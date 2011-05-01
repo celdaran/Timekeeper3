@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C55F6F8B-81BF-44A9-AA0A-859C0A66116E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Timekeeper</RootNamespace>
+    <AssemblyName>timekeeper</AssemblyName>
+    <ApplicationIcon>timekeeper.v22c.ico</ApplicationIcon>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ManifestCertificateThumbprint>29A84029ED05BE963F800826055015A93EFFA767</ManifestCertificateThumbprint>
+    <ManifestKeyFile>timekeeper_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>false</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationVersion>2.2.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DBI.cs" />
+    <Compile Include="fAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fAbout.Designer.cs">
+      <DependentUpon>fAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fAnnotate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fAnnotate.Designer.cs">
+      <DependentUpon>fAnnotate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fGridFilter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fGridFilter.Designer.cs">
+      <DependentUpon>fGridFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fGridManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fGridManage.Designer.cs">
+      <DependentUpon>fGridManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fGridManageRename.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fGridManageRename.Designer.cs">
+      <DependentUpon>fGridManageRename.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fGridSave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fGridSave.Designer.cs">
+      <DependentUpon>fGridSave.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fNotify.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fNotify.Designer.cs">
+      <DependentUpon>fNotify.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fPrompt.Designer.cs">
+      <DependentUpon>fPrompt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fPunch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fPunch.Designer.cs">
+      <DependentUpon>fPunch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fToolCalendar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fToolCalendar.Designer.cs">
+      <DependentUpon>fToolCalendar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fGrid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fGrid.Designer.cs">
+      <DependentUpon>fGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fToolCountdown.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fToolCountdown.Designer.cs">
+      <DependentUpon>fToolCountdown.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fToolDatecalc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fToolDatecalc.Designer.cs">
+      <DependentUpon>fToolDatecalc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fToolJournal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fToolJournal.Designer.cs">
+      <DependentUpon>fToolJournal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fLog.Designer.cs">
+      <DependentUpon>fLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fMain.Designer.cs">
+      <DependentUpon>fMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fItem.Designer.cs">
+      <DependentUpon>fItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fOptions.Designer.cs">
+      <DependentUpon>fOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fProperties.Designer.cs">
+      <DependentUpon>fProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fReport.Designer.cs">
+      <DependentUpon>fReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fToolReminders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fToolReminders.Designer.cs">
+      <DependentUpon>fToolReminders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fToolStopwatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fToolStopwatch.Designer.cs">
+      <DependentUpon>fToolStopwatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Journal.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="Items.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="Projects.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UUID.cs" />
+    <EmbeddedResource Include="fAbout.resx">
+      <DependentUpon>fAbout.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fAnnotate.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fAnnotate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fGridFilter.resx">
+      <DependentUpon>fGridFilter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fGridManage.resx">
+      <DependentUpon>fGridManage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fGridManageRename.resx">
+      <DependentUpon>fGridManageRename.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fGridSave.resx">
+      <DependentUpon>fGridSave.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fNotify.resx">
+      <DependentUpon>fNotify.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fPrompt.resx">
+      <DependentUpon>fPrompt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fPunch.resx">
+      <DependentUpon>fPunch.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fToolCalendar.resx">
+      <DependentUpon>fToolCalendar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fGrid.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fToolCountdown.resx">
+      <DependentUpon>fToolCountdown.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fToolDatecalc.resx">
+      <DependentUpon>fToolDatecalc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fToolJournal.resx">
+      <DependentUpon>fToolJournal.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fLog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fMain.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fItem.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fOptions.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fProperties.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fReport.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fToolReminders.resx">
+      <DependentUpon>fToolReminders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fToolStopwatch.resx">
+      <DependentUpon>fToolStopwatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Database.cs" />
+    <Compile Include="Task.cs" />
+    <Compile Include="Tasks.cs" />
+    <Compile Include="Common.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menu-project.bmp" />
+    <None Include="Resources\menu-task.bmp" />
+    <None Include="Resources\iconFolderClosed.bmp" />
+    <None Include="Resources\arrow-up.bmp" />
+    <None Include="Resources\arrow-down.bmp" />
+    <None Include="Resources\timekeeper-256.png" />
+    <None Include="Resources\timekeeper-48.png" />
+    <Content Include="timekeeper.v22c.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

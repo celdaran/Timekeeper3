@@ -1,0 +1,75 @@
+-------------------------
+Timekeeper 2.2 Change Log
+-------------------------
+
+April 21, 2011:
+  * Began work on support for hidden tasks and projects.
+ 
+April 22, 2011:
+  * Finished support for hidden tasks and projects. (1124)
+  * Added support for keyboard customization. (1044)
+  * Added support for Recent Files list. (1099)
+  * View Log is safe to use if no file is open. (1103)
+  * Daily time total added to HTML report. (1114)
+  * Project added to HTML report. (1131)
+  * About box cleaned up (with stats, etc). (1117)
+  * Log Browser has "close gap" helper buttons. (1121, 1122)
+  * Stopwatch cleaned up (~1036)
+  * Calendar cleaned up (~1036)
+  * Plus minor bug fixes and clean up along the way.
+  * Added rudimentary support for editing Journal entries.
+
+April 23, 2011:
+  * Re-fixed the About box.
+  * Fixed bugs WRT bad keyboard shortcut mappings.
+  * Added a "remove" button to deassign a keyboard mapping.
+  * Worked on 1047 but did not get it fixed. It's still a mystery.
+
+April 24, 2011:
+  * One more pass through the todo list, added a Priority column
+  * Worked on help file.
+
+April 25, 2011:
+  * Fixed issue with malformed meta table. db.check is improved yet again.
+  * Won't load a non-existent file unless File | New is selected. (1137)
+  * Tasks menu isn't quite right when Projects are hidden (1133)
+  * Add "Start/Stop Timer" to context/popup menu (1141)
+  * Make sure annotations are on by default (1142)
+
+April 27, 2011:
+  * Topped off work on 1137
+  * 1133 Tasks menu isn't quite right when Projects are hidden
+  * 1141 Add "Start/Stop Timer" to context/popup menu
+  * 1142 Make sure annotations are on by default.
+
+April 28, 2011:
+  * Topped off the installer
+
+April 30, 2011:
+
+  * 1096 Automatically reload most recent saved grid view on the grid dialog
+  * 1115 Replace "no timer is running" ShowMessage with real dialog w/ inline options
+  * 1134 Maybe disable the "close gap" button if the gap is already closed.
+  * 1135 Add some "how to unhide" instructions to the Hide confirmation.
+  * 1136 Add a "don't show this again" checkbox to the Hide confirmation dialog.
+  * 1138 After a virgin install on Jason's box, he got the "index out of range" error.
+  * 1143 Using the close gap buttons does not set the dirty bit
+  * 1144 Save the "Log Report" window metrics.
+  * 1145 Allow a TKDB file to be passed on the command line.
+  * 1146 Accidentally selecting a very large amount of data on the Report Grid is bad.
+  * 1147 Prevent reordering of tasks while the timer is running.
+  * 1148 Remove "Timer" tab from Options dialog: everything there can go to "Behavior"
+  * 1149 Log browser: add an explicit cancel button
+  * 1150 Log browser: don't reset box each time into it
+  * 1151 Log browser: date range doesn't properly include from/to dates
+  * 1152 Grid: automatically save a "Last View" view every time the view is changed.
+
+May 1, 2011:
+
+  * 1037 Icon still needs work. It's all new, fresh, and wonderful now. *sheesh*
+  * 1052 Register the TKDB file type. (New installer does that).
+  * 1153 Show project in application title bar while timing, not just task.
+
+  * Cleaned up directory structure
+  * Archived old versions
+  * Moved TK2.2 to perforce
