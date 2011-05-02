@@ -73,3 +73,11 @@ May 1, 2011:
   * Cleaned up directory structure
   * Archived old versions
   * Moved TK2.2 to perforce
+
+May 2, 2011:
+
+  Went past my deadline. Those last two bugs were annoying me so much:
+  
+  * 1156 Null object reference error on first launch.
+  * 1157 Right-clicking a task and selecting properties dies if no task actually selected.
+  * 1158 The about box colors look wrong on Aero.
