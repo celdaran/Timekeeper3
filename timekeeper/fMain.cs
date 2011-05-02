@@ -156,34 +156,37 @@ namespace Timekeeper
         // Tasks | Edit Task
         private void menuTasksEdit_Click(object sender, EventArgs e)
         {
-            Task task;
-            if (wTasks.SelectedNode == null) {
-                Common.Warn("No task selected.");
-                return;
-            } else {
+            if (wTasks.SelectedNode != null) {
+                Task task;
                 task = new Task(data, wTasks.SelectedNode.Text);
+                dlgItemEdit(wTasks, "Edit Task", (Item)task);
             }
-            dlgItemEdit(wTasks, "Edit Task", (Item) task);
         }
 
         // Tasks | Hide Task
         private void menuTasksHideTask_Click(object sender, EventArgs e)
         {
-            hideItem(wTasks, options.wViewHiddenTasks.Checked);
-            _setHideTaskMenuVisibility(false);
+            if (wTasks.SelectedNode != null) {
+                hideItem(wTasks, options.wViewHiddenTasks.Checked);
+                _setHideTaskMenuVisibility(false);
+            }
         }
 
         // Tasks | Unhide Task
         private void menuTasksUnhideTask_Click(object sender, EventArgs e)
         {
-            unhideItem(wTasks);
-            _setHideTaskMenuVisibility(true);
+            if (wTasks.SelectedNode != null) {
+                unhideItem(wTasks);
+                _setHideTaskMenuVisibility(true);
+            }
         }
 
         // Task | Delete Task
         private void menuTasksDeleteTask_Click(object sender, EventArgs e)
         {
-            deleteItem(wTasks);
+            if (wTasks.SelectedNode != null) {
+                deleteItem(wTasks);
+            }
         }
 
         // Task | New Project
@@ -203,34 +206,37 @@ namespace Timekeeper
         // Task | Edit Project
         private void menuTasksEditProject_Click(object sender, EventArgs e)
         {
-            Project project;
-            if (wProjects.SelectedNode == null) {
-                Common.Warn("No project selected.");
-                return;
-            } else {
+            if (wProjects.SelectedNode != null) {
+                Project project;
                 project = new Project(data, wProjects.SelectedNode.Text);
+                dlgItemEdit(wProjects, "Edit Project", (Item)project);
             }
-            dlgItemEdit(wProjects, "Edit Project", (Item)project);
         }
 
         // Tasks | Hide Project
         private void menuTasksHideProject_Click(object sender, EventArgs e)
         {
-            hideItem(wProjects, options.wViewHiddenProjects.Checked);
-            _setHideProjectMenuVisibility(false);
+            if (wProjects.SelectedNode != null) {
+                hideItem(wProjects, options.wViewHiddenProjects.Checked);
+                _setHideProjectMenuVisibility(false);
+            }
         }
 
         // Tasks | Unhide Project
         private void menuTasksUnhideProject_Click(object sender, EventArgs e)
         {
-            unhideItem(wProjects);
-            _setHideProjectMenuVisibility(true);
+            if (wProjects.SelectedNode != null) {
+                unhideItem(wProjects);
+                _setHideProjectMenuVisibility(true);
+            }
         }
 
         // Tasks | Delete Project
         private void menuTasksDeleteProject_Click(object sender, EventArgs e)
         {
-            deleteItem(wProjects);
+            if (wProjects.SelectedNode != null) {
+                deleteItem(wProjects);
+            }
         }
 
         //---------------------------------------------------------------------
@@ -454,7 +460,9 @@ namespace Timekeeper
         // Popup Task | Rename
         private void pmenuTasksRename_Click(object sender, EventArgs e)
         {
-            wTasks.SelectedNode.BeginEdit();
+            if (wTasks.SelectedNode != null) {
+                wTasks.SelectedNode.BeginEdit();
+            }
         }
 
         // Poup Task | Show Projects
@@ -467,14 +475,18 @@ namespace Timekeeper
         // Poup Task | Properties
         private void pmenuTasksProperties_Click(object sender, EventArgs e)
         {
-            Task item = (Task)wTasks.SelectedNode.Tag;
-            ShowProperties((Item)item);
+            if (wTasks.SelectedNode != null) {
+                Task item = (Task)wTasks.SelectedNode.Tag;
+                ShowProperties((Item)item);
+            }
         }
 
         // Popup Project | Rename
         private void pmenuProjectsRename_Click(object sender, EventArgs e)
         {
-            wProjects.SelectedNode.BeginEdit();
+            if (wProjects.SelectedNode != null) {
+                wProjects.SelectedNode.BeginEdit();
+            }
         }
 
         // Popup Project | Hide Pane
@@ -487,8 +499,10 @@ namespace Timekeeper
         // Popup Projects | Properties
         private void pmenuProjectsProperties_Click(object sender, EventArgs e)
         {
-            Project item = (Project)wProjects.SelectedNode.Tag;
-            ShowProperties((Item)item);
+            if (wProjects.SelectedNode != null) {
+                Project item = (Project)wProjects.SelectedNode.Tag;
+                ShowProperties((Item)item);
+            }
         }
 
         //---------------------------------------------------------------------
@@ -1570,7 +1584,7 @@ namespace Timekeeper
             // View or hide the project pane
             _toggleProjects();
 
-            if (dataFile.Length > 0)
+            if (dataFile != null)
             {
                 if (!loadFile(false)) {
                     // bail if we failed loading the file
