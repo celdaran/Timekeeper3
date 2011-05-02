@@ -88,6 +88,8 @@ namespace Timekeeper
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.wSQLtracing = new System.Windows.Forms.CheckBox();
             this.wTestMode = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.wTitleBarTemplate = new System.Windows.Forms.TextBox();
             this.wTabs.SuspendLayout();
             this.tabInterface.SuspendLayout();
             this.wGroupLayout.SuspendLayout();
@@ -461,15 +463,17 @@ namespace Timekeeper
             // 
             // wGroupTimer
             // 
+            this.wGroupTimer.Controls.Add(this.wTitleBarTemplate);
+            this.wGroupTimer.Controls.Add(this.label5);
             this.wGroupTimer.Controls.Add(this.wShowCurrent);
             this.wGroupTimer.Controls.Add(this.wShowTodayAll);
             this.wGroupTimer.Controls.Add(this.wShowToday);
             this.wGroupTimer.Location = new System.Drawing.Point(6, 6);
             this.wGroupTimer.Name = "wGroupTimer";
-            this.wGroupTimer.Size = new System.Drawing.Size(336, 102);
+            this.wGroupTimer.Size = new System.Drawing.Size(336, 118);
             this.wGroupTimer.TabIndex = 1;
             this.wGroupTimer.TabStop = false;
-            this.wGroupTimer.Text = "Title Bar Display";
+            this.wGroupTimer.Text = "Title Bar";
             // 
             // wShowCurrent
             // 
@@ -477,10 +481,10 @@ namespace Timekeeper
             this.wShowCurrent.Checked = true;
             this.wShowCurrent.Location = new System.Drawing.Point(25, 22);
             this.wShowCurrent.Name = "wShowCurrent";
-            this.wShowCurrent.Size = new System.Drawing.Size(155, 17);
+            this.wShowCurrent.Size = new System.Drawing.Size(188, 17);
             this.wShowCurrent.TabIndex = 2;
             this.wShowCurrent.TabStop = true;
-            this.wShowCurrent.Text = "Time since timer last started";
+            this.wShowCurrent.Text = "Display time since timer last started";
             this.wShowCurrent.UseVisualStyleBackColor = true;
             // 
             // wShowTodayAll
@@ -488,9 +492,9 @@ namespace Timekeeper
             this.wShowTodayAll.AutoSize = true;
             this.wShowTodayAll.Location = new System.Drawing.Point(25, 68);
             this.wShowTodayAll.Name = "wShowTodayAll";
-            this.wShowTodayAll.Size = new System.Drawing.Size(170, 17);
+            this.wShowTodayAll.Size = new System.Drawing.Size(206, 17);
             this.wShowTodayAll.TabIndex = 4;
-            this.wShowTodayAll.Text = "Elapsed time today for all tasks";
+            this.wShowTodayAll.Text = "Display elapsed time today for all tasks";
             this.wShowTodayAll.UseVisualStyleBackColor = true;
             // 
             // wShowToday
@@ -498,9 +502,9 @@ namespace Timekeeper
             this.wShowToday.AutoSize = true;
             this.wShowToday.Location = new System.Drawing.Point(25, 45);
             this.wShowToday.Name = "wShowToday";
-            this.wShowToday.Size = new System.Drawing.Size(152, 17);
+            this.wShowToday.Size = new System.Drawing.Size(224, 17);
             this.wShowToday.TabIndex = 3;
-            this.wShowToday.Text = "Elapsed time today for task";
+            this.wShowToday.Text = "Display elapsed time today for current task";
             this.wShowToday.UseVisualStyleBackColor = true;
             // 
             // wGroupOther
@@ -511,9 +515,9 @@ namespace Timekeeper
             this.wGroupOther.Controls.Add(this.wPromptInterval);
             this.wGroupOther.Controls.Add(this.wPromptNoTimer);
             this.wGroupOther.Controls.Add(this.wProjectFollow);
-            this.wGroupOther.Location = new System.Drawing.Point(348, 111);
+            this.wGroupOther.Location = new System.Drawing.Point(348, 130);
             this.wGroupOther.Name = "wGroupOther";
-            this.wGroupOther.Size = new System.Drawing.Size(188, 136);
+            this.wGroupOther.Size = new System.Drawing.Size(188, 117);
             this.wGroupOther.TabIndex = 14;
             this.wGroupOther.TabStop = false;
             this.wGroupOther.Text = "Annoyances";
@@ -601,9 +605,9 @@ namespace Timekeeper
             this.wGroupAnnotations.Controls.Add(this.label3);
             this.wGroupAnnotations.Controls.Add(this.wPostLog);
             this.wGroupAnnotations.Controls.Add(this.wPreLog);
-            this.wGroupAnnotations.Location = new System.Drawing.Point(6, 111);
+            this.wGroupAnnotations.Location = new System.Drawing.Point(6, 130);
             this.wGroupAnnotations.Name = "wGroupAnnotations";
-            this.wGroupAnnotations.Size = new System.Drawing.Size(336, 136);
+            this.wGroupAnnotations.Size = new System.Drawing.Size(336, 117);
             this.wGroupAnnotations.TabIndex = 5;
             this.wGroupAnnotations.TabStop = false;
             this.wGroupAnnotations.Text = "Annotations";
@@ -660,7 +664,7 @@ namespace Timekeeper
             this.wGroupWindow.Controls.Add(this.wMinimizeOnUse);
             this.wGroupWindow.Location = new System.Drawing.Point(348, 6);
             this.wGroupWindow.Name = "wGroupWindow";
-            this.wGroupWindow.Size = new System.Drawing.Size(188, 102);
+            this.wGroupWindow.Size = new System.Drawing.Size(188, 118);
             this.wGroupWindow.TabIndex = 10;
             this.wGroupWindow.TabStop = false;
             this.wGroupWindow.Text = "Window Control";
@@ -857,6 +861,23 @@ namespace Timekeeper
             this.wTestMode.UseVisualStyleBackColor = true;
             this.wTestMode.Visible = false;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(22, 93);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(54, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Template:";
+            // 
+            // wTitleBarTemplate
+            // 
+            this.wTitleBarTemplate.Location = new System.Drawing.Point(77, 90);
+            this.wTitleBarTemplate.Name = "wTitleBarTemplate";
+            this.wTitleBarTemplate.Size = new System.Drawing.Size(154, 20);
+            this.wTitleBarTemplate.TabIndex = 6;
+            this.wTitleBarTemplate.Text = "%task (%project) - %time";
+            // 
             // fOptions
             // 
             this.AcceptButton = this.btnSave;
@@ -966,5 +987,7 @@ namespace Timekeeper
         internal System.Windows.Forms.NumericUpDown wPromptInterval;
         internal System.Windows.Forms.CheckBox wPromptNoTimer;
         internal System.Windows.Forms.CheckBox wPromptHide;
+        private System.Windows.Forms.Label label5;
+        public System.Windows.Forms.TextBox wTitleBarTemplate;
     }
 }

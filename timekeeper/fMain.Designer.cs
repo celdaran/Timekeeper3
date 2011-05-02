@@ -957,7 +957,7 @@ namespace Timekeeper
             // timerLong
             // 
             this.timerLong.Enabled = true;
-            this.timerLong.Interval = 60000;
+            this.timerLong.Interval = 600000;
             this.timerLong.Tick += new System.EventHandler(this.timerLong_Tick);
             // 
             // dlgNew

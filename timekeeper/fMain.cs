@@ -583,9 +583,13 @@ namespace Timekeeper
                 }
 
                 // Text = currentTaskNode.Text + " (Timer Running)";
-                Text = currentTaskNode.Text + " (" + currentProjectNode.Text + ") - " + timeToShow;
+                // Text = currentTaskNode.Text + " (" + currentProjectNode.Text + ") - " + timeToShow;
+                string tmp = options.wTitleBarTemplate.Text;
+                tmp = tmp.Replace("%task", "{0}");
+                tmp = tmp.Replace("%project", "{1}");
+                tmp = tmp.Replace("%time", "{2}");
+                Text = String.Format(tmp, currentTaskNode.Text, currentProjectNode.Text, timeToShow);
                 wNotifyIcon.Text = Text;
-
             }
 
             // Animate the task icon
@@ -1475,6 +1479,7 @@ namespace Timekeeper
             int ProjectFollow = (int)key.GetValue("ProjectFollow", 1);
             int ShowHiddenTasks = (int)key.GetValue("ShowHiddenTasks", 0);
             int ShowHiddenProjects = (int)key.GetValue("ShowHiddenProjects", 0);
+            string TitleBarTemplate = (string)key.GetValue("TitleBarTemplate", "%task (%project) - %time");
             int SQLtracing = (int)key.GetValue("SQLtracing", 0);
             int TestMode = (int)key.GetValue("TestMode", 0);
 
@@ -1492,6 +1497,7 @@ namespace Timekeeper
             options.wProjectFollow.Checked = (ProjectFollow == 1);
             options.wViewHiddenTasks.Checked = (ShowHiddenTasks == 1);
             options.wViewHiddenProjects.Checked = (ShowHiddenProjects == 1);
+            options.wTitleBarTemplate.Text = TitleBarTemplate;
             options.wSQLtracing.Checked = (SQLtracing == 1);
             options.wTestMode.Checked = (TestMode == 1);
             key.Close();
@@ -1659,6 +1665,7 @@ namespace Timekeeper
             key.SetValue("ProjectFollow", options.wProjectFollow.Checked, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("ShowHiddenTasks", options.wViewHiddenTasks.Checked, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("ShowHiddenProjects", options.wViewHiddenProjects.Checked, Microsoft.Win32.RegistryValueKind.DWord);
+            key.SetValue("TitleBarTemplate", options.wTitleBarTemplate.Text);
             key.SetValue("SQLtracing", options.wSQLtracing.Checked, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("TestMode", options.wTestMode.Checked, Microsoft.Win32.RegistryValueKind.DWord);
             key.Close();
