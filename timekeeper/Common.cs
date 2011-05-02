@@ -9,7 +9,7 @@ namespace Timekeeper
 {
     class Common
     {
-        public const string VERSION = "2.2.0.0";
+        public const string VERSION = "2.2.0.4";
         public const string DATE_FORMAT = "yyyy-MM-dd";
         public const string TIME_FORMAT = "HH:mm:ss";
         public const string DATETIME_FORMAT = DATE_FORMAT + " " + TIME_FORMAT;
