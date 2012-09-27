@@ -77,6 +77,7 @@ namespace Timekeeper
             this.menuToolsReminders = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
             this.menuToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelpContents = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelpWeb = new System.Windows.Forms.ToolStripMenuItem();
@@ -447,9 +448,11 @@ namespace Timekeeper
             this.menuToolsDatecalc,
             this.menuToolsReminders,
             this.toolStripMenuItem8,
-            this.menuToolsOptions});
+            this.menuToolsOptions,
+            this.toolStripMenuItem1});
             this.menuTools.Enabled = false;
             this.menuTools.Name = "menuTools";
+            this.menuTools.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
             this.menuTools.Size = new System.Drawing.Size(44, 20);
             this.menuTools.Text = "T&ools";
             // 
@@ -530,6 +533,11 @@ namespace Timekeeper
             this.menuToolsOptions.Text = "Op&tions...";
             this.menuToolsOptions.Click += new System.EventHandler(this.menuToolsOptions_Click);
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(172, 6);
+            // 
             // menuHelp
             // 
             this.menuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -545,26 +553,26 @@ namespace Timekeeper
             // 
             this.menuHelpContents.Name = "menuHelpContents";
             this.menuHelpContents.ShortcutKeyDisplayString = "F1";
-            this.menuHelpContents.Size = new System.Drawing.Size(137, 22);
+            this.menuHelpContents.Size = new System.Drawing.Size(152, 22);
             this.menuHelpContents.Text = "&Contents";
             this.menuHelpContents.Click += new System.EventHandler(this.menuHelpContents_Click);
             // 
             // menuHelpWeb
             // 
             this.menuHelpWeb.Name = "menuHelpWeb";
-            this.menuHelpWeb.Size = new System.Drawing.Size(137, 22);
+            this.menuHelpWeb.Size = new System.Drawing.Size(152, 22);
             this.menuHelpWeb.Text = "&Web Support";
             this.menuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
             // 
             // menuHelpSep
             // 
             this.menuHelpSep.Name = "menuHelpSep";
-            this.menuHelpSep.Size = new System.Drawing.Size(134, 6);
+            this.menuHelpSep.Size = new System.Drawing.Size(149, 6);
             // 
             // menuHelpAbout
             // 
             this.menuHelpAbout.Name = "menuHelpAbout";
-            this.menuHelpAbout.Size = new System.Drawing.Size(137, 22);
+            this.menuHelpAbout.Size = new System.Drawing.Size(152, 22);
             this.menuHelpAbout.Text = "&About...";
             this.menuHelpAbout.Click += new System.EventHandler(this.menuHelpAbout_Click);
             // 
@@ -588,9 +596,9 @@ namespace Timekeeper
             // statusCurrentTask
             // 
             this.statusCurrentTask.AutoSize = false;
-            this.statusCurrentTask.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.statusCurrentTask.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.statusCurrentTask.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.statusCurrentTask.ForeColor = System.Drawing.SystemColors.GrayText;
             this.statusCurrentTask.Name = "statusCurrentTask";
@@ -602,9 +610,9 @@ namespace Timekeeper
             // 
             // statusTimeCurrent
             // 
-            this.statusTimeCurrent.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.statusTimeCurrent.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.statusTimeCurrent.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.statusTimeCurrent.ForeColor = System.Drawing.Color.Gray;
             this.statusTimeCurrent.Name = "statusTimeCurrent";
@@ -614,9 +622,9 @@ namespace Timekeeper
             // 
             // statusTimeToday
             // 
-            this.statusTimeToday.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.statusTimeToday.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.statusTimeToday.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.statusTimeToday.ForeColor = System.Drawing.Color.Gray;
             this.statusTimeToday.Name = "statusTimeToday";
@@ -626,9 +634,9 @@ namespace Timekeeper
             // 
             // statusTimeAll
             // 
-            this.statusTimeAll.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.statusTimeAll.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.statusTimeAll.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.statusTimeAll.ForeColor = System.Drawing.Color.Gray;
             this.statusTimeAll.Name = "statusTimeAll";
@@ -638,9 +646,9 @@ namespace Timekeeper
             // 
             // statusFile
             // 
-            this.statusFile.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.statusFile.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.statusFile.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.statusFile.ForeColor = System.Drawing.Color.Gray;
             this.statusFile.Name = "statusFile";
@@ -1102,6 +1110,7 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem menuFileRecent;
         private System.Windows.Forms.ToolStripMenuItem pmenuTasksTimer;
         private System.Windows.Forms.ToolStripSeparator pmenuTasksSep1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 

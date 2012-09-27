@@ -1010,7 +1010,7 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        private void loadProjects(TreeNode parent_node, int parent_id)
+        public void loadProjects(TreeNode parent_node, int parent_id)
         {
             // Get sort order (FIXME: copy/poasted from loadTasks; please fix that)
             int nOrderBy = options.wOrderBy.SelectedIndex;
@@ -1842,6 +1842,21 @@ namespace Timekeeper
             string topic = String.Format("html\\context\\fMain\\{0}.html", c.Name);
             Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
         }
+
+        /*
+        private void menuToolsfRecord_Click(object sender, EventArgs e)
+        {
+            record = new fRecordOriginal(data, this);
+            record.isTimerRunning = timerRunning;
+            record.ShowDialog(this);
+        }
+
+        private void form3ToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            Form3 form3 = new Form3();
+            form3.ShowDialog(this);
+        }
+        */
 
     }
 }

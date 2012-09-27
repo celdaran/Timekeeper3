@@ -373,6 +373,7 @@
     <None Include="Resources\arrow-down.bmp" />
     <None Include="Resources\timekeeper-256.png" />
     <None Include="Resources\timekeeper-48.png" />
+    <None Include="Resources\dropdown.png" />
     <Content Include="timekeeper.v22c.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
