@@ -23,10 +23,10 @@ namespace Timekeeper
         private DBI data;
         //private Log log; ==> fixme
 
-        private int id;
-        private int task_id;
-        private int project_id;
-        private int seconds;
+        private long id;
+        private long task_id;
+        private long project_id;
+        private long seconds;
         private DateTime timestamp_s;
         private DateTime timestamp_e;
         private string pre_log;
@@ -90,17 +90,19 @@ namespace Timekeeper
                 }
 
                 // Default search date pickers
-                query = "select min(timestamp_s) as timestamp_s from timekeeper";
+                query = "select min(timestamp_s) from timekeeper";
                 Row row = data.SelectRow(query);
-                if (row["timestamp_s"] != "") {
-                    DateTime dt = Convert.ToDateTime(row["timestamp_s"]);
+                if (row["min(timestamp_s)"] != null) {
+                    // Need to parse because the min() aggregater appears
+                    // to be converting my value to a string.
+                    DateTime dt = DateTime.Parse(row["min(timestamp_s)"]);
                     wFromDatePicker.Value = dt;
                 }
 
                 query = "select max(timestamp_s) as timestamp_s from timekeeper";
                 row = data.SelectRow(query);
                 if (row["timestamp_s"] != "") {
-                    DateTime dt = Convert.ToDateTime(row["timestamp_s"]);
+                    DateTime dt = DateTime.Parse(row["timestamp_s"]);
                     wToDatePicker.Value = dt;
                 }
 
@@ -112,21 +114,24 @@ namespace Timekeeper
 
                 this.isDirty = false;
             }
-            catch {
-                Common.Info("No file loaded.");
+            catch (Exception exception) {
+                Common.Info("No file loaded.\n\n" + exception.ToString());
             }
         }
 
-        private int getMaxId()
+        private long getMaxId()
         {
             try {
                 string query = "select max(id) as max_log_id from timekeeper";
                 Row row = data.SelectRow(query);
-                if (row["max_log_id"].Length > 0) {
+                return row["max_log_id"];
+                /*
+                if (row["max_log_id"] > 0) {
                     return Convert.ToInt32(row["max_log_id"]);
                 } else {
                     return 0;
                 }
+                */
             }
             catch {
                 return 0;
@@ -224,6 +229,11 @@ namespace Timekeeper
 
         private void displayRow()
         {
+            // FIXME: in general, if I haven't said it already, let's get rid
+            // of direct SQL access inside forms. This kind of stuff should
+            // be done at a business objects level or otherwise segregated 
+            // from the presentation layer. (Added as Bug Number #1218.)
+            
             try {
                 // Now get some real log data
                 string query = @"
@@ -239,8 +249,7 @@ namespace Timekeeper
                 where log.id = " + id;
                 Row row = data.SelectRow(query);
 
-                if (row["task_id"].Length == 0)
-                {
+                if (row["task_id"] == 0) {
                     // all out of rows
                     // try previous row next time
                     id--;
@@ -250,27 +259,20 @@ namespace Timekeeper
                 try
                 {
                     // Save values in object members
-                    task_id = Convert.ToInt32(row["task_id"]);
-                    project_id = Convert.ToInt32(row["project_id"]);
-                    seconds = Convert.ToInt32(row["seconds"]);
-                    timestamp_s = DateTime.Parse(row["timestamp_s"]);
-                    if (row["timestamp_e"].Length > 0)
-                    {
-                        timestamp_e = DateTime.Parse(row["timestamp_e"]);
-                    }
+                    task_id = row["task_id"];
+                    project_id = row["project_id"];
+                    seconds = row["seconds"];
+                    timestamp_s = row["timestamp_s"];
+                    if (row["timestamp_e"] != null)
+                        timestamp_e = row["timestamp_e"];
                     pre_log = row["pre_log"];
                     post_log = row["post_log"];
 
                     wPrevStart.Text = timestamp_s.ToString(Common.DATETIME_FORMAT);
-                    if (row["timestamp_e"].Length > 0)
-                    {
+                    if (row["timestamp_e"] != null)
                         wPrevEnd.Text = timestamp_e.ToString(Common.DATETIME_FORMAT);
-                    }
-                    else
-                    {
-                        wPrevEnd.Text = "";
-                    }
-                    wDuration.Text = Common.FormatSeconds(seconds);
+
+                    wDuration.Text = Timekeeper.FormatSeconds(seconds);
                     wPrevLog.Text = pre_log;
                     wPostLog.Text = post_log;
                     wTask.Text = row["task_name"];
@@ -278,7 +280,7 @@ namespace Timekeeper
 
                     wID.Text = id.ToString();
 
-                    if (row["is_locked"] == "True")
+                    if (row["is_locked"])
                     {
                         isLocked = true;
                         wPrevStart.Enabled = false;
@@ -507,7 +509,7 @@ namespace Timekeeper
                 timestamp_s = Convert.ToDateTime(wPrevStart.Text);
                 timestamp_e = Convert.ToDateTime(wPrevEnd.Text);
                 TimeSpan ts = timestamp_e.Subtract(timestamp_s);
-                seconds = Convert.ToInt32(ts.TotalSeconds);
+                seconds = (long)ts.TotalSeconds;
 
                 // set lookup fields
                 string tmp = wTask.Text;
@@ -533,11 +535,11 @@ namespace Timekeeper
 
             row["timestamp_s"] = timestamp_s.ToString(Common.DATETIME_FORMAT);
             row["timestamp_e"] = timestamp_e.ToString(Common.DATETIME_FORMAT);
-            row["seconds"] = seconds.ToString();
+            row["seconds"] = seconds;
             row["pre_log"] = wPrevLog.Text;
             row["post_log"] = wPostLog.Text;
-            row["task_id"] = task_id.ToString();
-            row["project_id"] = project_id.ToString();
+            row["task_id"] = task_id;
+            row["project_id"] = project_id;
 
             data.Update("timekeeper", row, "id", wID.Text);
 
@@ -587,8 +589,8 @@ namespace Timekeeper
                 timestamp_s = Convert.ToDateTime(wPrevStart.Text);
                 timestamp_e = Convert.ToDateTime(wPrevEnd.Text);
                 TimeSpan ts = timestamp_e.Subtract(timestamp_s);
-                seconds = Convert.ToInt32(ts.TotalSeconds);
-                return Common.FormatSeconds(seconds);
+                seconds = (long)ts.TotalSeconds;
+                return Timekeeper.FormatSeconds(seconds);
             }
             catch
             {
@@ -609,7 +611,7 @@ namespace Timekeeper
 
                 // Return standard-formatted string
                 DateTime prevEnd;
-                prevEnd = Convert.ToDateTime(row["timestamp_e"]);
+                prevEnd = row["timestamp_e"];
                 return prevEnd.ToString(Common.DATETIME_FORMAT);
             }
             catch {
@@ -628,13 +630,13 @@ namespace Timekeeper
 
                 // Did we get one?
                 DateTime nextBegin;
-                if (row["next_id"] == "") {
+                if (row["next_id"] == null) {
                     // If not, use current date time
                     nextBegin = DateTime.Now;
                 } else {
                     query = "select timestamp_s from timekeeper where id = " + row["next_id"];
                     row = data.SelectRow(query);
-                    nextBegin = Convert.ToDateTime(row["timestamp_s"]);
+                    nextBegin = row["timestamp_s"];
                 }
 
                 // Return standard-formatted string
@@ -650,10 +652,10 @@ namespace Timekeeper
         private void btnUnlock_Click(object sender, EventArgs e)
         {
             Row row = new Row();
-            row["is_locked"] = "0";
+            row["is_locked"] = true;
 
             data.Begin();
-            data.Update("timekeeper", row, "id", id.ToString());
+            data.Update("timekeeper", row, "id", id);
             displayRow();
             data.Commit();
         }

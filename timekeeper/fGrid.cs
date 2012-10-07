@@ -411,16 +411,16 @@ namespace Timekeeper
                 }
 
                 Row row = new Row();
-	            row["description"] = dlg.wDescription.Text;
-	            row["task_list"] = this.task_list;
-	            row["project_list"] = this.project_list;
+                row["description"] = dlg.wDescription.Text;
+                row["task_list"] = this.task_list;
+                row["project_list"] = this.project_list;
                 row["date_preset"] = this.wDatePreset.SelectedIndex.ToString();
-	            row["start_date"] = this.wStartDate.Text;
-	            row["end_date"] = this.wEndDate.Text;
+                row["start_date"] = this.wStartDate.Text;
+                row["end_date"] = this.wEndDate.Text;
                 row["end_date_type"] = endDateType;
                 row["group_by"] = this.wGroupBy.SelectedIndex.ToString();
                 row["data_from"] = this.wDataType.SelectedIndex.ToString();
-                row["hide_empty_rows"] = this.wHideEmptyRows.Checked ? "1" : "0";
+                row["hide_empty_rows"] = this.wHideEmptyRows.Checked; // was: ? "1" : "0";
                 row["timestamp_c"] = Common.Now();
                 row["timestamp_m"] = Common.Now();
 
@@ -436,7 +436,7 @@ namespace Timekeeper
                     int max_sort_index = tmp["max_sort_index"] == "" ? 0 : Convert.ToInt32(tmp["max_sort_index"]);
 
                     row["name"] = dlg.wName.Text;
-                    row["sort_index"] = Convert.ToString(max_sort_index + 1);
+                    row["sort_index"] = max_sort_index + 1;
                     data.Insert("grid_views", row);
                     Common.Info("New grid view saved.");
                 }
@@ -504,12 +504,13 @@ namespace Timekeeper
             string query = String.Format(@"select * from grid_views where name = '{0}'", name);
             Row row = this.data.SelectRow(query);
 
-            if (row["id"] != "") {
+            if (row["id"] != null) {
                 this.sLoadedViewName = row["name"];
                 this.sLoadedViewDescription = row["description"];
                 this.task_list = row["task_list"] == "" ? null : row["task_list"];
                 this.project_list = row["project_list"] == "" ? null : row["project_list"]; ;
 
+                // FIXME: no magic numbers, please
                 if (row["date_preset"] == "5")
                 {
                     wDatePreset.SelectedIndex = 5;
@@ -527,7 +528,7 @@ namespace Timekeeper
                 }
                 wGroupBy.SelectedIndex = Convert.ToInt32(row["group_by"]);
                 wDataType.SelectedIndex = Convert.ToInt32(row["data_from"]);
-                wHideEmptyRows.Checked = row["hide_empty_rows"] == "1";
+                wHideEmptyRows.Checked = row["hide_empty_rows"] == true;
                 dlgGridFilter._set_checks(dlgGridFilter.wTaskList, this.task_list);
                 dlgGridFilter._set_checks(dlgGridFilter.wProjectList, this.project_list);
             }
@@ -583,7 +584,7 @@ namespace Timekeeper
             switch (format)
             {
                 case 0:
-                    value = Common.FormatSeconds(seconds);
+                    value = Timekeeper.FormatSeconds(seconds);
                     toolTip = "Hours:Minutes:Seconds";
                     break;
                 case 1:
@@ -628,7 +629,7 @@ namespace Timekeeper
             row["end_date_type"] = null;
             row["group_by"] = this.wGroupBy.SelectedIndex.ToString();
             row["data_from"] = this.wDataType.SelectedIndex.ToString();
-            row["hide_empty_rows"] = this.wHideEmptyRows.Checked ? "1" : "0";
+            row["hide_empty_rows"] = this.wHideEmptyRows.Checked; // was: ? "1" : "0";
             row["timestamp_c"] = Common.Now();
             row["timestamp_m"] = Common.Now();
 
@@ -643,7 +644,7 @@ namespace Timekeeper
                     int max_sort_index = tmp["max_sort_index"] == "" ? 0 : Convert.ToInt32(tmp["max_sort_index"]);
 
                     row["name"] = "Last View";
-                    row["sort_index"] = Convert.ToString(max_sort_index + 1);
+                    row["sort_index"] = max_sort_index + 1;
                     data.Insert("grid_views", row);
                 }
             }

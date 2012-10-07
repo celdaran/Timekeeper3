@@ -125,9 +125,9 @@ namespace Timekeeper
 
             foreach (Row row in rows)
             {
-                int seconds = Convert.ToInt32(row["seconds"]);
-                DateTime start = Convert.ToDateTime(row["timestamp_s"]);
-                DateTime end = Convert.ToDateTime(row["timestamp_e"]);
+                int seconds = row["seconds"];
+                DateTime start = row["timestamp_s"];
+                DateTime end = row["timestamp_e"];
                 string pre = row["pre_log"].Replace("\n", "<br/>");
                 string post = row["post_log"].Replace("\n", "<br/>");
                 pre = pre.Replace("<br/>*", "<br/><li>");
@@ -142,7 +142,7 @@ namespace Timekeeper
                 {
                     if (nPrevDay != 0)
                     {
-                        hr += "<p><b>Daily Total</b>: " + Common.FormatSeconds(nDailySeconds) + "</p>";
+                        hr += "<p><b>Daily Total</b>: " + Timekeeper.FormatSeconds(nDailySeconds) + "</p>";
                     }
                     hr += "<hr /> <b>";
                     hr += start.ToString("dddd, MMMM dd, yyyy") + "</b>";
@@ -161,14 +161,14 @@ namespace Timekeeper
                     </table>
                     </p>",
                     start.ToString("HH:mm:ss"), end.ToString("HH:mm:ss"),
-                    Common.FormatSeconds(seconds), row["task_name"] + " / " + row["project_name"],
+                    Timekeeper.FormatSeconds(seconds), row["task_name"] + " / " + row["project_name"],
                     pre, post, hr);
                 doc += rpt;
 
                 nTotalSeconds += seconds;
                 nDailySeconds += seconds;
             }
-            doc += "<hr/><b>Total Time</b>: " + Common.FormatSeconds(nTotalSeconds);
+            doc += "<hr/><b>Total Time</b>: " + Timekeeper.FormatSeconds(nTotalSeconds);
 
             doc += "</body></html>";
             wReport.DocumentText = doc;

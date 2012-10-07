@@ -3,31 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-
-
 namespace Timekeeper
 {
-    class Common
+    class Timekeeper
     {
         public const string VERSION = "2.2.0.4";
-        public const string DATE_FORMAT = "yyyy-MM-dd";
-        public const string TIME_FORMAT = "HH:mm:ss";
-        public const string DATETIME_FORMAT = DATE_FORMAT + " " + TIME_FORMAT;
 
-        public Common()
+        public Timekeeper()
         {
         }
         
-        public static string Today()
-        {
-            return DateTime.Now.ToString(Common.DATE_FORMAT);
-        }
-
-        public static string Now()
-        {
-            return DateTime.Now.ToString(Common.DATETIME_FORMAT);
-        }
-
         public static string FormatSeconds(long seconds)
         {
             TimeSpan t = TimeSpan.FromSeconds(seconds);
@@ -54,26 +39,5 @@ namespace Timekeeper
                                     t.Minutes,
                                     t.Seconds);
         }
-
-        public static void Info(string msg)
-        {
-            MessageBox.Show(msg, "Timekeeper", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        public static void Warn(string msg)
-        {
-            MessageBox.Show(msg, "Timekeeper", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-        }
-
-        public static DialogResult Prompt(string msg)
-        {
-            return MessageBox.Show(msg, "Timekeeper", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-        }
-
-        public static DialogResult WarnPrompt(string msg)
-        {
-            return MessageBox.Show(msg, "Timekeeper", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-        }
-
     }
 }

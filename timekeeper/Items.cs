@@ -20,7 +20,7 @@ namespace Timekeeper
         //---------------------------------------------------------------------
         // Methods
         //---------------------------------------------------------------------
-        public int getSeconds()
+        public long getSeconds()
         {
             // fetch seconds from the db for this task
             string today = DateTime.Today.ToString(Common.DATE_FORMAT);
@@ -32,12 +32,15 @@ namespace Timekeeper
                 where timestamp_s > '{0} {1}'",
                 today, midnight);
             Row row = this.data.SelectRow(query);
+            return row["seconds"] == null ? 0 : row["seconds"];
 
+            /*
             if (row["seconds"].Length > 0) {
                 return Convert.ToInt32(row["seconds"]);
             } else {
                 return 0;
             }
+            */
         }
    
     }

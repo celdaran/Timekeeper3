@@ -17,7 +17,7 @@ namespace Timekeeper
         }
 
         // constructor, by id
-        public Task(DBI data, int task_id)
+        public Task(DBI data, long task_id)
         {
             this.data = data;
             this.table = "tasks";
@@ -41,7 +41,7 @@ namespace Timekeeper
                 where name = '{0}'", taskName);
 
             Row row = data.SelectRow(query);
-            int task_id = Convert.ToInt32(row["id"]);
+            long task_id = row["id"];
 
             _load(task_id);
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -53,12 +53,12 @@ namespace Timekeeper
 
             // Update current row with previous row's sort_index
             Row row = new Row();
-            row["sort_index"] = prev.Key.ToString();
+            row["sort_index"] = prev.Key;
             data.Update("grid_views", row, "name", curr.Value);
 
             // Update previous row with current row's sort_index
             row = new Row();
-            row["sort_index"] = curr.Key.ToString();
+            row["sort_index"] = curr.Key;
             data.Update("grid_views", row, "name", prev.Value);
 
             // Now just repaint whole form
@@ -85,12 +85,12 @@ namespace Timekeeper
 
             // Update current row with next row's sort_index
             Row row = new Row();
-            row["sort_index"] = next.Key.ToString();
+            row["sort_index"] = next.Key;
             data.Update("grid_views", row, "name", curr.Value);
 
             // Update next row with current row's sort_index
             row = new Row();
-            row["sort_index"] = curr.Key.ToString();
+            row["sort_index"] = curr.Key;
             data.Update("grid_views", row, "name", next.Value);
 
             // Now just repaint whole form
@@ -156,7 +156,7 @@ namespace Timekeeper
 
                 // check for uniqueness
                 Row row = data.SelectRow(String.Format(@"select count(*) as count from grid_views where name = '{0}'", dlg.wNewName.Text.Replace("'", "''")));
-                if (row["count"] == "1") {
+                if (row["count"] == 1) {
                     data.Rollback();
                     Common.Warn("A view with that name already exists.");
                     return;

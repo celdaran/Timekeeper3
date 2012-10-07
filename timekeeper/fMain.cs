@@ -50,9 +50,9 @@ namespace Timekeeper
         private bool timerRunning = false;
         private bool notificationOpen = false;
         private DateTime timerLastRun;
-        private int elapsed;
-        private int elapsedToday;
-        private int elapsedTodayAll;
+        private long elapsed;
+        private long elapsedToday;
+        private long elapsedTodayAll;
 
         // miscellaneous internals
         private DateTime annotateStartTime;
@@ -443,7 +443,7 @@ namespace Timekeeper
         // Help | Web Support
         private void menuHelpWeb_Click(object sender, EventArgs e)
         {
-            Help.ShowHelp(this, "http://www.technitivity.com/timekeeper/help/?version=" + Common.VERSION);
+            Help.ShowHelp(this, "http://www.technitivity.com/timekeeper/help/?version=" + Timekeeper.VERSION);
         }
 
         // Help | About
@@ -585,9 +585,9 @@ namespace Timekeeper
                 elapsedToday++;
                 elapsedTodayAll++;
 
-                statusTimeCurrent.Text = Common.FormatSeconds(elapsed);
-                statusTimeToday.Text = Common.FormatSeconds(elapsedToday);
-                statusTimeAll.Text = Common.FormatSeconds(elapsedTodayAll);
+                statusTimeCurrent.Text = Timekeeper.FormatSeconds(elapsed);
+                statusTimeToday.Text = Timekeeper.FormatSeconds(elapsedToday);
+                statusTimeAll.Text = Timekeeper.FormatSeconds(elapsedTodayAll);
 
                 string timeToShow;
                 if (options.wShowCurrent.Checked) {
@@ -975,7 +975,7 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        private void loadTasks(TreeNode parent_node, int parent_id)
+        private void loadTasks(TreeNode parent_node, long parent_id)
         {
             // Get sort order
             int nOrderBy = options.wOrderBy.SelectedIndex;
@@ -1012,7 +1012,7 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        public void loadProjects(TreeNode parent_node, int parent_id)
+        public void loadProjects(TreeNode parent_node, long parent_id)
         {
             // Get sort order (FIXME: copy/poasted from loadTasks; please fix that)
             int nOrderBy = options.wOrderBy.SelectedIndex;
@@ -1342,9 +1342,9 @@ namespace Timekeeper
             timerLastRun = DateTime.Now;
 
             // Grab times (this is a database hit)
-            elapsed = Convert.ToInt32(currentTask.elapsed().TotalSeconds);
-            elapsedToday = Convert.ToInt32(currentTask.elapsedToday().TotalSeconds);
-            elapsedTodayAll = Convert.ToInt32(currentTask.elapsedTodayAll(tasks.getSeconds()).TotalSeconds);
+            elapsed = (long)currentTask.elapsed().TotalSeconds;
+            elapsedToday = (long)currentTask.elapsedToday().TotalSeconds;
+            elapsedTodayAll = (long)currentTask.elapsedTodayAll(tasks.getSeconds()).TotalSeconds;
 
             // Make any UI changes based on the timer starting
             menuTasksTimer.Text = "&Stop Timer";
@@ -1435,8 +1435,8 @@ namespace Timekeeper
             properties.wID.Text = item.id.ToString();
             properties.wType.Text = item.is_folder ? "Folder" : "Item"; ;
             properties.wDescription.Text = item.description.Length > 0 ? item.description : "(none)";
-            properties.wTotalTime.Text = Common.FormatSeconds(item.countTreeTime(item.id, "1900-01-01", "2999-01-01"));
-            properties.wTimeToday.Text = Common.FormatSeconds(item.countTreeTime(item.id, start, end));
+            properties.wTotalTime.Text = Timekeeper.FormatSeconds(item.countTreeTime(item.id, "1900-01-01", "2999-01-01"));
+            properties.wTimeToday.Text = Timekeeper.FormatSeconds(item.countTreeTime(item.id, start, end));
             properties.wCreated.Text = item.timestamp_c.ToString();
 
             properties.ShowDialog(this);
@@ -1663,7 +1663,7 @@ namespace Timekeeper
             if (lastGridView != null) {
                 key.SetValue("LastGridView", lastGridView);
             }
-            key.SetValue("Version", Common.VERSION);
+            key.SetValue("Version", Timekeeper.VERSION);
             key.Close();
 
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "Options");
@@ -1782,7 +1782,7 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        public TreeNode _findNode(TreeNodeCollection nodes, int id)
+        public TreeNode _findNode(TreeNodeCollection nodes, long id)
         {
             TreeNode result = null;
 
@@ -1807,15 +1807,15 @@ namespace Timekeeper
         {
             string query = "select count(*) as count from tasks where is_deleted = 0 and is_hidden = 0 and parent_id > 0";
             Row row = data.SelectRow(query);
-            if (row["count"].Length > 0) {
-                int count = Convert.ToInt32(row["count"]);
+            long count = row["count"];
+            if (count > 0) {
                 wTasks.ShowRootLines = (count > 0);
             }
 
             query = "select count(*) as count from projects where is_deleted = 0 and is_hidden = 0 and parent_id > 0";
             row = data.SelectRow(query);
-            if (row["count"].Length > 0) {
-                int count = Convert.ToInt32(row["count"]);
+            count = row["count"];
+            if (count > 0) {
                 wProjects.ShowRootLines = (count > 0);
             }
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -42,7 +42,7 @@ namespace Timekeeper
                 data.Begin();
 
                 // Declarations
-                Version app_version = new Version(Common.VERSION);
+                Version app_version = new Version(Timekeeper.VERSION);
                 Version db_version;
                 Row row;
 
@@ -70,7 +70,7 @@ namespace Timekeeper
                 } else {
                     // if there is a meta table, check the version and disallow opening higher version dbs
                     row = data.SelectRow("select * from meta where key = 'version'");
-                    db_version = new Version(row["value"].ToString());
+                    db_version = new Version(row["value"]);
                     if (db_version > app_version) {
                         return -2;
                     }
@@ -80,45 +80,7 @@ namespace Timekeeper
                     if (rows.Count == 3) {
                         // Everything is okay.
                     } else {
-                        // Time to repair
-                        bool foundCreated = false;
-                        bool foundVersion = false;
-                        bool foundId = false;
-
-                        foreach (Row metaRow in rows) {
-                            if (row["key"] == "created") {
-                                foundCreated = true;
-                            } else if (row["key"] == "version") {
-                                foundVersion = true;
-                            } else if (row["key"] == "id") {
-                                foundId = true;
-                            } else {
-                                // that is all: add new ones here later
-                            }
-                        }
-
-                        if (!foundCreated) {
-                            // FIXME: duped code (all three of these are in _createMeta)
-                            row = new Row();
-                            row["key"] = "created";
-                            row["value"] = Common.Now();
-                            row["timestamp_c"] = Common.Now();
-                            data.Insert("meta", row);
-                        }
-                        if (!foundVersion) {
-                            row = new Row();
-                            row["key"] = "version";
-                            row["value"] = Common.VERSION;
-                            row["timestamp_c"] = Common.Now();
-                            data.Insert("meta", row);
-                        }
-                        if (!foundId) {
-                            row = new Row();
-                            row["key"] = "id";
-                            row["value"] = UUID.get();
-                            row["timestamp_c"] = Common.Now();
-                            data.Insert("meta", row);
-                        }
+                        // die a horrible death
                     }
                 }
 
@@ -182,9 +144,9 @@ namespace Timekeeper
 
                 // update version number, if necessary
                 row = data.SelectRow("select value from meta where key = 'version'");
-                db_version = new Version(row["value"].ToString());
+                db_version = new Version(row["value"]);
                 if (db_version < app_version) {
-                    row["value"] = Common.VERSION;
+                    row["value"] = Timekeeper.VERSION;
                     data.Update("meta", row, "key", "version");
                 }
 
@@ -194,7 +156,7 @@ namespace Timekeeper
                     // Create unique identifier for this database
                     row = new Row();
                     row["key"] = "id";
-                    row["value"] = UUID.get();
+                    row["value"] = UUID.Get();
                     row["timestamp_c"] = Common.Now();
                     data.Insert("meta", row);
                 }
@@ -259,16 +221,19 @@ namespace Timekeeper
 
                 // now grab individual attributes
                 row.Add("filename", data.DataFile);
-                row.Add("filesize", data.DataFileSize.ToString());
-                row.Add("taskcount", tasks.count().ToString());
-                row.Add("projectcount", projects.count().ToString());
-                row.Add("logcount", log.count().ToString());
-                row.Add("totalseconds", Common.FormatSeconds(log.seconds()));
+                row.Add("filesize", data.DataFileSize);
+                row.Add("taskcount", tasks.count());
+                row.Add("projectcount", projects.count());
+                row.Add("logcount", log.count());
+                row.Add("totalseconds", Timekeeper.FormatSeconds(log.seconds()));
                 row.Add("journalcount", "n/a");
             }
             catch
             {
                 // Return empty data
+                
+                // wipe out any partially created row from above
+                row = new Row();
 
                 // convert meta rows to rows
                 row.Add("created", "");
@@ -277,12 +242,12 @@ namespace Timekeeper
 
                 // now grab individual attributes
                 row.Add("filename", "No file opened");
-                row.Add("filesize", "");
-                row.Add("taskcount", "");
-                row.Add("projectcount", "");
-                row.Add("logcount", "");
+                row.Add("filesize", 0);
+                row.Add("taskcount", 0);
+                row.Add("projectcount", 0);
+                row.Add("logcount", 0);
                 row.Add("totalseconds", "");
-                row.Add("journalcount", "");
+                row.Add("journalcount", "n/a");
             }
 
             return row;
@@ -303,25 +268,30 @@ namespace Timekeeper
 
             data.Exec(createMeta);
 
+            Row row;
+
             // Stub in database creation date
-            Row row = new Row();
-            row["key"] = "created";
-            row["value"] = Common.Now();
-            row["timestamp_c"] = Common.Now();
+            row = new Row() {
+                {"key", "created"},
+                {"value", Common.Now()},
+                {"timestamp_c", Common.Now()}
+            };
             data.Insert("meta", row);
 
             // Stub in (schema) version
-            row = new Row();
-            row["key"] = "version";
-            row["value"] = Common.VERSION;
-            row["timestamp_c"] = Common.Now();
+            row = new Row() {
+                {"key", "version"},
+                {"value", Timekeeper.VERSION},
+                {"timestamp_c", Common.Now()}
+            };
             data.Insert("meta", row);
 
             // Create unique identifier for this database
-            row = new Row();
-            row["key"] = "id";
-            row["value"] = UUID.get();
-            row["timestamp_c"] = Common.Now();
+            row = new Row() {
+                {"key", "id"},
+                {"value", UUID.Get()},
+                {"timestamp_c", Common.Now()}
+            };
             data.Insert("meta", row);
         }
 
@@ -345,12 +315,12 @@ namespace Timekeeper
 
             // Stub in one task 
             Row row = new Row();
-            row["name"] = "Task";
-            row["descr"] = "Right click this task and select Edit to change the task name or this description";
-            row["parent_id"] = "0";
-            row["is_folder"] = "0";
-            row["is_hidden"] = "0";
-            row["is_deleted"] = "0";
+            row["name"] = "Default Task";
+            row["descr"] = "Right click this task and select Edit to change the name or this description";
+            row["parent_id"] = 0;
+            row["is_folder"] = 0;
+            row["is_hidden"] = 0;
+            row["is_deleted"] = 0;
             row["timestamp_c"] = Common.Now();
             row["timestamp_m"] = Common.Now();
             data.Insert("tasks", row);
@@ -376,12 +346,12 @@ namespace Timekeeper
 
             // Stub in one project
             Row row = new Row();
-            row["name"] = "(none)";
-            row["descr"] = "Default project";
-            row["parent_id"] = "0";
-            row["is_folder"] = "0";
-            row["is_hidden"] = "0";
-            row["is_deleted"] = "0";
+            row["name"] = "Default Project";
+            row["descr"] = "Right click this project and select Edit to change the name or this description";
+            row["parent_id"] = 0;
+            row["is_folder"] = 0;
+            row["is_hidden"] = 0;
+            row["is_deleted"] = 0;
             row["timestamp_c"] = Common.Now();
             row["timestamp_m"] = Common.Now();
             data.Insert("projects", row);

@@ -20,7 +20,7 @@ namespace Timekeeper
         //---------------------------------------------------------------------
         // Get 
         //---------------------------------------------------------------------
-        public List<Task> get(int parent_id, bool bShowHidden)
+        public List<Task> get(long parent_id, bool bShowHidden)
         {
             if (sOrderBy == "") {
                 sOrderBy = "timestamp_c";
@@ -44,7 +44,7 @@ namespace Timekeeper
             List<Task> tasks = new List<Task>();
 
             foreach (Row row in rows) {
-                int task_id = Convert.ToInt32(row["id"]);
+                long task_id = row["id"];
                 Task task = new Task(data, task_id);
                 tasks.Add(task);
             }
@@ -56,11 +56,14 @@ namespace Timekeeper
         {
             string query = "select count(*) as count from tasks";
             Row row = data.SelectRow(query);
+            return (int)row["count"];
+            /*
             if (row["count"] == "") {
                 return 0;
             } else {
                 return Convert.ToInt32(row["count"]);
             }
+            */
         }
 
 

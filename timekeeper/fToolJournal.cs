@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -28,7 +28,7 @@ namespace Timekeeper
 
             foreach (Row row in rows) {
                 DateTime dt;
-                dt = Convert.ToDateTime(row["timestamp_c"]);
+                dt = row["timestamp_c"];
                 wJumpBox.Items.Add(dt.ToString(Common.DATETIME_FORMAT));
             }
 

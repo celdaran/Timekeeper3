@@ -71,7 +71,7 @@ namespace Timekeeper
                 DateTime punch_in = DateTime.Parse(row["punch_in"].ToString());
                 DateTime punch_out = DateTime.Parse(row["punch_out"].ToString());
                 TimeSpan ts = punch_out.Subtract(punch_in);
-                string[] result = { row["day"].ToString(), punch_in.ToString("HH:mm:ss"), punch_out.ToString("HH:mm:ss"), Common.FormatTimeSpan(ts) };
+                string[] result = { row["day"].ToString(), punch_in.ToString("HH:mm:ss"), punch_out.ToString("HH:mm:ss"), Timekeeper.FormatTimeSpan(ts) };
                 wGrid.Rows.Add(result);
             }
         }
