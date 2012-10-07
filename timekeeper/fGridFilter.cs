@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+
+using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
@@ -22,7 +24,7 @@ namespace Timekeeper
 
         private void fGridFilter_Load(object sender, EventArgs e)
         {
-            data.begin();
+            data.Begin();
 
             if (!loaded)
             {
@@ -30,17 +32,19 @@ namespace Timekeeper
                 _load("projects", wProjectList);
             }
 
-            data.commit();
+            data.Commit();
         }
 
         internal void _load(string table, CheckedListBox list)
         {
             string query = String.Format(@"select * from {0} where is_folder = 0 and is_deleted = 0", table);
-            RowSet rows = data.select(query);
+            Table rows = data.Select(query);
 
             foreach (Row row in rows)
             {
-                Pair item = new Pair(row["name"], row["id"]);
+                Pair item = new Pair();
+                item.Key = row["id"];
+                item.Value = row["name"];
                 list.Items.Add(item);
             }
 
@@ -59,8 +63,8 @@ namespace Timekeeper
 
             for (int i = 0; i < list.Items.Count; i++) {
                 Pair pair = (Pair)list.Items[i];
-                int index = Array.IndexOf(ids, pair.value.ToString());
-                //Common.Info("index of " + pair.value.ToString() + " in array is " + index);
+                int index = Array.IndexOf(ids, pair.Key.ToString());
+                //Common.Info("index of " + pair.Key.ToString() + " in array is " + index);
                 if (index >= 0) {
                     list.SetItemChecked(i, true);
                 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     class Items
@@ -29,7 +31,7 @@ namespace Timekeeper
                 from timekeeper
                 where timestamp_s > '{0} {1}'",
                 today, midnight);
-            Row row = this.data.selectRow(query);
+            Row row = this.data.SelectRow(query);
 
             if (row["seconds"].Length > 0) {
                 return Convert.ToInt32(row["seconds"]);

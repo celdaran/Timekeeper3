@@ -7,6 +7,8 @@ using System.Drawing.Text;
 using System.Text;
 using System.Windows.Forms;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     public partial class fOptions : Form

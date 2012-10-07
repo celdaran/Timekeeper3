@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     class Tasks : Items
@@ -37,7 +39,7 @@ namespace Timekeeper
                 order by {2}",
                 sShowHidden, parent_id, sOrderBy);
 
-            RowSet rows = data.select(query);
+            Table rows = data.Select(query);
 
             List<Task> tasks = new List<Task>();
 
@@ -53,7 +55,7 @@ namespace Timekeeper
         public int count()
         {
             string query = "select count(*) as count from tasks";
-            Row row = data.selectRow(query);
+            Row row = data.SelectRow(query);
             if (row["count"] == "") {
                 return 0;
             } else {

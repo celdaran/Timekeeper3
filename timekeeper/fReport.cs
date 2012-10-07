@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     public partial class fReport : Form
@@ -29,7 +31,7 @@ namespace Timekeeper
             wPreset.Text = "Previous Day";
 
             string query = @"select distinct strftime('%Y-%m-%d', timestamp_s) as date from timekeeper order by date desc";
-            RowSet rows = data.select(query);
+            Table rows = data.Select(query);
 
             if (rows.Count > 1) {
                 wStartDate.Text = rows[1]["date"];
@@ -56,7 +58,7 @@ namespace Timekeeper
 
                 case "Previous Day":
                     query = @"select distinct strftime('%Y-%m-%d', timestamp_s) as date from timekeeper order by date desc";
-                    RowSet rows = data.select(query);
+                    Table rows = data.Select(query);
                     if (rows.Count > 1) {
                         wStartDate.Text = rows[1]["date"];
                         wEndDate.Text = rows[1]["date"];
@@ -97,7 +99,7 @@ namespace Timekeeper
                   and log.timestamp_e <= '{1}'",
                 startDate, endDate);
 
-            RowSet rows = data.select(query);
+            Table rows = data.Select(query);
 
             wReport.Navigate("about:blank");
 

@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     public partial class fGridManage : Form
@@ -23,18 +25,18 @@ namespace Timekeeper
         {
             wViewList.Items.Clear();
 
-            data.begin();
+            data.Begin();
 
             String query = String.Format(@"select * from grid_views order by sort_index");
-            RowSet rows = data.select(query);
+            Table rows = data.Select(query);
 
             foreach (Row row in rows)
             {
-                Pair pair = new Pair(row["name"], row["sort_index"]);
+                var pair = Tuple.Create(row["name"], row["sort_index"]);
                 wViewList.Items.Add(pair);
             }
 
-            data.commit();
+            data.Commit();
         }
 
         private void btnMoveUp_Click(object sender, EventArgs e)
@@ -47,23 +49,23 @@ namespace Timekeeper
             Pair prev = (Pair)wViewList.Items[i - 1];
 
             // Begin unit of work
-            data.begin();
+            data.Begin();
 
             // Update current row with previous row's sort_index
             Row row = new Row();
-            row["sort_index"] = prev.value.ToString();
-            data.update("grid_views", row, "name", curr.name);
+            row["sort_index"] = prev.Key.ToString();
+            data.Update("grid_views", row, "name", curr.Value);
 
             // Update previous row with current row's sort_index
             row = new Row();
-            row["sort_index"] = curr.value.ToString();
-            data.update("grid_views", row, "name", prev.name);
+            row["sort_index"] = curr.Key.ToString();
+            data.Update("grid_views", row, "name", prev.Value);
 
             // Now just repaint whole form
             _load_list();
 
             // Complete unit of work
-            data.commit();
+            data.Commit();
 
             // And reselect item
             wViewList.SelectedIndex = i - 1;
@@ -79,23 +81,23 @@ namespace Timekeeper
             Pair next = (Pair)wViewList.Items[i + 1];
 
             // Begin unit of work
-            data.begin();
+            data.Begin();
 
             // Update current row with next row's sort_index
             Row row = new Row();
-            row["sort_index"] = next.value.ToString();
-            data.update("grid_views", row, "name", curr.name);
+            row["sort_index"] = next.Key.ToString();
+            data.Update("grid_views", row, "name", curr.Value);
 
             // Update next row with current row's sort_index
             row = new Row();
-            row["sort_index"] = curr.value.ToString();
-            data.update("grid_views", row, "name", next.name);
+            row["sort_index"] = curr.Key.ToString();
+            data.Update("grid_views", row, "name", next.Value);
 
             // Now just repaint whole form
             _load_list();
 
             // Complete unit of work
-            data.commit();
+            data.Commit();
 
             // And reselect item
             wViewList.SelectedIndex = i + 1;
@@ -114,14 +116,14 @@ namespace Timekeeper
             List<Pair> removed = new List<Pair>();
 
             // Begin unit of work
-            data.begin();
+            data.Begin();
 
             // First delete from db
             foreach (Pair row in wViewList.CheckedItems)
             {
                 int i = wViewList.Items.IndexOf(row);
                 removed.Add(row);
-                data.delete("grid_views", "name", row.name);
+                data.Delete("grid_views", "name", row.Value);
                 count++;
             }
 
@@ -132,7 +134,7 @@ namespace Timekeeper
             }
 
             // Complete unit of work
-            data.commit();
+            data.Commit();
 
             // User feedback
             Common.Info(count + " item(s) were deleted.");
@@ -146,16 +148,16 @@ namespace Timekeeper
             }
 
             fGridManageRename dlg = new fGridManageRename();
-            dlg.wNewName.Text = curr.name;
+            dlg.wNewName.Text = curr.ToString();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 // Begin unit of work
-                data.begin();
+                data.Begin();
 
                 // check for uniqueness
-                Row row = data.selectRow(String.Format(@"select count(*) as count from grid_views where name = '{0}'", dlg.wNewName.Text.Replace("'", "''")));
+                Row row = data.SelectRow(String.Format(@"select count(*) as count from grid_views where name = '{0}'", dlg.wNewName.Text.Replace("'", "''")));
                 if (row["count"] == "1") {
-                    data.rollback();
+                    data.Rollback();
                     Common.Warn("A view with that name already exists.");
                     return;
                 }
@@ -163,13 +165,13 @@ namespace Timekeeper
                 // now rename
                 row = new Row();
                 row["name"] = dlg.wNewName.Text;
-                data.update("grid_views", row, "name", curr.name);
+                data.Update("grid_views", row, "name", curr.Value);
 
                 // Now just repaint whole form
                 _load_list();
 
                 // Complete unit of work
-                data.commit();
+                data.Commit();
             }
         }
 

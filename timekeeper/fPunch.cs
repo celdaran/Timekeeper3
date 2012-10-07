@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
@@ -64,13 +65,13 @@ namespace Timekeeper
                 order by day",
                 sStartDate, sEndDate);
 
-            RowSet rows = data.select(query);
+            Table rows = data.Select(query);
             foreach (Row row in rows)
             {
-                DateTime punch_in = DateTime.Parse(row["punch_in"]);
-                DateTime punch_out = DateTime.Parse(row["punch_out"]);
+                DateTime punch_in = DateTime.Parse(row["punch_in"].ToString());
+                DateTime punch_out = DateTime.Parse(row["punch_out"].ToString());
                 TimeSpan ts = punch_out.Subtract(punch_in);
-                string[] result = { row["day"], punch_in.ToString("HH:mm:ss"), punch_out.ToString("HH:mm:ss"), Common.FormatTimeSpan(ts) };
+                string[] result = { row["day"].ToString(), punch_in.ToString("HH:mm:ss"), punch_out.ToString("HH:mm:ss"), Common.FormatTimeSpan(ts) };
                 wGrid.Rows.Add(result);
             }
         }
@@ -90,7 +91,7 @@ namespace Timekeeper
                 case "Year to Date": wStartDate.Value = DateTime.Parse(now.Year.ToString() + "/01/01"); break;
                 case "All":
                     String query = @"select min(timestamp_s) as min from timekeeper";
-                    Row row = data.selectRow(query);
+                    Row row = data.SelectRow(query);
                     wStartDate.Value = DateTime.Parse(row["min"]); break;
             }
         }

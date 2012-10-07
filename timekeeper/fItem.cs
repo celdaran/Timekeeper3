@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     public partial class fItem : Form
@@ -17,7 +19,7 @@ namespace Timekeeper
             InitializeComponent();
             this.data = data;
             string query = String.Format(@"select * from {0} where is_deleted = 0 and is_hidden = 0 and is_folder = 1", table);
-            RowSet rows = data.select(query);
+            Table rows = data.Select(query);
             wParent.Items.Add("(Top Level)");
             foreach (Row row in rows) {
                 wParent.Items.Add(row["name"]);

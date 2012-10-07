@@ -9,6 +9,8 @@ using System.IO;
 using System.Web;  // this being used?
 using System.Text.RegularExpressions;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     public partial class fMain : Form
@@ -303,11 +305,11 @@ namespace Timekeeper
                 if (dlg.wJumpBox.SelectedIndex == -1) {
                     row["timestamp_entry"] = dlg.wEntryDate.Value.ToString(Common.DATE_FORMAT);
                     row["timestamp_c"] = Common.Now();
-                    data.insert("journal", row);
+                    data.Insert("journal", row);
                     Common.Info("Journal entry created.");
                 } else {
                     string timestamp_c = dlg.wJumpBox.Items[dlg.wJumpBox.SelectedIndex].ToString();
-                    data.update("journal", row, "timestamp_c", timestamp_c);
+                    data.Update("journal", row, "timestamp_c", timestamp_c);
                     Common.Info("Journal entry updated.");
                 }
             }
@@ -905,7 +907,7 @@ namespace Timekeeper
             data = new DBI(dataFile, options.wSQLtracing.Checked);
             Database db = new Database(data); // FIXME: bad file/class name
 
-            if (!data.dataFileExists) {
+            if (!data.DataFileExists) {
                 if (createIfMissing) {
                     db.create();
                 } else {
@@ -989,7 +991,7 @@ namespace Timekeeper
             }
 
             // Begin a transaction
-            data.begin();
+            data.Begin();
 
             // Instantiate Tasks object
             this.tasks = new Tasks(data, sOrderBy);
@@ -1006,7 +1008,7 @@ namespace Timekeeper
             }
 
             // End transaction
-            data.commit();
+            data.Commit();
         }
 
         //---------------------------------------------------------------------
@@ -1027,7 +1029,7 @@ namespace Timekeeper
             }
 
             // Begin a transaction
-            data.begin();
+            data.Begin();
 
             this.projects = new Projects(data, sOrderBy);
 
@@ -1043,7 +1045,7 @@ namespace Timekeeper
             }
 
             // End transaction
-            data.commit();
+            data.Commit();
         }
 
         //---------------------------------------------------------------------
@@ -1804,14 +1806,14 @@ namespace Timekeeper
         private void _togglePlusMinus()
         {
             string query = "select count(*) as count from tasks where is_deleted = 0 and is_hidden = 0 and parent_id > 0";
-            Row row = data.selectRow(query);
+            Row row = data.SelectRow(query);
             if (row["count"].Length > 0) {
                 int count = Convert.ToInt32(row["count"]);
                 wTasks.ShowRootLines = (count > 0);
             }
 
             query = "select count(*) as count from projects where is_deleted = 0 and is_hidden = 0 and parent_id > 0";
-            row = data.selectRow(query);
+            row = data.SelectRow(query);
             if (row["count"].Length > 0) {
                 int count = Convert.ToInt32(row["count"]);
                 wProjects.ShowRootLines = (count > 0);

@@ -7,6 +7,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     public partial class fGrid : Form
@@ -36,7 +38,7 @@ namespace Timekeeper
             wTimeFormat.SelectedIndex = 0;
 
             // Begin unit of work
-            this.data.begin();
+            this.data.Begin();
 
             // Populate the LoadView menu
             _populate_loadview();
@@ -47,7 +49,7 @@ namespace Timekeeper
             dlgGridFilter._load("projects", dlgGridFilter.wProjectList);
 
             // Complete unit of work
-            this.data.commit();
+            this.data.Commit();
 
             // Set focus to first control
             ActiveControl = wDatePreset;
@@ -100,7 +102,7 @@ namespace Timekeeper
         private void _load_grid(object sender, EventArgs e)
         {
             // Begin unit of work
-            data.begin();
+            data.Begin();
 
             // Start with a blank grid
             wGrid.Columns.Clear();
@@ -114,7 +116,7 @@ namespace Timekeeper
             // First, populate leftmost column with list of tasks/projects
             // FIXME: dangerous query building; please come back and clean up
             String query = String.Format(@"select * from {0} where is_folder = 0 and is_deleted = 0", wDataType.Text);
-            RowSet rows = data.select(query);
+            Table rows = data.Select(query);
 
             if (rows.Count > 0)
             {
@@ -172,7 +174,7 @@ namespace Timekeeper
                         group by grouping
                         order by grouping", sGroupBy, sStartDate, sEndDate, sTaskList, sProjectList);
 
-                    RowSet columns = data.select(query);
+                    Table columns = data.Select(query);
                     foreach (Row column in columns)
                     {
                         int id = wGrid.Columns.Add(column["grouping"], column["grouping"]);
@@ -211,7 +213,7 @@ namespace Timekeeper
                             group by grouping
                             order by grouping", sGroupBy, sStartDate, sEndDate, row["id"], itemCol, sTaskList, sProjectList);
 
-                        RowSet cells = data.select(query);
+                        Table cells = data.Select(query);
 
                         foreach (Row cell in cells)
                         {
@@ -234,7 +236,7 @@ namespace Timekeeper
                               and {3} = {0}
                               {4} {5}",
                             row["id"], sStartDate, sEndDate, itemCol, sTaskList, sProjectList);
-                        Row cell = data.selectRow(query);
+                        Row cell = data.SelectRow(query);
                         if (cell["seconds"] != "") {
                             rowTotal = Convert.ToInt32(cell["seconds"]);
                         }
@@ -283,7 +285,7 @@ namespace Timekeeper
             }
 
             // End unit of work
-            data.commit();
+            data.Commit();
         }
 
         private void _create_new_column(string colName, string colHeading, DataGridViewContentAlignment align, bool frozen)
@@ -308,7 +310,7 @@ namespace Timekeeper
                 case "Year to Date": wStartDate.Value = DateTime.Parse(now.Year.ToString() + "/01/01"); break;
                 case "All":
                     String query = @"select min(timestamp_s) as min from timekeeper";
-                    Row row = data.selectRow(query);
+                    Row row = data.SelectRow(query);
                     wStartDate.Value = DateTime.Parse(row["min"]); break;
                 case "Custom":
                     // do nothing
@@ -355,10 +357,20 @@ namespace Timekeeper
             dlg.wDescription.Text = sLoadedViewDescription;
             dlg.wEndDateType.Enabled = (wDatePreset.SelectedIndex == 5); // FIXME: watch the magic numbers
             if (dlg.wEndDateType.Enabled) {
-                // Populate at run-time
-                Pair dateEntered = new Pair("Entered Date: " + wEndDate.Text,  "1");  // literal
-                Pair dateToday   = new Pair("Today's Date: " + Common.Today(), "2");  // literal
-                Pair dateTodayFn = new Pair("Variable Date: Today()", "3");           // variable
+  		// literal
+                Pair dateEntered = new Pair();
+                dateEntered.Key = 1;
+                dateEntered.Value = "Entered Date: " + wEndDate.Text;
+                
+                // literal
+                Pair dateToday = new Pair();
+                dateToday.Key = 2;
+                dateToday.Value = "Today's Date: " + Common.Today();
+                
+                // variable
+                Pair dateTodayFn = new Pair();
+                dateTodayFn.Key = 3;
+                dateTodayFn.Value = "Variable Date: Today()";
 
                 dlg.wEndDateType.Items.Add(dateEntered);
                 if (wEndDate.Text.CompareTo(Common.Today()) != 0) {
@@ -378,11 +390,11 @@ namespace Timekeeper
                 }
 
                 // Begin unit of work
-                data.begin();
+                data.Begin();
 
                 // check for duplicates
                 string query = String.Format(@"select name from grid_views where name = '{0}'", dlg.wName.Text.Replace("'", "''"));
-                Row tmp = data.selectRow(query);
+                Row tmp = data.SelectRow(query);
                 if (tmp["name"] != "") {
                     if (Common.Prompt("A saved view with this name already exists. Do you want to overwrite it?") != DialogResult.Yes)  {
                         return;
@@ -394,7 +406,8 @@ namespace Timekeeper
                 string endDateType = null;
                 if (dlg.wEndDateType.SelectedItem != null) {
                     Pair p = (Pair)dlg.wEndDateType.SelectedItem;
-                    endDateType = p.value.ToString();
+                    // FIXME: this can be a native int here and below in the row[] defintion
+                    endDateType = p.Key.ToString();
                 }
 
                 Row row = new Row();
@@ -413,25 +426,25 @@ namespace Timekeeper
 
                 if ((dlg.wName.Text == sLoadedViewName) || overWrite)
                 {
-                    data.update("grid_views", row, "name", dlg.wName.Text);
+                    data.Update("grid_views", row, "name", dlg.wName.Text);
                     Common.Info("Grid view updated.");
                 }
                 else
                 {
                     query = String.Format(@"select max(sort_index) as max_sort_index from grid_views");
-                    tmp = data.selectRow(query);
+                    tmp = data.SelectRow(query);
                     int max_sort_index = tmp["max_sort_index"] == "" ? 0 : Convert.ToInt32(tmp["max_sort_index"]);
 
                     row["name"] = dlg.wName.Text;
                     row["sort_index"] = Convert.ToString(max_sort_index + 1);
-                    data.insert("grid_views", row);
+                    data.Insert("grid_views", row);
                     Common.Info("New grid view saved.");
                 }
 
                 _populate_loadview();
 
                 // Complete unit of work
-                data.commit();
+                data.Commit();
             }
         }
 
@@ -445,14 +458,14 @@ namespace Timekeeper
         private void _populate_loadview()
         {
             // Begin unit of work
-            data.begin();
+            data.Begin();
 
             // clear any previous entries
             btnLoadViewDropDown.DropDownItems.Clear();
 
             // now grab new entries
             string query = String.Format(@"select * from grid_views order by sort_index");
-            RowSet rows = this.data.select(query);
+            Table rows = this.data.Select(query);
 
             if (rows.Count > 0)
             {
@@ -472,7 +485,7 @@ namespace Timekeeper
             }
 
             // Complete unit of work
-            data.commit();
+            data.Commit();
         }
 
         private void _load_view(object sender, EventArgs e)
@@ -486,10 +499,10 @@ namespace Timekeeper
         private void _load_view_by_name(string name)
         {
             // Begin unit of work
-            data.begin();
+            data.Begin();
 
             string query = String.Format(@"select * from grid_views where name = '{0}'", name);
-            Row row = this.data.selectRow(query);
+            Row row = this.data.SelectRow(query);
 
             if (row["id"] != "") {
                 this.sLoadedViewName = row["name"];
@@ -520,7 +533,7 @@ namespace Timekeeper
             }
 
             // Complete unit of work
-            data.commit();
+            data.Commit();
         }
 
         private string _join_items(CheckedListBox list)
@@ -529,7 +542,7 @@ namespace Timekeeper
 
             foreach (Pair item in list.CheckedItems)
             {
-                join += item.value.ToString() + ",";
+                join += item.Key.ToString() + ",";
             }
             if (join != null)
             {
@@ -599,7 +612,7 @@ namespace Timekeeper
                 // this preserves prior Last View values upon load
                 // yeah --- it's a bit of a hack (FIXME?)
                 string sql = "select count(*) as row_count from grid_views";
-                Row tmp = data.selectRow(sql);
+                Row tmp = data.SelectRow(sql);
                 if (tmp["row_count"] != "0") {
                     return;
                 }
@@ -621,17 +634,17 @@ namespace Timekeeper
 
             try
             {
-                int count = data.update("grid_views", row, "name", "Last View");
+                int count = data.Update("grid_views", row, "name", "Last View");
 
                 if (count == 0)
                 {
                     string query = String.Format(@"select max(sort_index) as max_sort_index from grid_views");
-                    Row tmp = data.selectRow(query);
+                    Row tmp = data.SelectRow(query);
                     int max_sort_index = tmp["max_sort_index"] == "" ? 0 : Convert.ToInt32(tmp["max_sort_index"]);
 
                     row["name"] = "Last View";
                     row["sort_index"] = Convert.ToString(max_sort_index + 1);
-                    data.insert("grid_views", row);
+                    data.Insert("grid_views", row);
                 }
             }
             catch

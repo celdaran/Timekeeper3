@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     public partial class fToolJournal : Form
@@ -22,7 +24,7 @@ namespace Timekeeper
         private void fToolJournal_Load(object sender, EventArgs e)
         {
             string query = "select id, timestamp_c from journal order by timestamp_c";
-            RowSet rows = data.select(query);
+            Table rows = data.Select(query);
 
             foreach (Row row in rows) {
                 DateTime dt;
@@ -73,7 +75,7 @@ namespace Timekeeper
             dt = Convert.ToDateTime(timestamp_c);
 
             string query = "select * from journal where timestamp_c = '" + dt.ToString(Common.DATETIME_FORMAT) + "'";
-            Row row = data.selectRow(query);
+            Row row = data.SelectRow(query);
             wEntry.Text = row["description"];
 
             wEntryDate.Value = dt;

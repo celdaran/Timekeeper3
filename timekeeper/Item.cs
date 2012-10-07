@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     class Item
@@ -34,7 +36,7 @@ namespace Timekeeper
                 select * from {0}
                 where id = {1}", this.table, id);
 
-            Row row = data.selectRow(query);
+            Row row = data.SelectRow(query);
 
             this.id = id;
             this.name = row["name"];
@@ -79,7 +81,7 @@ namespace Timekeeper
                 where timestamp_s > '{1} {2}'
                   and {0} = {3}",
                 this.id_column, today, midnight, this.id);
-            Row row = this.data.selectRow(query);
+            Row row = this.data.SelectRow(query);
 
             if (row["seconds"].Length > 0) {
                 this.secondsOne = Convert.ToInt32(row["seconds"]) + offset;
@@ -93,7 +95,7 @@ namespace Timekeeper
             string query = String.Format(@"
                 select parent_id from {0} where id = '{1}'",
                 this.table, id);
-            Row row = data.selectRow(query);
+            Row row = data.SelectRow(query);
 
             if (row["parent_id"].Length == 0) {
                 return false;
@@ -117,7 +119,7 @@ namespace Timekeeper
                   and timestamp_e < '{2}'
                   and {0} = {3}",
                 this.id_column, fromDate, toDate, id);
-            Row row = this.data.selectRow(query);
+            Row row = this.data.SelectRow(query);
 
             int seconds = 0;
             if (row["seconds"].Length > 0) {
@@ -128,7 +130,7 @@ namespace Timekeeper
             query = String.Format(@"
                 select id from {0}
                 where parent_id = {1}", this.table, id);
-            RowSet rows = this.data.select(query);
+            Table rows = this.data.Select(query);
 
             foreach (Row child in rows) {
                 seconds += countTreeTime(Convert.ToInt32(child["id"]), fromDate, toDate);
@@ -154,7 +156,7 @@ namespace Timekeeper
             row["timestamp_c"] = Common.Now();
             row["timestamp_m"] = Common.Now();
 
-            this.id = this.data.insert(this.table, row);
+            this.id = this.data.Insert(this.table, row);
 
             if (this.id > 0) {
                 return 1;
@@ -173,7 +175,7 @@ namespace Timekeeper
                 select count(*) as count from {0}
                 where name = '{1}'", this.table, newname_q);
 
-            Row row = this.data.selectRow(query);
+            Row row = this.data.SelectRow(query);
             int count = Convert.ToInt32(row["count"]);
 
             if (count > 0) {
@@ -188,7 +190,7 @@ namespace Timekeeper
             Row row = new Row();
             row["is_hidden"] = "1";
             is_hidden = true;
-            return data.update(this.table, row, "id", this.id.ToString());
+            return data.Update(this.table, row, "id", this.id.ToString());
         }
 
         public int unhide()
@@ -196,7 +198,7 @@ namespace Timekeeper
             Row row = new Row();
             row["is_hidden"] = "0";
             is_hidden = false;
-            return data.update(this.table, row, "id", this.id.ToString());
+            return data.Update(this.table, row, "id", this.id.ToString());
         }
 
         public int delete()
@@ -204,7 +206,7 @@ namespace Timekeeper
             Row row = new Row();
             row["is_deleted"] = "1";
             is_deleted = true;
-            return data.update(this.table, row, "id", this.id.ToString());
+            return data.Update(this.table, row, "id", this.id.ToString());
         }
 
         public DateTime dateLastUsed()
@@ -214,7 +216,7 @@ namespace Timekeeper
                 from timekeeper
                 where {0} = {1}",
                 this.id_column, this.id);
-            Row row = data.selectRow(query);
+            Row row = data.SelectRow(query);
             string dateLastUsed = row["dateLastUsed"];
             if (dateLastUsed.Length > 0) {
                 return DateTime.Parse(row["dateLastUsed"]);
@@ -233,7 +235,7 @@ namespace Timekeeper
                 where {0} = {1}
                 group by date",
                 this.id_column, this.id);
-            Row row = data.selectRow(query);
+            Row row = data.SelectRow(query);
             string count = row["count"];
 
             if (count.Length > 0) {
@@ -253,7 +255,7 @@ namespace Timekeeper
                 where {0} = {1}
                 group by date",
                 this.id_column, this.id);
-            RowSet rows = data.select(query);
+            Table rows = data.Select(query);
 
             List<DateTime> days = new List<DateTime>();
             foreach (Row row in rows) {
@@ -273,7 +275,7 @@ namespace Timekeeper
                 row["name"] = newname;
                 row["descr"] = this.description;
                 row["timestamp_m"] = Common.Now();
-                int count = data.update(this.table, row, "id", this.id.ToString());
+                int count = data.Update(this.table, row, "id", this.id.ToString());
 
                 if (count == 1) {
                     this.name = newname;
@@ -289,7 +291,7 @@ namespace Timekeeper
             Row row = new Row();
             row["parent_id"] = id.ToString();
             row["timestamp_m"] = Common.Now();
-            int count = data.update(this.table, row, "id", this.id.ToString());
+            int count = data.Update(this.table, row, "id", this.id.ToString());
 
             return count == 1 ? 1 : 0;
         }
@@ -299,7 +301,7 @@ namespace Timekeeper
             Row row = new Row();
             row["parent_id"] = node.id.ToString();
             row["timestamp_m"] = Common.Now();
-            int count = data.update(this.table, row, "id", this.id.ToString());
+            int count = data.Update(this.table, row, "id", this.id.ToString());
 
             return count == 1 ? 1 : 0;
         }

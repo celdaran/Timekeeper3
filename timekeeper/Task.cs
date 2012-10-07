@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     class Task : Item
@@ -38,7 +40,7 @@ namespace Timekeeper
                 select id from tasks
                 where name = '{0}'", taskName);
 
-            Row row = data.selectRow(query);
+            Row row = data.SelectRow(query);
             int task_id = Convert.ToInt32(row["id"]);
 
             _load(task_id);

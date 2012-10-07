@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     class Database
@@ -37,15 +39,15 @@ namespace Timekeeper
         {
             try {
                 // Begin a transaction
-                data.begin();
+                data.Begin();
 
                 // Declarations
                 Version app_version = new Version(Common.VERSION);
                 Version db_version;
+                Row row;
 
                 // are there any tables at all?
-                Row row = data.selectRow("select count(*) as count from sqlite_master where type='table'");
-                if (row["count"] == "") {
+                if (!data.TablesExist()) {
                     // If we've opened the database and successfully queried the master table
                     // but have not found any rows, then it's a valid, empty SQLite file and
                     // we should allow the user to opt for converting it to a TK database.
@@ -53,8 +55,7 @@ namespace Timekeeper
                 }
 
                 // does the timekeeper table exist?
-                row = data.selectRow("select * from sqlite_master where type='table' and name = 'timekeeper'");
-                if (row["name"] == "") {
+                if (!data.TableExists("timekeeper")) {
                     // if no timekeeeper table, we have a valid SQLite file, but not a TK database.
                     // bail before we destroy this database
                     return -3;
@@ -62,21 +63,20 @@ namespace Timekeeper
                 }
 
                 // does the meta table exist?
-                row = data.selectRow("select * from sqlite_master where type='table' and name = 'meta'");
-                if (row["name"] == "") {
+                if (!data.TableExists("meta")) {
                     // if no meta table, this is probably an old 2.0.x beta version.
                     // so create the meta table and continue
                     _createMeta();
                 } else {
                     // if there is a meta table, check the version and disallow opening higher version dbs
-                    row = data.selectRow("select * from meta where key = 'version'");
-                    db_version = new Version(row["value"]);
+                    row = data.SelectRow("select * from meta where key = 'version'");
+                    db_version = new Version(row["value"].ToString());
                     if (db_version > app_version) {
                         return -2;
                     }
 
                     // And do an integrity check. We should have three rows.
-                    RowSet rows = data.select("select * from meta");
+                    Table rows = data.Select("select * from meta");
                     if (rows.Count == 3) {
                         // Everything is okay.
                     } else {
@@ -103,130 +103,130 @@ namespace Timekeeper
                             row["key"] = "created";
                             row["value"] = Common.Now();
                             row["timestamp_c"] = Common.Now();
-                            data.insert("meta", row);
+                            data.Insert("meta", row);
                         }
                         if (!foundVersion) {
                             row = new Row();
                             row["key"] = "version";
                             row["value"] = Common.VERSION;
                             row["timestamp_c"] = Common.Now();
-                            data.insert("meta", row);
+                            data.Insert("meta", row);
                         }
                         if (!foundId) {
                             row = new Row();
                             row["key"] = "id";
                             row["value"] = UUID.get();
                             row["timestamp_c"] = Common.Now();
-                            data.insert("meta", row);
+                            data.Insert("meta", row);
                         }
                     }
                 }
 
                 // does the tk table have a locked column?
-                row = data.selectRow("select * from timekeeper where id = 1");
+                row = data.SelectRow("select * from timekeeper where id = 1");
                 if (!row.ContainsKey("is_locked")) {
                     // Also from an old TK 2.0.x version
                     string alterTable = @"alter table timekeeper add column is_locked bool";
-                    data.exec(alterTable);
+                    data.Exec(alterTable);
                 }
 
                 // does the tasks table have a timestamp_m column?
-                row = data.selectRow("select * from tasks");
+                row = data.SelectRow("select * from tasks");
                 if (!row.ContainsKey("timestamp_m")) {
                     // File is pre TK 2.1
                     string alterTable = @"alter table tasks add column timestamp_m datetime";
-                    data.exec(alterTable);
+                    data.Exec(alterTable);
                     string updateTable = @"update tasks set timestamp_m = timestamp_c";
-                    data.exec(updateTable);
+                    data.Exec(updateTable);
                 }
 
                 // does the tasks table have a project_id__last column?
-                row = data.selectRow("select * from tasks");
+                row = data.SelectRow("select * from tasks");
                 if (!row.ContainsKey("project_id__last")) {
                     // File is pre TK 2.1
                     string alterTable = @"alter table tasks add column project_id__last int";
-                    data.exec(alterTable);
+                    data.Exec(alterTable);
                 }
 
                 // does the projects table have a timestamp_m column?
-                row = data.selectRow("select * from projects");
+                row = data.SelectRow("select * from projects");
                 if (!row.ContainsKey("timestamp_m")) {
                     // File is pre TK 2.1
                     string alterTable = @"alter table projects add column timestamp_m datetime";
-                    data.exec(alterTable);
+                    data.Exec(alterTable);
                     string updateTable = @"update projects set timestamp_m = timestamp_c";
-                    data.exec(updateTable);
+                    data.Exec(updateTable);
                 }
 
                 // does the grid_views table exist
-                row = data.selectRow("select * from sqlite_master where type='table' and name = 'grid_views'");
+                row = data.SelectRow("select * from sqlite_master where type='table' and name = 'grid_views'");
                 if (row["name"] == "") {
                     // Added in 2.1
                     _createViews();
                 }
 
                 // does the grid_views.end_date_type column exist?
-                row = data.selectRow("select * from grid_views");
+                row = data.SelectRow("select * from grid_views");
                 if (!row.ContainsKey("end_date_type")) {
                     // Added in 2.1
                     string alterTable = "alter table grid_views add column end_date_type int";
-                    data.exec(alterTable);
+                    data.Exec(alterTable);
                 }
 
                 // does the journal table exist
-                row = data.selectRow("select * from sqlite_master where type='table' and name = 'journal'");
+                row = data.SelectRow("select * from sqlite_master where type='table' and name = 'journal'");
                 if (row["name"] == "") {
                     // Added in 2.1
                     _createJournal();
                 }
 
                 // update version number, if necessary
-                row = data.selectRow("select value from meta where key = 'version'");
-                db_version = new Version(row["value"]);
+                row = data.SelectRow("select value from meta where key = 'version'");
+                db_version = new Version(row["value"].ToString());
                 if (db_version < app_version) {
                     row["value"] = Common.VERSION;
-                    data.update("meta", row, "key", "version");
+                    data.Update("meta", row, "key", "version");
                 }
 
                 // do we have a UUID for this database?
-                row = data.selectRow("select value from meta where key = 'id'");
+                row = data.SelectRow("select value from meta where key = 'id'");
                 if (row["value"] == "") {
                     // Create unique identifier for this database
                     row = new Row();
                     row["key"] = "id";
                     row["value"] = UUID.get();
                     row["timestamp_c"] = Common.Now();
-                    data.insert("meta", row);
+                    data.Insert("meta", row);
                 }
 
                 // does the tasks table have an is_hidden column?
-                row = data.selectRow("select * from tasks");
+                row = data.SelectRow("select * from tasks");
                 if (!row.ContainsKey("is_hidden"))
                 {
                     // File is pre TK 2.2
                     string alterTable = @"alter table tasks add column is_hidden bool";
-                    data.exec(alterTable);
+                    data.Exec(alterTable);
                     string updateTable = @"update tasks set is_hidden = 0";
-                    data.exec(updateTable);
+                    data.Exec(updateTable);
                 }
 
                 // does the projects table have an is_hidden column?
-                row = data.selectRow("select * from projects");
+                row = data.SelectRow("select * from projects");
                 if (!row.ContainsKey("is_hidden"))
                 {
                     // File is pre TK 2.2
                     string alterTable = @"alter table projects add column is_hidden bool";
-                    data.exec(alterTable);
+                    data.Exec(alterTable);
                     string updateTable = @"update projects set is_hidden = 0";
-                    data.exec(updateTable);
+                    data.Exec(updateTable);
                 }
 
                 // Commit
-                data.commit();
+                data.Commit();
             }
-            catch {
+            catch (Exception e) {
                 // Rollback
-                data.rollback();
+                data.Rollback();
                 return -1;
             }
 
@@ -245,7 +245,7 @@ namespace Timekeeper
             try
             {
                 // grab all meta rows
-                RowSet rows = data.select("select key, value from meta order by key");
+                Table rows = data.Select("select key, value from meta order by key");
 
                 // grab a few handy objects
                 Tasks tasks = new Tasks(data, "");
@@ -258,8 +258,8 @@ namespace Timekeeper
                 row.Add("version", rows[2]["value"]);
 
                 // now grab individual attributes
-                row.Add("filename", data.dataFile);
-                row.Add("filesize", data.dataFileSize.ToString());
+                row.Add("filename", data.DataFile);
+                row.Add("filesize", data.DataFileSize.ToString());
                 row.Add("taskcount", tasks.count().ToString());
                 row.Add("projectcount", projects.count().ToString());
                 row.Add("logcount", log.count().ToString());
@@ -301,28 +301,28 @@ namespace Timekeeper
                     timestamp_c datetime
                 )";
 
-            data.exec(createMeta);
+            data.Exec(createMeta);
 
             // Stub in database creation date
             Row row = new Row();
             row["key"] = "created";
             row["value"] = Common.Now();
             row["timestamp_c"] = Common.Now();
-            data.insert("meta", row);
+            data.Insert("meta", row);
 
             // Stub in (schema) version
             row = new Row();
             row["key"] = "version";
             row["value"] = Common.VERSION;
             row["timestamp_c"] = Common.Now();
-            data.insert("meta", row);
+            data.Insert("meta", row);
 
             // Create unique identifier for this database
             row = new Row();
             row["key"] = "id";
             row["value"] = UUID.get();
             row["timestamp_c"] = Common.Now();
-            data.insert("meta", row);
+            data.Insert("meta", row);
         }
 
         private void _createTasks()
@@ -341,7 +341,7 @@ namespace Timekeeper
                     timestamp_m datetime
                 )";
 
-            data.exec(createTasks);
+            data.Exec(createTasks);
 
             // Stub in one task 
             Row row = new Row();
@@ -353,7 +353,7 @@ namespace Timekeeper
             row["is_deleted"] = "0";
             row["timestamp_c"] = Common.Now();
             row["timestamp_m"] = Common.Now();
-            data.insert("tasks", row);
+            data.Insert("tasks", row);
 
         }
 
@@ -372,7 +372,7 @@ namespace Timekeeper
                     timestamp_m datetime
                 )";
 
-            data.exec(createProjects);
+            data.Exec(createProjects);
 
             // Stub in one project
             Row row = new Row();
@@ -384,7 +384,7 @@ namespace Timekeeper
             row["is_deleted"] = "0";
             row["timestamp_c"] = Common.Now();
             row["timestamp_m"] = Common.Now();
-            data.insert("projects", row);
+            data.Insert("projects", row);
         }
 
         private void _createTimekeeper()
@@ -402,7 +402,7 @@ namespace Timekeeper
                     is_locked bool
                 )";
 
-            data.exec(createTimekeeper);
+            data.Exec(createTimekeeper);
         }
 
         private void _createViews()
@@ -426,7 +426,7 @@ namespace Timekeeper
                     timestamp_m datetime
                 )";
 
-            data.exec(createViews);
+            data.Exec(createViews);
 
             // FIXME: stub in a default???
         }
@@ -441,7 +441,7 @@ namespace Timekeeper
                     timestamp_c datetime,
                     timestamp_m datetime
                 )";
-            data.exec(createJournal);
+            data.Exec(createJournal);
         }
 
     }

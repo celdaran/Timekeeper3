@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper
 {
     class Log
@@ -25,13 +27,13 @@ namespace Timekeeper
             row["pre_log"] = entry;
             row["is_locked"] = "1";
 
-            log_id = data.insert("timekeeper", row);
+            log_id = data.Insert("timekeeper", row);
 
             // record last project id
 
             row = new Row();
             row["project_id__last"] = project_id.ToString();
-            data.update("tasks", row, "id", task_id.ToString());
+            data.Update("tasks", row, "id", task_id.ToString());
         }
 
         public void end(string entry, string pre_entry, int seconds)
@@ -44,13 +46,13 @@ namespace Timekeeper
             row["post_log"] = entry;
             row["is_locked"] = "0";
 
-            data.update("timekeeper", row, "id", log_id.ToString());
+            data.Update("timekeeper", row, "id", log_id.ToString());
         }
 
         public int count()
         {
             string query = "select count(*) as count from timekeeper";
-            Row row = data.selectRow(query);
+            Row row = data.SelectRow(query);
             if (row["count"] == "") {
                 return 0;
             } else {
@@ -61,7 +63,7 @@ namespace Timekeeper
         public int seconds()
         {
             string query = "select sum(seconds) as seconds from timekeeper";
-            Row row = data.selectRow(query);
+            Row row = data.SelectRow(query);
             if (row["seconds"] == "") {
                 return 0;
             } else {

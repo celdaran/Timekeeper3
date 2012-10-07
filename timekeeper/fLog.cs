@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using Technitivity.Toolbox;
+
 // Big FIXME: forms shouldn't be doing any direct database access
 // These should only operate on the underlying objects. That is,
 // fLog should only access methods in the Log object. The Log object
@@ -64,18 +66,18 @@ namespace Timekeeper
                 toolTip2.SetToolTip(this.btnCloseEndGap, "Set the end time to the start time of the next entry");
 
                 // Begin unit of work
-                data.begin();
+                data.Begin();
 
                 // populate the comboboxes
                 query = "select name from tasks where is_deleted = 0 and is_hidden = 0 and is_folder = 0 order by name";
-                RowSet rows = data.select(query);
+                Table rows = data.Select(query);
                 foreach (Row taskRow in rows)
                 {
                     wTask.Items.Add(taskRow["name"]);
                 }
 
                 query = "select name from projects where is_deleted = 0 and is_hidden = 0 and is_folder = 0 order by name";
-                rows = data.select(query);
+                rows = data.Select(query);
                 foreach (Row projectRow in rows)
                 {
                     wProject.Items.Add(projectRow["name"]);
@@ -89,14 +91,14 @@ namespace Timekeeper
 
                 // Default search date pickers
                 query = "select min(timestamp_s) as timestamp_s from timekeeper";
-                Row row = data.selectRow(query);
+                Row row = data.SelectRow(query);
                 if (row["timestamp_s"] != "") {
                     DateTime dt = Convert.ToDateTime(row["timestamp_s"]);
                     wFromDatePicker.Value = dt;
                 }
 
                 query = "select max(timestamp_s) as timestamp_s from timekeeper";
-                row = data.selectRow(query);
+                row = data.SelectRow(query);
                 if (row["timestamp_s"] != "") {
                     DateTime dt = Convert.ToDateTime(row["timestamp_s"]);
                     wToDatePicker.Value = dt;
@@ -106,7 +108,7 @@ namespace Timekeeper
                 displayRow();
 
                 // Complete unit of work
-                data.commit();
+                data.Commit();
 
                 this.isDirty = false;
             }
@@ -119,7 +121,7 @@ namespace Timekeeper
         {
             try {
                 string query = "select max(id) as max_log_id from timekeeper";
-                Row row = data.selectRow(query);
+                Row row = data.SelectRow(query);
                 if (row["max_log_id"].Length > 0) {
                     return Convert.ToInt32(row["max_log_id"]);
                 } else {
@@ -235,7 +237,7 @@ namespace Timekeeper
                 join tasks t on t.id = log.task_id
                 join projects p on p.id = log.project_id
                 where log.id = " + id;
-                Row row = data.selectRow(query);
+                Row row = data.SelectRow(query);
 
                 if (row["task_id"].Length == 0)
                 {
@@ -385,7 +387,7 @@ namespace Timekeeper
                 }
 
                 // Begin unit of work
-                data.begin();
+                data.Begin();
 
                 string query = String.Format(@"
                     select
@@ -398,7 +400,7 @@ namespace Timekeeper
                       and log.timestamp_e < '{1}'
                       and (log.pre_log like '%{2}%' or log.post_log like '%{2}%')",
                     fromDate, toDate, wSearchText.Text);
-                RowSet rows = data.select(query);
+                Table rows = data.Select(query);
 
                 if (rows.Count > 0) {
                     foreach (Row row in rows) {
@@ -410,7 +412,7 @@ namespace Timekeeper
                 }
 
                 // Complete unit of work
-                data.commit();
+                data.Commit();
             }
             catch {
             }
@@ -497,7 +499,7 @@ namespace Timekeeper
             String query;
 
             // Begin unit of work
-            data.begin();
+            data.Begin();
 
             // convert form data
             try {
@@ -511,13 +513,13 @@ namespace Timekeeper
                 string tmp = wTask.Text;
                 tmp = tmp.Replace("'", "''");
                 query = String.Format(@"select id from tasks where name = '{0}'", tmp);
-                Row lookup = data.selectRow(query);
+                Row lookup = data.SelectRow(query);
                 task_id = Convert.ToInt32(lookup["id"]);
 
                 tmp = wProject.Text;
                 tmp = tmp.Replace("'", "''");
                 query = String.Format(@"select id from projects where name = '{0}'", tmp);
-                lookup = data.selectRow(query);
+                lookup = data.SelectRow(query);
                 project_id = Convert.ToInt32(lookup["id"]);
             }
             catch (Exception ee)
@@ -537,10 +539,10 @@ namespace Timekeeper
             row["task_id"] = task_id.ToString();
             row["project_id"] = project_id.ToString();
 
-            data.update("timekeeper", row, "id", wID.Text);
+            data.Update("timekeeper", row, "id", wID.Text);
 
             // Commit unit of work
-            data.commit();
+            data.Commit();
 
             // Cleanup
             this.isDirty = false;
@@ -600,10 +602,10 @@ namespace Timekeeper
             try {
                 // Get the previous row
                 string query = "select max(id) as prev_id from timekeeper where id < " + id;
-                Row row = data.selectRow(query);
+                Row row = data.SelectRow(query);
 
                 query = "select timestamp_e from timekeeper where id = " + row["prev_id"];
-                row = data.selectRow(query);
+                row = data.SelectRow(query);
 
                 // Return standard-formatted string
                 DateTime prevEnd;
@@ -622,7 +624,7 @@ namespace Timekeeper
             {
                 // Get the next row
                 string query = "select min(id) as next_id from timekeeper where id > " + id;
-                Row row = data.selectRow(query);
+                Row row = data.SelectRow(query);
 
                 // Did we get one?
                 DateTime nextBegin;
@@ -631,7 +633,7 @@ namespace Timekeeper
                     nextBegin = DateTime.Now;
                 } else {
                     query = "select timestamp_s from timekeeper where id = " + row["next_id"];
-                    row = data.selectRow(query);
+                    row = data.SelectRow(query);
                     nextBegin = Convert.ToDateTime(row["timestamp_s"]);
                 }
 
@@ -650,10 +652,10 @@ namespace Timekeeper
             Row row = new Row();
             row["is_locked"] = "0";
 
-            data.begin();
-            data.update("timekeeper", row, "id", id.ToString());
+            data.Begin();
+            data.Update("timekeeper", row, "id", id.ToString());
             displayRow();
-            data.commit();
+            data.Commit();
         }
 
         //---------------------------------------------------------------------
