@@ -28,7 +28,7 @@ namespace Timekeeper
             return DateTime.Now.ToString(Common.DATETIME_FORMAT);
         }
 
-        public static string FormatSeconds(int seconds)
+        public static string FormatSeconds(long seconds)
         {
             TimeSpan t = TimeSpan.FromSeconds(seconds);
             return string.Format("{0:D2}:{1:D2}:{2:D2}",
