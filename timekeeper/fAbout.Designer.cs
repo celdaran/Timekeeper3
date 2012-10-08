@@ -94,7 +94,6 @@ namespace Timekeeper
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Timekeeper 2.3";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // pictureBox1
             // 

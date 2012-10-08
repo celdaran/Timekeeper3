@@ -6,6 +6,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Linq;
+
+using System.Diagnostics;
 
 using Technitivity.Toolbox;
 
@@ -25,6 +28,8 @@ namespace Timekeeper
         private fGridFilter dlgGridFilter;
 
         public string lastGridView;
+
+        private int loopCount;
 
         public fGrid(DBI data)
         {
@@ -59,7 +64,8 @@ namespace Timekeeper
         {
             _set_start_date();
             _load_view_by_name(this.lastGridView);
-            _load_grid(sender, e);
+            //_load_grid(sender, e);
+            _load_grid2();
             _saveLastView(true);
         }
 
@@ -82,12 +88,14 @@ namespace Timekeeper
             _populate_loadview();
 
             // Then load it
-            _load_grid(sender, e);
+            //_load_grid(sender, e);
+            _load_grid2();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Hide();
+            Application.Exit(); // FIXME: DO NOT SUBMIT LIKE THIS
+            //Hide();
         }
 
         private void wHideEmptyRows_Click(object sender, EventArgs e)
@@ -99,10 +107,209 @@ namespace Timekeeper
         // Internal helpers
         //-------------------------------
 
+        private void _load_grid2()
+        {
+            /*
+            _load_grid(null, null);
+            return;
+            */
+
+            //-----------------------------------
+            // Initialization
+            //-----------------------------------
+
+            var t = new Stopwatch();
+            t.Start();
+
+            // Start with a blank grid
+            wGrid.Columns.Clear();
+
+            //-----------------------------------
+            // Query setup
+            //-----------------------------------
+
+            // Handle date ranges
+            string sStartDate = wStartDate.Text + " 00:00:00";
+            string sEndDate = wEndDate.Text + " 23:59:59";
+
+            // Handle grouping
+            string sGroupBy = "";
+            switch (wGroupBy.Text) {
+                case "Day": sGroupBy = "%Y/%m/%d"; break;
+                case "Week": sGroupBy = "%Y, %W"; break;
+                case "Month": sGroupBy = "%Y/%m"; break;
+                case "Year": sGroupBy = "%Y"; break;
+            }
+
+            // Handle filtering
+            string sTaskList;
+            string sProjectList;
+
+            if (task_list != null) {
+                sTaskList = " and task_id in (" + task_list + ")";
+            } else {
+                sTaskList = "";
+            }
+
+            if (project_list != null) {
+                sProjectList = " and project_id in (" + project_list + ")";
+            } else {
+                sProjectList = "";
+            }
+
+            // Get data
+            var query = String.Format(@"
+                select
+                    i.name as name, 
+                    strftime('{0}', tk.timestamp_s) as grouping, 
+                    sum(tk.seconds) as seconds
+                from timekeeper tk
+                join {1} i on i.id = tk.project_id
+                where timestamp_s >= '{2}'
+                  and timestamp_s <= '{3}'
+                  {4} {5}
+                group by i.name, grouping
+                order by i.name, grouping",
+                sGroupBy, wDataType.Text, sStartDate, sEndDate, sTaskList, sProjectList);
+
+            Table table = data.Select(query);
+
+            //-----------------------------------
+            // Build up grid in memory
+            //-----------------------------------
+
+            // Three structures: unique row values, unique column values, and a grid
+            var items = new Row();
+            var buckets = new Row();
+            var grid = new Dictionary<string, Dictionary<string, long>>();
+
+            // Build up from query results
+            foreach (Row r in table) {
+                if (items.ContainsKey(r["name"])) {
+                    items[r["name"]]++;
+                } else {
+                    items[r["name"]] = 1;
+                }
+
+                if (buckets.ContainsKey(r["grouping"])) {
+                    buckets[r["grouping"]]++;
+                } else {
+                    buckets[r["grouping"]] = 1;
+                }
+
+                if (grid.ContainsKey(r["name"])) {
+                    grid[r["name"]].Add(r["grouping"], r["seconds"]);
+                } else {
+                    var cell = new Dictionary<string, long>();
+                    cell[r["grouping"]] = r["seconds"];
+                    grid.Add(r["name"], cell);
+                }
+            }
+
+            //-----------------------------------
+            // Populate grid from memory
+            //-----------------------------------
+
+            // Add one column for the item
+            _create_new_column("item",
+                wDataType.Text.Substring(0, wDataType.Text.Length - 1),
+                DataGridViewContentAlignment.MiddleLeft,
+                true);
+
+            // Add one column for each bucket
+            var bucketList = buckets.Keys.ToList();
+            bucketList.Sort();
+            foreach (string key in bucketList) {
+                int id = wGrid.Columns.Add(key, key);
+                wGrid.Columns[id].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                wGrid.Columns[id].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
+                wGrid.Columns[id].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+
+            // Add one column for the row totals
+            _create_new_column("total", "Total", DataGridViewContentAlignment.MiddleLeft, false);
+
+            // Add one row for each item
+            var itemList = items.Keys.ToList();
+            itemList.Sort();
+            foreach (string key in itemList) {
+                wGrid.Rows.Add(key);
+            }
+
+            // Add one row for column totals
+            int totalRow = wGrid.Rows.Add("Total");
+            wGrid.Rows[totalRow].DefaultCellStyle.BackColor = Color.AliceBlue;
+
+            // Now fill in the middle
+            loopCount = 0;
+            int x = 0; int y = 0;
+            long rowTotal;
+            long seconds;
+            foreach (string item in itemList) {
+                x = 0;
+                rowTotal = 0;
+                foreach (string bucket in bucketList) {
+                    //wGrid.Rows[y].Cells[x + 1].Value = String.Format("({0},{1})", bucket, item);
+                    //wGrid.Rows[y].Cells[x + 1].Value = _seconds(table, bucket, item);
+                    if (grid[item].ContainsKey(bucket)) {
+                        seconds = grid[item][bucket];
+                        string c = _format_cell2(wTimeFormat.SelectedIndex, seconds);
+                        wGrid.Rows[y].Cells[x + 1].Value = c; // grid[item][bucket];
+                        wGrid.Rows[y].Cells[x + 1].Tag = seconds;
+                        rowTotal += seconds;
+                    }
+                    x++;
+                }
+                wGrid.Rows[y].Cells[x + 1].Value = _format_cell2(wTimeFormat.SelectedIndex, rowTotal);
+                y++;
+            }
+
+            //-----------------------------------
+            // Lastly, add column totals
+            //-----------------------------------
+
+            long colTotal = 0;
+            int colNo = 0;
+            foreach (DataGridViewColumn col in wGrid.Columns) {
+                if (colNo > 0) {
+                    colTotal = 0;
+                    foreach (DataGridViewRow row in wGrid.Rows) {
+                        if (row.Cells[col.Name].Tag != null)
+                            colTotal += (long)row.Cells[col.Name].Tag;
+                    }
+                    wGrid.Rows[wGrid.Rows.Count - 1].Cells[colNo].Value = _format_cell2(wTimeFormat.SelectedIndex, colTotal);
+                    //wGrid.Rows[wGrid.Rows.Count - 1].Cells[colNo].
+                }
+                colNo++;
+            }
+
+            //-----------------------------------
+            // Cleanup
+            //-----------------------------------
+
+            //Common.Info("Executed loop " + loopCount.ToString() + " times");
+            t.Stop();
+            Common.Info("Elapsed time: " + t.ElapsedMilliseconds.ToString());
+        }
+
+        private string _seconds(Table table, string bucket, string item)
+        {
+            foreach (Row r in table) {
+                if ((r["name"] == item) && (r["grouping"] == bucket)) {
+                    return r["seconds"].ToString();
+                }
+                loopCount++;
+            }
+            return "";
+        }
+
         private void _load_grid(object sender, EventArgs e)
         {
             // Begin unit of work
             data.Begin();
+
+            var t = new Stopwatch();
+            t.Start();
 
             // Start with a blank grid
             wGrid.Columns.Clear();
@@ -118,6 +325,7 @@ namespace Timekeeper
             String query = String.Format(@"select * from {0} where is_folder = 0 and is_deleted = 0", wDataType.Text);
             Table rows = data.Select(query);
 
+            // This is the expensive section
             if (rows.Count > 0)
             {
                 if (rows.Count > 1000) {
@@ -257,6 +465,8 @@ namespace Timekeeper
                     row_id++;
                 }
 
+                //Common.Info("Elapsed time: " + t.ElapsedMilliseconds.ToString());
+
                 // create the bottom total row
                 wGrid.Rows.Add("Total");
                 for (int j = 1; j < wGrid.Columns.Count; j++) 
@@ -286,6 +496,9 @@ namespace Timekeeper
 
             // End unit of work
             data.Commit();
+
+            t.Stop();
+            Common.Info("Elapsed time: " + t.ElapsedMilliseconds.ToString());
         }
 
         private void _create_new_column(string colName, string colHeading, DataGridViewContentAlignment align, bool frozen)
@@ -345,7 +558,8 @@ namespace Timekeeper
             {
                 this.task_list = _join_items(dlgGridFilter.wTaskList);
                 this.project_list = _join_items(dlgGridFilter.wProjectList);
-                _load_grid(sender, e);
+                //_load_grid(sender, e);
+                _load_grid2();
             }
         }
 
@@ -493,7 +707,8 @@ namespace Timekeeper
             string name = sender.ToString().Replace("'", "''");
             lastGridView = name;
             _load_view_by_name(name);
-            _load_grid(sender, e);
+            //_load_grid(sender, e);
+            _load_grid2();
         }
 
         private void _load_view_by_name(string name)
@@ -501,40 +716,46 @@ namespace Timekeeper
             // Begin unit of work
             data.Begin();
 
-            string query = String.Format(@"select * from grid_views where name = '{0}'", name);
-            Row row = this.data.SelectRow(query);
+            try {
+                string query = String.Format(@"select * from grid_views where name = '{0}'", name);
+                Row row = this.data.SelectRow(query);
 
-            if (row["id"] != null) {
-                this.sLoadedViewName = row["name"];
-                this.sLoadedViewDescription = row["description"];
-                this.task_list = row["task_list"] == "" ? null : row["task_list"];
-                this.project_list = row["project_list"] == "" ? null : row["project_list"]; ;
+                if (row["id"] != null) {
+                    this.sLoadedViewName = row["name"];
+                    this.sLoadedViewDescription = row["description"];
+                    this.task_list = row["task_list"] == "" ? null : row["task_list"];
+                    this.project_list = row["project_list"] == "" ? null : row["project_list"]; ;
 
-                // FIXME: no magic numbers, please
-                if (row["date_preset"] == "5")
-                {
-                    wDatePreset.SelectedIndex = 5;
-                    wStartDate.Text = row["start_date"];
-                    if (row["end_date_type"] == "3") {
-                        wEndDate.Text = Common.Today();
-                    } else {
-                        wEndDate.Text = row["end_date"];
+                    // FIXME: no magic numbers, please
+                    if (row["date_preset"] == 5)
+                    {
+                        wDatePreset.SelectedIndex = 5;
+                        wStartDate.Text = row["start_date"];
+                        if (row["end_date_type"] == 3) {
+                            wEndDate.Text = Common.Today();
+                        } else {
+                            wEndDate.Text = row["end_date"];
+                        }
                     }
+                    else
+                    {
+                        wDatePreset.SelectedIndex = row["date_preset"];
+                        _set_start_date();
+                    }
+                    wGroupBy.SelectedIndex = row["group_by"];
+                    wDataType.SelectedIndex = row["data_from"];
+                    wHideEmptyRows.Checked = true; // row["hide_empty_rows"] == 1; // FIXME: this column should be boolean
+                    dlgGridFilter._set_checks(dlgGridFilter.wTaskList, this.task_list);
+                    dlgGridFilter._set_checks(dlgGridFilter.wProjectList, this.project_list);
                 }
-                else
-                {
-                    wDatePreset.SelectedIndex = Convert.ToInt32(row["date_preset"]);
-                    _set_start_date();
-                }
-                wGroupBy.SelectedIndex = Convert.ToInt32(row["group_by"]);
-                wDataType.SelectedIndex = Convert.ToInt32(row["data_from"]);
-                wHideEmptyRows.Checked = row["hide_empty_rows"] == true;
-                dlgGridFilter._set_checks(dlgGridFilter.wTaskList, this.task_list);
-                dlgGridFilter._set_checks(dlgGridFilter.wProjectList, this.project_list);
+            } catch (Exception e) {
+                Common.Warn(e.ToString());
+            }
+            finally {
+                // Complete unit of work
+                data.Commit();
             }
 
-            // Complete unit of work
-            data.Commit();
         }
 
         private string _join_items(CheckedListBox list)
@@ -576,6 +797,26 @@ namespace Timekeeper
                 wDatePreset.SelectedIndex = 5;
             }
 
+        }
+
+        private string _format_cell2(int format, long seconds)
+        {
+            string value;
+            switch (format) {
+                case 0:
+                    value = Timekeeper.FormatSeconds(seconds);
+                    break;
+                case 1:
+                    value = Math.Round(Convert.ToDecimal(seconds / 60)).ToString();
+                    break;
+                case 2:
+                    value = seconds.ToString();
+                    break;
+                default:
+                    value = "ERR";
+                    break;
+            }
+            return value;
         }
 
         private string _format_cell(int format, int seconds, out string toolTip)

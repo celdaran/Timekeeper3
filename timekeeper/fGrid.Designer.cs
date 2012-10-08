@@ -37,6 +37,8 @@ namespace Timekeeper
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.wGroupOptions = new System.Windows.Forms.GroupBox();
+            this.wTimeFormat = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.wDataType = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.wGroupBy = new System.Windows.Forms.ComboBox();
@@ -57,8 +59,6 @@ namespace Timekeeper
             this.btnSaveView2 = new System.Windows.Forms.ToolStripButton();
             this.btnManageViews = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.wTimeFormat = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.wGrid)).BeginInit();
             this.panel1.SuspendLayout();
             this.wGroupOptions.SuspendLayout();
@@ -157,6 +157,28 @@ namespace Timekeeper
             this.wGroupOptions.TabStop = false;
             this.wGroupOptions.Text = "Grid Options";
             this.wGroupOptions.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            // 
+            // wTimeFormat
+            // 
+            this.wTimeFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.wTimeFormat.FormattingEnabled = true;
+            this.wTimeFormat.Items.AddRange(new object[] {
+            "hh:mm:ss",
+            "Minutes",
+            "Seconds"});
+            this.wTimeFormat.Location = new System.Drawing.Point(106, 75);
+            this.wTimeFormat.Name = "wTimeFormat";
+            this.wTimeFormat.Size = new System.Drawing.Size(90, 21);
+            this.wTimeFormat.TabIndex = 13;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(18, 81);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(80, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Display time as:";
             // 
             // wDataType
             // 
@@ -378,28 +400,6 @@ namespace Timekeeper
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // wTimeFormat
-            // 
-            this.wTimeFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.wTimeFormat.FormattingEnabled = true;
-            this.wTimeFormat.Items.AddRange(new object[] {
-            "hh:mm:ss",
-            "Minutes",
-            "Seconds"});
-            this.wTimeFormat.Location = new System.Drawing.Point(106, 75);
-            this.wTimeFormat.Name = "wTimeFormat";
-            this.wTimeFormat.Size = new System.Drawing.Size(90, 21);
-            this.wTimeFormat.TabIndex = 13;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 81);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(80, 13);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Display time as:";
-            // 
             // fGrid
             // 
             this.AcceptButton = this.btnRefresh;
@@ -410,7 +410,7 @@ namespace Timekeeper
             this.Controls.Add(this.wGrid);
             this.Controls.Add(this.wToolbar);
             this.Controls.Add(this.panel1);
-            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "fGrid";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

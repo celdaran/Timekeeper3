@@ -45,21 +45,17 @@ namespace Timekeeper
             this.is_folder = row["is_folder"];
             this.is_hidden = row["is_hidden"];
             this.is_deleted = row["is_deleted"];
-            this.timestamp_c = row["timestamp_c"];
-            this.timestamp_m = row["timestamp_m"];
-            if (row.ContainsKey("project_id__last"))
-            {
-                if (row["project_id__last"] > 0)
-                {
+            if (row["timestamp_c"] != null)
+                this.timestamp_c = row["timestamp_c"];
+            if (row["timestamp_m"] != null)
+                this.timestamp_m = row["timestamp_m"];
+            if (row.ContainsKey("project_id__last")) {
+                if (row["project_id__last"] > 0) {
                     project_id__last = row["project_id__last"];
-                }
-                else
-                {
+                } else {
                     project_id__last = -1;
                 }
-            }
-            else
-            {
+            } else {
                 project_id__last = -1;
             }
 
