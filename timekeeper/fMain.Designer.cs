@@ -126,6 +126,7 @@ namespace Timekeeper
             this.wNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.menuMain.SuspendLayout();
             this.statusMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -553,26 +554,26 @@ namespace Timekeeper
             // 
             this.menuHelpContents.Name = "menuHelpContents";
             this.menuHelpContents.ShortcutKeyDisplayString = "F1";
-            this.menuHelpContents.Size = new System.Drawing.Size(152, 22);
+            this.menuHelpContents.Size = new System.Drawing.Size(137, 22);
             this.menuHelpContents.Text = "&Contents";
             this.menuHelpContents.Click += new System.EventHandler(this.menuHelpContents_Click);
             // 
             // menuHelpWeb
             // 
             this.menuHelpWeb.Name = "menuHelpWeb";
-            this.menuHelpWeb.Size = new System.Drawing.Size(152, 22);
+            this.menuHelpWeb.Size = new System.Drawing.Size(137, 22);
             this.menuHelpWeb.Text = "&Web Support";
             this.menuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
             // 
             // menuHelpSep
             // 
             this.menuHelpSep.Name = "menuHelpSep";
-            this.menuHelpSep.Size = new System.Drawing.Size(149, 6);
+            this.menuHelpSep.Size = new System.Drawing.Size(134, 6);
             // 
             // menuHelpAbout
             // 
             this.menuHelpAbout.Name = "menuHelpAbout";
-            this.menuHelpAbout.Size = new System.Drawing.Size(152, 22);
+            this.menuHelpAbout.Size = new System.Drawing.Size(137, 22);
             this.menuHelpAbout.Text = "&About...";
             this.menuHelpAbout.Click += new System.EventHandler(this.menuHelpAbout_Click);
             // 
@@ -868,7 +869,7 @@ namespace Timekeeper
             this.pmenuProjectsSep2,
             this.pmenuProjectsHidePane});
             this.menuProject.Name = "menuProject";
-            this.menuProject.Size = new System.Drawing.Size(165, 214);
+            this.menuProject.Size = new System.Drawing.Size(165, 236);
             // 
             // pmenuProjectsNew
             // 
@@ -893,7 +894,7 @@ namespace Timekeeper
             // 
             this.pmenuProjectsEdit.Name = "pmenuProjectsEdit";
             this.pmenuProjectsEdit.Size = new System.Drawing.Size(164, 22);
-            this.pmenuProjectsEdit.Text = "&Edit..";
+            this.pmenuProjectsEdit.Text = "&Edit...";
             this.pmenuProjectsEdit.Click += new System.EventHandler(this.menuTasksEditProject_Click);
             // 
             // pmenuProjectsRename
@@ -1007,6 +1008,7 @@ namespace Timekeeper
             this.statusMain.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.menuTask.ResumeLayout(false);
             this.menuProject.ResumeLayout(false);
