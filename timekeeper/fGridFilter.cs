@@ -43,7 +43,7 @@ namespace Timekeeper
             foreach (Row row in rows)
             {
                 Pair item = new Pair();
-                item.Key = row["id"];
+                item.Key = (int)row["id"];
                 item.Value = row["name"];
                 list.Items.Add(item);
             }

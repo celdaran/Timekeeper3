@@ -120,12 +120,12 @@ namespace Timekeeper
                 <body>", styles);
 
             int nPrevDay = 0;
-            int nTotalSeconds = 0;
-            int nDailySeconds = 0;
+            long nTotalSeconds = 0;
+            long nDailySeconds = 0;
 
             foreach (Row row in rows)
             {
-                int seconds = row["seconds"];
+                long seconds = row["seconds"];
                 DateTime start = row["timestamp_s"];
                 DateTime end = row["timestamp_e"];
                 string pre = row["pre_log"].Replace("\n", "<br/>");

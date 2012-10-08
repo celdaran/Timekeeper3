@@ -77,7 +77,6 @@ namespace Timekeeper
             this.menuToolsReminders = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
             this.menuToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelpContents = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelpWeb = new System.Windows.Forms.ToolStripMenuItem();
@@ -449,8 +448,7 @@ namespace Timekeeper
             this.menuToolsDatecalc,
             this.menuToolsReminders,
             this.toolStripMenuItem8,
-            this.menuToolsOptions,
-            this.toolStripMenuItem1});
+            this.menuToolsOptions});
             this.menuTools.Enabled = false;
             this.menuTools.Name = "menuTools";
             this.menuTools.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
@@ -533,11 +531,6 @@ namespace Timekeeper
             this.menuToolsOptions.Size = new System.Drawing.Size(175, 22);
             this.menuToolsOptions.Text = "Op&tions...";
             this.menuToolsOptions.Click += new System.EventHandler(this.menuToolsOptions_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(172, 6);
             // 
             // menuHelp
             // 
@@ -869,7 +862,7 @@ namespace Timekeeper
             this.pmenuProjectsSep2,
             this.pmenuProjectsHidePane});
             this.menuProject.Name = "menuProject";
-            this.menuProject.Size = new System.Drawing.Size(165, 236);
+            this.menuProject.Size = new System.Drawing.Size(165, 214);
             // 
             // pmenuProjectsNew
             // 
@@ -1112,7 +1105,6 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem menuFileRecent;
         private System.Windows.Forms.ToolStripMenuItem pmenuTasksTimer;
         private System.Windows.Forms.ToolStripSeparator pmenuTasksSep1;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
     }
 }
 

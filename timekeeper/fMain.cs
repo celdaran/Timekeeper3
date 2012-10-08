@@ -247,7 +247,7 @@ namespace Timekeeper
         {
             fGrid grid = new fGrid(data);
             grid.lastGridView = lastGridView;
-            grid.ShowDialog(this);
+            grid.Show(this);
             lastGridView = grid.lastGridView;
         }
 
@@ -258,7 +258,7 @@ namespace Timekeeper
                 options.wFontList.SelectedItem.ToString(), 
                 Convert.ToInt32(options.wFontSize.Value),
                 reportHeight, reportWidth);
-            rpt.ShowDialog(this);
+            rpt.Show(this);
             reportHeight = rpt.Height;
             reportWidth = rpt.Width;
         }
@@ -267,7 +267,7 @@ namespace Timekeeper
         private void menuReportsPunch_Click(object sender, EventArgs e)
         {
             fPunch punch = new fPunch(data);
-            punch.ShowDialog(this);
+            punch.Show(this);
         }
 
         //---------------------------------------------------------------------
@@ -1356,6 +1356,15 @@ namespace Timekeeper
             pmenuTasksDelete.Enabled = false;
             wNotifyIcon.Text = Timekeeper.Abbreviate(Text, 63);
 
+            menuFile.Enabled = false;
+            menuFileNew.Enabled = false;
+            menuFileOpen.Enabled = false;
+            menuFileSaveAs.Enabled = false;
+            menuFileClose.Enabled = false;
+            menuFileRecent.Enabled = false;
+            menuFileUtilities.Enabled = false;
+            menuFileExit.Enabled = false;
+
             if (options.wMinimizeOnUse.Checked) {
                 if ((ModifierKeys & Keys.Shift) == Keys.Shift) {
                     // Shift key temporarily overrides the minimize-on-use setting
@@ -1420,6 +1429,15 @@ namespace Timekeeper
 
             menuTasksDeleteTask.Enabled = true;
             pmenuTasksDelete.Enabled = true;
+
+            menuFile.Enabled = true;
+            menuFileNew.Enabled = true;
+            menuFileOpen.Enabled = true;
+            menuFileSaveAs.Enabled = true;
+            menuFileClose.Enabled = true;
+            menuFileRecent.Enabled = true;
+            menuFileUtilities.Enabled = true;
+            menuFileExit.Enabled = true;
         }
 
         //---------------------------------------------------------------------
