@@ -27,7 +27,6 @@ namespace Timekeeper
         private fOptions options;
         private fToolCalendar calendar;
         private fProperties properties;
-        private fLog log;
 
         // dialog box attributes
         private int reportHeight;
@@ -276,9 +275,7 @@ namespace Timekeeper
         // Tools | Log/Tweak
         private void menuToolsTweak_Click(object sender, EventArgs e)
         {
-            if (log == null) {
-                log = new fLog(data);
-            }
+            var log = new fLog(data);
             log.isTimerRunning = timerRunning;
             log.ShowDialog(this);
         }
