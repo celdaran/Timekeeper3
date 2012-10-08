@@ -172,11 +172,11 @@ namespace Timekeeper
 
             // see if the name is free
             string query = String.Format(@"
-                select count(*) as count from {0}
+                select count(*) from {0}
                 where name = '{1}'", this.table, newname_q);
 
             Row row = this.data.SelectRow(query);
-            int count = row["count"];
+            long count = row["count(*)"];
 
             if (count > 0) {
                 return true;

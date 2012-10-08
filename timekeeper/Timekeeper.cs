@@ -39,5 +39,16 @@ namespace Timekeeper
                                     t.Minutes,
                                     t.Seconds);
         }
+
+        // FIXME: TBX candidate
+        public static string Abbreviate(string text, int length)
+        {
+            if (text.Length < length) {
+                return text;
+            } else {
+                return text.Substring(0, length - 3) + "...";
+            }
+        }
+
     }
 }

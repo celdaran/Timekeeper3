@@ -605,7 +605,8 @@ namespace Timekeeper
                 tmp = tmp.Replace("%project", "{1}");
                 tmp = tmp.Replace("%time", "{2}");
                 Text = String.Format(tmp, currentTaskNode.Text, currentProjectNode.Text, timeToShow);
-                wNotifyIcon.Text = Text;
+                //wNotifyIcon.Text = Text;
+                wNotifyIcon.Text = Timekeeper.Abbreviate(Text, 63);
             }
 
             // Animate the task icon
@@ -1356,7 +1357,7 @@ namespace Timekeeper
             Text = wTasks.SelectedNode.Text;
             menuTasksDeleteTask.Enabled = false;
             pmenuTasksDelete.Enabled = false;
-            wNotifyIcon.Text = Text;
+            wNotifyIcon.Text = Timekeeper.Abbreviate(Text, 63);
 
             if (options.wMinimizeOnUse.Checked) {
                 if ((ModifierKeys & Keys.Shift) == Keys.Shift) {

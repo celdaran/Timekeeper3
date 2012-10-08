@@ -249,7 +249,7 @@ namespace Timekeeper
                 where log.id = " + id;
                 Row row = data.SelectRow(query);
 
-                if (row["task_id"] == 0) {
+                if (row["task_id"] == null) {
                     // all out of rows
                     // try previous row next time
                     id--;
