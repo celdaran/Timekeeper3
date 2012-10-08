@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using System.Diagnostics;
+
 using Technitivity.Toolbox;
 
 // Big FIXME: forms shouldn't be doing any direct database access
@@ -17,6 +19,10 @@ namespace Timekeeper
 {
     public partial class fLog : Form
     {
+        //---------------------------------------------------------------------
+        // Properties
+        //---------------------------------------------------------------------
+
         public bool isTimerRunning;
         private bool isLocked;
 
@@ -31,17 +37,26 @@ namespace Timekeeper
         private DateTime timestamp_e;
         private string pre_log;
         private string post_log;
+        private DateTime timestamp_s_current;
 
         private int oldWidth = 775;
 
         private bool isDirty;
         private string oldValue;
 
+        //---------------------------------------------------------------------
+        // Constructor
+        //---------------------------------------------------------------------
+
         public fLog(DBI data)
         {
             InitializeComponent();
             this.data = data;
         }
+
+        //---------------------------------------------------------------------
+        // Form events
+        //---------------------------------------------------------------------
 
         private void fLog_Load(object sender, EventArgs e)
         {
@@ -83,9 +98,16 @@ namespace Timekeeper
                     wProject.Items.Add(projectRow["name"]);
                 }
 
-                id = getMaxId();
+                // Initialize id with latest row
+                SetLastId();
                 if (id == 0) {
                     Common.Info("There are no rows in the log.");
+                    btnPrev.Enabled = false;
+                    btnNext.Enabled = false;
+                    btnFirst.Enabled = false;
+                    btnLast.Enabled = false;
+                    btnCloseStartGap.Enabled = false;
+                    btnCloseEndGap.Enabled = false;
                     return;
                 }
 
@@ -106,8 +128,12 @@ namespace Timekeeper
                     wToDatePicker.Value = dt;
                 }
 
+                // Disable Next/Last buttons
+                btnLast.Enabled = false;
+                btnNext.Enabled = false;
+
                 // Show row
-                displayRow();
+                DisplayRow();
 
                 // Complete unit of work
                 data.Commit();
@@ -119,72 +145,126 @@ namespace Timekeeper
             }
         }
 
-        private long getMaxId()
+        //---------------------------------------------------------------------
+
+        private void fLog_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Hide();
+            e.Cancel = true; // wait . . . is this necessary?
+        }
+
+        //---------------------------------------------------------------------
+        // Control events
+        //---------------------------------------------------------------------
+
+        private void btnOK_Click(object sender, EventArgs e)
         {
             try {
-                string query = "select max(id) as max_log_id from timekeeper";
-                Row row = data.SelectRow(query);
-                return row["max_log_id"];
-                /*
-                if (row["max_log_id"] > 0) {
-                    return Convert.ToInt32(row["max_log_id"]);
+                if (isLocked && isTimerRunning) {
+                    SaveRow(false);
                 } else {
-                    return 0;
+                    SaveRow(true);
                 }
-                */
+                Hide();
             }
             catch {
-                return 0;
             }
         }
+
+        //---------------------------------------------------------------------
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
+
+        //---------------------------------------------------------------------
 
         private void btnPrev_Click(object sender, EventArgs e)
         {
             try {
-                _save(sender, e, false);
-                id--;
-                if (id < 1) {
-                    id = 1;
+                SaveRow(false);
+                SetPrevId();
+                if (id > 0) {
+                    DisplayRow();
+                    btnLast.Enabled = true;
+                    btnNext.Enabled = true;
+                    if (AtBeginning()) {
+                        btnFirst.Enabled = false;
+                        btnPrev.Enabled = false;
+                    }
                 } else {
-                    displayRow();
+                    btnFirst.Enabled = false;
+                    btnPrev.Enabled = false;
                 }
             }
             catch {
             }
         }
 
+        //---------------------------------------------------------------------
+
         private void btnNext_Click(object sender, EventArgs e)
         {
             try {
-                _save(sender, e, false);
-                id++;
-                displayRow();
+                SaveRow(false);
+                SetNextId();
+                if (id > 0) {
+                    DisplayRow();
+                    btnFirst.Enabled = true;
+                    btnPrev.Enabled = true;
+                    if (AtEnd()) {
+                        btnLast.Enabled = false;
+                        btnNext.Enabled = false;
+                    }
+                } else {
+                    btnLast.Enabled = false;
+                    btnNext.Enabled = false;
+                }
             }
             catch {
             }
         }
+
+        //---------------------------------------------------------------------
 
         private void btnLast_Click(object sender, EventArgs e)
         {
             try {
-                _save(sender, e, false);
-                id = getMaxId();
-                displayRow();
+                SaveRow(false);
+                SetLastId();
+                if (id > 0) {
+                    DisplayRow();
+                    btnFirst.Enabled = true;
+                    btnPrev.Enabled = true;
+                    btnLast.Enabled = false;
+                    btnNext.Enabled = false;
+                }
             }
             catch {
             }
         }
 
+        //---------------------------------------------------------------------
+
         private void btnFirst_Click(object sender, EventArgs e)
         {
             try {
-                _save(sender, e, false);
-                id = 1;
-                displayRow();
+                SaveRow(false);
+                SetFirstId();
+                if (id > 0) {
+                    DisplayRow();
+                    btnLast.Enabled = true;
+                    btnNext.Enabled = true;
+                    btnFirst.Enabled = false;
+                    btnPrev.Enabled = false;
+                }
             }
             catch {
             }
         }
+
+        //---------------------------------------------------------------------
 
         private void btnCloseStartGap_Click(object sender, EventArgs e)
         {
@@ -208,6 +288,8 @@ namespace Timekeeper
             }
         }
 
+        //---------------------------------------------------------------------
+
         private void btnCloseEndGap_Click(object sender, EventArgs e)
         {
             try
@@ -227,131 +309,20 @@ namespace Timekeeper
             }
         }
 
-        private void displayRow()
+        //---------------------------------------------------------------------
+
+        private void btnUnlock_Click(object sender, EventArgs e)
         {
-            // FIXME: in general, if I haven't said it already, let's get rid
-            // of direct SQL access inside forms. This kind of stuff should
-            // be done at a business objects level or otherwise segregated 
-            // from the presentation layer. (Added as Bug Number #1218.)
-            
-            try {
-                // Now get some real log data
-                string query = @"
-                select
-                    log.task_id, t.name as task_name,
-                    log.project_id, p.name as project_name,
-                    log.timestamp_s, log.timestamp_e, 
-                    log.seconds, log.pre_log, log.post_log,
-                    log.is_locked
-                from timekeeper log
-                join tasks t on t.id = log.task_id
-                join projects p on p.id = log.project_id
-                where log.id = " + id;
-                Row row = data.SelectRow(query);
+            Row row = new Row();
+            row["is_locked"] = true;
 
-                if (row["task_id"] == null) {
-                    // all out of rows
-                    // try previous row next time
-                    id--;
-                    return;
-                }
-
-                try
-                {
-                    // Save values in object members
-                    task_id = row["task_id"];
-                    project_id = row["project_id"];
-                    seconds = row["seconds"];
-                    timestamp_s = row["timestamp_s"];
-                    if (row["timestamp_e"] != null)
-                        timestamp_e = row["timestamp_e"];
-                    pre_log = row["pre_log"];
-                    post_log = row["post_log"];
-
-                    wPrevStart.Text = timestamp_s.ToString(Common.DATETIME_FORMAT);
-                    if (row["timestamp_e"] != null)
-                        wPrevEnd.Text = timestamp_e.ToString(Common.DATETIME_FORMAT);
-
-                    wDuration.Text = Timekeeper.FormatSeconds(seconds);
-                    wPrevLog.Text = pre_log;
-                    wPostLog.Text = post_log;
-                    wTask.Text = row["task_name"];
-                    wProject.Text = row["project_name"];
-
-                    wID.Text = id.ToString();
-
-                    if (row["is_locked"])
-                    {
-                        isLocked = true;
-                        wPrevStart.Enabled = false;
-                        wPrevEnd.Enabled = false;
-                        wDuration.Enabled = false;
-                        wPrevLog.Enabled = false;
-                        wPostLog.Enabled = false;
-                        wTask.Enabled = false;
-                        wProject.Enabled = false;
-                        btnUnlock.Visible = isTimerRunning ? false : true;
-                    }
-                    else
-                    {
-                        isLocked = false;
-                        wPrevStart.Enabled = true;
-                        wPrevEnd.Enabled = true;
-                        wDuration.Enabled = true;
-                        wPrevLog.Enabled = true;
-                        wPostLog.Enabled = true;
-                        wTask.Enabled = true;
-                        wProject.Enabled = true;
-                        btnUnlock.Visible = false;
-                    }
-
-                    // Disable close gap buttons if no gap to close
-                    string prevEndTime = _getPreviousEndTime();
-                    if (prevEndTime == wPrevStart.Text) {
-                        btnCloseStartGap.Enabled = false;
-                    } else {
-                        if (prevEndTime == "") {
-                            btnCloseStartGap.Enabled = false;
-                        } else {
-                            btnCloseStartGap.Enabled = true;
-                        }
-                    }
-
-                    string nextStartTime = _getNextStartTime();
-                    if (nextStartTime == wPrevEnd.Text) {
-                        btnCloseEndGap.Enabled = false;
-                    } else {
-                        btnCloseEndGap.Enabled = true;
-                    }
-
-                }
-                catch (Exception ee)
-                {
-                    Common.Warn(ee.ToString());
-                }
-            }
-            catch {
-            }
+            data.Begin();
+            data.Update("timekeeper", row, "id", id);
+            DisplayRow();
+            data.Commit();
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            try {
-                if (isLocked && isTimerRunning) {
-                    _save(sender, e, false);
-                } else {
-                    _save(sender, e, true);
-                }
-                Hide();
-            }
-            catch {
-            }
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Hide();
-        }
+        //---------------------------------------------------------------------
 
         private void btnExpand_Click(object sender, EventArgs e)
         {
@@ -372,6 +343,8 @@ namespace Timekeeper
                 Common.Warn(ee.ToString());
             }
         }
+
+        //---------------------------------------------------------------------
 
         private void btnGo_Click(object sender, EventArgs e)
         {
@@ -420,28 +393,30 @@ namespace Timekeeper
             }
         }
 
+        //---------------------------------------------------------------------
+
         private void wResults_DoubleClick(object sender, EventArgs e)
         {
             try {
                 DataGridViewRow row = wResults.SelectedRows[0];
                 DataGridViewCell cell = row.Cells["log_id"];
                 id = Convert.ToInt32(cell.Value);
-                displayRow();
+                DisplayRow();
             }
             catch {
             }
         }
 
-        private void fLog_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Hide();
-            e.Cancel = true; // wait . . . is this necessary?
-        }
+        //---------------------------------------------------------------------
+        // Dirt handling
+        //---------------------------------------------------------------------
 
         private void wEnterControl(object sender, EventArgs e)
         {
             this.oldValue = _getText(sender);
         }
+
+        //---------------------------------------------------------------------
 
         private void wPrevEnd_TextChanged(object sender, EventArgs e)
         {
@@ -450,6 +425,8 @@ namespace Timekeeper
             }
             wDuration.Text = _calculateDuration();
         }
+
+        //---------------------------------------------------------------------
 
         private void wDuration_TextChanged(object sender, EventArgs e)
         {
@@ -471,21 +448,120 @@ namespace Timekeeper
             wPrevEnd.Text = timestamp_e.ToString(Common.DATETIME_FORMAT);
         }
 
-        private void fLog_Activated(object sender, EventArgs e)
-        {
-            // This needs work! If you make changes, then come back, it reloads 
-            // whatever's in memory and you lose all changes
-            //displayRow();
-        }
+        //---------------------------------------------------------------------
 
         private void wLeaveControl(object sender, EventArgs e)
         {
             _controlChanged(sender);
         }
 
+        //---------------------------------------------------------------------
         // Helpers
+        //---------------------------------------------------------------------
 
-        private void _save(object sender, EventArgs e, bool forceSave)
+        private void DisplayRow()
+        {
+            // FIXME: in general, if I haven't said it already, let's get rid
+            // of direct SQL access inside forms. This kind of stuff should
+            // be done at a business objects level or otherwise segregated 
+            // from the presentation layer. (Added as Bug Number #1218.)
+
+            try {
+                // Now get some real log data
+                string query = @"
+                select
+                    log.task_id, t.name as task_name,
+                    log.project_id, p.name as project_name,
+                    log.timestamp_s, log.timestamp_e, 
+                    log.seconds, log.pre_log, log.post_log,
+                    log.is_locked
+                from timekeeper log
+                join tasks t on t.id = log.task_id
+                join projects p on p.id = log.project_id
+                where log.id = " + id;
+                Row row = data.SelectRow(query);
+
+                if (row["task_id"] == null) {
+                    // all out of rows
+                    return;
+                }
+
+                try {
+                    // Save values in object members
+                    task_id = row["task_id"];
+                    project_id = row["project_id"];
+                    seconds = row["seconds"];
+                    timestamp_s = row["timestamp_s"];
+                    if (row["timestamp_e"] != null)
+                        timestamp_e = row["timestamp_e"];
+                    pre_log = row["pre_log"];
+                    post_log = row["post_log"];
+
+                    wPrevStart.Text = timestamp_s.ToString(Common.DATETIME_FORMAT);
+                    if (row["timestamp_e"] != null)
+                        wPrevEnd.Text = timestamp_e.ToString(Common.DATETIME_FORMAT);
+
+                    wDuration.Text = Timekeeper.FormatSeconds(seconds);
+                    wPrevLog.Text = pre_log;
+                    wPostLog.Text = post_log;
+                    wTask.Text = row["task_name"];
+                    wProject.Text = row["project_name"];
+
+                    wID.Text = id.ToString();
+
+                    if (row["is_locked"]) {
+                        isLocked = true;
+                        wPrevStart.Enabled = false;
+                        wPrevEnd.Enabled = false;
+                        wDuration.Enabled = false;
+                        wPrevLog.Enabled = false;
+                        wPostLog.Enabled = false;
+                        wTask.Enabled = false;
+                        wProject.Enabled = false;
+                        btnUnlock.Visible = isTimerRunning ? false : true;
+                    } else {
+                        isLocked = false;
+                        wPrevStart.Enabled = true;
+                        wPrevEnd.Enabled = true;
+                        wDuration.Enabled = true;
+                        wPrevLog.Enabled = true;
+                        wPostLog.Enabled = true;
+                        wTask.Enabled = true;
+                        wProject.Enabled = true;
+                        btnUnlock.Visible = false;
+                    }
+
+                    // Disable close gap buttons if no gap to close
+                    string prevEndTime = _getPreviousEndTime();
+                    if (prevEndTime == wPrevStart.Text) {
+                        btnCloseStartGap.Enabled = false;
+                    } else {
+                        if (prevEndTime == "") {
+                            btnCloseStartGap.Enabled = false;
+                        } else {
+                            btnCloseStartGap.Enabled = true;
+                        }
+                    }
+
+                    string nextStartTime = _getNextStartTime();
+                    if (nextStartTime == wPrevEnd.Text) {
+                        btnCloseEndGap.Enabled = false;
+                    } else {
+                        btnCloseEndGap.Enabled = true;
+                    }
+
+                }
+                catch (Exception ee) {
+                    Common.Warn(ee.ToString());
+                }
+            }
+            catch {
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void SaveRow(bool forceSave)
         {
             if (!forceSave) {
                 if (!this.isDirty) {
@@ -524,8 +600,7 @@ namespace Timekeeper
                 lookup = data.SelectRow(query);
                 project_id = Convert.ToInt32(lookup["id"]);
             }
-            catch (Exception ee)
-            {
+            catch (Exception ee) {
                 // Um, don't do this . . .
                 Common.Warn(ee.ToString());
             }
@@ -549,6 +624,118 @@ namespace Timekeeper
             // Cleanup
             this.isDirty = false;
         }
+
+        //---------------------------------------------------------------------
+        // Row location testers
+        //---------------------------------------------------------------------
+
+        private bool AtEnd()
+        {
+            string query = String.Format(@"
+                select id, timestamp_s from timekeeper 
+                order by timestamp_s desc 
+                limit 1");
+            Row row = data.SelectRow(query);
+            if ((row["id"] != null) && (row["id"] == this.id)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private bool AtBeginning()
+        {
+            string query = String.Format(@"
+                select id, timestamp_s from timekeeper 
+                order by timestamp_s asc 
+                limit 1");
+            Row row = data.SelectRow(query);
+            if ((row["id"] != null) && (row["id"] == this.id)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // ID values
+        // Remember that the id does not imply chronology. Backfills, data 
+        // migrations, and other data changes can create "out of order" id 
+        // values. The value of timestamp_s is authoritative.
+        //---------------------------------------------------------------------
+
+        private void SetLastId()
+        {
+            string query = String.Format(@"
+                select id, timestamp_s from timekeeper 
+                order by timestamp_s desc 
+                limit 1");
+            _SetId(query);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void SetFirstId()
+        {
+            string query = String.Format(@"
+                select id, timestamp_s from timekeeper 
+                order by timestamp_s asc 
+                limit 1");
+            _SetId(query);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void SetPrevId()
+        {
+            string query = String.Format(@"
+                select id, timestamp_s from timekeeper
+                where timestamp_s < '{0}'
+                order by timestamp_s desc
+                limit 1",
+            this.timestamp_s_current.ToString(Common.DATETIME_FORMAT));
+            _SetId(query);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void SetNextId()
+        {
+            if (this.timestamp_s_current == DateTime.MinValue)
+                return;
+            string query = String.Format(@"
+                select id, timestamp_s from timekeeper
+                where timestamp_s > '{0}'
+                order by timestamp_s asc
+                limit 1",
+            this.timestamp_s_current.ToString(Common.DATETIME_FORMAT));
+            _SetId(query);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void _SetId(string query)
+        {
+            var s = new Stopwatch();
+            s.Start();
+
+            try {
+                Row row = data.SelectRow(query);
+                this.id = row["id"];
+                this.timestamp_s_current = row["timestamp_s"];
+            }
+            catch {
+                this.id = 0;
+                this.timestamp_s_current = DateTime.MinValue;
+            }
+
+            s.Stop();
+            this.Text = "Elapsed time " + s.ElapsedMilliseconds.ToString();
+        }
+
+        //---------------------------------------------------------------------
 
         private string _getText(object sender)
         {
@@ -649,17 +836,6 @@ namespace Timekeeper
             }
         }
 
-        private void btnUnlock_Click(object sender, EventArgs e)
-        {
-            Row row = new Row();
-            row["is_locked"] = true;
-
-            data.Begin();
-            data.Update("timekeeper", row, "id", id);
-            displayRow();
-            data.Commit();
-        }
-
         //---------------------------------------------------------------------
         // Context-sensitive help
         //---------------------------------------------------------------------
@@ -671,7 +847,9 @@ namespace Timekeeper
             Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
         }
 
-
+        //---------------------------------------------------------------------
+        // End of fLog
+        //---------------------------------------------------------------------
 
     }
 }
