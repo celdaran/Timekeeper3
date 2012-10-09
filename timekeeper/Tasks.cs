@@ -57,15 +57,6 @@ namespace Timekeeper
             string query = "select count(*) as count from tasks";
             Row row = data.SelectRow(query);
             return (int)row["count"];
-            /*
-            if (row["count"] == "") {
-                return 0;
-            } else {
-                return Convert.ToInt32(row["count"]);
-            }
-            */
         }
-
-
     }
 }

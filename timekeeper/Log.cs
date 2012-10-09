@@ -25,7 +25,7 @@ namespace Timekeeper
             row["timestamp_s"] = Common.Now();
             row["seconds"] = 0;
             row["pre_log"] = entry;
-            row["is_locked"] = true;
+            row["is_locked"] = 1;
 
             log_id = data.Insert("timekeeper", row);
 
@@ -44,7 +44,7 @@ namespace Timekeeper
             row["seconds"] = seconds;
             row["pre_log"] = pre_entry;
             row["post_log"] = entry;
-            row["is_locked"] = false;
+            row["is_locked"] = 0;
 
             data.Update("timekeeper", row, "id", log_id);
         }
@@ -54,27 +54,13 @@ namespace Timekeeper
             string query = "select count(*) as count from timekeeper";
             Row row = data.SelectRow(query);
             return (int)row["count"];
-            /*
-            if (row["count"] == "") {
-                return 0;
-            } else {
-                return Convert.ToInt32(row["count"]);
-            }
-            */
         }
 
         public int seconds()
         {
             string query = "select sum(seconds) as seconds from timekeeper";
             Row row = data.SelectRow(query);
-            return (int)row["seconds"];
-            /*
-            if (row["seconds"] == "") {
-                return 0;
-            } else {
-                return Convert.ToInt32(row["seconds"]);
-            }
-            */
+            return row["seconds"] == null ? 0 : (int)row["seconds"];
         }
 
     }

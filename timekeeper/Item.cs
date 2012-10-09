@@ -120,7 +120,7 @@ namespace Timekeeper
                 this.id_column, fromDate, toDate, id);
             Row row = this.data.SelectRow(query);
 
-            long seconds = row["seconds"];
+            long seconds = row["seconds"] == null ? 0 : row["seconds"];
 
             // get child(ren)
             query = String.Format(@"
@@ -146,9 +146,9 @@ namespace Timekeeper
             row["name"] = this.name;
             row["descr"] = this.description;
             row["parent_id"] = this.parent_id;
-            row["is_folder"] = this.is_folder;
-            row["is_hidden"] = false;
-            row["is_deleted"] = false;
+            row["is_folder"] = this.is_folder ? 1 : 0;
+            row["is_hidden"] = 0;
+            row["is_deleted"] = 0;
             row["timestamp_c"] = Common.Now();
             row["timestamp_m"] = Common.Now();
 
@@ -185,7 +185,7 @@ namespace Timekeeper
         {
             Row row = new Row();
             is_hidden = true;
-            row["is_hidden"] = is_hidden;
+            row["is_hidden"] = 1;
             return data.Update(this.table, row, "id", this.id);
         }
 
@@ -193,7 +193,7 @@ namespace Timekeeper
         {
             Row row = new Row();
             is_hidden = false;
-            row["is_hidden"] = is_hidden;
+            row["is_hidden"] = 0;
             return data.Update(this.table, row, "id", this.id);
         }
 
@@ -201,7 +201,7 @@ namespace Timekeeper
         {
             Row row = new Row();
             is_deleted = true;
-            row["is_deleted"] = is_deleted;
+            row["is_deleted"] = 1;
             return data.Update(this.table, row, "id", this.id);
         }
 

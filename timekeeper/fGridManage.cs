@@ -32,7 +32,9 @@ namespace Timekeeper
 
             foreach (Row row in rows)
             {
-                var pair = Tuple.Create(row["name"], row["sort_index"]);
+                var pair = new Pair();
+                pair.Key = row["sort_index"];
+                pair.Value = row["name"];
                 wViewList.Items.Add(pair);
             }
 

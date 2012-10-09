@@ -122,7 +122,7 @@ namespace Timekeeper
 
                 // does the grid_views table exist
                 row = data.SelectRow("select * from sqlite_master where type='table' and name = 'grid_views'");
-                if (row["name"] == "") {
+                if (row["name"] == null) {
                     // Added in 2.1
                     _createViews();
                 }
@@ -137,7 +137,7 @@ namespace Timekeeper
 
                 // does the journal table exist
                 row = data.SelectRow("select * from sqlite_master where type='table' and name = 'journal'");
-                if (row["name"] == "") {
+                if (row["name"] == null) {
                     // Added in 2.1
                     _createJournal();
                 }
@@ -152,7 +152,7 @@ namespace Timekeeper
 
                 // do we have a UUID for this database?
                 row = data.SelectRow("select value from meta where key = 'id'");
-                if (row["value"] == "") {
+                if (row["value"] == null) {
                     // Create unique identifier for this database
                     row = new Row();
                     row["key"] = "id";
@@ -246,8 +246,8 @@ namespace Timekeeper
                 row.Add("taskcount", 0);
                 row.Add("projectcount", 0);
                 row.Add("logcount", 0);
-                row.Add("totalseconds", "");
-                row.Add("journalcount", "n/a");
+                row.Add("totalseconds", 0);
+                row.Add("journalcount", 0);
             }
 
             return row;

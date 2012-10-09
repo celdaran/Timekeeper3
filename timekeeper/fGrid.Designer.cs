@@ -237,6 +237,7 @@ namespace Timekeeper
             this.wHideEmptyRows.TabIndex = 11;
             this.wHideEmptyRows.Text = "Hide empty rows";
             this.wHideEmptyRows.UseVisualStyleBackColor = true;
+            this.wHideEmptyRows.Visible = false;
             this.wHideEmptyRows.Click += new System.EventHandler(this.wHideEmptyRows_Click);
             // 
             // wGroupDates
@@ -411,6 +412,7 @@ namespace Timekeeper
             this.Controls.Add(this.wToolbar);
             this.Controls.Add(this.panel1);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(0, 245);
             this.Name = "fGrid";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

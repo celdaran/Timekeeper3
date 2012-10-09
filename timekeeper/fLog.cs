@@ -101,13 +101,14 @@ namespace Timekeeper
                 // Initialize id with latest row
                 SetLastId();
                 if (id == 0) {
-                    Common.Info("There are no rows in the log.");
+                    //Common.Info("There are no rows in the log.");
                     btnPrev.Enabled = false;
                     btnNext.Enabled = false;
                     btnFirst.Enabled = false;
                     btnLast.Enabled = false;
                     btnCloseStartGap.Enabled = false;
                     btnCloseEndGap.Enabled = false;
+                    btnOK.Enabled = false;
                     return;
                 }
 
@@ -123,7 +124,7 @@ namespace Timekeeper
 
                 query = "select max(timestamp_s) as timestamp_s from timekeeper";
                 row = data.SelectRow(query);
-                if (row["timestamp_s"] != "") {
+                if (row["timestamp_s"] != null) {
                     DateTime dt = DateTime.Parse(row["timestamp_s"]);
                     wToDatePicker.Value = dt;
                 }
@@ -314,7 +315,7 @@ namespace Timekeeper
         private void btnUnlock_Click(object sender, EventArgs e)
         {
             Row row = new Row();
-            row["is_locked"] = true;
+            row["is_locked"] = 0;
 
             data.Begin();
             data.Update("timekeeper", row, "id", id);

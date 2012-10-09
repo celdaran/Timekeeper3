@@ -94,8 +94,8 @@ namespace Timekeeper
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Application.Exit(); // FIXME: DO NOT SUBMIT LIKE THIS
-            //Hide();
+            //Application.Exit(); // for quick testing
+            Hide();
         }
 
         private void wHideEmptyRows_Click(object sender, EventArgs e)
@@ -157,6 +157,9 @@ namespace Timekeeper
                 sProjectList = "";
             }
 
+            // Get table name from Data Type dropdown
+            string tableName = wDataType.Text.Substring(0, wDataType.Text.Length - 1).ToLower();
+
             // Get data
             var query = String.Format(@"
                 select
@@ -164,13 +167,13 @@ namespace Timekeeper
                     strftime('{0}', tk.timestamp_s) as grouping, 
                     sum(tk.seconds) as seconds
                 from timekeeper tk
-                join {1} i on i.id = tk.project_id
+                join {1}s i on i.id = tk.{1}_id
                 where timestamp_s >= '{2}'
                   and timestamp_s <= '{3}'
                   {4} {5}
                 group by i.name, grouping
                 order by i.name, grouping",
-                sGroupBy, wDataType.Text, sStartDate, sEndDate, sTaskList, sProjectList);
+                sGroupBy, tableName, sStartDate, sEndDate, sTaskList, sProjectList);
 
             Table table = data.Select(query);
 
@@ -431,7 +434,7 @@ namespace Timekeeper
                             wGrid.Rows[row_id].Cells[cell["grouping"]].Value = cellValue;
                             wGrid.Rows[row_id].Cells[cell["grouping"]].ToolTipText = cellToolTip;
                             wGrid.Rows[row_id].Cells[cell["grouping"]].Tag = cell["seconds"];
-                            rowTotal += Convert.ToInt32(cell["seconds"]);
+                            rowTotal += (int)cell["seconds"];
                         }
                     }
                     else
@@ -445,8 +448,8 @@ namespace Timekeeper
                               {4} {5}",
                             row["id"], sStartDate, sEndDate, itemCol, sTaskList, sProjectList);
                         Row cell = data.SelectRow(query);
-                        if (cell["seconds"] != "") {
-                            rowTotal = Convert.ToInt32(cell["seconds"]);
+                        if (cell["seconds"] != null) {
+                            rowTotal = (int)cell["seconds"];
                         }
                     }
 
@@ -609,7 +612,7 @@ namespace Timekeeper
                 // check for duplicates
                 string query = String.Format(@"select name from grid_views where name = '{0}'", dlg.wName.Text.Replace("'", "''"));
                 Row tmp = data.SelectRow(query);
-                if (tmp["name"] != "") {
+                if (tmp["name"] != null) {
                     if (Common.Prompt("A saved view with this name already exists. Do you want to overwrite it?") != DialogResult.Yes)  {
                         return;
                     } else {
@@ -634,7 +637,7 @@ namespace Timekeeper
                 row["end_date_type"] = endDateType;
                 row["group_by"] = this.wGroupBy.SelectedIndex.ToString();
                 row["data_from"] = this.wDataType.SelectedIndex.ToString();
-                row["hide_empty_rows"] = this.wHideEmptyRows.Checked; // was: ? "1" : "0";
+                row["hide_empty_rows"] = this.wHideEmptyRows.Checked ? 1 : 0;
                 row["timestamp_c"] = Common.Now();
                 row["timestamp_m"] = Common.Now();
 
@@ -647,7 +650,7 @@ namespace Timekeeper
                 {
                     query = String.Format(@"select max(sort_index) as max_sort_index from grid_views");
                     tmp = data.SelectRow(query);
-                    int max_sort_index = tmp["max_sort_index"] == "" ? 0 : Convert.ToInt32(tmp["max_sort_index"]);
+                    long max_sort_index = tmp["max_sort_index"] == null ? 0 : tmp["max_sort_index"];
 
                     row["name"] = dlg.wName.Text;
                     row["sort_index"] = max_sort_index + 1;
@@ -723,8 +726,8 @@ namespace Timekeeper
                 if (row["id"] != null) {
                     this.sLoadedViewName = row["name"];
                     this.sLoadedViewDescription = row["description"];
-                    this.task_list = row["task_list"] == "" ? null : row["task_list"];
-                    this.project_list = row["project_list"] == "" ? null : row["project_list"]; ;
+                    this.task_list = row["task_list"];
+                    this.project_list = row["project_list"];
 
                     // FIXME: no magic numbers, please
                     if (row["date_preset"] == 5)
@@ -744,7 +747,7 @@ namespace Timekeeper
                     }
                     wGroupBy.SelectedIndex = row["group_by"];
                     wDataType.SelectedIndex = row["data_from"];
-                    wHideEmptyRows.Checked = true; // row["hide_empty_rows"] == 1; // FIXME: this column should be boolean
+                    wHideEmptyRows.Checked = row["hide_empty_rows"] == 1; // FIXME: this column should be boolean // FIXME: actually, this column should be deleted
                     dlgGridFilter._set_checks(dlgGridFilter.wTaskList, this.task_list);
                     dlgGridFilter._set_checks(dlgGridFilter.wProjectList, this.project_list);
                 }
@@ -870,7 +873,7 @@ namespace Timekeeper
             row["end_date_type"] = null;
             row["group_by"] = this.wGroupBy.SelectedIndex.ToString();
             row["data_from"] = this.wDataType.SelectedIndex.ToString();
-            row["hide_empty_rows"] = this.wHideEmptyRows.Checked; // was: ? "1" : "0";
+            row["hide_empty_rows"] = this.wHideEmptyRows.Checked ? 1 : 0;
             row["timestamp_c"] = Common.Now();
             row["timestamp_m"] = Common.Now();
 
@@ -882,7 +885,7 @@ namespace Timekeeper
                 {
                     string query = String.Format(@"select max(sort_index) as max_sort_index from grid_views");
                     Row tmp = data.SelectRow(query);
-                    int max_sort_index = tmp["max_sort_index"] == "" ? 0 : Convert.ToInt32(tmp["max_sort_index"]);
+                    int max_sort_index = tmp["max_sort_index"] == null ? 0 : tmp["max_sort_index"];
 
                     row["name"] = "Last View";
                     row["sort_index"] = max_sort_index + 1;
