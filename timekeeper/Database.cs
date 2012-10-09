@@ -186,7 +186,7 @@ namespace Timekeeper
                 // Commit
                 data.Commit();
             }
-            catch (Exception e) {
+            catch { //(Exception e) {
                 // Rollback
                 data.Rollback();
                 return -1;

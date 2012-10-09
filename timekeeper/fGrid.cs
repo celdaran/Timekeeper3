@@ -37,8 +37,8 @@ namespace Timekeeper
             this.data = data;
 
             // Some interface defaults
-            wDatePreset.SelectedIndex = 2;
-            wGroupBy.SelectedIndex = 2;
+            wDatePreset.SelectedItem = "This Month";
+            wGroupBy.SelectedItem = "Month";
             wDataType.SelectedIndex = 0;
             wTimeFormat.SelectedIndex = 0;
 
@@ -290,9 +290,8 @@ namespace Timekeeper
             // Cleanup
             //-----------------------------------
 
-            //Common.Info("Executed loop " + loopCount.ToString() + " times");
             t.Stop();
-            Common.Info("Elapsed time: " + t.ElapsedMilliseconds.ToString());
+            //Common.Info("Elapsed time: " + t.ElapsedMilliseconds.ToString());
         }
 
         private string _seconds(Table table, string bucket, string item)
@@ -501,7 +500,7 @@ namespace Timekeeper
             data.Commit();
 
             t.Stop();
-            Common.Info("Elapsed time: " + t.ElapsedMilliseconds.ToString());
+            //Common.Info("Elapsed time: " + t.ElapsedMilliseconds.ToString());
         }
 
         private void _create_new_column(string colName, string colHeading, DataGridViewContentAlignment align, bool frozen)
@@ -518,21 +517,78 @@ namespace Timekeeper
         private void _set_start_date()
         {
             DateTime now = DateTime.Now;
+            String query;
+
             switch (wDatePreset.Text)
             {
-                case "Today": wStartDate.Value = now; break;
-                case "This Week": wStartDate.Value = now.Subtract(new TimeSpan(24 * 7, 0, 0)); break;
-                case "This Month": wStartDate.Value = DateTime.Parse(now.Year.ToString() + "/" + now.Month.ToString() + "/1"); break;
-                case "Year to Date": wStartDate.Value = DateTime.Parse(now.Year.ToString() + "/01/01"); break;
+                case "Today":
+                    wStartDate.Value = now;
+                    wEndDate.Value = now;
+                    break;
+
+                case "Yesterday": 
+                    wStartDate.Value = now.Subtract(new TimeSpan(24, 0, 0));
+                    wEndDate.Value = wStartDate.Value;
+                    break;
+
+                case "Previous Day":
+                    query = @"select distinct strftime('%Y-%m-%d', timestamp_s) as date from timekeeper order by date desc";
+                    Table rows = data.Select(query);
+                    if (rows.Count > 1) {
+                        wStartDate.Value = DateTime.Parse(rows[1]["date"]);
+                        wEndDate.Value = wStartDate.Value;
+                    } else {
+                        wStartDate.Value = now;
+                        wEndDate.Value = now;
+                    }
+                    break;
+
+                case "This Week":
+                    int diff = now.DayOfWeek - DayOfWeek.Monday;
+                    wStartDate.Value = now.Subtract(new TimeSpan(diff * 7, 0, 0)); 
+                    wEndDate.Value = now;
+                    break;
+
+                case "This Month": 
+                    wStartDate.Value = DateTime.Parse(now.Year.ToString() + "/" + now.Month.ToString() + "/1"); 
+                    wEndDate.Value = now;
+                    break;
+
+                case "Last Month":
+                    int year = now.Year;
+                    int month = now.Month;
+                    if (now.Month == 1) {
+                        year--;
+                        month = 12;
+                    } else {
+                        month--;
+                    }
+                    wStartDate.Value = DateTime.Parse(year.ToString() + "/" + month.ToString() + "/1");
+                    wEndDate.Value =   DateTime.Parse(year.ToString() + "/" + month.ToString() + "/" + DateTime.DaysInMonth(year, month).ToString());
+                    break;
+
+                case "This Year":
+                    wStartDate.Value = DateTime.Parse(now.Year.ToString() + "/01/01");
+                    wEndDate.Value = now;
+                    break;
+
+                case "Last Year":
+                    year = now.Year;
+                    year--;
+                    wStartDate.Value = DateTime.Parse(year.ToString() + "/01/01");
+                    wEndDate.Value = DateTime.Parse(year.ToString() + "/12/31");
+                    break;
+
                 case "All":
-                    String query = @"select min(timestamp_s) as min from timekeeper";
+                    query = @"select min(timestamp_s) as min from timekeeper";
                     Row row = data.SelectRow(query);
-                    wStartDate.Value = DateTime.Parse(row["min"]); break;
+                    wStartDate.Value = DateTime.Parse(row["min"]);
+                    break;
+
                 case "Custom":
                     // do nothing
                     break;
             }
-            wEndDate.Value = now.Date;
         }
 
         private void _toggle_empty_rows()
@@ -572,9 +628,9 @@ namespace Timekeeper
             
             dlg.wName.Text = sLoadedViewName;
             dlg.wDescription.Text = sLoadedViewDescription;
-            dlg.wEndDateType.Enabled = (wDatePreset.SelectedIndex == 5); // FIXME: watch the magic numbers
+            dlg.wEndDateType.Enabled = ((string)wDatePreset.SelectedItem == "Custom");
             if (dlg.wEndDateType.Enabled) {
-  		// literal
+                // literal
                 Pair dateEntered = new Pair();
                 dateEntered.Key = 1;
                 dateEntered.Value = "Entered Date: " + wEndDate.Text;
@@ -729,10 +785,10 @@ namespace Timekeeper
                     this.task_list = row["task_list"];
                     this.project_list = row["project_list"];
 
-                    // FIXME: no magic numbers, please
-                    if (row["date_preset"] == 5)
+                    // FIXME: no magic numbers, please (7 = Custom)
+                    if (row["date_preset"] == 7)
                     {
-                        wDatePreset.SelectedIndex = 5;
+                        wDatePreset.SelectedItem = "Custom";
                         wStartDate.Text = row["start_date"];
                         if (row["end_date_type"] == 3) {
                             wEndDate.Text = Common.Today();
@@ -795,9 +851,8 @@ namespace Timekeeper
         private void wStartDate_Leave(object sender, EventArgs e)
         {
             DateTimePicker picker = (DateTimePicker)sender;
-            if (sBeforeDate != picker.Text)
-            {
-                wDatePreset.SelectedIndex = 5;
+            if (sBeforeDate != picker.Text) {
+                wDatePreset.SelectedItem = "Custom";
             }
 
         }

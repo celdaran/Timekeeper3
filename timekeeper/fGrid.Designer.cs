@@ -262,9 +262,13 @@ namespace Timekeeper
             this.wDatePreset.FormattingEnabled = true;
             this.wDatePreset.Items.AddRange(new object[] {
             "Today",
+            "Yesterday",
+            "Previous Day",
             "This Week",
             "This Month",
-            "Year to Date",
+            "Last Month",
+            "This Year",
+            "Last Year",
             "All",
             "Custom"});
             this.wDatePreset.Location = new System.Drawing.Point(77, 20);
@@ -412,7 +416,7 @@ namespace Timekeeper
             this.Controls.Add(this.wToolbar);
             this.Controls.Add(this.panel1);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(0, 245);
+            this.MinimumSize = new System.Drawing.Size(8, 245);
             this.Name = "fGrid";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
