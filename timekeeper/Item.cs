@@ -234,15 +234,7 @@ namespace Timekeeper
                 group by date",
                 this.id_column, this.id);
             Row row = data.SelectRow(query);
-            return row["count"];
-
-            /*
-            if (count.Length > 0) {
-                return Convert.ToInt32(count);
-            } else {
-                return 0;
-            }
-            */
+            return (int)row["count"];
         }
 
         public List<DateTime> daysUsed()

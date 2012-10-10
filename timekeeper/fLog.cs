@@ -733,7 +733,8 @@ namespace Timekeeper
             }
 
             s.Stop();
-            this.Text = "Elapsed time " + s.ElapsedMilliseconds.ToString();
+            // Helpful debugging step
+            // this.Text = "Elapsed time " + s.ElapsedMilliseconds.ToString();
         }
 
         //---------------------------------------------------------------------

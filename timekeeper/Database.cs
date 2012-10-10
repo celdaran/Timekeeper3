@@ -183,6 +183,11 @@ namespace Timekeeper
                     data.Exec(updateTable);
                 }
 
+                // make sure timekeeper.is_locked is not null (TKT #1227)
+                row = new Row();
+                row["is_locked"] = 0;
+                int count = data.Update("timekeeper", row, "is_locked is null");
+
                 // Commit
                 data.Commit();
             }
@@ -212,6 +217,7 @@ namespace Timekeeper
                 // grab a few handy objects
                 Tasks tasks = new Tasks(data, "");
                 Projects projects = new Projects(data, "");
+                Journal journal = new Journal(data);
                 Log log = new Log(data);
 
                 // convert meta rows to rows (note order by above)
@@ -224,9 +230,9 @@ namespace Timekeeper
                 row.Add("filesize", data.DataFileSize);
                 row.Add("taskcount", tasks.count());
                 row.Add("projectcount", projects.count());
+                row.Add("journalcount", journal.count());
                 row.Add("logcount", log.count());
                 row.Add("totalseconds", Timekeeper.FormatSeconds(log.seconds()));
-                row.Add("journalcount", "n/a");
             }
             catch
             {
@@ -245,9 +251,9 @@ namespace Timekeeper
                 row.Add("filesize", 0);
                 row.Add("taskcount", 0);
                 row.Add("projectcount", 0);
+                row.Add("journalcount", 0);
                 row.Add("logcount", 0);
                 row.Add("totalseconds", 0);
-                row.Add("journalcount", 0);
             }
 
             return row;

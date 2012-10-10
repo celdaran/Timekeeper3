@@ -230,7 +230,7 @@ namespace Timekeeper
             }
 
             // Add one column for the row totals
-            _create_new_column("total", "Total", DataGridViewContentAlignment.MiddleLeft, false);
+            _create_new_column("total", "Total", DataGridViewContentAlignment.MiddleRight, false);
 
             // Add one row for each item
             var itemList = items.Keys.ToList();
@@ -264,6 +264,7 @@ namespace Timekeeper
                     x++;
                 }
                 wGrid.Rows[y].Cells[x + 1].Value = _format_cell2(wTimeFormat.SelectedIndex, rowTotal);
+                wGrid.Rows[y].Cells[x + 1].Tag = rowTotal;
                 y++;
             }
 
@@ -865,9 +866,12 @@ namespace Timekeeper
                     value = Timekeeper.FormatSeconds(seconds);
                     break;
                 case 1:
-                    value = Math.Round(Convert.ToDecimal(seconds / 60)).ToString();
+                    value = Math.Round(Convert.ToDecimal((float)seconds / 60 / 60), 2).ToString();
                     break;
                 case 2:
+                    value = Math.Round(Convert.ToDecimal(seconds / 60)).ToString();
+                    break;
+                case 3:
                     value = seconds.ToString();
                     break;
                 default:
@@ -913,7 +917,7 @@ namespace Timekeeper
                 // yeah --- it's a bit of a hack (FIXME?)
                 string sql = "select count(*) as row_count from grid_views";
                 Row tmp = data.SelectRow(sql);
-                if (tmp["row_count"] != "0") {
+                if (tmp["row_count"] != 0) {
                     return;
                 }
             }
