@@ -81,3 +81,233 @@ May 2, 2011:
   * 1156 Null object reference error on first launch.
   * 1157 Right-clicking a task and selecting properties dies if no task actually selected.
   * 1158 The about box colors look wrong on Aero.
+
+-------------------------
+Timekeeper 2.3 Change Log
+-------------------------
+
+Before October 7, 2012:
+
+  * Removed cruft from unused TK3 interface experiments.
+
+  * The About box was dated 9/1/2011 and spoke of a Beta 5. I did not find any code
+    changes to go along with this, outside of the About box change.
+
+  * Created Technitivity.Toolbox as a base for future Timekeeper work.
+
+October 6, 2012 (Changeset 205):
+
+  * Changed target from Any CPU to x86.
+  * Updated to .NET 4.0
+  * More internals work.
+
+October 7, 2012 (Changeset 209, 211, 212, 213, 214, 215)
+
+  * Fixed the Timekeeper.Common vs Toolbox.Common split.
+  * Converted the app to use the new Technitivity.Toolbox library instead of its own
+    internal classes, such as DBI, UUID, Common, and so on.
+  * TKT #1162: fixed the "longer than 64 characters" bug.
+  * TKT #1167: fixed the problem with fLog dropdowns growing out of control.
+  * TKT #1173: fixed the "Edit.." display bug.
+  * TKT #1179: fixed modality of report and grid windows.
+  * TKT #1215: disabled entire File menu while timer is running.
+
+October 8, 2012 (Changeset 216, 217, 218)
+
+  * TKT #1195: re-wrote grid population from scratch
+  * TKT #1198: first/last/prev/next buttons use timestamp_s for chronology, not tkid
+  * TKT #1221: fixed boolean problem (residual issue from Toolbox.DBI)
+  * TKT #1224: fixed display problem (changed Tuple to Pair)
+  * Largely a bug fix pass: bad "" vs. null checks, boolean issues, plus a
+    fairly large problem with the new _load_grid2() method
+
+October 9, 2012 (Changeset 219)
+
+  * TKT #1177: Enhanced date presets on Grid control (Yesterday, Previous Day, Last
+    Month, Last Year, and a revised This Week).
+
+October 10, 2012 (Changeset 221, 222)
+
+  * A few more minor bug fixes and tweaks. This is officially 2.3 beta 2.
+  * TKT #1190: Add "hours" to time format on grid control.
+  * TKT #1226: Datatype error on grid.
+  * TKT #1227: Null/bool issue in fLog.
+  * TKT #1229: Total total missing from Grid.
+  * TKT #1232: Implemented journal entry count to About box.
+
+  * TKT #1238: "This Week" calculation not right.
+  * TKT #1237: Fixed broken search.
+  * TKT #1235: Close all open windows when DB is closed.
+  * TKT #1233: Report now orders by date.
+  * TKT #1240: Calendar exploding when selecting tasks/projects.
+  * TKT #1159: Changed how notification works: now uses NotifyIcon ShowBubble.
+  * TKT #1116: Implicitly fixed by fixing 1159.
+
+October 11, 2012 (Changeset 223)
+
+  * Decided to just stamp this 2.3 Beta 3.
+  * Updated the version number and this file.
+
+-------------------------
+Timekeeper Changesets
+-------------------------
+
+change  75 on 2011/05/01 by hillsc@hillsc-laptop 
+change  76 on 2011/05/01 by hillsc@hillsc-laptop 
+change  77 on 2011/05/02 by hillsc@hillsc-laptop     Version 2.2.0.4
+change  78 on 2011/05/02 by hillsc@hillsc-laptop 
+change  79 on 2011/05/02 by hillsc@hillsc-laptop 
+change  80 on 2011/05/02 by hillsc@hillsc-laptop     Version 2.2.0.4 change.log update
+
+change 199 on 2012/09/26 by hillsc@hillsc-laptop     Last submit before TBXifying. The "Beta 5" work seems to have gone no further than updating the About dialog box.
+
+change 205 on 2012/10/06 by hillsc@hillsc-desktop 
+change 209 on 2012/10/07 by hillsc@hillsc-desktop 
+change 211 on 2012/10/07 by hillsc@hillsc-desktop 
+change 212 on 2012/10/07 by hillsc@hillsc-desktop 
+change 213 on 2012/10/07 by hillsc@hillsc-desktop 
+change 214 on 2012/10/07 by hillsc@hillsc-desktop 
+change 215 on 2012/10/07 by hillsc@hillsc-desktop 
+change 216 on 2012/10/08 by hillsc@hillsc-desktop 
+change 217 on 2012/10/08 by hillsc@hillsc-desktop 
+change 218 on 2012/10/08 by hillsc@hillsc-desktop 
+change 219 on 2012/10/09 by hillsc@hillsc-desktop 
+change 220 on 2012/10/09 by hillsc@hillsc-desktop 
+change 221 on 2012/10/10 by hillsc@hillsc-desktop 
+Change 222 on 2012/10/10 by hillsc@hillsc-desktop
+
+-------------------------
+CREATING A LABEL
+-------------------------
+
+C:\Users\hillsc\Projects\timekeeper>p4 label timekeeper_v2302
+Label timekeeper_v2302 saved.
+
+C:\Users\hillsc\Projects\timekeeper>p4 labelsync -l timekeeper_v2302 ...
+//depot/timekeeper/change.log#2 - added
+//depot/timekeeper/timekeeper.sln#2 - added
+//depot/timekeeper/timekeeper/app.config#3 - added
+//depot/timekeeper/timekeeper/Database.cs#6 - added
+//depot/timekeeper/timekeeper/DBI.cs#1 - added
+//depot/timekeeper/timekeeper/fAbout.cs#4 - added
+//depot/timekeeper/timekeeper/fAbout.Designer.cs#7 - added
+//depot/timekeeper/timekeeper/fAbout.resx#2 - added
+//depot/timekeeper/timekeeper/fAnnotate.cs#2 - added
+//depot/timekeeper/timekeeper/fAnnotate.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fAnnotate.resx#1 - added
+//depot/timekeeper/timekeeper/fGrid.cs#7 - added
+//depot/timekeeper/timekeeper/fGrid.Designer.cs#5 - added
+//depot/timekeeper/timekeeper/fGrid.resx#2 - added
+//depot/timekeeper/timekeeper/fGridFilter.cs#3 - added
+//depot/timekeeper/timekeeper/fGridFilter.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fGridFilter.resx#1 - added
+//depot/timekeeper/timekeeper/fGridManage.cs#4 - added
+//depot/timekeeper/timekeeper/fGridManage.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fGridManage.resx#1 - added
+//depot/timekeeper/timekeeper/fGridManageRename.cs#1 - added
+//depot/timekeeper/timekeeper/fGridManageRename.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fGridManageRename.resx#1 - added
+//depot/timekeeper/timekeeper/fGridSave.cs#1 - added
+//depot/timekeeper/timekeeper/fGridSave.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fGridSave.resx#1 - added
+//depot/timekeeper/timekeeper/fItem.cs#2 - added
+//depot/timekeeper/timekeeper/fItem.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fItem.resx#1 - added
+//depot/timekeeper/timekeeper/fLog.cs#7 - added
+//depot/timekeeper/timekeeper/fLog.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fLog.resx#1 - added
+//depot/timekeeper/timekeeper/fMain.cs#9 - added
+//depot/timekeeper/timekeeper/fMain.Designer.cs#5 - added
+//depot/timekeeper/timekeeper/fMain.resx#4 - added
+//depot/timekeeper/timekeeper/fNew.cs#1 - added
+//depot/timekeeper/timekeeper/fNew.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fNew.resx#1 - added
+//depot/timekeeper/timekeeper/fNotify.cs#1 - added
+//depot/timekeeper/timekeeper/fNotify.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fNotify.resx#1 - added
+//depot/timekeeper/timekeeper/fOptions.cs#2 - added
+//depot/timekeeper/timekeeper/fOptions.Designer.cs#2 - added
+//depot/timekeeper/timekeeper/fOptions.resx#1 - added
+//depot/timekeeper/timekeeper/fPrompt.cs#1 - added
+//depot/timekeeper/timekeeper/fPrompt.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fPrompt.resx#1 - added
+//depot/timekeeper/timekeeper/fProperties.cs#1 - added
+//depot/timekeeper/timekeeper/fProperties.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fProperties.resx#1 - added
+//depot/timekeeper/timekeeper/fPunch.cs#3 - added
+//depot/timekeeper/timekeeper/fPunch.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fPunch.resx#1 - added
+//depot/timekeeper/timekeeper/fReport.cs#4 - added
+//depot/timekeeper/timekeeper/fReport.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fReport.resx#1 - added
+//depot/timekeeper/timekeeper/fToolCalendar.cs#1 - added
+//depot/timekeeper/timekeeper/fToolCalendar.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fToolCalendar.resx#1 - added
+//depot/timekeeper/timekeeper/fToolCountdown.cs#1 - added
+//depot/timekeeper/timekeeper/fToolCountdown.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fToolCountdown.resx#1 - added
+//depot/timekeeper/timekeeper/fToolDatecalc.cs#1 - added
+//depot/timekeeper/timekeeper/fToolDatecalc.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fToolDatecalc.resx#1 - added
+//depot/timekeeper/timekeeper/fToolJournal.cs#3 - added
+//depot/timekeeper/timekeeper/fToolJournal.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fToolJournal.resx#1 - added
+//depot/timekeeper/timekeeper/fToolReminders.cs#1 - added
+//depot/timekeeper/timekeeper/fToolReminders.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fToolReminders.resx#1 - added
+//depot/timekeeper/timekeeper/fToolStopwatch.cs#2 - added
+//depot/timekeeper/timekeeper/fToolStopwatch.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/fToolStopwatch.resx#1 - added
+//depot/timekeeper/timekeeper/Item.cs#7 - added
+//depot/timekeeper/timekeeper/Items.cs#3 - added
+//depot/timekeeper/timekeeper/Journal.cs#3 - added
+//depot/timekeeper/timekeeper/Log.cs#4 - added
+//depot/timekeeper/timekeeper/Program.cs#1 - added
+//depot/timekeeper/timekeeper/Project.cs#3 - added
+//depot/timekeeper/timekeeper/Projects.cs#4 - added
+//depot/timekeeper/timekeeper/Properties/app.manifest#1 - added
+//depot/timekeeper/timekeeper/Properties/AssemblyInfo.cs#2 - added
+//depot/timekeeper/timekeeper/Properties/Resources.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/Properties/Resources.resx#1 - added
+//depot/timekeeper/timekeeper/Properties/Settings.Designer.cs#1 - added
+//depot/timekeeper/timekeeper/Properties/Settings.settings#1 - added
+//depot/timekeeper/timekeeper/Task.cs#3 - added
+//depot/timekeeper/timekeeper/Tasks.cs#4 - added
+//depot/timekeeper/timekeeper/Timekeeper.cs#3 - added
+//depot/timekeeper/timekeeper/timekeeper.csproj#4 - added
+//depot/timekeeper/timekeeper/timekeeper.csproj.user#1 - added
+//depot/timekeeper/timekeeper/UUID.cs#1 - added
+
+C:\Users\hillsc\Projects\timekeeper>
+
+p4 label timekeeper_v2302
+
+# A Perforce Label Specification.
+#
+#  Label:       The label name.
+#  Update:      The date this specification was last modified.
+#  Access:      The date of the last 'labelsync' on this label.
+#  Owner:       The user who created this label.
+#  Description: A short description of the label (optional).
+#  Options:     Label update options: locked or unlocked.
+#  Revision:    Optional revision specification to make an automatic label.
+#  View:        Lines to select depot files for the label.
+#
+# Use 'p4 help label' to see more about label views.
+
+Label:	timekeeper_v2302
+
+Update:	2012/10/10 09:22:39
+
+Access:	2012/10/10 09:21:32
+
+Owner:	hillsc
+
+Description:
+	Created by hillsc.
+
+Options:	unlocked
+
+View:
+	//depot/timekeeper/...
+
