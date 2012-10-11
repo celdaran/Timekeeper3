@@ -546,7 +546,7 @@ namespace Timekeeper
 
                 case "This Week":
                     int diff = now.DayOfWeek - DayOfWeek.Monday;
-                    wStartDate.Value = now.Subtract(new TimeSpan(diff * 7, 0, 0)); 
+                    wStartDate.Value = now.Subtract(new TimeSpan(diff * 24, 0, 0)); 
                     wEndDate.Value = now;
                     break;
 

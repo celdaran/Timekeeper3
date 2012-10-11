@@ -96,7 +96,8 @@ namespace Timekeeper
                 join tasks t on t.id = log.task_id
                 join projects p on p.id = log.project_id
                 where log.timestamp_s >= '{0}'
-                  and log.timestamp_e <= '{1}'",
+                  and log.timestamp_e <= '{1}'
+                order by timestamp_s",
                 startDate, endDate);
 
             Table rows = data.Select(query);

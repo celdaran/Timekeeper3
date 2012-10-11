@@ -213,14 +213,11 @@ namespace Timekeeper
                 where {0} = {1}",
                 this.id_column, this.id);
             Row row = data.SelectRow(query);
-            return row["dateLastUsed"];
-            /*
-            if (dateLastUsed.Length > 0) {
+            if (row["dateLastUsed"] != null) {
                 return DateTime.Parse(row["dateLastUsed"]);
             } else {
                 return DateTime.Now;
             }
-            */
         }
 
         public int countDaysUsed()
@@ -234,7 +231,11 @@ namespace Timekeeper
                 group by date",
                 this.id_column, this.id);
             Row row = data.SelectRow(query);
-            return (int)row["count"];
+            if (row["count"] != null) {
+                return (int)row["count"];
+            } else {
+                return 0;
+            }
         }
 
         public List<DateTime> daysUsed()
@@ -251,7 +252,7 @@ namespace Timekeeper
 
             List<DateTime> days = new List<DateTime>();
             foreach (Row row in rows) {
-                days.Add(row["date"]);
+                days.Add(DateTime.Parse(row["date"]));
             }
 
             return days;

@@ -380,7 +380,7 @@ namespace Timekeeper
 
                 if (rows.Count > 0) {
                     foreach (Row row in rows) {
-                        string[] result = { row["id"], row["timestamp_s"], row["timestamp_e"], row["task_name"], row["project_name"] };
+                        string[] result = { row["id"].ToString(), row["timestamp_s"].ToString(), row["timestamp_e"].ToString(), row["task_name"], row["project_name"] };
                         wResults.Rows.Add(result);
                     }
                 } else {

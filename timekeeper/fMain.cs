@@ -28,6 +28,9 @@ namespace Timekeeper
         private fToolCalendar calendar;
         private fProperties properties;
 
+        // form tracking
+        private List<Form> openForms = new List<Form>();
+
         // dialog box attributes
         private int reportHeight;
         private int reportWidth;
@@ -248,6 +251,7 @@ namespace Timekeeper
             fGrid grid = new fGrid(data);
             grid.lastGridView = lastGridView;
             grid.Show(this);
+            openForms.Add(grid);
             lastGridView = grid.lastGridView;
         }
 
@@ -259,6 +263,7 @@ namespace Timekeeper
                 Convert.ToInt32(options.wFontSize.Value),
                 reportHeight, reportWidth);
             rpt.Show(this);
+            openForms.Add(rpt);
             reportHeight = rpt.Height;
             reportWidth = rpt.Width;
         }
@@ -268,6 +273,7 @@ namespace Timekeeper
         {
             fPunch punch = new fPunch(data);
             punch.Show(this);
+            openForms.Add(punch);
         }
 
         //---------------------------------------------------------------------
@@ -285,6 +291,7 @@ namespace Timekeeper
         {
             calendar = new fToolCalendar();
             calendar.Show(this);
+            openForms.Add(calendar);
         }
 
         // Tools | Journal
@@ -317,6 +324,7 @@ namespace Timekeeper
         {
             fToolStopwatch dlg = new fToolStopwatch();
             dlg.Show(this);
+            openForms.Add(dlg);
         }
 
         // Tools | Countdown
@@ -331,6 +339,7 @@ namespace Timekeeper
         {
             fToolDatecalc dlg = new fToolDatecalc();
             dlg.Show(this);
+            openForms.Add(dlg);
         }
 
         // Tools | Reminders
@@ -638,15 +647,11 @@ namespace Timekeeper
                 {
                     if (timerRunning == false)
                     {
-                        if (notificationOpen == false)
-                        {
-                            notificationOpen = true;
-                            fNotify dlg = new fNotify();
-                            dlg.ShowDialog(this);
-                            if (dlg.wDontShowAgain.Checked) {
-                                options.wPromptNoTimer.Checked = false;
-                            }
-                            notificationOpen = false;
+                        if (wNotifyIcon.Visible) {
+                            wNotifyIcon.ShowBalloonTip(30000,
+                                "Timekeeper", 
+                                "No timer is currently running.\n\nYou can change the frequency of this notification, or disable it completly, in the Options dialog box.",
+                                ToolTipIcon.Info);
                         }
                     }
                 }
@@ -897,6 +902,10 @@ namespace Timekeeper
             statusTimeAll.ForeColor = Color.Gray;
 
             this.data = null;
+
+            foreach (Form form in openForms) {
+                form.Close();
+            }
         }
 
         //---------------------------------------------------------------------
