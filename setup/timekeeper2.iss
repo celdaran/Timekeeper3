@@ -7,12 +7,13 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{0B3F450A-5663-4629-8FEB-1EFF677D445D}
 AppName=Timekeeper
-AppVerName=Timekeeper Version 2.2
+AppVerName=Timekeeper Version 2.3
 AppPublisher=Technitivity
 AppPublisherURL=http://www.technitivity.com
 AppSupportURL=http://www.technitivity.com
 AppUpdatesURL=http://www.technitivity.com
-DefaultDirName={pf}\Timekeeper2.2
+DefaultDirName={pf}\Timekeeper 2.3
+UsePreviousAppDir=no
 DefaultGroupName=Timekeeper
 AllowNoIcons=yes
 OutputDir=C:\Users\hillsc\Projects\timekeeper\setup
@@ -20,6 +21,9 @@ OutputBaseFilename=setup
 SetupIconFile=C:\Users\hillsc\Projects\timekeeper\assets\timekeeper.v22c.ico
 Compression=lzma
 SolidCompression=yes
+VersionInfoVersion=2.3.0.3
+VersionInfoCopyright=Copyright © 1999-2012 by Technitivity
+VersionInfoCompany=Technitivity
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -31,7 +35,8 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "C:\Users\hillsc\Projects\timekeeper\timekeeper\bin\x86\Release\timekeeper.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\hillsc\Projects\timekeeper\timekeeper\bin\x86\Release\System.Data.SQLite.DLL"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\hillsc\Projects\timekeeper\timekeeper\bin\x86\Release\timekeeper.chm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\hillsc\Projects\timekeeper\timekeeper\bin\x86\Release\Technitivity.Toolbox.DLL"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\hillsc\Projects\timekeeper\help\timekeeper.chm"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
