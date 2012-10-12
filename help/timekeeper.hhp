@@ -1,0 +1,17 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=timekeeper.chm
+Contents file=timekeeper.hhc
+Default topic=html\index.html
+Display compile progress=No
+Full-text search=Yes
+Index file=timekeeper.hhk
+Language=0x409 English (United States)
+Title=Timekeeper
+
+
+[FILES]
+html\index.html
+
+[INFOTYPES]
+

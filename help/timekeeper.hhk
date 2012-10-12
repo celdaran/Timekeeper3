@@ -1,0 +1,30 @@
+<!doctype html public "-//ietf//dtd html//en">
+<html>
+<head>
+<!-- sitemap 1.0 -->
+</head>
+<body>
+<ul>
+    <li><object type="text/sitemap">
+        <param name="name" value="Index">
+        <param name="local" value="html/index.html">
+        </object> </li>
+    <li><object type="text/sitemap">
+        <param name="name" value="Tasks">
+        <param name="local" value="html/context/fMain/wTasks.html">
+        </object> </li>
+    <li><object type="text/sitemap">
+        <param name="name" value="Projects">
+        <param name="local" value="html/context/fMain/wProjects.html">
+        </object> </li>
+    <li><object type="text/sitemap">
+        <param name="name" value="Search">
+        <param name="local" value="html/context/fLog/index.html">
+        </object> </li>
+    <li><object type="text/sitemap">
+        <param name="name" value="Editing">
+        <param name="local" value="html/context/fLog/index.html">
+        </object> </li>
+</ul>
+</body>
+</html>
