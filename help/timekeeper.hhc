@@ -9,7 +9,7 @@
 </OBJECT>
 <UL>
     <LI><OBJECT type="text/sitemap">
-        <param name="Name" value="Timekeeper 2.2">
+        <param name="Name" value="Timekeeper 2.3">
         <param name="Local" value="html/index.html">
         </OBJECT>
 
@@ -28,8 +28,12 @@
                 <param name="Local" value="html/features.html">
                 </OBJECT>
             <LI><OBJECT type="text/sitemap">
+                <param name="Name" value="What's New in Version 2.3?">
+                <param name="Local" value="html/whatsnew.2303.html">
+                </OBJECT>
+            <LI><OBJECT type="text/sitemap">
                 <param name="Name" value="What's New in Version 2.2?">
-                <param name="Local" value="html/whatsnew.html">
+                <param name="Local" value="html/whatsnew.2204.html">
                 </OBJECT>
         </UL>
 
