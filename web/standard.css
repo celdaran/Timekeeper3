@@ -24,8 +24,8 @@ h1, h2, h3 {
 
 h1 {
     font-size: 1.25em;
-    background-color: #eee;
-    border-bottom: 1px solid #000000;
+    x-background-color: #eee;
+    x-border-bottom: 1px solid #000000;
 }
 
 h2 {
