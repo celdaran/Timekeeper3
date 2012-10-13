@@ -149,14 +149,19 @@ October 11, 2012 (Changeset 223, 224)
   * Updated the version number and this file.
   * Updated the About box (somehow forgot that)
 
-October 12, 2012 (Changesets 225, 226, 227, 228, 229, 230)
+October 12, 2012 (Changesets 225, 226, 227, 228, 229, 230, 231, 232, 233, 234)
 
   * Added timekeeper/setup to p4.
   * Added timekeeper/help to p4.
   * Updated the installation script (timekeeper.iss).
   * Renamed timekeeper/help/html/whatsnew.html.
   * Minimal updates to the help system (still incomplete).
-  * Updated this file.
+  * Updated this file (230).
+  * Added timekeeper/web to p4.
+  * Updated timekeeper/web/index.html with live www.technitivity.com/timekeeper/index.html.
+  * Updated web site files to Timekeeper 2.3.
+  * Updated this file again (234).
+  * Updated label timekeeper_v2303.
 
 -------------------------
 Timekeeper Changesets
