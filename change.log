@@ -143,38 +143,53 @@ October 10, 2012 (Changeset 221, 222)
   * TKT #1159: Changed how notification works: now uses NotifyIcon ShowBubble.
   * TKT #1116: Implicitly fixed by fixing 1159.
 
-October 11, 2012 (Changeset 223)
+October 11, 2012 (Changeset 223, 224)
 
   * Decided to just stamp this 2.3 Beta 3.
   * Updated the version number and this file.
+  * Updated the About box (somehow forgot that)
+
+October 12, 2012 (Changesets 225, 226, 227, 228, 229, 230)
+
+  * Added timekeeper/setup to p4.
+  * Added timekeeper/help to p4.
+  * Updated the installation script (timekeeper.iss).
+  * Renamed timekeeper/help/html/whatsnew.html.
+  * Minimal updates to the help system (still incomplete).
+  * Updated this file.
 
 -------------------------
 Timekeeper Changesets
 -------------------------
 
-change  75 on 2011/05/01 by hillsc@hillsc-laptop 
-change  76 on 2011/05/01 by hillsc@hillsc-laptop 
-change  77 on 2011/05/02 by hillsc@hillsc-laptop     Version 2.2.0.4
-change  78 on 2011/05/02 by hillsc@hillsc-laptop 
-change  79 on 2011/05/02 by hillsc@hillsc-laptop 
-change  80 on 2011/05/02 by hillsc@hillsc-laptop     Version 2.2.0.4 change.log update
-
-change 199 on 2012/09/26 by hillsc@hillsc-laptop     Last submit before TBXifying. The "Beta 5" work seems to have gone no further than updating the About dialog box.
-
-change 205 on 2012/10/06 by hillsc@hillsc-desktop 
-change 209 on 2012/10/07 by hillsc@hillsc-desktop 
-change 211 on 2012/10/07 by hillsc@hillsc-desktop 
-change 212 on 2012/10/07 by hillsc@hillsc-desktop 
-change 213 on 2012/10/07 by hillsc@hillsc-desktop 
-change 214 on 2012/10/07 by hillsc@hillsc-desktop 
-change 215 on 2012/10/07 by hillsc@hillsc-desktop 
-change 216 on 2012/10/08 by hillsc@hillsc-desktop 
-change 217 on 2012/10/08 by hillsc@hillsc-desktop 
-change 218 on 2012/10/08 by hillsc@hillsc-desktop 
-change 219 on 2012/10/09 by hillsc@hillsc-desktop 
-change 220 on 2012/10/09 by hillsc@hillsc-desktop 
+Change 229 on 2012/10/12
+Change 228 on 2012/10/12
+Change 227 on 2012/10/12
+Change 226 on 2012/10/12
+Change 225 on 2012/10/12
+Change 224 on 2012/10/11
+Change 223 on 2012/10/11
+change 222 on 2012/10/10 by hillsc@hillsc-desktop
 change 221 on 2012/10/10 by hillsc@hillsc-desktop 
-Change 222 on 2012/10/10 by hillsc@hillsc-desktop
+change 220 on 2012/10/09 by hillsc@hillsc-desktop 
+change 219 on 2012/10/09 by hillsc@hillsc-desktop 
+change 218 on 2012/10/08 by hillsc@hillsc-desktop 
+change 217 on 2012/10/08 by hillsc@hillsc-desktop 
+change 216 on 2012/10/08 by hillsc@hillsc-desktop 
+change 215 on 2012/10/07 by hillsc@hillsc-desktop 
+change 214 on 2012/10/07 by hillsc@hillsc-desktop 
+change 213 on 2012/10/07 by hillsc@hillsc-desktop 
+change 212 on 2012/10/07 by hillsc@hillsc-desktop 
+change 211 on 2012/10/07 by hillsc@hillsc-desktop 
+change 209 on 2012/10/07 by hillsc@hillsc-desktop 
+change 205 on 2012/10/06 by hillsc@hillsc-desktop 
+change 199 on 2012/09/26 by hillsc@hillsc-laptop     Last submit before TBXifying. The "Beta 5" work seems to have gone no further than updating the About dialog box.
+change  80 on 2011/05/02 by hillsc@hillsc-laptop     Version 2.2.0.4 change.log update
+change  79 on 2011/05/02 by hillsc@hillsc-laptop 
+change  78 on 2011/05/02 by hillsc@hillsc-laptop 
+change  77 on 2011/05/02 by hillsc@hillsc-laptop     Version 2.2.0.4
+change  76 on 2011/05/01 by hillsc@hillsc-laptop 
+change  75 on 2011/05/01 by hillsc@hillsc-laptop 
 
 -------------------------
 CREATING A LABEL
