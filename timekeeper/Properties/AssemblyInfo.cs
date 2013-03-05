@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Timekeeper")]
-[assembly: AssemblyDescription("Personal Time-Tracking Application")]
+[assembly: AssemblyDescription("Personal Time Tracking Application")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Technitivity")]
 [assembly: AssemblyProduct("Timekeeper")]
-[assembly: AssemblyCopyright("Copyright © 1999-2012 by Technitivity")]
+[assembly: AssemblyCopyright("Copyright © 1999-2013 by Technitivity")]
 [assembly: AssemblyTrademark("Technitivity is a Division of Lockshire Media, LLC")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.3.0.3")]
-[assembly: AssemblyFileVersion("2.3.0.3")]
+[assembly: AssemblyVersion("3.0.0.0")]
+[assembly: AssemblyFileVersion("3.0.0.0")]

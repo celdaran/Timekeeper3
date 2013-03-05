@@ -131,6 +131,9 @@
     <Compile Include="fGridSave.Designer.cs">
       <DependentUpon>fGridSave.cs</DependentUpon>
     </Compile>
+    <Compile Include="fMain.Operations.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="fNotify.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -365,12 +368,21 @@
   <ItemGroup>
     <None Include="Resources\menu-project.bmp" />
     <None Include="Resources\menu-task.bmp" />
-    <None Include="Resources\iconFolderClosed.bmp" />
-    <None Include="Resources\arrow-up.bmp" />
-    <None Include="Resources\arrow-down.bmp" />
     <None Include="Resources\timekeeper-256.png" />
     <None Include="Resources\timekeeper-48.png" />
-    <None Include="Resources\dropdown.png" />
+    <None Include="Resources\button-bold.png" />
+    <None Include="Resources\button-numbered-list.png" />
+    <None Include="Resources\button-bulleted-list.png" />
+    <None Include="Resources\button-strikethrough.png" />
+    <None Include="Resources\button-underlined.png" />
+    <None Include="Resources\button-italics.png" />
+    <None Include="Resources\button-prev.png" />
+    <None Include="Resources\button-next.png" />
+    <None Include="Resources\button-first.png" />
+    <None Include="Resources\button-last.png" />
+    <None Include="Resources\button-cancel.png" />
+    <None Include="Resources\icon-go.png" />
+    <None Include="Resources\button-close-stop-gap.png" />
     <Content Include="timekeeper.v22c.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

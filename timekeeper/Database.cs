@@ -144,11 +144,15 @@ namespace Timekeeper
 
                 // update version number, if necessary
                 row = data.SelectRow("select value from meta where key = 'version'");
+                /*
+                 * FIXME: do NOT do this unless there's a reason to.
+                 * Don't blindly update the version number if nothing has changed.
                 db_version = new Version(row["value"]);
                 if (db_version < app_version) {
                     row["value"] = Timekeeper.VERSION;
                     data.Update("meta", row, "key", "version");
                 }
+                */
 
                 // do we have a UUID for this database?
                 row = data.SelectRow("select value from meta where key = 'id'");

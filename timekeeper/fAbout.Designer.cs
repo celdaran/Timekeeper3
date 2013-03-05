@@ -71,16 +71,16 @@ namespace Timekeeper
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(188, 13);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Copyright © 1999-2012 by Charlie Hills";
+            this.label3.Text = "Copyright © 1999-2013 by Charlie Hills";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(66, 25);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(172, 13);
+            this.label2.Size = new System.Drawing.Size(165, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Beta 3 Released October 11, 2012";
+            this.label2.Text = "Unreleased Development Version";
             // 
             // label1
             // 
@@ -90,7 +90,7 @@ namespace Timekeeper
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Timekeeper 2.3";
+            this.label1.Text = "Timekeeper 3.0";
             // 
             // pictureBox1
             // 

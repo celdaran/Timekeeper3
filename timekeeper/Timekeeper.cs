@@ -7,7 +7,7 @@ namespace Timekeeper
 {
     class Timekeeper
     {
-        public const string VERSION = "2.2.0.4";
+        public const string VERSION = "3.0.0.0";
 
         public Timekeeper()
         {

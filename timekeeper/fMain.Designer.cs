@@ -45,8 +45,11 @@ namespace Timekeeper
             this.menuFileUtilitiesRepair = new System.Windows.Forms.ToolStripMenuItem();
             this.menuFileSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuFileExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuTasks = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuTasksTimer = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAction = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuActionStart = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuActionStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuActionStartAdvanced = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuActionStopAdvanced = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuTasksNewTask = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksNewTaskFolder = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,12 +64,34 @@ namespace Timekeeper
             this.menuTasksHideProject = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksUnhideProject = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksDeleteProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuReports = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuReport = new System.Windows.Forms.ToolStripMenuItem();
             this.menuReportsGrid = new System.Windows.Forms.ToolStripMenuItem();
             this.menuReportsQuick = new System.Windows.Forms.ToolStripMenuItem();
             this.menuReportsPunch = new System.Windows.Forms.ToolStripMenuItem();
             this.menuReportsJournal = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuTools = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuTool = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolBrowse = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControl = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControlStart = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControlStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControlContinue = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControlClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuTimerControlsSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuToolControlFirst = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControlPrev = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControlNext = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControlLast = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuTimerControlsSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuToolControlCloseStartGap = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControlCloseEndGap = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolFormat = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolFormatBold = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolFormatItalic = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolFormatUnderline = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolFormatStrikethrough = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuToolFind = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuToolsTweak = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
             this.menuToolsJournal = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,7 +113,7 @@ namespace Timekeeper
             this.statusTimeToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusTimeAll = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusFile = new System.Windows.Forms.ToolStripStatusLabel();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitTrees = new System.Windows.Forms.SplitContainer();
             this.wTasks = new System.Windows.Forms.TreeView();
             this.menuTask = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.pmenuTasksTimer = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,27 +148,71 @@ namespace Timekeeper
             this.timerLong = new System.Windows.Forms.Timer(this.components);
             this.dlgNew = new System.Windows.Forms.OpenFileDialog();
             this.wNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.splitMain = new System.Windows.Forms.SplitContainer();
+            this.panelMemo = new System.Windows.Forms.Panel();
+            this.wMemo = new System.Windows.Forms.RichTextBox();
+            this.toolStripFormat = new System.Windows.Forms.ToolStrip();
+            this.toolFormatBold = new System.Windows.Forms.ToolStripButton();
+            this.toolFormatItalic = new System.Windows.Forms.ToolStripButton();
+            this.toolFormatUnderline = new System.Windows.Forms.ToolStripButton();
+            this.toolFormatStrikethrough = new System.Windows.Forms.ToolStripButton();
+            this.toolFormatSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolFormatBulletedList = new System.Windows.Forms.ToolStripButton();
+            this.toolFormatNumberedList = new System.Windows.Forms.ToolStripButton();
+            this.panelControls = new System.Windows.Forms.Panel();
+            this.labelTag = new System.Windows.Forms.Label();
+            this.wTag = new System.Windows.Forms.ComboBox();
+            this.labelLocation = new System.Windows.Forms.Label();
+            this.wLocation = new System.Windows.Forms.ComboBox();
+            this.wEndTime = new System.Windows.Forms.DateTimePicker();
+            this.wStartTime = new System.Windows.Forms.DateTimePicker();
+            this.labelStartTime = new System.Windows.Forms.Label();
+            this.labelEndTime = new System.Windows.Forms.Label();
+            this.wDuration = new System.Windows.Forms.TextBox();
+            this.labelDuration = new System.Windows.Forms.Label();
+            this.toolStripControls = new System.Windows.Forms.ToolStrip();
+            this.toolControlStart = new System.Windows.Forms.ToolStripButton();
+            this.toolControlStop = new System.Windows.Forms.ToolStripButton();
+            this.toolControlContinue = new System.Windows.Forms.ToolStripButton();
+            this.toolControlClose = new System.Windows.Forms.ToolStripButton();
+            this.toolControlSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolControlFirstEntry = new System.Windows.Forms.ToolStripButton();
+            this.toolControlPrevEntry = new System.Windows.Forms.ToolStripButton();
+            this.toolControlNextEntry = new System.Windows.Forms.ToolStripButton();
+            this.toolControlLastEntry = new System.Windows.Forms.ToolStripButton();
+            this.toolControlEntryId = new System.Windows.Forms.ToolStripLabel();
+            this.toolControlSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolControlCloseStartGap = new System.Windows.Forms.ToolStripButton();
+            this.toolControlCloseEndGap = new System.Windows.Forms.ToolStripButton();
             this.menuMain.SuspendLayout();
             this.statusMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
+            this.splitTrees.Panel1.SuspendLayout();
+            this.splitTrees.Panel2.SuspendLayout();
+            this.splitTrees.SuspendLayout();
             this.menuTask.SuspendLayout();
             this.menuProject.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitMain)).BeginInit();
+            this.splitMain.Panel1.SuspendLayout();
+            this.splitMain.Panel2.SuspendLayout();
+            this.splitMain.SuspendLayout();
+            this.panelMemo.SuspendLayout();
+            this.toolStripFormat.SuspendLayout();
+            this.panelControls.SuspendLayout();
+            this.toolStripControls.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuMain
             // 
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuFile,
-            this.menuTasks,
-            this.menuReports,
-            this.menuTools,
+            this.menuAction,
+            this.menuReport,
+            this.menuTool,
             this.menuHelp});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(540, 24);
+            this.menuMain.Size = new System.Drawing.Size(424, 24);
             this.menuMain.TabIndex = 0;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -256,10 +325,13 @@ namespace Timekeeper
             this.menuFileExit.Text = "E&xit";
             this.menuFileExit.Click += new System.EventHandler(this.menuFileExit_Click);
             // 
-            // menuTasks
+            // menuAction
             // 
-            this.menuTasks.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuTasksTimer,
+            this.menuAction.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuActionStart,
+            this.menuActionStop,
+            this.menuActionStartAdvanced,
+            this.menuActionStopAdvanced,
             this.menuTasksSep1,
             this.menuTasksNewTask,
             this.menuTasksNewTaskFolder,
@@ -274,62 +346,87 @@ namespace Timekeeper
             this.menuTasksHideProject,
             this.menuTasksUnhideProject,
             this.menuTasksDeleteProject});
-            this.menuTasks.Enabled = false;
-            this.menuTasks.Name = "menuTasks";
-            this.menuTasks.Size = new System.Drawing.Size(46, 20);
-            this.menuTasks.Text = "&Tasks";
+            this.menuAction.Enabled = false;
+            this.menuAction.Name = "menuAction";
+            this.menuAction.Size = new System.Drawing.Size(54, 20);
+            this.menuAction.Text = "&Actions";
             // 
-            // menuTasksTimer
+            // menuActionStart
             // 
-            this.menuTasksTimer.Name = "menuTasksTimer";
-            this.menuTasksTimer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.menuTasksTimer.Size = new System.Drawing.Size(177, 22);
-            this.menuTasksTimer.Tag = "0";
-            this.menuTasksTimer.Text = "&Start Timer";
-            this.menuTasksTimer.Click += new System.EventHandler(this.menuTasksTimer_Click);
+            this.menuActionStart.Image = global::Timekeeper.Properties.Resources.buttonGo;
+            this.menuActionStart.Name = "menuActionStart";
+            this.menuActionStart.Size = new System.Drawing.Size(196, 22);
+            this.menuActionStart.Text = "&Start Timer";
+            this.menuActionStart.Click += new System.EventHandler(this.menuActionStart_Click);
+            // 
+            // menuActionStop
+            // 
+            this.menuActionStop.Image = global::Timekeeper.Properties.Resources.buttonCancel;
+            this.menuActionStop.Name = "menuActionStop";
+            this.menuActionStop.Size = new System.Drawing.Size(196, 22);
+            this.menuActionStop.Text = "&Stop Timer";
+            this.menuActionStop.Visible = false;
+            this.menuActionStop.Click += new System.EventHandler(this.menuActionStop_Click);
+            // 
+            // menuActionStartAdvanced
+            // 
+            this.menuActionStartAdvanced.Image = global::Timekeeper.Properties.Resources.buttonGo;
+            this.menuActionStartAdvanced.Name = "menuActionStartAdvanced";
+            this.menuActionStartAdvanced.Size = new System.Drawing.Size(196, 22);
+            this.menuActionStartAdvanced.Text = "&Annotate and Start Timer";
+            this.menuActionStartAdvanced.Click += new System.EventHandler(this.menuActionStartAdvanced_Click);
+            // 
+            // menuActionStopAdvanced
+            // 
+            this.menuActionStopAdvanced.Image = global::Timekeeper.Properties.Resources.buttonCancel;
+            this.menuActionStopAdvanced.Name = "menuActionStopAdvanced";
+            this.menuActionStopAdvanced.Size = new System.Drawing.Size(196, 22);
+            this.menuActionStopAdvanced.Text = "&Annotate and Stop Timer";
+            this.menuActionStopAdvanced.Visible = false;
+            this.menuActionStopAdvanced.Click += new System.EventHandler(this.menuActionStopAdvanced_Click);
             // 
             // menuTasksSep1
             // 
             this.menuTasksSep1.Name = "menuTasksSep1";
-            this.menuTasksSep1.Size = new System.Drawing.Size(174, 6);
+            this.menuTasksSep1.Size = new System.Drawing.Size(193, 6);
             // 
             // menuTasksNewTask
             // 
-            this.menuTasksNewTask.Image = global::Timekeeper.Properties.Resources.menuTask;
+            this.menuTasksNewTask.Image = global::Timekeeper.Properties.Resources.iconTask;
             this.menuTasksNewTask.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewTask.Name = "menuTasksNewTask";
-            this.menuTasksNewTask.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksNewTask.Size = new System.Drawing.Size(196, 22);
             this.menuTasksNewTask.Text = "&New Task...";
             this.menuTasksNewTask.Click += new System.EventHandler(this.menuTasksNewTask_Click);
             // 
             // menuTasksNewTaskFolder
             // 
-            this.menuTasksNewTaskFolder.Image = global::Timekeeper.Properties.Resources.iconFolderClosed;
+            this.menuTasksNewTaskFolder.Image = global::Timekeeper.Properties.Resources.iconFolderSmall;
             this.menuTasksNewTaskFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewTaskFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.menuTasksNewTaskFolder.Name = "menuTasksNewTaskFolder";
-            this.menuTasksNewTaskFolder.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksNewTaskFolder.Size = new System.Drawing.Size(196, 22);
             this.menuTasksNewTaskFolder.Text = "New Task Folder...";
             this.menuTasksNewTaskFolder.Click += new System.EventHandler(this.menuTasksNewTaskFolder_Click);
             // 
             // menuTasksEditTask
             // 
             this.menuTasksEditTask.Name = "menuTasksEditTask";
-            this.menuTasksEditTask.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksEditTask.Size = new System.Drawing.Size(196, 22);
             this.menuTasksEditTask.Text = "&Edit Task...";
             this.menuTasksEditTask.Click += new System.EventHandler(this.menuTasksEdit_Click);
             // 
             // menuTasksHideTask
             // 
             this.menuTasksHideTask.Name = "menuTasksHideTask";
-            this.menuTasksHideTask.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksHideTask.Size = new System.Drawing.Size(196, 22);
             this.menuTasksHideTask.Text = "&Hide Task...";
             this.menuTasksHideTask.Click += new System.EventHandler(this.menuTasksHideTask_Click);
             // 
             // menuTasksUnhideTask
             // 
             this.menuTasksUnhideTask.Name = "menuTasksUnhideTask";
-            this.menuTasksUnhideTask.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksUnhideTask.Size = new System.Drawing.Size(196, 22);
             this.menuTasksUnhideTask.Text = "Un&hide Task...";
             this.menuTasksUnhideTask.Visible = false;
             this.menuTasksUnhideTask.Click += new System.EventHandler(this.menuTasksUnhideTask_Click);
@@ -337,52 +434,52 @@ namespace Timekeeper
             // menuTasksDeleteTask
             // 
             this.menuTasksDeleteTask.Name = "menuTasksDeleteTask";
-            this.menuTasksDeleteTask.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksDeleteTask.Size = new System.Drawing.Size(196, 22);
             this.menuTasksDeleteTask.Text = "&Delete Task...";
             this.menuTasksDeleteTask.Click += new System.EventHandler(this.menuTasksDeleteTask_Click);
             // 
             // menuTasksSep2
             // 
             this.menuTasksSep2.Name = "menuTasksSep2";
-            this.menuTasksSep2.Size = new System.Drawing.Size(174, 6);
+            this.menuTasksSep2.Size = new System.Drawing.Size(193, 6);
             // 
             // menuTasksNewProject
             // 
-            this.menuTasksNewProject.Image = global::Timekeeper.Properties.Resources.menuProject;
+            this.menuTasksNewProject.Image = global::Timekeeper.Properties.Resources.iconProject;
             this.menuTasksNewProject.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewProject.Name = "menuTasksNewProject";
-            this.menuTasksNewProject.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksNewProject.Size = new System.Drawing.Size(196, 22);
             this.menuTasksNewProject.Text = "New &Project...";
             this.menuTasksNewProject.Click += new System.EventHandler(this.menuTasksNewProject_Click);
             // 
             // menuTasksNewProjectFolder
             // 
-            this.menuTasksNewProjectFolder.Image = global::Timekeeper.Properties.Resources.iconFolderClosed;
+            this.menuTasksNewProjectFolder.Image = global::Timekeeper.Properties.Resources.iconFolderSmall;
             this.menuTasksNewProjectFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewProjectFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.menuTasksNewProjectFolder.Name = "menuTasksNewProjectFolder";
-            this.menuTasksNewProjectFolder.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksNewProjectFolder.Size = new System.Drawing.Size(196, 22);
             this.menuTasksNewProjectFolder.Text = "New Project Folder...";
             this.menuTasksNewProjectFolder.Click += new System.EventHandler(this.menuTasksNewProjectFolder_Click);
             // 
             // menuTasksEditProject
             // 
             this.menuTasksEditProject.Name = "menuTasksEditProject";
-            this.menuTasksEditProject.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksEditProject.Size = new System.Drawing.Size(196, 22);
             this.menuTasksEditProject.Text = "Edit P&roject...";
             this.menuTasksEditProject.Click += new System.EventHandler(this.menuTasksEditProject_Click);
             // 
             // menuTasksHideProject
             // 
             this.menuTasksHideProject.Name = "menuTasksHideProject";
-            this.menuTasksHideProject.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksHideProject.Size = new System.Drawing.Size(196, 22);
             this.menuTasksHideProject.Text = "H&ide Project...";
             this.menuTasksHideProject.Click += new System.EventHandler(this.menuTasksHideProject_Click);
             // 
             // menuTasksUnhideProject
             // 
             this.menuTasksUnhideProject.Name = "menuTasksUnhideProject";
-            this.menuTasksUnhideProject.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksUnhideProject.Size = new System.Drawing.Size(196, 22);
             this.menuTasksUnhideProject.Text = "Unh&ide Project...";
             this.menuTasksUnhideProject.Visible = false;
             this.menuTasksUnhideProject.Click += new System.EventHandler(this.menuTasksUnhideProject_Click);
@@ -390,21 +487,21 @@ namespace Timekeeper
             // menuTasksDeleteProject
             // 
             this.menuTasksDeleteProject.Name = "menuTasksDeleteProject";
-            this.menuTasksDeleteProject.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksDeleteProject.Size = new System.Drawing.Size(196, 22);
             this.menuTasksDeleteProject.Text = "Delete Pr&oject...";
             this.menuTasksDeleteProject.Click += new System.EventHandler(this.menuTasksDeleteProject_Click);
             // 
-            // menuReports
+            // menuReport
             // 
-            this.menuReports.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuReport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuReportsGrid,
             this.menuReportsQuick,
             this.menuReportsPunch,
             this.menuReportsJournal});
-            this.menuReports.Enabled = false;
-            this.menuReports.Name = "menuReports";
-            this.menuReports.Size = new System.Drawing.Size(57, 20);
-            this.menuReports.Text = "&Reports";
+            this.menuReport.Enabled = false;
+            this.menuReport.Name = "menuReport";
+            this.menuReport.Size = new System.Drawing.Size(57, 20);
+            this.menuReport.Text = "&Reports";
             // 
             // menuReportsGrid
             // 
@@ -436,9 +533,15 @@ namespace Timekeeper
             this.menuReportsJournal.Size = new System.Drawing.Size(173, 22);
             this.menuReportsJournal.Text = "Journal Listing...";
             // 
-            // menuTools
+            // menuTool
             // 
-            this.menuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuToolBrowse,
+            this.menuToolControl,
+            this.menuToolFormat,
+            this.toolStripSeparator4,
+            this.menuToolFind,
+            this.toolStripSeparator1,
             this.menuToolsTweak,
             this.toolStripMenuItem7,
             this.menuToolsJournal,
@@ -449,46 +552,214 @@ namespace Timekeeper
             this.menuToolsReminders,
             this.toolStripMenuItem8,
             this.menuToolsOptions});
-            this.menuTools.Enabled = false;
-            this.menuTools.Name = "menuTools";
-            this.menuTools.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
-            this.menuTools.Size = new System.Drawing.Size(44, 20);
-            this.menuTools.Text = "T&ools";
+            this.menuTool.Enabled = false;
+            this.menuTool.Name = "menuTool";
+            this.menuTool.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
+            this.menuTool.Size = new System.Drawing.Size(44, 20);
+            this.menuTool.Text = "T&ools";
+            // 
+            // menuToolBrowse
+            // 
+            this.menuToolBrowse.Name = "menuToolBrowse";
+            this.menuToolBrowse.Size = new System.Drawing.Size(161, 22);
+            this.menuToolBrowse.Text = "&Browse Entries";
+            this.menuToolBrowse.Click += new System.EventHandler(this.menuToolBrowse_Click);
+            // 
+            // menuToolControl
+            // 
+            this.menuToolControl.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuToolControlStart,
+            this.menuToolControlStop,
+            this.menuToolControlContinue,
+            this.menuToolControlClose,
+            this.menuTimerControlsSep1,
+            this.menuToolControlFirst,
+            this.menuToolControlPrev,
+            this.menuToolControlNext,
+            this.menuToolControlLast,
+            this.menuTimerControlsSep2,
+            this.menuToolControlCloseStartGap,
+            this.menuToolControlCloseEndGap});
+            this.menuToolControl.Name = "menuToolControl";
+            this.menuToolControl.Size = new System.Drawing.Size(161, 22);
+            this.menuToolControl.Text = "&Controls";
+            this.menuToolControl.Visible = false;
+            // 
+            // menuToolControlStart
+            // 
+            this.menuToolControlStart.Image = global::Timekeeper.Properties.Resources.buttonGo;
+            this.menuToolControlStart.Name = "menuToolControlStart";
+            this.menuToolControlStart.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Return)));
+            this.menuToolControlStart.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlStart.Text = "Start";
+            this.menuToolControlStart.Click += new System.EventHandler(this.menuToolControlStart_Click);
+            // 
+            // menuToolControlStop
+            // 
+            this.menuToolControlStop.Image = global::Timekeeper.Properties.Resources.buttonCancel;
+            this.menuToolControlStop.Name = "menuToolControlStop";
+            this.menuToolControlStop.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlStop.Text = "Stop";
+            this.menuToolControlStop.Click += new System.EventHandler(this.menuToolControlStop_Click);
+            // 
+            // menuToolControlContinue
+            // 
+            this.menuToolControlContinue.Image = global::Timekeeper.Properties.Resources.buttonGo;
+            this.menuToolControlContinue.Name = "menuToolControlContinue";
+            this.menuToolControlContinue.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlContinue.Text = "Continue";
+            // 
+            // menuToolControlClose
+            // 
+            this.menuToolControlClose.Image = global::Timekeeper.Properties.Resources.buttonCancel;
+            this.menuToolControlClose.Name = "menuToolControlClose";
+            this.menuToolControlClose.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlClose.Text = "Close";
+            // 
+            // menuTimerControlsSep1
+            // 
+            this.menuTimerControlsSep1.Name = "menuTimerControlsSep1";
+            this.menuTimerControlsSep1.Size = new System.Drawing.Size(188, 6);
+            // 
+            // menuToolControlFirst
+            // 
+            this.menuToolControlFirst.Image = global::Timekeeper.Properties.Resources.buttonFirst;
+            this.menuToolControlFirst.Name = "menuToolControlFirst";
+            this.menuToolControlFirst.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Home)));
+            this.menuToolControlFirst.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlFirst.Text = "&First Entry";
+            this.menuToolControlFirst.Click += new System.EventHandler(this.menuToolControlFirst_Click);
+            // 
+            // menuToolControlPrev
+            // 
+            this.menuToolControlPrev.Image = global::Timekeeper.Properties.Resources.buttonPrev;
+            this.menuToolControlPrev.Name = "menuToolControlPrev";
+            this.menuToolControlPrev.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Left)));
+            this.menuToolControlPrev.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlPrev.Text = "&Previous Entry";
+            this.menuToolControlPrev.Click += new System.EventHandler(this.menuToolControlPrev_Click);
+            // 
+            // menuToolControlNext
+            // 
+            this.menuToolControlNext.Image = global::Timekeeper.Properties.Resources.buttonNext;
+            this.menuToolControlNext.Name = "menuToolControlNext";
+            this.menuToolControlNext.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Right)));
+            this.menuToolControlNext.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlNext.Text = "&Next Entry";
+            this.menuToolControlNext.Click += new System.EventHandler(this.menuToolControlNext_Click);
+            // 
+            // menuToolControlLast
+            // 
+            this.menuToolControlLast.Image = global::Timekeeper.Properties.Resources.buttonLast;
+            this.menuToolControlLast.Name = "menuToolControlLast";
+            this.menuToolControlLast.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.End)));
+            this.menuToolControlLast.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlLast.Text = "&Last Entry";
+            this.menuToolControlLast.Click += new System.EventHandler(this.menuToolControlLast_Click);
+            // 
+            // menuTimerControlsSep2
+            // 
+            this.menuTimerControlsSep2.Name = "menuTimerControlsSep2";
+            this.menuTimerControlsSep2.Size = new System.Drawing.Size(188, 6);
+            // 
+            // menuToolControlCloseStartGap
+            // 
+            this.menuToolControlCloseStartGap.Name = "menuToolControlCloseStartGap";
+            this.menuToolControlCloseStartGap.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlCloseStartGap.Text = "&Close Start Gap";
+            // 
+            // menuToolControlCloseEndGap
+            // 
+            this.menuToolControlCloseEndGap.Name = "menuToolControlCloseEndGap";
+            this.menuToolControlCloseEndGap.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlCloseEndGap.Text = "&Close End Gap";
+            // 
+            // menuToolFormat
+            // 
+            this.menuToolFormat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuToolFormatBold,
+            this.menuToolFormatItalic,
+            this.menuToolFormatUnderline,
+            this.menuToolFormatStrikethrough});
+            this.menuToolFormat.Name = "menuToolFormat";
+            this.menuToolFormat.Size = new System.Drawing.Size(161, 22);
+            this.menuToolFormat.Text = "&Format";
+            this.menuToolFormat.Visible = false;
+            // 
+            // menuToolFormatBold
+            // 
+            this.menuToolFormatBold.Name = "menuToolFormatBold";
+            this.menuToolFormatBold.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+            this.menuToolFormatBold.Size = new System.Drawing.Size(177, 22);
+            this.menuToolFormatBold.Text = "&Bold";
+            // 
+            // menuToolFormatItalic
+            // 
+            this.menuToolFormatItalic.Name = "menuToolFormatItalic";
+            this.menuToolFormatItalic.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.menuToolFormatItalic.Size = new System.Drawing.Size(177, 22);
+            this.menuToolFormatItalic.Text = "&Italic";
+            // 
+            // menuToolFormatUnderline
+            // 
+            this.menuToolFormatUnderline.Name = "menuToolFormatUnderline";
+            this.menuToolFormatUnderline.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
+            this.menuToolFormatUnderline.Size = new System.Drawing.Size(177, 22);
+            this.menuToolFormatUnderline.Text = "&Underline";
+            // 
+            // menuToolFormatStrikethrough
+            // 
+            this.menuToolFormatStrikethrough.Name = "menuToolFormatStrikethrough";
+            this.menuToolFormatStrikethrough.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.menuToolFormatStrikethrough.Size = new System.Drawing.Size(177, 22);
+            this.menuToolFormatStrikethrough.Text = "&Strikethrough";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(158, 6);
+            // 
+            // menuToolFind
+            // 
+            this.menuToolFind.Name = "menuToolFind";
+            this.menuToolFind.Size = new System.Drawing.Size(161, 22);
+            this.menuToolFind.Text = "&Find...";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(158, 6);
             // 
             // menuToolsTweak
             // 
             this.menuToolsTweak.Name = "menuToolsTweak";
-            this.menuToolsTweak.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.menuToolsTweak.Size = new System.Drawing.Size(175, 22);
-            this.menuToolsTweak.Text = "&View Log";
+            this.menuToolsTweak.Size = new System.Drawing.Size(161, 22);
+            this.menuToolsTweak.Text = "&View Log (Legacy)";
             this.menuToolsTweak.Click += new System.EventHandler(this.menuToolsTweak_Click);
             // 
             // toolStripMenuItem7
             // 
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(172, 6);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(158, 6);
             // 
             // menuToolsJournal
             // 
             this.menuToolsJournal.Name = "menuToolsJournal";
-            this.menuToolsJournal.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.J)));
-            this.menuToolsJournal.Size = new System.Drawing.Size(175, 22);
+            this.menuToolsJournal.Size = new System.Drawing.Size(161, 22);
             this.menuToolsJournal.Text = "&Journal...";
             this.menuToolsJournal.Click += new System.EventHandler(this.menuToolsJournal_Click);
             // 
             // menuToolsCalendar
             // 
             this.menuToolsCalendar.Name = "menuToolsCalendar";
-            this.menuToolsCalendar.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.menuToolsCalendar.Size = new System.Drawing.Size(175, 22);
+            this.menuToolsCalendar.Size = new System.Drawing.Size(161, 22);
             this.menuToolsCalendar.Text = "&Calendar...";
             this.menuToolsCalendar.Click += new System.EventHandler(this.menuToolsCalendar_Click);
             // 
             // menuToolsStopwatch
             // 
             this.menuToolsStopwatch.Name = "menuToolsStopwatch";
-            this.menuToolsStopwatch.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.menuToolsStopwatch.Size = new System.Drawing.Size(175, 22);
+            this.menuToolsStopwatch.Size = new System.Drawing.Size(161, 22);
             this.menuToolsStopwatch.Text = "Stopwatch...";
             this.menuToolsStopwatch.Click += new System.EventHandler(this.menuToolsStopwatch_Click);
             // 
@@ -496,7 +767,7 @@ namespace Timekeeper
             // 
             this.menuToolsCountdown.Enabled = false;
             this.menuToolsCountdown.Name = "menuToolsCountdown";
-            this.menuToolsCountdown.Size = new System.Drawing.Size(175, 22);
+            this.menuToolsCountdown.Size = new System.Drawing.Size(161, 22);
             this.menuToolsCountdown.Text = "C&ountdown...";
             this.menuToolsCountdown.Visible = false;
             this.menuToolsCountdown.Click += new System.EventHandler(this.menuToolsCountdown_Click);
@@ -505,7 +776,7 @@ namespace Timekeeper
             // 
             this.menuToolsDatecalc.Enabled = false;
             this.menuToolsDatecalc.Name = "menuToolsDatecalc";
-            this.menuToolsDatecalc.Size = new System.Drawing.Size(175, 22);
+            this.menuToolsDatecalc.Size = new System.Drawing.Size(161, 22);
             this.menuToolsDatecalc.Text = "&Date Calculator...";
             this.menuToolsDatecalc.Visible = false;
             this.menuToolsDatecalc.Click += new System.EventHandler(this.menuToolsDatecalc_Click);
@@ -514,7 +785,7 @@ namespace Timekeeper
             // 
             this.menuToolsReminders.Enabled = false;
             this.menuToolsReminders.Name = "menuToolsReminders";
-            this.menuToolsReminders.Size = new System.Drawing.Size(175, 22);
+            this.menuToolsReminders.Size = new System.Drawing.Size(161, 22);
             this.menuToolsReminders.Text = "&Reminders...";
             this.menuToolsReminders.Visible = false;
             this.menuToolsReminders.Click += new System.EventHandler(this.menuToolsReminders_Click);
@@ -522,13 +793,13 @@ namespace Timekeeper
             // toolStripMenuItem8
             // 
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(172, 6);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(158, 6);
             // 
             // menuToolsOptions
             // 
             this.menuToolsOptions.Name = "menuToolsOptions";
             this.menuToolsOptions.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.menuToolsOptions.Size = new System.Drawing.Size(175, 22);
+            this.menuToolsOptions.Size = new System.Drawing.Size(161, 22);
             this.menuToolsOptions.Text = "Op&tions...";
             this.menuToolsOptions.Click += new System.EventHandler(this.menuToolsOptions_Click);
             // 
@@ -580,11 +851,11 @@ namespace Timekeeper
             this.statusTimeToday,
             this.statusTimeAll,
             this.statusFile});
-            this.statusMain.Location = new System.Drawing.Point(0, 246);
+            this.statusMain.Location = new System.Drawing.Point(0, 351);
             this.statusMain.Name = "statusMain";
             this.statusMain.ShowItemToolTips = true;
-            this.statusMain.Size = new System.Drawing.Size(540, 22);
-            this.statusMain.TabIndex = 1;
+            this.statusMain.Size = new System.Drawing.Size(424, 22);
+            this.statusMain.TabIndex = 12;
             this.statusMain.Text = "statusStrip1";
             // 
             // statusCurrentTask
@@ -652,23 +923,23 @@ namespace Timekeeper
             this.statusFile.ToolTipText = "Currently opened file";
             this.statusFile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.statusFile_MouseDown);
             // 
-            // splitContainer1
+            // splitTrees
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
-            this.splitContainer1.Name = "splitContainer1";
+            this.splitTrees.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitTrees.Location = new System.Drawing.Point(0, 0);
+            this.splitTrees.Name = "splitTrees";
             // 
-            // splitContainer1.Panel1
+            // splitTrees.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.wTasks);
+            this.splitTrees.Panel1.Controls.Add(this.wTasks);
             // 
-            // splitContainer1.Panel2
+            // splitTrees.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.wProjects);
-            this.splitContainer1.Size = new System.Drawing.Size(540, 222);
-            this.splitContainer1.SplitterDistance = 308;
-            this.splitContainer1.TabIndex = 2;
-            this.splitContainer1.TabStop = false;
+            this.splitTrees.Panel2.Controls.Add(this.wProjects);
+            this.splitTrees.Size = new System.Drawing.Size(424, 115);
+            this.splitTrees.SplitterDistance = 240;
+            this.splitTrees.TabIndex = 2;
+            this.splitTrees.TabStop = false;
             // 
             // wTasks
             // 
@@ -684,7 +955,7 @@ namespace Timekeeper
             this.wTasks.SelectedImageIndex = 0;
             this.wTasks.ShowLines = false;
             this.wTasks.ShowNodeToolTips = true;
-            this.wTasks.Size = new System.Drawing.Size(308, 222);
+            this.wTasks.Size = new System.Drawing.Size(240, 115);
             this.wTasks.TabIndex = 0;
             this.wTasks.Tag = "tasks";
             this.wTasks.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.wTasks_AfterLabelEdit);
@@ -721,7 +992,7 @@ namespace Timekeeper
             this.pmenuTasksTimer.Name = "pmenuTasksTimer";
             this.pmenuTasksTimer.Size = new System.Drawing.Size(142, 22);
             this.pmenuTasksTimer.Text = "Start Timer";
-            this.pmenuTasksTimer.Click += new System.EventHandler(this.menuTasksTimer_Click);
+            this.pmenuTasksTimer.Click += new System.EventHandler(this.menuActionStart_Click);
             // 
             // pmenuTasksSep1
             // 
@@ -730,7 +1001,6 @@ namespace Timekeeper
             // 
             // pmenuTasksNewTask
             // 
-            this.pmenuTasksNewTask.Image = global::Timekeeper.Properties.Resources.menuTask;
             this.pmenuTasksNewTask.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.pmenuTasksNewTask.Name = "pmenuTasksNewTask";
             this.pmenuTasksNewTask.Size = new System.Drawing.Size(142, 22);
@@ -739,7 +1009,6 @@ namespace Timekeeper
             // 
             // pmenuTasksNewFolder
             // 
-            this.pmenuTasksNewFolder.Image = global::Timekeeper.Properties.Resources.iconFolderClosed;
             this.pmenuTasksNewFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.pmenuTasksNewFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.pmenuTasksNewFolder.Name = "pmenuTasksNewFolder";
@@ -803,7 +1072,6 @@ namespace Timekeeper
             // 
             // pmenuTasksShowProjects
             // 
-            this.pmenuTasksShowProjects.Image = global::Timekeeper.Properties.Resources.menuProject;
             this.pmenuTasksShowProjects.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.pmenuTasksShowProjects.Name = "pmenuTasksShowProjects";
             this.pmenuTasksShowProjects.Size = new System.Drawing.Size(142, 22);
@@ -838,7 +1106,7 @@ namespace Timekeeper
             this.wProjects.SelectedImageIndex = 0;
             this.wProjects.ShowLines = false;
             this.wProjects.ShowNodeToolTips = true;
-            this.wProjects.Size = new System.Drawing.Size(228, 222);
+            this.wProjects.Size = new System.Drawing.Size(180, 115);
             this.wProjects.TabIndex = 1;
             this.wProjects.Tag = "projects";
             this.wProjects.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.wProjects_AfterLabelEdit);
@@ -866,7 +1134,6 @@ namespace Timekeeper
             // 
             // pmenuProjectsNew
             // 
-            this.pmenuProjectsNew.Image = global::Timekeeper.Properties.Resources.menuProject;
             this.pmenuProjectsNew.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.pmenuProjectsNew.Name = "pmenuProjectsNew";
             this.pmenuProjectsNew.Size = new System.Drawing.Size(164, 22);
@@ -875,7 +1142,6 @@ namespace Timekeeper
             // 
             // pmenuProjectsNewFolder
             // 
-            this.pmenuProjectsNewFolder.Image = global::Timekeeper.Properties.Resources.iconFolderClosed;
             this.pmenuProjectsNewFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.pmenuProjectsNewFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.pmenuProjectsNewFolder.Name = "pmenuProjectsNewFolder";
@@ -979,12 +1245,405 @@ namespace Timekeeper
             this.wNotifyIcon.Visible = true;
             this.wNotifyIcon.DoubleClick += new System.EventHandler(this.wNotifyIcon_DoubleClick);
             // 
+            // splitMain
+            // 
+            this.splitMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitMain.Location = new System.Drawing.Point(0, 24);
+            this.splitMain.Name = "splitMain";
+            this.splitMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitMain.Panel1
+            // 
+            this.splitMain.Panel1.Controls.Add(this.splitTrees);
+            // 
+            // splitMain.Panel2
+            // 
+            this.splitMain.Panel2.Controls.Add(this.panelMemo);
+            this.splitMain.Panel2.Controls.Add(this.panelControls);
+            this.splitMain.Size = new System.Drawing.Size(424, 327);
+            this.splitMain.SplitterDistance = 115;
+            this.splitMain.TabIndex = 4;
+            this.splitMain.TabStop = false;
+            // 
+            // panelMemo
+            // 
+            this.panelMemo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelMemo.Controls.Add(this.wMemo);
+            this.panelMemo.Controls.Add(this.toolStripFormat);
+            this.panelMemo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMemo.Location = new System.Drawing.Point(0, 0);
+            this.panelMemo.Name = "panelMemo";
+            this.panelMemo.Size = new System.Drawing.Size(424, 96);
+            this.panelMemo.TabIndex = 0;
+            // 
+            // wMemo
+            // 
+            this.wMemo.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wMemo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.wMemo.Location = new System.Drawing.Point(0, 25);
+            this.wMemo.Name = "wMemo";
+            this.wMemo.Size = new System.Drawing.Size(420, 67);
+            this.wMemo.TabIndex = 0;
+            this.wMemo.Text = "";
+            this.wMemo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wMemo_KeyDown);
+            // 
+            // toolStripFormat
+            // 
+            this.toolStripFormat.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.toolStripFormat.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStripFormat.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolFormatBold,
+            this.toolFormatItalic,
+            this.toolFormatUnderline,
+            this.toolFormatStrikethrough,
+            this.toolFormatSep1,
+            this.toolFormatBulletedList,
+            this.toolFormatNumberedList});
+            this.toolStripFormat.Location = new System.Drawing.Point(0, 0);
+            this.toolStripFormat.Name = "toolStripFormat";
+            this.toolStripFormat.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.toolStripFormat.Size = new System.Drawing.Size(420, 25);
+            this.toolStripFormat.TabIndex = 0;
+            this.toolStripFormat.Text = "toolStrip1";
+            // 
+            // toolFormatBold
+            // 
+            this.toolFormatBold.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolFormatBold.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolFormatBold.Image = global::Timekeeper.Properties.Resources.buttonBold;
+            this.toolFormatBold.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolFormatBold.Name = "toolFormatBold";
+            this.toolFormatBold.Size = new System.Drawing.Size(23, 22);
+            this.toolFormatBold.Text = "B";
+            this.toolFormatBold.ToolTipText = "Bold";
+            // 
+            // toolFormatItalic
+            // 
+            this.toolFormatItalic.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolFormatItalic.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolFormatItalic.Image = global::Timekeeper.Properties.Resources.buttonItalics;
+            this.toolFormatItalic.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolFormatItalic.Name = "toolFormatItalic";
+            this.toolFormatItalic.Size = new System.Drawing.Size(23, 22);
+            this.toolFormatItalic.Text = "I";
+            this.toolFormatItalic.ToolTipText = "Italics";
+            // 
+            // toolFormatUnderline
+            // 
+            this.toolFormatUnderline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolFormatUnderline.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolFormatUnderline.Image = global::Timekeeper.Properties.Resources.buttonUnderlined;
+            this.toolFormatUnderline.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolFormatUnderline.Name = "toolFormatUnderline";
+            this.toolFormatUnderline.Size = new System.Drawing.Size(23, 22);
+            this.toolFormatUnderline.Text = "U";
+            this.toolFormatUnderline.ToolTipText = "Underline";
+            // 
+            // toolFormatStrikethrough
+            // 
+            this.toolFormatStrikethrough.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolFormatStrikethrough.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolFormatStrikethrough.Image = global::Timekeeper.Properties.Resources.buttonStrikethrough;
+            this.toolFormatStrikethrough.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolFormatStrikethrough.Name = "toolFormatStrikethrough";
+            this.toolFormatStrikethrough.Size = new System.Drawing.Size(23, 22);
+            this.toolFormatStrikethrough.Text = "S";
+            this.toolFormatStrikethrough.ToolTipText = "Strikethrough";
+            // 
+            // toolFormatSep1
+            // 
+            this.toolFormatSep1.Name = "toolFormatSep1";
+            this.toolFormatSep1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolFormatBulletedList
+            // 
+            this.toolFormatBulletedList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolFormatBulletedList.Image = global::Timekeeper.Properties.Resources.buttonListBulleted;
+            this.toolFormatBulletedList.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolFormatBulletedList.Name = "toolFormatBulletedList";
+            this.toolFormatBulletedList.Size = new System.Drawing.Size(23, 22);
+            this.toolFormatBulletedList.Text = "toolStripButton5";
+            // 
+            // toolFormatNumberedList
+            // 
+            this.toolFormatNumberedList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolFormatNumberedList.Image = global::Timekeeper.Properties.Resources.buttonListNumbered;
+            this.toolFormatNumberedList.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolFormatNumberedList.Name = "toolFormatNumberedList";
+            this.toolFormatNumberedList.Size = new System.Drawing.Size(23, 22);
+            this.toolFormatNumberedList.Text = "toolStripButton1";
+            // 
+            // panelControls
+            // 
+            this.panelControls.BackColor = System.Drawing.SystemColors.Control;
+            this.panelControls.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelControls.Controls.Add(this.labelTag);
+            this.panelControls.Controls.Add(this.wTag);
+            this.panelControls.Controls.Add(this.labelLocation);
+            this.panelControls.Controls.Add(this.wLocation);
+            this.panelControls.Controls.Add(this.wEndTime);
+            this.panelControls.Controls.Add(this.wStartTime);
+            this.panelControls.Controls.Add(this.labelStartTime);
+            this.panelControls.Controls.Add(this.labelEndTime);
+            this.panelControls.Controls.Add(this.wDuration);
+            this.panelControls.Controls.Add(this.labelDuration);
+            this.panelControls.Controls.Add(this.toolStripControls);
+            this.panelControls.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelControls.Location = new System.Drawing.Point(0, 96);
+            this.panelControls.Name = "panelControls";
+            this.panelControls.Size = new System.Drawing.Size(424, 112);
+            this.panelControls.TabIndex = 0;
+            // 
+            // labelTag
+            // 
+            this.labelTag.Location = new System.Drawing.Point(225, 59);
+            this.labelTag.Name = "labelTag";
+            this.labelTag.Size = new System.Drawing.Size(58, 13);
+            this.labelTag.TabIndex = 15;
+            this.labelTag.Text = "Ta&g";
+            // 
+            // wTag
+            // 
+            this.wTag.FormattingEnabled = true;
+            this.wTag.Items.AddRange(new object[] {
+            "Important",
+            "Clean this Up",
+            "Delete this Later",
+            "(New Entry...)"});
+            this.wTag.Location = new System.Drawing.Point(289, 56);
+            this.wTag.Name = "wTag";
+            this.wTag.Size = new System.Drawing.Size(121, 21);
+            this.wTag.TabIndex = 14;
+            // 
+            // labelLocation
+            // 
+            this.labelLocation.Location = new System.Drawing.Point(225, 33);
+            this.labelLocation.Name = "labelLocation";
+            this.labelLocation.Size = new System.Drawing.Size(58, 13);
+            this.labelLocation.TabIndex = 13;
+            this.labelLocation.Text = "&Location";
+            // 
+            // wLocation
+            // 
+            this.wLocation.FormattingEnabled = true;
+            this.wLocation.Items.AddRange(new object[] {
+            "Work",
+            "Home",
+            "On the Road",
+            "(New Location...)"});
+            this.wLocation.Location = new System.Drawing.Point(289, 30);
+            this.wLocation.Name = "wLocation";
+            this.wLocation.Size = new System.Drawing.Size(121, 21);
+            this.wLocation.TabIndex = 12;
+            // 
+            // wEndTime
+            // 
+            this.wEndTime.CustomFormat = "yyyy-MM-dd hh:mm:ss";
+            this.wEndTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.wEndTime.Location = new System.Drawing.Point(67, 56);
+            this.wEndTime.Name = "wEndTime";
+            this.wEndTime.Size = new System.Drawing.Size(127, 20);
+            this.wEndTime.TabIndex = 9;
+            // 
+            // wStartTime
+            // 
+            this.wStartTime.CustomFormat = "yyyy-MM-dd hh:mm:ss";
+            this.wStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.wStartTime.Location = new System.Drawing.Point(67, 30);
+            this.wStartTime.Name = "wStartTime";
+            this.wStartTime.Size = new System.Drawing.Size(127, 20);
+            this.wStartTime.TabIndex = 7;
+            // 
+            // labelStartTime
+            // 
+            this.labelStartTime.Location = new System.Drawing.Point(3, 33);
+            this.labelStartTime.Name = "labelStartTime";
+            this.labelStartTime.Size = new System.Drawing.Size(58, 13);
+            this.labelStartTime.TabIndex = 6;
+            this.labelStartTime.Text = "S&tart:";
+            // 
+            // labelEndTime
+            // 
+            this.labelEndTime.AutoSize = true;
+            this.labelEndTime.Location = new System.Drawing.Point(3, 59);
+            this.labelEndTime.Name = "labelEndTime";
+            this.labelEndTime.Size = new System.Drawing.Size(29, 13);
+            this.labelEndTime.TabIndex = 8;
+            this.labelEndTime.Text = "&End:";
+            // 
+            // wDuration
+            // 
+            this.wDuration.Location = new System.Drawing.Point(67, 82);
+            this.wDuration.Name = "wDuration";
+            this.wDuration.Size = new System.Drawing.Size(127, 20);
+            this.wDuration.TabIndex = 11;
+            this.wDuration.Text = "00:15:23";
+            // 
+            // labelDuration
+            // 
+            this.labelDuration.AutoSize = true;
+            this.labelDuration.Location = new System.Drawing.Point(3, 85);
+            this.labelDuration.Name = "labelDuration";
+            this.labelDuration.Size = new System.Drawing.Size(50, 13);
+            this.labelDuration.TabIndex = 10;
+            this.labelDuration.Text = "&Duration:";
+            // 
+            // toolStripControls
+            // 
+            this.toolStripControls.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.toolStripControls.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStripControls.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolControlStart,
+            this.toolControlStop,
+            this.toolControlContinue,
+            this.toolControlClose,
+            this.toolControlSep1,
+            this.toolControlFirstEntry,
+            this.toolControlPrevEntry,
+            this.toolControlNextEntry,
+            this.toolControlLastEntry,
+            this.toolControlEntryId,
+            this.toolControlSep2,
+            this.toolControlCloseStartGap,
+            this.toolControlCloseEndGap});
+            this.toolStripControls.Location = new System.Drawing.Point(0, 0);
+            this.toolStripControls.Name = "toolStripControls";
+            this.toolStripControls.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.toolStripControls.Size = new System.Drawing.Size(420, 25);
+            this.toolStripControls.TabIndex = 0;
+            this.toolStripControls.Text = "toolStrip2";
+            // 
+            // toolControlStart
+            // 
+            this.toolControlStart.Image = global::Timekeeper.Properties.Resources.buttonGo;
+            this.toolControlStart.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlStart.Name = "toolControlStart";
+            this.toolControlStart.Size = new System.Drawing.Size(51, 22);
+            this.toolControlStart.Text = "&Start";
+            this.toolControlStart.ToolTipText = "Start the Timer";
+            this.toolControlStart.Visible = false;
+            this.toolControlStart.Click += new System.EventHandler(this.toolControlStart_Click);
+            // 
+            // toolControlStop
+            // 
+            this.toolControlStop.Image = global::Timekeeper.Properties.Resources.buttonCancel;
+            this.toolControlStop.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlStop.Name = "toolControlStop";
+            this.toolControlStop.Size = new System.Drawing.Size(49, 22);
+            this.toolControlStop.Text = "&Stop";
+            this.toolControlStop.ToolTipText = "Stop the Timer";
+            this.toolControlStop.Visible = false;
+            this.toolControlStop.Click += new System.EventHandler(this.toolControlStop_Click);
+            // 
+            // toolControlContinue
+            // 
+            this.toolControlContinue.Image = global::Timekeeper.Properties.Resources.buttonGo;
+            this.toolControlContinue.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlContinue.Name = "toolControlContinue";
+            this.toolControlContinue.Size = new System.Drawing.Size(70, 22);
+            this.toolControlContinue.Text = "&Continue";
+            this.toolControlContinue.ToolTipText = "Continue Timing";
+            this.toolControlContinue.Visible = false;
+            this.toolControlContinue.Click += new System.EventHandler(this.toolControlCancel_Click);
+            // 
+            // toolControlClose
+            // 
+            this.toolControlClose.Image = global::Timekeeper.Properties.Resources.buttonCancel;
+            this.toolControlClose.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlClose.Name = "toolControlClose";
+            this.toolControlClose.Size = new System.Drawing.Size(53, 22);
+            this.toolControlClose.Text = "&Close";
+            this.toolControlClose.ToolTipText = "Close This Pane";
+            this.toolControlClose.Visible = false;
+            this.toolControlClose.Click += new System.EventHandler(this.toolControlCancel_Click);
+            // 
+            // toolControlSep1
+            // 
+            this.toolControlSep1.Name = "toolControlSep1";
+            this.toolControlSep1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolControlFirstEntry
+            // 
+            this.toolControlFirstEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolControlFirstEntry.Image = global::Timekeeper.Properties.Resources.buttonFirst;
+            this.toolControlFirstEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlFirstEntry.Name = "toolControlFirstEntry";
+            this.toolControlFirstEntry.Size = new System.Drawing.Size(23, 22);
+            this.toolControlFirstEntry.Text = "|<";
+            this.toolControlFirstEntry.ToolTipText = "Go to First Entry";
+            this.toolControlFirstEntry.Click += new System.EventHandler(this.menuToolControlFirst_Click);
+            // 
+            // toolControlPrevEntry
+            // 
+            this.toolControlPrevEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolControlPrevEntry.Image = global::Timekeeper.Properties.Resources.buttonPrev;
+            this.toolControlPrevEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlPrevEntry.Name = "toolControlPrevEntry";
+            this.toolControlPrevEntry.Size = new System.Drawing.Size(23, 22);
+            this.toolControlPrevEntry.Text = "<<";
+            this.toolControlPrevEntry.ToolTipText = "Go to Previous Entry";
+            this.toolControlPrevEntry.Click += new System.EventHandler(this.menuToolControlPrev_Click);
+            // 
+            // toolControlNextEntry
+            // 
+            this.toolControlNextEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolControlNextEntry.Image = global::Timekeeper.Properties.Resources.buttonNext;
+            this.toolControlNextEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlNextEntry.Name = "toolControlNextEntry";
+            this.toolControlNextEntry.Size = new System.Drawing.Size(23, 22);
+            this.toolControlNextEntry.Text = ">>";
+            this.toolControlNextEntry.ToolTipText = "Go to Next Entry";
+            this.toolControlNextEntry.Click += new System.EventHandler(this.menuToolControlNext_Click);
+            // 
+            // toolControlLastEntry
+            // 
+            this.toolControlLastEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolControlLastEntry.Image = global::Timekeeper.Properties.Resources.buttonLast;
+            this.toolControlLastEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlLastEntry.Name = "toolControlLastEntry";
+            this.toolControlLastEntry.Size = new System.Drawing.Size(23, 22);
+            this.toolControlLastEntry.Text = ">|";
+            this.toolControlLastEntry.ToolTipText = "Go to Last Entry";
+            this.toolControlLastEntry.Click += new System.EventHandler(this.menuToolControlLast_Click);
+            // 
+            // toolControlEntryId
+            // 
+            this.toolControlEntryId.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.toolControlEntryId.Name = "toolControlEntryId";
+            this.toolControlEntryId.Size = new System.Drawing.Size(43, 22);
+            this.toolControlEntryId.Text = "523455";
+            this.toolControlEntryId.ToolTipText = "Timekeeper Entry Number";
+            // 
+            // toolControlSep2
+            // 
+            this.toolControlSep2.Name = "toolControlSep2";
+            this.toolControlSep2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolControlCloseStartGap
+            // 
+            this.toolControlCloseStartGap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolControlCloseStartGap.Image = global::Timekeeper.Properties.Resources.buttonCloseStartGap;
+            this.toolControlCloseStartGap.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlCloseStartGap.Name = "toolControlCloseStartGap";
+            this.toolControlCloseStartGap.Size = new System.Drawing.Size(23, 22);
+            this.toolControlCloseStartGap.Text = "Close Start Gap";
+            // 
+            // toolControlCloseEndGap
+            // 
+            this.toolControlCloseEndGap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolControlCloseEndGap.Image = global::Timekeeper.Properties.Resources.buttonCloseStopGap;
+            this.toolControlCloseEndGap.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlCloseEndGap.Name = "toolControlCloseEndGap";
+            this.toolControlCloseEndGap.Size = new System.Drawing.Size(23, 22);
+            this.toolControlCloseEndGap.Text = "Close End Gap";
+            // 
             // fMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(540, 268);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(424, 373);
+            this.Controls.Add(this.splitMain);
             this.Controls.Add(this.statusMain);
             this.Controls.Add(this.menuMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -999,12 +1658,24 @@ namespace Timekeeper
             this.menuMain.PerformLayout();
             this.statusMain.ResumeLayout(false);
             this.statusMain.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.splitTrees.Panel1.ResumeLayout(false);
+            this.splitTrees.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).EndInit();
+            this.splitTrees.ResumeLayout(false);
             this.menuTask.ResumeLayout(false);
             this.menuProject.ResumeLayout(false);
+            this.splitMain.Panel1.ResumeLayout(false);
+            this.splitMain.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitMain)).EndInit();
+            this.splitMain.ResumeLayout(false);
+            this.panelMemo.ResumeLayout(false);
+            this.panelMemo.PerformLayout();
+            this.toolStripFormat.ResumeLayout(false);
+            this.toolStripFormat.PerformLayout();
+            this.panelControls.ResumeLayout(false);
+            this.panelControls.PerformLayout();
+            this.toolStripControls.ResumeLayout(false);
+            this.toolStripControls.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1019,25 +1690,24 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem menuFileClose;
         private System.Windows.Forms.ToolStripSeparator menuFileSep1;
         private System.Windows.Forms.ToolStripMenuItem menuFileExit;
-        private System.Windows.Forms.ToolStripMenuItem menuTasks;
+        private System.Windows.Forms.ToolStripMenuItem menuAction;
         private System.Windows.Forms.ToolStripMenuItem menuTasksNewTask;
         private System.Windows.Forms.ToolStripSeparator menuTasksSep1;
         private System.Windows.Forms.ToolStripMenuItem menuTasksNewProject;
-        private System.Windows.Forms.ToolStripMenuItem menuTools;
+        private System.Windows.Forms.ToolStripMenuItem menuTool;
         private System.Windows.Forms.ToolStripMenuItem menuToolsTweak;
         private System.Windows.Forms.ToolStripMenuItem menuHelp;
         private System.Windows.Forms.ToolStripMenuItem menuHelpContents;
         private System.Windows.Forms.ToolStripSeparator menuHelpSep;
         private System.Windows.Forms.ToolStripMenuItem menuHelpAbout;
         private System.Windows.Forms.StatusStrip statusMain;
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitTrees;
         private System.Windows.Forms.TreeView wTasks;
         private System.Windows.Forms.OpenFileDialog dlgOpen;
         private System.Windows.Forms.ToolStripStatusLabel statusFile;
         private System.Windows.Forms.TreeView wProjects;
         private System.Windows.Forms.ImageList imgSmall;
-        private System.Windows.Forms.ToolStripMenuItem menuTasksTimer;
-        private System.Windows.Forms.ToolStripMenuItem menuReports;
+        private System.Windows.Forms.ToolStripMenuItem menuReport;
         private System.Windows.Forms.ToolStripMenuItem menuReportsGrid;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
         private System.Windows.Forms.ToolStripMenuItem menuToolsCalendar;
@@ -1105,6 +1775,68 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem menuFileRecent;
         private System.Windows.Forms.ToolStripMenuItem pmenuTasksTimer;
         private System.Windows.Forms.ToolStripSeparator pmenuTasksSep1;
+        private System.Windows.Forms.SplitContainer splitMain;
+        private System.Windows.Forms.Panel panelMemo;
+        private System.Windows.Forms.Panel panelControls;
+        private System.Windows.Forms.RichTextBox wMemo;
+        private System.Windows.Forms.ToolStrip toolStripFormat;
+        private System.Windows.Forms.ToolStripButton toolFormatBold;
+        private System.Windows.Forms.ToolStripButton toolFormatItalic;
+        private System.Windows.Forms.ToolStripButton toolFormatUnderline;
+        private System.Windows.Forms.ToolStripButton toolFormatStrikethrough;
+        private System.Windows.Forms.ToolStrip toolStripControls;
+        private System.Windows.Forms.ToolStripButton toolControlFirstEntry;
+        private System.Windows.Forms.ToolStripButton toolControlPrevEntry;
+        private System.Windows.Forms.ToolStripButton toolControlNextEntry;
+        private System.Windows.Forms.ToolStripButton toolControlLastEntry;
+        private System.Windows.Forms.DateTimePicker wEndTime;
+        private System.Windows.Forms.DateTimePicker wStartTime;
+        private System.Windows.Forms.Label labelStartTime;
+        private System.Windows.Forms.Label labelEndTime;
+        private System.Windows.Forms.TextBox wDuration;
+        private System.Windows.Forms.Label labelDuration;
+        private System.Windows.Forms.ToolStripButton toolControlStop;
+        private System.Windows.Forms.ToolStripButton toolControlClose;
+        private System.Windows.Forms.ToolStripSeparator toolControlSep1;
+        private System.Windows.Forms.ToolStripSeparator toolControlSep2;
+        private System.Windows.Forms.ToolStripButton toolControlCloseStartGap;
+        private System.Windows.Forms.ToolStripButton toolControlCloseEndGap;
+        private System.Windows.Forms.ToolStripLabel toolControlEntryId;
+        private System.Windows.Forms.ToolStripButton toolFormatBulletedList;
+        private System.Windows.Forms.ToolStripSeparator toolFormatSep1;
+        private System.Windows.Forms.ToolStripButton toolFormatNumberedList;
+        private System.Windows.Forms.ToolStripMenuItem menuToolBrowse;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControl;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlContinue;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlClose;
+        private System.Windows.Forms.ToolStripSeparator menuTimerControlsSep1;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlFirst;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlPrev;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlNext;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlLast;
+        private System.Windows.Forms.ToolStripSeparator menuTimerControlsSep2;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlCloseStartGap;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlCloseEndGap;
+        private System.Windows.Forms.ToolStripMenuItem menuToolFormat;
+        private System.Windows.Forms.ToolStripMenuItem menuToolFormatBold;
+        private System.Windows.Forms.ToolStripMenuItem menuToolFormatItalic;
+        private System.Windows.Forms.ToolStripMenuItem menuToolFormatUnderline;
+        private System.Windows.Forms.ToolStripMenuItem menuToolFormatStrikethrough;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem menuActionStart;
+        private System.Windows.Forms.ToolStripMenuItem menuActionStartAdvanced;
+        private System.Windows.Forms.ToolStripMenuItem menuActionStop;
+        private System.Windows.Forms.ToolStripMenuItem menuActionStopAdvanced;
+        private System.Windows.Forms.ToolStripButton toolControlStart;
+        private System.Windows.Forms.ToolStripButton toolControlContinue;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlStart;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlStop;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem menuToolFind;
+        private System.Windows.Forms.Label labelTag;
+        private System.Windows.Forms.ComboBox wTag;
+        private System.Windows.Forms.Label labelLocation;
+        private System.Windows.Forms.ComboBox wLocation;
     }
 }
 

@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Web;  // this being used?
+//using System.Web;  // this being used?
 using System.Text.RegularExpressions;
 
 using Technitivity.Toolbox;
@@ -50,21 +50,22 @@ namespace Timekeeper
 
         // timer properties
         private bool timerRunning = false;
-        private bool notificationOpen = false;
         private DateTime timerLastRun;
         private long elapsed;
         private long elapsedToday;
         private long elapsedTodayAll;
 
+        // dev-only helper settings
+        private bool suppressAnnotationDialogs = true;
+
         // miscellaneous internals
         private DateTime annotateStartTime;
-        private string annotatePreLog;
 
         //---------------------------------------------------------------------
         // Constants
         //---------------------------------------------------------------------
 
-        const string REGKEY = "Software\\Technitivity\\Timekeeper\\2.0\\";
+        const string REGKEY = "Software\\Technitivity\\Timekeeper\\3.0\\";
 
         const int IMG_FOLDER_OPEN = 0;
         const int IMG_FOLDER_CLOSED = 1;
@@ -133,14 +134,28 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        // Tasks | Timer
-        private void menuTasksTimer_Click(object sender, EventArgs e)
+        // Action | Start Timer
+        private void menuActionStart_Click(object sender, EventArgs e)
         {
-            if (timerRunning) {
-                endTimer();
-            } else {
-                startTimer();
-            }
+            StartTimer();
+        }
+
+        // Action | Stop Timer
+        private void menuActionStop_Click(object sender, EventArgs e)
+        {
+            StopTimer();
+        }
+
+        // Action | Annotate and Start Timer
+        private void menuActionStartAdvanced_Click(object sender, EventArgs e)
+        {
+            OpenLogForStarting();
+        }
+
+        // Action | Annotate and Stop Timer
+        private void menuActionStopAdvanced_Click(object sender, EventArgs e)
+        {
+            OpenLogForStopping();
         }
 
         // Tasks | New Task
@@ -277,6 +292,61 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
+
+        // Tools | Browse Entries
+        private void menuToolBrowse_Click(object sender, EventArgs e)
+        {
+            if (menuToolBrowse.Checked) {
+                CloseLog();
+            } else {
+                OpenLogForBrowsing();
+            }
+        }
+
+        // Tools | Control | Start
+        private void menuToolControlStart_Click(object sender, EventArgs e)
+        {
+            Keys saveKeys = new Keys();
+            saveKeys = menuToolControlStart.ShortcutKeys;
+            menuToolControlStart.ShortcutKeys = Keys.None;
+            menuToolControlStop.ShortcutKeys = saveKeys;
+            StartTimer();
+        }
+
+        // Tools | Control | Stop
+        private void menuToolControlStop_Click(object sender, EventArgs e)
+        {
+            Keys saveKeys = new Keys();
+            saveKeys = menuToolControlStop.ShortcutKeys;
+            menuToolControlStop.ShortcutKeys = Keys.None;
+            menuToolControlStart.ShortcutKeys = saveKeys;
+            StopTimer();
+            CloseLog();
+        }
+
+        // Tools | Control | First Entry
+        private void menuToolControlFirst_Click(object sender, EventArgs e)
+        {
+            Common.Info("First Entry");
+        }
+
+        // Tools | Control | Previous Entry
+        private void menuToolControlPrev_Click(object sender, EventArgs e)
+        {
+            Common.Info("Prev Entry");
+        }
+
+        // Tools | Control | Next Entry
+        private void menuToolControlNext_Click(object sender, EventArgs e)
+        {
+            Common.Info("Next Entry");
+        }
+
+        // Tools | Control | Last Entry
+        private void menuToolControlLast_Click(object sender, EventArgs e)
+        {
+            Common.Info("Last Entry");
+        }
 
         // Tools | Log/Tweak
         private void menuToolsTweak_Click(object sender, EventArgs e)
@@ -514,6 +584,29 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
+        // Toolstrip button events
+        //---------------------------------------------------------------------
+
+        private void toolControlStart_Click(object sender, EventArgs e)
+        {
+            StartTimer();
+        }
+
+        private void toolControlStop_Click(object sender, EventArgs e)
+        {
+            StopTimer();
+            CloseLog();
+        }
+
+        private void toolControlCancel_Click(object sender, EventArgs e)
+        {
+            // Whether the timer is running or not, the cancel button (which
+            // is labeled as either Close or Continue) simply closes the 
+            // control window pane.
+            CloseLog();
+        }
+
+        //---------------------------------------------------------------------
         // Keyboard events
         //---------------------------------------------------------------------
 
@@ -545,6 +638,27 @@ namespace Timekeeper
             }
         }
 
+        // Memo keys
+        private void wMemo_KeyDown(object sender, KeyEventArgs e)
+        {
+            /*
+            if ((Control.ModifierKeys & Keys.Control) == Keys.Control && e.KeyCode == Keys.I) {
+                Common.Info("You pressed Ctrl+I");
+                e.SuppressKeyPress = true;
+                e.Handled = true;
+            }
+            */
+
+            // No matter what, whether the timer is running or not, Escape
+            // is what closes the browser pane. So it's "unconditionally"
+            // handled here, rather than through menu item or toolbar 
+            // button shortcuts.
+
+            if (e.KeyCode == Keys.Escape) {
+                CloseLog();
+            }
+        }
+
         //---------------------------------------------------------------------
         // Mouse events
         //---------------------------------------------------------------------
@@ -568,7 +682,7 @@ namespace Timekeeper
         // Mouse shortcut
         private void wTasks_DoubleClick(object sender, EventArgs e)
         {
-            menuTasksTimer_Click(sender, e);
+            StartTimer();
         }
 
         //---------------------------------------------------------------------
@@ -890,9 +1004,9 @@ namespace Timekeeper
             statusFile.ToolTipText = statusFile.Text;
             statusFile.ForeColor = Color.Gray;
 
-            menuTasks.Enabled = false;
-            menuReports.Enabled = false;
-            menuTools.Enabled = false;
+            menuAction.Enabled = false;
+            menuReport.Enabled = false;
+            menuTool.Enabled = false;
 
             statusTimeCurrent.Text = "0:00:00";
             statusTimeToday.Text = "0:00:00";
@@ -945,9 +1059,9 @@ namespace Timekeeper
             wTasks.ExpandAll();
             wProjects.ExpandAll();
 
-            menuTasks.Enabled = true;
-            menuReports.Enabled = true;
-            menuTools.Enabled = true;
+            menuAction.Enabled = true;
+            menuReport.Enabled = true;
+            menuTool.Enabled = true;
 
             statusTimeCurrent.Text = "0:00:00";
             statusTimeToday.Text = "0:00:00";
@@ -1295,7 +1409,7 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        private void startTimer()
+        private void StartTimer()
         {
             // Find the currently selected project
             if (wProjects.SelectedNode == null) {
@@ -1325,8 +1439,8 @@ namespace Timekeeper
             }
 
             // Prompt for annotation
-            string preLog = "Task started";
-            if (options.wPreLog.Checked) {
+            if (suppressAnnotationDialogs) {
+            } else {
                 fAnnotate dlg = new fAnnotate(data);
                 dlg.panelTop.Visible = false;
                 dlg.ActiveControl = dlg.wLog;
@@ -1334,16 +1448,14 @@ namespace Timekeeper
                 if (dlg.ShowDialog(this) != DialogResult.OK) {
                     return;
                 }
-                preLog = dlg.wLog.Text;
-                this.annotatePreLog = preLog;
-                this.annotateStartTime = DateTime.Now;
             }
+            this.annotateStartTime = DateTime.Now;
 
             // Now start timing
             currentTask.beginTiming();
             currentTask.project_id__last = currentProject.id;
             currentLog = new Log(data);
-            currentLog.start(preLog, currentTask.id, currentProject.id);
+            currentLog.start(wMemo.Text, currentTask.id, currentProject.id);
 
             timerRunning = true;
             timerLastRun = DateTime.Now;
@@ -1354,8 +1466,22 @@ namespace Timekeeper
             elapsedTodayAll = (long)currentTask.elapsedTodayAll(tasks.getSeconds()).TotalSeconds;
 
             // Make any UI changes based on the timer starting
-            menuTasksTimer.Text = "&Stop Timer";
-            pmenuTasksTimer.Text = "&Stop Timer";
+            pmenuTasksTimer.Text = "&Stop Timer"; // FIXME: deprecated
+            menuActionStart.Visible = false;
+            menuActionStartAdvanced.Visible = false;
+            menuActionStop.Visible = true;
+            menuActionStopAdvanced.Visible = true;
+
+            // swap start/stop keystrokes
+            Keys saveKeys = new Keys();
+            Keys saveKeysAdvanced = new Keys();
+            saveKeys = menuActionStart.ShortcutKeys;
+            saveKeysAdvanced = menuActionStartAdvanced.ShortcutKeys;
+            menuActionStart.ShortcutKeys = Keys.None;
+            menuActionStartAdvanced.ShortcutKeys = Keys.None;
+            menuActionStop.ShortcutKeys = saveKeys;
+            menuActionStopAdvanced.ShortcutKeys = saveKeysAdvanced;
+
             statusCurrentTask.Text = wTasks.SelectedNode.Text;
             statusCurrentTask.ForeColor = Color.Black;
             statusTimeCurrent.ForeColor = Color.Black;
@@ -1381,16 +1507,106 @@ namespace Timekeeper
                     WindowState = FormWindowState.Minimized;
                 }
             }
+
+            CloseLog(); // Don't display while the timer is running
+        }
+
+        // FIXME: MOVE THIS
+        private void OpenLogForBrowsing()
+        {
+            menuToolBrowse.Checked = true;
+
+            toolControlStart.Visible = false;
+            toolControlStop.Visible = false;
+            toolControlContinue.Visible = false;
+            toolControlClose.Visible = true;
+
+            menuToolControlStart.Visible = false;
+            menuToolControlStop.Visible = false;
+            menuToolControlContinue.Visible = false;
+            menuToolControlClose.Visible = true;
+
+            menuToolFormat.Visible = true;
+            menuToolControl.Visible = true;
+
+            splitMain.Panel2Collapsed = false;
+            wMemo.Focus();
+        }
+
+        // FIXME: MOVE THIS
+        private void OpenLogForStarting()
+        {
+            menuToolBrowse.Checked = false;
+
+            toolControlStart.Visible = true;
+            toolControlStop.Visible = false;
+            toolControlContinue.Visible = false;
+            toolControlClose.Visible = true;
+
+            menuToolControlStart.Visible = true;
+            menuToolControlStop.Visible = false;
+            menuToolControlContinue.Visible = false;
+            menuToolControlClose.Visible = true;
+
+            menuToolFormat.Visible = true;
+            menuToolControl.Visible = true;
+
+            labelEndTime.Enabled = false;
+            wEndTime.Enabled = false;
+            labelDuration.Enabled = false;
+            wDuration.Enabled = false;
+
+            splitMain.Panel2Collapsed = false;
+            wMemo.Text = "";
+            wMemo.Focus();
+        }
+
+        // FIXME: MOVE THIS
+        private void OpenLogForStopping()
+        {
+            menuToolBrowse.Checked = false;
+
+            toolControlStart.Visible = false;
+            toolControlStop.Visible = true;
+            toolControlContinue.Visible = true;
+            toolControlClose.Visible = false;
+
+            menuToolControlStart.Visible = false;
+            menuToolControlStop.Visible = true;
+            menuToolControlContinue.Visible = true;
+            menuToolControlClose.Visible = false;
+
+            menuToolFormat.Visible = true;
+            menuToolControl.Visible = true;
+
+            labelEndTime.Enabled = true;
+            wEndTime.Enabled = true;
+            labelDuration.Enabled = true;
+            wDuration.Enabled = true;
+
+            splitMain.Panel2Collapsed = false;
+            wMemo.Focus();
+        }
+
+        // FIXME: MOVE THIS
+        private void CloseLog()
+        {
+            // Clean up Tool menus
+            menuToolBrowse.Checked = false;
+            menuToolFormat.Visible = false;
+            menuToolControl.Visible = false;
+
+            // Close control pane
+            splitMain.Panel2Collapsed = true;
         }
 
         //---------------------------------------------------------------------
-        private void endTimer()
+        private void StopTimer()
         {
             // Get annotation
-            string postLog = "Task finished";
-            string preLog = this.annotatePreLog;
+            string postLog = wMemo.Text; // FIXME: postLog is my unified log until the db migration happens.
 
-            if (options.wPostLog.Checked) {
+            if (options.wPostLog.Checked && suppressAnnotationDialogs == false) {
                 // instantiate dialog box
                 fAnnotate dlg = new fAnnotate(data);
 
@@ -1405,17 +1621,17 @@ namespace Timekeeper
                 dlg.wStartTime.Text = this.annotateStartTime.ToString(Common.TIME_FORMAT);
                 dlg.ttStartTime.SetToolTip(dlg.wStartTime, this.annotateStartTime.ToString(Common.DATETIME_FORMAT));
                 dlg.wElapsedTime.Text = ts.ToString().Substring(0, 8);
-                dlg.wPreLog.Text = preLog;
+                //dlg.wPreLog.Text = preLog;
                 if (dlg.ShowDialog(this) != DialogResult.OK) {
                     return;
                 }
                 postLog = dlg.wLog.Text;
-                preLog = dlg.wPreLog.Text;
+                //preLog = dlg.wPreLog.Text;
             }
 
             // Close off timer
             int seconds = currentTask.endTiming();
-            currentLog.end(postLog, preLog, seconds);
+            currentLog.end(postLog, "", seconds);
             timerRunning = false;
             //timerLastRunNotified = false;
 
@@ -1427,11 +1643,24 @@ namespace Timekeeper
             // Make any UI changes 
             Text = "Timekeeper";
 
-            menuTasksTimer.Text = "&Start Timer";
-            pmenuTasksTimer.Text = "&Start Timer";
+            pmenuTasksTimer.Text = "&Start Timer"; // FIXME: deprecated (?)
+            menuActionStart.Visible = true;
+            menuActionStartAdvanced.Visible = true;
+            menuActionStop.Visible = false;
+            menuActionStopAdvanced.Visible = false;
             statusCurrentTask.Text = "Timer Not Running";
             statusCurrentTask.ForeColor = Color.Gray;
             statusTimeCurrent.ForeColor = Color.Gray;
+
+            // swap start/stop keystrokes
+            Keys saveKeys = new Keys();
+            Keys saveKeysAdvanced = new Keys();
+            saveKeys = menuActionStop.ShortcutKeys;
+            saveKeysAdvanced = menuActionStopAdvanced.ShortcutKeys;
+            menuActionStop.ShortcutKeys = Keys.None;
+            menuActionStopAdvanced.ShortcutKeys = Keys.None;
+            menuActionStart.ShortcutKeys = saveKeys;
+            menuActionStartAdvanced.ShortcutKeys = saveKeysAdvanced;
 
             currentTaskNode.ImageIndex = IMG_TASK;
             currentTaskNode.SelectedImageIndex = IMG_TASK;
@@ -1494,9 +1723,9 @@ namespace Timekeeper
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "WindowMetrics");
             Left = (int)key.GetValue("Left", 10);
             Top = (int)key.GetValue("Top", 10);
-            Width = (int)key.GetValue("Width", 400);
-            Height = (int)key.GetValue("Height", 200);
-            splitContainer1.SplitterDistance = (int)key.GetValue("Split", 300);
+            Width = (int)key.GetValue("Width", 426);
+            Height = (int)key.GetValue("Height", 376);
+            splitTrees.SplitterDistance = (int)key.GetValue("Split", 300);
             int HideProjects = (int)key.GetValue("HideProjects", 1);
             reportHeight = (int)key.GetValue("ReportHeight", 380);
             reportWidth = (int)key.GetValue("ReportWidth", 580);
@@ -1645,6 +1874,9 @@ namespace Timekeeper
                 // View root lines?
                 _togglePlusMinus();
             }
+
+            // NEW:
+            splitMain.Panel2Collapsed = true;
         }
 
         //---------------------------------------------------------------------
@@ -1671,8 +1903,8 @@ namespace Timekeeper
             key.SetValue("Top", Top, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("Width", Width, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("Height", Height, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("Split", splitContainer1.SplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("HideProjects", splitContainer1.Panel2Collapsed, Microsoft.Win32.RegistryValueKind.DWord);
+            key.SetValue("Split", splitTrees.SplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
+            key.SetValue("HideProjects", splitTrees.Panel2Collapsed, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("ReportHeight", reportHeight, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("ReportWidth", reportWidth, Microsoft.Win32.RegistryValueKind.DWord);
 
@@ -1749,7 +1981,7 @@ namespace Timekeeper
             bool show = options.wViewProjectPane.Checked;
             bool hide = !show;
 
-            splitContainer1.Panel2Collapsed = hide;
+            splitTrees.Panel2Collapsed = hide;
             pmenuTasksSep3.Visible = hide;
             pmenuTasksShowProjects.Visible = hide;
 
