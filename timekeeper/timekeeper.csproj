@@ -95,6 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entry.cs" />
     <Compile Include="fAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -231,7 +232,6 @@
       <DependentUpon>fToolStopwatch.cs</DependentUpon>
     </Compile>
     <Compile Include="Journal.cs" />
-    <Compile Include="Log.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Items.cs" />
     <Compile Include="Program.cs" />

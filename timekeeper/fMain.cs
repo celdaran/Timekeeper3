@@ -41,12 +41,15 @@ namespace Timekeeper
         private Projects projects;
 
         // current objects
-        private Log currentLog;
+        private Entry currentEntry;
         private Task currentTask;
         private Project currentProject;
         private TreeNode currentTaskNode;
         private TreeNode currentProjectNode;
         private TreeNode draggingNode;
+
+        // browser objects
+        private Entry browserEntry;
 
         // timer properties
         private bool timerRunning = false;
@@ -321,31 +324,101 @@ namespace Timekeeper
             menuToolControlStop.ShortcutKeys = Keys.None;
             menuToolControlStart.ShortcutKeys = saveKeys;
             StopTimer();
+            CloseLog(); // FIXME: I'm now thinking this should be optional, I may just leave it open all the time, now that I can
+        }
+
+        private void menuToolControlContinue_Click(object sender, EventArgs e)
+        {
+            menuToolControlClose_Click(sender, e);
+        }
+
+        private void menuToolControlClose_Click(object sender, EventArgs e)
+        {
             CloseLog();
         }
 
         // Tools | Control | First Entry
         private void menuToolControlFirst_Click(object sender, EventArgs e)
         {
-            Common.Info("First Entry");
+            try {
+                SaveRow(false);
+                browserEntry.SetFirstId();
+                if (browserEntry.EntryId > 0) {
+                    DisplayRow();
+                    // SetButtons(First)
+                    EnableLast(true);
+                    EnableNext(true);
+                    EnableFirst(false);
+                    EnablePrev(false);
+                }
+            }
+            catch {
+            }
         }
 
         // Tools | Control | Previous Entry
         private void menuToolControlPrev_Click(object sender, EventArgs e)
         {
-            Common.Info("Prev Entry");
+            try {
+                SaveRow(false);
+                browserEntry.SetPrevId();
+                if (browserEntry.EntryId > 0) {
+                    DisplayRow();
+                    EnableLast(true);
+                    EnableNext(true);
+                    if (browserEntry.AtBeginning()) {
+                        EnableFirst(false);
+                        EnablePrev(false);
+                    }
+                } else {
+                    EnableFirst(false);
+                    EnablePrev(false);
+                }
+            }
+            catch {
+            }
         }
 
         // Tools | Control | Next Entry
         private void menuToolControlNext_Click(object sender, EventArgs e)
         {
-            Common.Info("Next Entry");
+            try {
+                SaveRow(false);
+                browserEntry.SetNextId();
+                if (browserEntry.EntryId > 0) {
+                    DisplayRow();
+                    EnableFirst(true);
+                    EnablePrev(true);
+                    if (browserEntry.AtEnd()) {
+                        EnableLast(false);
+                        EnableNext(false);
+                    }
+                } else {
+                    EnableLast(false);
+                    EnableNext(false);
+                }
+            }
+            catch {
+            }
         }
 
         // Tools | Control | Last Entry
         private void menuToolControlLast_Click(object sender, EventArgs e)
         {
-            Common.Info("Last Entry");
+            try {
+                SaveRow(false);
+                browserEntry.SetLastId();
+                if (browserEntry.EntryId > 0) {
+                    DisplayRow();
+                    // SetButtons(Last);
+                    EnableFirst(true);
+                    EnablePrev(true);
+                    EnableLast(false);
+                    EnableNext(false);
+                }
+            }
+            catch {
+            }
         }
 
         // Tools | Log/Tweak
@@ -584,29 +657,6 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        // Toolstrip button events
-        //---------------------------------------------------------------------
-
-        private void toolControlStart_Click(object sender, EventArgs e)
-        {
-            StartTimer();
-        }
-
-        private void toolControlStop_Click(object sender, EventArgs e)
-        {
-            StopTimer();
-            CloseLog();
-        }
-
-        private void toolControlCancel_Click(object sender, EventArgs e)
-        {
-            // Whether the timer is running or not, the cancel button (which
-            // is labeled as either Close or Continue) simply closes the 
-            // control window pane.
-            CloseLog();
-        }
-
-        //---------------------------------------------------------------------
         // Keyboard events
         //---------------------------------------------------------------------
 
@@ -655,7 +705,7 @@ namespace Timekeeper
             // button shortcuts.
 
             if (e.KeyCode == Keys.Escape) {
-                CloseLog();
+                menuToolControlClose_Click(sender, e);
             }
         }
 
@@ -1454,8 +1504,20 @@ namespace Timekeeper
             // Now start timing
             currentTask.beginTiming();
             currentTask.project_id__last = currentProject.id;
-            currentLog = new Log(data);
-            currentLog.start(wMemo.Text, currentTask.id, currentProject.id);
+
+            currentEntry = new Entry(data);
+            currentEntry.TaskId = currentTask.id;
+            currentEntry.ProjectId = currentProject.id;
+            currentEntry.StartTime = wStartTime.Value;
+            currentEntry.StopTime = wStartTime.Value; // defaults to start time.
+            currentEntry.Seconds = 0; // default to zero
+            currentEntry.Text = wMemo.Text;
+            currentEntry.PreLog = wMemo.Text;
+            currentEntry.PostLog = ""; // FIXME (this is going away anyway)
+            currentEntry.IsLocked = true;
+            currentEntry.Create();
+            
+            //currentEntry.Begin(wMemo.Text, currentTask.id, currentProject.id);
 
             timerRunning = true;
             timerLastRun = DateTime.Now;
@@ -1466,7 +1528,6 @@ namespace Timekeeper
             elapsedTodayAll = (long)currentTask.elapsedTodayAll(tasks.getSeconds()).TotalSeconds;
 
             // Make any UI changes based on the timer starting
-            pmenuTasksTimer.Text = "&Stop Timer"; // FIXME: deprecated
             menuActionStart.Visible = false;
             menuActionStartAdvanced.Visible = false;
             menuActionStop.Visible = true;
@@ -1526,10 +1587,12 @@ namespace Timekeeper
             menuToolControlContinue.Visible = false;
             menuToolControlClose.Visible = true;
 
+            /*
             menuToolFormat.Visible = true;
-            menuToolControl.Visible = true;
+            menuToolControl.Visible = false;
+            */
 
-            splitMain.Panel2Collapsed = false;
+            //splitMain.Panel2Collapsed = false;
             wMemo.Focus();
         }
 
@@ -1548,15 +1611,21 @@ namespace Timekeeper
             menuToolControlContinue.Visible = false;
             menuToolControlClose.Visible = true;
 
+            toolControlEntryId.Text = "New";
+
+            /*
             menuToolFormat.Visible = true;
             menuToolControl.Visible = true;
+            */
 
-            labelEndTime.Enabled = false;
-            wEndTime.Enabled = false;
-            labelDuration.Enabled = false;
-            wDuration.Enabled = false;
+            labelEndTime.Visible = false;
+            wStopTime.Visible = false;
+            labelDuration.Visible = false;
+            wDuration.Visible = false;
 
-            splitMain.Panel2Collapsed = false;
+            //splitMain.Panel2Collapsed = false;
+
+            wStartTime.Value = DateTime.Now;
             wMemo.Text = "";
             wMemo.Focus();
         }
@@ -1576,15 +1645,18 @@ namespace Timekeeper
             menuToolControlContinue.Visible = true;
             menuToolControlClose.Visible = false;
 
+            /*
             menuToolFormat.Visible = true;
             menuToolControl.Visible = true;
+            */
 
-            labelEndTime.Enabled = true;
-            wEndTime.Enabled = true;
-            labelDuration.Enabled = true;
-            wDuration.Enabled = true;
+            labelEndTime.Visible = true;
+            wStopTime.Visible = true;
+            labelDuration.Visible = true;
+            wDuration.Visible = true;
 
-            splitMain.Panel2Collapsed = false;
+            //splitMain.Panel2Collapsed = false;
+            wStopTime.Value = DateTime.Now;
             wMemo.Focus();
         }
 
@@ -1593,11 +1665,14 @@ namespace Timekeeper
         {
             // Clean up Tool menus
             menuToolBrowse.Checked = false;
+
+            /*
             menuToolFormat.Visible = false;
             menuToolControl.Visible = false;
+            */
 
             // Close control pane
-            splitMain.Panel2Collapsed = true;
+            //splitMain.Panel2Collapsed = true;
         }
 
         //---------------------------------------------------------------------
@@ -1630,20 +1705,28 @@ namespace Timekeeper
             }
 
             // Close off timer
-            int seconds = currentTask.endTiming();
-            currentLog.end(postLog, "", seconds);
+            //int seconds = currentTask.endTiming();
+            currentEntry.TaskId = currentTask.id;
+            currentEntry.ProjectId = currentProject.id;
+            currentEntry.StartTime = wStartTime.Value;
+            currentEntry.StopTime = wStopTime.Value;
+            currentEntry.Seconds = currentTask.endTiming();
+            currentEntry.Text = wMemo.Text;
+            currentEntry.PreLog = ""; // FIXME: but it's going away
+            currentEntry.PostLog = wMemo.Text;
+            currentEntry.IsLocked = false;
+            currentEntry.Save();
             timerRunning = false;
             //timerLastRunNotified = false;
 
             // Clear instances of current object
             currentTask = null;
             currentProject = null;
-            currentLog = null;
+            currentEntry = null;
 
             // Make any UI changes 
             Text = "Timekeeper";
 
-            pmenuTasksTimer.Text = "&Start Timer"; // FIXME: deprecated (?)
             menuActionStart.Visible = true;
             menuActionStartAdvanced.Visible = true;
             menuActionStop.Visible = false;
@@ -1876,7 +1959,201 @@ namespace Timekeeper
             }
 
             // NEW:
-            splitMain.Panel2Collapsed = true;
+            //splitMain.Panel2Collapsed = true;
+            browserEntry = new Entry(data);
+            LoadBrowser();
+        }
+
+        // FIXME/MOVEME
+
+        private void EnableFirst(bool enabled)
+        {
+            toolControlFirstEntry.Enabled = enabled;
+            menuToolControlFirst.Enabled = enabled;
+        }
+
+        private void EnableLast(bool enabled)
+        {
+            toolControlLastEntry.Enabled = enabled;
+            menuToolControlLast.Enabled = enabled;
+        }
+
+        private void EnablePrev(bool enabled)
+        {
+            toolControlPrevEntry.Enabled = enabled;
+            menuToolControlPrev.Enabled = enabled;
+        }
+
+        private void EnableNext(bool enabled)
+        {
+            toolControlNextEntry.Enabled = enabled;
+            menuToolControlNext.Enabled = enabled;
+        }
+
+        private void EnableCloseStartGap(bool enabled)
+        {
+            toolControlCloseStartGap.Enabled = enabled;
+            menuToolControlCloseStartGap.Enabled = enabled;
+        }
+
+        private void EnableCloseEndGap(bool enabled)
+        {
+            toolControlCloseEndGap.Enabled = enabled;
+            menuToolControlCloseEndGap.Enabled = enabled;
+        }
+
+        private void EnableButtons(bool enabled)
+        {
+            Common.Warn("EnableButtons deprecated");
+        }
+
+        private void LoadBrowser()
+        {
+            try {
+                // Initialize id with latest row
+                browserEntry.SetLastId();
+                if (browserEntry.EntryId == 0) {
+                    //EnableButtons(false);
+                    return;
+                }
+
+                // Show row
+                DisplayRow();
+
+                // Add keyboard shortcuts to tooltips
+                var kc = new KeysConverter();
+                toolControlFirstEntry.ToolTipText += " (" + kc.ConvertToString(menuToolControlFirst.ShortcutKeys) + ")";
+                toolControlLastEntry.ToolTipText += " (" + kc.ConvertToString(menuToolControlLast.ShortcutKeys) + ")";
+                toolControlNextEntry.ToolTipText += " (" + kc.ConvertToString(menuToolControlNext.ShortcutKeys) + ")";
+                toolControlPrevEntry.ToolTipText += " (" + kc.ConvertToString(menuToolControlPrev.ShortcutKeys) + ")";
+
+                toolControlStart.ToolTipText += " (" + kc.ConvertToString(menuToolControlStart.ShortcutKeys) + ")";
+                toolControlStop.ToolTipText += " (" + kc.ConvertToString(menuToolControlStart.ShortcutKeys) + ")";
+                toolControlContinue.ToolTipText += " (Esc)";
+                toolControlClose.ToolTipText += " (Esc)";
+
+                //this.isDirty = false;
+            }
+            catch (Exception exception) {
+                Common.Info("No file loaded.\n\n" + exception.ToString());
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void DisplayRow()
+        {
+            try {
+                browserEntry.Load();
+
+                if (browserEntry.Empty()) {
+                    return;
+                }
+
+                try {
+                    // Display start/end times
+                    wStartTime.Value = browserEntry.StartTime;
+                    wStopTime.Value = browserEntry.StopTime;
+
+                    // Display duration and entry text
+                    wDuration.Text = Timekeeper.FormatSeconds(browserEntry.Seconds);
+                    wMemo.Text = browserEntry.PreLog + "\n\n" + browserEntry.PostLog;
+
+                    // Now select tasks and projects while browsing.
+                    TreeNode node = _findNode(wTasks.Nodes, browserEntry.TaskName);
+                    if (node != null) {
+                        wTasks.SelectedNode = node;
+                        wTasks.SelectedNode.Expand();
+                    }
+
+                    node = _findNode(wProjects.Nodes, browserEntry.ProjectName);
+                    if (node != null) {
+                        wProjects.SelectedNode = node;
+                        wProjects.SelectedNode.Expand();
+                    }
+
+                    toolControlEntryId.Text = browserEntry.EntryId.ToString();
+
+                    if (browserEntry.IsLocked) {
+                        wStartTime.Enabled = false;
+                        wStopTime.Enabled = false;
+                        wDuration.Enabled = false;
+                        wLocation.Enabled = false;
+                        wTag.Enabled = false;
+                        //btnUnlock.Visible = isTimerRunning ? false : true;
+                    } else {
+                        wStartTime.Enabled = true;
+                        wStopTime.Enabled = true;
+                        wDuration.Enabled = true;
+                        wLocation.Enabled = true;
+                        wTag.Enabled = true;
+                        //btnUnlock.Visible = false;
+                    }
+                    /*
+
+                    // Disable close gap buttons if no gap to close
+                    string prevEndTime = _getPreviousEndTime();
+                    if (prevEndTime == wPrevStart.Text) {
+                        btnCloseStartGap.Enabled = false;
+                    } else {
+                        if (prevEndTime == "") {
+                            btnCloseStartGap.Enabled = false;
+                        } else {
+                            btnCloseStartGap.Enabled = true;
+                        }
+                    }
+
+                    string nextStartTime = _getNextStartTime();
+                    if (nextStartTime == wPrevEnd.Text) {
+                        btnCloseEndGap.Enabled = false;
+                    } else {
+                        btnCloseEndGap.Enabled = true;
+                    }
+                    */
+
+                }
+                catch (Exception ee) {
+                    Common.Warn(ee.ToString());
+                }
+            }
+            catch {
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SaveRow(bool forceSave)
+        {
+            /*
+            if (!forceSave) {
+                if (!this.isDirty) {
+                    return;
+                }
+            }
+            */
+
+            // FIXME: is this still needed?
+            if ((wStartTime.Text == "") && (wStopTime.Text == "")) {
+                // Bail if there's obviously no work to do
+                return;
+            }
+
+            // First translate some necessary from the form 
+            Task task = (Task)wTasks.SelectedNode.Tag;
+            Project project = (Project)wProjects.SelectedNode.Tag;
+            TimeSpan ts = wStopTime.Value.Subtract(wStartTime.Value);
+
+            browserEntry.TaskId = task.id;
+            browserEntry.ProjectId = project.id;
+            browserEntry.StartTime = wStartTime.Value;
+            browserEntry.StopTime = wStopTime.Value;
+            browserEntry.Seconds = (long)ts.TotalSeconds;
+            browserEntry.Text = wMemo.Text;
+            browserEntry.PostLog = wMemo.Text;
+            browserEntry.Save();
+
+            // Cleanup
+            //this.isDirty = false;
         }
 
         //---------------------------------------------------------------------

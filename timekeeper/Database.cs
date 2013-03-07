@@ -222,7 +222,7 @@ namespace Timekeeper
                 Tasks tasks = new Tasks(data, "");
                 Projects projects = new Projects(data, "");
                 Journal journal = new Journal(data);
-                Log log = new Log(data);
+                Entry log = new Entry(data);
 
                 // convert meta rows to rows (note order by above)
                 row.Add("created", rows[0]["value"]);
@@ -235,8 +235,8 @@ namespace Timekeeper
                 row.Add("taskcount", tasks.count());
                 row.Add("projectcount", projects.count());
                 row.Add("journalcount", journal.count());
-                row.Add("logcount", log.count());
-                row.Add("totalseconds", Timekeeper.FormatSeconds(log.seconds()));
+                row.Add("logcount", log.Count());
+                row.Add("totalseconds", Timekeeper.FormatSeconds(log.TotalSeconds()));
             }
             catch
             {
