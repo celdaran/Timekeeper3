@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -95,230 +95,233 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entry.cs" />
-    <Compile Include="fAbout.cs">
+    <Compile Include="Classes\Entry.cs" />
+    <Compile Include="Classes\Journal.cs" />
+    <Compile Include="Classes\Item.cs" />
+    <Compile Include="Classes\Items.cs" />
+    <Compile Include="Classes\Program.cs" />
+    <Compile Include="Classes\Project.cs" />
+    <Compile Include="Classes\Projects.cs" />
+    <Compile Include="Classes\Timekeeper.cs" />
+    <Compile Include="Classes\Database.cs" />
+    <Compile Include="Classes\Task.cs" />
+    <Compile Include="Classes\Tasks.cs" />
+    <Compile Include="Forms\fAbout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fAbout.Designer.cs">
+    <Compile Include="Forms\fAbout.Designer.cs">
       <DependentUpon>fAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="fAnnotate.cs">
+    <Compile Include="Forms\fAnnotate.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fAnnotate.Designer.cs">
+    <Compile Include="Forms\fAnnotate.Designer.cs">
       <DependentUpon>fAnnotate.cs</DependentUpon>
     </Compile>
-    <Compile Include="fGridFilter.cs">
+    <Compile Include="Forms\fGridFilter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fGridFilter.Designer.cs">
+    <Compile Include="Forms\fGridFilter.Designer.cs">
       <DependentUpon>fGridFilter.cs</DependentUpon>
     </Compile>
-    <Compile Include="fGridManage.cs">
+    <Compile Include="Forms\fGridManage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fGridManage.Designer.cs">
+    <Compile Include="Forms\fGridManage.Designer.cs">
       <DependentUpon>fGridManage.cs</DependentUpon>
     </Compile>
-    <Compile Include="fGridManageRename.cs">
+    <Compile Include="Forms\fGridManageRename.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fGridManageRename.Designer.cs">
+    <Compile Include="Forms\fGridManageRename.Designer.cs">
       <DependentUpon>fGridManageRename.cs</DependentUpon>
     </Compile>
-    <Compile Include="fGridSave.cs">
+    <Compile Include="Forms\fGridSave.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fGridSave.Designer.cs">
+    <Compile Include="Forms\fGridSave.Designer.cs">
       <DependentUpon>fGridSave.cs</DependentUpon>
     </Compile>
-    <Compile Include="fMain.Operations.cs">
+    <Compile Include="Forms\fMain.Operations.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fNotify.cs">
+    <Compile Include="Forms\fNotify.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fNotify.Designer.cs">
+    <Compile Include="Forms\fNotify.Designer.cs">
       <DependentUpon>fNotify.cs</DependentUpon>
     </Compile>
-    <Compile Include="fPrompt.cs">
+    <Compile Include="Forms\fPrompt.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fPrompt.Designer.cs">
+    <Compile Include="Forms\fPrompt.Designer.cs">
       <DependentUpon>fPrompt.cs</DependentUpon>
     </Compile>
-    <Compile Include="fPunch.cs">
+    <Compile Include="Forms\fPunch.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fPunch.Designer.cs">
+    <Compile Include="Forms\fPunch.Designer.cs">
       <DependentUpon>fPunch.cs</DependentUpon>
     </Compile>
-    <Compile Include="fToolCalendar.cs">
+    <Compile Include="Forms\fToolCalendar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fToolCalendar.Designer.cs">
+    <Compile Include="Forms\fToolCalendar.Designer.cs">
       <DependentUpon>fToolCalendar.cs</DependentUpon>
     </Compile>
-    <Compile Include="fGrid.cs">
+    <Compile Include="Forms\fGrid.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fGrid.Designer.cs">
+    <Compile Include="Forms\fGrid.Designer.cs">
       <DependentUpon>fGrid.cs</DependentUpon>
     </Compile>
-    <Compile Include="fToolCountdown.cs">
+    <Compile Include="Forms\fToolCountdown.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fToolCountdown.Designer.cs">
+    <Compile Include="Forms\fToolCountdown.Designer.cs">
       <DependentUpon>fToolCountdown.cs</DependentUpon>
     </Compile>
-    <Compile Include="fToolDatecalc.cs">
+    <Compile Include="Forms\fToolDatecalc.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fToolDatecalc.Designer.cs">
+    <Compile Include="Forms\fToolDatecalc.Designer.cs">
       <DependentUpon>fToolDatecalc.cs</DependentUpon>
     </Compile>
-    <Compile Include="fToolJournal.cs">
+    <Compile Include="Forms\fToolJournal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fToolJournal.Designer.cs">
+    <Compile Include="Forms\fToolJournal.Designer.cs">
       <DependentUpon>fToolJournal.cs</DependentUpon>
     </Compile>
-    <Compile Include="fLog.cs">
+    <Compile Include="Forms\fLog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fLog.Designer.cs">
+    <Compile Include="Forms\fLog.Designer.cs">
       <DependentUpon>fLog.cs</DependentUpon>
     </Compile>
-    <Compile Include="fMain.cs">
+    <Compile Include="Forms\fMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fMain.Designer.cs">
+    <Compile Include="Forms\fMain.Designer.cs">
       <DependentUpon>fMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="fItem.cs">
+    <Compile Include="Forms\fItem.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fItem.Designer.cs">
+    <Compile Include="Forms\fItem.Designer.cs">
       <DependentUpon>fItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="fOptions.cs">
+    <Compile Include="Forms\fOptions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fOptions.Designer.cs">
+    <Compile Include="Forms\fOptions.Designer.cs">
       <DependentUpon>fOptions.cs</DependentUpon>
     </Compile>
-    <Compile Include="fProperties.cs">
+    <Compile Include="Forms\fProperties.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fProperties.Designer.cs">
+    <Compile Include="Forms\fProperties.Designer.cs">
       <DependentUpon>fProperties.cs</DependentUpon>
     </Compile>
-    <Compile Include="fReport.cs">
+    <Compile Include="Forms\fReport.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fReport.Designer.cs">
+    <Compile Include="Forms\fReport.Designer.cs">
       <DependentUpon>fReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="fToolReminders.cs">
+    <Compile Include="Forms\fToolReminders.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fToolReminders.Designer.cs">
+    <Compile Include="Forms\fToolReminders.Designer.cs">
       <DependentUpon>fToolReminders.cs</DependentUpon>
     </Compile>
-    <Compile Include="fToolStopwatch.cs">
+    <Compile Include="Forms\fToolStopwatch.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="fToolStopwatch.Designer.cs">
+    <Compile Include="Forms\fToolStopwatch.Designer.cs">
       <DependentUpon>fToolStopwatch.cs</DependentUpon>
     </Compile>
-    <Compile Include="Journal.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="Items.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Project.cs" />
-    <Compile Include="Projects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Timekeeper.cs" />
-    <EmbeddedResource Include="fAbout.resx">
+    <EmbeddedResource Include="Forms\fAbout.resx">
       <DependentUpon>fAbout.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="fAnnotate.resx">
+    <EmbeddedResource Include="Forms\fAnnotate.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fAnnotate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fGridFilter.resx">
+    <EmbeddedResource Include="Forms\fGridFilter.resx">
       <DependentUpon>fGridFilter.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="fGridManage.resx">
+    <EmbeddedResource Include="Forms\fGridManage.resx">
       <DependentUpon>fGridManage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="fGridManageRename.resx">
+    <EmbeddedResource Include="Forms\fGridManageRename.resx">
       <DependentUpon>fGridManageRename.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="fGridSave.resx">
+    <EmbeddedResource Include="Forms\fGridSave.resx">
       <DependentUpon>fGridSave.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="fNotify.resx">
+    <EmbeddedResource Include="Forms\fNotify.resx">
       <DependentUpon>fNotify.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fPrompt.resx">
+    <EmbeddedResource Include="Forms\fPrompt.resx">
       <DependentUpon>fPrompt.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fPunch.resx">
+    <EmbeddedResource Include="Forms\fPunch.resx">
       <DependentUpon>fPunch.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="fToolCalendar.resx">
+    <EmbeddedResource Include="Forms\fToolCalendar.resx">
       <DependentUpon>fToolCalendar.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="fGrid.resx">
+    <EmbeddedResource Include="Forms\fGrid.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fGrid.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fToolCountdown.resx">
+    <EmbeddedResource Include="Forms\fToolCountdown.resx">
       <DependentUpon>fToolCountdown.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fToolDatecalc.resx">
+    <EmbeddedResource Include="Forms\fToolDatecalc.resx">
       <DependentUpon>fToolDatecalc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fToolJournal.resx">
+    <EmbeddedResource Include="Forms\fToolJournal.resx">
       <DependentUpon>fToolJournal.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="fLog.resx">
+    <EmbeddedResource Include="Forms\fLog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fMain.resx">
+    <EmbeddedResource Include="Forms\fMain.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fItem.resx">
+    <EmbeddedResource Include="Forms\fItem.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fOptions.resx">
+    <EmbeddedResource Include="Forms\fOptions.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fOptions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fProperties.resx">
+    <EmbeddedResource Include="Forms\fProperties.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fReport.resx">
+    <EmbeddedResource Include="Forms\fReport.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fReport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fToolReminders.resx">
+    <EmbeddedResource Include="Forms\fToolReminders.resx">
       <DependentUpon>fToolReminders.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="fToolStopwatch.resx">
+    <EmbeddedResource Include="Forms\fToolStopwatch.resx">
       <DependentUpon>fToolStopwatch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -344,9 +347,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Database.cs" />
-    <Compile Include="Task.cs" />
-    <Compile Include="Tasks.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

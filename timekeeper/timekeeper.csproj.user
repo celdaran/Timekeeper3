@@ -15,7 +15,6 @@
     <ErrorReportUrlHistory />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <StartArguments>
-    </StartArguments>
+    <StartArguments>"C:\Users\hillsc\Google Drive\Timekeeper\tk30.tkdb"</StartArguments>
   </PropertyGroup>
 </Project>
