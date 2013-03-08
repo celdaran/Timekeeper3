@@ -81,6 +81,7 @@ namespace Timekeeper
             this.menuToolControlPrev = new System.Windows.Forms.ToolStripMenuItem();
             this.menuToolControlNext = new System.Windows.Forms.ToolStripMenuItem();
             this.menuToolControlLast = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControlNew = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTimerControlsSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuToolControlCloseStartGap = new System.Windows.Forms.ToolStripMenuItem();
             this.menuToolControlCloseEndGap = new System.Windows.Forms.ToolStripMenuItem();
@@ -184,6 +185,7 @@ namespace Timekeeper
             this.toolControlPrevEntry = new System.Windows.Forms.ToolStripButton();
             this.toolControlNextEntry = new System.Windows.Forms.ToolStripButton();
             this.toolControlLastEntry = new System.Windows.Forms.ToolStripButton();
+            this.toolControlNewEntry = new System.Windows.Forms.ToolStripButton();
             this.toolControlEntryId = new System.Windows.Forms.ToolStripLabel();
             this.toolControlSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolControlCloseStartGap = new System.Windows.Forms.ToolStripButton();
@@ -585,6 +587,7 @@ namespace Timekeeper
             this.menuToolControlPrev,
             this.menuToolControlNext,
             this.menuToolControlLast,
+            this.menuToolControlNew,
             this.menuTimerControlsSep2,
             this.menuToolControlCloseStartGap,
             this.menuToolControlCloseEndGap});
@@ -666,6 +669,14 @@ namespace Timekeeper
             this.menuToolControlLast.Size = new System.Drawing.Size(191, 22);
             this.menuToolControlLast.Text = "&Last Entry";
             this.menuToolControlLast.Click += new System.EventHandler(this.menuToolControlLast_Click);
+            // 
+            // menuToolControlNew
+            // 
+            this.menuToolControlNew.Image = global::Timekeeper.Properties.Resources.buttonNew;
+            this.menuToolControlNew.Name = "menuToolControlNew";
+            this.menuToolControlNew.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlNew.Text = "&New Entry";
+            this.menuToolControlNew.Click += new System.EventHandler(this.menuToolControlNew_Click);
             // 
             // menuTimerControlsSep2
             // 
@@ -1545,6 +1556,7 @@ namespace Timekeeper
             this.toolControlPrevEntry,
             this.toolControlNextEntry,
             this.toolControlLastEntry,
+            this.toolControlNewEntry,
             this.toolControlEntryId,
             this.toolControlSep2,
             this.toolControlCloseStartGap,
@@ -1651,6 +1663,17 @@ namespace Timekeeper
             this.toolControlLastEntry.Text = ">|";
             this.toolControlLastEntry.ToolTipText = "Go to Last Entry";
             this.toolControlLastEntry.Click += new System.EventHandler(this.menuToolControlLast_Click);
+            // 
+            // toolControlNewEntry
+            // 
+            this.toolControlNewEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolControlNewEntry.Image = global::Timekeeper.Properties.Resources.buttonNew;
+            this.toolControlNewEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlNewEntry.Name = "toolControlNewEntry";
+            this.toolControlNewEntry.Size = new System.Drawing.Size(23, 22);
+            this.toolControlNewEntry.Text = "New Entry";
+            this.toolControlNewEntry.ToolTipText = "Go to New Entry";
+            this.toolControlNewEntry.Click += new System.EventHandler(this.menuToolControlNew_Click);
             // 
             // toolControlEntryId
             // 
@@ -1915,6 +1938,8 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolControlRevert;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolControlNewEntry;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlNew;
     }
 }
 

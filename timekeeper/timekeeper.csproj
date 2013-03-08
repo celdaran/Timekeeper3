@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Timekeeper</RootNamespace>
     <AssemblyName>timekeeper</AssemblyName>
-    <ApplicationIcon>timekeeper.v22c.ico</ApplicationIcon>
+    <ApplicationIcon>Properties\timekeeper.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ManifestCertificateThumbprint>29A84029ED05BE963F800826055015A93EFFA767</ManifestCertificateThumbprint>
     <ManifestKeyFile>timekeeper_TemporaryKey.pfx</ManifestKeyFile>
@@ -366,6 +366,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\button-new.png" />
     <None Include="Resources\menu-project.bmp" />
     <None Include="Resources\menu-task.bmp" />
     <None Include="Resources\timekeeper-256.png" />
@@ -383,7 +384,7 @@
     <None Include="Resources\button-cancel.png" />
     <None Include="Resources\icon-go.png" />
     <None Include="Resources\button-close-stop-gap.png" />
-    <Content Include="timekeeper.v22c.ico" />
+    <Content Include="Properties\timekeeper.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
