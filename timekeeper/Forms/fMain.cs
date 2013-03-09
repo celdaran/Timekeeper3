@@ -64,6 +64,7 @@ namespace Timekeeper
 
         // miscellaneous internals
         private DateTime annotateStartTime;
+        private bool suppressBrowserDisplay = false;
 
         //---------------------------------------------------------------------
         // Constants
@@ -141,6 +142,7 @@ namespace Timekeeper
         // Action | Start Timer
         private void menuActionStart_Click(object sender, EventArgs e)
         {
+            suppressBrowserDisplay = true;
             StartTimer();
         }
 
@@ -148,6 +150,7 @@ namespace Timekeeper
         private void menuActionStop_Click(object sender, EventArgs e)
         {
             StopTimer();
+            suppressBrowserDisplay = false;
         }
 
         // Action | Annotate and Start Timer
@@ -159,7 +162,10 @@ namespace Timekeeper
         // Action | Annotate and Stop Timer
         private void menuActionStopAdvanced_Click(object sender, EventArgs e)
         {
-            OpenLogForStopping();
+            OpenLogForStopping(true);
+            // This can be used for quick & annotated, but once annotated,
+            // we disable quick mode by no longer suppressing the browser.
+            suppressBrowserDisplay = false; 
         }
 
         // Tasks | New Task
@@ -310,22 +316,14 @@ namespace Timekeeper
         // Tools | Control | Start
         private void menuToolControlStart_Click(object sender, EventArgs e)
         {
-            Keys saveKeys = new Keys();
-            saveKeys = menuToolControlStart.ShortcutKeys;
-            menuToolControlStart.ShortcutKeys = Keys.None;
-            menuToolControlStop.ShortcutKeys = saveKeys;
             StartTimer();
         }
 
         // Tools | Control | Stop
         private void menuToolControlStop_Click(object sender, EventArgs e)
         {
-            Keys saveKeys = new Keys();
-            saveKeys = menuToolControlStop.ShortcutKeys;
-            menuToolControlStop.ShortcutKeys = Keys.None;
-            menuToolControlStart.ShortcutKeys = saveKeys;
             StopTimer();
-            CloseLog(); // FIXME: I'm now thinking this should be optional, I may just leave it open all the time, now that I can
+            //CloseLog(); // FIXME: I'm now thinking this should be optional, I may just leave it open all the time, now that I can
         }
 
         private void menuToolControlContinue_Click(object sender, EventArgs e)
@@ -346,7 +344,6 @@ namespace Timekeeper
                 browserEntry.SetFirstId();
                 if (browserEntry.EntryId > 0) {
                     DisplayRow();
-                    // SetButtons(First)
                     EnableLast(true);
                     EnableNext(true);
                     EnableFirst(false);
@@ -372,6 +369,10 @@ namespace Timekeeper
                         EnableFirst(false);
                         EnablePrev(false);
                     }
+                    if (browserEntry.AtEnd()) {
+                        EnableNext(false);
+                        EnableLast(false);
+                    }
                     isBrowsing = true;
                 } else {
                     EnableFirst(false);
@@ -395,6 +396,10 @@ namespace Timekeeper
                     if (browserEntry.AtEnd()) {
                         EnableLast(false);
                         EnableNext(false);
+                        if (timerRunning) {
+                            //Common.Info("special handling here");
+                            OpenLogForStopping(false);
+                        }
                     }
                     isBrowsing = true;
                 } else {
@@ -414,12 +419,14 @@ namespace Timekeeper
                 browserEntry.SetLastId();
                 if (browserEntry.EntryId > 0) {
                     DisplayRow();
-                    // SetButtons(Last);
                     EnableFirst(true);
                     EnablePrev(true);
                     EnableLast(false);
                     EnableNext(false);
                     isBrowsing = true;
+                }
+                if (timerRunning) {
+                    OpenLogForStopping(false);
                 }
             }
             catch {
@@ -428,9 +435,28 @@ namespace Timekeeper
 
         private void menuToolControlNew_Click(object sender, EventArgs e)
         {
-            Common.Info("I'm a new entry!");
+            OpenLogForStarting();
         }
 
+        private void menuToolControlCloseStartGap_Click(object sender, EventArgs e)
+        {
+            Common.Info("Closed Start Gap!");
+        }
+
+        private void menuToolControlCloseEndGap_Click(object sender, EventArgs e)
+        {
+            Common.Info("Closed End Gap!");
+        }
+
+        private void menuToolControlRevert_Click(object sender, EventArgs e)
+        {
+            Common.Info("Reverted!");
+        }
+
+        private void menuToolControlUnlock_Click(object sender, EventArgs e)
+        {
+            Common.Info("Unlocked!");
+        }
 
         // Tools | Log/Tweak
         private void menuToolsTweak_Click(object sender, EventArgs e)
@@ -770,7 +796,10 @@ namespace Timekeeper
                 statusTimeToday.Text = Timekeeper.FormatSeconds(elapsedToday);
                 statusTimeAll.Text = Timekeeper.FormatSeconds(elapsedTodayAll);
 
-                wDuration.Text = statusTimeCurrent.Text;
+                if (!isBrowsing) {
+                    wDuration.Text = statusTimeCurrent.Text;
+                    wStopTime.Value = DateTime.Now;
+                }
 
                 string timeToShow;
                 if (options.wShowCurrent.Checked) {
@@ -1474,6 +1503,15 @@ namespace Timekeeper
         //---------------------------------------------------------------------
         private void StartTimer()
         {
+            // Cannot start timer while browsing
+            if (isBrowsing) {
+                // Should be unreachable code due to the start function being
+                // disabled in the UI itself. Setting this here for safety
+                // purposes anyway.
+                Common.Warn("You cannot start the timer while browsing entries.");
+                return;
+            }
+
             // Find the currently selected project
             if (wProjects.SelectedNode == null) {
                 if (wProjects.Nodes.Count == 1) {
@@ -1521,11 +1559,11 @@ namespace Timekeeper
             currentEntry = new Entry(data);
             currentEntry.TaskId = currentTask.id;
             currentEntry.ProjectId = currentProject.id;
-            currentEntry.StartTime = isBrowsing ? DateTime.Now : wStartTime.Value;
-            currentEntry.StopTime = isBrowsing ? DateTime.Now : wStartTime.Value; // defaults to start time.
+            currentEntry.StartTime = wStartTime.Value;
+            currentEntry.StopTime = wStartTime.Value; // defaults to start time.
             currentEntry.Seconds = 0; // default to zero
-            currentEntry.Text = isBrowsing ? "" : wMemo.Text;
-            currentEntry.PreLog = isBrowsing ? "" : wMemo.Text;
+            currentEntry.Text = wMemo.Text;
+            currentEntry.PreLog = wMemo.Text;
             currentEntry.PostLog = ""; // FIXME (this is going away anyway)
             currentEntry.IsLocked = true;
             currentEntry.Create();
@@ -1547,6 +1585,7 @@ namespace Timekeeper
             menuActionStopAdvanced.Visible = true;
 
             // swap start/stop keystrokes
+            // FIXME: this is a mess
             Keys saveKeys = new Keys();
             Keys saveKeysAdvanced = new Keys();
             saveKeys = menuActionStart.ShortcutKeys;
@@ -1555,6 +1594,9 @@ namespace Timekeeper
             menuActionStartAdvanced.ShortcutKeys = Keys.None;
             menuActionStop.ShortcutKeys = saveKeys;
             menuActionStopAdvanced.ShortcutKeys = saveKeysAdvanced;
+            saveKeys = menuToolControlStart.ShortcutKeys;
+            menuToolControlStart.ShortcutKeys = Keys.None;
+            menuToolControlStop.ShortcutKeys = saveKeys;
 
             statusCurrentTask.Text = wTasks.SelectedNode.Text;
             statusCurrentTask.ForeColor = Color.Black;
@@ -1586,98 +1628,67 @@ namespace Timekeeper
             //CloseLog();
             
             // As soon as the timer has started, we have to paint "stop" mode.
-            OpenLogForStopping(); 
+            OpenLogForStopping(false); 
        }
 
         // FIXME: MOVE THIS
         private void OpenLogForStarting()
         {
-            menuToolBrowse.Checked = false;
+            // Set UI accordingly
+            SetCreateState();
 
-            toolControlStart.Visible = true;
-            toolControlStop.Visible = false;
-            toolControlContinue.Visible = false;
-            toolControlClose.Visible = true;
-            toolControlNewEntry.Visible = true;
-            toolControlCloseEndGap.Visible = false;
+            // Reset browser entry
+            browserEntry.Reset();
+            isBrowsing = false;
 
-            menuToolControlStart.Visible = true;
-            menuToolControlStop.Visible = false;
-            menuToolControlContinue.Visible = false;
-            menuToolControlClose.Visible = true;
-            menuToolControlNew.Visible = true;
-            menuToolControlCloseEndGap.Visible = false;
-
-            toolControlEntryId.Text = ""; // don't show anything for a new row.
-
-            /*
-            menuToolFormat.Visible = true;
-            menuToolControl.Visible = true;
-            */
-
-            labelEndTime.Visible = false;
-            wStopTime.Visible = false;
-            labelDuration.Visible = false;
-            wDuration.Visible = false;
-
-            splitMain.Panel2Collapsed = false;
-
-            panelControls.Height = 58;
-
+            // Set default values
+            toolControlEntryId.Text = "";
             wStartTime.Value = DateTime.Now;
+            wStopTime.Value = DateTime.Now;
+            wDuration.Text = "";
             wMemo.Text = "";
+
+            // Ensure proper display
+            splitMain.Panel2Collapsed = suppressBrowserDisplay ? true : false;
             wMemo.Focus();
         }
 
         // FIXME: MOVE THIS
-        private void OpenLogForStopping()
+        // FIXME: ALSO RENAME THIS -- NOT A FAN OF "OPEN LOG" ANY MORE
+        // FIXME: And now that I just added showBrowser support, that puts the last nail in the coffin
+        private void OpenLogForStopping(bool showBrowser)
         {
-            menuToolBrowse.Checked = false;
+            // Set UI accordingly 
+            SetStopState();
 
-            toolControlStart.Visible = false;
-            toolControlStop.Visible = true;
-            toolControlContinue.Visible = true;
-            toolControlClose.Visible = false;
+            // Reset browser entry
+            isBrowsing = false;
 
-            menuToolControlStart.Visible = false;
-            menuToolControlStop.Visible = true;
-            menuToolControlContinue.Visible = true;
-            menuToolControlClose.Visible = false;
+            if (showBrowser) {
+                splitMain.Panel2Collapsed = false;
+            }
 
-            /*
-            menuToolFormat.Visible = true;
-            menuToolControl.Visible = true;
-            */
+            //wStopTime.Value = DateTime.Now;
 
-            labelEndTime.Visible = true;
-            wStopTime.Visible = true;
-            labelDuration.Visible = true;
-            wDuration.Visible = true;
-
-            //splitMain.Panel2Collapsed = false;
-
-            panelControls.Height = 112;
-
-            wStopTime.Value = DateTime.Now;
+            // Ensure proper display
             wMemo.Focus();
         }
 
         // FIXME: MOVE THIS
         private void OpenLogForBrowsing()
         {
+            // FIXME: BROWSING IS DEPRECATED --- I THINK?
             menuToolBrowse.Checked = true;
 
             toolControlStart.Visible = false;
             toolControlStop.Visible = false;
             toolControlContinue.Visible = false;
             toolControlClose.Visible = true;
-            toolControlNewEntry.Visible = false;
 
             menuToolControlStart.Visible = false;
             menuToolControlStop.Visible = false;
             menuToolControlContinue.Visible = false;
             menuToolControlClose.Visible = true;
-            menuToolControlNew.Visible = false;
 
             /*
             menuToolFormat.Visible = true;
@@ -1702,6 +1713,9 @@ namespace Timekeeper
             */
 
             // Close control pane
+            // Note, this isn't an option. If we're here, it means CLOSE IT.
+            // If you find yourself here and don't want it closed, then go
+            // fix the caller.
             splitMain.Panel2Collapsed = true;
         }
 
@@ -1735,7 +1749,6 @@ namespace Timekeeper
             }
 
             // Close off timer
-            //int seconds = currentTask.endTiming();
             currentEntry.TaskId = currentTask.id;
             currentEntry.ProjectId = currentProject.id;
             currentEntry.StartTime = wStartTime.Value;
@@ -1766,6 +1779,7 @@ namespace Timekeeper
             statusTimeCurrent.ForeColor = Color.Gray;
 
             // swap start/stop keystrokes
+            // FIXME: this is a mess
             Keys saveKeys = new Keys();
             Keys saveKeysAdvanced = new Keys();
             saveKeys = menuActionStop.ShortcutKeys;
@@ -1774,6 +1788,9 @@ namespace Timekeeper
             menuActionStopAdvanced.ShortcutKeys = Keys.None;
             menuActionStart.ShortcutKeys = saveKeys;
             menuActionStartAdvanced.ShortcutKeys = saveKeysAdvanced;
+            saveKeys = menuToolControlStop.ShortcutKeys;
+            menuToolControlStop.ShortcutKeys = Keys.None;
+            menuToolControlStart.ShortcutKeys = saveKeys;
 
             currentTaskNode.ImageIndex = IMG_TASK;
             currentTaskNode.SelectedImageIndex = IMG_TASK;
@@ -1789,6 +1806,9 @@ namespace Timekeeper
             menuFileRecent.Enabled = true;
             menuFileUtilities.Enabled = true;
             menuFileExit.Enabled = true;
+
+            // As soon as the timer has stopped, we have to paint "start" mode.
+            OpenLogForStarting();
         }
 
         //---------------------------------------------------------------------
@@ -1997,16 +2017,64 @@ namespace Timekeeper
 
         // FIXME/MOVEME
 
+        private void ShowStart(bool show)
+        {
+            toolControlStart.Visible = show;
+            menuToolControlStart.Visible = show;
+        }
+
+        private void ShowStop(bool show)
+        {
+            toolControlStop.Visible = show;
+            menuToolControlStop.Visible = show;
+        }
+
+        private void ShowContinue(bool show)
+        {
+            toolControlContinue.Visible = show;
+            menuToolControlContinue.Visible = show;
+        }
+
+        private void ShowClose(bool show)
+        {
+            toolControlClose.Visible = show;
+            menuToolControlClose.Visible = show;
+        }
+
+        private void ShowUnlock(bool show)
+        {
+            toolControlUnlock.Visible = show;
+            menuToolControlUnlock.Visible = show;
+        }
+
+        private void EnableStart(bool enabled)
+        {
+            toolControlStart.Enabled = enabled;
+            menuToolControlStart.Enabled = enabled;
+        }
+
+        private void EnableStop(bool enabled)
+        {
+            toolControlStop.Enabled = enabled;
+            menuToolControlStop.Enabled = enabled;
+        }
+
+        private void EnableContinue(bool enabled)
+        {
+            toolControlContinue.Enabled = enabled;
+            menuToolControlContinue.Enabled = enabled;
+        }
+
+        private void EnableClose(bool enabled)
+        {
+            toolControlClose.Enabled = enabled;
+            menuToolControlClose.Enabled = enabled;
+        }
+
         private void EnableFirst(bool enabled)
         {
             toolControlFirstEntry.Enabled = enabled;
             menuToolControlFirst.Enabled = enabled;
-        }
-
-        private void EnableLast(bool enabled)
-        {
-            toolControlLastEntry.Enabled = enabled;
-            menuToolControlLast.Enabled = enabled;
         }
 
         private void EnablePrev(bool enabled)
@@ -2021,6 +2089,18 @@ namespace Timekeeper
             menuToolControlNext.Enabled = enabled;
         }
 
+        private void EnableLast(bool enabled)
+        {
+            toolControlLastEntry.Enabled = enabled;
+            menuToolControlLast.Enabled = enabled;
+        }
+
+        private void EnableNew(bool enabled)
+        {
+            toolControlNewEntry.Enabled = enabled;
+            menuToolControlNew.Enabled = enabled;
+        }
+
         private void EnableCloseStartGap(bool enabled)
         {
             toolControlCloseStartGap.Enabled = enabled;
@@ -2033,15 +2113,141 @@ namespace Timekeeper
             menuToolControlCloseEndGap.Enabled = enabled;
         }
 
-        private void EnableButtons(bool enabled)
+        private void EnableRevert(bool enabled)
         {
-            Common.Warn("EnableButtons deprecated");
+            toolControlRevert.Enabled = enabled;
+            menuToolControlRevert.Enabled = enabled;
+        }
+
+        private void EnableStartEntry(bool enabled)
+        {
+            wStartTime.Enabled = enabled;
+            labelStartTime.Enabled = enabled;
+        }
+
+        private void EnableStopEntry(bool enabled)
+        {
+            wStopTime.Enabled = enabled;
+            labelEndTime.Enabled = enabled;
+        }
+
+        private void EnableDurationEntry(bool enabled)
+        {
+            wDuration.Enabled = enabled;
+            labelDuration.Enabled = enabled;
+        }
+
+        private void EnableMemoEntry(bool enabled)
+        {
+            wMemo.Enabled = enabled;
+        }
+
+        private void SetCreateState()
+        {
+            ShowStart(true);
+            ShowStop(false);
+            ShowContinue(false);
+            ShowClose(true);
+
+            EnableStart(true);
+            EnableStop(false);
+            EnableContinue(false);
+            EnableClose(true);
+
+            EnableFirst(true);
+            EnablePrev(true);
+            EnableNext(false);
+            EnableLast(false);
+            EnableNew(false);
+
+            EnableCloseStartGap(true);
+            EnableCloseEndGap(false);
+            EnableRevert(false);
+
+            EnableStartEntry(true);
+            EnableStopEntry(false);
+            EnableDurationEntry(false);
+        }
+
+        private void SetBrowseState() {
+
+            if (timerRunning) {
+                ShowStart(false);
+                ShowStop(true);
+                ShowContinue(true);
+                ShowClose(false);
+
+                EnableStart(false);
+                EnableStop(false);
+                EnableContinue(true);
+                EnableClose(false);
+
+                EnableNew(false);
+
+                EnableCloseStartGap(true);
+                EnableCloseEndGap(true);
+                EnableRevert(false);
+
+                EnableStartEntry(true);
+                EnableStopEntry(true);
+                EnableDurationEntry(true);
+            } else {
+                ShowStart(true);
+                ShowStop(false);
+                ShowContinue(false);
+                ShowClose(true);
+
+                EnableStart(false);
+                EnableStop(false);
+                EnableContinue(false);
+                EnableClose(true);
+
+                EnableNew(true);
+
+                EnableCloseStartGap(true);
+                EnableCloseEndGap(true);
+                EnableRevert(false);
+
+                EnableStartEntry(true);
+                EnableStopEntry(true);
+                EnableDurationEntry(true);
+            }
+        }
+
+        private void SetStopState()
+        {
+            ShowStart(false);
+            ShowStop(true);
+            ShowContinue(true);
+            ShowClose(false);
+
+            EnableStart(false);
+            EnableStop(true);
+            EnableContinue(true);
+            EnableClose(false);
+
+            EnableFirst(true);
+            EnablePrev(true);
+            EnableNext(false);
+            EnableLast(false);
+            EnableNew(false);
+
+            EnableCloseStartGap(false);
+            EnableCloseEndGap(false);
+            EnableRevert(false);
+
+            EnableStartEntry(false);
+            EnableStopEntry(false);
+            EnableDurationEntry(false);
         }
 
         private void LoadBrowser()
         {
             try {
                 // Initialize id with latest row
+
+                // um, actually, don't
+                /*
                 browserEntry.SetLastId();
                 if (browserEntry.EntryId == 0) {
                     //EnableButtons(false);
@@ -2050,6 +2256,7 @@ namespace Timekeeper
 
                 // Show row
                 DisplayRow();
+                */
 
                 // Add keyboard shortcuts to tooltips
                 var kc = new KeysConverter();
@@ -2078,17 +2285,19 @@ namespace Timekeeper
                 browserEntry.Load();
 
                 if (browserEntry.Empty()) {
+                    Common.Info("You thought you couldn't hit this, did you?");
                     return;
                 }
 
                 try {
-                    // Display start/end times
+                    // Set appropriate UI state
+                    SetBrowseState();
+
+                    // Display entry
                     wStartTime.Value = browserEntry.StartTime;
                     wStopTime.Value = browserEntry.StopTime;
-
-                    // Display duration and entry text
                     wDuration.Text = Timekeeper.FormatSeconds(browserEntry.Seconds);
-                    wMemo.Text = browserEntry.PreLog + "\n\n" + browserEntry.PostLog;
+                    wMemo.Text = browserEntry.PostLog; // FIXME: this will be changed to just "memo"
 
                     // Now select tasks and projects while browsing.
                     TreeNode node = _findNode(wTasks.Nodes, browserEntry.TaskName);
@@ -2106,20 +2315,28 @@ namespace Timekeeper
                     toolControlEntryId.Text = browserEntry.EntryId.ToString();
 
                     if (browserEntry.IsLocked) {
-                        wStartTime.Enabled = false;
-                        wStopTime.Enabled = false;
-                        wDuration.Enabled = false;
-                        wLocation.Enabled = false;
-                        wTag.Enabled = false;
-                        //btnUnlock.Visible = isTimerRunning ? false : true;
+                        EnableCloseStartGap(false);
+                        EnableCloseEndGap(false);
+                        EnableStartEntry(false);
+                        EnableStopEntry(false);
+                        EnableDurationEntry(false);
+                        if (timerRunning) {
+                            EnableMemoEntry(true);
+                            ShowUnlock(false);
+                        } else {
+                            EnableMemoEntry(false);
+                            ShowUnlock(true);
+                        }
                     } else {
-                        wStartTime.Enabled = true;
-                        wStopTime.Enabled = true;
-                        wDuration.Enabled = true;
-                        wLocation.Enabled = true;
-                        wTag.Enabled = true;
-                        //btnUnlock.Visible = false;
+                        EnableCloseStartGap(true);
+                        EnableCloseEndGap(true);
+                        EnableStartEntry(true);
+                        EnableStopEntry(true);
+                        EnableDurationEntry(true);
+                        EnableMemoEntry(true);
+                        ShowUnlock(false);
                     }
+
                     /*
 
                     // Disable close gap buttons if no gap to close

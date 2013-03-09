@@ -192,7 +192,10 @@ namespace Timekeeper
             this.toolControlCloseEndGap = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
+            this.menuTimerControlsSep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuToolControlRevert = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuToolControlUnlock = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.statusMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
@@ -573,6 +576,7 @@ namespace Timekeeper
             this.menuToolBrowse.Name = "menuToolBrowse";
             this.menuToolBrowse.Size = new System.Drawing.Size(161, 22);
             this.menuToolBrowse.Text = "&Browse Entries";
+            this.menuToolBrowse.Visible = false;
             this.menuToolBrowse.Click += new System.EventHandler(this.menuToolBrowse_Click);
             // 
             // menuToolControl
@@ -590,7 +594,10 @@ namespace Timekeeper
             this.menuToolControlNew,
             this.menuTimerControlsSep2,
             this.menuToolControlCloseStartGap,
-            this.menuToolControlCloseEndGap});
+            this.menuToolControlCloseEndGap,
+            this.menuTimerControlsSep3,
+            this.menuToolControlRevert,
+            this.menuToolControlUnlock});
             this.menuToolControl.Name = "menuToolControl";
             this.menuToolControl.Size = new System.Drawing.Size(161, 22);
             this.menuToolControl.Text = "&Controls";
@@ -601,7 +608,7 @@ namespace Timekeeper
             this.menuToolControlStart.Image = global::Timekeeper.Properties.Resources.buttonGo;
             this.menuToolControlStart.Name = "menuToolControlStart";
             this.menuToolControlStart.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Return)));
-            this.menuToolControlStart.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlStart.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlStart.Text = "Start";
             this.menuToolControlStart.Click += new System.EventHandler(this.menuToolControlStart_Click);
             // 
@@ -609,7 +616,7 @@ namespace Timekeeper
             // 
             this.menuToolControlStop.Image = global::Timekeeper.Properties.Resources.buttonCancel;
             this.menuToolControlStop.Name = "menuToolControlStop";
-            this.menuToolControlStop.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlStop.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlStop.Text = "Stop";
             this.menuToolControlStop.Click += new System.EventHandler(this.menuToolControlStop_Click);
             // 
@@ -617,7 +624,7 @@ namespace Timekeeper
             // 
             this.menuToolControlContinue.Image = global::Timekeeper.Properties.Resources.buttonGo;
             this.menuToolControlContinue.Name = "menuToolControlContinue";
-            this.menuToolControlContinue.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlContinue.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlContinue.Text = "Continue";
             this.menuToolControlContinue.Click += new System.EventHandler(this.menuToolControlContinue_Click);
             // 
@@ -625,21 +632,21 @@ namespace Timekeeper
             // 
             this.menuToolControlClose.Image = global::Timekeeper.Properties.Resources.buttonCancel;
             this.menuToolControlClose.Name = "menuToolControlClose";
-            this.menuToolControlClose.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlClose.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlClose.Text = "Close";
             this.menuToolControlClose.Click += new System.EventHandler(this.menuToolControlClose_Click);
             // 
             // menuTimerControlsSep1
             // 
             this.menuTimerControlsSep1.Name = "menuTimerControlsSep1";
-            this.menuTimerControlsSep1.Size = new System.Drawing.Size(188, 6);
+            this.menuTimerControlsSep1.Size = new System.Drawing.Size(190, 6);
             // 
             // menuToolControlFirst
             // 
             this.menuToolControlFirst.Image = global::Timekeeper.Properties.Resources.buttonFirst;
             this.menuToolControlFirst.Name = "menuToolControlFirst";
             this.menuToolControlFirst.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Home)));
-            this.menuToolControlFirst.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlFirst.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlFirst.Text = "&First Entry";
             this.menuToolControlFirst.Click += new System.EventHandler(this.menuToolControlFirst_Click);
             // 
@@ -648,7 +655,7 @@ namespace Timekeeper
             this.menuToolControlPrev.Image = global::Timekeeper.Properties.Resources.buttonPrev;
             this.menuToolControlPrev.Name = "menuToolControlPrev";
             this.menuToolControlPrev.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Left)));
-            this.menuToolControlPrev.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlPrev.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlPrev.Text = "&Previous Entry";
             this.menuToolControlPrev.Click += new System.EventHandler(this.menuToolControlPrev_Click);
             // 
@@ -657,7 +664,7 @@ namespace Timekeeper
             this.menuToolControlNext.Image = global::Timekeeper.Properties.Resources.buttonNext;
             this.menuToolControlNext.Name = "menuToolControlNext";
             this.menuToolControlNext.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Right)));
-            this.menuToolControlNext.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlNext.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlNext.Text = "&Next Entry";
             this.menuToolControlNext.Click += new System.EventHandler(this.menuToolControlNext_Click);
             // 
@@ -666,7 +673,7 @@ namespace Timekeeper
             this.menuToolControlLast.Image = global::Timekeeper.Properties.Resources.buttonLast;
             this.menuToolControlLast.Name = "menuToolControlLast";
             this.menuToolControlLast.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.End)));
-            this.menuToolControlLast.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlLast.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlLast.Text = "&Last Entry";
             this.menuToolControlLast.Click += new System.EventHandler(this.menuToolControlLast_Click);
             // 
@@ -674,26 +681,30 @@ namespace Timekeeper
             // 
             this.menuToolControlNew.Image = global::Timekeeper.Properties.Resources.buttonNew;
             this.menuToolControlNew.Name = "menuToolControlNew";
-            this.menuToolControlNew.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlNew.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.N)));
+            this.menuToolControlNew.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlNew.Text = "&New Entry";
             this.menuToolControlNew.Click += new System.EventHandler(this.menuToolControlNew_Click);
             // 
             // menuTimerControlsSep2
             // 
             this.menuTimerControlsSep2.Name = "menuTimerControlsSep2";
-            this.menuTimerControlsSep2.Size = new System.Drawing.Size(188, 6);
+            this.menuTimerControlsSep2.Size = new System.Drawing.Size(190, 6);
             // 
             // menuToolControlCloseStartGap
             // 
             this.menuToolControlCloseStartGap.Name = "menuToolControlCloseStartGap";
-            this.menuToolControlCloseStartGap.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlCloseStartGap.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlCloseStartGap.Text = "&Close Start Gap";
+            this.menuToolControlCloseStartGap.Click += new System.EventHandler(this.menuToolControlCloseStartGap_Click);
             // 
             // menuToolControlCloseEndGap
             // 
             this.menuToolControlCloseEndGap.Name = "menuToolControlCloseEndGap";
-            this.menuToolControlCloseEndGap.Size = new System.Drawing.Size(191, 22);
+            this.menuToolControlCloseEndGap.Size = new System.Drawing.Size(193, 22);
             this.menuToolControlCloseEndGap.Text = "&Close End Gap";
+            this.menuToolControlCloseEndGap.Click += new System.EventHandler(this.menuToolControlCloseEndGap_Click);
             // 
             // menuToolFormat
             // 
@@ -739,6 +750,7 @@ namespace Timekeeper
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(158, 6);
+            this.toolStripSeparator4.Visible = false;
             // 
             // menuToolFind
             // 
@@ -1521,9 +1533,9 @@ namespace Timekeeper
             this.labelEndTime.AutoSize = true;
             this.labelEndTime.Location = new System.Drawing.Point(3, 59);
             this.labelEndTime.Name = "labelEndTime";
-            this.labelEndTime.Size = new System.Drawing.Size(29, 13);
+            this.labelEndTime.Size = new System.Drawing.Size(26, 13);
             this.labelEndTime.TabIndex = 8;
-            this.labelEndTime.Text = "&End:";
+            this.labelEndTime.Text = "&End";
             // 
             // wDuration
             // 
@@ -1531,7 +1543,6 @@ namespace Timekeeper
             this.wDuration.Name = "wDuration";
             this.wDuration.Size = new System.Drawing.Size(127, 20);
             this.wDuration.TabIndex = 11;
-            this.wDuration.Text = "00:15:23";
             // 
             // labelDuration
             // 
@@ -1563,7 +1574,7 @@ namespace Timekeeper
             this.toolControlCloseEndGap,
             this.toolStripSeparator3,
             this.toolControlRevert,
-            this.toolStripButton1});
+            this.toolControlUnlock});
             this.toolStripControls.Location = new System.Drawing.Point(0, 0);
             this.toolStripControls.Name = "toolStripControls";
             this.toolStripControls.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -1667,6 +1678,7 @@ namespace Timekeeper
             // toolControlNewEntry
             // 
             this.toolControlNewEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolControlNewEntry.Enabled = false;
             this.toolControlNewEntry.Image = global::Timekeeper.Properties.Resources.buttonNew;
             this.toolControlNewEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlNewEntry.Name = "toolControlNewEntry";
@@ -1696,6 +1708,7 @@ namespace Timekeeper
             this.toolControlCloseStartGap.Name = "toolControlCloseStartGap";
             this.toolControlCloseStartGap.Size = new System.Drawing.Size(23, 22);
             this.toolControlCloseStartGap.Text = "Close Start Gap";
+            this.toolControlCloseStartGap.Click += new System.EventHandler(this.menuToolControlCloseStartGap_Click);
             // 
             // toolControlCloseEndGap
             // 
@@ -1705,6 +1718,7 @@ namespace Timekeeper
             this.toolControlCloseEndGap.Name = "toolControlCloseEndGap";
             this.toolControlCloseEndGap.Size = new System.Drawing.Size(23, 22);
             this.toolControlCloseEndGap.Text = "Close End Gap";
+            this.toolControlCloseEndGap.Click += new System.EventHandler(this.menuToolControlCloseEndGap_Click);
             // 
             // toolStripSeparator3
             // 
@@ -1714,22 +1728,45 @@ namespace Timekeeper
             // toolControlRevert
             // 
             this.toolControlRevert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolControlRevert.Enabled = false;
             this.toolControlRevert.Image = ((System.Drawing.Image)(resources.GetObject("toolControlRevert.Image")));
             this.toolControlRevert.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlRevert.Name = "toolControlRevert";
             this.toolControlRevert.Size = new System.Drawing.Size(44, 22);
             this.toolControlRevert.Text = "Revert";
             this.toolControlRevert.ToolTipText = "Revert Changes to Last Saved State";
+            this.toolControlRevert.Click += new System.EventHandler(this.menuToolControlRevert_Click);
             // 
-            // toolStripButton1
+            // toolControlUnlock
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(42, 22);
-            this.toolStripButton1.Text = "Unlock";
-            this.toolStripButton1.ToolTipText = "Unlock Entry for Editing";
+            this.toolControlUnlock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolControlUnlock.Image = ((System.Drawing.Image)(resources.GetObject("toolControlUnlock.Image")));
+            this.toolControlUnlock.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolControlUnlock.Name = "toolControlUnlock";
+            this.toolControlUnlock.Size = new System.Drawing.Size(42, 22);
+            this.toolControlUnlock.Text = "Unlock";
+            this.toolControlUnlock.ToolTipText = "Unlock Entry for Editing";
+            this.toolControlUnlock.Visible = false;
+            this.toolControlUnlock.Click += new System.EventHandler(this.menuToolControlUnlock_Click);
+            // 
+            // menuTimerControlsSep3
+            // 
+            this.menuTimerControlsSep3.Name = "menuTimerControlsSep3";
+            this.menuTimerControlsSep3.Size = new System.Drawing.Size(190, 6);
+            // 
+            // menuToolControlRevert
+            // 
+            this.menuToolControlRevert.Name = "menuToolControlRevert";
+            this.menuToolControlRevert.Size = new System.Drawing.Size(193, 22);
+            this.menuToolControlRevert.Text = "&Revert";
+            this.menuToolControlRevert.Click += new System.EventHandler(this.menuToolControlRevert_Click);
+            // 
+            // menuToolControlUnlock
+            // 
+            this.menuToolControlUnlock.Name = "menuToolControlUnlock";
+            this.menuToolControlUnlock.Size = new System.Drawing.Size(193, 22);
+            this.menuToolControlUnlock.Text = "&Unlock";
+            this.menuToolControlUnlock.Click += new System.EventHandler(this.menuToolControlUnlock_Click);
             // 
             // fMain
             // 
@@ -1937,9 +1974,12 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolControlRevert;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolControlUnlock;
         private System.Windows.Forms.ToolStripButton toolControlNewEntry;
         private System.Windows.Forms.ToolStripMenuItem menuToolControlNew;
+        private System.Windows.Forms.ToolStripSeparator menuTimerControlsSep3;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlRevert;
+        private System.Windows.Forms.ToolStripMenuItem menuToolControlUnlock;
     }
 }
 

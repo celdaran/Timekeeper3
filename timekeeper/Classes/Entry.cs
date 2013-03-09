@@ -33,7 +33,7 @@ namespace Timekeeper
         public string PreLog;
         public string PostLog;
         public string Text;         // NEW --> replaces pre_log and post_log
-        public bool IsLocked;       // perhaps this should be private?
+        public bool IsLocked;
         public string TaskName;
         public string ProjectName;
 
@@ -134,6 +134,12 @@ namespace Timekeeper
         public bool Empty()
         {
             return (this.EntryId == 0);
+        }
+
+        public void Reset()
+        {
+            this.CurrentStartTime = DateTime.Now;
+            //this.SetPrevId();
         }
 
         //---------------------------------------------------------------------
