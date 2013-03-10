@@ -20,7 +20,6 @@ namespace Timekeeper
         private string Query;
         private string Message;
         
-        private long LastEntryId;
         private DateTime CurrentStartTime;
 
         // Public Entry attributes
@@ -32,7 +31,7 @@ namespace Timekeeper
         public long Seconds;
         public string PreLog;
         public string PostLog;
-        public string Text;         // NEW --> replaces pre_log and post_log
+        public string Memo;         // NEW --> replaces pre_log and post_log
         public bool IsLocked;
         public string TaskName;
         public string ProjectName;
@@ -45,7 +44,20 @@ namespace Timekeeper
         {
             this.Data = Data;
             this.Log = new Log(Data.DataFile + ".log");
-            this.Text = "FIXME";
+
+            this.EntryId = 0;
+            this.TaskId = 0;
+            this.ProjectId = 0;
+            this.StartTime = DateTime.Now;
+            this.StopTime = DateTime.Now;
+            this.Seconds = 0;
+            this.PreLog = "";
+            this.PostLog = "";
+            this.Memo = "";
+            this.IsLocked = false;
+            this.TaskName = "";
+            this.ProjectName = "";
+
             this.CurrentStartTime = DateTime.Now;
         }
 
@@ -65,7 +77,6 @@ namespace Timekeeper
             try {
                 // Create the row based on current object attributes
                 EntryId = Data.Insert("timekeeper", GetAttributes());
-                LastEntryId = EntryId;
 
                 // Update the tasks table to track the last project
                 Row row = new Row();
@@ -79,24 +90,14 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public void Save(long entryId)
+        public void Save()
         {
             try {
-                // Update on the last created entry id (LastEntryId) instead
-                // of EntryId, since EntryId may change based on user navigation
-                // in the inline log browser.
-                Data.Update("timekeeper", GetAttributes(), "id", entryId);
+                Data.Update("timekeeper", GetAttributes(), "id", EntryId);
             }
             catch {
                 Log.Warn("could not close");
             }
-        }
-
-        //---------------------------------------------------------------------
-
-        public void Save()
-        {
-            Save(LastEntryId);
         }
 
         //---------------------------------------------------------------------
@@ -131,64 +132,71 @@ namespace Timekeeper
             Load(this.EntryId);
         }
 
-        public bool Empty()
+        public void LoadFirst()
         {
-            return (this.EntryId == 0);
+            this.SetFirstId();
+            this.Load();
         }
 
-        public void Reset()
+        public void LoadPrevious()
         {
-            this.CurrentStartTime = DateTime.Now;
-            //this.SetPrevId();
+            this.SetPrevId();
+            this.Load();
         }
 
-        //---------------------------------------------------------------------
-
-        public void SetLastId()
+        public void LoadNext()
         {
-            string query = String.Format(@"
-                select id, timestamp_s from timekeeper 
-                order by timestamp_s desc 
-                limit 1");
-            SetId(query);
+            this.SetNextId();
+            this.Load();
         }
 
-        //---------------------------------------------------------------------
-
-        public void SetFirstId()
+        public void LoadLast()
         {
-            string query = String.Format(@"
-                select id, timestamp_s from timekeeper 
-                order by timestamp_s asc 
-                limit 1");
-            SetId(query);
+            this.SetLastId();
+            this.Load();
         }
 
-        //---------------------------------------------------------------------
-
-        public void SetPrevId()
+        public Entry Copy()
         {
-            string query = String.Format(@"
-                select id, timestamp_s from timekeeper
-                where timestamp_s < '{0}'
-                order by timestamp_s desc
-                limit 1", this.CurrentStartTime.ToString(Common.DATETIME_FORMAT));
-            SetId(query);
+            Entry copy = new Entry(this.Data);
+
+            copy.EntryId = this.EntryId;
+            copy.TaskId = this.TaskId;
+            copy.ProjectId = this.ProjectId;
+            copy.StartTime = this.StartTime;
+            copy.StopTime = this.StopTime;
+            copy.Seconds = this.Seconds;
+            copy.PreLog = this.PreLog;
+            copy.PostLog = this.PostLog;
+            copy.IsLocked = this.IsLocked;
+            copy.TaskName = this.TaskName;
+            copy.ProjectName = this.ProjectName;
+
+            return copy;
         }
 
-        //---------------------------------------------------------------------
-
-        public void SetNextId()
+        public bool Equals(Entry copy)
         {
-            if (this.CurrentStartTime == DateTime.MinValue)
-                return;
-            string query = String.Format(@"
-                select id, timestamp_s from timekeeper
-                where timestamp_s > '{0}'
-                order by timestamp_s asc
-                limit 1", this.CurrentStartTime.ToString(Common.DATETIME_FORMAT));
-            SetId(query);
+            if (copy == null) {
+                return false;
+            }
+
+            if (
+	            (copy.TaskId == this.TaskId) &&
+	            (copy.ProjectId == this.ProjectId) &&
+	            (copy.StartTime == this.StartTime) &&
+	            (copy.StopTime == this.StopTime) &&
+	            (copy.Seconds == this.Seconds) &&
+	            (copy.PreLog == this.PreLog) &&
+	            (copy.PostLog == this.PostLog) &&
+	            (copy.IsLocked == this.IsLocked)
+               ) {
+                return true;
+	        } else {
+                return false;
+	        }
         }
+
 
         //---------------------------------------------------------------------
         // Helper "Properties"
@@ -282,6 +290,55 @@ namespace Timekeeper
             }
         }
 
+        //---------------------------------------------------------------------
+        // Navigation Helpers
+        //---------------------------------------------------------------------
+
+        private void SetFirstId()
+        {
+            string query = String.Format(@"
+                select id, timestamp_s from timekeeper 
+                order by timestamp_s asc 
+                limit 1");
+            SetId(query);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void SetPrevId()
+        {
+            string query = String.Format(@"
+                select id, timestamp_s from timekeeper
+                where timestamp_s < '{0}'
+                order by timestamp_s desc
+                limit 1", this.CurrentStartTime.ToString(Common.DATETIME_FORMAT));
+            SetId(query);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void SetNextId()
+        {
+            if (this.CurrentStartTime == DateTime.MinValue)
+                return;
+            string query = String.Format(@"
+                select id, timestamp_s from timekeeper
+                where timestamp_s > '{0}'
+                order by timestamp_s asc
+                limit 1", this.CurrentStartTime.ToString(Common.DATETIME_FORMAT));
+            SetId(query);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void SetLastId()
+        {
+            string query = String.Format(@"
+                select id, timestamp_s from timekeeper 
+                order by timestamp_s desc 
+                limit 1");
+            SetId(query);
+        }
 
         //---------------------------------------------------------------------
 

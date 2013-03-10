@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-//using System.Web;  // this being used?
 using System.Text.RegularExpressions;
 
 using Technitivity.Toolbox;
@@ -48,8 +47,10 @@ namespace Timekeeper
         private TreeNode currentProjectNode;
         private TreeNode draggingNode;
 
-        // browser objects
+        // Browser Objects
         private Entry browserEntry;
+        private Entry priorLoadedBrowserEntry;
+        private Entry newBrowserEntry;
         private bool isBrowsing = false;
 
         // timer properties
@@ -341,7 +342,8 @@ namespace Timekeeper
         {
             try {
                 SaveRow(false);
-                browserEntry.SetFirstId();
+                browserEntry.LoadFirst();
+                priorLoadedBrowserEntry = browserEntry.Copy();
                 if (browserEntry.EntryId > 0) {
                     DisplayRow();
                     EnableLast(true);
@@ -352,6 +354,7 @@ namespace Timekeeper
                 }
             }
             catch {
+                // FIXME: watch this kind of "error handling"
             }
         }
 
@@ -359,8 +362,15 @@ namespace Timekeeper
         private void menuToolControlPrev_Click(object sender, EventArgs e)
         {
             try {
+                if (!isBrowsing) {
+                    // If we're not browsing, this is a new row. If it's a new
+                    // row, save it so we don't lose it later.
+                    FormToEntry(ref newBrowserEntry, 0);
+                }
+
                 SaveRow(false);
-                browserEntry.SetPrevId();
+                browserEntry.LoadPrevious();
+                priorLoadedBrowserEntry = browserEntry.Copy();
                 if (browserEntry.EntryId > 0) {
                     DisplayRow();
                     EnableLast(true);
@@ -388,7 +398,8 @@ namespace Timekeeper
         {
             try {
                 SaveRow(false);
-                browserEntry.SetNextId();
+                browserEntry.LoadNext();
+                priorLoadedBrowserEntry = browserEntry.Copy();
                 if (browserEntry.EntryId > 0) {
                     DisplayRow();
                     EnableFirst(true);
@@ -416,7 +427,8 @@ namespace Timekeeper
         {
             try {
                 SaveRow(false);
-                browserEntry.SetLastId();
+                browserEntry.LoadLast();
+                priorLoadedBrowserEntry = browserEntry.Copy();
                 if (browserEntry.EntryId > 0) {
                     DisplayRow();
                     EnableFirst(true);
@@ -1562,9 +1574,9 @@ namespace Timekeeper
             currentEntry.StartTime = wStartTime.Value;
             currentEntry.StopTime = wStartTime.Value; // defaults to start time.
             currentEntry.Seconds = 0; // default to zero
-            currentEntry.Text = wMemo.Text;
-            currentEntry.PreLog = wMemo.Text;
-            currentEntry.PostLog = ""; // FIXME (this is going away anyway)
+            currentEntry.Memo = wMemo.Text;
+            currentEntry.PreLog = ""; // THIS IS GOING AWAY, PostLog is on its way to being Memo
+            currentEntry.PostLog = wMemo.Text; // FIXME (this is going away anyway)
             currentEntry.IsLocked = true;
             currentEntry.Create();
 
@@ -1637,16 +1649,16 @@ namespace Timekeeper
             // Set UI accordingly
             SetCreateState();
 
-            // Reset browser entry
-            browserEntry.Reset();
+            // Create browser objects
+            browserEntry = new Entry(data);
+            priorLoadedBrowserEntry = new Entry(data);
+            if (newBrowserEntry == null) {
+                newBrowserEntry = new Entry(data);
+            }
             isBrowsing = false;
 
-            // Set default values
-            toolControlEntryId.Text = "";
-            wStartTime.Value = DateTime.Now;
-            wStopTime.Value = DateTime.Now;
-            wDuration.Text = "";
-            wMemo.Text = "";
+            // Load empty form
+            EntryToForm(newBrowserEntry);
 
             // Ensure proper display
             splitMain.Panel2Collapsed = suppressBrowserDisplay ? true : false;
@@ -1707,6 +1719,12 @@ namespace Timekeeper
             // Clean up Tool menus
             menuToolBrowse.Checked = false;
 
+            // Save row, just in case
+            SaveRow(false);
+
+            // Kill any existing "new" entry
+            newBrowserEntry = null;
+
             /*
             menuToolFormat.Visible = false;
             menuToolControl.Visible = false;
@@ -1724,6 +1742,7 @@ namespace Timekeeper
         {
             // Get annotation
             string postLog = wMemo.Text; // FIXME: postLog is my unified log until the db migration happens.
+                                         // double FIXME: this isn't even being used anymore
 
             if (options.wPostLog.Checked && suppressAnnotationDialogs == false) {
                 // instantiate dialog box
@@ -1754,7 +1773,7 @@ namespace Timekeeper
             currentEntry.StartTime = wStartTime.Value;
             currentEntry.StopTime = wStopTime.Value;
             currentEntry.Seconds = currentTask.endTiming();
-            currentEntry.Text = wMemo.Text;
+            currentEntry.Memo = wMemo.Text;
             currentEntry.PreLog = ""; // FIXME: but it's going away
             currentEntry.PostLog = wMemo.Text;
             currentEntry.IsLocked = false;
@@ -1808,6 +1827,7 @@ namespace Timekeeper
             menuFileExit.Enabled = true;
 
             // As soon as the timer has stopped, we have to paint "start" mode.
+            newBrowserEntry = null;
             OpenLogForStarting();
         }
 
@@ -2010,7 +2030,6 @@ namespace Timekeeper
 
             // NEW:
             //splitMain.Panel2Collapsed = true;
-            browserEntry = new Entry(data);
             LoadBrowser();
             OpenLogForStarting();
         }
@@ -2269,8 +2288,6 @@ namespace Timekeeper
                 toolControlStop.ToolTipText += " (" + kc.ConvertToString(menuToolControlStart.ShortcutKeys) + ")";
                 toolControlContinue.ToolTipText += " (Esc)";
                 toolControlClose.ToolTipText += " (Esc)";
-
-                //this.isDirty = false;
             }
             catch (Exception exception) {
                 Common.Info("No file loaded.\n\n" + exception.ToString());
@@ -2282,37 +2299,19 @@ namespace Timekeeper
         private void DisplayRow()
         {
             try {
-                browserEntry.Load();
+                // browserEntry.Load();
 
+                /*
                 if (browserEntry.Empty()) {
                     Common.Info("You thought you couldn't hit this, did you?");
                     return;
                 }
+                */
 
                 try {
-                    // Set appropriate UI state
                     SetBrowseState();
 
-                    // Display entry
-                    wStartTime.Value = browserEntry.StartTime;
-                    wStopTime.Value = browserEntry.StopTime;
-                    wDuration.Text = Timekeeper.FormatSeconds(browserEntry.Seconds);
-                    wMemo.Text = browserEntry.PostLog; // FIXME: this will be changed to just "memo"
-
-                    // Now select tasks and projects while browsing.
-                    TreeNode node = _findNode(wTasks.Nodes, browserEntry.TaskName);
-                    if (node != null) {
-                        wTasks.SelectedNode = node;
-                        wTasks.SelectedNode.Expand();
-                    }
-
-                    node = _findNode(wProjects.Nodes, browserEntry.ProjectName);
-                    if (node != null) {
-                        wProjects.SelectedNode = node;
-                        wProjects.SelectedNode.Expand();
-                    }
-
-                    toolControlEntryId.Text = browserEntry.EntryId.ToString();
+                    EntryToForm(browserEntry);
 
                     if (browserEntry.IsLocked) {
                         EnableCloseStartGap(false);
@@ -2370,38 +2369,80 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public void SaveRow(bool forceSave)
+        private void FormToEntry(ref Entry entry, long entryId)
         {
-            /*
-            if (!forceSave) {
-                if (!this.isDirty) {
-                    return;
-                }
-            }
-            */
-
-            // FIXME: is this still needed?
-            if ((wStartTime.Text == "") && (wStopTime.Text == "")) {
-                // Bail if there's obviously no work to do
-                return;
-            }
-
-            // First translate some necessary from the form 
+            // First translate some necessary data from the form 
             Task task = (Task)wTasks.SelectedNode.Tag;
             Project project = (Project)wProjects.SelectedNode.Tag;
             TimeSpan ts = wStopTime.Value.Subtract(wStartTime.Value);
 
-            browserEntry.TaskId = task.id;
-            browserEntry.ProjectId = project.id;
-            browserEntry.StartTime = wStartTime.Value;
-            browserEntry.StopTime = wStopTime.Value;
-            browserEntry.Seconds = (long)ts.TotalSeconds;
-            browserEntry.Text = wMemo.Text;
-            browserEntry.PostLog = wMemo.Text;
-            browserEntry.Save();
+            // Update browserEntry with current form data
+            entry.EntryId = entryId;
+            entry.TaskId = task.id;
+            entry.ProjectId = project.id;
+            entry.StartTime = wStartTime.Value;
+            entry.StopTime = wStopTime.Value;
+            entry.Seconds = (long)ts.TotalSeconds;
+            entry.Memo = wMemo.Text;
+            entry.PostLog = wMemo.Text;
+            entry.TaskName = wTasks.SelectedNode.Text;
+            entry.ProjectName = wProjects.SelectedNode.Text;
+        }
 
-            // Cleanup
-            //this.isDirty = false;
+        private void EntryToForm(Entry entry)
+        {
+            // Now select tasks and projects while browsing.
+            TreeNode node = _findNode(wTasks.Nodes, entry.TaskName);
+            if (node != null) {
+                wTasks.SelectedNode = node;
+                wTasks.SelectedNode.Expand();
+            }
+
+            node = _findNode(wProjects.Nodes, entry.ProjectName);
+            if (node != null) {
+                wProjects.SelectedNode = node;
+                wProjects.SelectedNode.Expand();
+            }
+
+            // Display entry
+            wStartTime.Value = entry.StartTime;
+            wStopTime.Value = entry.StopTime;
+            wDuration.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
+            wMemo.Text = entry.PostLog; // FIXME: this will be changed to just "memo"
+
+            // And any other relevant values
+            toolControlEntryId.Text = entry.EntryId > 0 ? entry.EntryId.ToString() : "";
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SaveRow(bool forceSave)
+        {
+            // Bail if we have no entry
+            if (browserEntry.EntryId == 0) {
+                return;
+            }
+
+            // Copy form values to browser entry
+            FormToEntry(ref browserEntry, browserEntry.EntryId);
+
+            // Now bail if nothing's changed
+            if (!forceSave) {
+                if (browserEntry.Equals(priorLoadedBrowserEntry)) {
+                    return;
+                }
+            }
+
+            // FIXME: is this still needed?
+            /*
+            if ((wStartTime.Text == "") && (wStopTime.Text == "")) {
+                // Bail if there's obviously no work to do
+                return;
+            }
+            */
+
+            // If we've made it this far, save the row
+            browserEntry.Save();
         }
 
         //---------------------------------------------------------------------
