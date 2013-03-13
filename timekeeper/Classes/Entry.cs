@@ -96,7 +96,7 @@ namespace Timekeeper
                 Data.Update("timekeeper", GetAttributes(), "id", EntryId);
             }
             catch {
-                Log.Warn("could not close");
+                Log.Warn("could not save");
             }
         }
 
@@ -168,6 +168,7 @@ namespace Timekeeper
             copy.Seconds = this.Seconds;
             copy.PreLog = this.PreLog;
             copy.PostLog = this.PostLog;
+            copy.Memo = this.PostLog; // FIXME
             copy.IsLocked = this.IsLocked;
             copy.TaskName = this.TaskName;
             copy.ProjectName = this.ProjectName;
@@ -197,6 +198,17 @@ namespace Timekeeper
 	        }
         }
 
+        public void Unlock()
+        {
+            try {
+                Row row = new Row();
+                row["is_locked"] = 0;
+                Data.Update("timekeeper", row, "id", EntryId);
+            }
+            catch {
+                Log.Warn("could not unlock");
+            }
+        }
 
         //---------------------------------------------------------------------
         // Helper "Properties"

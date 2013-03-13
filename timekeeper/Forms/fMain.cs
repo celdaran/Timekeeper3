@@ -462,12 +462,16 @@ namespace Timekeeper
 
         private void menuToolControlRevert_Click(object sender, EventArgs e)
         {
-            Common.Info("Reverted!");
+            // FIXME: maybe prompt for this?
+            EntryToForm(priorLoadedBrowserEntry);
+            EnableRevert(false);
         }
 
         private void menuToolControlUnlock_Click(object sender, EventArgs e)
         {
-            Common.Info("Unlocked!");
+            browserEntry.IsLocked = false;
+            browserEntry.Save();
+            DisplayRow();
         }
 
         // Tools | Log/Tweak
@@ -788,6 +792,18 @@ namespace Timekeeper
         // Timer Events
         //---------------------------------------------------------------------
 
+        // FIXME: where should this live?
+        private long ConvertToSeconds(string time)
+        {
+            string[] parts = time.Split(':');
+            // todo: support partial parts (one part => ss, two => mm:ss ...)
+            // error handling would be nice too (e.g., four parts!?)
+            long h = Convert.ToInt32(parts[0]) * 3600;
+            long m = Convert.ToInt32(parts[1]) * 60;
+            long s = Convert.ToInt32(parts[2]);
+            return h + m + s;
+        }
+
         private void timer_Tick(object sender, EventArgs e)
         {
             //---------------------------------------------------------
@@ -872,6 +888,53 @@ namespace Timekeeper
                                 ToolTipIcon.Info);
                         }
                     }
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // Editing
+        //---------------------------------------------------------------------
+
+        private void wStartTime_Leave(object sender, EventArgs e)
+        {
+            if (isBrowsing) {
+                if (wStartTime.Value != priorLoadedBrowserEntry.StartTime) {
+                    EnableRevert(true);
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void wStopTime_Leave(object sender, EventArgs e)
+        {
+            if (isBrowsing) {
+                if (wStopTime.Value != priorLoadedBrowserEntry.StopTime) {
+                    EnableRevert(true);
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void wDuration_Leave(object sender, EventArgs e)
+        {
+            if (isBrowsing) {
+                long duration = ConvertToSeconds(wDuration.Text);
+                if (duration != priorLoadedBrowserEntry.Seconds) {
+                    EnableRevert(true);
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void wMemo_TextChanged(object sender, EventArgs e)
+        {
+            if (isBrowsing) {
+                if (wMemo.Text != priorLoadedBrowserEntry.Memo) {
+                    EnableRevert(true);
                 }
             }
         }
@@ -1662,6 +1725,7 @@ namespace Timekeeper
 
             // Ensure proper display
             splitMain.Panel2Collapsed = suppressBrowserDisplay ? true : false;
+
             wMemo.Focus();
         }
 
@@ -1694,7 +1758,6 @@ namespace Timekeeper
 
             toolControlStart.Visible = false;
             toolControlStop.Visible = false;
-            toolControlContinue.Visible = false;
             toolControlClose.Visible = true;
 
             menuToolControlStart.Visible = false;
@@ -2029,9 +2092,14 @@ namespace Timekeeper
             }
 
             // NEW:
-            //splitMain.Panel2Collapsed = true;
+
             LoadBrowser();
             OpenLogForStarting();
+
+            // FIXME: This should be controlled by an option.
+            // Until I have that option, I'm going to proceed as if the option
+            // is set to "Don't Show Browser by Default" (or whatever I call it).
+            splitMain.Panel2Collapsed = true;
         }
 
         // FIXME/MOVEME
@@ -2046,12 +2114,6 @@ namespace Timekeeper
         {
             toolControlStop.Visible = show;
             menuToolControlStop.Visible = show;
-        }
-
-        private void ShowContinue(bool show)
-        {
-            toolControlContinue.Visible = show;
-            menuToolControlContinue.Visible = show;
         }
 
         private void ShowClose(bool show)
@@ -2076,12 +2138,6 @@ namespace Timekeeper
         {
             toolControlStop.Enabled = enabled;
             menuToolControlStop.Enabled = enabled;
-        }
-
-        private void EnableContinue(bool enabled)
-        {
-            toolControlContinue.Enabled = enabled;
-            menuToolControlContinue.Enabled = enabled;
         }
 
         private void EnableClose(bool enabled)
@@ -2165,12 +2221,10 @@ namespace Timekeeper
         {
             ShowStart(true);
             ShowStop(false);
-            ShowContinue(false);
             ShowClose(true);
 
             EnableStart(true);
             EnableStop(false);
-            EnableContinue(false);
             EnableClose(true);
 
             EnableFirst(true);
@@ -2181,7 +2235,6 @@ namespace Timekeeper
 
             EnableCloseStartGap(true);
             EnableCloseEndGap(false);
-            EnableRevert(false);
 
             EnableStartEntry(true);
             EnableStopEntry(false);
@@ -2193,19 +2246,16 @@ namespace Timekeeper
             if (timerRunning) {
                 ShowStart(false);
                 ShowStop(true);
-                ShowContinue(true);
-                ShowClose(false);
+                ShowClose(true);
 
                 EnableStart(false);
                 EnableStop(false);
-                EnableContinue(true);
-                EnableClose(false);
+                EnableClose(true);
 
                 EnableNew(false);
 
                 EnableCloseStartGap(true);
                 EnableCloseEndGap(true);
-                EnableRevert(false);
 
                 EnableStartEntry(true);
                 EnableStopEntry(true);
@@ -2213,19 +2263,16 @@ namespace Timekeeper
             } else {
                 ShowStart(true);
                 ShowStop(false);
-                ShowContinue(false);
                 ShowClose(true);
 
                 EnableStart(false);
                 EnableStop(false);
-                EnableContinue(false);
                 EnableClose(true);
 
                 EnableNew(true);
 
                 EnableCloseStartGap(true);
                 EnableCloseEndGap(true);
-                EnableRevert(false);
 
                 EnableStartEntry(true);
                 EnableStopEntry(true);
@@ -2237,13 +2284,11 @@ namespace Timekeeper
         {
             ShowStart(false);
             ShowStop(true);
-            ShowContinue(true);
-            ShowClose(false);
+            ShowClose(true);
 
             EnableStart(false);
             EnableStop(true);
-            EnableContinue(true);
-            EnableClose(false);
+            EnableClose(true);
 
             EnableFirst(true);
             EnablePrev(true);
@@ -2253,7 +2298,6 @@ namespace Timekeeper
 
             EnableCloseStartGap(false);
             EnableCloseEndGap(false);
-            EnableRevert(false);
 
             EnableStartEntry(false);
             EnableStopEntry(false);
@@ -2286,7 +2330,6 @@ namespace Timekeeper
 
                 toolControlStart.ToolTipText += " (" + kc.ConvertToString(menuToolControlStart.ShortcutKeys) + ")";
                 toolControlStop.ToolTipText += " (" + kc.ConvertToString(menuToolControlStart.ShortcutKeys) + ")";
-                toolControlContinue.ToolTipText += " (Esc)";
                 toolControlClose.ToolTipText += " (Esc)";
             }
             catch (Exception exception) {
@@ -2310,6 +2353,8 @@ namespace Timekeeper
 
                 try {
                     SetBrowseState();
+
+                    EnableRevert(false);
 
                     EntryToForm(browserEntry);
 
@@ -2443,6 +2488,9 @@ namespace Timekeeper
 
             // If we've made it this far, save the row
             browserEntry.Save();
+
+            // And disable reverting, just in case
+            EnableRevert(false);
         }
 
         //---------------------------------------------------------------------
