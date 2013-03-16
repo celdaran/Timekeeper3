@@ -65,7 +65,7 @@ namespace Timekeeper
 
         // miscellaneous internals
         private DateTime annotateStartTime;
-        private bool suppressBrowserDisplay = false;
+        //private bool suppressBrowserDisplay = false;
 
         //---------------------------------------------------------------------
         // Constants
@@ -143,7 +143,7 @@ namespace Timekeeper
         // Action | Start Timer
         private void menuActionStart_Click(object sender, EventArgs e)
         {
-            suppressBrowserDisplay = true;
+            //suppressBrowserDisplay = true;
             StartTimer();
         }
 
@@ -151,22 +151,39 @@ namespace Timekeeper
         private void menuActionStop_Click(object sender, EventArgs e)
         {
             StopTimer();
-            suppressBrowserDisplay = false;
+            //suppressBrowserDisplay = false;
         }
 
         // Action | Annotate and Start Timer
+        // FIXME: rename these "advanced" things . . . not what they are any more (just simple open/close browser)
         private void menuActionStartAdvanced_Click(object sender, EventArgs e)
         {
-            OpenLogForStarting();
+            // Menu Mucking
+            /* this should be handled in the ResetBrowserForX() methods
+            menuActionStartAdvanced.Visible = false;
+            menuActionStopAdvanced.Visible = true;
+            */
+
+            ShowBrowser(true);
+
+            if (timerRunning) {
+                ResetBrowserForStopping(true);
+            } else {
+                //ResetBrowserForStarting(true);
+            }
         }
 
         // Action | Annotate and Stop Timer
         private void menuActionStopAdvanced_Click(object sender, EventArgs e)
         {
-            OpenLogForStopping(true);
+            CloseBrowser();
+
+            // NO MORE: this is simple open/close, not advanced start/stop
+            //ResetBrowserForStopping(true); 
+
             // This can be used for quick & annotated, but once annotated,
             // we disable quick mode by no longer suppressing the browser.
-            suppressBrowserDisplay = false; 
+            //suppressBrowserDisplay = false; 
         }
 
         // Tasks | New Task
@@ -304,11 +321,12 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
+/*
         // Tools | Browse Entries
         private void menuToolBrowse_Click(object sender, EventArgs e)
         {
             if (menuToolBrowse.Checked) {
-                CloseLog();
+                CloseBrowser();
             } else {
                 OpenLogForBrowsing();
             }
@@ -324,18 +342,14 @@ namespace Timekeeper
         private void menuToolControlStop_Click(object sender, EventArgs e)
         {
             StopTimer();
-            //CloseLog(); // FIXME: I'm now thinking this should be optional, I may just leave it open all the time, now that I can
-        }
-
-        private void menuToolControlContinue_Click(object sender, EventArgs e)
-        {
-            menuToolControlClose_Click(sender, e);
+            //CloseBrowser(); // FIXME: I'm now thinking this should be optional, I may just leave it open all the time, now that I can
         }
 
         private void menuToolControlClose_Click(object sender, EventArgs e)
         {
-            CloseLog();
+            CloseBrowser();
         }
+*/
 
         // Tools | Control | First Entry
         private void menuToolControlFirst_Click(object sender, EventArgs e)
@@ -409,7 +423,7 @@ namespace Timekeeper
                         EnableNext(false);
                         if (timerRunning) {
                             //Common.Info("special handling here");
-                            OpenLogForStopping(false);
+                            ResetBrowserForStopping(false);
                         }
                     }
                     isBrowsing = true;
@@ -438,7 +452,7 @@ namespace Timekeeper
                     isBrowsing = true;
                 }
                 if (timerRunning) {
-                    OpenLogForStopping(false);
+                    ResetBrowserForStopping(false);
                 }
             }
             catch {
@@ -447,7 +461,7 @@ namespace Timekeeper
 
         private void menuToolControlNew_Click(object sender, EventArgs e)
         {
-            OpenLogForStarting();
+            ResetBrowserForStarting(true);
         }
 
         private void menuToolControlCloseStartGap_Click(object sender, EventArgs e)
@@ -758,7 +772,8 @@ namespace Timekeeper
             // button shortcuts.
 
             if (e.KeyCode == Keys.Escape) {
-                menuToolControlClose_Click(sender, e);
+                menuActionStopAdvanced_Click(sender, e);
+                //menuToolControlClose_Click(sender, e);
             }
         }
 
@@ -1655,9 +1670,9 @@ namespace Timekeeper
 
             // Make any UI changes based on the timer starting
             menuActionStart.Visible = false;
-            menuActionStartAdvanced.Visible = false;
+            //menuActionStartAdvanced.Visible = false;
             menuActionStop.Visible = true;
-            menuActionStopAdvanced.Visible = true;
+            //menuActionStopAdvanced.Visible = true;
 
             // swap start/stop keystrokes
             // FIXME: this is a mess
@@ -1669,9 +1684,11 @@ namespace Timekeeper
             menuActionStartAdvanced.ShortcutKeys = Keys.None;
             menuActionStop.ShortcutKeys = saveKeys;
             menuActionStopAdvanced.ShortcutKeys = saveKeysAdvanced;
+            /*
             saveKeys = menuToolControlStart.ShortcutKeys;
             menuToolControlStart.ShortcutKeys = Keys.None;
             menuToolControlStop.ShortcutKeys = saveKeys;
+            */
 
             statusCurrentTask.Text = wTasks.SelectedNode.Text;
             statusCurrentTask.ForeColor = Color.Black;
@@ -1700,14 +1717,14 @@ namespace Timekeeper
             }
 
             // Don't display while the timer is running (FIXME: make this an option)
-            //CloseLog();
+            //CloseBrowser();
             
             // As soon as the timer has started, we have to paint "stop" mode.
-            OpenLogForStopping(false); 
-       }
+            ResetBrowserForStopping(false); 
+        }
 
         // FIXME: MOVE THIS
-        private void OpenLogForStarting()
+        private void ResetBrowserForStarting(bool openLog)
         {
             // Set UI accordingly
             SetCreateState();
@@ -1724,7 +1741,8 @@ namespace Timekeeper
             EntryToForm(newBrowserEntry);
 
             // Ensure proper display
-            splitMain.Panel2Collapsed = suppressBrowserDisplay ? true : false;
+            //splitMain.Panel2Collapsed = suppressBrowserDisplay ? true : false;
+            //splitMain.Panel2Collapsed = !openLog;
 
             wMemo.Focus();
         }
@@ -1732,7 +1750,7 @@ namespace Timekeeper
         // FIXME: MOVE THIS
         // FIXME: ALSO RENAME THIS -- NOT A FAN OF "OPEN LOG" ANY MORE
         // FIXME: And now that I just added showBrowser support, that puts the last nail in the coffin
-        private void OpenLogForStopping(bool showBrowser)
+        private void ResetBrowserForStopping(bool showBrowser)
         {
             // Set UI accordingly 
             SetStopState();
@@ -1741,43 +1759,25 @@ namespace Timekeeper
             isBrowsing = false;
 
             if (showBrowser) {
-                splitMain.Panel2Collapsed = false;
+                // not now: this is now totally under explicit user-control
+                // and not determined by any special "mode" we might be in.
+                //splitMain.Panel2Collapsed = false;
             }
 
             //wStopTime.Value = DateTime.Now;
+
+            // Menu Mucking
+            /*
+            menuActionStartAdvanced.Visible = true;
+            menuActionStopAdvanced.Visible = false;
+            */
 
             // Ensure proper display
             wMemo.Focus();
         }
 
         // FIXME: MOVE THIS
-        private void OpenLogForBrowsing()
-        {
-            // FIXME: BROWSING IS DEPRECATED --- I THINK?
-            menuToolBrowse.Checked = true;
-
-            toolControlStart.Visible = false;
-            toolControlStop.Visible = false;
-            toolControlClose.Visible = true;
-
-            menuToolControlStart.Visible = false;
-            menuToolControlStop.Visible = false;
-            menuToolControlContinue.Visible = false;
-            menuToolControlClose.Visible = true;
-
-            /*
-            menuToolFormat.Visible = true;
-            menuToolControl.Visible = false;
-            */
-
-            //splitMain.Panel2Collapsed = false;
-
-            wMemo.Focus();
-        }
-
-
-        // FIXME: MOVE THIS
-        private void CloseLog()
+        private void CloseBrowser()
         {
             // Clean up Tool menus
             menuToolBrowse.Checked = false;
@@ -1797,7 +1797,7 @@ namespace Timekeeper
             // Note, this isn't an option. If we're here, it means CLOSE IT.
             // If you find yourself here and don't want it closed, then go
             // fix the caller.
-            splitMain.Panel2Collapsed = true;
+            ShowBrowser(false);
         }
 
         //---------------------------------------------------------------------
@@ -1853,9 +1853,9 @@ namespace Timekeeper
             Text = "Timekeeper";
 
             menuActionStart.Visible = true;
-            menuActionStartAdvanced.Visible = true;
+            //menuActionStartAdvanced.Visible = true;
             menuActionStop.Visible = false;
-            menuActionStopAdvanced.Visible = false;
+            //menuActionStopAdvanced.Visible = false;
             statusCurrentTask.Text = "Timer Not Running";
             statusCurrentTask.ForeColor = Color.Gray;
             statusTimeCurrent.ForeColor = Color.Gray;
@@ -1870,10 +1870,11 @@ namespace Timekeeper
             menuActionStopAdvanced.ShortcutKeys = Keys.None;
             menuActionStart.ShortcutKeys = saveKeys;
             menuActionStartAdvanced.ShortcutKeys = saveKeysAdvanced;
+            /*
             saveKeys = menuToolControlStop.ShortcutKeys;
             menuToolControlStop.ShortcutKeys = Keys.None;
             menuToolControlStart.ShortcutKeys = saveKeys;
-
+            */
             currentTaskNode.ImageIndex = IMG_TASK;
             currentTaskNode.SelectedImageIndex = IMG_TASK;
 
@@ -1891,7 +1892,9 @@ namespace Timekeeper
 
             // As soon as the timer has stopped, we have to paint "start" mode.
             newBrowserEntry = null;
-            OpenLogForStarting();
+
+            // FIXME: stopping the timer != opening the browser
+            ResetBrowserForStarting(false);
         }
 
         //---------------------------------------------------------------------
@@ -2094,32 +2097,49 @@ namespace Timekeeper
             // NEW:
 
             LoadBrowser();
-            OpenLogForStarting();
+            ResetBrowserForStarting(false);
 
             // FIXME: This should be controlled by an option.
             // Until I have that option, I'm going to proceed as if the option
             // is set to "Don't Show Browser by Default" (or whatever I call it).
             splitMain.Panel2Collapsed = true;
+
+            // experimental: swapping Tasks/Projects
+            //this.splitTrees.Panel1.Controls.Add(this.wTasks);
+
+            /*
+            splitTrees.Panel1.Controls.Remove(this.wTasks);
+            splitTrees.Panel1.Controls.Remove(this.wProjects);
+
+            splitTrees.Panel1.Controls.Add(this.wProjects);
+            splitTrees.Panel2.Controls.Add(this.wTasks);
+            */
         }
 
         // FIXME/MOVEME
 
+        private void ShowBrowser(bool show) {
+            menuActionStartAdvanced.Visible = !show;
+            menuActionStopAdvanced.Visible = show;
+            splitMain.Panel2Collapsed = !show;
+        }
+
         private void ShowStart(bool show)
         {
             toolControlStart.Visible = show;
-            menuToolControlStart.Visible = show;
+            //menuToolControlStart.Visible = show;
         }
 
         private void ShowStop(bool show)
         {
             toolControlStop.Visible = show;
-            menuToolControlStop.Visible = show;
+            //menuToolControlStop.Visible = show;
         }
 
         private void ShowClose(bool show)
         {
             toolControlClose.Visible = show;
-            menuToolControlClose.Visible = show;
+            //menuToolControlClose.Visible = show;
         }
 
         private void ShowUnlock(bool show)
@@ -2131,19 +2151,21 @@ namespace Timekeeper
         private void EnableStart(bool enabled)
         {
             toolControlStart.Enabled = enabled;
-            menuToolControlStart.Enabled = enabled;
+            menuActionStart.Enabled = enabled;
+            //menuToolControlStart.Enabled = enabled;
         }
 
         private void EnableStop(bool enabled)
         {
             toolControlStop.Enabled = enabled;
-            menuToolControlStop.Enabled = enabled;
+            menuActionStop.Enabled = enabled;
+            //menuToolControlStop.Enabled = enabled;
         }
 
         private void EnableClose(bool enabled)
         {
             toolControlClose.Enabled = enabled;
-            menuToolControlClose.Enabled = enabled;
+            //menuToolControlClose.Enabled = enabled;
         }
 
         private void EnableFirst(bool enabled)
@@ -2328,8 +2350,8 @@ namespace Timekeeper
                 toolControlNextEntry.ToolTipText += " (" + kc.ConvertToString(menuToolControlNext.ShortcutKeys) + ")";
                 toolControlPrevEntry.ToolTipText += " (" + kc.ConvertToString(menuToolControlPrev.ShortcutKeys) + ")";
 
-                toolControlStart.ToolTipText += " (" + kc.ConvertToString(menuToolControlStart.ShortcutKeys) + ")";
-                toolControlStop.ToolTipText += " (" + kc.ConvertToString(menuToolControlStart.ShortcutKeys) + ")";
+                toolControlStart.ToolTipText += " (" + kc.ConvertToString(menuActionStart.ShortcutKeys) + ")";
+                toolControlStop.ToolTipText += " (" + kc.ConvertToString(menuActionStop.ShortcutKeys) + ")";
                 toolControlClose.ToolTipText += " (Esc)";
             }
             catch (Exception exception) {
