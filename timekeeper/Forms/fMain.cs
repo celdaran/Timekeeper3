@@ -466,19 +466,64 @@ namespace Timekeeper
 
         private void menuToolControlCloseStartGap_Click(object sender, EventArgs e)
         {
-            Common.Info("Closed Start Gap!");
+            try {
+                // Update the control with previous end time
+                DateTime PreviousEndTime = GetPreviousEndTime();
+                if (PreviousEndTime == DateTime.MinValue) {
+                    // something went wrong, do nothing
+                } else {
+                    wStartTime.Value = PreviousEndTime;
+                }
+
+                // Recalculate duration
+                wDuration.Text = _calculateDuration();
+
+                // Disable button (already done)
+                EnableCloseStartGap(false);
+
+                // Enable revert
+                EnableRevert(true);
+            }
+            catch {
+                Common.Info("Could not get previous row.");
+            }
         }
 
         private void menuToolControlCloseEndGap_Click(object sender, EventArgs e)
         {
-            Common.Info("Closed End Gap!");
+            try {
+                // Set next start date
+                DateTime NextStartTime = GetNextStartTime();
+                if (NextStartTime == DateTime.MinValue) {
+                    // something went wrong, set it to now
+                    wStopTime.Value = DateTime.Now;
+                } else {
+                    wStopTime.Value = NextStartTime;
+                }
+
+                // And recalculate duration
+                wDuration.Text = _calculateDuration();
+
+                // Enable revert
+                EnableRevert(true);
+            }
+            catch {
+                Common.Info("Could not find next row.");
+            }
         }
 
         private void menuToolControlRevert_Click(object sender, EventArgs e)
         {
-            // FIXME: maybe prompt for this?
+            // FIXME: maybe prompt for confirmation?
+
+            // Copy the prior entry to the form
             EntryToForm(priorLoadedBrowserEntry);
-            EnableRevert(false);
+
+            // Copy the prior entry to our internal representation
+            browserEntry = priorLoadedBrowserEntry.Copy();
+
+            // Now display the row (which also handles toolbar button states)
+            DisplayRow();
         }
 
         private void menuToolControlUnlock_Click(object sender, EventArgs e)
@@ -2071,6 +2116,7 @@ namespace Timekeeper
 
                 // File-dependent settings
                 key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "State");
+                // fixme: these should come from the db as they're not OS-wide settings
                 string lastTask = (string)key.GetValue("LastTask");
                 string lastProject = (string)key.GetValue("LastProject");
                 lastGridView = (string)key.GetValue("LastGridView", "Last View");
@@ -2153,6 +2199,12 @@ namespace Timekeeper
             toolControlStart.Enabled = enabled;
             menuActionStart.Enabled = enabled;
             //menuToolControlStart.Enabled = enabled;
+            if (enabled) {
+                var kc = new KeysConverter();
+                toolControlStart.ToolTipText = "Start the Timer (" + kc.ConvertToString(menuActionStart.ShortcutKeys) + ")";
+            } else {
+                toolControlStart.ToolTipText = "Timer cannot be started while browsing old entries. Click 'Go to New Entry' to begin timing.";
+            }
         }
 
         private void EnableStop(bool enabled)
@@ -2403,27 +2455,29 @@ namespace Timekeeper
                         ShowUnlock(false);
                     }
 
-                    /*
-
-                    // Disable close gap buttons if no gap to close
-                    string prevEndTime = _getPreviousEndTime();
-                    if (prevEndTime == wPrevStart.Text) {
-                        btnCloseStartGap.Enabled = false;
+                    // Enable/disable start gap button
+                    if (browserEntry.AtBeginning()) {
+                        EnableCloseStartGap(false);
                     } else {
-                        if (prevEndTime == "") {
-                            btnCloseStartGap.Enabled = false;
+                        DateTime PreviousEndTime = GetPreviousEndTime();
+                        if (PreviousEndTime == wStartTime.Value) {
+                            EnableCloseStartGap(false);
                         } else {
-                            btnCloseStartGap.Enabled = true;
+                            EnableCloseStartGap(true);
                         }
                     }
 
-                    string nextStartTime = _getNextStartTime();
-                    if (nextStartTime == wPrevEnd.Text) {
-                        btnCloseEndGap.Enabled = false;
+                    // Enable/disable stop gap button
+                    if (browserEntry.AtEnd()) {
+                        EnableCloseEndGap(true);
                     } else {
-                        btnCloseEndGap.Enabled = true;
+                        DateTime NextStartTime = GetNextStartTime();
+                        if (NextStartTime == wStopTime.Value) {
+                            EnableCloseEndGap(false);
+                        } else {
+                            EnableCloseEndGap(true);
+                        }
                     }
-                    */
 
                 }
                 catch (Exception ee) {
@@ -2513,6 +2567,51 @@ namespace Timekeeper
 
             // And disable reverting, just in case
             EnableRevert(false);
+        }
+
+        //---------------------------------------------------------------------
+        // Helpers
+        //---------------------------------------------------------------------
+
+        private string _calculateDuration()
+        {
+            try {
+                browserEntry.StartTime = wStartTime.Value;
+                browserEntry.StopTime = wStopTime.Value;
+                //timestamp_s = Convert.ToDateTime(wStartTime.Text);
+                //timestamp_e = Convert.ToDateTime(wStopTime.Text);
+                TimeSpan ts = browserEntry.StopTime.Subtract(browserEntry.StartTime);
+                browserEntry.Seconds = (long)ts.TotalSeconds;
+                return Timekeeper.FormatSeconds(browserEntry.Seconds);
+            }
+            catch {
+                Common.Warn("Unrecognized date/time format.");
+                return "00:00:00";
+            }
+        }
+
+        private DateTime GetPreviousEndTime()
+        {
+            try {
+                Entry copy = browserEntry.Copy();
+                copy.LoadPrevious();
+                return copy.StopTime;
+            }
+            catch {
+                return DateTime.MinValue;
+            }
+        }
+
+        private DateTime GetNextStartTime()
+        {
+            try {
+                Entry copy = browserEntry.Copy();
+                copy.LoadNext();
+                return copy.StartTime;
+            }
+            catch {
+                return DateTime.MinValue;
+            }
         }
 
         //---------------------------------------------------------------------

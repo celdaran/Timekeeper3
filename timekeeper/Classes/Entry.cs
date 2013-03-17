@@ -40,25 +40,11 @@ namespace Timekeeper
         // Constructors
         //---------------------------------------------------------------------
 
-        public Entry(DBI Data)
+        public Entry(DBI data)
         {
-            this.Data = Data;
-            this.Log = new Log(Data.DataFile + ".log");
-
-            this.EntryId = 0;
-            this.TaskId = 0;
-            this.ProjectId = 0;
-            this.StartTime = DateTime.Now;
-            this.StopTime = DateTime.Now;
-            this.Seconds = 0;
-            this.PreLog = "";
-            this.PostLog = "";
-            this.Memo = "";
-            this.IsLocked = false;
-            this.TaskName = "";
-            this.ProjectName = "";
-
-            this.CurrentStartTime = DateTime.Now;
+            this.Data = data;
+            this.Log = new Log(this.Data.DataFile + ".log");
+            this.SetAttributes();
         }
 
         //---------------------------------------------------------------------
@@ -107,19 +93,25 @@ namespace Timekeeper
         public void Load(long logId)
         {
             try {
-                Query = @"
-                    select
-                        log.id,
-                        log.task_id, t.name as task_name,
-                        log.project_id, p.name as project_name,
-                        log.timestamp_s, log.timestamp_e, 
-                        log.seconds, log.pre_log, log.post_log,
-                        log.is_locked
-                    from timekeeper log
-                    join tasks t on t.id = log.task_id
-                    join projects p on p.id = log.project_id
-                    where log.id = " + logId;
-                SetAttributes(Data.SelectRow(Query));
+                if (logId == 0) {
+                    // No log id? Set attributes to defaults
+                    SetAttributes();
+                } else {
+                    // Otherwise get attributes from db
+                    Query = @"
+                        select
+                            log.id,
+                            log.task_id, t.name as task_name,
+                            log.project_id, p.name as project_name,
+                            log.timestamp_s, log.timestamp_e, 
+                            log.seconds, log.pre_log, log.post_log,
+                            log.is_locked
+                        from timekeeper log
+                        join tasks t on t.id = log.task_id
+                        join projects p on p.id = log.project_id
+                        where log.id = " + logId;
+                    SetAttributes(Data.SelectRow(Query));
+                }
             } catch (Exception e) {
                 Message = string.Format("Could not set attributes in Entry.Load(), Query = {0}, Error = {1}",
                     Query, e.ToString());
@@ -160,6 +152,10 @@ namespace Timekeeper
         {
             Entry copy = new Entry(this.Data);
 
+            // copy private properties
+            copy.CurrentStartTime = this.CurrentStartTime;
+
+            // copy public properties
             copy.EntryId = this.EntryId;
             copy.TaskId = this.TaskId;
             copy.ProjectId = this.ProjectId;
@@ -252,6 +248,24 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
+
+        private void SetAttributes()
+        {
+            this.CurrentStartTime = DateTime.Now;
+
+            this.EntryId = 0;
+            this.TaskId = 0;
+            this.ProjectId = 0;
+            this.StartTime = DateTime.Now;
+            this.StopTime = DateTime.Now;
+            this.Seconds = 0;
+            this.PreLog = "";
+            this.PostLog = "";
+            this.Memo = "";
+            this.IsLocked = false;
+            this.TaskName = "";
+            this.ProjectName = "";
+        }
 
         private void SetAttributes(Row row)
         {
