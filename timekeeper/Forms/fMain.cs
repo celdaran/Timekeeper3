@@ -482,7 +482,9 @@ namespace Timekeeper
                 EnableCloseStartGap(false);
 
                 // Enable revert
-                EnableRevert(true);
+                if (isBrowsing) {
+                    EnableRevert(true);
+                }
             }
             catch {
                 Common.Info("Could not get previous row.");
@@ -855,14 +857,67 @@ namespace Timekeeper
         // FIXME: where should this live?
         private long ConvertToSeconds(string time)
         {
-            string[] parts = time.Split(':');
-            // todo: support partial parts (one part => ss, two => mm:ss ...)
-            // error handling would be nice too (e.g., four parts!?)
-            long h = Convert.ToInt32(parts[0]) * 3600;
-            long m = Convert.ToInt32(parts[1]) * 60;
-            long s = Convert.ToInt32(parts[2]);
-            return h + m + s;
+            long seconds = 0;
+            long h = 0;
+            long m = 0;
+            long s = 0;
+            bool negative = false;
+
+            try {
+                if (time.Substring(0, 1) == "-") {
+                    // user going back in time
+                    negative = true;
+                    // strip minus sign from text
+                    time = time.Substring(1);
+                }
+
+                string[] parts = time.Split(':');
+
+                switch (parts.Length)
+                {
+                    case 1 :
+                        // one part => minutes
+                        h = 0;
+                        m = Convert.ToInt32(parts[0]) * 60;
+                        s = 0;
+                        break;
+                    case 2 :
+                        // two parts => hours minutes
+                        h = Convert.ToInt32(parts[0]) * 3600;
+                        m = Convert.ToInt32(parts[1]) * 60;
+                        s = 0;
+                        if ((m < 0) || (m > 3599)) {
+                            throw new System.ApplicationException("invalid minutes");
+                        }
+                        break;
+                    case 3 :
+                        // three parts => hours minutes seconds
+                        h = Convert.ToInt32(parts[0]) * 3600;
+                        m = Convert.ToInt32(parts[1]) * 60;
+                        s = Convert.ToInt32(parts[2]);
+                        if ((m < 0) || (m > 3599)) {
+                            throw new System.ApplicationException("invalid minutes");
+                        }
+                        if ((s < 0) || (s > 59)) {
+                            throw new System.ApplicationException("invalid seconds");
+                        }
+                        break;
+                    default :
+                        // if it's not 1, 2, or three, do nothing
+                        break;
+                }
+
+                seconds = h + m + s;
+            }
+            catch {
+                // do anything? -- probably not, just ignore it and 
+                // return the default value of 0
+            }
+
+            return negative ? -seconds : seconds;
         }
+
+        //---------------------------------------------------------------------
 
         private void timer_Tick(object sender, EventArgs e)
         {
@@ -960,6 +1015,7 @@ namespace Timekeeper
         {
             if (isBrowsing) {
                 if (wStartTime.Value != priorLoadedBrowserEntry.StartTime) {
+                    wDuration.Text = _calculateDuration();
                     EnableRevert(true);
                 }
             }
@@ -971,6 +1027,7 @@ namespace Timekeeper
         {
             if (isBrowsing) {
                 if (wStopTime.Value != priorLoadedBrowserEntry.StopTime) {
+                    wDuration.Text = _calculateDuration();
                     EnableRevert(true);
                 }
             }
@@ -981,9 +1038,27 @@ namespace Timekeeper
         private void wDuration_Leave(object sender, EventArgs e)
         {
             if (isBrowsing) {
-                long duration = ConvertToSeconds(wDuration.Text);
-                if (duration != priorLoadedBrowserEntry.Seconds) {
-                    EnableRevert(true);
+                long seconds = ConvertToSeconds(wDuration.Text);
+
+                if (seconds != priorLoadedBrowserEntry.Seconds) {
+                    if (seconds < 0) {
+                        // either set the start time backwards
+                        browserEntry.Seconds = -seconds;
+                        browserEntry.StartTime = browserEntry.StopTime.AddSeconds(Convert.ToDouble(seconds));
+                        wStartTime.Value = browserEntry.StartTime;
+                        EnableRevert(true);
+                    } else if (seconds > 0) {
+                        // or the end time forward
+                        browserEntry.Seconds = seconds;
+                        browserEntry.StopTime = browserEntry.StartTime.AddSeconds(Convert.ToDouble(seconds));
+                        wStopTime.Value = browserEntry.StopTime;
+                        EnableRevert(true);
+                    } else {
+                        // duration is zero, do nothing
+                    }
+
+                    // reformat duration before leaving
+                    wDuration.Text = Timekeeper.FormatSeconds(browserEntry.Seconds);
                 }
             }
         }
@@ -1688,7 +1763,7 @@ namespace Timekeeper
             this.annotateStartTime = DateTime.Now;
 
             // Now start timing
-            currentTask.beginTiming();
+            currentTask.beginTiming(wStartTime.Value);
             currentTask.project_id__last = currentProject.id;
 
             currentEntry = new Entry(data);

@@ -299,10 +299,10 @@ namespace Timekeeper
             return count == 1 ? 1 : 0;
         }
 
-        public void beginTiming()
+        public void beginTiming(DateTime setStartTime)
         {
             isTiming = true;
-            startTime = DateTime.Now;
+            startTime = setStartTime;
             getSeconds();
         }
 

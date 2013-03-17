@@ -366,6 +366,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\button-unlock.png" />
+    <None Include="Resources\button-revert.png" />
     <None Include="Resources\button-stop.png" />
     <None Include="Resources\button-new.png" />
     <None Include="Resources\menu-project.bmp" />
