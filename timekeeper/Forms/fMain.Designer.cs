@@ -680,7 +680,6 @@ namespace Timekeeper
             this.menuToolFormatBold.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
             this.menuToolFormatBold.Size = new System.Drawing.Size(177, 22);
             this.menuToolFormatBold.Text = "&Bold";
-            this.menuToolFormatBold.Click += new System.EventHandler(this.menuToolFormatBold_Click);
             // 
             // menuToolFormatItalic
             // 
@@ -792,13 +791,6 @@ namespace Timekeeper
             this.menuToolsOptions.Size = new System.Drawing.Size(161, 22);
             this.menuToolsOptions.Text = "Op&tions...";
             this.menuToolsOptions.Click += new System.EventHandler(this.menuToolsOptions_Click);
-            // 
-            // weToolStripMenuItem
-            // 
-            this.weToolStripMenuItem.Name = "weToolStripMenuItem";
-            this.weToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.weToolStripMenuItem.Text = "Web Browser";
-            this.weToolStripMenuItem.Click += new System.EventHandler(this.weToolStripMenuItem_Click);
             // 
             // menuHelp
             // 
@@ -1350,7 +1342,6 @@ namespace Timekeeper
             this.toolFormatBold.Size = new System.Drawing.Size(23, 22);
             this.toolFormatBold.Text = "B";
             this.toolFormatBold.ToolTipText = "Bold";
-            this.toolFormatBold.Click += new System.EventHandler(this.menuToolFormatBold_Click);
             // 
             // toolFormatItalic
             // 
@@ -1493,7 +1484,6 @@ namespace Timekeeper
             this.wStartTime.Name = "wStartTime";
             this.wStartTime.Size = new System.Drawing.Size(127, 20);
             this.wStartTime.TabIndex = 7;
-            this.wStartTime.ValueChanged += new System.EventHandler(this.wStartTime_ValueChanged);
             this.wStartTime.Leave += new System.EventHandler(this.wStartTime_Leave);
             // 
             // labelStartTime

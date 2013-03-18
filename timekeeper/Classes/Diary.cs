@@ -18,7 +18,7 @@ namespace Timekeeper
 
         public int count()
         {
-            string query = "select count(*) from journal";
+            string query = "select count(*) from Diary";
             Row row = data.SelectRow(query);
             return (int)row["count(*)"];
         }

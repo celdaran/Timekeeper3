@@ -22,6 +22,9 @@ namespace Timekeeper
         private DBI data;
         private string dataFile;
 
+        // application-wide logging
+        private Log ApplicationLog;
+
         // persistent dialog boxes
         private fOptions options;
         private fToolCalendar calendar;
@@ -375,8 +378,8 @@ namespace Timekeeper
                     isBrowsing = true;
                 }
             }
-            catch {
-                // FIXME: watch this kind of "error handling"
+            catch (Exception x) {
+                ApplicationLog.Info("Exception in menuToolControlFirst_Click. " + x.Message);
             }
         }
 
@@ -411,8 +414,8 @@ namespace Timekeeper
                     EnablePrev(false);
                 }
             }
-            catch (Exception ee) {
-                Common.Warn(ee.ToString());
+            catch (Exception x) {
+                ApplicationLog.Info("Exception in menuToolControlPrev_Click. " + x.Message);
             }
         }
 
@@ -441,7 +444,8 @@ namespace Timekeeper
                     EnableNext(false);
                 }
             }
-            catch {
+            catch (Exception x) {
+                ApplicationLog.Info("Exception in menuToolControlNext_Click. " + x.Message);
             }
         }
 
@@ -464,7 +468,8 @@ namespace Timekeeper
                     ResetBrowserForStopping(false);
                 }
             }
-            catch {
+            catch (Exception x) {
+                ApplicationLog.Info("Exception in menuToolControlLast_Click. " + x.Message);
             }
         }
 
@@ -495,8 +500,8 @@ namespace Timekeeper
                     EnableRevert(true);
                 }
             }
-            catch {
-                Common.Info("Could not get previous row.");
+            catch (Exception x) {
+                ApplicationLog.Info("Exception in menuToolControlCloseStartGap_Click. " + x.Message);
             }
         }
 
@@ -518,8 +523,8 @@ namespace Timekeeper
                 // Enable revert
                 EnableRevert(true);
             }
-            catch {
-                Common.Info("Could not find next row.");
+            catch (Exception x) {
+                ApplicationLog.Info("Exception in menuToolControlCloseEndGap_Click. " + x.Message);
             }
         }
 
@@ -698,8 +703,9 @@ namespace Timekeeper
                         }
                     }
                 }
-                catch {
+                catch (Exception x) {
                     Common.Warn("There was a problem applying options.");
+                    ApplicationLog.Info("Exception in menuToolsOptions_Click. " + x.Message);
                 }
             }
         }
@@ -721,7 +727,7 @@ namespace Timekeeper
         // Help | About
         private void menuHelpAbout_Click(object sender, EventArgs e)
         {
-            Database db = new Database(data);
+            Database db = new Database(data, ApplicationLog);
             Row dbinfo = db.Info();
             fAbout dlg = new fAbout(dbinfo);
             dlg.ShowDialog(this);
@@ -1337,7 +1343,7 @@ namespace Timekeeper
         private bool loadFile(bool createIfMissing)
         {
             data = new DBI(dataFile, options.wSQLtracing.Checked);
-            Database db = new Database(data); // FIXME: bad file/class name
+            Database db = new Database(data, ApplicationLog); // FIXME: bad file/class name
             Version version = new Version(3, 0);
             bool populate = true;
 
@@ -2054,6 +2060,35 @@ namespace Timekeeper
         // Load settings
         private void fMain_Load(object sender, EventArgs e)
         {
+            // FIXME: this thing is like a microcosm of the problems
+            // with fMain in general. Let's get this cleaned up while
+            // we clean up the entire class.
+
+            string path = "";
+
+            try {
+                // Determine log file path
+                path = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "Timekeeper");
+
+                // Create directory if it doesn't exist
+                if (!Directory.Exists(path)) {
+                    DirectoryInfo di = Directory.CreateDirectory(path);
+                }
+
+                // Add file to path
+                path += @"\Timekeeper.log";
+
+                // Now instantiate the log and write out a line
+                ApplicationLog = new Log(path);
+                ApplicationLog.Info("Timekeeper Started");
+            }
+            catch {
+                Common.Warn("Could not open or write to log file.\n\n" + path);
+            }
+
+            // Read saved values from registry
             Microsoft.Win32.RegistryKey key;
 
             // Registry relocation
@@ -2494,8 +2529,8 @@ namespace Timekeeper
                 toolControlStop.ToolTipText += " (" + kc.ConvertToString(menuActionStop.ShortcutKeys) + ")";
                 toolControlClose.ToolTipText += " (Esc)";
             }
-            catch (Exception exception) {
-                Common.Info("No file loaded.\n\n" + exception.ToString());
+            catch (Exception x) {
+                Common.Info("No file loaded.\n\n" + x.ToString());
             }
         }
 
@@ -2503,7 +2538,7 @@ namespace Timekeeper
 
         private void DisplayRow()
         {
-            try {
+            //try {
                 // browserEntry.Load();
 
                 /*
@@ -2568,12 +2603,13 @@ namespace Timekeeper
                     }
 
                 }
-                catch (Exception ee) {
-                    Common.Warn(ee.ToString());
+                catch (Exception x) {
+                    Common.Warn(x.ToString());
+                    ApplicationLog.Info("Exception in DisplayRow. " + x.Message);
                 }
-            }
-            catch {
-            }
+            //}
+            //catch {
+            //}
         }
 
         //---------------------------------------------------------------------
@@ -2672,8 +2708,8 @@ namespace Timekeeper
                 browserEntry.Seconds = (long)ts.TotalSeconds;
                 return Timekeeper.FormatSeconds(browserEntry.Seconds);
             }
-            catch {
-                Common.Warn("Unrecognized date/time format.");
+            catch (Exception x) {
+                ApplicationLog.Info("Exception in _calculateDuration. " + x.Message);
                 return "00:00:00";
             }
         }
@@ -2793,6 +2829,8 @@ namespace Timekeeper
             key.Close();
 
             closeFile();
+
+            ApplicationLog.Info("Timekeeper Closed");
         }
 
         //---------------------------------------------------------------------

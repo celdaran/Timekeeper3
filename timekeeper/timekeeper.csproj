@@ -96,7 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Entry.cs" />
-    <Compile Include="Classes\Journal.cs" />
+    <Compile Include="Classes\Diary.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\Items.cs" />
     <Compile Include="Classes\Program.cs" />
