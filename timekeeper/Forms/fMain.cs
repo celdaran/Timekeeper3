@@ -117,6 +117,14 @@ namespace Timekeeper
             }
         }
 
+        // File | Save As
+        private void menuFileSaveAs_Click(object sender, EventArgs e)
+        {
+            if (dlgSaveAs.ShowDialog(this) == DialogResult.OK) {
+                Common.Info("You selected Save As " + dlgSaveAs.FilterIndex.ToString());
+            }
+        }
+
         // File | Close
         private void menuFileClose_Click(object sender, EventArgs e)
         {
@@ -403,7 +411,8 @@ namespace Timekeeper
                     EnablePrev(false);
                 }
             }
-            catch {
+            catch (Exception ee) {
+                Common.Warn(ee.ToString());
             }
         }
 
@@ -713,7 +722,7 @@ namespace Timekeeper
         private void menuHelpAbout_Click(object sender, EventArgs e)
         {
             Database db = new Database(data);
-            Row dbinfo = db.info();
+            Row dbinfo = db.Info();
             fAbout dlg = new fAbout(dbinfo);
             dlg.ShowDialog(this);
         }
@@ -1329,26 +1338,29 @@ namespace Timekeeper
         {
             data = new DBI(dataFile, options.wSQLtracing.Checked);
             Database db = new Database(data); // FIXME: bad file/class name
+            Version version = new Version(3, 0);
+            bool populate = true;
 
             if (!data.DataFileExists) {
                 if (createIfMissing) {
-                    db.create();
+                    db.Create(version, populate);
                 } else {
                     Common.Warn("The file " + dataFile + " could not be found.");
                     return false;
                 }
             }
 
-            int status = db.check();
+            int status = db.Check();
             switch (status)
             {
                 case -1: Common.Warn("An error occurred during the database check. Cannot open file."); return false;
                 case -2: Common.Warn("This database is from a newer version of Timekeeper. Cannot open file."); return false;
                 case -3: Common.Warn("This is not a Timekeeper database. File not opened."); return false;
                 case -4: Common.Warn("This appears to be an empty database. A future version of Timekeeper will allow you to claim it."); return false;
+                case -5: Common.Warn("This database is from a prior version of Timekeeper and needs to be updated."); return false;
             }
 
-            db.info();
+            db.Info();
 
             loadTasks(null, 0);
             loadProjects(null, 0);
@@ -1900,7 +1912,7 @@ namespace Timekeeper
         private void CloseBrowser()
         {
             // Clean up Tool menus
-            menuToolBrowse.Checked = false;
+            //menuToolBrowse.Checked = false;
 
             // Save row, just in case
             SaveRow(false);
@@ -2223,7 +2235,8 @@ namespace Timekeeper
             // FIXME: This should be controlled by an option.
             // Until I have that option, I'm going to proceed as if the option
             // is set to "Don't Show Browser by Default" (or whatever I call it).
-            splitMain.Panel2Collapsed = true;
+            ShowBrowser(true);
+            //splitMain.Panel2Collapsed = true;
 
             // experimental: swapping Tasks/Projects
             //this.splitTrees.Panel1.Controls.Add(this.wTasks);
