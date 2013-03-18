@@ -6,12 +6,12 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
-    class Journal
+    class Diary
     {
         private DBI data;
 
         // constructor, no lookup
-        public Journal(DBI data)
+        public Diary(DBI data)
         {
             this.data = data;
         }
