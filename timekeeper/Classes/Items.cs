@@ -9,39 +9,85 @@ namespace Timekeeper
     class Items
     {
         //---------------------------------------------------------------------
-        // This is the base class for accessing groups of nodes. A node is the
-        // base class for the application's two node classes: Task and Project.
+        // Properties
         //---------------------------------------------------------------------
 
-        // protected properties
-        protected DBI data;
-        protected string sOrderBy;
+        protected DBI Data;
+        protected string TableName;
+        protected string OrderByClause;
 
         //---------------------------------------------------------------------
-        // Methods
+        // Constructor
         //---------------------------------------------------------------------
-        public long getSeconds()
+
+        public Items(DBI data, string tableName, string orderByClause)
         {
-            // fetch seconds from the db for this task
-            string today = DateTime.Today.ToString(Common.DATE_FORMAT);
-            string midnight = "00:00:00";
+            this.Data = data;
+            this.TableName = tableName;
+            this.OrderByClause = orderByClause;
+        }
+
+        //---------------------------------------------------------------------
+        // Public Methods
+        //---------------------------------------------------------------------
+
+        public int Count()
+        {
+            string query = String.Format(@"select count(*) as Count from {0}", this.TableName);
+            Row Row = Data.SelectRow(query);
+            return (int)Row["Count"];
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool HasParents()
+        {
+            string Query = String.Format(@"
+                select count(*) as Count 
+                from {0} 
+                where IsDeleted = 0
+                  and IsHidden = 0 
+                  and ParentId > 0",
+                this.TableName);
+            Row Row = Data.SelectRow(Query);
+            long count = Row["Count"];
+
+            if (count > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // Protected Methods
+        //---------------------------------------------------------------------
+
+        protected Table GetItems(long parentId, bool showHidden)
+        {
+            if (OrderByClause == "") {
+                OrderByClause = "CreateTime";
+            }
+
+            string HiddenQualifier = "";
+            if (!showHidden) {
+                HiddenQualifier = "and IsHidden = 0";
+            }
 
             string query = String.Format(@"
-                select sum(seconds) as seconds
-                from timekeeper
-                where timestamp_s > '{0} {1}'",
-                today, midnight);
-            Row row = this.data.SelectRow(query);
-            return row["seconds"] == null ? 0 : row["seconds"];
+                select * from {0}
+                where IsDeleted = 0
+                  {1}
+                  and ParentId = {2}
+                order by {3}",
+                this.TableName, HiddenQualifier, parentId, OrderByClause);
 
-            /*
-            if (row["seconds"].Length > 0) {
-                return Convert.ToInt32(row["seconds"]);
-            } else {
-                return 0;
-            }
-            */
+            Table Rows = Data.Select(query);
+
+            return Rows;
         }
-   
+
+        //---------------------------------------------------------------------
+
     }
 }

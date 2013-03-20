@@ -11,53 +11,34 @@ namespace Timekeeper
         //---------------------------------------------------------------------
         // Constructor
         //---------------------------------------------------------------------
-        public Projects(DBI data, string sOrderBy)
+
+        public Projects(DBI data, string orderByClause)
+            : base(data, "Project", orderByClause)
+        {}
+
+        public Projects(DBI data) 
+            : this (data, "CreateDate")
+        {}
+
+        //---------------------------------------------------------------------
+        // Public Methods
+        //---------------------------------------------------------------------
+
+        public List<Project> Fetch(long parentId, bool showHidden)
         {
-            this.data = data;
-            this.sOrderBy = sOrderBy;
+            Table Rows = base.GetItems(parentId, showHidden);
+
+            List<Project> Projects = new List<Project>();
+
+            foreach (Row Row in Rows) {
+                var Project = new Project(Data, Row["ProjectId"]);
+                Projects.Add(Project);
+            }
+
+            return Projects;
         }
 
         //---------------------------------------------------------------------
-        // Get 
-        //---------------------------------------------------------------------
-        public List<Project> get(long parent_id, bool bShowHidden)
-        {
-            if (sOrderBy == "") {
-                sOrderBy = "timestamp_c";
-            }
-
-            string sShowHidden = "";
-            if (!bShowHidden) {
-                sShowHidden = "and is_hidden = 0";
-            } 
-            
-            string query = String.Format(@"
-                select id from projects
-                where is_deleted = 0
-                  {0}
-                  and parent_id = {1}
-                order by {2}", sShowHidden, parent_id, sOrderBy);
-
-            Table rows = data.Select(query);
-
-            List<Project> projects = new List<Project>();
-
-            foreach (Row row in rows) {
-                long project_id = row["id"];
-                Project project = new Project(data, project_id);
-                projects.Add(project);
-            }
-
-            return projects;
-        }
-
-        public int count()
-        {
-            // FIXME: move to parent class, set table and call 'super'
-            string query = "select count(*) as count from projects";
-            Row row = data.SelectRow(query);
-            return (int)row["count"];
-        }
 
     }
 }
