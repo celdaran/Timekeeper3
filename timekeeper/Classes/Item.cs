@@ -8,270 +8,331 @@ namespace Timekeeper
 {
     class Item
     {
-        // public properties
-        public long id;
-        public string name;
-        public string description;
-        public long parent_id;
-        public bool is_folder;
-        public bool is_hidden;
-        public bool is_deleted;
-        public DateTime timestamp_c;
-        public DateTime timestamp_m;
-        public long project_id__last;
+        //---------------------------------------------------------------------
+        // Public Properties
+        //---------------------------------------------------------------------
 
-        public bool isTiming;
-        public DateTime startTime;
+        public long ItemId;
+        public DateTime CreateTime;
+        public DateTime ModifyTime;
+        public string ItemGuid;
 
-        // protected properties
-        protected DBI data;
-        protected string table;
-        protected string id_column;
-        protected long secondsOne = 0;
-        
-        protected void _load(long id)
+        public string Name;
+        public string Description;
+        public long ParentId;
+        public long SortOrderNo;
+        public long FollowedItemId;
+        public bool IsFolder;
+        public bool IsHidden;
+        public bool IsDeleted;
+        public DateTime HiddenTime;
+        public DateTime DeleteTime;
+
+        // In-memory only
+        public DateTime StartTime;
+
+        //---------------------------------------------------------------------
+        // Protected Properties
+        //---------------------------------------------------------------------
+
+        protected DBI Data;
+        protected string TableName;
+        protected string IdColumnName;
+
+        //---------------------------------------------------------------------
+        // Private Properties
+        //---------------------------------------------------------------------
+
+        private string OtherTableName;
+        private long SecondsElapsedToday = 0;
+
+        //---------------------------------------------------------------------
+        // Constructors
+        //---------------------------------------------------------------------
+
+        public Item(DBI data, string tableName, string idColumnName)
+        {
+            this.Data = data;
+            this.TableName = tableName;
+            this.IdColumnName = idColumnName;
+            this.OtherTableName = this.TableName == "Project" ? "Activity" : "Project";
+        }
+
+        //---------------------------------------------------------------------
+
+        public Item(DBI data, long itemId, string tableName, string idColumnName)
+            : this(data, tableName, idColumnName)
+        {
+            Load(itemId);
+        }
+
+        //---------------------------------------------------------------------
+
+        public Item(DBI data, string itemName, string tableName, string idColumnName)
+            : this(data, tableName, idColumnName)
         {
             // fetch row from db
+            itemName = itemName.Replace("'", "''");
+
             string query = String.Format(@"
-                select * from {0}
-                where id = {1}", this.table, id);
+                select {0}
+                from {1}
+                where Name = '{2}'",
+                this.IdColumnName,
+                this.TableName,
+                itemName);
 
             Row row = data.SelectRow(query);
+            long itemId = row[this.IdColumnName];
 
-            this.id = id;
-            this.name = row["name"];
-            this.description = row["descr"];
-            this.parent_id = row["parent_id"];
-            this.is_folder = row["is_folder"];
-            this.is_hidden = row["is_hidden"];
-            this.is_deleted = row["is_deleted"];
-            if (row["timestamp_c"] != null)
-                this.timestamp_c = row["timestamp_c"];
-            if (row["timestamp_m"] != null)
-                this.timestamp_m = row["timestamp_m"];
-            if (row.ContainsKey("project_id__last")) {
-                if (row["project_id__last"] > 0) {
-                    project_id__last = row["project_id__last"];
-                } else {
-                    project_id__last = -1;
-                }
+            Load(itemId);
+        }
+
+        //---------------------------------------------------------------------
+        // Property-Like Methods
+        //---------------------------------------------------------------------
+
+        public DateTime DateLastUsed()
+        {
+            string Query = String.Format(@"
+                select max(StopTime) as DateLastUsed
+                from Journal
+                where {0} = {1}",
+                this.IdColumnName, this.ItemId);
+            Row Row = Data.SelectRow(Query);
+            if (Row["DateLastUsed"] != null) {
+                return DateTime.Parse(Row["DateLastUsed"]);
             } else {
-                project_id__last = -1;
+                return DateTime.Now;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public int NumberOfDaysUsed()
+        {
+            Table Rows = FetchDatesUsed();
+            return Rows.Count;
+        }
+
+        //---------------------------------------------------------------------
+
+        public List<DateTime> DaysUsed()
+        {
+            Table Rows = FetchDatesUsed();
+
+            List<DateTime> Days = new List<DateTime>();
+            foreach (Row Row in Rows) {
+                Days.Add(DateTime.Parse(Row["StartDate"]));
             }
 
-            // Initialize times
-            this.getSeconds();
+            return Days;
         }
 
-        protected void getSeconds()
+        //---------------------------------------------------------------------
+
+        public bool IsDescendentOf(long itemId)
         {
-            getSeconds(0);
-        }
+            string Query = String.Format(@"
+                select ParentId from {0} where {1} = '{2}'",
+                this.TableName, this.IdColumnName, itemId);
+            Row row = Data.SelectRow(Query);
 
-        protected void getSeconds(long offset)
-        {
-            // fetch seconds from the db for this node
-            string today = DateTime.Today.ToString(Common.DATE_FORMAT);
-            string midnight = "00:00:00";
-
-            string query = String.Format(@"
-                select sum(seconds) as seconds
-                from timekeeper
-                where timestamp_s > '{1} {2}'
-                  and {0} = {3}",
-                this.id_column, today, midnight, this.id);
-            Row row = this.data.SelectRow(query);
-
-            if (row["seconds"] > 0) {
-                this.secondsOne = row["seconds"] + offset;
-            }
-
-        }
-
-        // is the specified id a descendent of the current node?
-        public bool isDescendentOf(long id)
-        {
-            string query = String.Format(@"
-                select parent_id from {0} where id = '{1}'",
-                this.table, id);
-            Row row = data.SelectRow(query);
-
-            if (row["parent_id"] == 0) {
+            if (row["ParentId"] == 0) {
                 return false;
             } else {
-                long parent_id = row["parent_id"];
-                if (this.id == parent_id) {
+                long ParentId = row["ParentId"];
+                if (this.ItemId == ParentId) {
                     return true;
                 } else {
-                    return isDescendentOf(parent_id);
+                    return IsDescendentOf(ParentId);
                 }
             }
         }
 
-        public long countTreeTime(long id, string fromDate, string toDate)
+        //---------------------------------------------------------------------
+
+        public long RecursiveSecondsElapsed(long itemId, string fromDate, string toDate)
         {
             // get self
-            string query = String.Format(@"
-                select sum(seconds) as seconds
-                from timekeeper
-                where timestamp_s >= '{1}'
-                  and timestamp_e < '{2}'
-                  and {0} = {3}",
-                this.id_column, fromDate, toDate, id);
-            Row row = this.data.SelectRow(query);
+            string Query = String.Format(@"
+                select sum(Seconds) as Seconds
+                from Journal
+                where StartTime >= '{0}'
+                  and StopTime < '{1}'
+                  and {2} = {3}",
+                fromDate, toDate, this.IdColumnName, itemId);
+            Row Row = this.Data.SelectRow(Query);
 
-            long seconds = row["seconds"] == null ? 0 : row["seconds"];
+            long Seconds = Row["Seconds"] == null ? 0 : Row["Seconds"];
 
             // get child(ren)
-            query = String.Format(@"
-                select id from {0}
-                where parent_id = {1}", this.table, id);
-            Table rows = this.data.Select(query);
+            Query = String.Format(@"
+                select {0}
+                from {1}
+                where ParentId = {2}",
+                this.IdColumnName, this.TableName, itemId);
+            Table Rows = this.Data.Select(Query);
 
-            foreach (Row child in rows) {
-                seconds += countTreeTime(child["id"], fromDate, toDate);
+            foreach (Row Child in Rows) {
+                Seconds += RecursiveSecondsElapsed(Child[this.IdColumnName], fromDate, toDate);
             }
 
-            return seconds;
+            return Seconds;
         }
 
-        public int create()
+        //---------------------------------------------------------------------
+        // Methods
+        //---------------------------------------------------------------------
+
+        public int Create()
         {
-            if (exists(this.name) == true) {
+            if (Exists(this.Name) == true) {
                 return -1;
             }
 
-            Row row = new Row();
+            Row Row = new Row();
 
-            row["name"] = this.name;
-            row["descr"] = this.description;
-            row["parent_id"] = this.parent_id;
-            row["is_folder"] = this.is_folder ? 1 : 0;
-            row["is_hidden"] = 0;
-            row["is_deleted"] = 0;
-            row["timestamp_c"] = Common.Now();
-            row["timestamp_m"] = Common.Now();
+            Row["CreateTime"] = Common.Now();
+            Row["ModifyTime"] = Common.Now();
+            Row[this.TableName + "Guid"] = UUID.Get();
 
-            this.id = this.data.Insert(this.table, row);
+            Row["Name"] = this.Name;
+            Row["Description"] = this.Description;
+            Row["ParentId"] = this.ParentId;
+            Row["SortOrderNo"] = this.SortOrderNo;
+            Row["Last" + OtherTableName + "Id"] = this.FollowedItemId;
+            Row["IsFolder"] = this.IsFolder ? 1 : 0;
+            Row["IsHidden"] = 0;
+            Row["IsDeleted"] = 0;
+            Row["HiddenTime"] = null;
+            Row["DeleteTime"] = null;
 
-            if (this.id > 0) {
+            this.ItemId = this.Data.Insert(this.TableName, Row);
+
+            if (this.ItemId > 0) {
                 return 1;
             } else {
                 return 0;
             }
         }
 
-        public bool exists(string newname)
+        //---------------------------------------------------------------------
+
+        public int Delete()
         {
-            // poor-man's quote
-            string newname_q = newname.Replace('\'', '"');
+            this.IsDeleted = true;
+            return SetStatus("Deleted", this.IsDeleted);
+        }
+
+        //---------------------------------------------------------------------
+
+        public TimeSpan Elapsed()
+        {
+            DateTime Now = DateTime.Now;
+            return new TimeSpan(Now.Ticks - StartTime.Ticks);
+        }
+
+        //---------------------------------------------------------------------
+
+        public TimeSpan ElapsedToday()
+        {
+            DateTime Now = DateTime.Now;
+            Now = Now.AddSeconds(this.SecondsElapsedToday);
+            return new TimeSpan(Now.Ticks - StartTime.Ticks);
+        }
+
+        //---------------------------------------------------------------------
+
+        public string ElapsedTodayFormatted()
+        {
+            DateTime midnight = DateTime.Parse("00:00:00");
+            midnight = midnight.AddSeconds(this.SecondsElapsedToday);
+            TimeSpan ts = new TimeSpan(midnight.Ticks - 0);
+            return Timekeeper.FormatTimeSpan(ts);
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool Exists(string name)
+        {
+            // FIME: You do this everywhere. I'm still not happy with DBI
+            // or the fact that I can't parameterize my queries.
+            name = name.Replace('\'', '"');
 
             // see if the name is free
-            string query = String.Format(@"
-                select count(*) from {0}
-                where name = '{1}'", this.table, newname_q);
+            string Query = String.Format(@"
+                select count(*) as Count
+                from {0}
+                where name = '{1}'", this.TableName, name);
 
-            Row row = this.data.SelectRow(query);
-            long count = row["count(*)"];
+            Row Row = this.Data.SelectRow(Query);
+            long Count = Row["Count"];
 
-            if (count > 0) {
+            if (Count > 0) {
                 return true;
             } else {
                 return false;
             }
         }
 
-        public int hide()
+        //---------------------------------------------------------------------
+
+        public int Hide()
         {
-            Row row = new Row();
-            is_hidden = true;
-            row["is_hidden"] = 1;
-            return data.Update(this.table, row, "id", this.id);
+            this.IsHidden = true;
+            return SetStatus("Hidden", this.IsHidden);
         }
 
-        public int unhide()
+        //---------------------------------------------------------------------
+
+        protected void Load(long itemId)
         {
-            Row row = new Row();
-            is_hidden = false;
-            row["is_hidden"] = 0;
-            return data.Update(this.table, row, "id", this.id);
+            // fetch row from db
+            string Query = String.Format(@"
+                select * from {0}
+                where {1} = {2}", this.TableName, this.IdColumnName, itemId);
+
+            Row row = Data.SelectRow(Query);
+
+            this.ItemId = itemId;
+            this.CreateTime = row["CreateTime"];
+            this.ModifyTime = row["ModifyTime"];
+            this.ItemGuid = row[this.TableName + "Guid"];
+
+            this.Name = row["Name"];
+            this.Description = row["Description"];
+            this.ParentId = row["ParentId"];
+            this.SortOrderNo = row["SortOrderNo"];
+            this.FollowedItemId = row["Last" + this.OtherTableName + "Id"];
+            this.IsFolder = row["IsFolder"];
+            this.IsHidden = row["IsHidden"];
+            this.IsDeleted = row["IsDeleted"];
+
+            if (row["HiddenTime"] != null)
+                this.HiddenTime = row["HiddenTime"];
+            if (row["DeleteTime"] != null)
+                this.DeleteTime = row["DeleteTime"];
+
+            // Initialize times
+            this.SetSecondsElapsedToday();
         }
 
-        public int delete()
+        //---------------------------------------------------------------------
+
+        public int Rename(string newname, bool changeDescriptionOnly)
         {
-            Row row = new Row();
-            is_deleted = true;
-            row["is_deleted"] = 1;
-            return data.Update(this.table, row, "id", this.id);
-        }
-
-        public DateTime dateLastUsed()
-        {
-            string query = String.Format(@"
-                select max(timestamp_e) as dateLastUsed
-                from timekeeper
-                where {0} = {1}",
-                this.id_column, this.id);
-            Row row = data.SelectRow(query);
-            if (row["dateLastUsed"] != null) {
-                return DateTime.Parse(row["dateLastUsed"]);
-            } else {
-                return DateTime.Now;
-            }
-        }
-
-        public int countDaysUsed()
-        {
-            string query = String.Format(@"
-                select 
-                    strftime('%Y-%m-%d', timestamp_s) as date, 
-                    count(*) as count
-                from timekeeper 
-                where {0} = {1}
-                group by date",
-                this.id_column, this.id);
-            Row row = data.SelectRow(query);
-            if (row["count"] != null) {
-                return (int)row["count"];
-            } else {
-                return 0;
-            }
-        }
-
-        public List<DateTime> daysUsed()
-        {
-            string query = String.Format(@"
-                select 
-                    strftime('%Y-%m-%d', timestamp_s) as date, 
-                    count(*) as count
-                from timekeeper 
-                where {0} = {1}
-                group by date",
-                this.id_column, this.id);
-            Table rows = data.Select(query);
-
-            List<DateTime> days = new List<DateTime>();
-            foreach (Row row in rows) {
-                days.Add(DateTime.Parse(row["date"]));
-            }
-
-            return days;
-        }
-
-        public int rename(string newname, bool changeDescriptionOnly)
-        {
-            if (!changeDescriptionOnly && (exists(newname) == true)) {
+            if (!changeDescriptionOnly && (Exists(newname) == true)) {
                 return -1;
             } else {
-                // now update
-                Row row = new Row();
-                row["name"] = newname;
-                row["descr"] = this.description;
-                row["timestamp_m"] = Common.Now();
-                int count = data.Update(this.table, row, "id", this.id);
+                Row Row = new Row();
+                Row["Name"] = newname;
+                Row["Description"] = this.Description;
+                Row["ModifyTime"] = Common.Now();
+                int Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
-                if (count == 1) {
-                    this.name = newname;
+                if (Count == 1) {
+                    this.Name = newname;
                     return 1;
                 } else {
                     return 0;
@@ -279,88 +340,126 @@ namespace Timekeeper
             }
         }
 
-        public int reparent(long id)
-        {
-            Row row = new Row();
-            row["parent_id"] = id;
-            row["timestamp_m"] = Common.Now();
-            int count = data.Update(this.table, row, "id", this.id);
+        //---------------------------------------------------------------------
 
-            return count == 1 ? 1 : 0;
+        public int Reparent(long itemId)
+        {
+            Row Row = new Row();
+            Row["ParentId"] = itemId;
+            Row["ModifyTime"] = Common.Now();
+            int Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+
+            return Count == 1 ? 1 : 0;
         }
 
-        public int reparent(Item node)
-        {
-            Row row = new Row();
-            row["parent_id"] = node.id;
-            row["timestamp_m"] = Common.Now();
-            int count = data.Update(this.table, row, "id", this.id);
+        //---------------------------------------------------------------------
 
-            return count == 1 ? 1 : 0;
+        public int Reparent(Item node)
+        {
+            return this.Reparent(node.ItemId);
         }
 
-        public void beginTiming(DateTime setStartTime)
+        //---------------------------------------------------------------------
+
+        public void StartTiming(DateTime setStartTime)
         {
-            isTiming = true;
-            startTime = setStartTime;
-            getSeconds();
+            // Simply record the time we start
+            StartTime = setStartTime;
+
+            // Update (in memory) elapsed seconds for today
+            this.SetSecondsElapsedToday();
         }
 
-        public int endTiming()
+        //---------------------------------------------------------------------
+
+        public int StopTiming()
         {
-            // Get elapsed seconds
+            // Calculate elapsed seconds
             DateTime endTime = DateTime.Now;
-            TimeSpan ts = new TimeSpan(endTime.Ticks - startTime.Ticks);
+            TimeSpan ts = new TimeSpan(endTime.Ticks - StartTime.Ticks);
             int elapsedSeconds = Convert.ToInt32(ts.TotalSeconds);
 
-            // subtract one second (correction for rounding problems)
-            elapsedSeconds--;
+            // Update (in memory) elapsed seconds for today
+            this.SetSecondsElapsedToday(elapsedSeconds);
 
-            // update row (and parents recursively)
-            // updateTime(this.id, elapsedSeconds);
-
-            // re-load time
-            this.getSeconds(elapsedSeconds);
-
-            // return the elapsed time
+            // Return the elapsed time
             return elapsedSeconds;
         }
 
-        public TimeSpan elapsed()
+        //---------------------------------------------------------------------
+
+        public int Unhide()
         {
-            DateTime currentTime = DateTime.Now;
-            return new TimeSpan(currentTime.Ticks - startTime.Ticks);
+            this.IsHidden = false;
+            return SetStatus("Hidden", this.IsHidden);
         }
 
-        public TimeSpan elapsedToday()
+        //---------------------------------------------------------------------
+        // Protected Helpers
+        //---------------------------------------------------------------------
+
+        protected void SetSecondsElapsedToday()
         {
-            DateTime currentTime = DateTime.Now;
-            currentTime = currentTime.AddSeconds(this.secondsOne);
-            return new TimeSpan(currentTime.Ticks - startTime.Ticks);
+            SetSecondsElapsedToday(0);
         }
 
-        public TimeSpan elapsedTodayAll(long seconds)
+        //---------------------------------------------------------------------
+
+        protected void SetSecondsElapsedToday(long offset)
         {
-            DateTime currentTime = DateTime.Now;
-            currentTime = currentTime.AddSeconds(seconds);
-            return new TimeSpan(currentTime.Ticks - startTime.Ticks);
+            // fetch seconds from the db for this node
+            string today = DateTime.Today.ToString(Common.DATE_FORMAT);
+            string midnight = "00:00:00";
+
+            string query = String.Format(@"
+                select sum(Seconds) as Seconds
+                from Journal
+                where StartTime > '{0} {1}'
+                  and {2} = {3}",
+                today, midnight, this.IdColumnName, this.ItemId);
+            Row row = this.Data.SelectRow(query);
+
+            if (row["Seconds"] > 0) {
+                this.SecondsElapsedToday = row["Seconds"] + offset;
+            }
         }
 
-        public string elapsedTodayStatic()
+        //---------------------------------------------------------------------
+        // Private Helpers
+        //---------------------------------------------------------------------
+
+        private Table FetchDatesUsed()
         {
-            DateTime midnight = DateTime.Parse("00:00:00");
-            midnight = midnight.AddSeconds(this.secondsOne);
-            TimeSpan ts = new TimeSpan(midnight.Ticks - 0);
-            return Timekeeper.FormatTimeSpan(ts);
+            string Query = String.Format(@"
+                select 
+                    strftime('%Y-%m-%d', StartTime) as StartDate, 
+                    count(*) as Count
+                from Journal
+                where {0} = {1}
+                group by StartDate",
+                this.IdColumnName, this.ItemId);
+            return Data.Select(Query);
         }
 
-        public string elapsedTodayAllStatic(long seconds)
+        //---------------------------------------------------------------------
+
+        private int SetStatus(string status, bool isSet)
         {
-            DateTime midnight = DateTime.Parse("00:00:00");
-            midnight = midnight.AddSeconds(seconds);
-            TimeSpan ts = new TimeSpan(midnight.Ticks - 0);
-            return Timekeeper.FormatTimeSpan(ts);
+            string BooleanColumnName = "Is" + status;
+            string TimeColumnName = status + "Time";
+
+            Row Row = new Row();
+            Row[BooleanColumnName] = isSet ? 1 : 0;
+            if (isSet) {
+                Row[TimeColumnName] = DateTime.Now;
+            } else {
+                Row[TimeColumnName] = null;
+            }
+
+            return Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
         }
+
+        //---------------------------------------------------------------------
 
     }
-} 
+}

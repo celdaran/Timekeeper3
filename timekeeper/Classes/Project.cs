@@ -8,43 +8,23 @@ namespace Timekeeper
 {
     class Project : Item
     {
+        private static string ProjectTableName = "Project";
+        private static string ProjectIdColumnName = "ProjectId";
+
         // constructor, no lookup
         public Project(DBI data)
-        {
-            this.data = data;
-            this.table = "projects";
-            this.id_column = "project_id";
-        }
+            : base(data, ProjectTableName, ProjectIdColumnName)
+        {}
 
         // constructor, by id
-        public Project(DBI data, long project_id)
-        {
-            this.data = data;
-            this.table = "projects";
-            this.id_column = "project_id";
-
-            _load(project_id);
-        }
+        public Project(DBI data, long projectId)
+            : base(data, projectId, ProjectTableName, ProjectIdColumnName)
+        {}
 
         // constructor, by name
         public Project(DBI data, string projectName)
-        {
-            this.data = data;
-            this.table = "projects";
-            this.id_column = "project_id";
-
-            // fetch row from db
-            projectName = projectName.Replace("'", "''");
-
-            string query = String.Format(@"
-                select id from projects
-                where name = '{0}'", projectName);
-
-            Row row = data.SelectRow(query);
-            long project_id = row["id"];
-
-            _load(project_id);
-        }
+            : base(data, projectName, ProjectTableName, ProjectIdColumnName)
+        {}
 
     }
 } 
