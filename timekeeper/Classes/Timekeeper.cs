@@ -1,18 +1,65 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
+
+using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
-    class Timekeeper
+    public static class Timekeeper
     {
+        //---------------------------------------------------------------------
+        // Constants
+        //---------------------------------------------------------------------
+
+        public const string TITLE = "Timekeeper";
         public const string VERSION = "3.0.0.0";
 
-        public Timekeeper()
+        //---------------------------------------------------------------------
+        // Properties
+        //---------------------------------------------------------------------
+
+        private static Log Log;
+
+        //---------------------------------------------------------------------
+        // Helper Methods (TBX candidates?)
+        //---------------------------------------------------------------------
+
+        public static string Abbreviate(string text, int length)
         {
+            if (text.Length < length) {
+                return text;
+            } else {
+                return text.Substring(0, length - 3) + "...";
+            }
         }
-        
+
+        //---------------------------------------------------------------------
+
+        public static void Exception(Exception x)
+        {
+            if (Log == null) {
+                Log = new Log(GetPath());
+            }
+            StackTrace StackTrace = new StackTrace();
+            StackFrame StackFrame = StackTrace.GetFrame(1);
+            string msg = String.Format(@"Exception in {0}.{1}: {2}",
+                StackFrame.GetMethod().DeclaringType, StackFrame.GetMethod().Name, x.Message);
+            Log.Warn(msg);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static void Info(string msg)
+        {
+            if (Log == null) {
+                Log = new Log(GetPath());
+            }
+            Log.Info(msg);
+        }
+
+        //---------------------------------------------------------------------
+
         public static string FormatSeconds(long seconds)
         {
             TimeSpan t = TimeSpan.FromSeconds(seconds);
@@ -21,6 +68,8 @@ namespace Timekeeper
                                     t.Minutes,
                                     t.Seconds);
         }
+
+        //---------------------------------------------------------------------
 
         public static string FormatTimeSpan(TimeSpan t)
         {
@@ -40,15 +89,39 @@ namespace Timekeeper
                                     t.Seconds);
         }
 
-        // FIXME: TBX candidate
-        public static string Abbreviate(string text, int length)
+        //---------------------------------------------------------------------
+
+        public static void Warn(string msg)
         {
-            if (text.Length < length) {
-                return text;
-            } else {
-                return text.Substring(0, length - 3) + "...";
+            if (Log == null) {
+                Log = new Log(GetPath());
             }
+            Log.Warn(msg);
         }
+
+        //---------------------------------------------------------------------
+        // Private helpers
+        //---------------------------------------------------------------------
+
+        private static string GetPath()
+        {
+            // Determine log file path
+            string LogPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Timekeeper.TITLE);
+
+            // Create directory if it doesn't exist
+            if (!Directory.Exists(LogPath)) {
+                Directory.CreateDirectory(LogPath);
+            }
+
+            // Add filename to path
+            LogPath += @"\" + Timekeeper.TITLE + @".log";
+
+            // And that's all we need.
+            return LogPath;
+        }
+
+        //---------------------------------------------------------------------
 
     }
 }
