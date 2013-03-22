@@ -18,6 +18,8 @@ namespace Timekeeper
         // Properties
         //---------------------------------------------------------------------
 
+        // FIXME: MOVE data and dataFile to Timekeeper. Make them global!
+
         // data properties
         private DBI data;
         private string dataFile;
@@ -39,12 +41,13 @@ namespace Timekeeper
         private string lastGridView;
 
         // objects
-        private Tasks tasks;
+        private Activities tasks;
         private Projects projects;
+        private Entries entries;
 
         // current objects
         private Entry currentEntry;
-        private Task currentTask;
+        private Activity currentTask;
         private Project currentProject;
         private TreeNode currentTaskNode;
         private TreeNode currentProjectNode;
@@ -67,7 +70,7 @@ namespace Timekeeper
         private bool suppressAnnotationDialogs = true;
 
         // miscellaneous internals
-        private DateTime annotateStartTime;
+        //private DateTime annotateStartTime;
         //private bool suppressBrowserDisplay = false;
 
         //---------------------------------------------------------------------
@@ -200,14 +203,14 @@ namespace Timekeeper
         // Tasks | New Task
         private void menuTasksNewTask_Click(object sender, EventArgs e)
         {
-            Task task = new Task(data);
+            Activity task = new Activity(data);
             dlgItemNew(wTasks, "New Task", false, (Item)task, IMG_TASK);
         }
 
 	    // Tasks | New Task Folder
         private void menuTasksNewTaskFolder_Click(object sender, EventArgs e)
         {
-            Task task = new Task(data);
+            Activity task = new Activity(data);
             dlgItemNew(wTasks, "New Task Folder", true, (Item)task, IMG_TASK);
         }
 
@@ -215,8 +218,8 @@ namespace Timekeeper
         private void menuTasksEdit_Click(object sender, EventArgs e)
         {
             if (wTasks.SelectedNode != null) {
-                Task task;
-                task = new Task(data, wTasks.SelectedNode.Text);
+                Activity task;
+                task = new Activity(data, wTasks.SelectedNode.Text);
                 dlgItemEdit(wTasks, "Edit Task", (Item)task);
             }
         }
@@ -415,7 +418,7 @@ namespace Timekeeper
                 }
             }
             catch (Exception x) {
-                ApplicationLog.Info("Exception in menuToolControlPrev_Click. " + x.Message);
+                Timekeeper.Exception(x);
             }
         }
 
@@ -568,6 +571,7 @@ namespace Timekeeper
         // Tools | Journal
         private void menuToolsJournal_Click(object sender, EventArgs e)
         {
+            // FIXME: RAW SQL ALERT AGAIN
             fToolJournal dlg = new fToolJournal(data);
             dlg.ActiveControl = dlg.wEntry;
             if (dlg.ShowDialog(this) == DialogResult.OK && dlg.is_dirty)
@@ -575,16 +579,16 @@ namespace Timekeeper
                 Row row = new Row();
 
                 row["description"] = dlg.wEntry.Text;
-                row["timestamp_m"] = Common.Now();
+                row["ModifyTime"] = Common.Now();
 
                 if (dlg.wJumpBox.SelectedIndex == -1) {
                     row["timestamp_entry"] = dlg.wEntryDate.Value.ToString(Common.DATE_FORMAT);
-                    row["timestamp_c"] = Common.Now();
+                    row["CreateTime"] = Common.Now();
                     data.Insert("journal", row);
                     Common.Info("Journal entry created.");
                 } else {
-                    string timestamp_c = dlg.wJumpBox.Items[dlg.wJumpBox.SelectedIndex].ToString();
-                    data.Update("journal", row, "timestamp_c", timestamp_c);
+                    string CreateTime = dlg.wJumpBox.Items[dlg.wJumpBox.SelectedIndex].ToString();
+                    data.Update("journal", row, "CreateTime", CreateTime);
                     Common.Info("Journal entry updated.");
                 }
             }
@@ -727,7 +731,7 @@ namespace Timekeeper
         // Help | About
         private void menuHelpAbout_Click(object sender, EventArgs e)
         {
-            Database db = new Database(data, ApplicationLog);
+            Database db = new Database(data);
             Row dbinfo = db.Info();
             fAbout dlg = new fAbout(dbinfo);
             dlg.ShowDialog(this);
@@ -756,7 +760,7 @@ namespace Timekeeper
         private void pmenuTasksProperties_Click(object sender, EventArgs e)
         {
             if (wTasks.SelectedNode != null) {
-                Task item = (Task)wTasks.SelectedNode.Tag;
+                Activity item = (Activity)wTasks.SelectedNode.Tag;
                 ShowProperties((Item)item);
             }
         }
@@ -997,9 +1001,9 @@ namespace Timekeeper
         {
             if (timerRunning) {
                 // Refresh actual time values from database to correct for drift
-                elapsed = Convert.ToInt32(currentTask.elapsed().TotalSeconds);
-                elapsedToday = Convert.ToInt32(currentTask.elapsedToday().TotalSeconds);
-                elapsedTodayAll = Convert.ToInt32(currentTask.elapsedTodayAll(tasks.getSeconds()).TotalSeconds);
+                elapsed = Convert.ToInt32(currentTask.Elapsed().TotalSeconds);
+                elapsedToday = Convert.ToInt32(currentTask.ElapsedToday().TotalSeconds);
+                elapsedTodayAll = Convert.ToInt32(entries.ElapsedToday());
             }
 
             // Annoyance support: if so desired, bug the user that the timer isn't running
@@ -1013,7 +1017,7 @@ namespace Timekeeper
                     {
                         if (wNotifyIcon.Visible) {
                             wNotifyIcon.ShowBalloonTip(30000,
-                                "Timekeeper", 
+                                Timekeeper.TITLE, 
                                 "No timer is currently running.\n\nYou can change the frequency of this notification, or disable it completly, in the Options dialog box.",
                                 ToolTipIcon.Info);
                         }
@@ -1123,7 +1127,7 @@ namespace Timekeeper
             }
 
             Item item = (Item)node.Tag;
-            int result = item.rename(newName, false);
+            int result = item.Rename(newName, false);
 
             if (result == -1) {
                 Common.Warn("Project name already exists.");
@@ -1143,20 +1147,20 @@ namespace Timekeeper
         private void wTasks_AfterSelect(object sender, TreeViewEventArgs e)
         {
             // Get current task
-            Task task = (Task)wTasks.SelectedNode.Tag;
+            Activity task = (Activity)wTasks.SelectedNode.Tag;
 
             // Update status bar
             if (timerRunning == false) {
                 statusTimeCurrent.Text = "0:00:00";
                 statusTimeCurrent.ForeColor = Color.Gray;
-                statusTimeToday.Text = task.elapsedTodayStatic();
-                statusTimeAll.Text = task.elapsedTodayAllStatic(tasks.getSeconds());
+                statusTimeToday.Text = task.ElapsedTodayFormatted();
+                statusTimeAll.Text = entries.ElapsedTodayFormatted();
             }
 
             // Project auto-follow
             if (options.wProjectFollow.Checked) {
-                if (task.project_id__last > 0) {
-                    TreeNode node = _findNode(wProjects.Nodes, task.project_id__last);
+                if (task.FollowedItemId > 0) {
+                    TreeNode node = _findNode(wProjects.Nodes, task.FollowedItemId);
                     if (node != null) {
                         wProjects.SelectedNode = node;
                     }
@@ -1167,25 +1171,25 @@ namespace Timekeeper
             if (calendar != null)
             {
                 // select date the task was last used
-                Task currentTask = (Task)wTasks.SelectedNode.Tag;
-                DateTime lastUsed = currentTask.dateLastUsed();
+                Activity currentTask = (Activity)wTasks.SelectedNode.Tag;
+                DateTime lastUsed = currentTask.DateLastUsed();
 
                 calendar.wCalendar.TodayDate = lastUsed;
                 //calendar.wCalendar.SelectionStart = calendar.wCalendar.TodayDate;
                 //calendar.wCalendar.SelectionEnd = calendar.wCalendar.TodayDate;
 
                 // now bold all dates where task has been used
-                int count = currentTask.countDaysUsed();
+                int count = currentTask.NumberOfDaysUsed();
                 DateTime[] a = new DateTime[count];
 
-                List<DateTime> list = currentTask.daysUsed();
+                List<DateTime> list = currentTask.DaysUsed();
                 a = list.ToArray();
 
                 calendar.wCalendar.BoldedDates = a;
             }
 
-            // Set hide mode based on task's is_hidden property
-            _setHideTaskMenuVisibility(!task.is_hidden);
+            // Set hide mode based on task's IsHidden property
+            _setHideTaskMenuVisibility(!task.IsHidden);
         }
 
         //---------------------------------------------------------------------
@@ -1201,17 +1205,17 @@ namespace Timekeeper
                 Project currentProject = (Project)wProjects.SelectedNode.Tag;
 
                 // now bold all dates where project has been used
-                int count = currentProject.countDaysUsed();
+                int count = currentProject.NumberOfDaysUsed();
                 DateTime[] a = new DateTime[count];
 
-                List<DateTime> list = currentProject.daysUsed();
+                List<DateTime> list = currentProject.DaysUsed();
                 a = list.ToArray();
 
                 calendar.wCalendar.BoldedDates = a;
             }
 
-            // Set hide mode based on projects's is_hidden property
-            _setHideProjectMenuVisibility(!project.is_hidden);
+            // Set hide mode based on projects's IsHidden property
+            _setHideProjectMenuVisibility(!project.IsHidden);
         }
 
         //---------------------------------------------------------------------
@@ -1278,19 +1282,19 @@ namespace Timekeeper
                 Point pt = ((TreeView)sender).PointToClient(new Point(e.X, e.Y));
                 TreeNode DestinationNode = ((TreeView)sender).GetNodeAt(pt);
                 TreeNode NewNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
-                Task to = (Task)DestinationNode.Tag;
+                Activity to = (Activity)DestinationNode.Tag;
 
-                if (to.is_folder == true) {
+                if (to.IsFolder == true) {
                     // if it's a folder, then reparent
-                    Task from = (Task)draggingNode.Tag;
-                    if (from.isDescendentOf(to.id)) {
+                    Activity from = (Activity)draggingNode.Tag;
+                    if (from.IsDescendentOf(to.ItemId)) {
                         Common.Warn("Cannot reparent to a descendent node.");
                         return;
-                    } else if (from.id == to.id) {
+                    } else if (from.ItemId == to.ItemId) {
                         Common.Warn("Cannot move task to self.");
                         return;
                     }
-                    from.reparent(to);
+                    from.Reparent(to);
                     reloadTasks();
                 } else {
                     // if it's a task, then swap
@@ -1343,7 +1347,7 @@ namespace Timekeeper
         private bool loadFile(bool createIfMissing)
         {
             data = new DBI(dataFile, options.wSQLtracing.Checked);
-            Database db = new Database(data, ApplicationLog); // FIXME: bad file/class name
+            Database db = new Database(data); // FIXME: bad file/class name
             Version version = new Version(3, 0);
             bool populate = true;
 
@@ -1370,6 +1374,8 @@ namespace Timekeeper
 
             loadTasks(null, 0);
             loadProjects(null, 0);
+
+            entries = new Entries(data); // NEW
 
             FileInfo fileinfo = new FileInfo(dataFile);
             statusFile.Text = fileinfo.Name;
@@ -1416,35 +1422,35 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        private void loadTasks(TreeNode parent_node, long parent_id)
+        private void loadTasks(TreeNode parent_node, long ParentId)
         {
             // Get sort order
             int nOrderBy = options.wOrderBy.SelectedIndex;
             string sOrderBy;
             switch (nOrderBy) {
-                case 0: sOrderBy = "name asc"; break;
-                case 1: sOrderBy = "name desc"; break;
-                case 2: sOrderBy = "timestamp_c asc"; break;
-                case 3: sOrderBy = "timestamp_c desc"; break;
-                case 4: sOrderBy = "timestamp_m asc"; break;
-                case 5: sOrderBy = "timestamp_m desc"; break;
-                default: sOrderBy = "timestamp_c asc"; break;
+                case 0: sOrderBy = "Name asc"; break;
+                case 1: sOrderBy = "Name desc"; break;
+                case 2: sOrderBy = "CreateTime asc"; break;
+                case 3: sOrderBy = "CreateTime desc"; break;
+                case 4: sOrderBy = "ModifyTime asc"; break;
+                case 5: sOrderBy = "ModifyTime desc"; break;
+                default: sOrderBy = "CreateTime asc"; break;
             }
 
             // Begin a transaction
             data.Begin();
 
             // Instantiate Tasks object
-            this.tasks = new Tasks(data, sOrderBy);
+            this.tasks = new Activities(data, sOrderBy);
 
-            foreach (Task task in tasks.get(parent_id, options.wViewHiddenTasks.Checked))
+            foreach (Activity task in tasks.Fetch(ParentId, options.wViewHiddenTasks.Checked))
             {
                 // create the new node
                 TreeNode node = insertItem(wTasks, parent_node, task, IMG_TASK);
 
                 // then recurse
-                if (task.id != parent_id) {
-                    loadTasks(node, task.id);
+                if (task.ItemId != ParentId) {
+                    loadTasks(node, task.ItemId);
                 }
             }
 
@@ -1453,20 +1459,20 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        public void loadProjects(TreeNode parent_node, long parent_id)
+        public void loadProjects(TreeNode parent_node, long ParentId)
         {
             // Get sort order (FIXME: copy/poasted from loadTasks; please fix that)
             int nOrderBy = options.wOrderBy.SelectedIndex;
             string sOrderBy;
             switch (nOrderBy)
             {
-                case 0: sOrderBy = "name asc"; break;
-                case 1: sOrderBy = "name desc"; break;
-                case 2: sOrderBy = "timestamp_c asc"; break;
-                case 3: sOrderBy = "timestamp_c desc"; break;
-                case 4: sOrderBy = "timestamp_m asc"; break;
-                case 5: sOrderBy = "timestamp_m desc"; break;
-                default: sOrderBy = "timestamp_c asc"; break;
+                case 0: sOrderBy = "Name asc"; break;
+                case 1: sOrderBy = "Name desc"; break;
+                case 2: sOrderBy = "CreateTime asc"; break;
+                case 3: sOrderBy = "CreateTime desc"; break;
+                case 4: sOrderBy = "ModifyTime asc"; break;
+                case 5: sOrderBy = "ModifyTime desc"; break;
+                default: sOrderBy = "CreateTime asc"; break;
             }
 
             // Begin a transaction
@@ -1474,14 +1480,14 @@ namespace Timekeeper
 
             this.projects = new Projects(data, sOrderBy);
 
-            foreach (Project project in projects.get(parent_id, options.wViewHiddenProjects.Checked))
+            foreach (Project project in projects.Fetch(ParentId, options.wViewHiddenProjects.Checked))
             {
                 // create the new node
                 TreeNode node = insertItem(wProjects, parent_node, project, IMG_PROJECT);
 
                 // then recurse
-                if (project.id != parent_id) {
-                    loadProjects(node, project.id);
+                if (project.ItemId != ParentId) {
+                    loadProjects(node, project.ItemId);
                 }
             }
 
@@ -1505,9 +1511,9 @@ namespace Timekeeper
             }
 
             if (dlg.ShowDialog(this) == DialogResult.OK) {
-                item.name = dlg.wNodeName.Text;
-                item.description = dlg.wNodeDescription.Text;
-                item.is_folder = is_folder;
+                item.Name = dlg.wNodeName.Text;
+                item.Description = dlg.wNodeDescription.Text;
+                item.IsFolder = is_folder;
                 createItem(tree, item, dlg.wParent.Text, imageIndex);
             }
         }
@@ -1537,8 +1543,8 @@ namespace Timekeeper
             if (dlg.ShowDialog(this) == DialogResult.OK) {
 
                 // first rename
-                item.description = dlg.wNodeDescription.Text;
-                int result = item.rename(dlg.wNodeName.Text, oldName == dlg.wNodeName.Text);
+                item.Description = dlg.wNodeDescription.Text;
+                int result = item.Rename(dlg.wNodeName.Text, oldName == dlg.wNodeName.Text);
                 if (result == 0) {
                     Common.Warn("Error renaming task.");
                     return;
@@ -1546,22 +1552,22 @@ namespace Timekeeper
                     Common.Warn("An item with that name already exists.");
                     return;
                 } else {
-                    tree.SelectedNode.Text = item.name;
-                    tree.SelectedNode.ToolTipText = item.description;
+                    tree.SelectedNode.Text = item.Name;
+                    tree.SelectedNode.ToolTipText = item.Description;
                 }
                 
                 // then reparent
                 TreeNode parentNode = _findNode(tree.Nodes, dlg.wParent.Text);
 
                 if (parentNode == null) {
-                    item.reparent(0);
+                    item.Reparent(0);
                 } else {
                     Item parentItem = (Item)parentNode.Tag;
-                    if (item.isDescendentOf(parentItem.id)) {
+                    if (item.IsDescendentOf(parentItem.ItemId)) {
                         Common.Warn("Item renamed, but not reparented. Cannot reparent to a descendent.");
                         return;
                     }
-                    item.reparent((Item)parentNode.Tag);
+                    item.Reparent((Item)parentNode.Tag);
                 }
 
                 // and reload
@@ -1580,20 +1586,20 @@ namespace Timekeeper
         private void createItem(TreeView tree, Item item, string parentName, int imageIndex)
         {
             TreeNode parentNode = null;
-            item.parent_id = 0;
+            item.ParentId = 0;
 
             if (parentName != "(Top Level)") {
                 parentNode = _findNode(tree.Nodes, parentName);
                 if (parentNode != null) {
                     Item parentItem = (Item)parentNode.Tag;
-                    item.parent_id = parentItem.id;
+                    item.ParentId = parentItem.ItemId;
                 } else {
                     Common.Warn("There was an error creating the item.");
                     return;
                 }
             }
 
-            int result = item.create();
+            int result = item.Create();
             if (result == 1) {
                 TreeNode foo = insertItem(tree, parentNode, item, imageIndex);
             } else if (result == 0) {
@@ -1609,9 +1615,9 @@ namespace Timekeeper
         {
             TreeNode node = new TreeNode();
             node.Tag = item;
-            node.Text = item.name;
-            node.ToolTipText = item.description;
-            if (item.is_hidden == true) {
+            node.Text = item.Name;
+            node.ToolTipText = item.Description;
+            if (item.IsHidden == true) {
                 node.ForeColor = Color.Gray;
                 //node.ImageIndex = IMG_TASK_HIDDEN;
             }
@@ -1623,7 +1629,7 @@ namespace Timekeeper
                 }
             }
             */
-            if (item.is_folder == true) {
+            if (item.IsFolder == true) {
                 node.ImageIndex = IMG_FOLDER_CLOSED;
                 node.SelectedImageIndex = IMG_FOLDER_OPEN;
             } else {
@@ -1661,7 +1667,7 @@ namespace Timekeeper
 
             // hide in the database
             Item item = (Item)tree.SelectedNode.Tag;
-            int result = item.hide();
+            int result = item.Hide();
 
             if (result == 0) {
                 Common.Warn("There was a problem hiding the item.");
@@ -1689,7 +1695,7 @@ namespace Timekeeper
         {
             // unhide in the database
             Item item = (Item)tree.SelectedNode.Tag;
-            int result = item.unhide();
+            int result = item.Unhide();
 
             if (result == 0) {
                 Common.Warn("There was a problem unhiding the item.");
@@ -1713,7 +1719,7 @@ namespace Timekeeper
 
             // remove in the database
             Item item = (Item)tree.SelectedNode.Tag;
-            int result = item.delete();
+            int result = item.Delete();
 
             if (result == 0) {
                 Common.Warn("There was a problem deleting the item.");
@@ -1721,11 +1727,18 @@ namespace Timekeeper
             }
 
             // now remove from the UI
-            // FIXME: make sure you set is_deleted to all descendents
+            // FIXME: make sure you set IsDeleted to all descendents
             tree.SelectedNode.Remove();
 
             // display root lines?
             _togglePlusMinus();
+        }
+
+        // FIXME / MOVEME
+
+        private bool BrowserOpen()
+        {
+            return !splitMain.Panel2Collapsed;
         }
 
         //---------------------------------------------------------------------
@@ -1759,10 +1772,10 @@ namespace Timekeeper
             // Grab instances of currently selected objects
             currentTaskNode = wTasks.SelectedNode;
             currentProjectNode = wProjects.SelectedNode;
-            currentTask = (Task)currentTaskNode.Tag;
+            currentTask = (Activity)currentTaskNode.Tag;
             currentProject = (Project)currentProjectNode.Tag;
 
-            if ((currentTask.is_folder == true) || (currentProject.is_folder)) {
+            if ((currentTask.IsFolder == true) || (currentProject.IsFolder)) {
                 Common.Warn("Folders cannot be timed. Please select a task before starting the timer.");
                 return;
             }
@@ -1778,22 +1791,22 @@ namespace Timekeeper
                     return;
                 }
             }
-            this.annotateStartTime = DateTime.Now;
 
             // Now start timing
-            currentTask.beginTiming(wStartTime.Value);
-            currentTask.project_id__last = currentProject.id;
+            DateTime StartTime = BrowserOpen() ? wStartTime.Value : DateTime.Now;
+            currentTask.StartTiming(StartTime);
+            currentTask.FollowedItemId = currentProject.ItemId; // FIXME: needs to work both ways
 
             currentEntry = new Entry(data);
-            currentEntry.TaskId = currentTask.id;
-            currentEntry.ProjectId = currentProject.id;
-            currentEntry.StartTime = wStartTime.Value;
-            currentEntry.StopTime = wStartTime.Value; // defaults to start time.
+            currentEntry.ActivityId = currentTask.ItemId;
+            currentEntry.ProjectId = currentProject.ItemId;
+            currentEntry.StartTime = StartTime;
+            currentEntry.StopTime = StartTime;
             currentEntry.Seconds = 0; // default to zero
             currentEntry.Memo = wMemo.Text;
-            currentEntry.PreLog = ""; // THIS IS GOING AWAY, PostLog is on its way to being Memo
-            currentEntry.PostLog = wMemo.Text; // FIXME (this is going away anyway)
             currentEntry.IsLocked = true;
+            currentEntry.LocationId = 1;
+            currentEntry.TagId = 1;
             currentEntry.Create();
 
             //currentEntry.Begin(wMemo.Text, currentTask.id, currentProject.id);
@@ -1802,9 +1815,9 @@ namespace Timekeeper
             timerLastRun = DateTime.Now;
 
             // Grab times (this is a database hit)
-            elapsed = (long)currentTask.elapsed().TotalSeconds;
-            elapsedToday = (long)currentTask.elapsedToday().TotalSeconds;
-            elapsedTodayAll = (long)currentTask.elapsedTodayAll(tasks.getSeconds()).TotalSeconds;
+            elapsed = (long)currentTask.Elapsed().TotalSeconds;
+            elapsedToday = (long)currentTask.ElapsedToday().TotalSeconds;
+            elapsedTodayAll = (long)entries.ElapsedToday();
 
             // Make any UI changes based on the timer starting
             menuActionStart.Visible = false;
@@ -1864,25 +1877,30 @@ namespace Timekeeper
         // FIXME: MOVE THIS
         private void ResetBrowserForStarting(bool openLog)
         {
-            // Set UI accordingly
-            SetCreateState();
+            try {
+                // Set UI accordingly
+                SetCreateState();
 
-            // Create browser objects
-            browserEntry = new Entry(data);
-            priorLoadedBrowserEntry = new Entry(data);
-            if (newBrowserEntry == null) {
-                newBrowserEntry = new Entry(data);
+                // Create browser objects
+                browserEntry = new Entry(data);
+                priorLoadedBrowserEntry = new Entry(data);
+                if (newBrowserEntry == null) {
+                    newBrowserEntry = new Entry(data);
+                }
+                isBrowsing = false;
+
+                // Load empty form
+                EntryToForm(newBrowserEntry);
+
+                // Ensure proper display
+                //splitMain.Panel2Collapsed = suppressBrowserDisplay ? true : false;
+                //splitMain.Panel2Collapsed = !openLog;
+
+                wMemo.Focus();
             }
-            isBrowsing = false;
-
-            // Load empty form
-            EntryToForm(newBrowserEntry);
-
-            // Ensure proper display
-            //splitMain.Panel2Collapsed = suppressBrowserDisplay ? true : false;
-            //splitMain.Panel2Collapsed = !openLog;
-
-            wMemo.Focus();
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
         }
 
         // FIXME: MOVE THIS
@@ -1941,43 +1959,16 @@ namespace Timekeeper
         //---------------------------------------------------------------------
         private void StopTimer()
         {
-            // Get annotation
-            string postLog = wMemo.Text; // FIXME: postLog is my unified log until the db migration happens.
-                                         // double FIXME: this isn't even being used anymore
-
-            if (options.wPostLog.Checked && suppressAnnotationDialogs == false) {
-                // instantiate dialog box
-                fAnnotate dlg = new fAnnotate(data);
-
-                // a few settings
-                dlg.panelTop.Visible = true;
-                dlg.ActiveControl = dlg.wLog;
-
-                DateTime endTime = DateTime.Now;
-                TimeSpan ts = new TimeSpan(endTime.Ticks - this.annotateStartTime.Ticks);
-
-                // default fields
-                dlg.wStartTime.Text = this.annotateStartTime.ToString(Common.TIME_FORMAT);
-                dlg.ttStartTime.SetToolTip(dlg.wStartTime, this.annotateStartTime.ToString(Common.DATETIME_FORMAT));
-                dlg.wElapsedTime.Text = ts.ToString().Substring(0, 8);
-                //dlg.wPreLog.Text = preLog;
-                if (dlg.ShowDialog(this) != DialogResult.OK) {
-                    return;
-                }
-                postLog = dlg.wLog.Text;
-                //preLog = dlg.wPreLog.Text;
-            }
-
             // Close off timer
-            currentEntry.TaskId = currentTask.id;
-            currentEntry.ProjectId = currentProject.id;
+            currentEntry.ActivityId = currentTask.ItemId;
+            currentEntry.ProjectId = currentProject.ItemId;
             currentEntry.StartTime = wStartTime.Value;
-            currentEntry.StopTime = wStopTime.Value;
-            currentEntry.Seconds = currentTask.endTiming();
+            currentEntry.StopTime = BrowserOpen() ? wStopTime.Value : DateTime.Now;
+            currentEntry.Seconds = currentTask.StopTiming();
             currentEntry.Memo = wMemo.Text;
-            currentEntry.PreLog = ""; // FIXME: but it's going away
-            currentEntry.PostLog = wMemo.Text;
             currentEntry.IsLocked = false;
+            currentEntry.LocationId = 1;
+            currentEntry.TagId = 1;
             currentEntry.Save();
             timerRunning = false;
             //timerLastRunNotified = false;
@@ -1988,7 +1979,7 @@ namespace Timekeeper
             currentEntry = null;
 
             // Make any UI changes 
-            Text = "Timekeeper";
+            Text = Timekeeper.TITLE;
 
             menuActionStart.Visible = true;
             //menuActionStartAdvanced.Visible = true;
@@ -2041,14 +2032,14 @@ namespace Timekeeper
             string start = DateTime.Now.ToString(Common.DATE_FORMAT + " 00:00:00");
             string end =   DateTime.Now.ToString(Common.DATE_FORMAT + " 23:59:59");
 
-            properties.Text = "Properties for " + item.name;
+            properties.Text = "Properties for " + item.Name;
 
-            properties.wID.Text = item.id.ToString();
-            properties.wType.Text = item.is_folder ? "Folder" : "Item"; ;
-            properties.wDescription.Text = item.description.Length > 0 ? item.description : "(none)";
-            properties.wTotalTime.Text = Timekeeper.FormatSeconds(item.countTreeTime(item.id, "1900-01-01", "2999-01-01"));
-            properties.wTimeToday.Text = Timekeeper.FormatSeconds(item.countTreeTime(item.id, start, end));
-            properties.wCreated.Text = item.timestamp_c.ToString();
+            properties.wID.Text = item.ItemId.ToString();
+            properties.wType.Text = item.IsFolder ? "Folder" : "Item"; ;
+            properties.wDescription.Text = item.Description.Length > 0 ? item.Description : "(none)";
+            properties.wTotalTime.Text = Timekeeper.FormatSeconds(item.RecursiveSecondsElapsed(item.ItemId, "1900-01-01", "2999-01-01"));
+            properties.wTimeToday.Text = Timekeeper.FormatSeconds(item.RecursiveSecondsElapsed(item.ItemId, start, end));
+            properties.wCreated.Text = item.CreateTime.ToString();
 
             properties.ShowDialog(this);
         }
@@ -2060,9 +2051,9 @@ namespace Timekeeper
         // Load settings
         private void fMain_Load(object sender, EventArgs e)
         {
-            // FIXME: this thing is like a microcosm of the problems
+            // FIXME: this method is like a microcosm of the problems
             // with fMain in general. Let's get this cleaned up while
-            // we clean up the entire class.
+            // we clean up the entire class. Seriously.
 
             string path = "";
 
@@ -2070,7 +2061,7 @@ namespace Timekeeper
                 // Determine log file path
                 path = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    "Timekeeper");
+                    Timekeeper.TITLE);
 
                 // Create directory if it doesn't exist
                 if (!Directory.Exists(path)) {
@@ -2207,14 +2198,20 @@ namespace Timekeeper
             */
 
             // Load keyboard shortcuts
-            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "Keyboard");
-            foreach (string name in key.GetValueNames()) {
-                foreach (ToolStripMenuItem item in menuMain.Items.Find(name, true)) {
-                    item.ShortcutKeys = (Keys)key.GetValue(name);
-                    options.wFunctionList.Items.Add(name, (int)item.ShortcutKeys);
+            try {
+                key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "Keyboard");
+                foreach (string name in key.GetValueNames()) {
+                    foreach (ToolStripMenuItem item in menuMain.Items.Find(name, true)) {
+                        item.ShortcutKeys = (Keys)key.GetValue(name);
+                        options.wFunctionList.Items.Add(name, (int)item.ShortcutKeys);
+                    }
                 }
+                key.Close();
             }
-            key.Close();
+            catch (Exception x) {
+                ApplicationLog.Warn("Exception loading keyboard shortcuts. " + x.Message);
+            }
+
 
             // Re-open last loaded file, if dataFile not already set
             if (dataFile == null) {
@@ -2617,27 +2614,26 @@ namespace Timekeeper
         private void FormToEntry(ref Entry entry, long entryId)
         {
             // First translate some necessary data from the form 
-            Task task = (Task)wTasks.SelectedNode.Tag;
+            Activity task = (Activity)wTasks.SelectedNode.Tag;
             Project project = (Project)wProjects.SelectedNode.Tag;
             TimeSpan ts = wStopTime.Value.Subtract(wStartTime.Value);
 
             // Update browserEntry with current form data
             entry.EntryId = entryId;
-            entry.TaskId = task.id;
-            entry.ProjectId = project.id;
+            entry.ActivityId = task.ItemId;
+            entry.ProjectId = project.ItemId;
             entry.StartTime = wStartTime.Value;
             entry.StopTime = wStopTime.Value;
             entry.Seconds = (long)ts.TotalSeconds;
             entry.Memo = wMemo.Text;
-            entry.PostLog = wMemo.Text;
-            entry.TaskName = wTasks.SelectedNode.Text;
+            entry.ActivityName = wTasks.SelectedNode.Text;
             entry.ProjectName = wProjects.SelectedNode.Text;
         }
 
         private void EntryToForm(Entry entry)
         {
             // Now select tasks and projects while browsing.
-            TreeNode node = _findNode(wTasks.Nodes, entry.TaskName);
+            TreeNode node = _findNode(wTasks.Nodes, entry.ActivityName);
             if (node != null) {
                 wTasks.SelectedNode = node;
                 wTasks.SelectedNode.Expand();
@@ -2653,7 +2649,7 @@ namespace Timekeeper
             wStartTime.Value = entry.StartTime;
             wStopTime.Value = entry.StopTime;
             wDuration.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
-            wMemo.Text = entry.PostLog; // FIXME: this will be changed to just "memo"
+            wMemo.Text = entry.Memo;
 
             // And any other relevant values
             toolControlEntryId.Text = entry.EntryId > 0 ? entry.EntryId.ToString() : "";
@@ -2664,7 +2660,7 @@ namespace Timekeeper
         public void SaveRow(bool forceSave)
         {
             // Bail if we have no entry
-            if (browserEntry.EntryId == 0) {
+            if ((browserEntry == null) || (browserEntry.EntryId == 0)) {
                 return;
             }
 
@@ -2908,7 +2904,7 @@ namespace Timekeeper
             {
                 Item item = (Item)n.Tag;
 
-                if (item.id == id) {
+                if (item.ItemId == id) {
                     result = n;
                 } else {
                     result = _findNode(n.Nodes, id);
@@ -2923,19 +2919,11 @@ namespace Timekeeper
 
         private void _togglePlusMinus()
         {
-            string query = "select count(*) as count from tasks where is_deleted = 0 and is_hidden = 0 and parent_id > 0";
-            Row row = data.SelectRow(query);
-            long count = row["count"];
-            if (count > 0) {
-                wTasks.ShowRootLines = (count > 0);
-            }
+            Activities Activities = new Activities(data);
+            wTasks.ShowRootLines = Activities.HasParents();
 
-            query = "select count(*) as count from projects where is_deleted = 0 and is_hidden = 0 and parent_id > 0";
-            row = data.SelectRow(query);
-            count = row["count"];
-            if (count > 0) {
-                wProjects.ShowRootLines = (count > 0);
-            }
+            Projects Projects = new Projects(data);
+            wProjects.ShowRootLines = Projects.HasParents();
         }
 
         private void reloadTasks()
@@ -2961,6 +2949,16 @@ namespace Timekeeper
             Control c = (Control)sender;
             string topic = String.Format("html\\context\\fMain\\{0}.html", c.Name);
             Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
+        }
+
+        private void menuToolFind_Click(object sender, EventArgs e)
+        {
+            try {
+                throw new System.ApplicationException("Doing this on purpose");
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
         }
 
         /*

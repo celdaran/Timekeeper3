@@ -9,7 +9,6 @@ namespace Timekeeper
     class Database
     {
         private DBI Data;
-        private Log ApplicationLog;
 
         private const string SCHEMA_VERSION = "3.0.0.0";
 
@@ -24,10 +23,9 @@ namespace Timekeeper
         // Constructor
         //---------------------------------------------------------------------
 
-        public Database(DBI data, Log applicationLog)
+        public Database(DBI data)
         {
             this.Data = data;
-            this.ApplicationLog = applicationLog;
         }
 
         //---------------------------------------------------------------------
@@ -60,7 +58,7 @@ namespace Timekeeper
                 CreateSystemGridTimeDisplay(version, populate);
             }
             catch (Exception x) {
-                ApplicationLog.Warn("Exception in Database.Create(). " + x.Message);
+                Timekeeper.Exception(x);
                 return false;
             }
 
@@ -153,10 +151,10 @@ namespace Timekeeper
                 Table Meta = Data.Select("select Key, Value from Meta order by Key");
 
                 // grab a few handy objects
-                Tasks Tasks = new Tasks(Data, "");
+                Activities Tasks = new Activities(Data, "");
                 Projects Projects = new Projects(Data, "");
                 Diary Diary = new Diary(Data);
-                Entry Journal = new Entry(Data); // FIXME: actually, this may be my first JournalEntry vs Journal class distinction
+                Entries Entries = new Entries(Data);
 
                 // convert meta rows to rows (note order by above)
                 row.Add("created", Meta[0]["Value"]);
@@ -166,17 +164,19 @@ namespace Timekeeper
                 // now grab individual attributes
                 row.Add("filename", Data.DataFile);
                 row.Add("filesize", Data.DataFileSize);
-                row.Add("taskcount", Tasks.count());
-                row.Add("projectcount", Projects.count());
+                row.Add("taskcount", Tasks.Count());
+                row.Add("projectcount", Projects.Count());
                 row.Add("journalcount", Diary.count());
-                row.Add("logcount", Journal.Count());
-                row.Add("totalseconds", Timekeeper.FormatSeconds(Journal.TotalSeconds()));
+                row.Add("logcount", Entries.Count());
+                row.Add("totalseconds", Timekeeper.FormatSeconds(Entries.TotalSeconds()));
             }
-            catch
+            catch (Exception x)
             {
-                // Return empty Data
-                
-                // wipe out any partially created row from above
+                // Log the problem
+                Timekeeper.Exception(x);
+
+                // Return empty Data on any sort of error
+
                 row = new Row();
 
                 // convert meta rows to rows
@@ -355,7 +355,6 @@ namespace Timekeeper
             }
 
             if (version.Major == 2 && version.Minor >= 2) {
-                // basically same as above, but is_hidden moved
                 Query = @"
                     CREATE TABLE tasks (
                         id integer primary key,
@@ -786,7 +785,7 @@ namespace Timekeeper
                         Seconds             INTEGER NOT NULL,
                         Memo                TEXT,
                         LocationId          INTEGER,
-                        UserTagId           INTEGER,
+                        TagId               INTEGER,
                         IsLocked            BOOLEAN NOT NULL)";
             }
 

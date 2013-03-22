@@ -188,10 +188,10 @@ namespace Timekeeper
 
             // Build up from query results
             foreach (Row r in table) {
-                if (items.ContainsKey(r["name"])) {
-                    items[r["name"]]++;
+                if (items.ContainsKey(r["Name"])) {
+                    items[r["Name"]]++;
                 } else {
-                    items[r["name"]] = 1;
+                    items[r["Name"]] = 1;
                 }
 
                 if (buckets.ContainsKey(r["grouping"])) {
@@ -200,12 +200,12 @@ namespace Timekeeper
                     buckets[r["grouping"]] = 1;
                 }
 
-                if (grid.ContainsKey(r["name"])) {
-                    grid[r["name"]].Add(r["grouping"], r["seconds"]);
+                if (grid.ContainsKey(r["Name"])) {
+                    grid[r["Name"]].Add(r["grouping"], r["seconds"]);
                 } else {
                     var cell = new Dictionary<string, long>();
                     cell[r["grouping"]] = r["seconds"];
-                    grid.Add(r["name"], cell);
+                    grid.Add(r["Name"], cell);
                 }
             }
 
@@ -298,7 +298,7 @@ namespace Timekeeper
         private string _seconds(Table table, string bucket, string item)
         {
             foreach (Row r in table) {
-                if ((r["name"] == item) && (r["grouping"] == bucket)) {
+                if ((r["Name"] == item) && (r["grouping"] == bucket)) {
                     return r["seconds"].ToString();
                 }
                 loopCount++;
@@ -325,7 +325,7 @@ namespace Timekeeper
 
             // First, populate leftmost column with list of tasks/projects
             // FIXME: dangerous query building; please come back and clean up
-            String query = String.Format(@"select * from {0} where is_folder = 0 and is_deleted = 0", wDataType.Text);
+            String query = String.Format(@"select * from {0} where is_folder = 0 and IsDeleted = 0", wDataType.Text);
             Table rows = data.Select(query);
 
             // This is the expensive section
@@ -339,7 +339,7 @@ namespace Timekeeper
 
                 // Stub in one row for each task/project found
                 foreach (Row row in rows) {
-                    wGrid.Rows.Add(row["name"]);
+                    wGrid.Rows.Add(row["Name"]);
                 }
 
                 // Handle date ranges
@@ -669,7 +669,7 @@ namespace Timekeeper
                 // check for duplicates
                 string query = String.Format(@"select name from grid_views where name = '{0}'", dlg.wName.Text.Replace("'", "''"));
                 Row tmp = data.SelectRow(query);
-                if (tmp["name"] != null) {
+                if (tmp["Name"] != null) {
                     if (Common.Prompt("A saved view with this name already exists. Do you want to overwrite it?") != DialogResult.Yes)  {
                         return;
                     } else {
@@ -695,8 +695,8 @@ namespace Timekeeper
                 row["group_by"] = this.wGroupBy.SelectedIndex.ToString();
                 row["data_from"] = this.wDataType.SelectedIndex.ToString();
                 row["hide_empty_rows"] = this.wHideEmptyRows.Checked ? 1 : 0;
-                row["timestamp_c"] = Common.Now();
-                row["timestamp_m"] = Common.Now();
+                row["CreateTime"] = Common.Now();
+                row["ModifyTime"] = Common.Now();
 
                 if ((dlg.wName.Text == sLoadedViewName) || overWrite)
                 {
@@ -709,7 +709,7 @@ namespace Timekeeper
                     tmp = data.SelectRow(query);
                     long max_sort_index = tmp["max_sort_index"] == null ? 0 : tmp["max_sort_index"];
 
-                    row["name"] = dlg.wName.Text;
+                    row["Name"] = dlg.wName.Text;
                     row["sort_index"] = max_sort_index + 1;
                     data.Insert("grid_views", row);
                     Common.Info("New grid view saved.");
@@ -745,7 +745,7 @@ namespace Timekeeper
             {
                 foreach (Row row in rows)
                 {
-                    ToolStripItem item = btnLoadViewDropDown.DropDownItems.Add(row["name"]);
+                    ToolStripItem item = btnLoadViewDropDown.DropDownItems.Add(row["Name"]);
                     item.Click += new System.EventHandler(this._load_view);
                     item.ToolTipText = row["description"];
                 }
@@ -781,7 +781,7 @@ namespace Timekeeper
                 Row row = this.data.SelectRow(query);
 
                 if (row["id"] != null) {
-                    this.sLoadedViewName = row["name"];
+                    this.sLoadedViewName = row["Name"];
                     this.sLoadedViewDescription = row["description"];
                     this.task_list = row["task_list"];
                     this.project_list = row["project_list"];
@@ -933,8 +933,8 @@ namespace Timekeeper
             row["group_by"] = this.wGroupBy.SelectedIndex.ToString();
             row["data_from"] = this.wDataType.SelectedIndex.ToString();
             row["hide_empty_rows"] = this.wHideEmptyRows.Checked ? 1 : 0;
-            row["timestamp_c"] = Common.Now();
-            row["timestamp_m"] = Common.Now();
+            row["CreateTime"] = Common.Now();
+            row["ModifyTime"] = Common.Now();
 
             try
             {
@@ -946,7 +946,7 @@ namespace Timekeeper
                     Row tmp = data.SelectRow(query);
                     int max_sort_index = tmp["max_sort_index"] == null ? 0 : tmp["max_sort_index"];
 
-                    row["name"] = "Last View";
+                    row["Name"] = "Last View";
                     row["sort_index"] = max_sort_index + 1;
                     data.Insert("grid_views", row);
                 }

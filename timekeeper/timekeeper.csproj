@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -95,17 +95,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Classes\Activities.cs" />
+    <Compile Include="Classes\Activity.cs" />
+    <Compile Include="Classes\Entries.cs" />
     <Compile Include="Classes\Entry.cs" />
     <Compile Include="Classes\Diary.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\Items.cs" />
-    <Compile Include="Classes\Program.cs" />
     <Compile Include="Classes\Project.cs" />
     <Compile Include="Classes\Projects.cs" />
     <Compile Include="Classes\Timekeeper.cs" />
     <Compile Include="Classes\Database.cs" />
-    <Compile Include="Classes\Task.cs" />
-    <Compile Include="Classes\Tasks.cs" />
     <Compile Include="Forms\fAbout.cs">
       <SubType>Form</SubType>
     </Compile>

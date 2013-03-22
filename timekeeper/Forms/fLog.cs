@@ -84,18 +84,18 @@ namespace Timekeeper
                 data.Begin();
 
                 // populate the comboboxes
-                query = "select name from tasks where is_deleted = 0 and is_hidden = 0 and is_folder = 0 order by name";
+                query = "select name from tasks where IsDeleted = 0 and IsHidden = 0 and is_folder = 0 order by name";
                 Table rows = data.Select(query);
                 foreach (Row taskRow in rows)
                 {
-                    wTask.Items.Add(taskRow["name"]);
+                    wTask.Items.Add(taskRow["Name"]);
                 }
 
-                query = "select name from projects where is_deleted = 0 and is_hidden = 0 and is_folder = 0 order by name";
+                query = "select name from projects where IsDeleted = 0 and IsHidden = 0 and is_folder = 0 order by name";
                 rows = data.Select(query);
                 foreach (Row projectRow in rows)
                 {
-                    wProject.Items.Add(projectRow["name"]);
+                    wProject.Items.Add(projectRow["Name"]);
                 }
 
                 // Initialize id with latest row

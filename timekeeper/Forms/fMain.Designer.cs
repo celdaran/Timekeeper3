@@ -100,7 +100,6 @@ namespace Timekeeper
             this.menuToolsReminders = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
             this.menuToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
-            this.weToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelpContents = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelpWeb = new System.Windows.Forms.ToolStripMenuItem();
@@ -299,28 +298,28 @@ namespace Timekeeper
             // 
             this.menuFileUtilitiesImport.Enabled = false;
             this.menuFileUtilitiesImport.Name = "menuFileUtilitiesImport";
-            this.menuFileUtilitiesImport.Size = new System.Drawing.Size(152, 22);
+            this.menuFileUtilitiesImport.Size = new System.Drawing.Size(120, 22);
             this.menuFileUtilitiesImport.Text = "Import...";
             // 
             // menuFileUtilitiesExport
             // 
             this.menuFileUtilitiesExport.Enabled = false;
             this.menuFileUtilitiesExport.Name = "menuFileUtilitiesExport";
-            this.menuFileUtilitiesExport.Size = new System.Drawing.Size(152, 22);
+            this.menuFileUtilitiesExport.Size = new System.Drawing.Size(120, 22);
             this.menuFileUtilitiesExport.Text = "Export...";
             // 
             // menuFileUtilitiesBackup
             // 
             this.menuFileUtilitiesBackup.Enabled = false;
             this.menuFileUtilitiesBackup.Name = "menuFileUtilitiesBackup";
-            this.menuFileUtilitiesBackup.Size = new System.Drawing.Size(152, 22);
+            this.menuFileUtilitiesBackup.Size = new System.Drawing.Size(120, 22);
             this.menuFileUtilitiesBackup.Text = "Backup...";
             // 
             // menuFileUtilitiesRepair
             // 
             this.menuFileUtilitiesRepair.Enabled = false;
             this.menuFileUtilitiesRepair.Name = "menuFileUtilitiesRepair";
-            this.menuFileUtilitiesRepair.Size = new System.Drawing.Size(152, 22);
+            this.menuFileUtilitiesRepair.Size = new System.Drawing.Size(120, 22);
             this.menuFileUtilitiesRepair.Text = "Repair...";
             // 
             // menuFileSep1
@@ -558,8 +557,7 @@ namespace Timekeeper
             this.menuToolsDatecalc,
             this.menuToolsReminders,
             this.toolStripMenuItem8,
-            this.menuToolsOptions,
-            this.weToolStripMenuItem});
+            this.menuToolsOptions});
             this.menuTool.Enabled = false;
             this.menuTool.Name = "menuTool";
             this.menuTool.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
@@ -713,6 +711,7 @@ namespace Timekeeper
             this.menuToolFind.Name = "menuToolFind";
             this.menuToolFind.Size = new System.Drawing.Size(161, 22);
             this.menuToolFind.Text = "&Find...";
+            this.menuToolFind.Click += new System.EventHandler(this.menuToolFind_Click);
             // 
             // toolStripSeparator1
             // 
@@ -807,26 +806,26 @@ namespace Timekeeper
             // 
             this.menuHelpContents.Name = "menuHelpContents";
             this.menuHelpContents.ShortcutKeyDisplayString = "F1";
-            this.menuHelpContents.Size = new System.Drawing.Size(137, 22);
+            this.menuHelpContents.Size = new System.Drawing.Size(152, 22);
             this.menuHelpContents.Text = "&Contents";
             this.menuHelpContents.Click += new System.EventHandler(this.menuHelpContents_Click);
             // 
             // menuHelpWeb
             // 
             this.menuHelpWeb.Name = "menuHelpWeb";
-            this.menuHelpWeb.Size = new System.Drawing.Size(137, 22);
+            this.menuHelpWeb.Size = new System.Drawing.Size(152, 22);
             this.menuHelpWeb.Text = "&Web Support";
             this.menuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
             // 
             // menuHelpSep
             // 
             this.menuHelpSep.Name = "menuHelpSep";
-            this.menuHelpSep.Size = new System.Drawing.Size(134, 6);
+            this.menuHelpSep.Size = new System.Drawing.Size(149, 6);
             // 
             // menuHelpAbout
             // 
             this.menuHelpAbout.Name = "menuHelpAbout";
-            this.menuHelpAbout.Size = new System.Drawing.Size(137, 22);
+            this.menuHelpAbout.Size = new System.Drawing.Size(152, 22);
             this.menuHelpAbout.Text = "&About...";
             this.menuHelpAbout.Click += new System.EventHandler(this.menuHelpAbout_Click);
             // 
@@ -1917,7 +1916,6 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem menuToolControlRevert;
         private System.Windows.Forms.ToolStripMenuItem menuToolControlUnlock;
         private System.Windows.Forms.ToolStripMenuItem toolbarHelperToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem weToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog dlgSaveAs;
     }
 }

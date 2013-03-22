@@ -18,11 +18,11 @@ namespace Timekeeper
         {
             InitializeComponent();
             this.data = data;
-            string query = String.Format(@"select * from {0} where is_deleted = 0 and is_hidden = 0 and is_folder = 1", table);
+            string query = String.Format(@"select * from {0} where IsDeleted = 0 and IsHidden = 0 and is_folder = 1", table);
             Table rows = data.Select(query);
             wParent.Items.Add("(Top Level)");
             foreach (Row row in rows) {
-                wParent.Items.Add(row["name"]);
+                wParent.Items.Add(row["Name"]);
             }
         }
 

@@ -34,7 +34,7 @@ namespace Timekeeper
             {
                 var pair = new Pair();
                 pair.Key = row["sort_index"];
-                pair.Value = row["name"];
+                pair.Value = row["Name"];
                 wViewList.Items.Add(pair);
             }
 
@@ -166,7 +166,7 @@ namespace Timekeeper
 
                 // now rename
                 row = new Row();
-                row["name"] = dlg.wNewName.Text;
+                row["Name"] = dlg.wNewName.Text;
                 data.Update("grid_views", row, "name", curr.Value);
 
                 // Now just repaint whole form

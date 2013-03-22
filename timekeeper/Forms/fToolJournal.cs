@@ -23,12 +23,12 @@ namespace Timekeeper
 
         private void fToolJournal_Load(object sender, EventArgs e)
         {
-            string query = "select id, timestamp_c from journal order by timestamp_c";
+            string query = "select DiaryEntryId, CreateTime from Diary order by CreateTime";
             Table rows = data.Select(query);
 
             foreach (Row row in rows) {
                 DateTime dt;
-                dt = row["timestamp_c"];
+                dt = row["CreateTime"];
                 wJumpBox.Items.Add(dt.ToString(Common.DATETIME_FORMAT));
             }
 
@@ -69,12 +69,12 @@ namespace Timekeeper
 
         private void wJumpBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string timestamp_c = wJumpBox.Items[wJumpBox.SelectedIndex].ToString();
+            string CreateTime = wJumpBox.Items[wJumpBox.SelectedIndex].ToString();
 
             DateTime dt;
-            dt = Convert.ToDateTime(timestamp_c);
+            dt = Convert.ToDateTime(CreateTime);
 
-            string query = "select * from journal where timestamp_c = '" + dt.ToString(Common.DATETIME_FORMAT) + "'";
+            string query = "select * from Diary where CreateTime = '" + dt.ToString(Common.DATETIME_FORMAT) + "'";
             Row row = data.SelectRow(query);
             wEntry.Text = row["description"];
 

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 
-using System.Diagnostics;
-
 using Technitivity.Toolbox;
 
 namespace Timekeeper
@@ -15,26 +13,36 @@ namespace Timekeeper
         //---------------------------------------------------------------------
 
         private DBI Data;
-        private Log Log;
-        
-        private string Query;
-        private string Message;
-        
+
         private DateTime CurrentStartTime;
 
-        // Public Entry attributes
+        private enum Mode { Insert, Update };
+
+        //---------------------------------------------------------------------
+        // Entry Attributes
+        //---------------------------------------------------------------------
+
+        // Public
         public long EntryId;
-        public long TaskId;
+        public long ActivityId;
         public long ProjectId;
-        public DateTime StartTime;    // about to rename timestamp_s
-        public DateTime StopTime;     // about to rename timestamp_e
+        public DateTime StartTime;
+        public DateTime StopTime;
         public long Seconds;
-        public string PreLog;
-        public string PostLog;
-        public string Memo;         // NEW --> replaces pre_log and post_log
+        public string Memo;
+        public long LocationId;
+        public long TagId;
         public bool IsLocked;
-        public string TaskName;
+
+        public string ActivityName;
         public string ProjectName;
+        public string LocationName;
+        public string TagName;
+
+        // Private
+        private DateTime CreateTime;
+        private DateTime ModifyTime;
+        private string JournalEntryGuid;
 
         //---------------------------------------------------------------------
         // Constructors
@@ -43,110 +51,41 @@ namespace Timekeeper
         public Entry(DBI data)
         {
             this.Data = data;
-            this.Log = new Log(this.Data.DataFile + ".log");
             this.SetAttributes();
         }
 
         //---------------------------------------------------------------------
 
-        public Entry(DBI Data, long logId) : this(Data)
+        public Entry(DBI data, long entryId) : this(data)
         {
-            this.Load(logId);
+            this.Load(entryId);
         }
 
         //---------------------------------------------------------------------
-        // Primary Entry Management Methods
+        // Primary Methods
         //---------------------------------------------------------------------
 
         public void Create()
         {
             try {
-                // Create the row based on current object attributes
-                EntryId = Data.Insert("timekeeper", GetAttributes());
+                // Create the Row based on current object attributes
+                EntryId = Data.Insert("Journal", GetAttributes(Mode.Insert));
 
-                // Update the tasks table to track the last project
+                // Update bidirectional tracking
                 Row row = new Row();
-                row["project_id__last"] = this.ProjectId;
-                Data.Update("tasks", row, "id", this.TaskId);
-            }
-            catch {
-                Log.Warn("could not create");
-            }
-        }
+                row["LastProjectId"] = this.ProjectId;
+                Data.Update("Activity", row, "ActivityId", this.ActivityId);
 
-        //---------------------------------------------------------------------
-
-        public void Save()
-        {
-            try {
-                Data.Update("timekeeper", GetAttributes(), "id", EntryId);
+                row = new Row();
+                row["LastActivityId"] = this.ActivityId;
+                Data.Update("Project", row, "ProjectId", this.ProjectId);
             }
-            catch {
-                Log.Warn("could not save");
+            catch (Exception x) {
+                Timekeeper.Exception(x);
             }
         }
 
         //---------------------------------------------------------------------
-        // Browsing Methods
-        //---------------------------------------------------------------------
-
-        public void Load(long logId)
-        {
-            try {
-                if (logId == 0) {
-                    // No log id? Set attributes to defaults
-                    SetAttributes();
-                } else {
-                    // Otherwise get attributes from db
-                    Query = @"
-                        select
-                            log.id,
-                            log.task_id, t.name as task_name,
-                            log.project_id, p.name as project_name,
-                            log.timestamp_s, log.timestamp_e, 
-                            log.seconds, log.pre_log, log.post_log,
-                            log.is_locked
-                        from timekeeper log
-                        join tasks t on t.id = log.task_id
-                        join projects p on p.id = log.project_id
-                        where log.id = " + logId;
-                    SetAttributes(Data.SelectRow(Query));
-                }
-            } catch (Exception e) {
-                Message = string.Format("Could not set attributes in Entry.Load(), Query = {0}, Error = {1}",
-                    Query, e.ToString());
-                Log.Warn(Message);
-            }
-        }
-
-        public void Load()
-        {
-            Load(this.EntryId);
-        }
-
-        public void LoadFirst()
-        {
-            this.SetFirstId();
-            this.Load();
-        }
-
-        public void LoadPrevious()
-        {
-            this.SetPrevId();
-            this.Load();
-        }
-
-        public void LoadNext()
-        {
-            this.SetNextId();
-            this.Load();
-        }
-
-        public void LoadLast()
-        {
-            this.SetLastId();
-            this.Load();
-        }
 
         public Entry Copy()
         {
@@ -154,23 +93,30 @@ namespace Timekeeper
 
             // copy private properties
             copy.CurrentStartTime = this.CurrentStartTime;
+            copy.CreateTime = this.CreateTime;
+            copy.ModifyTime = this.ModifyTime;
+            copy.JournalEntryGuid = UUID.Get();
 
             // copy public properties
             copy.EntryId = this.EntryId;
-            copy.TaskId = this.TaskId;
+            copy.ActivityId = this.ActivityId;
             copy.ProjectId = this.ProjectId;
             copy.StartTime = this.StartTime;
             copy.StopTime = this.StopTime;
             copy.Seconds = this.Seconds;
-            copy.PreLog = this.PreLog;
-            copy.PostLog = this.PostLog;
-            copy.Memo = this.PostLog; // FIXME
+            copy.Memo = this.Memo;
+            copy.LocationId = this.LocationId;
+            copy.TagId = this.TagId;
             copy.IsLocked = this.IsLocked;
-            copy.TaskName = this.TaskName;
+            copy.ActivityName = this.ActivityName;
             copy.ProjectName = this.ProjectName;
+            copy.LocationName = this.LocationName;
+            copy.TagName = this.TagName;
 
             return copy;
         }
+
+        //---------------------------------------------------------------------
 
         public bool Equals(Entry copy)
         {
@@ -179,121 +125,17 @@ namespace Timekeeper
             }
 
             if (
-	            (copy.TaskId == this.TaskId) &&
-	            (copy.ProjectId == this.ProjectId) &&
-	            (copy.StartTime == this.StartTime) &&
-	            (copy.StopTime == this.StopTime) &&
-	            (copy.Seconds == this.Seconds) &&
-	            (copy.PreLog == this.PreLog) &&
-	            (copy.PostLog == this.PostLog) &&
-	            (copy.IsLocked == this.IsLocked)
+                // Only compare public, non-PK, non-foreign members
+                (copy.ActivityId == this.ActivityId) &&
+                (copy.ProjectId == this.ProjectId) &&
+                (copy.StartTime == this.StartTime) &&
+                (copy.StopTime == this.StopTime) &&
+                (copy.Seconds == this.Seconds) &&
+                (copy.Memo == this.Memo) &&
+                (copy.LocationId == this.LocationId) &&
+                (copy.TagId == this.TagId) &&
+                (copy.IsLocked == this.IsLocked)
                ) {
-                return true;
-	        } else {
-                return false;
-	        }
-        }
-
-        public void Unlock()
-        {
-            try {
-                Row row = new Row();
-                row["is_locked"] = 0;
-                Data.Update("timekeeper", row, "id", EntryId);
-            }
-            catch {
-                Log.Warn("could not unlock");
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // Helper "Properties"
-        //---------------------------------------------------------------------
-
-        public int Count()
-        {
-            string query = "select count(*) as count from timekeeper";
-            Row row = Data.SelectRow(query);
-            return (int)row["count"];
-        }
-
-        //---------------------------------------------------------------------
-
-        public int TotalSeconds()
-        {
-            string query = "select sum(seconds) as seconds from timekeeper";
-            Row row = Data.SelectRow(query);
-            return row["seconds"] == null ? 0 : (int)row["seconds"];
-        }
-
-        //---------------------------------------------------------------------
-        // Private Helpers
-        //---------------------------------------------------------------------
-
-        private Row GetAttributes()
-        {
-            var row = new Row();
-            //row["id"] = EntryId;
-            row["task_id"] = TaskId;
-            row["project_id"] = ProjectId;
-            row["timestamp_s"] = StartTime.ToString(Technitivity.Toolbox.Common.DATETIME_FORMAT);
-            row["timestamp_e"] = StopTime.ToString(Technitivity.Toolbox.Common.DATETIME_FORMAT);
-            row["seconds"] = Seconds;
-            row["pre_log"] = PreLog;
-            row["post_log"] = PostLog;
-            row["is_locked"] = IsLocked ? 1 : 0;
-            //row["task_name"] = TaskName;
-            //row["project_name"] = ProjectName;
-            return row;
-        }
-
-        //---------------------------------------------------------------------
-
-        private void SetAttributes()
-        {
-            this.CurrentStartTime = DateTime.Now;
-
-            this.EntryId = 0;
-            this.TaskId = 0;
-            this.ProjectId = 0;
-            this.StartTime = DateTime.Now;
-            this.StopTime = DateTime.Now;
-            this.Seconds = 0;
-            this.PreLog = "";
-            this.PostLog = "";
-            this.Memo = "";
-            this.IsLocked = false;
-            this.TaskName = "";
-            this.ProjectName = "";
-        }
-
-        private void SetAttributes(Row row)
-        {
-            EntryId = row["id"];
-            TaskId = row["task_id"];
-            ProjectId = row["project_id"];
-            StartTime = row["timestamp_s"];
-            StopTime = row["timestamp_e"];
-            Seconds = row["seconds"];
-            PreLog = row["pre_log"];
-            PostLog = row["post_log"];
-            IsLocked = row["is_locked"];
-            TaskName = row["task_name"];
-            ProjectName = row["project_name"];
-        }
-
-        //---------------------------------------------------------------------
-        // Row location testers
-        //---------------------------------------------------------------------
-
-        public bool AtEnd()
-        {
-            string query = String.Format(@"
-                select id, timestamp_s from timekeeper 
-                order by timestamp_s desc 
-                limit 1");
-            Row row = Data.SelectRow(query);
-            if ((row["id"] != null) && (row["id"] == this.EntryId)) {
                 return true;
             } else {
                 return false;
@@ -302,14 +144,224 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
+        public void Load(long entryId)
+        {
+            try {
+                if (entryId == 0) {
+                    SetAttributes();
+                } else {
+                    string Query = @"
+                        select
+                            j.JournalEntryId,
+                            j.ActivityId, a.Name as ActivityName,
+                            j.ProjectId, p.Name as ProjectName,
+                            j.StartTime,
+                            j.StopTime,
+                            j.Seconds,
+                            j.Memo,
+                            j.LocationId, l.Name as LocationName,
+                            j.TagId, t.Name as TagName,
+                            j.IsLocked,
+                            j.CreateTime, j.ModifyTime, j.JournalEntryGuid
+                        from Journal j
+                        join Activity a on a.ActivityId  = j.ActivityId
+                        join Project p  on p.ProjectId   = j.ProjectId
+                        join Location l on l.LocationId  = j.LocationId
+                        join Tag t      on t.TagId       = j.TagId
+                        where j.JournalEntryId = " + entryId;
+                    SetAttributes(Data.SelectRow(Query));
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public void Load()
+        {
+            Load(this.EntryId);
+        }
+
+        //---------------------------------------------------------------------
+
+        public void Save()
+        {
+            try {
+                Data.Update("Journal", GetAttributes(Mode.Update), "JournalEntryId", EntryId);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public void Unlock()
+        {
+            try {
+                Row row = new Row();
+                row["IsLocked"] = 0;
+                Data.Update("Journal", row, "JournalEntryId", EntryId);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // Browsing Helper Methods
+        //---------------------------------------------------------------------
+
+        public void LoadFirst()
+        {
+            this.SetFirstId();
+            this.Load();
+        }
+
+        //---------------------------------------------------------------------
+
+        public void LoadPrevious()
+        {
+            this.SetPrevId();
+            this.Load();
+        }
+
+        //---------------------------------------------------------------------
+
+        public void LoadNext()
+        {
+            this.SetNextId();
+            this.Load();
+        }
+
+        //---------------------------------------------------------------------
+
+        public void LoadLast()
+        {
+            this.SetLastId();
+            this.Load();
+        }
+
+        //---------------------------------------------------------------------
+        // Private Helpers
+        //---------------------------------------------------------------------
+
+        private Row GetAttributes(Mode mode)
+        {
+            Row Row = new Row();
+
+            if (mode == Mode.Insert) {
+                Row["CreateTime"] = Common.Now();
+            }
+            Row["ModifyTime"] = Common.Now();
+            Row["JournalEntryGuid"] = UUID.Get();
+
+            Row["ActivityId"] = ActivityId;
+            Row["ProjectId"] = ProjectId;
+            Row["StartTime"] = StartTime.ToString(Common.DATETIME_FORMAT);
+            Row["StopTime"] = StopTime.ToString(Common.DATETIME_FORMAT);
+            Row["Seconds"] = Seconds;
+            Row["Memo"] = Memo;
+            Row["LocationId"] = LocationId;
+            Row["TagId"] = TagId;
+
+            Row["IsLocked"] = IsLocked ? 1 : 0;
+
+            return Row;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void SetAttributes()
+        {
+            Row row = new Row();
+
+            row["StartTime"] = DateTime.Now;
+
+            row["JournalEntryId"] = 0;
+            row["ActivityId"] = 0;
+            row["ProjectId"] = 0;
+            row["StartTime"] = DateTime.Now;
+            row["StopTime"] = DateTime.Now;
+            row["Seconds"] = 0;
+            row["Memo"] = "";
+            row["LocationId"] = 0;
+            row["TagId"] = 0;
+            row["IsLocked"] = false;
+
+            row["ActivityName"] = "";
+            row["ProjectName"] = "";
+            row["LocationName"] = "";
+            row["TagName"] = "";
+
+            row["CreateTime"] = DateTime.Now;
+            row["ModifyTime"] = DateTime.Now;
+            row["JournalEntryGuid"] = UUID.Get();
+
+            SetAttributes(row);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void SetAttributes(Row row)
+        {
+            CurrentStartTime = row["StartTime"];
+
+            EntryId = row["JournalEntryId"];
+            ActivityId = row["ActivityId"];
+            ProjectId = row["ProjectId"];
+            StartTime = row["StartTime"];
+            StopTime = row["StopTime"];
+            Seconds = row["Seconds"];
+            Memo = row["Memo"];
+            LocationId = row["LocationId"];
+            TagId = row["TagId"];
+            IsLocked = row["IsLocked"];
+
+            ActivityName = row["ActivityName"];
+            ProjectName = row["ProjectName"];
+            LocationName = row["LocationName"];
+            TagName = row["TagName"];
+
+            CreateTime = row["CreateTime"];
+            ModifyTime = row["ModifyTime"];
+            JournalEntryGuid = row["JournalEntryGuid"];
+        }
+
+        //---------------------------------------------------------------------
+        // Row location testers
+        //---------------------------------------------------------------------
+
+        public bool AtEnd()
+        {
+            string Query = String.Format(@"
+                select JournalEntryId from Journal 
+                order by StartTime desc 
+                limit 1");
+            return EdgeTest(Query);
+        }
+
+        //---------------------------------------------------------------------
+
         public bool AtBeginning()
         {
-            string query = String.Format(@"
-                select id, timestamp_s from timekeeper 
-                order by timestamp_s asc 
+            string Query = String.Format(@"
+                select JournalEntryId from Journal 
+                order by StartTime asc
                 limit 1");
-            Row row = Data.SelectRow(query);
-            if ((row["id"] != null) && (row["id"] == this.EntryId)) {
+            return EdgeTest(Query);
+        }
+
+        //---------------------------------------------------------------------
+        // Location Helpers
+        //---------------------------------------------------------------------
+
+        private bool EdgeTest(string query)
+        {
+            Row Row = Data.SelectRow(query);
+            if ((Row["JournalEntryId"] != null) && (Row["JournalEntryId"] == this.EntryId)) {
                 return true;
             } else {
                 return false;
@@ -323,8 +375,8 @@ namespace Timekeeper
         private void SetFirstId()
         {
             string query = String.Format(@"
-                select id, timestamp_s from timekeeper 
-                order by timestamp_s asc 
+                select JournalEntryId, StartTime from Journal 
+                order by StartTime asc
                 limit 1");
             SetId(query);
         }
@@ -334,9 +386,9 @@ namespace Timekeeper
         private void SetPrevId()
         {
             string query = String.Format(@"
-                select id, timestamp_s from timekeeper
-                where timestamp_s < '{0}'
-                order by timestamp_s desc
+                select JournalEntryId, StartTime from Journal 
+                where StartTime < '{0}'
+                order by StartTime desc
                 limit 1", this.CurrentStartTime.ToString(Common.DATETIME_FORMAT));
             SetId(query);
         }
@@ -348,9 +400,9 @@ namespace Timekeeper
             if (this.CurrentStartTime == DateTime.MinValue)
                 return;
             string query = String.Format(@"
-                select id, timestamp_s from timekeeper
-                where timestamp_s > '{0}'
-                order by timestamp_s asc
+                select JournalEntryId, StartTime from Journal 
+                where StartTime > '{0}'
+                order by StartTime asc
                 limit 1", this.CurrentStartTime.ToString(Common.DATETIME_FORMAT));
             SetId(query);
         }
@@ -360,8 +412,8 @@ namespace Timekeeper
         private void SetLastId()
         {
             string query = String.Format(@"
-                select id, timestamp_s from timekeeper 
-                order by timestamp_s desc 
+                select JournalEntryId, StartTime from Journal 
+                order by StartTime desc 
                 limit 1");
             SetId(query);
         }
@@ -374,25 +426,18 @@ namespace Timekeeper
             // A Note on EntryId Values
             // Remember that the id does not imply chronology. Backfills, Data 
             // migrations, and other Data changes can create "out of order" id 
-            // values. The value of timestamp_s is authoritative.
+            // values. The value of StartTime is authoritative.
             //-----------------------------------------------------------------
-
-            var s = new Stopwatch();
-            s.Start();
 
             try {
                 Row row = Data.SelectRow(query);
-                this.EntryId = row["id"];
-                this.CurrentStartTime = row["timestamp_s"];
+                this.EntryId = row["JournalEntryId"];
+                this.CurrentStartTime = row["StartTime"];
             }
             catch {
                 this.EntryId = 0;
                 this.CurrentStartTime = DateTime.MinValue;
             }
-
-            s.Stop();
-            // Helpful debugging step
-            // this.Text = "Elapsed time " + s.ElapsedMilliseconds.ToString();
         }
 
         //---------------------------------------------------------------------

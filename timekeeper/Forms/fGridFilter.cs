@@ -37,14 +37,14 @@ namespace Timekeeper
 
         internal void _load(string table, CheckedListBox list)
         {
-            string query = String.Format(@"select * from {0} where is_folder = 0 and is_deleted = 0", table);
+            string query = String.Format(@"select * from {0} where is_folder = 0 and IsDeleted = 0", table);
             Table rows = data.Select(query);
 
             foreach (Row row in rows)
             {
                 Pair item = new Pair();
                 item.Key = (int)row["id"];
-                item.Value = row["name"];
+                item.Value = row["Name"];
                 list.Items.Add(item);
             }
 
