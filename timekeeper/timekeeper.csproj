@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -95,6 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Meta.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Classes\Activities.cs" />
     <Compile Include="Classes\Activity.cs" />
@@ -142,9 +143,6 @@
     </Compile>
     <Compile Include="Forms\fGridSave.Designer.cs">
       <DependentUpon>fGridSave.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\fMain.Operations.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\fNotify.cs">
       <SubType>Form</SubType>
@@ -212,23 +210,47 @@
     <Compile Include="Forms\fMain.Designer.cs">
       <DependentUpon>fMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\fMain.Action.cs">
+      <DependentUpon>fMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fMain.Browser.cs">
+      <DependentUpon>fMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fMain.Dialog.cs">
+      <DependentUpon>fMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fMain.MenuBar.cs">
+      <DependentUpon>fMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fMain.StatusBar.cs">
+      <DependentUpon>fMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\fMain.Trees.cs">
+      <DependentUpon>fMain.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\fItem.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\fItem.Designer.cs">
       <DependentUpon>fItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fOptions.cs">
+    <Compile Include="Forms\Options.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fOptions.Designer.cs">
-      <DependentUpon>fOptions.cs</DependentUpon>
+    <Compile Include="Forms\Options.Designer.cs">
+      <DependentUpon>Options.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fProperties.cs">
+    <Compile Include="Forms\Properties.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fProperties.Designer.cs">
-      <DependentUpon>fProperties.cs</DependentUpon>
+    <Compile Include="Forms\Properties.Designer.cs">
+      <DependentUpon>Properties.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\fReport.cs">
       <SubType>Form</SubType>
@@ -316,13 +338,13 @@
       <SubType>Designer</SubType>
       <DependentUpon>fItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fOptions.resx">
+    <EmbeddedResource Include="Forms\Options.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>fOptions.cs</DependentUpon>
+      <DependentUpon>Options.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fProperties.resx">
+    <EmbeddedResource Include="Forms\Properties.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>fProperties.cs</DependentUpon>
+      <DependentUpon>Properties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fReport.resx">
       <SubType>Designer</SubType>

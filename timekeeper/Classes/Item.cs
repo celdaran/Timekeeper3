@@ -85,6 +85,24 @@ namespace Timekeeper
             Row row = data.SelectRow(query);
             long itemId = row[this.IdColumnName];
 
+            /*
+            Row Row = Timekeeper.DB.SelectRow(query);
+            Row Row = App.DB.Insert("table", Row);
+            Row Row = TK.DB.SelectRow(query);
+            Row Row = Global.DB.Update(query);
+
+            Database.SelectRow(Query);
+            Database.Insert("Table", Row);
+            Database.Update("Tabble", Row, "Id = Id");
+            Database.Begin();
+            Database.Commit();
+            Database.Rollback();
+            Database.TableExists("TableName");
+            Database.TablesExist();
+            
+            */
+
+
             Load(itemId);
         }
 
@@ -320,23 +338,56 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public int Rename(string newname, bool changeDescriptionOnly)
+        public int Redescribe(string newDescription)
         {
-            if (!changeDescriptionOnly && (Exists(newname) == true)) {
-                return -1;
-            } else {
-                Row Row = new Row();
-                Row["Name"] = newname;
-                Row["Description"] = this.Description;
-                Row["ModifyTime"] = Common.Now();
-                int Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+            Row Row = new Row();
+            Row["Description"] = newDescription;
+            Row["ModifyTime"] = Common.Now();
+            int Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
-                if (Count == 1) {
-                    this.Name = newname;
-                    return 1;
-                } else {
-                    return 0;
-                }
+            if (Count == 1) {
+                this.Description = newDescription;
+                return Timekeeper.SUCCESS;
+            } else {
+                return Timekeeper.FAILURE;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        // false = 0 = unsuccessful
+        // true = 1 = successful
+        // below 0 = unsucessful, but with reason
+
+        public const int ERR_RENAME_EXISTS = -1;
+        public const int ERR_RENAME_NULL = -2;
+        public const int ERR_RENAME_BLANK = -3;
+
+        public int Rename(string newName)
+        {
+            // Validation
+            if (newName == null) {
+                return ERR_RENAME_NULL;
+            }
+
+            if (newName.Length == 0) {
+                return ERR_RENAME_BLANK;
+            }
+
+            if (Exists(newName)) {
+                return ERR_RENAME_EXISTS;
+            }
+
+            Row Row = new Row();
+            Row["Name"] = newName;
+            Row["ModifyTime"] = Common.Now();
+            int Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+
+            if (Count == 1) {
+                this.Name = newName;
+                return Timekeeper.SUCCESS;
+            } else {
+                return Timekeeper.FAILURE;
             }
         }
 

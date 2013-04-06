@@ -30,34 +30,34 @@ namespace Timekeeper
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fMain));
-            this.menuMain = new System.Windows.Forms.MenuStrip();
+            this.MenuMain = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuFileNew = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuFileOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuFileClose = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuFileRecent = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuFileUtilities = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuFileNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuFileOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuFileClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuFileSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuFileRecent = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuFileUtilities = new System.Windows.Forms.ToolStripMenuItem();
             this.menuFileUtilitiesImport = new System.Windows.Forms.ToolStripMenuItem();
             this.menuFileUtilitiesExport = new System.Windows.Forms.ToolStripMenuItem();
             this.menuFileUtilitiesBackup = new System.Windows.Forms.ToolStripMenuItem();
             this.menuFileUtilitiesRepair = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuFileSep1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuFileExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuAction = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuActionStart = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuActionStop = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuActionStartAdvanced = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuActionStopAdvanced = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuTasksSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuFileSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuFileExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuAction = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuActionStartTimer = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuActionStopTimer = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuActionOpenBrowser = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuActionCloseBrowser = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuActionSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuTasksNewTask = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksNewTaskFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksEditTask = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksHideTask = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksUnhideTask = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksDeleteTask = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuTasksSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuActionSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuTasksNewProject = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksNewProjectFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTasksEditProject = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,12 +106,12 @@ namespace Timekeeper
             this.menuHelpSep = new System.Windows.Forms.ToolStripSeparator();
             this.menuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolbarHelperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusMain = new System.Windows.Forms.StatusStrip();
-            this.statusCurrentTask = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusTimeCurrent = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusTimeToday = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusTimeAll = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusFile = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBar = new System.Windows.Forms.StatusStrip();
+            this.StatusBarItemName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBarItemTime = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBarItemTimeToday = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBarItemsTimeToday = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBarFileName = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitTrees = new System.Windows.Forms.SplitContainer();
             this.wTasks = new System.Windows.Forms.TreeView();
             this.menuTask = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -140,10 +140,10 @@ namespace Timekeeper
             this.pmenuProjectsProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.pmenuProjectsSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.pmenuProjectsHidePane = new System.Windows.Forms.ToolStripMenuItem();
-            this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
+            this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.timerShort = new System.Windows.Forms.Timer(this.components);
             this.timerLong = new System.Windows.Forms.Timer(this.components);
-            this.dlgNew = new System.Windows.Forms.OpenFileDialog();
+            this.NewFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.wNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.splitMain = new System.Windows.Forms.SplitContainer();
             this.panelMemo = new System.Windows.Forms.Panel();
@@ -190,9 +190,9 @@ namespace Timekeeper
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
-            this.dlgSaveAs = new System.Windows.Forms.SaveFileDialog();
-            this.menuMain.SuspendLayout();
-            this.statusMain.SuspendLayout();
+            this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
+            this.MenuMain.SuspendLayout();
+            this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
             this.splitTrees.Panel1.SuspendLayout();
             this.splitTrees.Panel2.SuspendLayout();
@@ -210,89 +210,88 @@ namespace Timekeeper
             this.toolStripControls.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuMain
+            // MenuMain
             // 
-            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuFile,
-            this.menuAction,
+            this.MenuAction,
             this.menuReport,
             this.menuTool,
             this.menuHelp,
             this.toolbarHelperToolStripMenuItem});
-            this.menuMain.Location = new System.Drawing.Point(0, 0);
-            this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(620, 24);
-            this.menuMain.TabIndex = 0;
-            this.menuMain.Text = "menuStrip1";
+            this.MenuMain.Location = new System.Drawing.Point(0, 0);
+            this.MenuMain.Name = "MenuMain";
+            this.MenuMain.Size = new System.Drawing.Size(620, 24);
+            this.MenuMain.TabIndex = 0;
             // 
             // menuFile
             // 
             this.menuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuFileNew,
-            this.menuFileOpen,
-            this.menuFileSaveAs,
-            this.menuFileClose,
-            this.toolStripSeparator2,
-            this.menuFileRecent,
-            this.menuFileUtilities,
-            this.menuFileSep1,
-            this.menuFileExit});
+            this.MenuFileNew,
+            this.MenuFileOpen,
+            this.MenuFileSaveAs,
+            this.MenuFileClose,
+            this.MenuFileSep1,
+            this.MenuFileRecent,
+            this.MenuFileUtilities,
+            this.MenuFileSep2,
+            this.MenuFileExit});
             this.menuFile.Name = "menuFile";
             this.menuFile.Size = new System.Drawing.Size(35, 20);
             this.menuFile.Text = "&File";
             // 
-            // menuFileNew
+            // MenuFileNew
             // 
-            this.menuFileNew.Name = "menuFileNew";
-            this.menuFileNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.menuFileNew.Size = new System.Drawing.Size(152, 22);
-            this.menuFileNew.Text = "&New...";
-            this.menuFileNew.Click += new System.EventHandler(this.menuFileNew_Click);
+            this.MenuFileNew.Name = "MenuFileNew";
+            this.MenuFileNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.MenuFileNew.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileNew.Text = "&New...";
+            this.MenuFileNew.Click += new System.EventHandler(this.MenuFileNew_Click);
             // 
-            // menuFileOpen
+            // MenuFileOpen
             // 
-            this.menuFileOpen.Name = "menuFileOpen";
-            this.menuFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.menuFileOpen.Size = new System.Drawing.Size(152, 22);
-            this.menuFileOpen.Text = "&Open...";
-            this.menuFileOpen.Click += new System.EventHandler(this.menuFileOpen_Click);
+            this.MenuFileOpen.Name = "MenuFileOpen";
+            this.MenuFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.MenuFileOpen.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileOpen.Text = "&Open...";
+            this.MenuFileOpen.Click += new System.EventHandler(this.MenuFileOpen_Click);
             // 
-            // menuFileSaveAs
+            // MenuFileSaveAs
             // 
-            this.menuFileSaveAs.Name = "menuFileSaveAs";
-            this.menuFileSaveAs.Size = new System.Drawing.Size(152, 22);
-            this.menuFileSaveAs.Text = "Save As...";
-            this.menuFileSaveAs.Click += new System.EventHandler(this.menuFileSaveAs_Click);
+            this.MenuFileSaveAs.Name = "MenuFileSaveAs";
+            this.MenuFileSaveAs.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileSaveAs.Text = "Save As...";
+            this.MenuFileSaveAs.Click += new System.EventHandler(this.MenuFileSaveAs_Click);
             // 
-            // menuFileClose
+            // MenuFileClose
             // 
-            this.menuFileClose.Name = "menuFileClose";
-            this.menuFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.menuFileClose.Size = new System.Drawing.Size(152, 22);
-            this.menuFileClose.Text = "&Close";
-            this.menuFileClose.Click += new System.EventHandler(this.menuFileClose_Click);
+            this.MenuFileClose.Name = "MenuFileClose";
+            this.MenuFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.MenuFileClose.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileClose.Text = "&Close";
+            this.MenuFileClose.Click += new System.EventHandler(this.MenuFileClose_Click);
             // 
-            // toolStripSeparator2
+            // MenuFileSep1
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.MenuFileSep1.Name = "MenuFileSep1";
+            this.MenuFileSep1.Size = new System.Drawing.Size(149, 6);
             // 
-            // menuFileRecent
+            // MenuFileRecent
             // 
-            this.menuFileRecent.Name = "menuFileRecent";
-            this.menuFileRecent.Size = new System.Drawing.Size(152, 22);
-            this.menuFileRecent.Text = "&Recent Files";
+            this.MenuFileRecent.Name = "MenuFileRecent";
+            this.MenuFileRecent.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileRecent.Text = "&Recent Files";
             // 
-            // menuFileUtilities
+            // MenuFileUtilities
             // 
-            this.menuFileUtilities.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuFileUtilities.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuFileUtilitiesImport,
             this.menuFileUtilitiesExport,
             this.menuFileUtilitiesBackup,
             this.menuFileUtilitiesRepair});
-            this.menuFileUtilities.Name = "menuFileUtilities";
-            this.menuFileUtilities.Size = new System.Drawing.Size(152, 22);
-            this.menuFileUtilities.Text = "Utilities";
+            this.MenuFileUtilities.Name = "MenuFileUtilities";
+            this.MenuFileUtilities.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilities.Text = "Utilities";
             // 
             // menuFileUtilitiesImport
             // 
@@ -322,80 +321,80 @@ namespace Timekeeper
             this.menuFileUtilitiesRepair.Size = new System.Drawing.Size(120, 22);
             this.menuFileUtilitiesRepair.Text = "Repair...";
             // 
-            // menuFileSep1
+            // MenuFileSep2
             // 
-            this.menuFileSep1.Name = "menuFileSep1";
-            this.menuFileSep1.Size = new System.Drawing.Size(149, 6);
+            this.MenuFileSep2.Name = "MenuFileSep2";
+            this.MenuFileSep2.Size = new System.Drawing.Size(149, 6);
             // 
-            // menuFileExit
+            // MenuFileExit
             // 
-            this.menuFileExit.Name = "menuFileExit";
-            this.menuFileExit.Size = new System.Drawing.Size(152, 22);
-            this.menuFileExit.Text = "E&xit";
-            this.menuFileExit.Click += new System.EventHandler(this.menuFileExit_Click);
+            this.MenuFileExit.Name = "MenuFileExit";
+            this.MenuFileExit.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileExit.Text = "E&xit";
+            this.MenuFileExit.Click += new System.EventHandler(this.MenuFileExit_Click);
             // 
-            // menuAction
+            // MenuAction
             // 
-            this.menuAction.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuActionStart,
-            this.menuActionStop,
-            this.menuActionStartAdvanced,
-            this.menuActionStopAdvanced,
-            this.menuTasksSep1,
+            this.MenuAction.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuActionStartTimer,
+            this.MenuActionStopTimer,
+            this.MenuActionOpenBrowser,
+            this.MenuActionCloseBrowser,
+            this.MenuActionSep1,
             this.menuTasksNewTask,
             this.menuTasksNewTaskFolder,
             this.menuTasksEditTask,
             this.menuTasksHideTask,
             this.menuTasksUnhideTask,
             this.menuTasksDeleteTask,
-            this.menuTasksSep2,
+            this.MenuActionSep2,
             this.menuTasksNewProject,
             this.menuTasksNewProjectFolder,
             this.menuTasksEditProject,
             this.menuTasksHideProject,
             this.menuTasksUnhideProject,
             this.menuTasksDeleteProject});
-            this.menuAction.Enabled = false;
-            this.menuAction.Name = "menuAction";
-            this.menuAction.Size = new System.Drawing.Size(54, 20);
-            this.menuAction.Text = "&Actions";
+            this.MenuAction.Enabled = false;
+            this.MenuAction.Name = "MenuAction";
+            this.MenuAction.Size = new System.Drawing.Size(49, 20);
+            this.MenuAction.Text = "&Action";
             // 
-            // menuActionStart
+            // MenuActionStartTimer
             // 
-            this.menuActionStart.Image = global::Timekeeper.Properties.Resources.buttonGo;
-            this.menuActionStart.Name = "menuActionStart";
-            this.menuActionStart.Size = new System.Drawing.Size(177, 22);
-            this.menuActionStart.Text = "&Start Timer";
-            this.menuActionStart.Click += new System.EventHandler(this.menuActionStart_Click);
+            this.MenuActionStartTimer.Image = global::Timekeeper.Properties.Resources.buttonGo;
+            this.MenuActionStartTimer.Name = "MenuActionStartTimer";
+            this.MenuActionStartTimer.Size = new System.Drawing.Size(177, 22);
+            this.MenuActionStartTimer.Text = "&Start Timer";
+            this.MenuActionStartTimer.Click += new System.EventHandler(this.MenuActionStartTimer_Click);
             // 
-            // menuActionStop
+            // MenuActionStopTimer
             // 
-            this.menuActionStop.Image = global::Timekeeper.Properties.Resources.buttonStop;
-            this.menuActionStop.Name = "menuActionStop";
-            this.menuActionStop.Size = new System.Drawing.Size(177, 22);
-            this.menuActionStop.Text = "&Stop Timer";
-            this.menuActionStop.Visible = false;
-            this.menuActionStop.Click += new System.EventHandler(this.menuActionStop_Click);
+            this.MenuActionStopTimer.Image = global::Timekeeper.Properties.Resources.buttonStop;
+            this.MenuActionStopTimer.Name = "MenuActionStopTimer";
+            this.MenuActionStopTimer.Size = new System.Drawing.Size(177, 22);
+            this.MenuActionStopTimer.Text = "&Stop Timer";
+            this.MenuActionStopTimer.Visible = false;
+            this.MenuActionStopTimer.Click += new System.EventHandler(this.MenuActionStopTimer_Click);
             // 
-            // menuActionStartAdvanced
+            // MenuActionOpenBrowser
             // 
-            this.menuActionStartAdvanced.Name = "menuActionStartAdvanced";
-            this.menuActionStartAdvanced.Size = new System.Drawing.Size(177, 22);
-            this.menuActionStartAdvanced.Text = "Open &Browser";
-            this.menuActionStartAdvanced.Click += new System.EventHandler(this.menuActionStartAdvanced_Click);
+            this.MenuActionOpenBrowser.Name = "MenuActionOpenBrowser";
+            this.MenuActionOpenBrowser.Size = new System.Drawing.Size(177, 22);
+            this.MenuActionOpenBrowser.Text = "Open &Browser";
+            this.MenuActionOpenBrowser.Click += new System.EventHandler(this.MenuActionOpenBrowser_Click);
             // 
-            // menuActionStopAdvanced
+            // MenuActionCloseBrowser
             // 
-            this.menuActionStopAdvanced.Name = "menuActionStopAdvanced";
-            this.menuActionStopAdvanced.Size = new System.Drawing.Size(177, 22);
-            this.menuActionStopAdvanced.Text = "Close &Browser";
-            this.menuActionStopAdvanced.Visible = false;
-            this.menuActionStopAdvanced.Click += new System.EventHandler(this.menuActionStopAdvanced_Click);
+            this.MenuActionCloseBrowser.Name = "MenuActionCloseBrowser";
+            this.MenuActionCloseBrowser.Size = new System.Drawing.Size(177, 22);
+            this.MenuActionCloseBrowser.Text = "Close &Browser";
+            this.MenuActionCloseBrowser.Visible = false;
+            this.MenuActionCloseBrowser.Click += new System.EventHandler(this.MenuActionCloseBrowser_Click);
             // 
-            // menuTasksSep1
+            // MenuActionSep1
             // 
-            this.menuTasksSep1.Name = "menuTasksSep1";
-            this.menuTasksSep1.Size = new System.Drawing.Size(174, 6);
+            this.MenuActionSep1.Name = "MenuActionSep1";
+            this.MenuActionSep1.Size = new System.Drawing.Size(174, 6);
             // 
             // menuTasksNewTask
             // 
@@ -445,10 +444,10 @@ namespace Timekeeper
             this.menuTasksDeleteTask.Text = "&Delete Task...";
             this.menuTasksDeleteTask.Click += new System.EventHandler(this.menuTasksDeleteTask_Click);
             // 
-            // menuTasksSep2
+            // MenuActionSep2
             // 
-            this.menuTasksSep2.Name = "menuTasksSep2";
-            this.menuTasksSep2.Size = new System.Drawing.Size(174, 6);
+            this.MenuActionSep2.Name = "MenuActionSep2";
+            this.MenuActionSep2.Size = new System.Drawing.Size(174, 6);
             // 
             // menuTasksNewProject
             // 
@@ -806,26 +805,26 @@ namespace Timekeeper
             // 
             this.menuHelpContents.Name = "menuHelpContents";
             this.menuHelpContents.ShortcutKeyDisplayString = "F1";
-            this.menuHelpContents.Size = new System.Drawing.Size(152, 22);
+            this.menuHelpContents.Size = new System.Drawing.Size(137, 22);
             this.menuHelpContents.Text = "&Contents";
             this.menuHelpContents.Click += new System.EventHandler(this.menuHelpContents_Click);
             // 
             // menuHelpWeb
             // 
             this.menuHelpWeb.Name = "menuHelpWeb";
-            this.menuHelpWeb.Size = new System.Drawing.Size(152, 22);
+            this.menuHelpWeb.Size = new System.Drawing.Size(137, 22);
             this.menuHelpWeb.Text = "&Web Support";
             this.menuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
             // 
             // menuHelpSep
             // 
             this.menuHelpSep.Name = "menuHelpSep";
-            this.menuHelpSep.Size = new System.Drawing.Size(149, 6);
+            this.menuHelpSep.Size = new System.Drawing.Size(134, 6);
             // 
             // menuHelpAbout
             // 
             this.menuHelpAbout.Name = "menuHelpAbout";
-            this.menuHelpAbout.Size = new System.Drawing.Size(152, 22);
+            this.menuHelpAbout.Size = new System.Drawing.Size(137, 22);
             this.menuHelpAbout.Text = "&About...";
             this.menuHelpAbout.Click += new System.EventHandler(this.menuHelpAbout_Click);
             // 
@@ -836,87 +835,86 @@ namespace Timekeeper
             this.toolbarHelperToolStripMenuItem.Text = "&Toolbar Functions";
             this.toolbarHelperToolStripMenuItem.Visible = false;
             // 
-            // statusMain
+            // StatusBar
             // 
-            this.statusMain.GripMargin = new System.Windows.Forms.Padding(2, 2, 2, 1);
-            this.statusMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
-            this.statusMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusCurrentTask,
-            this.statusTimeCurrent,
-            this.statusTimeToday,
-            this.statusTimeAll,
-            this.statusFile});
-            this.statusMain.Location = new System.Drawing.Point(0, 351);
-            this.statusMain.Name = "statusMain";
-            this.statusMain.ShowItemToolTips = true;
-            this.statusMain.Size = new System.Drawing.Size(620, 22);
-            this.statusMain.TabIndex = 12;
-            this.statusMain.Text = "statusStrip1";
+            this.StatusBar.GripMargin = new System.Windows.Forms.Padding(2, 2, 2, 1);
+            this.StatusBar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
+            this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusBarItemName,
+            this.StatusBarItemTime,
+            this.StatusBarItemTimeToday,
+            this.StatusBarItemsTimeToday,
+            this.StatusBarFileName});
+            this.StatusBar.Location = new System.Drawing.Point(0, 351);
+            this.StatusBar.Name = "StatusBar";
+            this.StatusBar.ShowItemToolTips = true;
+            this.StatusBar.Size = new System.Drawing.Size(620, 22);
+            this.StatusBar.TabIndex = 12;
             // 
-            // statusCurrentTask
+            // StatusBarItemName
             // 
-            this.statusCurrentTask.AutoSize = false;
-            this.statusCurrentTask.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            this.StatusBarItemName.AutoSize = false;
+            this.StatusBarItemName.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.statusCurrentTask.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.statusCurrentTask.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.statusCurrentTask.Name = "statusCurrentTask";
-            this.statusCurrentTask.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.statusCurrentTask.Size = new System.Drawing.Size(175, 17);
-            this.statusCurrentTask.Text = "Timer Not Running";
-            this.statusCurrentTask.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.statusCurrentTask.ToolTipText = "Task currently being timed";
+            this.StatusBarItemName.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.StatusBarItemName.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.StatusBarItemName.Name = "StatusBarItemName";
+            this.StatusBarItemName.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.StatusBarItemName.Size = new System.Drawing.Size(175, 17);
+            this.StatusBarItemName.Text = "Timer Not Running";
+            this.StatusBarItemName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.StatusBarItemName.ToolTipText = "Task currently being timed";
             // 
-            // statusTimeCurrent
+            // StatusBarItemTime
             // 
-            this.statusTimeCurrent.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            this.StatusBarItemTime.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.statusTimeCurrent.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.statusTimeCurrent.ForeColor = System.Drawing.Color.Gray;
-            this.statusTimeCurrent.Name = "statusTimeCurrent";
-            this.statusTimeCurrent.Size = new System.Drawing.Size(49, 17);
-            this.statusTimeCurrent.Text = "0:00:00";
-            this.statusTimeCurrent.ToolTipText = "Time elapsed since timer started";
+            this.StatusBarItemTime.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.StatusBarItemTime.ForeColor = System.Drawing.Color.Gray;
+            this.StatusBarItemTime.Name = "StatusBarItemTime";
+            this.StatusBarItemTime.Size = new System.Drawing.Size(49, 17);
+            this.StatusBarItemTime.Text = "0:00:00";
+            this.StatusBarItemTime.ToolTipText = "Time elapsed since timer started";
             // 
-            // statusTimeToday
+            // StatusBarItemTimeToday
             // 
-            this.statusTimeToday.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            this.StatusBarItemTimeToday.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.statusTimeToday.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.statusTimeToday.ForeColor = System.Drawing.Color.Gray;
-            this.statusTimeToday.Name = "statusTimeToday";
-            this.statusTimeToday.Size = new System.Drawing.Size(49, 17);
-            this.statusTimeToday.Text = "0:00:00";
-            this.statusTimeToday.ToolTipText = "Time elapsed today for current task";
+            this.StatusBarItemTimeToday.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.StatusBarItemTimeToday.ForeColor = System.Drawing.Color.Gray;
+            this.StatusBarItemTimeToday.Name = "StatusBarItemTimeToday";
+            this.StatusBarItemTimeToday.Size = new System.Drawing.Size(49, 17);
+            this.StatusBarItemTimeToday.Text = "0:00:00";
+            this.StatusBarItemTimeToday.ToolTipText = "Time elapsed today for current task";
             // 
-            // statusTimeAll
+            // StatusBarItemsTimeToday
             // 
-            this.statusTimeAll.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            this.StatusBarItemsTimeToday.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.statusTimeAll.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.statusTimeAll.ForeColor = System.Drawing.Color.Gray;
-            this.statusTimeAll.Name = "statusTimeAll";
-            this.statusTimeAll.Size = new System.Drawing.Size(49, 17);
-            this.statusTimeAll.Text = "0:00:00";
-            this.statusTimeAll.ToolTipText = "Time elapsed today for all tasks";
+            this.StatusBarItemsTimeToday.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.StatusBarItemsTimeToday.ForeColor = System.Drawing.Color.Gray;
+            this.StatusBarItemsTimeToday.Name = "StatusBarItemsTimeToday";
+            this.StatusBarItemsTimeToday.Size = new System.Drawing.Size(49, 17);
+            this.StatusBarItemsTimeToday.Text = "0:00:00";
+            this.StatusBarItemsTimeToday.ToolTipText = "Time elapsed today for all tasks";
             // 
-            // statusFile
+            // StatusBarFileName
             // 
-            this.statusFile.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            this.StatusBarFileName.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.statusFile.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.statusFile.ForeColor = System.Drawing.Color.Gray;
-            this.statusFile.Name = "statusFile";
-            this.statusFile.Size = new System.Drawing.Size(72, 17);
-            this.statusFile.Text = "No File Open";
-            this.statusFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.statusFile.ToolTipText = "Currently opened file";
-            this.statusFile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.statusFile_MouseDown);
+            this.StatusBarFileName.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.StatusBarFileName.ForeColor = System.Drawing.Color.Gray;
+            this.StatusBarFileName.Name = "StatusBarFileName";
+            this.StatusBarFileName.Size = new System.Drawing.Size(72, 17);
+            this.StatusBarFileName.Text = "No File Open";
+            this.StatusBarFileName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.StatusBarFileName.ToolTipText = "Currently opened file";
+            this.StatusBarFileName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.statusFile_MouseDown);
             // 
             // splitTrees
             // 
@@ -938,7 +936,6 @@ namespace Timekeeper
             // 
             // wTasks
             // 
-            this.wTasks.AllowDrop = true;
             this.wTasks.ContextMenuStrip = this.menuTask;
             this.wTasks.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wTasks.HideSelection = false;
@@ -954,10 +951,7 @@ namespace Timekeeper
             this.wTasks.TabIndex = 0;
             this.wTasks.Tag = "tasks";
             this.wTasks.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.wTasks_AfterLabelEdit);
-            this.wTasks.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.wTasks_ItemDrag);
             this.wTasks.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.wTasks_AfterSelect);
-            this.wTasks.DragDrop += new System.Windows.Forms.DragEventHandler(this.wTasks_DragDrop);
-            this.wTasks.DragEnter += new System.Windows.Forms.DragEventHandler(this.wTasks_DragEnter);
             this.wTasks.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             this.wTasks.DoubleClick += new System.EventHandler(this.wTasks_DoubleClick);
             this.wTasks.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wTasks_KeyDown);
@@ -1075,7 +1069,6 @@ namespace Timekeeper
             // 
             // wProjects
             // 
-            this.wProjects.AllowDrop = true;
             this.wProjects.ContextMenuStrip = this.menuProject;
             this.wProjects.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wProjects.HideSelection = false;
@@ -1093,6 +1086,7 @@ namespace Timekeeper
             this.wProjects.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.wProjects_AfterLabelEdit);
             this.wProjects.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.wProjects_AfterSelect);
             this.wProjects.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            this.wProjects.DoubleClick += new System.EventHandler(this.wProjects_DoubleClick);
             this.wProjects.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wProjects_KeyDown);
             this.wProjects.MouseDown += new System.Windows.Forms.MouseEventHandler(this.wProjects_MouseDown);
             // 
@@ -1190,12 +1184,12 @@ namespace Timekeeper
             this.pmenuProjectsHidePane.Text = "H&ide Projects Pane";
             this.pmenuProjectsHidePane.Click += new System.EventHandler(this.pmenuProjectsHidePane_Click);
             // 
-            // dlgOpen
+            // OpenFileDialog
             // 
-            this.dlgOpen.DefaultExt = "tkdb";
-            this.dlgOpen.FileName = "project";
-            this.dlgOpen.Filter = "Timekeeper Files|*.tkdb";
-            this.dlgOpen.Title = "Open Timekeeper File";
+            this.OpenFileDialog.DefaultExt = "tkdb";
+            this.OpenFileDialog.FileName = "project";
+            this.OpenFileDialog.Filter = "Timekeeper Files|*.tkdb";
+            this.OpenFileDialog.Title = "Open Timekeeper File";
             // 
             // timerShort
             // 
@@ -1209,14 +1203,14 @@ namespace Timekeeper
             this.timerLong.Interval = 600000;
             this.timerLong.Tick += new System.EventHandler(this.timerLong_Tick);
             // 
-            // dlgNew
+            // NewFileDialog
             // 
-            this.dlgNew.CheckFileExists = false;
-            this.dlgNew.DefaultExt = "tkdb";
-            this.dlgNew.FileName = "project";
-            this.dlgNew.Filter = "Timekeeper Files|*.tkdb";
-            this.dlgNew.SupportMultiDottedExtensions = true;
-            this.dlgNew.Title = "New File";
+            this.NewFileDialog.CheckFileExists = false;
+            this.NewFileDialog.DefaultExt = "tkdb";
+            this.NewFileDialog.FileName = "project";
+            this.NewFileDialog.Filter = "Timekeeper Files|*.tkdb";
+            this.NewFileDialog.SupportMultiDottedExtensions = true;
+            this.NewFileDialog.Title = "New File";
             // 
             // wNotifyIcon
             // 
@@ -1555,7 +1549,7 @@ namespace Timekeeper
             this.toolControlStart.Size = new System.Drawing.Size(80, 22);
             this.toolControlStart.Text = "&Start Timer";
             this.toolControlStart.ToolTipText = "Start the Timer";
-            this.toolControlStart.Click += new System.EventHandler(this.menuActionStart_Click);
+            this.toolControlStart.Click += new System.EventHandler(this.MenuActionStartTimer_Click);
             // 
             // toolControlStop
             // 
@@ -1566,7 +1560,7 @@ namespace Timekeeper
             this.toolControlStop.Text = "&Stop Timer";
             this.toolControlStop.ToolTipText = "Stop the Timer";
             this.toolControlStop.Visible = false;
-            this.toolControlStop.Click += new System.EventHandler(this.menuActionStop_Click);
+            this.toolControlStop.Click += new System.EventHandler(this.MenuActionStopTimer_Click);
             // 
             // toolControlClose
             // 
@@ -1576,7 +1570,7 @@ namespace Timekeeper
             this.toolControlClose.Size = new System.Drawing.Size(95, 22);
             this.toolControlClose.Text = "&Close Browser";
             this.toolControlClose.ToolTipText = "Close This Pane";
-            this.toolControlClose.Click += new System.EventHandler(this.menuActionStopAdvanced_Click);
+            this.toolControlClose.Click += new System.EventHandler(this.MenuActionCloseBrowser_Click);
             // 
             // toolControlSep1
             // 
@@ -1703,12 +1697,12 @@ namespace Timekeeper
             this.toolControlUnlock.Visible = false;
             this.toolControlUnlock.Click += new System.EventHandler(this.menuToolControlUnlock_Click);
             // 
-            // dlgSaveAs
+            // SaveAsDialog
             // 
-            this.dlgSaveAs.DefaultExt = "tkdb";
-            this.dlgSaveAs.Filter = "Timekeeper 3.0 Database|*.tkdb|Timekeeper 2.3 Database|*.tkdb|Timekeeper 2.2 Data" +
+            this.SaveAsDialog.DefaultExt = "tkdb";
+            this.SaveAsDialog.Filter = "Timekeeper 3.0 Database|*.tkdb|Timekeeper 2.3 Database|*.tkdb|Timekeeper 2.2 Data" +
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
-            this.dlgSaveAs.Title = "Save As";
+            this.SaveAsDialog.Title = "Save As";
             // 
             // fMain
             // 
@@ -1716,20 +1710,20 @@ namespace Timekeeper
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(620, 373);
             this.Controls.Add(this.splitMain);
-            this.Controls.Add(this.statusMain);
-            this.Controls.Add(this.menuMain);
+            this.Controls.Add(this.StatusBar);
+            this.Controls.Add(this.MenuMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuMain;
+            this.MainMenuStrip = this.MenuMain;
             this.Name = "fMain";
             this.Text = "Timekeeper";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.fMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fMain_FormClosed);
             this.Load += new System.EventHandler(this.fMain_Load);
             this.Resize += new System.EventHandler(this.fMain_Resize);
-            this.menuMain.ResumeLayout(false);
-            this.menuMain.PerformLayout();
-            this.statusMain.ResumeLayout(false);
-            this.statusMain.PerformLayout();
+            this.MenuMain.ResumeLayout(false);
+            this.MenuMain.PerformLayout();
+            this.StatusBar.ResumeLayout(false);
+            this.StatusBar.PerformLayout();
             this.splitTrees.Panel1.ResumeLayout(false);
             this.splitTrees.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).EndInit();
@@ -1756,16 +1750,16 @@ namespace Timekeeper
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuMain;
+        private System.Windows.Forms.MenuStrip MenuMain;
         private System.Windows.Forms.ToolStripMenuItem menuFile;
-        private System.Windows.Forms.ToolStripMenuItem menuFileNew;
-        private System.Windows.Forms.ToolStripMenuItem menuFileOpen;
-        private System.Windows.Forms.ToolStripMenuItem menuFileClose;
-        private System.Windows.Forms.ToolStripSeparator menuFileSep1;
-        private System.Windows.Forms.ToolStripMenuItem menuFileExit;
-        private System.Windows.Forms.ToolStripMenuItem menuAction;
+        private System.Windows.Forms.ToolStripMenuItem MenuFileNew;
+        private System.Windows.Forms.ToolStripMenuItem MenuFileOpen;
+        private System.Windows.Forms.ToolStripMenuItem MenuFileClose;
+        private System.Windows.Forms.ToolStripSeparator MenuFileSep2;
+        private System.Windows.Forms.ToolStripMenuItem MenuFileExit;
+        private System.Windows.Forms.ToolStripMenuItem MenuAction;
         private System.Windows.Forms.ToolStripMenuItem menuTasksNewTask;
-        private System.Windows.Forms.ToolStripSeparator menuTasksSep1;
+        private System.Windows.Forms.ToolStripSeparator MenuActionSep1;
         private System.Windows.Forms.ToolStripMenuItem menuTasksNewProject;
         private System.Windows.Forms.ToolStripMenuItem menuTool;
         private System.Windows.Forms.ToolStripMenuItem menuToolsTweak;
@@ -1773,11 +1767,11 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem menuHelpContents;
         private System.Windows.Forms.ToolStripSeparator menuHelpSep;
         private System.Windows.Forms.ToolStripMenuItem menuHelpAbout;
-        private System.Windows.Forms.StatusStrip statusMain;
+        private System.Windows.Forms.StatusStrip StatusBar;
         private System.Windows.Forms.SplitContainer splitTrees;
         private System.Windows.Forms.TreeView wTasks;
-        private System.Windows.Forms.OpenFileDialog dlgOpen;
-        private System.Windows.Forms.ToolStripStatusLabel statusFile;
+        private System.Windows.Forms.OpenFileDialog OpenFileDialog;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarFileName;
         private System.Windows.Forms.TreeView wProjects;
         private System.Windows.Forms.ImageList imgSmall;
         private System.Windows.Forms.ToolStripMenuItem menuReport;
@@ -1789,10 +1783,10 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem menuToolsDatecalc;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem8;
         private System.Windows.Forms.ToolStripMenuItem menuToolsOptions;
-        private System.Windows.Forms.ToolStripStatusLabel statusTimeAll;
-        private System.Windows.Forms.ToolStripStatusLabel statusCurrentTask;
-        private System.Windows.Forms.ToolStripStatusLabel statusTimeToday;
-        private System.Windows.Forms.ToolStripStatusLabel statusTimeCurrent;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarItemsTimeToday;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarItemName;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarItemTimeToday;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarItemTime;
         private System.Windows.Forms.Timer timerShort;
         private System.Windows.Forms.ContextMenuStrip menuProject;
         private System.Windows.Forms.ToolStripMenuItem pmenuProjectsNew;
@@ -1809,16 +1803,16 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem pmenuTasksShowProjects;
         private System.Windows.Forms.ToolStripMenuItem menuTasksEditTask;
         private System.Windows.Forms.ToolStripMenuItem menuTasksDeleteTask;
-        private System.Windows.Forms.ToolStripSeparator menuTasksSep2;
+        private System.Windows.Forms.ToolStripSeparator MenuActionSep2;
         private System.Windows.Forms.ToolStripMenuItem menuTasksEditProject;
         private System.Windows.Forms.ToolStripMenuItem menuTasksDeleteProject;
         private System.Windows.Forms.Timer timerLong;
-        private System.Windows.Forms.OpenFileDialog dlgNew;
+        private System.Windows.Forms.OpenFileDialog NewFileDialog;
         private System.Windows.Forms.ToolStripMenuItem menuTasksNewTaskFolder;
         private System.Windows.Forms.ToolStripSeparator pmenuTasksSep2;
         private System.Windows.Forms.ToolStripMenuItem pmenuTasksProperties;
         private System.Windows.Forms.ToolStripMenuItem menuToolsStopwatch;
-        private System.Windows.Forms.ToolStripMenuItem menuFileSaveAs;
+        private System.Windows.Forms.ToolStripMenuItem MenuFileSaveAs;
         private System.Windows.Forms.ToolStripMenuItem menuReportsQuick;
         private System.Windows.Forms.ToolStripMenuItem pmenuTasksEdit;
         private System.Windows.Forms.ToolStripMenuItem menuTasksNewProjectFolder;
@@ -1827,8 +1821,8 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripSeparator pmenuProjectsSep1;
         private System.Windows.Forms.ToolStripMenuItem pmenuProjectsProperties;
         private System.Windows.Forms.ToolStripMenuItem menuToolsJournal;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem menuFileUtilities;
+        private System.Windows.Forms.ToolStripSeparator MenuFileSep1;
+        private System.Windows.Forms.ToolStripMenuItem MenuFileUtilities;
         private System.Windows.Forms.ToolStripMenuItem menuFileUtilitiesImport;
         private System.Windows.Forms.ToolStripMenuItem menuFileUtilitiesExport;
         private System.Windows.Forms.ToolStripMenuItem menuFileUtilitiesBackup;
@@ -1845,7 +1839,7 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem menuTasksUnhideProject;
         private System.Windows.Forms.ToolStripMenuItem pmenuTasksUnhide;
         private System.Windows.Forms.ToolStripMenuItem pmenuProjectsUnhide;
-        private System.Windows.Forms.ToolStripMenuItem menuFileRecent;
+        private System.Windows.Forms.ToolStripMenuItem MenuFileRecent;
         private System.Windows.Forms.SplitContainer splitMain;
         private System.Windows.Forms.Panel panelMemo;
         private System.Windows.Forms.Panel panelControls;
@@ -1890,10 +1884,10 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem menuToolFormatUnderline;
         private System.Windows.Forms.ToolStripMenuItem menuToolFormatStrikethrough;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem menuActionStart;
-        private System.Windows.Forms.ToolStripMenuItem menuActionStartAdvanced;
-        private System.Windows.Forms.ToolStripMenuItem menuActionStop;
-        private System.Windows.Forms.ToolStripMenuItem menuActionStopAdvanced;
+        private System.Windows.Forms.ToolStripMenuItem MenuActionStartTimer;
+        private System.Windows.Forms.ToolStripMenuItem MenuActionOpenBrowser;
+        private System.Windows.Forms.ToolStripMenuItem MenuActionStopTimer;
+        private System.Windows.Forms.ToolStripMenuItem MenuActionCloseBrowser;
         private System.Windows.Forms.ToolStripButton toolControlStart;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem menuToolFind;
@@ -1916,7 +1910,7 @@ namespace Timekeeper
         private System.Windows.Forms.ToolStripMenuItem menuToolControlRevert;
         private System.Windows.Forms.ToolStripMenuItem menuToolControlUnlock;
         private System.Windows.Forms.ToolStripMenuItem toolbarHelperToolStripMenuItem;
-        private System.Windows.Forms.SaveFileDialog dlgSaveAs;
+        private System.Windows.Forms.SaveFileDialog SaveAsDialog;
     }
 }
 

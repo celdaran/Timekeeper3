@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Forms
 {
-    public partial class fOptions : Form
+    public partial class Options : Form
     {
         public bool saved = false;
         public bool reordered = false;
@@ -20,7 +20,7 @@ namespace Timekeeper
         const int CTRL = (int)Keys.Control;
         const int SHIFT = (int)Keys.Shift;
 
-        public fOptions(DBI data)
+        public Options(DBI data)
         {
             InitializeComponent();
             this.data = data;

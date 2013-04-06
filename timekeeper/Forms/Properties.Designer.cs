@@ -1,6 +1,6 @@
-namespace Timekeeper
+namespace Timekeeper.Forms
 {
-    partial class fProperties
+    partial class Properties
     {
         /// <summary>
         /// Required designer variable.

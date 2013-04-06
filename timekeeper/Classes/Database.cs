@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using Technitivity.Toolbox;
 
+// TODO: Implement support for Item.IsOpened
+// TODO: Implement support for Journal.ExternalEntryId
+
 namespace Timekeeper
 {
-    class Database
+    class Datafile
     {
         private DBI Data;
 
@@ -19,18 +23,34 @@ namespace Timekeeper
         public const int ERROR_REQUIRES_UPGRADE = -5;
         public const int ERROR_INVALID_METADATA = -6;
 
+        public readonly string Name;
+
         //---------------------------------------------------------------------
         // Constructor
         //---------------------------------------------------------------------
 
-        public Database(DBI data)
+        // Deprecated constructor
+        public Datafile(DBI data)
         {
             this.Data = data;
+            FileInfo fileinfo = new FileInfo(this.Data.DataFile);
+            this.Name = fileinfo.Name;
+        }
+
+        // New/future constructor
+        // Calling the old for compatability purposes
+        public Datafile() : this(Timekeeper.Database)
+        {
         }
 
         //---------------------------------------------------------------------
         // Creation & Compliance
         //---------------------------------------------------------------------
+
+        public bool Create(Version version)
+        {
+            return Create(version, true);
+        }
 
         public bool Create(Version version, bool populate)
         {
@@ -153,7 +173,7 @@ namespace Timekeeper
                 // grab a few handy objects
                 Activities Tasks = new Activities(Data, "");
                 Projects Projects = new Projects(Data, "");
-                Diary Diary = new Diary(Data);
+                Classes.Diary Diary = new Classes.Diary();
                 Entries Entries = new Entries(Data);
 
                 // convert meta rows to rows (note order by above)
@@ -166,7 +186,7 @@ namespace Timekeeper
                 row.Add("filesize", Data.DataFileSize);
                 row.Add("taskcount", Tasks.Count());
                 row.Add("projectcount", Projects.Count());
-                row.Add("journalcount", Diary.count());
+                row.Add("journalcount", Diary.Count());
                 row.Add("logcount", Entries.Count());
                 row.Add("totalseconds", Timekeeper.FormatSeconds(Entries.TotalSeconds()));
             }
@@ -314,6 +334,30 @@ namespace Timekeeper
                     {"Value", UUID.Get()}
                 };
                 Data.Insert("Meta", Row);
+
+                Row = new Row() {
+                    {"CreateTime", Common.Now()},
+                    {"ModifyTime", Common.Now()},
+                    {"Key", "LastActivity"},
+                    {"Value", null}
+                };
+                Data.Insert("Meta", Row);
+
+                Row = new Row() {
+                    {"CreateTime", Common.Now()},
+                    {"ModifyTime", Common.Now()},
+                    {"Key", "LastProject"},
+                    {"Value", null}
+                };
+                Data.Insert("Meta", Row);
+
+                Row = new Row() {
+                    {"CreateTime", Common.Now()},
+                    {"ModifyTime", Common.Now()},
+                    {"Key", "LastGridView"},
+                    {"Value", null}
+                };
+                Data.Insert("Meta", Row);
             }
         }
 
@@ -382,6 +426,7 @@ namespace Timekeeper
                         SortOrderNo     INTEGER,
                         LastProjectId   INTEGER,
                         IsFolder        BOOLEAN NOT NULL,
+                        IsOpened        BOOLEAN NOT NULL,
                         IsHidden        BOOLEAN NOT NULL,
                         IsDeleted       BOOLEAN NOT NULL,
                         HiddenTime      DATETIME,
@@ -466,6 +511,7 @@ namespace Timekeeper
                     {"SortOrderNo", 0},
                     {"LastProjectId", 0},
                     {"IsFolder", 0},
+                    {"IsOpened", 0},
                     {"IsHidden", 0},
                     {"IsDeleted", 0},
                     {"HiddenTime", null},
@@ -538,6 +584,7 @@ namespace Timekeeper
                         SortOrderNo     INTEGER,
                         LastActivityId  INTEGER,
                         IsFolder        BOOLEAN NOT NULL,
+                        IsOpened        BOOLEAN NOT NULL,
                         IsHidden        BOOLEAN NOT NULL,
                         IsDeleted       BOOLEAN NOT NULL,
                         HiddenTime      DATETIME,
@@ -620,6 +667,7 @@ namespace Timekeeper
                     {"SortOrderNo", 0},
                     {"LastActivityId", 0},
                     {"IsFolder", 0},
+                    {"IsOpened", 0},
                     {"IsHidden", 0},
                     {"IsDeleted", 0},
                     {"HiddenTime", null},
@@ -778,6 +826,7 @@ namespace Timekeeper
                         CreateTime          DATETIME NOT NULL,
                         ModifyTime          DATETIME NOT NULL,
                         JournalEntryGuid    TEXT NOT NULL,
+                        ExternalEntryId     INTEGER
                         ActivityId          INTEGER NOT NULL,
                         ProjectId           INTEGER NOT NULL,
                         StartTime           DATETIME,

@@ -90,9 +90,6 @@ namespace Timekeeper
             this.wInstructions.Size = new System.Drawing.Size(308, 84);
             this.wInstructions.TabIndex = 4;
             this.wInstructions.TabStop = false;
-            this.wInstructions.Text = "Hide this item?\r\n\r\nTo display hidden items, press F6 to open the Options dialog b" +
-                "ox and check the appropriate boxes on the View tab. Hidden items are always avai" +
-                "lable on reports.";
             // 
             // fPrompt
             // 

@@ -74,7 +74,7 @@ namespace Timekeeper
                 HiddenQualifier = "and IsHidden = 0";
             }
 
-            string query = String.Format(@"
+            string Query = String.Format(@"
                 select * from {0}
                 where IsDeleted = 0
                   {1}
@@ -82,7 +82,7 @@ namespace Timekeeper
                 order by {3}",
                 this.TableName, HiddenQualifier, parentId, OrderByClause);
 
-            Table Rows = Data.Select(query);
+            Table Rows = Data.Select(Query);
 
             return Rows;
         }

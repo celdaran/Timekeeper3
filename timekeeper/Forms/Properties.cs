@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timekeeper
+namespace Timekeeper.Forms
 {
-    public partial class fProperties : Form
+    public partial class Properties : Form
     {
-        public fProperties()
+        public Properties()
         {
             InitializeComponent();
         }

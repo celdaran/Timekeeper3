@@ -1,6 +1,6 @@
-namespace Timekeeper
+namespace Timekeeper.Forms
 {
-    partial class fOptions
+    partial class Options
     {
         /// <summary>
         /// Required designer variable.

@@ -14,15 +14,18 @@ namespace Timekeeper
 
         public const string TITLE = "Timekeeper";
         public const string VERSION = "3.0.0.0";
+        public const int SUCCESS = 1;
+        public const int FAILURE = 0;
 
         //---------------------------------------------------------------------
         // Properties
         //---------------------------------------------------------------------
 
+        public static DBI Database;
         private static Log Log;
 
         //---------------------------------------------------------------------
-        // Helper Methods (TBX candidates?)
+        // Helper Methods (Some TBX candidates?)
         //---------------------------------------------------------------------
 
         public static string Abbreviate(string text, int length)
@@ -32,6 +35,24 @@ namespace Timekeeper
             } else {
                 return text.Substring(0, length - 3) + "...";
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        public static DBI CloseDatabase()
+        {
+            Database = null;
+            return Database;
+        }
+
+        //---------------------------------------------------------------------
+
+        public static DBI OpenDatabase(string dataFile, bool enableTracing)
+        {
+            if (Database == null) {
+                Database = new DBI(dataFile, enableTracing);
+            }
+            return Database;
         }
 
         //---------------------------------------------------------------------
@@ -105,20 +126,30 @@ namespace Timekeeper
 
         private static string GetPath()
         {
-            // Determine log file path
-            string LogPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Timekeeper.TITLE);
+            string LogPath = "";
 
-            // Create directory if it doesn't exist
-            if (!Directory.Exists(LogPath)) {
-                Directory.CreateDirectory(LogPath);
+            try {
+                // Determine log file path
+                LogPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Timekeeper.TITLE);
+
+                // Create directory if it doesn't exist
+                if (!Directory.Exists(LogPath)) {
+                    Directory.CreateDirectory(LogPath);
+                }
+
+                // Add filename to path
+                LogPath += @"\" + Timekeeper.TITLE + @".log";
+
+                // And that's all we need.
+                return LogPath;
             }
-
-            // Add filename to path
-            LogPath += @"\" + Timekeeper.TITLE + @".log";
-
-            // And that's all we need.
-            return LogPath;
+            catch (Exception x) {
+                // FIXME: Is this appropriate at this level? Consider alternatives
+                Common.Warn("Could not open or write to log file.\n\n" + LogPath);
+                Common.Warn(x.Message);
+                return "";
+            }
         }
 
         //---------------------------------------------------------------------
