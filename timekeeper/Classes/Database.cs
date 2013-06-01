@@ -10,20 +10,22 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
-    class Datafile
+    partial class Datafile
     {
-        private DBI Data;
+        public DBI Data;
 
-        private const string SCHEMA_VERSION = "3.0.0.0";
+        public readonly string Name;
+        public readonly string FullPath;
 
-        public const int ERROR_UNSPECIFIED = -1;
+        public const string SCHEMA_VERSION = "3.0.0.0";
+
+        public const int ERROR_UNEXPECTED = -1;
         public const int ERROR_NEWER_VERSION_DETECTED = -2;
         public const int ERROR_NOT_TKDB = -3;
         public const int ERROR_EMPTY_DB = -4;
         public const int ERROR_REQUIRES_UPGRADE = -5;
-        public const int ERROR_INVALID_METADATA = -6;
 
-        public readonly string Name;
+        private FileInfo FileInfo;
 
         //---------------------------------------------------------------------
         // Constructor
@@ -33,8 +35,9 @@ namespace Timekeeper
         public Datafile(DBI data)
         {
             this.Data = data;
-            FileInfo fileinfo = new FileInfo(this.Data.DataFile);
-            this.Name = fileinfo.Name;
+            FileInfo = new FileInfo(this.Data.DataFile);
+            this.Name = FileInfo.Name;
+            this.FullPath = FileInfo.DirectoryName + "\\" + FileInfo.Name;
         }
 
         // New/future constructor
@@ -68,9 +71,11 @@ namespace Timekeeper
                 CreateJournal(version);
                 CreateDiary(version);
 
-                // Saved User Settings
-                CreateSettingsGrid(version);
-                CreateSettingsReport(version);
+                // User Options
+                CreateOptions(version, populate);
+                CreateGridOptions(version);
+                CreateReportOptions(version);
+                CreateFilterOptions(version);
 
                 // System Reference tables
                 CreateSystemDatePreset(version, populate);
@@ -90,6 +95,9 @@ namespace Timekeeper
         public int Check()
         {
             try {
+                Version CurrentSchemaVersion = new Version(SCHEMA_VERSION);
+                Version FoundSchemaVersion = this.GetSchemaVersion();
+
                 // Quick sanity check on currently-opened database. If these
                 // two functions work, we have a valid SQLite file.
                 // FIXME: this should be DBI's responsibility, I'm not sure
@@ -97,12 +105,7 @@ namespace Timekeeper
                 Data.Begin();
                 Data.Rollback();
 
-                // Declarations
-                Version CurrentSchemaVersion = new Version(SCHEMA_VERSION);
-                Version FoundSchemaVersion;
-                Row Row;
-
-                // are there any tables at all?
+                // Are there any tables at all?
                 if (!Data.TablesExist()) {
                     // If we've opened the database and successfully queried the master table
                     // but have not found any rows, then it's a valid, empty SQLite file and
@@ -110,47 +113,24 @@ namespace Timekeeper
                     return ERROR_EMPTY_DB;
                 }
 
-                // does the primary journal table exist?
-                if (!Data.TableExists("Journal")) {
-                    // If no Journal table, we have a valid SQLite file, but not a TK database.
-                    // Let's bail before we destroy someone else's database.
-                    return ERROR_NOT_TKDB;
-                }
-
-                // does the meta table exist?
-                if (!Data.TableExists("Meta")) {
-                    // If no meta table, this is probably an old 2.0.x beta version.
-                    return ERROR_REQUIRES_UPGRADE;
-                } else {
-                    // If the table exists, attempt to read the schema version.
-                    Row = Data.SelectRow("select * from Meta where Key = 'version'");
-                    if (Row["Value"] == null) {
-                        // If version not found, we're in trouble. The user
-                        // might have to upgrade or repair the database.
-                        return ERROR_INVALID_METADATA;
-                    }
-
-                    // If we found a schema version, check it against the
-                    // expected schema version and disallow opening databases 
-                    // with higher schema versions.
-                    FoundSchemaVersion = new Version(Row["Value"]);
+                // Can we extract the schema version from the meta table?
+                if (FoundSchemaVersion != null)
+                {
                     if (FoundSchemaVersion > CurrentSchemaVersion) {
                         return ERROR_NEWER_VERSION_DETECTED;
                     }
 
-                    // Also disallow opening lower versions, but return an error
-                    // allowing the application to prompt for and convert. It's
-                    // a quite different case from above, but does illustrate the
-                    // point that from TK3 forward, you cannot leave Check()
-                    // with anything but a valid, current schema found.
                     if (CurrentSchemaVersion > FoundSchemaVersion) {
                         return ERROR_REQUIRES_UPGRADE;
                     }
+                } else {
+                    return ERROR_NOT_TKDB;
                 }
+
             }
-            catch { //(Exception x) {
-                //Common.Warn(x.Message);
-                return ERROR_UNSPECIFIED;
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                return ERROR_UNEXPECTED;
             }
 
             // Success
@@ -166,20 +146,17 @@ namespace Timekeeper
 
             try
             {
-                // grab all meta rows
-                // FIXME: Meta object? Yeah, feels like it. Even if it's in this file
-                Table Meta = Data.Select("select Key, Value from Meta order by Key");
-
-                // grab a few handy objects
+                // Grab a few handy objects
                 Activities Tasks = new Activities(Data, "");
                 Projects Projects = new Projects(Data, "");
                 Classes.Diary Diary = new Classes.Diary();
                 Entries Entries = new Entries(Data);
 
                 // convert meta rows to rows (note order by above)
-                row.Add("created", Meta[0]["Value"]);
-                row.Add("id", Meta[1]["Value"]);
-                row.Add("version", Meta[2]["Value"]);
+                Classes.Meta Meta = new Classes.Meta();
+                row.Add("created", Meta.Created);
+                row.Add("id", Meta.Id);
+                row.Add("version", Meta.Version);
 
                 // now grab individual attributes
                 row.Add("filename", Data.DataFile);
@@ -218,6 +195,59 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
+
+        public Version GetSchemaVersion()
+        {
+            Version FoundSchemaVersion = null;
+
+            try {
+                // Universal (i.e., all TK 2.x and above) meta table detection.
+                if (Data.TableExists(Timekeeper.MetaTableName()) || Data.TableExists("meta"))
+                {
+                    // Determine table name and column names
+                    string TableName;
+                    string ValueColumnName;
+                    string KeyColumnName;
+                    string KeyColumnValue;
+
+                    if (Data.TableExists(Timekeeper.MetaTableName())) {
+                        TableName = Timekeeper.MetaTableName();
+                        ValueColumnName = "Value";
+                        KeyColumnName = "Key";
+                        KeyColumnValue = "Version";
+                    } else {
+                        TableName = "meta";
+                        ValueColumnName = "value";
+                        KeyColumnName = "key";
+                        KeyColumnValue = "version";
+                    }
+
+                    string Query = String.Format("select {0} as Value from {1} where {2} = '{3}'",
+                        ValueColumnName, TableName, KeyColumnName, KeyColumnValue);
+
+                    // If the table exists, attempt to read the schema version.
+                    Row Row = Data.SelectRow(Query);
+                    if (Row["Value"] == null) {
+                        // If version not found, we're in trouble. The user
+                        // might have to upgrade or repair the database.
+                        throw new System.ApplicationException("Version not found");
+                    } else {
+                        FoundSchemaVersion = new Version(Row["Value"]);
+                    }
+
+                } else {
+                    throw new System.ApplicationException("Meta data not found");
+                }
+
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+
+            return FoundSchemaVersion;
+        }
+
+        //---------------------------------------------------------------------
         // Table Create Methods
         //---------------------------------------------------------------------
 
@@ -239,13 +269,12 @@ namespace Timekeeper
             }
 
             if (version.Major == 3 && version.Minor == 0) {
-                Query = @"
-                    CREATE TABLE Meta (
+                Query = String.Format(@"
+                    CREATE TABLE {0} (
                         MetaId      INTEGER PRIMARY KEY,
-                        CreateTime  DATETIME NOT NULL,
-                        ModifyTime  DATETIME NOT NULL,
                         Key         TEXT NOT NULL,
-                        Value       TEXT NOT NULL)";
+                        Value       TEXT NOT NULL)",
+                    Timekeeper.MetaTableName());
             }
 
             if (Query != null) {
@@ -310,54 +339,30 @@ namespace Timekeeper
             }
 
             if (version.Major == 3 && version.Minor == 0) {
-                // Still three rows
+                // Now four rows
                 Row = new Row() {
-                    {"CreateTime", Common.Now()},
-                    {"ModifyTime", Common.Now()},
-                    {"Key", "created"},
+                    {"Key", "Created"},
                     {"Value", Common.Now()}
                 };
-                Data.Insert("Meta", Row);
+                Data.Insert(Timekeeper.MetaTableName(), Row);
 
                 Row = new Row() {
-                    {"CreateTime", Common.Now()},
-                    {"ModifyTime", Common.Now()},
-                    {"Key", "version"},
+                    {"Key", "Upgraded"},
+                    {"Value", Common.Now()}
+                };
+                Data.Insert(Timekeeper.MetaTableName(), Row);
+
+                Row = new Row() {
+                    {"Key", "Version"},
                     {"Value", SCHEMA_VERSION},
                 };
-                Data.Insert("Meta", Row);
+                Data.Insert(Timekeeper.MetaTableName(), Row);
 
                 Row = new Row() {
-                    {"CreateTime", Common.Now()},
-                    {"ModifyTime", Common.Now()},
-                    {"Key", "id"},
+                    {"Key", "Id"},
                     {"Value", UUID.Get()}
                 };
-                Data.Insert("Meta", Row);
-
-                Row = new Row() {
-                    {"CreateTime", Common.Now()},
-                    {"ModifyTime", Common.Now()},
-                    {"Key", "LastActivity"},
-                    {"Value", null}
-                };
-                Data.Insert("Meta", Row);
-
-                Row = new Row() {
-                    {"CreateTime", Common.Now()},
-                    {"ModifyTime", Common.Now()},
-                    {"Key", "LastProject"},
-                    {"Value", null}
-                };
-                Data.Insert("Meta", Row);
-
-                Row = new Row() {
-                    {"CreateTime", Common.Now()},
-                    {"ModifyTime", Common.Now()},
-                    {"Key", "LastGridView"},
-                    {"Value", null}
-                };
-                Data.Insert("Meta", Row);
+                Data.Insert(Timekeeper.MetaTableName(), Row);
             }
         }
 
@@ -430,7 +435,7 @@ namespace Timekeeper
                         IsHidden        BOOLEAN NOT NULL,
                         IsDeleted       BOOLEAN NOT NULL,
                         HiddenTime      DATETIME,
-                        DeleteTime      DATETIME)";
+                        DeletedTime     DATETIME)";
             }
 
             if (Query != null) {
@@ -515,7 +520,7 @@ namespace Timekeeper
                     {"IsHidden", 0},
                     {"IsDeleted", 0},
                     {"HiddenTime", null},
-                    {"DeleteTime", null}
+                    {"DeletedTime", null}
                 };
                 Data.Insert("Activity", Row);
             }
@@ -588,7 +593,7 @@ namespace Timekeeper
                         IsHidden        BOOLEAN NOT NULL,
                         IsDeleted       BOOLEAN NOT NULL,
                         HiddenTime      DATETIME,
-                        DeleteTime      DATETIME)";
+                        DeletedTime     DATETIME)";
             }
 
             if (Query != null) {
@@ -671,7 +676,7 @@ namespace Timekeeper
                     {"IsHidden", 0},
                     {"IsDeleted", 0},
                     {"HiddenTime", null},
-                    {"DeleteTime", null}
+                    {"DeletedTime", null}
                 };
                 Data.Insert("Project", Row);
             }
@@ -700,7 +705,10 @@ namespace Timekeeper
                         CreateTime              DATETIME NOT NULL,
                         ModifyTime              DATETIME NOT NULL,
                         Name                    TEXT NOT NULL,
-                        Description             TEXT
+                        Description             TEXT,
+                        SortOrderNo             INTEGER NOT NULL,
+                        IsHidden                BOOLEAN NOT NULL,
+                        IsDeleted               BOOLEAN NOT NULL
                     )";
             }
 
@@ -722,7 +730,10 @@ namespace Timekeeper
                     {"CreateTime", Common.Now()},
                     {"ModifyTime", Common.Now()},
                     {"Name", "Work"},
-                    {"Description", "Entry Created at Work"}
+                    {"Description", "Entry Created at Work"},
+                    {"SortOrderNo", 1},
+                    {"IsHidden", 0},
+                    {"IsDeleted", 0}
                 };
                 Data.Insert("Location", Row);
 
@@ -730,7 +741,10 @@ namespace Timekeeper
                     {"CreateTime", Common.Now()},
                     {"ModifyTime", Common.Now()},
                     {"Name", "Home"},
-                    {"Description", "Entry Created at Home"}
+                    {"Description", "Entry Created at Home"},
+                    {"SortOrderNo", 2},
+                    {"IsHidden", 0},
+                    {"IsDeleted", 0}
                 };
                 Data.Insert("Location", Row);
             }
@@ -759,7 +773,10 @@ namespace Timekeeper
                         CreateTime              DATETIME NOT NULL,
                         ModifyTime              DATETIME NOT NULL,
                         Name                    TEXT NOT NULL,
-                        Description             TEXT
+                        Description             TEXT,
+                        SortOrderNo             INTEGER NOT NULL,
+                        IsHidden                BOOLEAN NOT NULL,
+                        IsDeleted               BOOLEAN NOT NULL
                     )";
             }
 
@@ -781,7 +798,10 @@ namespace Timekeeper
                     {"CreateTime", Common.Now()},
                     {"ModifyTime", Common.Now()},
                     {"Name", "Follow Up"},
-                    {"Description", "Tagged for Follow Up"}
+                    {"Description", "Tagged for Follow Up"},
+                    {"SortOrderNo", 1},
+                    {"IsHidden", 0},
+                    {"IsDeleted", 0}
                 };
                 Data.Insert("Tag", Row);
 
@@ -789,7 +809,10 @@ namespace Timekeeper
                     {"CreateTime", Common.Now()},
                     {"ModifyTime", Common.Now()},
                     {"Name", "Incomplete"},
-                    {"Description", "Tagged as Incomplete"}
+                    {"Description", "Tagged as Incomplete"},
+                    {"SortOrderNo", 2},
+                    {"IsHidden", 0},
+                    {"IsDeleted", 0}
                 };
                 Data.Insert("Tag", Row);
             }
@@ -826,7 +849,7 @@ namespace Timekeeper
                         CreateTime          DATETIME NOT NULL,
                         ModifyTime          DATETIME NOT NULL,
                         JournalEntryGuid    TEXT NOT NULL,
-                        ExternalEntryId     INTEGER
+                        ExternalEntryId     INTEGER,
                         ActivityId          INTEGER NOT NULL,
                         ProjectId           INTEGER NOT NULL,
                         StartTime           DATETIME,
@@ -918,7 +941,70 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        private void CreateSettingsGrid(Version version)
+        private void CreateOptions(Version version, bool populate)
+        {
+            string Query = null;
+            Row Row;
+
+            //----------------------------------------
+            // Create the table
+            //----------------------------------------
+
+            if (version.Major == 2) {
+                // Not present in 2.x
+                Query = null;
+            }
+
+            if (version.Major == 3 && version.Minor == 0) {
+                Query = @"
+                    CREATE TABLE Options (
+                        OptionsId                   INTEGER PRIMARY KEY AUTOINCREMENT,
+                        CreateTime                  DATETIME NOT NULL,
+                        ModifyTime                  DATETIME NOT NULL,
+                        Key                         TEXT NOT NULL,
+                        Value                       TEXT)";
+            }
+
+            if (Query != null) {
+                Data.Exec(Query);
+            }
+
+            // Potential bail point
+            if (!populate) {
+                return;
+            }
+
+            if (version.Major == 3 && version.Minor == 0) {
+
+                Row = new Row() {
+                    {"CreateTime", Common.Now()},
+                    {"ModifyTime", Common.Now()},
+                    {"Key", "LastActivity"},
+                    {"Value", null}
+                };
+                Data.Insert("Options", Row);
+
+                Row = new Row() {
+                    {"CreateTime", Common.Now()},
+                    {"ModifyTime", Common.Now()},
+                    {"Key", "LastProject"},
+                    {"Value", null}
+                };
+                Data.Insert("Options", Row);
+
+                Row = new Row() {
+                    {"CreateTime", Common.Now()},
+                    {"ModifyTime", Common.Now()},
+                    {"Key", "LastGridView"},
+                    {"Value", null}
+                };
+                Data.Insert("Options", Row);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void CreateGridOptions(Version version)
         {
             string Query = null;
 
@@ -953,9 +1039,9 @@ namespace Timekeeper
 
             if (version.Major == 3 && version.Minor == 0) {
                 Query = @"
-                    CREATE TABLE SettingsGrid (
-                        UserGridViewId              INTEGER PRIMARY KEY AUTOINCREMENT,
-                        SettingsGridId              DATETIME NOT NULL,
+                    CREATE TABLE GridOptions (
+                        GridOptionsId               INTEGER PRIMARY KEY AUTOINCREMENT,
+                        CreateTime                  DATETIME NOT NULL,
                         ModifyTime                  DATETIME NOT NULL,
                         Name                        TEXT NOT NULL,
                         Description                 TEXT,
@@ -978,7 +1064,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        private void CreateSettingsReport(Version version)
+        private void CreateReportOptions(Version version)
         {
             string Query = null;
 
@@ -988,8 +1074,8 @@ namespace Timekeeper
 
             if (version.Major == 3 && version.Minor == 0) {
                 Query = @"
-                    CREATE TABLE SettingsReport (
-                        SettingsReportId            INTEGER PRIMARY KEY AUTOINCREMENT,
+                    CREATE TABLE ReportOptions (
+                        ReportOptionsId             INTEGER PRIMARY KEY AUTOINCREMENT,
                         CreateTime                  DATETIME NOT NULL,
                         ModifyTime                  DATETIME NOT NULL,
                         Name                        TEXT NOT NULL,
@@ -1002,6 +1088,31 @@ namespace Timekeeper
 
         }
 
+        //---------------------------------------------------------------------
+
+        private void CreateFilterOptions(Version version)
+        {
+            string Query = null;
+
+            //----------------------------------------
+            // Create the table
+            //----------------------------------------
+
+            if (version.Major == 3 && version.Minor == 0) {
+                Query = @"
+                    CREATE TABLE ReportOptions (
+                        ReportOptionsId            INTEGER PRIMARY KEY AUTOINCREMENT,
+                        CreateTime                  DATETIME NOT NULL,
+                        ModifyTime                  DATETIME NOT NULL,
+                        Name                        TEXT NOT NULL,
+                        Description                 TEXT)";
+            }
+
+            if (Query != null) {
+                Data.Exec(Query);
+            }
+
+        }
         //---------------------------------------------------------------------
 
         private void CreateSystemDatePreset(Version version, bool populate)

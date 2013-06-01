@@ -19,17 +19,14 @@ namespace Timekeeper.Classes
         // Properties
         //---------------------------------------------------------------------
 
-        private DBI Data;
+        private DBI Database;
 
         //---------------------------------------------------------------------
 
         public DateTime Created;
+        public DateTime Upgraded;
         public Version Version;
         public string Id;
-
-        private string _LastActivity;
-        private string _LastProject;
-        private string _LastGridView;
 
         //---------------------------------------------------------------------
         // Constructor
@@ -37,72 +34,17 @@ namespace Timekeeper.Classes
 
         public Meta()
         {
-            this.Data = Timekeeper.Database;
+            this.Database = Timekeeper.Database;
 
             try {
                 Table Rows = new Table();
-                Rows = this.Data.Select("select * from Meta order by MetaId");
+                string Query = String.Format(@"select * from {0} order by MetaId", Timekeeper.MetaTableName());
+                Rows = this.Database.Select(Query);
 
                 this.Created = Convert.ToDateTime(Rows[0]["Value"]);
-                this.Version = new Version(Rows[1]["Value"]);
-                this.Id = Rows[2]["Value"];
-                this._LastActivity = Rows[3]["Value"];
-                this._LastProject = Rows[4]["Value"];
-                this._LastGridView = Rows[5]["Value"];
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        public string LastActivity
-        {
-            get { return _LastActivity; }
-
-            set {
-                _LastActivity = value;
-                Save("LastActivity", value);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        public string LastProject
-        {
-            get { return _LastProject; }
-
-            set {
-                _LastProject = value;
-                Save("LastProject", value);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        public string LastGridView
-        {
-            get { return _LastGridView; }
-
-            set
-            {
-                _LastGridView = value;
-                Save("LastGridView", value);
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // Private helpers
-        //---------------------------------------------------------------------
-
-        private void Save(string columnName, string columnValue)
-        {
-            try {
-                Row Row = new Row();
-                Row["Value"] = columnValue;
-                Row["ModifyTime"] = Common.Now();
-                this.Data.Update("Meta", Row, "Key", columnName);
+                this.Upgraded = Convert.ToDateTime(Rows[1]["Value"]);
+                this.Version = new Version(Rows[2]["Value"]);
+                this.Id = Rows[3]["Value"];
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

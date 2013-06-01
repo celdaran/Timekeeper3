@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
 
 using Technitivity.Toolbox;
 
@@ -28,7 +29,7 @@ namespace Timekeeper
             // Auto-follow
             if (options.wProjectFollow.Checked) {
                 if (Activity.FollowedItemId > 0) {
-                    TreeNode node = Trees_FindNode(wProjects.Nodes, Activity.FollowedItemId);
+                    TreeNode node = Widgets.FindTreeNode(wProjects.Nodes, Activity.FollowedItemId);
                     if (node != null) {
                         wProjects.SelectedNode = node;
                     }
@@ -79,7 +80,7 @@ namespace Timekeeper
                 Database = Timekeeper.OpenDatabase(DatabaseFileName, options.wSQLtracing.Checked);
 
                 Datafile Datafile = new Datafile();
-                Version Version = new Version(3, 0);
+                Version Version = new Version(Datafile.SCHEMA_VERSION);
 
                 if (!Database.DataFileExists) {
                     if (action == DatabaseCheckAction.CreateIfMissing) {
@@ -92,7 +93,7 @@ namespace Timekeeper
                 int Status = Datafile.Check();
 
                 switch (Status) {
-                    case Datafile.ERROR_UNSPECIFIED:
+                    case Datafile.ERROR_UNEXPECTED:
                         Common.Warn("An error occurred during the database check. Cannot open file.");
                         return false;
 
@@ -105,16 +106,23 @@ namespace Timekeeper
                         return false;
 
                     case Datafile.ERROR_EMPTY_DB:
-                        Common.Warn("This appears to be an empty database. A future version of Timekeeper will allow you to claim it.");
+                        //Common.Warn("This appears to be an empty database. A future version of Timekeeper will allow you to claim it.");
+                        if (Common.WarnPrompt("This appears to be an empty database. Would you like Timekeeper to claim it?") == System.Windows.Forms.DialogResult.Yes) {
+                            if (Datafile.Create(Version)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
                         return false;
 
                     case Datafile.ERROR_REQUIRES_UPGRADE:
-                        Common.Warn("This database is from a prior version of Timekeeper and needs to be updated.");
-                        return false;
-
-                    case Datafile.ERROR_INVALID_METADATA:
-                        Common.Warn("Invalid meta data encountered in database.");
-                        return false;
+                        //Common.Warn("This database is from a prior version of Timekeeper and needs to be updated.");
+                        if (Action_ConvertPriorVersion()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                 }
             }
             catch (Exception x) {
@@ -129,8 +137,8 @@ namespace Timekeeper
 
         private void Action_CloseFile()
         {
-            Trees_DestroyActivityTree();
-            Trees_DestroyProjectTree();
+            wTasks.Nodes.Clear();
+            wProjects.Nodes.Clear();
 
             StatusBar_FileClosed();
             MenuBar_FileClosed();
@@ -165,6 +173,8 @@ namespace Timekeeper
 
             // Display root lines?
             Trees_ShowRootLines();
+
+            //tree.ShowRootLines = Activities.HasParents();
         }
 
         //---------------------------------------------------------------------
@@ -182,7 +192,7 @@ namespace Timekeeper
 
         private void Action_FormClose()
         {
-            Action_SaveSettings();
+            Action_SaveOptions();
             Action_CloseFile();
 
             // Logging (TODO: should this be an option?)
@@ -200,13 +210,13 @@ namespace Timekeeper
             options = new Forms.Options(Database);
             properties = new Forms.Properties();
 
-            // Load saved Registry settings
-            Action_LoadSettings();
+            // Load options from the Registry & TKDB
+            Action_LoadOptions();
 
             // Initialize timer
             timerLastRun = DateTime.Now;
 
-            // Any system-wide (i.e., not file-based) UI settings
+            // Any system-wide (i.e., not file-based) UI options
             Action_InitializeUI();
 
             // If DatabaseFileName not already set (via command line) then
@@ -258,8 +268,11 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        private void Action_LoadSettings()
+        private void Action_LoadOptions()
         {
+            // TODO: Move all of this to the Options.cs class.
+            // I'd like a single class to handle all application options,
+            // whether stored in the Registry or in TKDB.Options.
 
             // Read saved values from registry
             Microsoft.Win32.RegistryKey key;
@@ -359,7 +372,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        private void Action_SaveSettings()
+        private void Action_SaveOptions()
         {
             Microsoft.Win32.RegistryKey key;
 
@@ -423,13 +436,13 @@ namespace Timekeeper
 
             // Save DB-specific state
             if (wTasks.SelectedNode != null) {
-                Meta.LastActivity = wTasks.SelectedNode.Text;
+                Options.LastActivity = wTasks.SelectedNode.Text;
             }
             if (wProjects.SelectedNode != null) {
-                Meta.LastProject = wProjects.SelectedNode.Text;
+                Options.LastProject = wProjects.SelectedNode.Text;
             }
             if (lastGridView != null) {
-                Meta.LastGridView = lastGridView;
+                Options.LastGridView = lastGridView;
             }
 
         }
@@ -491,11 +504,13 @@ namespace Timekeeper
                     return false;
                 }
 
-                Trees_BuildActivityTree(wTasks.Nodes, null, 0);
-                Trees_BuildProjectTree(wProjects.Nodes, null, 0);
+                Widgets = new Classes.Widgets();
+                Widgets.BuildActivityTree(wTasks.Nodes, null, 0);
+                Widgets.BuildProjectTree(wProjects.Nodes, null, 0);
 
                 Entries = new Entries(Database);
                 Meta = new Classes.Meta();
+                Options = new Classes.Options();
 
                 MenuBar_FileOpened();
                 StatusBar_FileOpened();
@@ -507,19 +522,19 @@ namespace Timekeeper
                 // and save name for next Ctrl+O
                 OpenFileDialog.FileName = DatabaseFileName;
 
-                string lastTask = Meta.LastActivity;
-                string lastProject = Meta.LastProject;
-                lastGridView = Meta.LastGridView ?? "Last View";
+                string lastTask = Options.LastActivity;
+                string lastProject = Options.LastProject;
+                lastGridView = Options.LastGridView ?? "Last View";
 
                 // Re-select last selected task
-                TreeNode lastNode = Trees_FindNode(wTasks.Nodes, lastTask);
+                TreeNode lastNode = Widgets.FindTreeNode(wTasks.Nodes, lastTask);
                 if (lastNode != null) {
                     wTasks.SelectedNode = lastNode;
                     wTasks.SelectedNode.Expand();
                 }
 
                 // Re-select last selected project
-                lastNode = Trees_FindNode(wProjects.Nodes, lastProject);
+                lastNode = Widgets.FindTreeNode(wProjects.Nodes, lastProject);
                 if (lastNode != null) {
                     wProjects.SelectedNode = lastNode;
                     wProjects.SelectedNode.Expand();
@@ -541,6 +556,64 @@ namespace Timekeeper
                 Timekeeper.Exception(x);
                 return false;
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        private bool Action_ConvertPriorVersion()
+        {
+
+            // if (Common.WarnPrompt("This database is from a prior version of Timekeeper. Would you like to convert it? (The database will be backed up before converting.)") == System.Windows.Forms.DialogResult.Yes) {
+
+            try {
+                // Get backup file name
+                string NewDataFile = GetBackupFileName();
+
+                // Open dialog box
+                Forms.Upgrade Dialog = new Forms.Upgrade();
+                Dialog.BackUpFileLabel.Text = NewDataFile;
+                Dialog.StepLabel.Text = "Click the Start button to begin the database upgrade...";
+                if (Dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                return false;
+            }
+        }
+
+        private string GetBackupFileName()
+        {
+            return GetBackupFileName(1);
+        }
+
+        private string GetBackupFileName(int fileno)
+        {
+            Datafile Datafile = new Datafile();
+            FileInfo FileInfo = new FileInfo(Datafile.FullPath);
+
+            string BackupFileName;
+
+            if (fileno == 1) {
+                BackupFileName = String.Format("{0}\\{1} - Backup{2}",
+                    FileInfo.Directory.FullName,
+                    Path.GetFileNameWithoutExtension(FileInfo.Name),
+                    FileInfo.Extension);
+            } else {
+                BackupFileName = String.Format("{0}\\{1} - Backup ({3}){2}",
+                    FileInfo.Directory.FullName,
+                    Path.GetFileNameWithoutExtension(FileInfo.Name),
+                    FileInfo.Extension, fileno);
+            }
+
+            if (File.Exists(BackupFileName)) {
+                BackupFileName = GetBackupFileName(fileno + 1);
+            }
+
+            return BackupFileName;
         }
 
         //---------------------------------------------------------------------
@@ -580,7 +653,7 @@ namespace Timekeeper
 
         private void Action_ReparentItem(TreeView tree, Item item, string parentText)
         {
-            TreeNode ParentNode = Trees_FindNode(tree.Nodes, parentText);
+            TreeNode ParentNode = Widgets.FindTreeNode(tree.Nodes, parentText);
 
             if (ParentNode == null) {
                 item.Reparent(0);
@@ -598,9 +671,9 @@ namespace Timekeeper
             tree.Nodes.Clear();
             // FIXME: bit of a hack, here (okay, more than a bit)
             if (tree.Name == "wTasks") {
-                Trees_BuildActivityTree(wTasks.Nodes, null, 0);
+                Widgets.BuildActivityTree(wTasks.Nodes, null, 0);
             } else {
-                Trees_BuildProjectTree(wProjects.Nodes, null, 0);
+                Widgets.BuildProjectTree(wProjects.Nodes, null, 0);
             }
             // FIXME: don't always collapse/expand all: do this intelligently
             tree.ExpandAll();
@@ -614,7 +687,13 @@ namespace Timekeeper
 
         private void Action_SaveAs(int fileType)
         {
-            Common.Info("You selected Save As Type: " + fileType.ToString());
+            DBI NewDatabase = new DBI(SaveAsDialog.FileName);
+            Datafile CurrentDatafile = new Datafile(Database);
+            Datafile NewDatafile = new Datafile(NewDatabase);
+
+            CurrentDatafile.SaveAs22(NewDatafile);
+
+            //Common.Info("You selected Save As Type: " + fileType.ToString());
         }
 
         //---------------------------------------------------------------------
@@ -665,9 +744,9 @@ namespace Timekeeper
             // Animate the task icon
             if (timerRunning == true) {
                 int currentIndex = currentTaskNode.SelectedImageIndex;
-                if (currentIndex > IMG_TASK_TIMER_END - 1) {
-                    currentTaskNode.ImageIndex = IMG_TASK_TIMER_START;
-                    currentTaskNode.SelectedImageIndex = IMG_TASK_TIMER_START;
+                if (currentIndex > Timekeeper.IMG_TASK_TIMER_END - 1) {
+                    currentTaskNode.ImageIndex = Timekeeper.IMG_TASK_TIMER_START;
+                    currentTaskNode.SelectedImageIndex = Timekeeper.IMG_TASK_TIMER_START;
                 } else {
                     currentTaskNode.ImageIndex++;
                     currentTaskNode.SelectedImageIndex++;
@@ -762,6 +841,7 @@ namespace Timekeeper
 
             //currentEntry.Begin(wMemo.Text, currentTask.id, currentProject.id);
 
+            timerShort.Enabled = true; // Are this line and the next line the same thing?
             timerRunning = true;
             timerLastRun = DateTime.Now;
 
@@ -810,7 +890,7 @@ namespace Timekeeper
 
             if (options.wMinimizeOnUse.Checked) {
                 if ((ModifierKeys & Keys.Shift) == Keys.Shift) {
-                    // Shift key temporarily overrides the minimize-on-use setting
+                    // Shift key temporarily overrides the minimize-on-use option
                 } else {
                     WindowState = FormWindowState.Minimized;
                 }
@@ -839,6 +919,7 @@ namespace Timekeeper
             currentEntry.TagId = 1;
             currentEntry.Save();
             timerRunning = false;
+            timerShort.Enabled = false;
             //timerLastRunNotified = false;
 
             // Clear instances of current object
@@ -872,8 +953,8 @@ namespace Timekeeper
             menuToolControlStop.ShortcutKeys = Keys.None;
             menuToolControlStart.ShortcutKeys = saveKeys;
             */
-            currentTaskNode.ImageIndex = IMG_TASK;
-            currentTaskNode.SelectedImageIndex = IMG_TASK;
+            currentTaskNode.ImageIndex = Timekeeper.IMG_TASK;
+            currentTaskNode.SelectedImageIndex = Timekeeper.IMG_TASK;
 
             menuTasksDeleteTask.Enabled = true;
             pmenuTasksDelete.Enabled = true;

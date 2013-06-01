@@ -93,7 +93,7 @@ namespace Timekeeper
                 item.Name = Dialog.wNodeName.Text;
                 item.Description = Dialog.wNodeDescription.Text;
                 item.IsFolder = isFolder;
-                int CreateResult = Trees_CreateItem(tree.Nodes, item, Dialog.wParent.Text, imageIndex);
+                int CreateResult = Widgets.CreateTreeItem(tree.Nodes, item, Dialog.wParent.Text, imageIndex);
                 switch (CreateResult) {
                     case TREES_ITEM_CREATED:
                         //Common.Info("Item created");

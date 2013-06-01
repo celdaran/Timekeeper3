@@ -258,6 +258,11 @@ namespace Timekeeper
 
         private void Browser_FormToEntry(ref Entry entry, long entryId)
         {
+            // Don't update the browser entry if nothing is selected
+            if ((wTasks.SelectedNode == null) || (wProjects.SelectedNode == null)) {
+                return;
+            }
+
             // First translate some necessary data from the form 
             Activity task = (Activity)wTasks.SelectedNode.Tag;
             Project project = (Project)wProjects.SelectedNode.Tag;
@@ -278,13 +283,13 @@ namespace Timekeeper
         private void Browser_EntryToForm(Entry entry)
         {
             // Now select tasks and projects while browsing.
-            TreeNode node = Trees_FindNode(wTasks.Nodes, entry.ActivityName);
+            TreeNode node = Widgets.FindTreeNode(wTasks.Nodes, entry.ActivityName);
             if (node != null) {
                 wTasks.SelectedNode = node;
                 wTasks.SelectedNode.Expand();
             }
 
-            node = Trees_FindNode(wProjects.Nodes, entry.ProjectName);
+            node = Widgets.FindTreeNode(wProjects.Nodes, entry.ProjectName);
             if (node != null) {
                 wProjects.SelectedNode = node;
                 wProjects.SelectedNode.Expand();

@@ -14,8 +14,18 @@ namespace Timekeeper
 
         public const string TITLE = "Timekeeper";
         public const string VERSION = "3.0.0.0";
+        public const string IDENTIFIER = "AA9FFC4E-5CEB-4E3F-83FE-7EC5D1A33300";
+
         public const int SUCCESS = 1;
         public const int FAILURE = 0;
+
+        public const int IMG_FOLDER_OPEN = 0;
+        public const int IMG_FOLDER_CLOSED = 1;
+        public const int IMG_PROJECT = 2;
+        public const int IMG_TASK = 3;
+        public const int IMG_TASK_TIMER_START = 4;
+        public const int IMG_TASK_TIMER_END = 7;
+        public const int IMG_TASK_HIDDEN = 8; // UNUSED (why?)
 
         //---------------------------------------------------------------------
         // Properties
@@ -67,6 +77,13 @@ namespace Timekeeper
             string msg = String.Format(@"Exception in {0}.{1}: {2}",
                 StackFrame.GetMethod().DeclaringType, StackFrame.GetMethod().Name, x.Message);
             Log.Warn(msg);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string MetaTableName()
+        {
+            return IDENTIFIER.Replace("-", "_");
         }
 
         //---------------------------------------------------------------------
@@ -151,8 +168,27 @@ namespace Timekeeper
                 return "";
             }
         }
-
-        //---------------------------------------------------------------------
-
     }
+
+    //---------------------------------------------------------------------
+    // Custom datatypes
+    //---------------------------------------------------------------------
+
+    public struct IdValuePair
+    {
+        public int Id;
+        public string Description;
+
+        public IdValuePair(int id, string description) {
+            this.Id = id;
+            this.Description = description;
+        }
+
+        public override string ToString() {
+            return this.Description;
+        }
+    }
+
+    //---------------------------------------------------------------------
+
 }

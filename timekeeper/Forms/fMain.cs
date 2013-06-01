@@ -40,10 +40,10 @@ namespace Timekeeper
         private string lastGridView;
 
         // objects
-        private Activities tasks;
-        private Projects projects;
         private Entries Entries;
         private Classes.Meta Meta;
+        private Classes.Options Options;
+        private Classes.Widgets Widgets;
 
         // current objects
         private Entry currentEntry;
@@ -71,14 +71,6 @@ namespace Timekeeper
         //---------------------------------------------------------------------
 
         const string REGKEY = "Software\\Technitivity\\Timekeeper\\3.0\\";
-
-        const int IMG_FOLDER_OPEN = 0;
-        const int IMG_FOLDER_CLOSED = 1;
-        const int IMG_PROJECT = 2;
-        const int IMG_TASK = 3;
-        const int IMG_TASK_TIMER_START = 4;
-        const int IMG_TASK_TIMER_END = 7;
-        const int IMG_TASK_HIDDEN = 8; // UNUSED (why?)
 
         //---------------------------------------------------------------------
         // Constructor
@@ -163,14 +155,14 @@ namespace Timekeeper
         private void menuTasksNewTask_Click(object sender, EventArgs e)
         {
             Activity task = new Activity(Database);
-            Dialog_NewItem(wTasks, "New Task", false, (Item)task, IMG_TASK);
+            Dialog_NewItem(wTasks, "New Task", false, (Item)task, Timekeeper.IMG_TASK);
         }
 
         // Tasks | New Task Folder
         private void menuTasksNewTaskFolder_Click(object sender, EventArgs e)
         {
             Activity task = new Activity(Database);
-            Dialog_NewItem(wTasks, "New Task Folder", true, (Item)task, IMG_TASK);
+            Dialog_NewItem(wTasks, "New Task Folder", true, (Item)task, Timekeeper.IMG_TASK);
         }
 
         // Tasks | Edit Task
@@ -212,14 +204,14 @@ namespace Timekeeper
         private void menuTasksNewProject_Click(object sender, EventArgs e)
         {
             Project project = new Project(Database);
-            Dialog_NewItem(wProjects, "New Project", false, (Item)project, IMG_PROJECT);
+            Dialog_NewItem(wProjects, "New Project", false, (Item)project, Timekeeper.IMG_PROJECT);
         }
 
         // Task | New Project Folder
         private void menuTasksNewProjectFolder_Click(object sender, EventArgs e)
         {
             Project project = new Project(Database);
-            Dialog_NewItem(wProjects, "New Project Folder", true, (Item)project, IMG_PROJECT);
+            Dialog_NewItem(wProjects, "New Project Folder", true, (Item)project, Timekeeper.IMG_PROJECT);
         }
 
         // Task | Edit Project
@@ -273,6 +265,10 @@ namespace Timekeeper
         // Report | Quick List
         private void menuReportsQuick_Click(object sender, EventArgs e)
         {
+            Forms.Report Report = new Forms.Report();
+            Report.Show(this);
+
+            /*
             fReport rpt = new fReport(Database, 
                 options.wFontList.SelectedItem.ToString(), 
                 Convert.ToInt32(options.wFontSize.Value),
@@ -281,6 +277,7 @@ namespace Timekeeper
             OpenForms.Add(rpt);
             reportHeight = rpt.Height;
             reportWidth = rpt.Width;
+            */
         }
 
         // Report | Punch Card
@@ -675,14 +672,21 @@ namespace Timekeeper
         // Form Events
         //---------------------------------------------------------------------
 
-        // Load settings
         private void fMain_Load(object sender, EventArgs e)
         {
             Action_FormLoad();
+
+            // short cut
+            //Forms.Report Report = new Forms.Report();
+            //Report.Show(this);
+
+            // another short cut
+            //Forms.Filtering FilterDialog = new Forms.Filtering();
+            //FilterDialog.Show(this);
         }
 
         //---------------------------------------------------------------------
-        // Save settings on exit
+
         private void fMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             Action_FormClose();
@@ -697,6 +701,7 @@ namespace Timekeeper
                 e.Cancel = true;
             } else {
                 // override settings in persistent dialogs
+                // TODO: no more "persistent dialog boxes" -- that should have been a red flag.
                 e.Cancel = false;
             }
         }
@@ -726,14 +731,14 @@ namespace Timekeeper
         private void reloadTasks()
         {
             wTasks.Nodes.Clear();
-            Trees_BuildActivityTree(wTasks.Nodes, null, 0);
+            Widgets.BuildActivityTree(wTasks.Nodes, null, 0);
             wTasks.ExpandAll();
         }
 
         private void reloadProjects()
         {
             wProjects.Nodes.Clear();
-            Trees_BuildProjectTree(wProjects.Nodes, null, 0);
+            Widgets.BuildProjectTree(wProjects.Nodes, null, 0);
             wProjects.ExpandAll();
         }
 
@@ -754,12 +759,17 @@ namespace Timekeeper
 
         private void menuToolFind_Click(object sender, EventArgs e)
         {
+            /*
             try {
                 throw new System.ApplicationException("Doing this on purpose");
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
+            */
+
+            Forms.Report Report = new Forms.Report();
+            Report.Show(this);
         }
 
         //---------------------------------------------------------------------

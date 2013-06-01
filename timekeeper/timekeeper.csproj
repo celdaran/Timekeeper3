@@ -21,7 +21,8 @@
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -95,7 +96,39 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Datafile.Create.cs" />
+    <Compile Include="Classes\Datafile.Downgrade.cs" />
+    <Compile Include="Classes\Datafile.Upgrade.cs" />
+    <Compile Include="Classes\FilterOptions.cs" />
+    <Compile Include="Classes\OtherAttributes.cs" />
     <Compile Include="Classes\Meta.cs" />
+    <Compile Include="Classes\Options.cs" />
+    <Compile Include="Classes\SystemData.cs" />
+    <Compile Include="Classes\Widgets.cs" />
+    <Compile Include="Forms\Controls\DateRangePicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\DateRangePicker.Designer.cs">
+      <DependentUpon>DateRangePicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Filtering.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Filtering.Designer.cs">
+      <DependentUpon>Filtering.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Report.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Report.Designer.cs">
+      <DependentUpon>Report.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Upgrade.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Upgrade.Designer.cs">
+      <DependentUpon>Upgrade.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Classes\Activities.cs" />
     <Compile Include="Classes\Activity.cs" />
@@ -271,6 +304,9 @@
       <DependentUpon>fToolStopwatch.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\Controls\DateRangePicker.resx">
+      <DependentUpon>DateRangePicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\fAbout.resx">
       <DependentUpon>fAbout.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -294,6 +330,9 @@
     <EmbeddedResource Include="Forms\fGridSave.resx">
       <DependentUpon>fGridSave.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Filtering.resx">
+      <DependentUpon>Filtering.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fNotify.resx">
       <DependentUpon>fNotify.cs</DependentUpon>
@@ -356,6 +395,12 @@
     <EmbeddedResource Include="Forms\fToolStopwatch.resx">
       <DependentUpon>fToolStopwatch.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Report.resx">
+      <DependentUpon>Report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Upgrade.resx">
+      <DependentUpon>Upgrade.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -398,6 +443,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\SQL\AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300.sql" />
+    <None Include="Resources\TextFileTest.txt" />
+    <None Include="Resources\button-refresh.png" />
+    <None Include="Resources\button-filter.png" />
+    <None Include="Resources\button-printer.png" />
     <None Include="Resources\button-unlock.png" />
     <None Include="Resources\button-revert.png" />
     <None Include="Resources\button-stop.png" />
@@ -421,6 +471,7 @@
     <None Include="Resources\button-close-stop-gap.png" />
     <Content Include="Properties\timekeeper.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -166,8 +166,8 @@ namespace Timekeeper
                         from Journal j
                         join Activity a on a.ActivityId  = j.ActivityId
                         join Project p  on p.ProjectId   = j.ProjectId
-                        join Location l on l.LocationId  = j.LocationId
-                        join Tag t      on t.TagId       = j.TagId
+                        left outer join Location l on l.LocationId  = j.LocationId
+                        left outer join Tag t      on t.TagId       = j.TagId
                         where j.JournalEntryId = " + entryId;
                     SetAttributes(Data.SelectRow(Query));
                 }
@@ -208,6 +208,57 @@ namespace Timekeeper
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        public DateTime PreviousDay()
+        {
+            DateTime PreviousDay;
+
+            string Query = @"
+                select distinct strftime('%Y-%m-%d', CreateTime) as Date 
+                from Journal 
+                order by Date desc";
+            Table Rows = Timekeeper.Database.Select(Query);
+
+            if (Rows.Count > 1) {
+                PreviousDay = DateTime.Parse(Rows[1]["Date"]);
+            } else {
+                PreviousDay = DateTime.Now;
+            }
+
+            return PreviousDay;
+        }
+
+        //---------------------------------------------------------------------
+
+        public DateTime FirstDay()
+        {
+            DateTime FirstDay;
+
+            string Query = @"
+                select min(CreateTime) as FirstDate 
+                from Journal";
+            Row Row = Timekeeper.Database.SelectRow(Query);
+            FirstDay = DateTime.Parse(Row["FirstDate"]);
+
+            return FirstDay;
+        }
+
+        //---------------------------------------------------------------------
+
+        public DateTime LastDay()
+        {
+            DateTime LastDay;
+
+            string Query = @"
+                select max(CreateTime) as LastDate 
+                from Journal";
+            Row Row = Timekeeper.Database.SelectRow(Query);
+            LastDay = DateTime.Parse(Row["LastDate"]);
+
+            return LastDay;
         }
 
         //---------------------------------------------------------------------
@@ -316,14 +367,14 @@ namespace Timekeeper
             StopTime = row["StopTime"];
             Seconds = row["Seconds"];
             Memo = row["Memo"];
-            LocationId = row["LocationId"];
-            TagId = row["TagId"];
+            LocationId = row["LocationId"] ?? 0;
+            TagId = row["TagId"] ?? 0;
             IsLocked = row["IsLocked"];
 
             ActivityName = row["ActivityName"];
             ProjectName = row["ProjectName"];
-            LocationName = row["LocationName"];
-            TagName = row["TagName"];
+            LocationName = row["LocationName"] ?? "";
+            TagName = row["TagName"] ?? "";
 
             CreateTime = row["CreateTime"];
             ModifyTime = row["ModifyTime"];

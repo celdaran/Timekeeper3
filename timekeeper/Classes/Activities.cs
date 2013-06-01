@@ -17,7 +17,7 @@ namespace Timekeeper
         {}
 
         public Activities(DBI data)
-            : this (data, "CreateDate")
+            : this (data, "CreateTime")
         {}
 
         //---------------------------------------------------------------------

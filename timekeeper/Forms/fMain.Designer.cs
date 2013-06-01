@@ -1193,7 +1193,6 @@ namespace Timekeeper
             // 
             // timerShort
             // 
-            this.timerShort.Enabled = true;
             this.timerShort.Interval = 1000;
             this.timerShort.Tick += new System.EventHandler(this.timer_Tick);
             // 

@@ -61,6 +61,20 @@ namespace Timekeeper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (
+        ///    MetaId                      INTEGER PRIMARY KEY AUTOINCREMENT,
+        ///    Key                         TEXT NOT NULL,
+        ///    Value                       TEXT NOT NULL
+        ///);
+        ///.
+        /// </summary>
+        internal static string AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 {
+            get {
+                return ResourceManager.GetString("AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap buttonBold {
@@ -96,6 +110,16 @@ namespace Timekeeper.Properties {
         internal static System.Drawing.Bitmap buttonCloseStopGap {
             get {
                 object obj = ResourceManager.GetObject("buttonCloseStopGap", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap buttonFilter {
+            get {
+                object obj = ResourceManager.GetObject("buttonFilter", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,6 +217,26 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap buttonPrinter {
+            get {
+                object obj = ResourceManager.GetObject("buttonPrinter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap buttonRefresh {
+            get {
+                object obj = ResourceManager.GetObject("buttonRefresh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap buttonRevert {
             get {
                 object obj = ResourceManager.GetObject("buttonRevert", resourceCulture);
@@ -267,6 +311,64 @@ namespace Timekeeper.Properties {
             get {
                 object obj = ResourceManager.GetObject("iconTask", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to body, table {{
+        ///    font-family: {0}, Tahoma, Verdana, Arial, Helv, sans-serif;
+        ///    margin: 1em;
+        ///    font-size: {1}pt;
+        ///    border-collapse: collapse;
+        ///    empty-cells: show;
+        ///}}
+        ///.memo {{
+        ///    margin-left: 2em;
+        ///}}.
+        /// </summary>
+        internal static string ReportCssTemplate {
+            get {
+                return ResourceManager.GetString("ReportCssTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;
+        ///&lt;html&gt;
+        ///&lt;head&gt;
+        ///  &lt;title&gt;{0}&lt;/title&gt;
+        ///  &lt;style&gt;
+        ///    {1}
+        ///  &lt;/style&gt;
+        ///&lt;/head&gt;
+        ///&lt;body&gt;
+        ///  {2}
+        ///&lt;/body&gt;
+        ///&lt;/html&gt;.
+        /// </summary>
+        internal static string ReportTemplate {
+            get {
+                return ResourceManager.GetString("ReportTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CREATE TABLE GridOptions (
+        ///    GridOptionsId               INTEGER PRIMARY KEY AUTOINCREMENT,
+        ///    CreateTime                  DATETIME NOT NULL,
+        ///    ModifyTime                  DATETIME NOT NULL,
+        ///    Name                        TEXT NOT NULL,
+        ///    Description                 TEXT,
+        ///    SortOrderNo                 INTEGER,
+        ///    ActivityFilter              TEXT,
+        ///    ProjectFilter               TEXT,
+        ///    SystemDatePresetId          INTEGER,
+        ///    FromDate                    DATETIME,
+        ///    ToDate           [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TextFileTest {
+            get {
+                return ResourceManager.GetString("TextFileTest", resourceCulture);
             }
         }
         

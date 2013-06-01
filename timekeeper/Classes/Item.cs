@@ -26,7 +26,7 @@ namespace Timekeeper
         public bool IsHidden;
         public bool IsDeleted;
         public DateTime HiddenTime;
-        public DateTime DeleteTime;
+        public DateTime DeletedTime;
 
         // In-memory only
         public DateTime StartTime;
@@ -224,7 +224,7 @@ namespace Timekeeper
             Row["IsHidden"] = 0;
             Row["IsDeleted"] = 0;
             Row["HiddenTime"] = null;
-            Row["DeleteTime"] = null;
+            Row["DeletedTime"] = null;
 
             this.ItemId = this.Data.Insert(this.TableName, Row);
 
@@ -329,8 +329,8 @@ namespace Timekeeper
 
             if (row["HiddenTime"] != null)
                 this.HiddenTime = row["HiddenTime"];
-            if (row["DeleteTime"] != null)
-                this.DeleteTime = row["DeleteTime"];
+            if (row["DeletedTime"] != null)
+                this.DeletedTime = row["DeletedTime"];
 
             // Initialize times
             this.SetSecondsElapsedToday();

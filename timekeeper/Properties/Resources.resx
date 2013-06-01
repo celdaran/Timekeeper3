@@ -187,4 +187,45 @@
   <data name="buttonUnlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button-unlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="buttonPrinter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button-printer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="buttonFilter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button-filter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="buttonRefresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button-refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="ReportCssTemplate" xml:space="preserve">
+    <value>body, table {{
+    font-family: {0}, Tahoma, Verdana, Arial, Helv, sans-serif;
+    margin: 1em;
+    font-size: {1}pt;
+    border-collapse: collapse;
+    empty-cells: show;
+}}
+.memo {{
+    margin-left: 2em;
+}}</value>
+  </data>
+  <data name="ReportTemplate" xml:space="preserve">
+    <value>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;{0}&lt;/title&gt;
+  &lt;style&gt;
+    {1}
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  {2}
+&lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="TextFileTest" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TextFileTest.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>

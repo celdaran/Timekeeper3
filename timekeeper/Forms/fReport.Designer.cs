@@ -43,6 +43,7 @@ namespace Timekeeper
             this.btnGo = new System.Windows.Forms.Button();
             this.wReport = new System.Windows.Forms.WebBrowser();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.panelButtonBar.SuspendLayout();
             this.wGroupPrint.SuspendLayout();
             this.wGroupDates.SuspendLayout();
@@ -204,21 +205,29 @@ namespace Timekeeper
             // 
             // wReport
             // 
-            this.wReport.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.wReport.Location = new System.Drawing.Point(0, 0);
+            this.wReport.Location = new System.Drawing.Point(0, 48);
             this.wReport.MinimumSize = new System.Drawing.Size(20, 20);
             this.wReport.Name = "wReport";
-            this.wReport.Size = new System.Drawing.Size(572, 213);
+            this.wReport.Size = new System.Drawing.Size(572, 138);
             this.wReport.TabIndex = 11;
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.toolStrip1);
             this.panel2.Controls.Add(this.wReport);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(572, 213);
             this.panel2.TabIndex = 1;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(572, 25);
+            this.toolStrip1.TabIndex = 12;
+            this.toolStrip1.Text = "toolStrip1";
             // 
             // fReport
             // 
@@ -241,6 +250,7 @@ namespace Timekeeper
             this.wGroupDates.ResumeLayout(false);
             this.wGroupDates.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -263,5 +273,6 @@ namespace Timekeeper
         private System.Windows.Forms.GroupBox wGroupPrint;
         private System.Windows.Forms.WebBrowser wReport;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ToolStrip toolStrip1;
     }
 }
