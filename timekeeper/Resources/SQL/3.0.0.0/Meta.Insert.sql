@@ -1,23 +1,23 @@
 INSERT INTO AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (
-    Key, Value,
+    Key, Value
 ) VALUES (
-    'Created', datetime('now')
+    'Created', '{0}'
 );
 
 INSERT INTO AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (
-    Key, Value,
+    Key, Value
 ) VALUES (
-    'Upgraded', null
+    'Upgraded', '0001-01-01 00:00:00'
 );
 
 INSERT INTO AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (
-    Key, Value,
+    Key, Value
 ) VALUES (
     'Version', '3.0.0.0'
 );
 
 INSERT INTO AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (
-    Key, Value,
+    Key, Value
 ) VALUES (
-    'Id', {0}
+    'Id', '{1}'
 );

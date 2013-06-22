@@ -2,8 +2,8 @@ INSERT INTO meta (
     key, value, timestamp_c
 ) VALUES (
     'created',
-    datetime('now'),
-    datetime('now')
+    '{0}',
+    '{0}'
 );
 
 INSERT INTO meta (
@@ -11,13 +11,13 @@ INSERT INTO meta (
 ) VALUES (
     'version',
     '2.2.0.4',
-    datetime('now')
+    '{0}'
 );
 
 INSERT INTO meta (
     key, value, timestamp_c
 ) VALUES (
     'id',
-    '{0}',
-    datetime('now')
+    '{1}',
+    '{0}'
 );

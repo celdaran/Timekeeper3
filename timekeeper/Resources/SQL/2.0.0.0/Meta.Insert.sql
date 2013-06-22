@@ -3,5 +3,5 @@ INSERT INTO meta (
 ) VALUES (
     'version',
     '2.0.0.0',
-    datetime('now')
+    '{0}'
 )
