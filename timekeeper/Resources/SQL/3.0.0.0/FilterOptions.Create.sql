@@ -1,22 +1,21 @@
 CREATE TABLE FilterOptions
 (
-    FilterOptionsId             INTEGER PRIMARY KEY AUTOINCREMENT,
-    CreateTime                  DATETIME NOT NULL,
-    ModifyTime                  DATETIME NOT NULL,
+    FilterOptionsId             INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    CreateTime                  DATETIME    NOT NULL,
+    ModifyTime                  DATETIME    NOT NULL,
 
-    Name                        TEXT,
-    Description                 TEXT,
-    SortOrderNo                 INTEGER,
-    ActivityList                TEXT,
-    ProjectList                 TEXT,
-    SystemDatePresetId          INTEGER,
-    FromDate                    DATETIME,
-    ToDate                      DATETIME,
+    ActivityList                TEXT            NULL,
+    ProjectList                 TEXT            NULL,
+    SystemDatePresetId          INTEGER         NULL,
+    FromDate                    DATETIME        NULL,
     -- need an "end date type" concept here: i.e., literal dates vs variable dates
-    Memo                        TEXT,
-    DurationOperator            INT,
-    DurationAmount              INT,
-    DurationUnit                INT,
-    LocationList                TEXT,
-    TagList                     TEXT,
+    ToDate                      DATETIME        NULL,
+    Memo                        TEXT            NULL,
+    DurationOperator            INT             NULL,
+    DurationAmount              INT             NULL,
+    DurationUnit                INT             NULL,
+    LocationList                TEXT            NULL,
+    CategoryList                TEXT            NULL,
+
+    FOREIGN KEY(SystemDatePresetId) REFERENCES SystemDatePreset(SystemDatePresetId)
 );

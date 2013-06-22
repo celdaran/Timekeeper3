@@ -14,7 +14,11 @@ CREATE TABLE Activity
     IsHidden        BOOLEAN NOT NULL,
     IsDeleted       BOOLEAN NOT NULL,
     HiddenTime      DATETIME,
-    DeletedTime     DATETIME
+    DeletedTime     DATETIME,
+
+    FOREIGN KEY(LastProjectId) REFERENCES Project(ProjectId)
 );
 
-CREATE UNIQUE INDEX idx_Project_ProjectId ON Project (ProjectId);
+CREATE UNIQUE INDEX idx_Activity_ActivityId ON Activity (ActivityId);
+CREATE UNIQUE INDEX idx_Activity_ActivityGuid ON Activity (ActivityGuid);
+CREATE UNIQUE INDEX idx_Activity_ActivityName ON Activity (ActivityName);

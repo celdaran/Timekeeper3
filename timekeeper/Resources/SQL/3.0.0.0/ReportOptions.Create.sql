@@ -1,12 +1,18 @@
 CREATE TABLE ReportOptions
 (
-    ReportOptionsId     INTEGER PRIMARY KEY AUTOINCREMENT,
-    CreateTime          DATETIME NOT NULL,
-    ModifyTime          DATETIME NOT NULL,
-    Name                TEXT NOT NULL,
-    Description         TEXT,
-    FilterOptionsId     INTEGER,
-    SortBy1             INTEGER,
-    SortBy2             INTEGER,
-    SortBy3             INTEGER
+    ReportOptionsId             INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    CreateTime                  DATETIME    NOT NULL,
+    ModifyTime                  DATETIME    NOT NULL,
+
+    Name                        TEXT        NOT NULL,
+    Description                 TEXT            NULL,
+    SortOrderNo                 INTEGER         NULL,
+
+    FilterOptionsId             INTEGER     NOT NULL,
+
+    SortBy1                     INTEGER         NULL,
+    SortBy2                     INTEGER         NULL,
+    SortBy3                     INTEGER         NULL,
+
+    FOREIGN KEY(FilterOptionsId) REFERENCES FilterOptions(FilterOptionsId)
 );
