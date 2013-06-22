@@ -2,14 +2,14 @@ INSERT INTO Project
 (
     CreateTime,
     ModifyTime,
-    ActivityGuid,
+    ProjectGuid,
 
     Name,
     Description,
     ParentId,
 
     SortOrderNo,
-    LastProjectId,
+    LastActivityId,
 
     IsFolder,
     IsOpened,
@@ -19,9 +19,9 @@ INSERT INTO Project
     DeletedTime
 
 ) VALUES (
-    datetime('now'),
-    datetime('now'),
-    {0},
+    '{0}',
+    '{0}',
+    '{1}',
 
     'Default Project',
     'Right click and select Edit to change the name or this description',

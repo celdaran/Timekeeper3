@@ -12,6 +12,6 @@ INSERT INTO projects (
     0,
     0,
     0,
-    datetime('now'),
-    datetime('now')
+    '{0}',
+    '{0}'
 )
