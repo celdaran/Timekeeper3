@@ -42,15 +42,15 @@ namespace Timekeeper
                     UpgradeJournal();
 
                     // Create 3.0 tables
-                    CreateLocation(CurrentSchemaVersion, Populate);
-                    CreateTag(CurrentSchemaVersion, Populate);
-                    CreateDiary(CurrentSchemaVersion);
-                    CreateOptions(CurrentSchemaVersion, Populate);
-                    CreateGridOptions(CurrentSchemaVersion);
-                    CreateReportOptions(CurrentSchemaVersion);
-                    CreateSystemDatePreset(CurrentSchemaVersion, Populate);
-                    CreateSystemGridGroupBy(CurrentSchemaVersion, Populate);
-                    CreateSystemGridTimeDisplay(CurrentSchemaVersion, Populate);
+                    CreateTable("Location", CurrentSchemaVersion, Populate);
+                    CreateTable("Category", CurrentSchemaVersion, Populate);
+                    CreateTable("Diary", CurrentSchemaVersion, false);
+                    CreateTable("Options", CurrentSchemaVersion, Populate);
+                    CreateTable("GridOptions", CurrentSchemaVersion, false);
+                    CreateTable("ReportOptions", CurrentSchemaVersion, false);
+                    CreateTable("SystemDatePreset", CurrentSchemaVersion, Populate);
+                    CreateTable("SystemGridGroupBy", CurrentSchemaVersion, Populate);
+                    CreateTable("SystemGridTimeDisplay", CurrentSchemaVersion, Populate);
 
                     return true;
                 }
@@ -69,13 +69,13 @@ namespace Timekeeper
                     UpgradeJournal();
 
                     // Create 3.0 tables
-                    CreateLocation(CurrentSchemaVersion, Populate);
-                    CreateTag(CurrentSchemaVersion, Populate);
-                    CreateOptions(CurrentSchemaVersion, Populate);
-                    CreateReportOptions(CurrentSchemaVersion);
-                    CreateSystemDatePreset(CurrentSchemaVersion, Populate);
-                    CreateSystemGridGroupBy(CurrentSchemaVersion, Populate);
-                    CreateSystemGridTimeDisplay(CurrentSchemaVersion, Populate);
+                    CreateTable("Location", CurrentSchemaVersion, Populate);
+                    CreateTable("Category", CurrentSchemaVersion, Populate);
+                    CreateTable("Options", CurrentSchemaVersion, Populate);
+                    CreateTable("ReportOptions", CurrentSchemaVersion, false);
+                    CreateTable("SystemDatePreset", CurrentSchemaVersion, Populate);
+                    CreateTable("SystemGridGroupBy", CurrentSchemaVersion, Populate);
+                    CreateTable("SystemGridTimeDisplay", CurrentSchemaVersion, Populate);
                     return true;
                 }
 
@@ -93,13 +93,13 @@ namespace Timekeeper
                     UpgradeJournal();
 
                     // Create 3.0 tables
-                    CreateLocation(CurrentSchemaVersion, Populate);
-                    CreateTag(CurrentSchemaVersion, Populate);
-                    CreateOptions(CurrentSchemaVersion, Populate);
-                    CreateReportOptions(CurrentSchemaVersion);
-                    CreateSystemDatePreset(CurrentSchemaVersion, Populate);
-                    CreateSystemGridGroupBy(CurrentSchemaVersion, Populate);
-                    CreateSystemGridTimeDisplay(CurrentSchemaVersion, Populate);
+                    CreateTable("Location", CurrentSchemaVersion, Populate);
+                    CreateTable("Category", CurrentSchemaVersion, Populate);
+                    CreateTable("Options", CurrentSchemaVersion, Populate);
+                    CreateTable("ReportOptions", CurrentSchemaVersion, false);
+                    CreateTable("SystemDatePreset", CurrentSchemaVersion, Populate);
+                    CreateTable("SystemGridGroupBy", CurrentSchemaVersion, Populate);
+                    CreateTable("SystemGridTimeDisplay", CurrentSchemaVersion, Populate);
                     return true;
                 }
 
@@ -122,7 +122,7 @@ namespace Timekeeper
             Application.DoEvents();
 
             // Save old table in memory
-            Table Meta = this.Data.Select("select * from meta order by rowid");
+            Table Meta = this.Database.Select("select * from meta order by rowid");
 
             // Old table did not have an identity column, so we have to 
             // convert our positional array to actual key names to avoid 
@@ -140,38 +140,38 @@ namespace Timekeeper
             }
 
             // Create new table
-            this.CreateMeta(CurrentSchemaVersion, false);
+            this.CreateTable("Meta", CurrentSchemaVersion, false);
 
             // Migrate data
             Row Row = new Row() {
                     {"Key", "Created"},
                     {"Value", Created}
                 };
-            Data.Insert(Timekeeper.MetaTableName(), Row);
+            Database.Insert(Timekeeper.MetaTableName(), Row);
             this.Progress.Value++;
 
             Row = new Row() {
                     {"Key", "Upgraded"},
                     {"Value", Common.Now()}
                 };
-            Data.Insert(Timekeeper.MetaTableName(), Row);
+            Database.Insert(Timekeeper.MetaTableName(), Row);
 
             Row = new Row() {
                     {"Key", "Version"},
                     {"Value", SCHEMA_VERSION},
                 };
-            Data.Insert(Timekeeper.MetaTableName(), Row);
+            Database.Insert(Timekeeper.MetaTableName(), Row);
             this.Progress.Value++;
 
             Row = new Row() {
                     {"Key", "Id"},
                     {"Value", Id}
                 };
-            Data.Insert(Timekeeper.MetaTableName(), Row);
+            Database.Insert(Timekeeper.MetaTableName(), Row);
             this.Progress.Value++;
 
             // Drop old table
-            this.Data.Exec("drop table meta");
+            this.Database.Exec("drop table meta");
         }
 
         //---------------------------------------------------------------------
@@ -185,10 +185,10 @@ namespace Timekeeper
             Application.DoEvents();
 
             // Save old table in memory
-            Table Activity = this.Data.Select("select * from tasks order by id");
+            Table Activity = this.Database.Select("select * from tasks order by id");
 
             // Create new table
-            this.CreateActivity(CurrentSchemaVersion, false);
+            this.CreateTable("Activity", CurrentSchemaVersion, false);
 
             // Migrate rows
             if (priorVersion.Minor == 0) {
@@ -200,7 +200,7 @@ namespace Timekeeper
             }
 
             // Drop old table
-            this.Data.Exec("drop table tasks");
+            this.Database.Exec("drop table tasks");
         }
 
         //---------------------------------------------------------------------
@@ -227,7 +227,7 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Data.Insert("Activity", NewRow);
+                this.Database.Insert("Activity", NewRow);
                 this.Progress.Value++;
             }
         }
@@ -256,7 +256,7 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Data.Insert("Activity", NewRow);
+                this.Database.Insert("Activity", NewRow);
                 this.Progress.Value++;
             }
         }
@@ -285,7 +285,7 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Data.Insert("Activity", NewRow);
+                this.Database.Insert("Activity", NewRow);
                 this.Progress.Value++;
             }
         }
@@ -301,10 +301,10 @@ namespace Timekeeper
             Application.DoEvents();
 
             // Save old table in memory
-            Table Project = this.Data.Select("select * from projects order by id");
+            Table Project = this.Database.Select("select * from projects order by id");
 
             // Create new table
-            this.CreateProject(CurrentSchemaVersion, false);
+            this.CreateTable("Project", CurrentSchemaVersion, false);
 
             // Migrate rows
             if (priorVersion.Minor == 0) {
@@ -316,7 +316,7 @@ namespace Timekeeper
             }
 
             // Drop old table
-            this.Data.Exec("drop table projects");
+            this.Database.Exec("drop table projects");
         }
 
         //---------------------------------------------------------------------
@@ -342,7 +342,7 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Data.Insert("Project", NewRow);
+                this.Database.Insert("Project", NewRow);
                 this.Progress.Value++;
             }
         }
@@ -370,7 +370,7 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Data.Insert("Project", NewRow);
+                this.Database.Insert("Project", NewRow);
                 this.Progress.Value++;
             }
         }
@@ -398,7 +398,7 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Data.Insert("Project", NewRow);
+                this.Database.Insert("Project", NewRow);
                 this.Progress.Value++;
             }
         }
@@ -414,10 +414,10 @@ namespace Timekeeper
             Application.DoEvents();
 
             // Save old table in memory
-            Table Journal = this.Data.Select("select * from timekeeper order by id");
+            Table Journal = this.Database.Select("select * from timekeeper order by id");
 
             // Create new table
-            this.CreateJournal(CurrentSchemaVersion);
+            this.CreateTable("Journal", CurrentSchemaVersion, false);
 
             long id = 0;
 
@@ -450,7 +450,7 @@ namespace Timekeeper
                         {"TagId", null},
                         {"IsLocked", OldRow["is_locked"] ? 1 : 0},
                     };
-                    this.Data.Insert("Journal", NewRow);
+                    this.Database.Insert("Journal", NewRow);
                     this.Progress.Value++;
 
                     if (id % 10 == 0) {
@@ -465,7 +465,7 @@ namespace Timekeeper
             }
 
             // Drop old table
-            this.Data.Exec("drop table timekeeper");
+            this.Database.Exec("drop table timekeeper");
         }
 
         //---------------------------------------------------------------------
@@ -479,10 +479,10 @@ namespace Timekeeper
             Application.DoEvents();
 
             // Save old table in memory
-            Table Diary = this.Data.Select("select * from journal order by id");
+            Table Diary = this.Database.Select("select * from journal order by id");
 
             // Create new table
-            this.CreateDiary(CurrentSchemaVersion);
+            this.CreateTable("Diary", CurrentSchemaVersion, false);
 
             // Migrate rows
             foreach (Row OldRow in Diary) {
@@ -496,12 +496,12 @@ namespace Timekeeper
                     {"LocationId", null},
                     {"TagId", null},
                 };
-                this.Data.Insert("Diary", NewRow);
+                this.Database.Insert("Diary", NewRow);
                 this.Progress.Value++;
             }
 
             // Drop old table
-            this.Data.Exec("drop table journal");
+            this.Database.Exec("drop table journal");
         }
 
         //---------------------------------------------------------------------
@@ -515,10 +515,10 @@ namespace Timekeeper
             Application.DoEvents();
 
             // Save old table in memory
-            Table GridOptions = this.Data.Select("select * from grid_views order by id");
+            Table GridOptions = this.Database.Select("select * from grid_views order by id");
 
             // Create new table
-            this.CreateGridOptions(CurrentSchemaVersion);
+            this.CreateTable("GridOptions", CurrentSchemaVersion, false);
 
             // Migrate rows
             foreach (Row OldRow in GridOptions) {
@@ -539,12 +539,12 @@ namespace Timekeeper
                     {"SystemGridGroupById", OldRow["group_by"]},
                     {"SystemGridTimeDisplayId", 0},
                 };
-                this.Data.Insert("GridOptions", NewRow);
+                this.Database.Insert("GridOptions", NewRow);
                 this.Progress.Value++;
             }
 
             // Drop old table
-            this.Data.Exec("drop table grid_views");
+            this.Database.Exec("drop table grid_views");
         }
 
         //---------------------------------------------------------------------
@@ -556,16 +556,16 @@ namespace Timekeeper
             int Count = 0;
             Row Row;
 
-            Row = this.Data.SelectRow("select count(*) as Count from meta");
+            Row = this.Database.SelectRow("select count(*) as Count from meta");
             Count += Row["Count"];
 
-            Row = this.Data.SelectRow("select count(*) as Count from tasks");
+            Row = this.Database.SelectRow("select count(*) as Count from tasks");
             Count += Row["Count"];
 
-            Row = this.Data.SelectRow("select count(*) as Count from projects");
+            Row = this.Database.SelectRow("select count(*) as Count from projects");
             Count += Row["Count"];
 
-            Row = this.Data.SelectRow("select count(*) as Count from timekeeper");
+            Row = this.Database.SelectRow("select count(*) as Count from timekeeper");
             Count += Row["Count"];
 
             return Count;
@@ -578,10 +578,10 @@ namespace Timekeeper
             int Count = Count20();
             Row Row;
 
-            Row = this.Data.SelectRow("select count(*) as Count from journal");
+            Row = this.Database.SelectRow("select count(*) as Count from journal");
             Count += Row["Count"];
 
-            Row = this.Data.SelectRow("select count(*) as Count from grid_views");
+            Row = this.Database.SelectRow("select count(*) as Count from grid_views");
             Count += Row["Count"];
 
             return Count;

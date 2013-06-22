@@ -42,7 +42,7 @@ namespace Timekeeper.Forms
 
             try {
                 // Back up file
-                File.Copy(Datafile.Data.DataFile, BackUpFileLabel.Text);
+                File.Copy(Datafile.Database.DataFile, BackUpFileLabel.Text);
 
                 // Upgrade file (this needs to happen in its own thread)
                 Upgraded = Datafile.Upgrade(StepLabel, UpgradeProgress);
