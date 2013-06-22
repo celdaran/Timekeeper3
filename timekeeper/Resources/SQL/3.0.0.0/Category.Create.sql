@@ -1,13 +1,17 @@
 CREATE TABLE Category
 (
-    CategoryId      INTEGER PRIMARY KEY AUTOINCREMENT,
-    CreateTime      DATETIME NOT NULL,
-    ModifyTime      DATETIME NOT NULL,
-    Name            TEXT NOT NULL,
-    Description     TEXT,
-    SortOrderNo     INTEGER NOT NULL,
-    IsHidden        BOOLEAN NOT NULL,
-    IsDeleted       BOOLEAN NOT NULL
+    CategoryId      INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    CreateTime      DATETIME    NOT NULL,
+    ModifyTime      DATETIME    NOT NULL,
+    CategoryGuid    TEXT        NOT NULL,
+    Name            TEXT        NOT NULL,
+    Description     TEXT            NULL,
+    SortOrderNo     INTEGER     NOT NULL,
+    IsHidden        BOOLEAN     NOT NULL,
+    IsDeleted       BOOLEAN     NOT NULL,
+    HiddenTime      DATETIME        NULL,
+    DeletedTime     DATETIME        NULL
 );
 
 CREATE UNIQUE INDEX idx_Category_CategoryId ON Category (CategoryId);
+CREATE UNIQUE INDEX idx_Category_CategoryGuid ON Category (CategoryGuid);
