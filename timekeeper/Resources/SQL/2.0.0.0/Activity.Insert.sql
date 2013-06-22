@@ -11,5 +11,5 @@ INSERT INTO tasks (
     0,
     0,
     0,
-    datetime('now')
+    '{0}'
 )

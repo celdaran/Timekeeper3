@@ -19,9 +19,9 @@ INSERT INTO Activity
     DeletedTime
 
 ) VALUES (
-    datetime('now'),
-    datetime('now'),
-    {0},
+    '{0}',
+    '{0}',
+    '{1}',
 
     'Default Activity',
     'Right click and select Edit to change the name or this description',
