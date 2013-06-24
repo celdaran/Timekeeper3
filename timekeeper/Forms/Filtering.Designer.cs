@@ -1,4 +1,4 @@
-﻿namespace Timekeeper.Forms
+namespace Timekeeper.Forms
 {
     partial class Filtering
     {
@@ -43,8 +43,8 @@
             this.CheckedListBoxMenuSelectNone = new System.Windows.Forms.ToolStripMenuItem();
             this.CheckedListBoxMenuInvertSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.CheckedListBoxMenuShowHidden = new System.Windows.Forms.ToolStripMenuItem();
-            this.TagLabel = new System.Windows.Forms.Label();
-            this.TagFilter = new System.Windows.Forms.CheckedListBox();
+            this.CategoryLabel = new System.Windows.Forms.Label();
+            this.CategoryFilter = new System.Windows.Forms.CheckedListBox();
             this.LocationLabel = new System.Windows.Forms.Label();
             this.CloseButton = new System.Windows.Forms.Button();
             this.OkayButton = new System.Windows.Forms.Button();
@@ -101,8 +101,8 @@
             this.FilterGroupBox.Controls.Add(this.DurationAmount);
             this.FilterGroupBox.Controls.Add(this.DurationUnit);
             this.FilterGroupBox.Controls.Add(this.LocationFilter);
-            this.FilterGroupBox.Controls.Add(this.TagLabel);
-            this.FilterGroupBox.Controls.Add(this.TagFilter);
+            this.FilterGroupBox.Controls.Add(this.CategoryLabel);
+            this.FilterGroupBox.Controls.Add(this.CategoryFilter);
             this.FilterGroupBox.Controls.Add(this.LocationLabel);
             this.FilterGroupBox.Location = new System.Drawing.Point(253, 12);
             this.FilterGroupBox.Name = "FilterGroupBox";
@@ -223,23 +223,23 @@
             this.CheckedListBoxMenuShowHidden.Size = new System.Drawing.Size(150, 22);
             this.CheckedListBoxMenuShowHidden.Text = "Show Hidden";
             // 
-            // TagLabel
+            // CategoryLabel
             // 
-            this.TagLabel.AutoSize = true;
-            this.TagLabel.Location = new System.Drawing.Point(20, 150);
-            this.TagLabel.Name = "TagLabel";
-            this.TagLabel.Size = new System.Drawing.Size(60, 13);
-            this.TagLabel.TabIndex = 8;
-            this.TagLabel.Text = "Categories:";
+            this.CategoryLabel.AutoSize = true;
+            this.CategoryLabel.Location = new System.Drawing.Point(20, 150);
+            this.CategoryLabel.Name = "CategoryLabel";
+            this.CategoryLabel.Size = new System.Drawing.Size(60, 13);
+            this.CategoryLabel.TabIndex = 8;
+            this.CategoryLabel.Text = "Categories:";
             // 
-            // TagFilter
+            // CategoryFilter
             // 
-            this.TagFilter.ContextMenuStrip = this.CheckedListBoxMenu;
-            this.TagFilter.FormattingEnabled = true;
-            this.TagFilter.Location = new System.Drawing.Point(106, 150);
-            this.TagFilter.Name = "TagFilter";
-            this.TagFilter.Size = new System.Drawing.Size(226, 64);
-            this.TagFilter.TabIndex = 6;
+            this.CategoryFilter.ContextMenuStrip = this.CheckedListBoxMenu;
+            this.CategoryFilter.FormattingEnabled = true;
+            this.CategoryFilter.Location = new System.Drawing.Point(106, 150);
+            this.CategoryFilter.Name = "CategoryFilter";
+            this.CategoryFilter.Size = new System.Drawing.Size(226, 64);
+            this.CategoryFilter.TabIndex = 6;
             // 
             // LocationLabel
             // 
@@ -410,7 +410,7 @@
             "Project",
             "Duration",
             "Location",
-            "Tag",
+            "Category",
             "External Id",
             "Internal Id"});
             this.SortBy1.Location = new System.Drawing.Point(93, 19);
@@ -431,7 +431,7 @@
             "Project",
             "Duration",
             "Location",
-            "Tag",
+            "Category",
             "External Id",
             "Internal Id"});
             this.SortBy2.Location = new System.Drawing.Point(93, 46);
@@ -452,7 +452,7 @@
             "Project",
             "Duration",
             "Location",
-            "Tag",
+            "Category",
             "External Id",
             "Internal Id"});
             this.SortBy3.Location = new System.Drawing.Point(93, 73);
@@ -530,9 +530,9 @@
         private System.Windows.Forms.NumericUpDown DurationAmount;
         private System.Windows.Forms.ComboBox DurationUnit;
         private System.Windows.Forms.CheckedListBox LocationFilter;
-        private System.Windows.Forms.CheckedListBox TagFilter;
+        private System.Windows.Forms.CheckedListBox CategoryFilter;
         private System.Windows.Forms.Label LocationLabel;
-        private System.Windows.Forms.Label TagLabel;
+        private System.Windows.Forms.Label CategoryLabel;
         private System.Windows.Forms.TextBox MemoFilter;
         private System.Windows.Forms.Label MemoLabel;
         private System.Windows.Forms.Button OkayButton;

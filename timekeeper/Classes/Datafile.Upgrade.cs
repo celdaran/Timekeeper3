@@ -14,6 +14,8 @@ namespace Timekeeper
 
         private ProgressBar Progress;
         private Label Step;
+        private long RowId;
+        private long InsertedRowId;
 
         //---------------------------------------------------------------------
         // Upgrading Functions
@@ -42,15 +44,16 @@ namespace Timekeeper
                     UpgradeJournal();
 
                     // Create 3.0 tables
-                    CreateTable("Location", CurrentSchemaVersion, Populate);
-                    CreateTable("Category", CurrentSchemaVersion, Populate);
-                    CreateTable("Diary", CurrentSchemaVersion, false);
-                    CreateTable("Options", CurrentSchemaVersion, Populate);
-                    CreateTable("GridOptions", CurrentSchemaVersion, false);
-                    CreateTable("ReportOptions", CurrentSchemaVersion, false);
-                    CreateTable("SystemDatePreset", CurrentSchemaVersion, Populate);
-                    CreateTable("SystemGridGroupBy", CurrentSchemaVersion, Populate);
-                    CreateTable("SystemGridTimeDisplay", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Location", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Category", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Diary", CurrentSchemaVersion, false);
+                    CreateNewTable("Options", CurrentSchemaVersion, Populate);
+                    CreateNewTable("FilterOptions", CurrentSchemaVersion, Populate);
+                    CreateNewTable("GridOptions", CurrentSchemaVersion, false);
+                    CreateNewTable("ReportOptions", CurrentSchemaVersion, false);
+                    CreateNewTable("SystemDatePreset", CurrentSchemaVersion, Populate);
+                    CreateNewTable("SystemGridGroupBy", CurrentSchemaVersion, Populate);
+                    CreateNewTable("SystemGridTimeDisplay", CurrentSchemaVersion, Populate);
 
                     return true;
                 }
@@ -69,13 +72,14 @@ namespace Timekeeper
                     UpgradeJournal();
 
                     // Create 3.0 tables
-                    CreateTable("Location", CurrentSchemaVersion, Populate);
-                    CreateTable("Category", CurrentSchemaVersion, Populate);
-                    CreateTable("Options", CurrentSchemaVersion, Populate);
-                    CreateTable("ReportOptions", CurrentSchemaVersion, false);
-                    CreateTable("SystemDatePreset", CurrentSchemaVersion, Populate);
-                    CreateTable("SystemGridGroupBy", CurrentSchemaVersion, Populate);
-                    CreateTable("SystemGridTimeDisplay", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Location", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Category", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Options", CurrentSchemaVersion, Populate);
+                    CreateNewTable("ReportOptions", CurrentSchemaVersion, false);
+                    CreateNewTable("SystemDatePreset", CurrentSchemaVersion, Populate);
+                    CreateNewTable("SystemGridGroupBy", CurrentSchemaVersion, Populate);
+                    CreateNewTable("SystemGridTimeDisplay", CurrentSchemaVersion, Populate);
+
                     return true;
                 }
 
@@ -93,18 +97,20 @@ namespace Timekeeper
                     UpgradeJournal();
 
                     // Create 3.0 tables
-                    CreateTable("Location", CurrentSchemaVersion, Populate);
-                    CreateTable("Category", CurrentSchemaVersion, Populate);
-                    CreateTable("Options", CurrentSchemaVersion, Populate);
-                    CreateTable("ReportOptions", CurrentSchemaVersion, false);
-                    CreateTable("SystemDatePreset", CurrentSchemaVersion, Populate);
-                    CreateTable("SystemGridGroupBy", CurrentSchemaVersion, Populate);
-                    CreateTable("SystemGridTimeDisplay", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Location", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Category", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Options", CurrentSchemaVersion, Populate);
+                    CreateNewTable("ReportOptions", CurrentSchemaVersion, false);
+                    CreateNewTable("SystemDatePreset", CurrentSchemaVersion, Populate);
+                    CreateNewTable("SystemGridGroupBy", CurrentSchemaVersion, Populate);
+                    CreateNewTable("SystemGridTimeDisplay", CurrentSchemaVersion, Populate);
+
                     return true;
                 }
 
             }
             catch (Exception x) {
+                Timekeeper.Warn("Database upgrade failed on Step '" + this.Step.Text + "' on Row Id " + RowId.ToString());
                 Timekeeper.Exception(x);
             }
 
@@ -118,8 +124,7 @@ namespace Timekeeper
         private void UpgradeMeta()
         {
             // Notify user
-            this.Step.Text = "Metadata";
-            Application.DoEvents();
+            SetStep("Metadata");
 
             // Save old table in memory
             Table Meta = this.Database.Select("select * from meta order by rowid");
@@ -143,31 +148,40 @@ namespace Timekeeper
             this.CreateTable("Meta", CurrentSchemaVersion, false);
 
             // Migrate data
+            RowId = 1;
             Row Row = new Row() {
                     {"Key", "Created"},
                     {"Value", Created}
                 };
-            Database.Insert(Timekeeper.MetaTableName(), Row);
+            InsertedRowId = Database.Insert(Timekeeper.MetaTableName(), Row);
+            if (InsertedRowId == 0) throw new Exception("Insert failed");
             this.Progress.Value++;
 
+            RowId++;
             Row = new Row() {
                     {"Key", "Upgraded"},
                     {"Value", Common.Now()}
                 };
-            Database.Insert(Timekeeper.MetaTableName(), Row);
+            InsertedRowId = Database.Insert(Timekeeper.MetaTableName(), Row);
+            if (InsertedRowId == 0) throw new Exception("Insert failed");
+            this.Progress.Value++;
 
+            RowId++;
             Row = new Row() {
                     {"Key", "Version"},
                     {"Value", SCHEMA_VERSION},
                 };
-            Database.Insert(Timekeeper.MetaTableName(), Row);
+            InsertedRowId = Database.Insert(Timekeeper.MetaTableName(), Row);
+            if (InsertedRowId == 0) throw new Exception("Insert failed");
             this.Progress.Value++;
 
+            RowId++;
             Row = new Row() {
                     {"Key", "Id"},
                     {"Value", Id}
                 };
-            Database.Insert(Timekeeper.MetaTableName(), Row);
+            InsertedRowId = Database.Insert(Timekeeper.MetaTableName(), Row);
+            if (InsertedRowId == 0) throw new Exception("Insert failed");
             this.Progress.Value++;
 
             // Drop old table
@@ -181,8 +195,7 @@ namespace Timekeeper
         private void UpgradeActivity(Version priorVersion)
         {
             // Notify user
-            this.Step.Text = "Activities";
-            Application.DoEvents();
+            SetStep("Activities");
 
             // Save old table in memory
             Table Activity = this.Database.Select("select * from tasks order by id");
@@ -210,6 +223,7 @@ namespace Timekeeper
             // Migrate data
             int SortOrderNo = 1;
             foreach (Row OldRow in activity) {
+                RowId = OldRow["id"];
                 Row NewRow = new Row() {
                     {"ActivityId", OldRow["id"]},
                     {"CreateTime", OldRow["timestamp_c"].ToString(Common.DATETIME_FORMAT)},
@@ -227,8 +241,13 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Database.Insert("Activity", NewRow);
+                InsertedRowId = this.Database.Insert("Activity", NewRow);
+                if (InsertedRowId == 0) throw new Exception("Insert failed");
                 this.Progress.Value++;
+
+                if (RowId % 10 == 0) {
+                    Application.DoEvents();
+                }
             }
         }
 
@@ -239,6 +258,7 @@ namespace Timekeeper
             // Migrate data
             int SortOrderNo = 1;
             foreach (Row OldRow in activity) {
+                RowId = OldRow["id"];
                 Row NewRow = new Row() {
                     {"ActivityId", OldRow["id"]},
                     {"CreateTime", OldRow["timestamp_c"].ToString(Common.DATETIME_FORMAT)},
@@ -256,8 +276,13 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Database.Insert("Activity", NewRow);
+                InsertedRowId = this.Database.Insert("Activity", NewRow);
+                if (InsertedRowId == 0) throw new Exception("Insert failed");
                 this.Progress.Value++;
+
+                if (RowId % 10 == 0) {
+                    Application.DoEvents();
+                }
             }
         }
 
@@ -268,6 +293,7 @@ namespace Timekeeper
             // Migrate data
             int SortOrderNo = 1;
             foreach (Row OldRow in activity) {
+                RowId = OldRow["id"];
                 Row NewRow = new Row() {
                     {"ActivityId", OldRow["id"]},
                     {"CreateTime", OldRow["timestamp_c"].ToString(Common.DATETIME_FORMAT)},
@@ -285,8 +311,13 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Database.Insert("Activity", NewRow);
+                InsertedRowId = this.Database.Insert("Activity", NewRow);
+                if (InsertedRowId == 0) throw new Exception("Insert failed");
                 this.Progress.Value++;
+
+                if (RowId % 10 == 0) {
+                    Application.DoEvents();
+                }
             }
         }
 
@@ -297,8 +328,7 @@ namespace Timekeeper
         private void UpgradeProject(Version priorVersion)
         {
             // Notify user
-            this.Step.Text = "Projects";
-            Application.DoEvents();
+            SetStep("Projects");
 
             // Save old table in memory
             Table Project = this.Database.Select("select * from projects order by id");
@@ -325,6 +355,12 @@ namespace Timekeeper
         {
             int SortOrderNo = 1;
             foreach (Row OldRow in project) {
+                RowId = OldRow["id"];
+
+                if (OldRow["timestamp_c"] == null) {
+                    OldRow["timestamp_c"] = OldRow["timestamp_m"];
+                }
+
                 Row NewRow = new Row() {
                     {"ProjectId", OldRow["id"]},
                     {"CreateTime", OldRow["timestamp_c"].ToString(Common.DATETIME_FORMAT)},
@@ -342,8 +378,13 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Database.Insert("Project", NewRow);
+                InsertedRowId = this.Database.Insert("Project", NewRow);
+                if (InsertedRowId == 0) throw new Exception("Insert failed");
                 this.Progress.Value++;
+
+                if (RowId % 10 == 0) {
+                    Application.DoEvents();
+                }
             }
         }
 
@@ -353,6 +394,12 @@ namespace Timekeeper
         {
             int SortOrderNo = 1;
             foreach (Row OldRow in project) {
+                RowId = OldRow["id"];
+
+                if (OldRow["timestamp_c"] == null) {
+                    OldRow["timestamp_c"] = OldRow["timestamp_m"];
+                }
+
                 Row NewRow = new Row() {
                     {"ProjectId", OldRow["id"]},
                     {"CreateTime", OldRow["timestamp_c"].ToString(Common.DATETIME_FORMAT)},
@@ -370,8 +417,13 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Database.Insert("Project", NewRow);
+                InsertedRowId = this.Database.Insert("Project", NewRow);
+                if (InsertedRowId == 0) throw new Exception("Insert failed");
                 this.Progress.Value++;
+
+                if (RowId % 10 == 0) {
+                    Application.DoEvents();
+                }
             }
         }
 
@@ -379,8 +431,15 @@ namespace Timekeeper
 
         private void MigrateProject22(Table project)
         {
-            int SortOrderNo = 1;
+            long SortOrderNo = 1;
+
             foreach (Row OldRow in project) {
+                RowId = OldRow["id"];
+
+                if (OldRow["timestamp_c"] == null) {
+                    OldRow["timestamp_c"] = OldRow["timestamp_m"];
+                }
+
                 Row NewRow = new Row() {
                     {"ProjectId", OldRow["id"]},
                     {"CreateTime", OldRow["timestamp_c"].ToString(Common.DATETIME_FORMAT)},
@@ -398,8 +457,13 @@ namespace Timekeeper
                     {"HiddenTime", null},
                     {"DeletedTime", null}
                 };
-                this.Database.Insert("Project", NewRow);
+                InsertedRowId = this.Database.Insert("Project", NewRow);
+                if (InsertedRowId == 0) throw new Exception("Insert failed");
                 this.Progress.Value++;
+
+                if (RowId % 10 == 0) {
+                    Application.DoEvents();
+                }
             }
         }
 
@@ -410,58 +474,52 @@ namespace Timekeeper
         private void UpgradeJournal()
         {
             // Notify user
-            this.Step.Text = "Timekeeper Entries";
-            Application.DoEvents();
+            SetStep("Timekeeper Journal Entries");
 
             // Save old table in memory
+            // FIXME: Really? In memory?
             Table Journal = this.Database.Select("select * from timekeeper order by id");
 
             // Create new table
             this.CreateTable("Journal", CurrentSchemaVersion, false);
 
-            long id = 0;
-
             // Migrate rows
-            try {
-                foreach (Row OldRow in Journal) {
-                    id = OldRow["id"];
+            foreach (Row OldRow in Journal) {
+                RowId = OldRow["id"];
 
-                    if (OldRow["is_locked"] == true) {
-                        // Automatically unlock any locked rows
-                        OldRow["timestamp_e"] = OldRow["timestamp_s"];
-                        OldRow["seconds"] = 0;
-                        OldRow["is_locked"] = false;
-                        Timekeeper.Warn(String.Format("Conversion warning: row {0} was locked. The row was safely unlocked and processing continued.", id));
-                    }
-
-                    Row NewRow = new Row() {
-                        {"JournalEntryId", OldRow["id"]},
-                        {"CreateTime", OldRow["timestamp_s"].ToString(Common.DATETIME_FORMAT)},
-                        {"ModifyTime", Common.Now()},
-                        {"JournalEntryGuid", UUID.Get()},
-                        {"ExternalEntryId", null},
-                        {"ActivityId", OldRow["task_id"]},
-                        {"ProjectId", OldRow["project_id"]},
-                        {"StartTime", OldRow["timestamp_s"].ToString(Common.DATETIME_FORMAT)},
-                        {"StopTime", OldRow["timestamp_e"].ToString(Common.DATETIME_FORMAT)},
-                        {"Seconds", OldRow["seconds"]},
-                        {"Memo", OldRow["pre_log"] + "\n\n<!--SEPARATOR-->\n\n" + OldRow["post_log"]},
-                        {"LocationId", null},
-                        {"TagId", null},
-                        {"IsLocked", OldRow["is_locked"] ? 1 : 0},
-                    };
-                    this.Database.Insert("Journal", NewRow);
-                    this.Progress.Value++;
-
-                    if (id % 10 == 0) {
-                        Application.DoEvents();
-                    }
+                if (OldRow["is_locked"] == true) {
+                    // Automatically unlock any locked rows
+                    OldRow["timestamp_e"] = OldRow["timestamp_s"];
+                    OldRow["seconds"] = 0;
+                    OldRow["is_locked"] = false;
+                    Timekeeper.Info(String.Format("Conversion Note: row {0} was locked. The row was safely unlocked and processing continued.", RowId));
                 }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-                Timekeeper.Warn(String.Format("Conversion error: row {0} was malformed, processing halted.", id));
-                throw;
+
+                Row NewRow = new Row() {
+                    {"JournalEntryId", OldRow["id"]},
+                    {"CreateTime", OldRow["timestamp_s"].ToString(Common.DATETIME_FORMAT)},
+                    {"ModifyTime", Common.Now()},
+                    {"JournalEntryGuid", UUID.Get()},
+                    {"ExternalEntryId", null},
+                    {"ActivityId", OldRow["task_id"]},
+                    {"ProjectId", OldRow["project_id"]},
+                    {"StartTime", OldRow["timestamp_s"].ToString(Common.DATETIME_FORMAT)},
+                    {"StopTime", OldRow["timestamp_e"].ToString(Common.DATETIME_FORMAT)},
+                    {"Seconds", OldRow["seconds"]},
+                    {"Memo", OldRow["pre_log"] + "\n\n<!--SEPARATOR-->\n\n" + OldRow["post_log"]},
+                    {"LocationId", null},
+                    {"CategoryId", null},
+                    {"IsLocked", OldRow["is_locked"] ? 1 : 0},
+                };
+                InsertedRowId = this.Database.Insert("Journal", NewRow);
+                if (InsertedRowId == 0) {
+                    throw new Exception("Insert failed");
+                }
+                this.Progress.Value++;
+
+                if (RowId % 10 == 0) {
+                    Application.DoEvents();
+                }
             }
 
             // Drop old table
@@ -475,8 +533,7 @@ namespace Timekeeper
         private void UpgradeDiary()
         {
             // Notify user
-            this.Step.Text = "Diary Entries";
-            Application.DoEvents();
+            SetStep("Diary Entries");
 
             // Save old table in memory
             Table Diary = this.Database.Select("select * from journal order by id");
@@ -486,6 +543,7 @@ namespace Timekeeper
 
             // Migrate rows
             foreach (Row OldRow in Diary) {
+                RowId = OldRow["id"];
                 Row NewRow = new Row() {
                     {"DiaryEntryId", OldRow["id"]},
                     {"CreateTime", OldRow["timestamp_c"].ToString(Common.DATETIME_FORMAT)},
@@ -494,10 +552,15 @@ namespace Timekeeper
                     {"EntryTime", OldRow["timestamp_entry"].ToString(Common.DATETIME_FORMAT)},
                     {"Memo", OldRow["description"]},
                     {"LocationId", null},
-                    {"TagId", null},
+                    {"CategoryId", null},
                 };
-                this.Database.Insert("Diary", NewRow);
+                InsertedRowId = this.Database.Insert("Diary", NewRow);
+                if (InsertedRowId == 0) throw new Exception("Insert failed");
                 this.Progress.Value++;
+
+                if (RowId % 10 == 0) {
+                    Application.DoEvents();
+                }
             }
 
             // Drop old table
@@ -511,17 +574,38 @@ namespace Timekeeper
         private void UpgradeGridOptions()
         {
             // Notify user
-            this.Step.Text = "Grid Options";
-            Application.DoEvents();
+            SetStep("Grid Options");
 
             // Save old table in memory
             Table GridOptions = this.Database.Select("select * from grid_views order by id");
 
-            // Create new table
+            // Create new tables
+            this.CreateTable("FilterOptions", CurrentSchemaVersion, false);
             this.CreateTable("GridOptions", CurrentSchemaVersion, false);
 
             // Migrate rows
             foreach (Row OldRow in GridOptions) {
+                RowId = OldRow["id"];
+
+                // FIXME: we're still missing the "end date type' concept (previously known as grid_views.end_date_type)
+                Row NewFilterOptionsRow = new Row() {
+                    {"CreateTime", Common.Now()},
+                    {"ModifyTime", Common.Now()},
+                    {"ActivityList", OldRow["task_list"]},
+                    {"ProjectList", OldRow["project_list"]},
+                    {"SystemDatePresetId", OldRow["date_preset"]},
+                    {"FromDate", OldRow["start_date"]},
+                    {"ToDate", OldRow["end_date"]},
+                    {"Memo", null},
+                    {"DurationOperator", null},
+                    {"DurationAmount", null},
+                    {"DurationUnit", null},
+                    {"LocationList", null},
+                    {"CategoryList", null}
+                };
+                InsertedRowId = this.Database.Insert("FilterOptions", NewFilterOptionsRow);
+                if (InsertedRowId == 0) throw new Exception("Insert failed");
+
                 Row NewRow = new Row() {
                     {"GridOptionsId", OldRow["id"]},
                     {"CreateTime", OldRow["timestamp_c"].ToString(Common.DATETIME_FORMAT)},
@@ -529,17 +613,13 @@ namespace Timekeeper
                     {"Name", OldRow["name"]},
                     {"Description", OldRow["description"]},
                     {"SortOrderNo", OldRow["sort_index"]},
-                    {"ActivityFilter", OldRow["task_list"]},
-                    {"ProjectFilter", OldRow["project_list"]},
-                    {"SystemDatePresetId", OldRow["date_preset"]},
-                    {"FromDate", OldRow["start_date"]},
-                    {"ToDate", OldRow["end_date"]},
-                    {"EndDateType", OldRow["end_date_type"]},
+                    {"FilterOptionsId", InsertedRowId},
                     {"ItemTypeId", OldRow["data_from"]},
                     {"SystemGridGroupById", OldRow["group_by"]},
-                    {"SystemGridTimeDisplayId", 0},
+                    {"SystemGridTimeDisplayId", null},
                 };
-                this.Database.Insert("GridOptions", NewRow);
+                InsertedRowId = this.Database.Insert("GridOptions", NewRow);
+                if (InsertedRowId == 0) throw new Exception("Insert failed");
                 this.Progress.Value++;
             }
 
@@ -556,8 +636,11 @@ namespace Timekeeper
             int Count = 0;
             Row Row;
 
+            /* No. Don't count how many there were. Count how many there will be
             Row = this.Database.SelectRow("select count(*) as Count from meta");
             Count += Row["Count"];
+            */
+            Count = 4; // Hardcoding for the four rows that the meta table gets in schema 3.0.0.0
 
             Row = this.Database.SelectRow("select count(*) as Count from tasks");
             Count += Row["Count"];
@@ -594,5 +677,36 @@ namespace Timekeeper
             // No change in the number of tables
             return Count21();
         }
+
+        //---------------------------------------------------------------------
+        // Step Helpers
+        //---------------------------------------------------------------------
+
+        private void SetStep(string stepText, long rowId)
+        {
+            SetStep(stepText);
+            this.RowId = rowId;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void SetStep(string stepText)
+        {
+            this.Step.Text = stepText;
+            Application.DoEvents();
+        }
+
+        //---------------------------------------------------------------------
+        // Create Table Helper
+        //---------------------------------------------------------------------
+
+        private void CreateNewTable(string tableName, Version currentSchemaVersion, bool populate)
+        {
+            SetStep("Creating " + tableName + " Table", -1);
+            CreateTable(tableName, currentSchemaVersion, populate);
+        }
+
+        //---------------------------------------------------------------------
+
     }
 }

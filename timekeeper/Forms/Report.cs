@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -127,7 +127,7 @@ namespace Timekeeper.Forms
                 join Activity a on a.ActivityId = log.ActivityId
                 join Project p on p.ProjectId = log.ProjectId
                 left join Location l on l.LocationId = log.LocationId
-                left join Tag t on t.TagId = log.TagId
+                left join Category t on t.CategoryId = log.CategoryId
                 where {0}
                 order by {1}",
                 WhereClause, OrderBy);
@@ -305,9 +305,9 @@ namespace Timekeeper.Forms
                     FilterOptions.List(FilterOptions.Locations)) + System.Environment.NewLine;
             }
 
-            if ((FilterOptions.Tags != null) && (FilterOptions.Tags.Count > 0)) {
-                WhereClause += String.Format("and log.TagId in ({0})",
-                    FilterOptions.List(FilterOptions.Tags)) + System.Environment.NewLine;
+            if ((FilterOptions.Categories != null) && (FilterOptions.Categories.Count > 0)) {
+                WhereClause += String.Format("and log.CategoryId in ({0})",
+                    FilterOptions.List(FilterOptions.Categories)) + System.Environment.NewLine;
             }
 
             return WhereClause;

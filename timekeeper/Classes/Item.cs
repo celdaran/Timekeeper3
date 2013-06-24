@@ -237,7 +237,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public int Delete()
+        public long Delete()
         {
             this.IsDeleted = true;
             return SetStatus("Deleted", this.IsDeleted);
@@ -296,7 +296,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public int Hide()
+        public long Hide()
         {
             this.IsHidden = true;
             return SetStatus("Hidden", this.IsHidden);
@@ -343,7 +343,7 @@ namespace Timekeeper
             Row Row = new Row();
             Row["Description"] = newDescription;
             Row["ModifyTime"] = Common.Now();
-            int Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+            long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 this.Description = newDescription;
@@ -381,7 +381,7 @@ namespace Timekeeper
             Row Row = new Row();
             Row["Name"] = newName;
             Row["ModifyTime"] = Common.Now();
-            int Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+            long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 this.Name = newName;
@@ -398,7 +398,7 @@ namespace Timekeeper
             Row Row = new Row();
             Row["ParentId"] = itemId;
             Row["ModifyTime"] = Common.Now();
-            int Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+            long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             return Count == 1 ? 1 : 0;
         }
@@ -439,7 +439,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public int Unhide()
+        public long Unhide()
         {
             this.IsHidden = false;
             return SetStatus("Hidden", this.IsHidden);
@@ -494,7 +494,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        private int SetStatus(string status, bool isSet)
+        private long SetStatus(string status, bool isSet)
         {
             string BooleanColumnName = "Is" + status;
             string TimeColumnName = status + "Time";

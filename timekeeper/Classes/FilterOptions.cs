@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -56,7 +56,7 @@ namespace Timekeeper.Classes
         public int DurationAmount { get; set; }
         public int DurationUnit { get; set; }
         public List<long> Locations { get; set; }
-        public List<long> Tags { get; set; }
+        public List<long> Categories { get; set; }
         public List<long> ImpliedActivities { get; set; }
         public List<long> ImpliedProjects { get; set; }
         public int SortBy1 { get; set; }
@@ -87,7 +87,7 @@ namespace Timekeeper.Classes
                 DurationAmount = Row["DurationAmount"];
                 DurationUnit = Row["DurationUnit"];
                 Locations = List(Row["LocationList"]);
-                Tags = List(Row["TagList"]);
+                Categories = List(Row["CategoryList"]);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -114,7 +114,7 @@ namespace Timekeeper.Classes
                 Row["DurationAmount"] = DurationAmount;
                 Row["DurationUnit"] = DurationUnit;
                 Row["LocationList"] = List(Locations);
-                Row["TagList"] = List(Tags);
+                Row["CategoryList"] = List(Categories);
 
                 Row Count = this.Database.SelectRow(@"
                 select count(*) as Count 
@@ -148,7 +148,7 @@ namespace Timekeeper.Classes
             DurationAmount = 0;
             DurationUnit = -1;
             Locations = null;
-            Tags = null;
+            Categories = null;
             ImpliedActivities = null;
             ImpliedProjects = null;
             SortBy1 = 0;

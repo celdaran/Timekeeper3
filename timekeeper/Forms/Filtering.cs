@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -74,7 +74,7 @@ namespace Timekeeper.Forms
             DurationUnit.SelectedIndex = 0;
 
             //----------------------------------------
-            // Populate Location & Tag filters
+            // Populate Location & Category filters
             //----------------------------------------
 
             OtherAttributes OtherAttributes = new OtherAttributes();
@@ -84,9 +84,9 @@ namespace Timekeeper.Forms
                 LocationFilter.Items.Add(Location);
             }
 
-            List<IdValuePair> Tags = OtherAttributes.Tags();
-            foreach (IdValuePair Tag in Tags) {
-                TagFilter.Items.Add(Tag);
+            List<IdValuePair> Categories = OtherAttributes.Categories();
+            foreach (IdValuePair Category in Categories) {
+                CategoryFilter.Items.Add(Category);
             }
 
             //----------------------------------------
@@ -127,8 +127,8 @@ namespace Timekeeper.Forms
                 SetSelectedValues(LocationFilter, FilterOptions.Locations);
             }
 
-            if (FilterOptions.Tags != null) {
-                SetSelectedValues(TagFilter, FilterOptions.Tags);
+            if (FilterOptions.Categories != null) {
+                SetSelectedValues(CategoryFilter, FilterOptions.Categories);
             }
 
             SortBy1.SelectedIndex = FilterOptions.SortBy1;
@@ -257,7 +257,7 @@ namespace Timekeeper.Forms
             FilterOptions.DurationAmount = (int)DurationAmount.Value;
             FilterOptions.DurationUnit = DurationUnit.SelectedIndex;
             FilterOptions.Locations = GetActuallySelectedValues(LocationFilter);
-            FilterOptions.Tags = GetActuallySelectedValues(TagFilter);
+            FilterOptions.Categories = GetActuallySelectedValues(CategoryFilter);
             FilterOptions.ImpliedActivities = GetImpliedSelectedValues(ActivityTree.Nodes, false);
             FilterOptions.ImpliedProjects = GetImpliedSelectedValues(ProjectTree.Nodes, false);
             FilterOptions.SortBy1 = SortBy1.SelectedIndex;

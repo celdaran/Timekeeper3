@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,6 +13,7 @@ namespace Timekeeper.Classes
         private string _LastActivity;
         private string _LastProject;
         private string _LastGridView;
+        private string _LastReportView;
 
         //---------------------------------------------------------------------
         // Constructor
@@ -32,22 +33,28 @@ namespace Timekeeper.Classes
                 Row Row;
                 string Query;
 
-                Query = String.Format(@"select Value from Options where Key = {0}", "LastActivity");
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastActivity");
                 Row = this.Database.SelectRow(Query);
                 if (Row.Count > 0) {
                     this._LastActivity = Row["Value"];
                 }
 
-                Query = String.Format(@"select Value from Options where Key = {0}", "LastProject");
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastProject");
                 Row = this.Database.SelectRow(Query);
                 if (Row.Count > 0) {
                     this._LastProject = Row["Value"];
                 }
 
-                Query = String.Format(@"select Value from Options where Key = {0}", "LastGridView");
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastGridView");
                 Row = this.Database.SelectRow(Query);
                 if (Row.Count > 0) {
                     this._LastGridView = Row["Value"];
+                }
+
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastReportView");
+                Row = this.Database.SelectRow(Query);
+                if (Row.Count > 0) {
+                    this._LastReportView = Row["Value"];
                 }
             }
             catch (Exception x) {
@@ -89,6 +96,19 @@ namespace Timekeeper.Classes
             {
                 _LastGridView = value;
                 Save("LastGridView", value);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public string LastReportView
+        {
+            get { return _LastReportView; }
+
+            set
+            {
+                _LastReportView = value;
+                Save("LastReportView", value);
             }
         }
 

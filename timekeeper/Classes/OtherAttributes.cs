@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -30,9 +30,9 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public List<IdValuePair> Tags()
+        public List<IdValuePair> Categories()
         {
-            return Fetch("Tag");
+            return Fetch("Categories");
         }
 
         //---------------------------------------------------------------------

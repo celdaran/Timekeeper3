@@ -180,8 +180,8 @@ namespace Timekeeper
             Query = Resources.GetString(ResourceName);
 
             if (Query != null) {
-                int status = Database.Exec(Query);
-                Timekeeper.Info(ResourceName + " status was " + status.ToString());
+                long status = Database.Exec(Query);
+                Timekeeper.Debug(ResourceName + " status was " + status.ToString());
             } else {
                 // Actually, this isn't necessarily bad: this will get
                 // tripped up when I try to create tables in older 
@@ -200,13 +200,13 @@ namespace Timekeeper
 
             ResourceName = String.Format("SQL_{0}_{1}_Insert", version, tableName);
             Query = Resources.GetString(ResourceName);
-            // FIXME: Consider removing positional arguments with named arguments
-            // The below implementation gets us by, but doesn't feel right at all.
-            Query = String.Format(Query, Common.Now(), UUID.Get(), UUID.Get());
 
             if (Query != null) {
-                int status = Database.Exec(Query);
-                Timekeeper.Info(ResourceName + " status was " + status.ToString());
+                // FIXME: Consider removing positional arguments with named arguments
+                // The below implementation gets us by, but doesn't feel right at all.
+                Query = String.Format(Query, Common.Now(), UUID.Get(), UUID.Get());
+                long status = Database.Exec(Query);
+                Timekeeper.Debug(ResourceName + " status was " + status.ToString());
             } else {
                 Timekeeper.Warn("Could not find resource: " + ResourceName);
                 return;

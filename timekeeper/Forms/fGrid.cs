@@ -938,7 +938,7 @@ namespace Timekeeper
 
             try
             {
-                int count = data.Update("grid_views", row, "name", "Last View");
+                long count = data.Update("grid_views", row, "name", "Last View");
 
                 if (count == 0)
                 {

@@ -157,7 +157,7 @@ namespace Timekeeper
             newDatafile.CreateTable("Meta", Version, true);
 
             //--------------------------------------------------------
-            // Data copy - FIXME: THIS IS NOT FINISHED
+            // Data copy
             //--------------------------------------------------------
 
             // Activity table
@@ -170,7 +170,6 @@ namespace Timekeeper
                     {"descr", Row["Description"]},
                     {"parent_id", Row["ParentId"]},
                     {"is_folder", Row["IsFolder"] ? 1 : 0},
-                    {"is_hidden", Row["IsHidden"] ? 1 : 0},
                     {"is_deleted", Row["IsDeleted"] ? 1 : 0},
                     {"project_id__last", Row["LastProjectId"]},
                     {"timestamp_c", Row["CreateTime"].ToString(Common.DATETIME_FORMAT)},
@@ -190,7 +189,6 @@ namespace Timekeeper
                     {"descr", Row["Description"]},
                     {"parent_id", Row["ParentId"]},
                     {"is_folder", Row["IsFolder"] ? 1 : 0},
-                    {"is_hidden", Row["IsHidden"] ? 1 : 0},
                     {"is_deleted", Row["IsDeleted"] ? 1 : 0},
                     {"timestamp_c", Row["CreateTime"].ToString(Common.DATETIME_FORMAT)},
                     {"timestamp_m", Row["ModifyTime"].ToString(Common.DATETIME_FORMAT)},

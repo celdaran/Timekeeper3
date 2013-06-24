@@ -21,4 +21,4 @@ CREATE TABLE Activity
 
 CREATE UNIQUE INDEX idx_Activity_ActivityId ON Activity (ActivityId);
 CREATE UNIQUE INDEX idx_Activity_ActivityGuid ON Activity (ActivityGuid);
-CREATE UNIQUE INDEX idx_Activity_ActivityName ON Activity (ActivityName);
+CREATE UNIQUE INDEX idx_Activity_ActivityName ON Activity (Name);

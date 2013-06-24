@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -24,7 +24,7 @@ namespace Timekeeper.Classes
         private DateTime _EntryTime;
         private string _Memo;
         private int _LocationId;
-        private int _TagId;
+        private int _CategoryId;
 
         //---------------------------------------------------------------------
         // Constructor
@@ -63,7 +63,7 @@ namespace Timekeeper.Classes
                 this._EntryTime = Row["EntryTime"];
                 this._Memo = Row["Memo"];
                 this._LocationId = Row["LocationId"];
-                this._TagId = Row["TagId"];
+                this._CategoryId = Row["CategoryId"];
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -106,10 +106,10 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public int TagId
+        public int CategoryId
         {
-            get { return _TagId; }
-            set { _TagId = value; }
+            get { return _CategoryId; }
+            set { _CategoryId = value; }
         }
 
         //---------------------------------------------------------------------
@@ -130,7 +130,7 @@ namespace Timekeeper.Classes
             Row["EntryTime"] = this.EntryTime.ToString(Common.DATETIME_FORMAT);
             Row["Memo"] = this.Memo;
             Row["LocationId"] = this.LocationId;
-            Row["TagId"] = this.TagId;
+            Row["CategoryId"] = this.CategoryId;
 
             Data.Insert("Diary", Row);
         }
@@ -146,7 +146,7 @@ namespace Timekeeper.Classes
             Row["EntryTime"] = this.EntryTime;
             Row["Memo"] = this.Memo;
             Row["LocationId"] = this.LocationId;
-            Row["TagId"] = this.TagId;
+            Row["CategoryId"] = this.CategoryId;
 
             Data.Update("Diary", Row, "DiaryEntryId", this.DiaryEntryId);
         }

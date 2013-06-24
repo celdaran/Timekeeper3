@@ -35,18 +35,7 @@ namespace Timekeeper
         private static Log Log;
 
         //---------------------------------------------------------------------
-        // Helper Methods (Some TBX candidates?)
-        //---------------------------------------------------------------------
-
-        public static string Abbreviate(string text, int length)
-        {
-            if (text.Length < length) {
-                return text;
-            } else {
-                return text.Substring(0, length - 3) + "...";
-            }
-        }
-
+        // Database I/O
         //---------------------------------------------------------------------
 
         public static DBI CloseDatabase()
@@ -57,25 +46,22 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public static DBI OpenDatabase(string dataFile, bool enableTracing)
+        public static DBI OpenDatabase(string dataFile, int logLevel)
         {
             if (Database == null) {
-                Database = new DBI(dataFile, enableTracing);
+                Database = new DBI(dataFile, logLevel, GetLogPath());
             }
             return Database;
         }
 
         //---------------------------------------------------------------------
+        // Standard Exception Handling
+        //---------------------------------------------------------------------
 
         public static void Exception(Exception x)
         {
-            if (Log == null) {
-                Log = new Log(GetPath());
-            }
-            StackTrace StackTrace = new StackTrace();
-            StackFrame StackFrame = StackTrace.GetFrame(1);
-            string msg = String.Format(@"Exception in {0}.{1}: {2}",
-                StackFrame.GetMethod().DeclaringType, StackFrame.GetMethod().Name, x.Message);
+            Log = GetLog();
+            string msg = Common.Exception(x, 2);
             Log.Warn(msg);
         }
 
@@ -87,15 +73,7 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-
-        public static void Info(string msg)
-        {
-            if (Log == null) {
-                Log = new Log(GetPath());
-            }
-            Log.Info(msg);
-        }
-
+        // Format Helpers
         //---------------------------------------------------------------------
 
         public static string FormatSeconds(long seconds)
@@ -128,20 +106,58 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
+        // Logging helpers
+        //---------------------------------------------------------------------
+
+        public static void Debug(string msg)
+        {
+            Log = GetLog();
+            Log.Debug(msg);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static void Info(string msg)
+        {
+            Log = GetLog();
+            Log.Info(msg);
+        }
+
+        //---------------------------------------------------------------------
 
         public static void Warn(string msg)
         {
-            if (Log == null) {
-                Log = new Log(GetPath());
-            }
+            Log = GetLog();
             Log.Warn(msg);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static void Error(string msg)
+        {
+            Log = GetLog();
+            Log.Error(msg);
         }
 
         //---------------------------------------------------------------------
         // Private helpers
         //---------------------------------------------------------------------
 
-        private static string GetPath()
+        private static Log GetLog()
+        {
+            if (Log == null) {
+                Log = new Technitivity.Toolbox.Log(GetLogPath());
+                // Figure out how to set this globally and/or
+                // have this area access Timekeeper's options.
+                Log.Level = Technitivity.Toolbox.Log.INFO;
+                Log.Debug("log file opened");
+            }
+            return Log;
+        }
+
+        //---------------------------------------------------------------------
+
+        private static string GetLogPath()
         {
             string LogPath = "";
 

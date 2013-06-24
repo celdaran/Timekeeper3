@@ -77,7 +77,9 @@ namespace Timekeeper
         private bool Action_CheckDatabase(DatabaseCheckAction action)
         {
             try {
-                Database = Timekeeper.OpenDatabase(DatabaseFileName, options.wSQLtracing.Checked);
+                options.wSQLtracing.Checked = true;
+                int LogLevel = Log.INFO;
+                Database = Timekeeper.OpenDatabase(DatabaseFileName, LogLevel);
 
                 Datafile Datafile = new Datafile();
                 Version Version = new Version(Datafile.SCHEMA_VERSION);
@@ -161,7 +163,7 @@ namespace Timekeeper
 
             // Remove item from the database
             Item item = (Item)tree.SelectedNode.Tag;
-            int result = item.Delete();
+            long result = item.Delete();
 
             if (result == 0) {
                 Common.Warn("There was a problem deleting the item.");
@@ -228,8 +230,11 @@ namespace Timekeeper
             }
 
             if (DatabaseFileName != null) {
-                Action_OpenFile();
+                // for now, do not open any files upon launch
+                //Action_OpenFile();
             }
+
+            Common.Info("Testing TBX 3.0.0.7");
         }
 
         //---------------------------------------------------------------------
@@ -475,7 +480,7 @@ namespace Timekeeper
         {
             // Unhide in the database
             Item item = (Item)tree.SelectedNode.Tag;
-            int result = item.Unhide();
+            long result = item.Unhide();
 
             if (result == 0) {
                 Common.Warn("There was a problem unhiding the item.");
@@ -562,10 +567,11 @@ namespace Timekeeper
 
         private bool Action_ConvertPriorVersion()
         {
-
-            // if (Common.WarnPrompt("This database is from a prior version of Timekeeper. Would you like to convert it? (The database will be backed up before converting.)") == System.Windows.Forms.DialogResult.Yes) {
+            bool status = false;
 
             try {
+                Timekeeper.Info("Database Upgrade Started");
+
                 // Get backup file name
                 string NewDataFile = GetBackupFileName();
 
@@ -574,15 +580,17 @@ namespace Timekeeper
                 Dialog.BackUpFileLabel.Text = NewDataFile;
                 Dialog.StepLabel.Text = "Click the Start button to begin the database upgrade...";
                 if (Dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
-                    return true;
-                } else {
-                    return false;
+                    status = true;
                 }
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
-                return false;
             }
+            finally {
+                Timekeeper.Info("Database Upgrade Completed");
+            }
+
+            return status;
         }
 
         private string GetBackupFileName()
@@ -738,7 +746,7 @@ namespace Timekeeper
                 tmp = tmp.Replace("%time", "{2}");
                 Text = String.Format(tmp, currentTaskNode.Text, currentProjectNode.Text, timeToShow);
                 //wNotifyIcon.Text = Text;
-                wNotifyIcon.Text = Timekeeper.Abbreviate(Text, 63);
+                wNotifyIcon.Text = Common.Abbreviate(Text, 63);
             }
 
             // Animate the task icon
@@ -836,7 +844,7 @@ namespace Timekeeper
             currentEntry.Memo = wMemo.Text;
             currentEntry.IsLocked = true;
             currentEntry.LocationId = 1;
-            currentEntry.TagId = 1;
+            currentEntry.CategoryId = 1;
             currentEntry.Create();
 
             //currentEntry.Begin(wMemo.Text, currentTask.id, currentProject.id);
@@ -877,7 +885,7 @@ namespace Timekeeper
             Text = wTasks.SelectedNode.Text;
             menuTasksDeleteTask.Enabled = false;
             pmenuTasksDelete.Enabled = false;
-            wNotifyIcon.Text = Timekeeper.Abbreviate(Text, 63);
+            wNotifyIcon.Text = Common.Abbreviate(Text, 63);
 
             menuFile.Enabled = false;
             MenuFileNew.Enabled = false;
@@ -916,7 +924,7 @@ namespace Timekeeper
             currentEntry.Memo = wMemo.Text;
             currentEntry.IsLocked = false;
             currentEntry.LocationId = 1;
-            currentEntry.TagId = 1;
+            currentEntry.CategoryId = 1;
             currentEntry.Save();
             timerRunning = false;
             timerShort.Enabled = false;

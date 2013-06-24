@@ -20,4 +20,4 @@ CREATE TABLE Project (
 
 CREATE UNIQUE INDEX idx_Project_ProjectId ON Project (ProjectId);
 CREATE UNIQUE INDEX idx_Project_ProjectGuid ON Project (ProjectGuid);
-CREATE UNIQUE INDEX idx_Project_ProjectName ON Project (ProjectName);
+CREATE UNIQUE INDEX idx_Project_ProjectName ON Project (Name);

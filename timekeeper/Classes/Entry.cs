@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -31,13 +31,13 @@ namespace Timekeeper
         public long Seconds;
         public string Memo;
         public long LocationId;
-        public long TagId;
+        public long CategoryId;
         public bool IsLocked;
 
         public string ActivityName;
         public string ProjectName;
         public string LocationName;
-        public string TagName;
+        public string CategoryName;
 
         // Private
         private DateTime CreateTime;
@@ -106,12 +106,12 @@ namespace Timekeeper
             copy.Seconds = this.Seconds;
             copy.Memo = this.Memo;
             copy.LocationId = this.LocationId;
-            copy.TagId = this.TagId;
+            copy.CategoryId = this.CategoryId;
             copy.IsLocked = this.IsLocked;
             copy.ActivityName = this.ActivityName;
             copy.ProjectName = this.ProjectName;
             copy.LocationName = this.LocationName;
-            copy.TagName = this.TagName;
+            copy.CategoryName = this.CategoryName;
 
             return copy;
         }
@@ -133,7 +133,7 @@ namespace Timekeeper
                 (copy.Seconds == this.Seconds) &&
                 (copy.Memo == this.Memo) &&
                 (copy.LocationId == this.LocationId) &&
-                (copy.TagId == this.TagId) &&
+                (copy.CategoryId == this.CategoryId) &&
                 (copy.IsLocked == this.IsLocked)
                ) {
                 return true;
@@ -160,14 +160,14 @@ namespace Timekeeper
                             j.Seconds,
                             j.Memo,
                             j.LocationId, l.Name as LocationName,
-                            j.TagId, t.Name as TagName,
+                            j.CategoryId, c.Name as CategoryName,
                             j.IsLocked,
                             j.CreateTime, j.ModifyTime, j.JournalEntryGuid
                         from Journal j
                         join Activity a on a.ActivityId  = j.ActivityId
                         join Project p  on p.ProjectId   = j.ProjectId
                         left outer join Location l on l.LocationId  = j.LocationId
-                        left outer join Tag t      on t.TagId       = j.TagId
+                        left outer join Category c      on c.CategoryId       = c.CategoryId
                         where j.JournalEntryId = " + entryId;
                     SetAttributes(Data.SelectRow(Query));
                 }
@@ -316,7 +316,7 @@ namespace Timekeeper
             Row["Seconds"] = Seconds;
             Row["Memo"] = Memo;
             Row["LocationId"] = LocationId;
-            Row["TagId"] = TagId;
+            Row["CategoryId"] = CategoryId;
 
             Row["IsLocked"] = IsLocked ? 1 : 0;
 
@@ -339,13 +339,13 @@ namespace Timekeeper
             row["Seconds"] = 0;
             row["Memo"] = "";
             row["LocationId"] = 0;
-            row["TagId"] = 0;
+            row["CategoryId"] = 0;
             row["IsLocked"] = false;
 
             row["ActivityName"] = "";
             row["ProjectName"] = "";
             row["LocationName"] = "";
-            row["TagName"] = "";
+            row["CategoryName"] = "";
 
             row["CreateTime"] = DateTime.Now;
             row["ModifyTime"] = DateTime.Now;
@@ -368,13 +368,13 @@ namespace Timekeeper
             Seconds = row["Seconds"];
             Memo = row["Memo"];
             LocationId = row["LocationId"] ?? 0;
-            TagId = row["TagId"] ?? 0;
+            CategoryId = row["CategoryId"] ?? 0;
             IsLocked = row["IsLocked"];
 
             ActivityName = row["ActivityName"];
             ProjectName = row["ProjectName"];
             LocationName = row["LocationName"] ?? "";
-            TagName = row["TagName"] ?? "";
+            CategoryName = row["CategoryName"] ?? "";
 
             CreateTime = row["CreateTime"];
             ModifyTime = row["ModifyTime"];
