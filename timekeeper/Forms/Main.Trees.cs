@@ -9,7 +9,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
-    partial class fMain
+    partial class Main
     {
         //---------------------------------------------------------------------
         // Helper class to break up fMain.cs into manageable pieces

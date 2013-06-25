@@ -11,7 +11,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
-    public partial class fMain : Form
+    public partial class Main : Form
     {
         //---------------------------------------------------------------------
         // Properties
@@ -76,7 +76,7 @@ namespace Timekeeper
         // Constructor
         //---------------------------------------------------------------------
 
-        public fMain(string[] args)
+        public Main(string[] args)
         {
             InitializeComponent();
             if (args.Length > 0) {

@@ -14,7 +14,7 @@ namespace Timekeeper
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new fMain(args));
+            Application.Run(new Main(args));
         }
     }
 }
