@@ -7,21 +7,21 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
-    partial class Datafile
+    partial class File
     {
         //---------------------------------------------------------------------
         // Downgrading Functions
         //---------------------------------------------------------------------
 
-        public void SaveAs23(Datafile newDatafile)
+        public void SaveAs23(File newFile)
         {
             // TK2.3's schema was identical to TK2.2
-            SaveAs22(newDatafile);
+            SaveAs22(newFile);
         }
 
         //---------------------------------------------------------------------
 
-        public void SaveAs22(Datafile newDatafile)
+        public void SaveAs22(File newFile)
         {
 
             //--------------------------------------------------------
@@ -30,11 +30,11 @@ namespace Timekeeper
 
             // Create the new database
             Version Version = new System.Version(2, 2, 0, 4);
-            newDatafile.Create(Version, false);
+            newFile.Create(Version, false);
 
             // Drop and recreate Meta table
-            newDatafile.Database.Exec("drop table meta");
-            newDatafile.CreateTable("Meta", Version, true);
+            newFile.Database.Exec("drop table meta");
+            newFile.CreateTable("Meta", Version, true);
 
             //--------------------------------------------------------
             // Data copy
@@ -57,7 +57,7 @@ namespace Timekeeper
                     {"timestamp_m", Row["ModifyTime"].ToString(Common.DATETIME_FORMAT)},
                 };
 
-                newDatafile.Database.Insert("tasks", NewRow);
+                newFile.Database.Insert("tasks", NewRow);
             }
 
             // Project table
@@ -76,7 +76,7 @@ namespace Timekeeper
                     {"timestamp_m", Row["ModifyTime"].ToString(Common.DATETIME_FORMAT)},
                 };
 
-                newDatafile.Database.Insert("projects", NewRow);
+                newFile.Database.Insert("projects", NewRow);
             }
 
             // Journal table
@@ -95,7 +95,7 @@ namespace Timekeeper
                     {"is_locked", Row["IsLocked"] ? 1 : 0},
                 };
 
-                newDatafile.Database.Insert("timekeeper", NewRow);
+                newFile.Database.Insert("timekeeper", NewRow);
             }
 
             // Diary table
@@ -110,7 +110,7 @@ namespace Timekeeper
                     {"timestamp_m", Row["ModifyTime"].ToString(Common.DATETIME_FORMAT)},
                 };
 
-                newDatafile.Database.Insert("journal", NewRow);
+                newFile.Database.Insert("journal", NewRow);
             }
 
             // GridOptions table
@@ -135,13 +135,13 @@ namespace Timekeeper
                     {"timestamp_m", Row["StopTime"].ToString(Common.DATETIME_FORMAT)},
                 };
 
-                newDatafile.Database.Insert("grid_views", NewRow);
+                newFile.Database.Insert("grid_views", NewRow);
             }
         }
 
         //---------------------------------------------------------------------
 
-        public void SaveAs21(Datafile newDatafile)
+        public void SaveAs21(File newFile)
         {
 
             //--------------------------------------------------------
@@ -150,11 +150,11 @@ namespace Timekeeper
 
             // Create the new database
             Version Version = new System.Version(2, 1, 0, 0);
-            newDatafile.Create(Version, false);
+            newFile.Create(Version, false);
 
             // Drop and recreate Meta table
-            newDatafile.Database.Exec("drop table meta");
-            newDatafile.CreateTable("Meta", Version, true);
+            newFile.Database.Exec("drop table meta");
+            newFile.CreateTable("Meta", Version, true);
 
             //--------------------------------------------------------
             // Data copy
@@ -176,7 +176,7 @@ namespace Timekeeper
                     {"timestamp_m", Row["ModifyTime"].ToString(Common.DATETIME_FORMAT)},
                 };
 
-                newDatafile.Database.Insert("tasks", NewRow);
+                newFile.Database.Insert("tasks", NewRow);
             }
 
             // Project table
@@ -194,7 +194,7 @@ namespace Timekeeper
                     {"timestamp_m", Row["ModifyTime"].ToString(Common.DATETIME_FORMAT)},
                 };
 
-                newDatafile.Database.Insert("projects", NewRow);
+                newFile.Database.Insert("projects", NewRow);
             }
 
             // Journal table
@@ -213,7 +213,7 @@ namespace Timekeeper
                     {"is_locked", Row["IsLocked"] ? 1 : 0},
                 };
 
-                newDatafile.Database.Insert("timekeeper", NewRow);
+                newFile.Database.Insert("timekeeper", NewRow);
             }
 
             // Diary table
@@ -228,7 +228,7 @@ namespace Timekeeper
                     {"timestamp_m", Row["ModifyTime"].ToString(Common.DATETIME_FORMAT)},
                 };
 
-                newDatafile.Database.Insert("journal", NewRow);
+                newFile.Database.Insert("journal", NewRow);
             }
 
             // GridOptions table
@@ -253,7 +253,7 @@ namespace Timekeeper
                     {"timestamp_m", Row["StopTime"].ToString(Common.DATETIME_FORMAT)},
                 };
 
-                newDatafile.Database.Insert("grid_views", NewRow);
+                newFile.Database.Insert("grid_views", NewRow);
             }
         }
 

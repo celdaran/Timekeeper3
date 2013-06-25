@@ -8,7 +8,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
-    partial class Datafile
+    partial class File
     {
         private Version CurrentSchemaVersion;
 

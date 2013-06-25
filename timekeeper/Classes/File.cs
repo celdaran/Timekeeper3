@@ -11,7 +11,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
-    partial class Datafile
+    partial class File
     {
         public DBI Database;
 
@@ -34,18 +34,18 @@ namespace Timekeeper
         //---------------------------------------------------------------------
 
         // Deprecated constructor
-        public Datafile(DBI data)
+        public File(DBI data)
         {
             this.Database = data;
-            FileInfo = new FileInfo(this.Database.DataFile);
+            FileInfo = new FileInfo(this.Database.FileName);
             this.Name = FileInfo.Name;
             this.FullPath = FileInfo.DirectoryName + "\\" + FileInfo.Name;
-            this.Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(Datafile).Assembly);
+            this.Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(File).Assembly);
         }
 
         // New/future constructor
         // Calling the old for compatability purposes
-        public Datafile() : this(Timekeeper.Database)
+        public File() : this(Timekeeper.Database)
         {
         }
 
@@ -237,8 +237,8 @@ namespace Timekeeper
                 row.Add("version", Meta.Version);
 
                 // now grab individual attributes
-                row.Add("filename", Database.DataFile);
-                row.Add("filesize", Database.DataFileSize);
+                row.Add("filename", Database.FileName);
+                row.Add("filesize", Database.FileSize);
                 row.Add("taskcount", Tasks.Count());
                 row.Add("projectcount", Projects.Count());
                 row.Add("journalcount", Diary.Count());
