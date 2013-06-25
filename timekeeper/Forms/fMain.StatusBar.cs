@@ -45,7 +45,7 @@ namespace Timekeeper
             StatusBarItemTimeToday.ForeColor = Color.Gray;
             StatusBarItemsTimeToday.ForeColor = Color.Gray;
 
-            StatusBarFileName.Text = new Datafile().Name;
+            StatusBarFileName.Text = new File().Name;
             StatusBarFileName.ToolTipText = DatabaseFileName + "\n(Right-click to copy to clipboard)";
             StatusBarFileName.ForeColor = Color.Black;
         }

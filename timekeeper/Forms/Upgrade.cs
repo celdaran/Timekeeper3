@@ -14,7 +14,7 @@ namespace Timekeeper.Forms
 {
     public partial class Upgrade : Form
     {
-        private Datafile Datafile;
+        private File File;
         private bool UpgradeSucceeded;
 
         //---------------------------------------------------------------------
@@ -25,7 +25,7 @@ namespace Timekeeper.Forms
         {
             InitializeComponent();
 
-            this.Datafile = new Datafile();
+            this.File = new File();
             this.UpgradeSucceeded = false;
         }
 
@@ -42,10 +42,10 @@ namespace Timekeeper.Forms
 
             try {
                 // Back up file
-                File.Copy(Datafile.Database.DataFile, BackUpFileLabel.Text);
+                System.IO.File.Copy(File.Database.FileName, BackUpFileLabel.Text);
 
                 // Upgrade file (this needs to happen in its own thread)
-                Upgraded = Datafile.Upgrade(StepLabel, UpgradeProgress);
+                Upgraded = File.Upgrade(StepLabel, UpgradeProgress);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

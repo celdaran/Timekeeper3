@@ -77,40 +77,45 @@ namespace Timekeeper
         private bool Action_CheckDatabase(DatabaseCheckAction action)
         {
             try {
+                // FIXME: Options overhaul is going to need two logging
+                // levels. Set one for Timekeeper and one for Toolbox.DBI.
+                // It might be helpful to have one set at debug and the
+                // other at warn, for example.
+
                 options.wSQLtracing.Checked = true;
                 int LogLevel = Log.INFO;
                 Database = Timekeeper.OpenDatabase(DatabaseFileName, LogLevel);
 
-                Datafile Datafile = new Datafile();
-                Version Version = new Version(Datafile.SCHEMA_VERSION);
+                File File = new File();
+                Version Version = new Version(File.SCHEMA_VERSION);
 
-                if (!Database.DataFileExists) {
+                if (!Database.FileExists) {
                     if (action == DatabaseCheckAction.CreateIfMissing) {
-                        Datafile.Create(Version);
+                        File.Create(Version);
                     } else {
                         Common.Warn("File " + DatabaseFileName + " not found");
                     }
                 }
 
-                int Status = Datafile.Check();
+                int Status = File.Check();
 
                 switch (Status) {
-                    case Datafile.ERROR_UNEXPECTED:
+                    case File.ERROR_UNEXPECTED:
                         Common.Warn("An error occurred during the database check. Cannot open file.");
                         return false;
 
-                    case Datafile.ERROR_NEWER_VERSION_DETECTED:
+                    case File.ERROR_NEWER_VERSION_DETECTED:
                         Common.Warn("This database is from a newer version of Timekeeper. Cannot open file.");
                         return false;
 
-                    case Datafile.ERROR_NOT_TKDB:
+                    case File.ERROR_NOT_TKDB:
                         Common.Warn("This is not a Timekeeper database. File not opened.");
                         return false;
 
-                    case Datafile.ERROR_EMPTY_DB:
+                    case File.ERROR_EMPTY_DB:
                         //Common.Warn("This appears to be an empty database. A future version of Timekeeper will allow you to claim it.");
                         if (Common.WarnPrompt("This appears to be an empty database. Would you like Timekeeper to claim it?") == System.Windows.Forms.DialogResult.Yes) {
-                            if (Datafile.Create(Version)) {
+                            if (File.Create(Version)) {
                                 return true;
                             } else {
                                 return false;
@@ -118,7 +123,7 @@ namespace Timekeeper
                         }
                         return false;
 
-                    case Datafile.ERROR_REQUIRES_UPGRADE:
+                    case File.ERROR_REQUIRES_UPGRADE:
                         //Common.Warn("This database is from a prior version of Timekeeper and needs to be updated.");
                         if (Action_ConvertPriorVersion()) {
                             return true;
@@ -600,8 +605,8 @@ namespace Timekeeper
 
         private string GetBackupFileName(int fileno)
         {
-            Datafile Datafile = new Datafile();
-            FileInfo FileInfo = new FileInfo(Datafile.FullPath);
+            File File = new File();
+            FileInfo FileInfo = new FileInfo(File.FullPath);
 
             string BackupFileName;
 
@@ -617,7 +622,7 @@ namespace Timekeeper
                     FileInfo.Extension, fileno);
             }
 
-            if (File.Exists(BackupFileName)) {
+            if (System.IO.File.Exists(BackupFileName)) {
                 BackupFileName = GetBackupFileName(fileno + 1);
             }
 
@@ -696,10 +701,10 @@ namespace Timekeeper
         private void Action_SaveAs(int fileType)
         {
             DBI NewDatabase = new DBI(SaveAsDialog.FileName);
-            Datafile CurrentDatafile = new Datafile(Database);
-            Datafile NewDatafile = new Datafile(NewDatabase);
+            File CurrentFile = new File(Database);
+            File NewFile = new File(NewDatabase);
 
-            CurrentDatafile.SaveAs22(NewDatafile);
+            CurrentFile.SaveAs22(NewFile);
 
             //Common.Info("You selected Save As Type: " + fileType.ToString());
         }

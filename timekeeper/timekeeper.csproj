@@ -97,8 +97,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Datafile.Downgrade.cs" />
-    <Compile Include="Classes\Datafile.Upgrade.cs" />
+    <Compile Include="Classes\File.cs" />
+    <Compile Include="Classes\File.Downgrade.cs" />
+    <Compile Include="Classes\File.Upgrade.cs" />
     <Compile Include="Classes\FilterOptions.cs" />
     <Compile Include="Classes\OtherAttributes.cs" />
     <Compile Include="Classes\Meta.cs" />
@@ -140,7 +141,6 @@
     <Compile Include="Classes\Project.cs" />
     <Compile Include="Classes\Projects.cs" />
     <Compile Include="Classes\Timekeeper.cs" />
-    <Compile Include="Classes\Database.cs" />
     <Compile Include="Forms\fAbout.cs">
       <SubType>Form</SubType>
     </Compile>

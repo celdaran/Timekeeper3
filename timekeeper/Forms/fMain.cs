@@ -424,7 +424,7 @@ namespace Timekeeper
         // Help | About
         private void menuHelpAbout_Click(object sender, EventArgs e)
         {
-            Datafile db = new Datafile(Database);
+            File db = new File(Database);
             Row dbinfo = db.Info();
             fAbout dlg = new fAbout(dbinfo);
             dlg.ShowDialog(this);
