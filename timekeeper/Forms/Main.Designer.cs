@@ -1,4 +1,4 @@
-namespace Timekeeper
+namespace Timekeeper.Forms
 {
     partial class Main
     {

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Forms
 {
     partial class Main
     {

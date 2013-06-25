@@ -6,7 +6,7 @@ using System.Drawing;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Forms
 {
     partial class Main
     {
