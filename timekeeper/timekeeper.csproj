@@ -237,34 +237,34 @@
     <Compile Include="Forms\fLog.Designer.cs">
       <DependentUpon>fLog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fMain.cs">
+    <Compile Include="Forms\Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fMain.Designer.cs">
-      <DependentUpon>fMain.cs</DependentUpon>
+    <Compile Include="Forms\Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\fMain.Action.cs">
-      <DependentUpon>fMain.cs</DependentUpon>
+      <DependentUpon>Main.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\fMain.Browser.cs">
-      <DependentUpon>fMain.cs</DependentUpon>
+      <DependentUpon>Main.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\fMain.Dialog.cs">
-      <DependentUpon>fMain.cs</DependentUpon>
+      <DependentUpon>Main.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\fMain.MenuBar.cs">
-      <DependentUpon>fMain.cs</DependentUpon>
+      <DependentUpon>Main.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\fMain.StatusBar.cs">
-      <DependentUpon>fMain.cs</DependentUpon>
+      <DependentUpon>Main.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\fMain.Trees.cs">
-      <DependentUpon>fMain.cs</DependentUpon>
+      <DependentUpon>Main.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\fItem.cs">
@@ -369,9 +369,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>fLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fMain.resx">
+    <EmbeddedResource Include="Forms\Main.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>fMain.cs</DependentUpon>
+      <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fItem.resx">
       <SubType>Designer</SubType>
