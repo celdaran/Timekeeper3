@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Timekeeper
 {
@@ -12,9 +13,55 @@ namespace Timekeeper
         [STAThread]
         static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Forms.Main(args));
+            if (RequiredLibrariesFound()) {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new Forms.Main(args));
+            } else {
+                MessageBox.Show("One or more required DLLs are missing. Cannot start application.", Timekeeper.TITLE);
+            }
         }
+
+        //-----------------------------------------------------------------------------
+
+        static bool RequiredLibrariesFound()
+        {
+            bool found = true;
+
+            try {
+                CheckAssembly("Technitivity.Toolbox", new Version(3, 0, 7, 7));
+                CheckAssembly("System.Data.SQLite", new Version(1, 0, 86, 0));
+            }
+            catch {
+                found = false;
+            }
+
+            return found;
+        }
+
+        //-----------------------------------------------------------------------------
+
+        static void CheckAssembly(string name, Version version)
+        {
+            try {
+                Assembly Assembly = Assembly.ReflectionOnlyLoadFrom(name + ".dll");
+                string LoadedName = Assembly.GetName().Name;
+                Version LoadedVersion = Assembly.GetName().Version;
+                if (LoadedName == name &&
+                    LoadedVersion.Major == version.Major &&
+                    LoadedVersion.Minor == version.Minor &&
+                    LoadedVersion.Build == version.Build) {
+                } else {
+                    throw new Exception("Name or version mismatch");
+                }
+            }
+            catch {
+                MessageBox.Show(name + ".dll (Version " + version + ") not found", Timekeeper.TITLE);
+                throw;
+            }
+        }
+
+        //-----------------------------------------------------------------------------
+
     }
 }
