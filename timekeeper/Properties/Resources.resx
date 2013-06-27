@@ -312,14 +312,14 @@
   <data name="SQL_3000_ReportOptions_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0.0.0\ReportOptions.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3000_SystemDatePreset_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SQL\3.0.0.0\SystemDatePreset.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="SQL_3000_RefDatePreset_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\3.0.0.0\RefDatePreset.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3000_SystemGridGroupBy_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SQL\3.0.0.0\SystemGridGroupBy.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="SQL_3000_RefGridGroupBy_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\3.0.0.0\RefGridGroupBy.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3000_SystemGridTimeDisplay_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SQL\3.0.0.0\SystemGridTimeDisplay.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="SQL_3000_RefGridTimeDisplay_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\3.0.0.0\RefGridTimeDisplay.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="SQL_2000_Activity_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\2.0.0.0\Activity.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
