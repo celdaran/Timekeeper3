@@ -1,14 +1,13 @@
 ------------------------------------------------------------------------
--- Table..: RefGroupBy
--- Purpose: The data filtering interface uses a drop-down selection of
---          date "Group By" values. For example, Week, Month, Year.
+-- Table..: RefItemType
+-- Purpose: Assigns identifiers to "Activity" and "Project".
 -- Added..: Timekeeper 3.0
 -- Updated: Timekeeper 3.0
 ------------------------------------------------------------------------
 
-CREATE TABLE RefGroupBy
+CREATE TABLE RefItemType
 (
-    RefGroupById    INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    RefItemTypeId       INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
     Name                TEXT        NOT NULL,

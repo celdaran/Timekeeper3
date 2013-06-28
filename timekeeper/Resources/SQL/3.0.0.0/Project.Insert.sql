@@ -12,7 +12,7 @@ INSERT INTO Project
     LastActivityId,
 
     IsFolder,
-    IsOpened,
+    IsFolderOpened,
     IsHidden,
     IsDeleted,
     HiddenTime,
