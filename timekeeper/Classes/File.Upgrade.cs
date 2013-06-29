@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -640,7 +640,7 @@ namespace Timekeeper
             Row = this.Database.SelectRow("select count(*) as Count from meta");
             Count += Row["Count"];
             */
-            Count = 4; // Hardcoding for the four rows that the meta table gets in schema 3.0.0.0
+            Count = 4; // Hardcoding for the four rows that the meta table gets in schema 3.0.x
 
             Row = this.Database.SelectRow("select count(*) as Count from tasks");
             Count += Row["Count"];

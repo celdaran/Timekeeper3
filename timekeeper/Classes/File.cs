@@ -18,7 +18,7 @@ namespace Timekeeper
         public readonly string Name;
         public readonly string FullPath;
 
-        public const string SCHEMA_VERSION = "3.0.0.0";
+        public const string SCHEMA_VERSION = "3.0.0.1";
 
         public const int ERROR_UNEXPECTED = -1;
         public const int ERROR_NEWER_VERSION_DETECTED = -2;
@@ -125,14 +125,23 @@ namespace Timekeeper
         public bool Create(string version, bool populate)
         {
             try {
+                // Note: due to FK constraints, the order
+                // of table creation below matters.
 
                 // Schema Metadata
                 CreateTable("Meta", version, populate);
 
+                // System Reference tables | FIXME: not FALSE for populate. wtf?
+                CreateTable("RefItemType", version, false);
+                CreateTable("RefDatePreset", version, false);
+                CreateTable("RefGroupBy", version, false);
+                CreateTable("RefTimeDisplay", version, false);
+                CreateTable("RefTimeZone", version, false);
+
                 // User Reference Tables
+                CreateTable("Location", version, populate);
                 CreateTable("Activity", version, populate);
                 CreateTable("Project",  version, populate);
-                CreateTable("Location", version, populate);
                 CreateTable("Category", version, populate);
 
                 // Journal Tables
@@ -145,10 +154,6 @@ namespace Timekeeper
                 CreateTable("GridOptions", version, false);
                 CreateTable("ReportOptions", version, false);
 
-                // System Reference tables | FIXME: these ARE reference tables, rename as such
-                CreateTable("SystemDatePreset", version, false);
-                CreateTable("SystemGridGroupBy", version, false);
-                CreateTable("SystemGridTimeDisplay", version, false);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -204,7 +209,7 @@ namespace Timekeeper
             if (Query != null) {
                 // FIXME: Consider removing positional arguments with named arguments
                 // The below implementation gets us by, but doesn't feel right at all.
-                Query = String.Format(Query, Common.Now(), UUID.Get(), UUID.Get());
+                Query = String.Format(Query, Common.Now(), UUID.Get(), UUID.Get(), SCHEMA_VERSION);
                 long status = Database.Exec(Query);
                 Timekeeper.Debug(ResourceName + " status was " + status.ToString());
             } else {

@@ -675,14 +675,6 @@ namespace Timekeeper.Forms
         private void fMain_Load(object sender, EventArgs e)
         {
             Action_FormLoad();
-
-            // short cut
-            //Forms.Report Report = new Forms.Report();
-            //Report.Show(this);
-
-            // another short cut
-            //Forms.Filtering FilterDialog = new Forms.Filtering();
-            //FilterDialog.Show(this);
         }
 
         //---------------------------------------------------------------------

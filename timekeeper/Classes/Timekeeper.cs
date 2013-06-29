@@ -157,7 +157,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        private static string GetLogPath()
+        public static string GetLogPath()
         {
             string LogPath = "";
 

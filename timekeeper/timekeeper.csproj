@@ -488,8 +488,9 @@
     <None Include="Resources\SQL\3.0.0.0\SystemGridTimeDisplay.Create.sql" />
     <None Include="Resources\SQL\3.0.0.0\Category.Insert.sql" />
     <None Include="Resources\SQL\3.0.0.0\Location.Insert.sql" />
+    <None Include="Resources\SQL\3.0.0.0\RefItemType.Create.sql" />
+    <None Include="Resources\SQL\3.0.0.0\RefTimeZone.Create.sql" />
     <Content Include="Resources\SQL\AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300.sql" />
-    <None Include="Resources\TextFileTest.txt" />
     <None Include="Resources\button-refresh.png" />
     <None Include="Resources\button-filter.png" />
     <None Include="Resources\button-printer.png" />
