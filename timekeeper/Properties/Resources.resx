@@ -118,83 +118,83 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="buttonListNumbered" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-numbered-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonListNumbered" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\NumberedList.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonListBulleted" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-bulleted-list.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonListBulleted" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\BulletedList.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="timekeeper48" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\timekeeper-48.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageIconMedium" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\MediumApp.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonUnderlined" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-underlined.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonUnderlined" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Underlined.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonLast" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-last.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonLast" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Last.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonNext" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonNext" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Next.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonItalics" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-italics.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonItalics" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Italics.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonStrikethrough" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-strikethrough.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonStrikethrough" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Strikethrough.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonPrev" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-prev.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonPrev" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Prev.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonCancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-cancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonCancel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Cancel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonFirst" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-first.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonFirst" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\First.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonBold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-bold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonBold" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Bold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="iconFolderSmall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\..\assets\icon-folder-small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageIconSmallFolder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\SmallFolder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="timekeeper256" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\timekeeper-256.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageIconLarge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\LargeApp.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="iconTask" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\menu-task.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageIconSmallActivity" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\SmallActivity.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="iconProject" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\menu-project.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageIconSmallProject" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\SmallProject.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonGo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icon-go.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonGo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Go.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonCloseStartGap" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-close-start-gap.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonCloseStartGap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\CloseStartGap.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonCloseStopGap" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-close-stop-gap.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonCloseStopGap" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\CloseStopGap.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-new.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\New.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonStop" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonStop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonRevert" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-revert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonRevert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Revert.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonUnlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-unlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonUnlock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Unlock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonPrinter" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-printer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonPrinter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Printer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonFilter" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-filter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonFilter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Filter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="buttonRefresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\button-refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ImageButtonRefresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\Refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ReportCssTemplate" xml:space="preserve">
     <value>body, table {{

@@ -87,7 +87,7 @@
             // 
             // FilterButton
             // 
-            this.FilterButton.Image = global::Timekeeper.Properties.Resources.buttonFilter;
+            this.FilterButton.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
             this.FilterButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FilterButton.Name = "FilterButton";
             this.FilterButton.Size = new System.Drawing.Size(77, 22);
@@ -97,7 +97,7 @@
             // RefreshButton
             // 
             this.RefreshButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.RefreshButton.Image = global::Timekeeper.Properties.Resources.buttonRefresh;
+            this.RefreshButton.Image = global::Timekeeper.Properties.Resources.ImageButtonRefresh;
             this.RefreshButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.RefreshButton.Name = "RefreshButton";
             this.RefreshButton.Size = new System.Drawing.Size(23, 22);
@@ -156,7 +156,7 @@
             this.PrintReportButton,
             this.PrintSetupButton,
             this.PrintPreviewButton});
-            this.PrintMenuButton.Image = global::Timekeeper.Properties.Resources.buttonPrinter;
+            this.PrintMenuButton.Image = global::Timekeeper.Properties.Resources.ImageButtonPrinter;
             this.PrintMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.PrintMenuButton.Name = "PrintMenuButton";
             this.PrintMenuButton.Size = new System.Drawing.Size(58, 22);

@@ -361,7 +361,7 @@ namespace Timekeeper.Forms
             // 
             // MenuActionStartTimer
             // 
-            this.MenuActionStartTimer.Image = global::Timekeeper.Properties.Resources.buttonGo;
+            this.MenuActionStartTimer.Image = global::Timekeeper.Properties.Resources.ImageButtonGo;
             this.MenuActionStartTimer.Name = "MenuActionStartTimer";
             this.MenuActionStartTimer.Size = new System.Drawing.Size(177, 22);
             this.MenuActionStartTimer.Text = "&Start Timer";
@@ -369,7 +369,7 @@ namespace Timekeeper.Forms
             // 
             // MenuActionStopTimer
             // 
-            this.MenuActionStopTimer.Image = global::Timekeeper.Properties.Resources.buttonStop;
+            this.MenuActionStopTimer.Image = global::Timekeeper.Properties.Resources.ImageButtonStop;
             this.MenuActionStopTimer.Name = "MenuActionStopTimer";
             this.MenuActionStopTimer.Size = new System.Drawing.Size(177, 22);
             this.MenuActionStopTimer.Text = "&Stop Timer";
@@ -398,7 +398,7 @@ namespace Timekeeper.Forms
             // 
             // menuTasksNewTask
             // 
-            this.menuTasksNewTask.Image = global::Timekeeper.Properties.Resources.iconTask;
+            this.menuTasksNewTask.Image = global::Timekeeper.Properties.Resources.ImageIconSmallActivity;
             this.menuTasksNewTask.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewTask.Name = "menuTasksNewTask";
             this.menuTasksNewTask.Size = new System.Drawing.Size(177, 22);
@@ -407,7 +407,7 @@ namespace Timekeeper.Forms
             // 
             // menuTasksNewTaskFolder
             // 
-            this.menuTasksNewTaskFolder.Image = global::Timekeeper.Properties.Resources.iconFolderSmall;
+            this.menuTasksNewTaskFolder.Image = global::Timekeeper.Properties.Resources.ImageIconSmallFolder;
             this.menuTasksNewTaskFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewTaskFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.menuTasksNewTaskFolder.Name = "menuTasksNewTaskFolder";
@@ -451,7 +451,7 @@ namespace Timekeeper.Forms
             // 
             // menuTasksNewProject
             // 
-            this.menuTasksNewProject.Image = global::Timekeeper.Properties.Resources.iconProject;
+            this.menuTasksNewProject.Image = global::Timekeeper.Properties.Resources.ImageIconSmallProject;
             this.menuTasksNewProject.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewProject.Name = "menuTasksNewProject";
             this.menuTasksNewProject.Size = new System.Drawing.Size(177, 22);
@@ -460,7 +460,7 @@ namespace Timekeeper.Forms
             // 
             // menuTasksNewProjectFolder
             // 
-            this.menuTasksNewProjectFolder.Image = global::Timekeeper.Properties.Resources.iconFolderSmall;
+            this.menuTasksNewProjectFolder.Image = global::Timekeeper.Properties.Resources.ImageIconSmallFolder;
             this.menuTasksNewProjectFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewProjectFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.menuTasksNewProjectFolder.Name = "menuTasksNewProjectFolder";
@@ -1328,7 +1328,7 @@ namespace Timekeeper.Forms
             // 
             this.toolFormatBold.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolFormatBold.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolFormatBold.Image = global::Timekeeper.Properties.Resources.buttonBold;
+            this.toolFormatBold.Image = global::Timekeeper.Properties.Resources.ImageButtonBold;
             this.toolFormatBold.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolFormatBold.Name = "toolFormatBold";
             this.toolFormatBold.Size = new System.Drawing.Size(23, 22);
@@ -1339,7 +1339,7 @@ namespace Timekeeper.Forms
             // 
             this.toolFormatItalic.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolFormatItalic.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolFormatItalic.Image = global::Timekeeper.Properties.Resources.buttonItalics;
+            this.toolFormatItalic.Image = global::Timekeeper.Properties.Resources.ImageButtonItalics;
             this.toolFormatItalic.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolFormatItalic.Name = "toolFormatItalic";
             this.toolFormatItalic.Size = new System.Drawing.Size(23, 22);
@@ -1350,7 +1350,7 @@ namespace Timekeeper.Forms
             // 
             this.toolFormatUnderline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolFormatUnderline.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolFormatUnderline.Image = global::Timekeeper.Properties.Resources.buttonUnderlined;
+            this.toolFormatUnderline.Image = global::Timekeeper.Properties.Resources.ImageButtonUnderlined;
             this.toolFormatUnderline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolFormatUnderline.Name = "toolFormatUnderline";
             this.toolFormatUnderline.Size = new System.Drawing.Size(23, 22);
@@ -1361,7 +1361,7 @@ namespace Timekeeper.Forms
             // 
             this.toolFormatStrikethrough.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolFormatStrikethrough.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolFormatStrikethrough.Image = global::Timekeeper.Properties.Resources.buttonStrikethrough;
+            this.toolFormatStrikethrough.Image = global::Timekeeper.Properties.Resources.ImageButtonStrikethrough;
             this.toolFormatStrikethrough.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolFormatStrikethrough.Name = "toolFormatStrikethrough";
             this.toolFormatStrikethrough.Size = new System.Drawing.Size(23, 22);
@@ -1376,7 +1376,7 @@ namespace Timekeeper.Forms
             // toolFormatBulletedList
             // 
             this.toolFormatBulletedList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolFormatBulletedList.Image = global::Timekeeper.Properties.Resources.buttonListBulleted;
+            this.toolFormatBulletedList.Image = global::Timekeeper.Properties.Resources.ImageButtonListBulleted;
             this.toolFormatBulletedList.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolFormatBulletedList.Name = "toolFormatBulletedList";
             this.toolFormatBulletedList.Size = new System.Drawing.Size(23, 22);
@@ -1385,7 +1385,7 @@ namespace Timekeeper.Forms
             // toolFormatNumberedList
             // 
             this.toolFormatNumberedList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolFormatNumberedList.Image = global::Timekeeper.Properties.Resources.buttonListNumbered;
+            this.toolFormatNumberedList.Image = global::Timekeeper.Properties.Resources.ImageButtonListNumbered;
             this.toolFormatNumberedList.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolFormatNumberedList.Name = "toolFormatNumberedList";
             this.toolFormatNumberedList.Size = new System.Drawing.Size(23, 22);
@@ -1542,7 +1542,7 @@ namespace Timekeeper.Forms
             // 
             // toolControlStart
             // 
-            this.toolControlStart.Image = global::Timekeeper.Properties.Resources.buttonGo;
+            this.toolControlStart.Image = global::Timekeeper.Properties.Resources.ImageButtonGo;
             this.toolControlStart.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlStart.Name = "toolControlStart";
             this.toolControlStart.Size = new System.Drawing.Size(80, 22);
@@ -1552,7 +1552,7 @@ namespace Timekeeper.Forms
             // 
             // toolControlStop
             // 
-            this.toolControlStop.Image = global::Timekeeper.Properties.Resources.buttonStop;
+            this.toolControlStop.Image = global::Timekeeper.Properties.Resources.ImageButtonStop;
             this.toolControlStop.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlStop.Name = "toolControlStop";
             this.toolControlStop.Size = new System.Drawing.Size(78, 22);
@@ -1563,7 +1563,7 @@ namespace Timekeeper.Forms
             // 
             // toolControlClose
             // 
-            this.toolControlClose.Image = global::Timekeeper.Properties.Resources.buttonCancel;
+            this.toolControlClose.Image = global::Timekeeper.Properties.Resources.ImageButtonCancel;
             this.toolControlClose.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlClose.Name = "toolControlClose";
             this.toolControlClose.Size = new System.Drawing.Size(95, 22);
@@ -1579,7 +1579,7 @@ namespace Timekeeper.Forms
             // toolControlFirstEntry
             // 
             this.toolControlFirstEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolControlFirstEntry.Image = global::Timekeeper.Properties.Resources.buttonFirst;
+            this.toolControlFirstEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonFirst;
             this.toolControlFirstEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlFirstEntry.Name = "toolControlFirstEntry";
             this.toolControlFirstEntry.Size = new System.Drawing.Size(23, 22);
@@ -1590,7 +1590,7 @@ namespace Timekeeper.Forms
             // toolControlPrevEntry
             // 
             this.toolControlPrevEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolControlPrevEntry.Image = global::Timekeeper.Properties.Resources.buttonPrev;
+            this.toolControlPrevEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonPrev;
             this.toolControlPrevEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlPrevEntry.Name = "toolControlPrevEntry";
             this.toolControlPrevEntry.Size = new System.Drawing.Size(23, 22);
@@ -1602,7 +1602,7 @@ namespace Timekeeper.Forms
             // 
             this.toolControlNextEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolControlNextEntry.Enabled = false;
-            this.toolControlNextEntry.Image = global::Timekeeper.Properties.Resources.buttonNext;
+            this.toolControlNextEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonNext;
             this.toolControlNextEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlNextEntry.Name = "toolControlNextEntry";
             this.toolControlNextEntry.Size = new System.Drawing.Size(23, 22);
@@ -1614,7 +1614,7 @@ namespace Timekeeper.Forms
             // 
             this.toolControlLastEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolControlLastEntry.Enabled = false;
-            this.toolControlLastEntry.Image = global::Timekeeper.Properties.Resources.buttonLast;
+            this.toolControlLastEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonLast;
             this.toolControlLastEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlLastEntry.Name = "toolControlLastEntry";
             this.toolControlLastEntry.Size = new System.Drawing.Size(23, 22);
@@ -1626,7 +1626,7 @@ namespace Timekeeper.Forms
             // 
             this.toolControlNewEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolControlNewEntry.Enabled = false;
-            this.toolControlNewEntry.Image = global::Timekeeper.Properties.Resources.buttonNew;
+            this.toolControlNewEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonNew;
             this.toolControlNewEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlNewEntry.Name = "toolControlNewEntry";
             this.toolControlNewEntry.Size = new System.Drawing.Size(23, 22);
@@ -1650,7 +1650,7 @@ namespace Timekeeper.Forms
             // toolControlCloseStartGap
             // 
             this.toolControlCloseStartGap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolControlCloseStartGap.Image = global::Timekeeper.Properties.Resources.buttonCloseStartGap;
+            this.toolControlCloseStartGap.Image = global::Timekeeper.Properties.Resources.ImageButtonCloseStartGap;
             this.toolControlCloseStartGap.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlCloseStartGap.Name = "toolControlCloseStartGap";
             this.toolControlCloseStartGap.Size = new System.Drawing.Size(23, 22);
@@ -1660,7 +1660,7 @@ namespace Timekeeper.Forms
             // toolControlCloseEndGap
             // 
             this.toolControlCloseEndGap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolControlCloseEndGap.Image = global::Timekeeper.Properties.Resources.buttonCloseStopGap;
+            this.toolControlCloseEndGap.Image = global::Timekeeper.Properties.Resources.ImageButtonCloseStopGap;
             this.toolControlCloseEndGap.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlCloseEndGap.Name = "toolControlCloseEndGap";
             this.toolControlCloseEndGap.Size = new System.Drawing.Size(23, 22);
@@ -1676,7 +1676,7 @@ namespace Timekeeper.Forms
             // 
             this.toolControlRevert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.toolControlRevert.Enabled = false;
-            this.toolControlRevert.Image = global::Timekeeper.Properties.Resources.buttonRevert;
+            this.toolControlRevert.Image = global::Timekeeper.Properties.Resources.ImageButtonRevert;
             this.toolControlRevert.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlRevert.Name = "toolControlRevert";
             this.toolControlRevert.Size = new System.Drawing.Size(23, 22);
@@ -1687,7 +1687,7 @@ namespace Timekeeper.Forms
             // toolControlUnlock
             // 
             this.toolControlUnlock.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolControlUnlock.Image = global::Timekeeper.Properties.Resources.buttonUnlock;
+            this.toolControlUnlock.Image = global::Timekeeper.Properties.Resources.ImageButtonUnlock;
             this.toolControlUnlock.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlUnlock.Name = "toolControlUnlock";
             this.toolControlUnlock.Size = new System.Drawing.Size(23, 22);

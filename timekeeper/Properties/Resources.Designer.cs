@@ -63,9 +63,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonBold {
+        internal static System.Drawing.Bitmap ImageButtonBold {
             get {
-                object obj = ResourceManager.GetObject("buttonBold", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonBold", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonCancel {
+        internal static System.Drawing.Bitmap ImageButtonCancel {
             get {
-                object obj = ResourceManager.GetObject("buttonCancel", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonCancel", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonCloseStartGap {
+        internal static System.Drawing.Bitmap ImageButtonCloseStartGap {
             get {
-                object obj = ResourceManager.GetObject("buttonCloseStartGap", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonCloseStartGap", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonCloseStopGap {
+        internal static System.Drawing.Bitmap ImageButtonCloseStopGap {
             get {
-                object obj = ResourceManager.GetObject("buttonCloseStopGap", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonCloseStopGap", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonFilter {
+        internal static System.Drawing.Bitmap ImageButtonFilter {
             get {
-                object obj = ResourceManager.GetObject("buttonFilter", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonFilter", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonFirst {
+        internal static System.Drawing.Bitmap ImageButtonFirst {
             get {
-                object obj = ResourceManager.GetObject("buttonFirst", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonFirst", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +123,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonGo {
+        internal static System.Drawing.Bitmap ImageButtonGo {
             get {
-                object obj = ResourceManager.GetObject("buttonGo", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonGo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonItalics {
+        internal static System.Drawing.Bitmap ImageButtonItalics {
             get {
-                object obj = ResourceManager.GetObject("buttonItalics", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonItalics", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,9 +143,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonLast {
+        internal static System.Drawing.Bitmap ImageButtonLast {
             get {
-                object obj = ResourceManager.GetObject("buttonLast", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonLast", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,9 +153,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonListBulleted {
+        internal static System.Drawing.Bitmap ImageButtonListBulleted {
             get {
-                object obj = ResourceManager.GetObject("buttonListBulleted", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonListBulleted", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -163,9 +163,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonListNumbered {
+        internal static System.Drawing.Bitmap ImageButtonListNumbered {
             get {
-                object obj = ResourceManager.GetObject("buttonListNumbered", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonListNumbered", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,9 +173,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonNew {
+        internal static System.Drawing.Bitmap ImageButtonNew {
             get {
-                object obj = ResourceManager.GetObject("buttonNew", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonNew", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -183,9 +183,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonNext {
+        internal static System.Drawing.Bitmap ImageButtonNext {
             get {
-                object obj = ResourceManager.GetObject("buttonNext", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonNext", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +193,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonPrev {
+        internal static System.Drawing.Bitmap ImageButtonPrev {
             get {
-                object obj = ResourceManager.GetObject("buttonPrev", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonPrev", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +203,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonPrinter {
+        internal static System.Drawing.Bitmap ImageButtonPrinter {
             get {
-                object obj = ResourceManager.GetObject("buttonPrinter", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonPrinter", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,9 +213,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonRefresh {
+        internal static System.Drawing.Bitmap ImageButtonRefresh {
             get {
-                object obj = ResourceManager.GetObject("buttonRefresh", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonRefresh", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +223,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonRevert {
+        internal static System.Drawing.Bitmap ImageButtonRevert {
             get {
-                object obj = ResourceManager.GetObject("buttonRevert", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonRevert", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,9 +233,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonStop {
+        internal static System.Drawing.Bitmap ImageButtonStop {
             get {
-                object obj = ResourceManager.GetObject("buttonStop", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonStop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -243,9 +243,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonStrikethrough {
+        internal static System.Drawing.Bitmap ImageButtonStrikethrough {
             get {
-                object obj = ResourceManager.GetObject("buttonStrikethrough", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonStrikethrough", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -253,9 +253,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonUnderlined {
+        internal static System.Drawing.Bitmap ImageButtonUnderlined {
             get {
-                object obj = ResourceManager.GetObject("buttonUnderlined", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonUnderlined", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -263,9 +263,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap buttonUnlock {
+        internal static System.Drawing.Bitmap ImageButtonUnlock {
             get {
-                object obj = ResourceManager.GetObject("buttonUnlock", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageButtonUnlock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -273,9 +273,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap iconFolderSmall {
+        internal static System.Drawing.Bitmap ImageIconLargeApp {
             get {
-                object obj = ResourceManager.GetObject("iconFolderSmall", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageIconLarge", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -283,9 +283,9 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap iconProject {
+        internal static System.Drawing.Bitmap ImageIconMediumApp {
             get {
-                object obj = ResourceManager.GetObject("iconProject", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageIconMedium", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -293,9 +293,29 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap iconTask {
+        internal static System.Drawing.Bitmap ImageIconSmallActivity {
             get {
-                object obj = ResourceManager.GetObject("iconTask", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageIconSmallActivity", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ImageIconSmallFolder {
+            get {
+                object obj = ResourceManager.GetObject("ImageIconSmallFolder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ImageIconSmallProject {
+            get {
+                object obj = ResourceManager.GetObject("ImageIconSmallProject", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1468,26 +1488,6 @@ namespace Timekeeper.Properties {
         internal static string SQL_3001_ReportOptions_Create {
             get {
                 return ResourceManager.GetString("SQL_3001_ReportOptions_Create", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap timekeeper256 {
-            get {
-                object obj = ResourceManager.GetObject("timekeeper256", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap timekeeper48 {
-            get {
-                object obj = ResourceManager.GetObject("timekeeper48", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
