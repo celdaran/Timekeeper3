@@ -1,7 +1,13 @@
+------------------------------------------------------------------------
+-- Table..: Category
+-- Purpose: Create two sample Categories.
+------------------------------------------------------------------------
+
 INSERT INTO Category
 (
     CreateTime,
     ModifyTime,
+    LocationId,
     CategoryGuid,
 
     Name,
@@ -17,6 +23,7 @@ INSERT INTO Category
 ) VALUES (
     '{0}',
     '{0}',
+    1,
     '{1}',
 
     'Follow Up',
@@ -35,6 +42,7 @@ INSERT INTO Category
 (
     CreateTime,
     ModifyTime,
+    LocationId,
     CategoryGuid,
 
     Name,
@@ -50,6 +58,7 @@ INSERT INTO Category
 ) VALUES (
     '{0}',
     '{0}',
+    1,
     '{2}',
 
     'Incomplete',

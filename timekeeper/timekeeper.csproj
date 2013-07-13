@@ -112,6 +112,9 @@
     <Compile Include="Forms\Controls\DateRangePicker.Designer.cs">
       <DependentUpon>DateRangePicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Controls\TablessControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\Filtering.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -444,6 +447,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Images\Buttons\CloseStartGap.png" />
+    <None Include="Resources\SQL\3.0\RefTimeDisplay.Insert.sql" />
+    <None Include="Resources\SQL\3.0\RefItemType.Insert.sql" />
+    <None Include="Resources\SQL\3.0\RefGroupBy.Insert.sql" />
+    <None Include="Resources\SQL\3.0\RefDatePreset.Insert.sql" />
+    <None Include="Resources\Images\Pictures\setup.bmp" />
     <None Include="Resources\SQL\2.0\Activity.Create.sql" />
     <None Include="Resources\SQL\2.0\Activity.Insert.sql" />
     <None Include="Resources\SQL\2.0\Journal.Create.sql" />
@@ -511,10 +519,11 @@
     <None Include="Resources\Images\Buttons\Strikethrough.png" />
     <None Include="Resources\Images\Buttons\Underlined.png" />
     <None Include="Resources\Images\Buttons\Unlock.png" />
-    <None Include="Resources\menu-project.bmp" />
-    <None Include="Resources\menu-task.bmp" />
-    <None Include="Resources\timekeeper-256.png" />
-    <None Include="Resources\timekeeper-48.png" />
+    <None Include="Resources\Images\Icons\LargeApp.png" />
+    <None Include="Resources\Images\Icons\MediumApp.png" />
+    <None Include="Resources\Images\Icons\SmallActivity.png" />
+    <None Include="Resources\Images\Icons\SmallProject.png" />
+    <None Include="Resources\Images\Icons\SmallFolder.png" />
     <Content Include="Properties\timekeeper.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

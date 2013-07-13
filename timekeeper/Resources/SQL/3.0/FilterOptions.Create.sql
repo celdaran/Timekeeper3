@@ -20,7 +20,6 @@ CREATE TABLE FilterOptions
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
-    LocationId          INTEGER         NULL,
 
     ActivityList        TEXT            NULL,
     ProjectList         TEXT            NULL,
@@ -34,6 +33,5 @@ CREATE TABLE FilterOptions
     LocationList        TEXT            NULL,
     CategoryList        TEXT            NULL,
 
-    FOREIGN KEY(LocationId)         REFERENCES Location(LocationId)
     FOREIGN KEY(RefDatePresetId)    REFERENCES RefDatePreset(RefDatePresetId)
 );

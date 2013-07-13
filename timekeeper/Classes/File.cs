@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Resources;
+using System.Collections.ObjectModel;
 
 using Technitivity.Toolbox;
-
-// TODO: Implement support for Item.IsOpened
-// TODO: Implement support for Journal.ExternalEntryId
 
 namespace Timekeeper
 {
@@ -132,14 +130,15 @@ namespace Timekeeper
                 CreateTable("Meta", version, populate);
 
                 // System Reference tables | FIXME: not FALSE for populate. wtf?
-                CreateTable("RefItemType", version, false);
-                CreateTable("RefDatePreset", version, false);
-                CreateTable("RefGroupBy", version, false);
-                CreateTable("RefTimeDisplay", version, false);
+                CreateTable("RefItemType", version, populate);
+                CreateTable("RefDatePreset", version, populate);
+                CreateTable("RefGroupBy", version, populate);
+                CreateTable("RefTimeDisplay", version, populate);
                 CreateTable("RefTimeZone", version, false);
+                PopulateRefTimeZone();
 
                 // User Reference Tables
-                CreateTable("Location", version, populate);
+                CreateTable("Location", version, false);
                 CreateTable("Activity", version, populate);
                 CreateTable("Project",  version, populate);
                 CreateTable("Category", version, populate);
@@ -216,6 +215,51 @@ namespace Timekeeper
                 Timekeeper.Warn("Could not find resource: " + ResourceName);
                 return;
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void PopulateRefTimeZone()
+        {
+            //----------------------------------------------
+            // The Time Zone reference table is populated
+            // at database creation by copying the OS list
+            // of time zones and assigning an identity value
+            // to each (for use as FKs inside the tkdb).
+            // Note: there is currently no support for
+            // updating this list after its initial 
+            // generation. Future FIXME.
+            //----------------------------------------------
+
+            ReadOnlyCollection<TimeZoneInfo> TimeZones = TimeZoneInfo.GetSystemTimeZones();
+            foreach (TimeZoneInfo TimeZone in TimeZones) {
+                Row RefTimeZone = new Row();
+                RefTimeZone["OSTimeZone"] = TimeZone.Id;
+                this.InsertedRowId = Database.Insert("RefTimeZone", RefTimeZone);
+                if (InsertedRowId == 0) throw new Exception("Insert failed");
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public void PopulateLocation()
+        {
+            Row Location = new Row();
+
+            Location["CreateTime"] = Common.Now();
+            Location["ModifyTime"] = Common.Now();
+            Location["LocationGuid"] = UUID.Get();
+            Location["Name"] = Options.LocationName;
+            Location["Description"] = Options.LocationDescription;
+            Location["RefTimeZoneId"] = Options.LocationTimeZoneId;
+            Location["SortOrderNo"] = 0;
+            Location["IsHidden"] = 0;
+            Location["IsDeleted"] = 0;
+            Location["HiddenTime"] = null;
+            Location["DeletedTime"] = null;
+
+            this.InsertedRowId = Database.Insert("Location", Location);
+            if (InsertedRowId == 0) throw new Exception("Insert failed");
         }
 
         //---------------------------------------------------------------------

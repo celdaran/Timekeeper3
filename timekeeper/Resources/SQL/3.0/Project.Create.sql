@@ -32,6 +32,8 @@ CREATE TABLE Project
     HiddenTime          DATETIME        NULL,
     DeletedTime         DATETIME        NULL,
 
+    ExternalProjectNo   TEXT            NULL,
+
     FOREIGN KEY(LocationId)         REFERENCES Location(LocationId)
     FOREIGN KEY(ParentId)           REFERENCES Project(ProjectId)
     FOREIGN KEY(LastActivityId)     REFERENCES Activity(ActivityId)
@@ -40,3 +42,4 @@ CREATE TABLE Project
 CREATE UNIQUE INDEX idx_Project_ProjectId ON Project(ProjectId);
 CREATE UNIQUE INDEX idx_Project_ProjectGuid ON Project(ProjectGuid);
 CREATE UNIQUE INDEX idx_Project_Name ON Project(Name);
+CREATE UNIQUE INDEX idx_Project_ExternalProjectNo on Project(ExternalProjectNo);

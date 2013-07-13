@@ -149,17 +149,19 @@ namespace Timekeeper.Forms
 
         private void Action_CloseFile()
         {
-            wTasks.Nodes.Clear();
-            wProjects.Nodes.Clear();
+            if (Database != null) {
+                wTasks.Nodes.Clear();
+                wProjects.Nodes.Clear();
 
-            StatusBar_FileClosed();
-            MenuBar_FileClosed();
+                StatusBar_FileClosed();
+                MenuBar_FileClosed();
 
-            Timekeeper.Info("Closing Database: " + DatabaseFileName);
-            Database = Timekeeper.CloseDatabase();
+                Timekeeper.Info("Closing Database: " + DatabaseFileName);
+                Database = Timekeeper.CloseDatabase();
 
-            foreach (Form Form in OpenForms) {
-                Form.Close();
+                foreach (Form Form in OpenForms) {
+                    Form.Close();
+                }
             }
         }
 
@@ -662,7 +664,7 @@ namespace Timekeeper.Forms
                 // Open dialog box
                 Forms.Upgrade Dialog = new Forms.Upgrade();
                 Dialog.BackUpFileLabel.Text = NewDataFile;
-                Dialog.StepLabel.Text = "Click the Start button to begin the database upgrade...";
+                //Dialog.StepLabel.Text = "Click the Start button to begin the database upgrade...";
                 if (Dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
                     status = true;
                 }

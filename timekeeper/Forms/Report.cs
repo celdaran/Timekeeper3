@@ -346,7 +346,7 @@ namespace Timekeeper.Forms
                     case 4: OrderBy = "log.Seconds"; break;
                     case 5: OrderBy = "l.Name"; break;
                     case 6: OrderBy = "t.Name"; break;
-                    case 7: OrderBy = "log.ExternalEntryId"; break;
+                    case 7: OrderBy = "p.ExternalProjectNo"; break;
                     case 8: OrderBy = "log.JournalEntryId"; break;
                 }
             }

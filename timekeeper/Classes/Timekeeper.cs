@@ -207,4 +207,23 @@ namespace Timekeeper
 
     //---------------------------------------------------------------------
 
+    public struct IdObjectPair
+    {
+        public int Id;
+        public object Object;
+
+        public IdObjectPair(int id, object o)
+        {
+            this.Id = id;
+            this.Object = o;
+        }
+
+        public override string ToString()
+        {
+            return this.Object.ToString();
+        }
+    }
+
+    //---------------------------------------------------------------------
+
 }

@@ -273,7 +273,7 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ImageIconLargeApp {
+        internal static System.Drawing.Bitmap ImageIconLarge {
             get {
                 object obj = ResourceManager.GetObject("ImageIconLarge", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -283,7 +283,7 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ImageIconMediumApp {
+        internal static System.Drawing.Bitmap ImageIconMedium {
             get {
                 object obj = ResourceManager.GetObject("ImageIconMedium", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -316,6 +316,16 @@ namespace Timekeeper.Properties {
         internal static System.Drawing.Bitmap ImageIconSmallProject {
             get {
                 object obj = ResourceManager.GetObject("ImageIconSmallProject", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PictureSetup {
+            get {
+                object obj = ResourceManager.GetObject("PictureSetup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -917,7 +927,12 @@ namespace Timekeeper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to INSERT INTO Activity
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: Activity
+        ///-- Purpose: Create a default Activity.
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO Activity
         ///(
         ///    CreateTime,
         ///    ModifyTime,
@@ -939,23 +954,7 @@ namespace Timekeeper.Properties {
         ///
         ///) VALUES (
         ///    &apos;{0}&apos;,
-        ///    &apos;{0}&apos;,
-        ///    &apos;{1}&apos;,
-        ///
-        ///    &apos;Default Activity&apos;,
-        ///    &apos;Right click and select Edit to change the name or this description&apos;,
-        ///    0,
-        ///    
-        ///    0,
-        ///    0,
-        ///    
-        ///    0,
-        ///    0,
-        ///    0,
-        ///    0,
-        ///    
-        ///    null,
-        ///    null [rest of string was truncated]&quot;;.
+        ///    &apos;{0 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3001_Activity_Insert {
             get {
@@ -984,7 +983,12 @@ namespace Timekeeper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to INSERT INTO Category
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: Category
+        ///-- Purpose: Create two sample Categories.
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO Category
         ///(
         ///    CreateTime,
         ///    ModifyTime,
@@ -1006,29 +1010,7 @@ namespace Timekeeper.Properties {
         ///    &apos;{1}&apos;,
         ///
         ///    &apos;Follow Up&apos;,
-        ///    &apos;Follow Up on this Journal Entry&apos;,
-        ///    
-        ///    0,
-        ///    
-        ///    0,
-        ///    0,
-        ///    
-        ///    null,
-        ///    null
-        ///);
-        ///
-        ///INSERT INTO Category
-        ///(
-        ///    CreateTime,
-        ///    ModifyTime,
-        ///    CategoryGuid,
-        ///
-        ///    Name,
-        ///    Description,
-        ///
-        ///    SortOrderNo,
-        ///
-        ///    Is [rest of string was truncated]&quot;;.
+        ///    &apos;Follow Up on this Journal  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3001_Category_Insert {
             get {
@@ -1125,52 +1107,11 @@ namespace Timekeeper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to INSERT INTO Location
-        ///(
-        ///    CreateTime,
-        ///    ModifyTime,
-        ///    LocationGuid,
-        ///
-        ///    Name,
-        ///    Description,
-        ///
-        ///    SortOrderNo,
-        ///
-        ///    IsHidden,
-        ///    IsDeleted,
-        ///    HiddenTime,
-        ///    DeletedTime
-        ///
-        ///) VALUES (
-        ///    &apos;{0}&apos;,
-        ///    &apos;{0}&apos;,
-        ///    &apos;{1}&apos;,
-        ///
-        ///    &apos;Work&apos;,
-        ///    &apos;Entry Created at Work&apos;,
-        ///    
-        ///    0,
-        ///    
-        ///    0,
-        ///    0,
-        ///    
-        ///    null,
-        ///    null
-        ///);
-        ///
-        ///INSERT INTO Location
-        ///(
-        ///    CreateTime,
-        ///    ModifyTime,
-        ///    LocationGuid,
-        ///
-        ///    Name,
-        ///    Description,
-        ///
-        ///    SortOrderNo,
-        ///
-        ///    IsHidden,
-        ///    Is [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: Location
+        ///-- Purpose: Placeholder.
+        ///------------------------------------------------------------------------
+        ///.
         /// </summary>
         internal static string SQL_3001_Location_Insert {
             get {
@@ -1196,7 +1137,12 @@ namespace Timekeeper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to INSERT INTO AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (Meta table)
+        ///-- Purpose: Populate Timekeeper meta data.
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (
         ///    Key, Value
         ///) VALUES (
         ///    &apos;Created&apos;, &apos;{0}&apos;
@@ -1208,18 +1154,7 @@ namespace Timekeeper.Properties {
         ///    &apos;Upgraded&apos;, &apos;0001-01-01 00:00:00&apos;
         ///);
         ///
-        ///INSERT INTO AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (
-        ///    Key, Value
-        ///) VALUES (
-        ///    &apos;Version&apos;, &apos;{3}&apos;
-        ///);
-        ///
-        ///INSERT INTO AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (
-        ///    Key, Value
-        ///) VALUES (
-        ///    &apos;Id&apos;, &apos;{1}&apos;
-        ///);
-        ///.
+        ///INSERT INTO AA9FFC4E_5 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3001_Meta_Insert {
             get {
@@ -1246,7 +1181,12 @@ namespace Timekeeper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to INSERT INTO Options
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: Options
+        ///-- Purpose: Populate default option values.
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO Options
         ///(
         ///    CreateTime,
         ///    ModifyTime,
@@ -1271,27 +1211,7 @@ namespace Timekeeper.Properties {
         ///    &apos;{0}&apos;,
         ///    &apos;{0}&apos;,
         ///    &apos;LastProject&apos;,
-        ///    null
-        ///);
-        ///
-        ///INSERT INTO Options
-        ///(
-        ///    CreateTime,
-        ///    ModifyTime,
-        ///    Key,
-        ///    Value
-        ///
-        ///) VALUES (
-        ///    &apos;{0}&apos;,
-        ///    &apos;{0}&apos;,
-        ///    &apos;LastGridView&apos;,
-        ///    null
-        ///);
-        ///
-        ///INSERT INTO Options
-        ///(
-        ///    CreateTime,
-        ///    Modify [rest of string was truncated]&quot;;.
+        ///    n [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3001_Options_Insert {
             get {
@@ -1318,7 +1238,12 @@ namespace Timekeeper.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to INSERT INTO Project
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: Project
+        ///-- Purpose: Create a default Project.
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO Project
         ///(
         ///    CreateTime,
         ///    ModifyTime,
@@ -1340,24 +1265,7 @@ namespace Timekeeper.Properties {
         ///
         ///) VALUES (
         ///    &apos;{0}&apos;,
-        ///    &apos;{0}&apos;,
-        ///    &apos;{1}&apos;,
-        ///
-        ///    &apos;Default Project&apos;,
-        ///    &apos;Right click and select Edit to change the name or this description&apos;,
-        ///    0,
-        ///    
-        ///    0,
-        ///    0,
-        ///    
-        ///    0,
-        ///    0,
-        ///    0,
-        ///    0,
-        ///    
-        ///    null,
-        ///    null
-        /// [rest of string was truncated]&quot;;.
+        ///    &apos;{0}&apos;, [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3001_Project_Insert {
             get {
@@ -1387,6 +1295,42 @@ namespace Timekeeper.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: RefDatePreset
+        ///-- Purpose: Populate a reference table to define date presets
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO RefDatePreset
+        ///(
+        ///    CreateTime,
+        ///    ModifyTime,
+        ///    Name,
+        ///    Description
+        ///
+        ///) VALUES (
+        ///    &apos;{0}&apos;,
+        ///    &apos;{0}&apos;,
+        ///    &apos;Today&apos;,
+        ///    &apos;Today&apos;
+        ///);
+        ///
+        ///INSERT INTO RefDatePreset
+        ///(
+        ///    CreateTime,
+        ///    ModifyTime,
+        ///    Name,
+        ///    Description
+        ///
+        ///) VALUES (
+        ///    [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SQL_3001_RefDatePreset_Insert {
+            get {
+                return ResourceManager.GetString("SQL_3001_RefDatePreset_Insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
         ///-- Table..: RefGroupBy
         ///-- Purpose: The data filtering interface uses a drop-down selection of
         ///--          date &quot;Group By&quot; values. For example, Week, Month, Year.
@@ -1402,6 +1346,43 @@ namespace Timekeeper.Properties {
         internal static string SQL_3001_RefGroupBy_Create {
             get {
                 return ResourceManager.GetString("SQL_3001_RefGroupBy_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: RefGroupBy
+        ///-- Purpose: Populate a reference table to define group by values.
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO RefGroupBy
+        ///(
+        ///    CreateTime,
+        ///    ModifyTime,
+        ///    Name,
+        ///    Description
+        ///
+        ///) VALUES (
+        ///    &apos;{0}&apos;,
+        ///    &apos;{0}&apos;,
+        ///    &apos;Day&apos;,
+        ///    &apos;Day&apos;
+        ///);
+        ///
+        ///INSERT INTO RefGroupBy
+        ///(
+        ///    CreateTime,
+        ///    ModifyTime,
+        ///    Name,
+        ///    Description
+        ///
+        ///) VALUES (
+        ///    &apos;{0}&apos;,
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SQL_3001_RefGroupBy_Insert {
+            get {
+                return ResourceManager.GetString("SQL_3001_RefGroupBy_Insert", resourceCulture);
             }
         }
         
@@ -1428,6 +1409,37 @@ namespace Timekeeper.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: RefItemType
+        ///-- Purpose: Populate a reference table to define Timekeeper item types.
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO RefItemType
+        ///(
+        ///    CreateTime,
+        ///    ModifyTime,
+        ///    Name,
+        ///    Description
+        ///
+        ///) VALUES (
+        ///    &apos;{0}&apos;,
+        ///    &apos;{0}&apos;,
+        ///    &apos;Activity&apos;,
+        ///    &apos;An Activity is a verb or action being timed.&apos;
+        ///);
+        ///
+        ///INSERT INTO RefItemType
+        ///(
+        ///    CreateTime,
+        ///    ModifyTime,        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SQL_3001_RefItemType_Insert {
+            get {
+                return ResourceManager.GetString("SQL_3001_RefItemType_Insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
         ///-- Table..: RefTimeDisplay
         ///-- Purpose: The interface uses a drop-down selection of time display
         ///--          formats to control how sum(Journal.Seconds) is displayed.
@@ -1443,6 +1455,37 @@ namespace Timekeeper.Properties {
         internal static string SQL_3001_RefTimeDisplay_Create {
             get {
                 return ResourceManager.GetString("SQL_3001_RefTimeDisplay_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: RefTimeDisplay
+        ///-- Purpose: Populate a reference table to define time display formats.
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO RefTimeDisplay
+        ///(
+        ///    CreateTime,
+        ///    ModifyTime,
+        ///    Name,
+        ///    Description
+        ///
+        ///) VALUES (
+        ///    &apos;{0}&apos;,
+        ///    &apos;{0}&apos;,
+        ///    &apos;hh:mm:ss&apos;,
+        ///    &apos;Display time in Hours:Minutes:Seconds.&apos;
+        ///);
+        ///
+        ///INSERT INTO RefTimeDisplay
+        ///(
+        ///    CreateTime,
+        ///    ModifyTime [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SQL_3001_RefTimeDisplay_Insert {
+            get {
+                return ResourceManager.GetString("SQL_3001_RefTimeDisplay_Insert", resourceCulture);
             }
         }
         

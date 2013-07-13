@@ -16,10 +16,6 @@ CREATE TABLE Journal
     ModifyTime              DATETIME    NOT NULL,
     LocationId              INTEGER         NULL,
 
-    -- NOT PERMANENT COLUMNS, ONLY HERE DURING UTC TRANSITION DEVELOPMENT
-    OriginalCreateTime      DATETIME    NOT NULL,
-    OriginalModifyTime      DATETIME    NOT NULL,
-
     JournalEntryGuid        TEXT        NOT NULL,
 
     ActivityId              INTEGER     NOT NULL,
@@ -31,7 +27,9 @@ CREATE TABLE Journal
     CategoryId              INTEGER         NULL,
     IsLocked                BOOLEAN     NOT NULL,
 
-    ExternalEntryNo         INTEGER         NULL,
+    -- NOT PERMANENT COLUMNS, ONLY HERE DURING UTC TRANSITION DEVELOPMENT
+    OriginalStartTime       DATETIME    NOT NULL,
+    OriginalStopTime        DATETIME    NOT NULL,
 
     FOREIGN KEY(LocationId)             REFERENCES Location(LocationId)
     FOREIGN KEY(ActivityId)             REFERENCES Activity(ActivityId)
@@ -44,4 +42,3 @@ CREATE UNIQUE INDEX idx_Journal_JournalEntryGuid    ON Journal(JournalEntryGuid)
 CREATE UNIQUE INDEX idx_Journal_StartTime           ON Journal(StartTime);
 CREATE        INDEX idx_Journal_ActivityId          ON Journal(ActivityId);
 CREATE        INDEX idx_Journal_ProjectId           ON Journal(ProjectId);
-CREATE        INDEX idx_Journal_ExternalEntryNo     on Journal(ExternalEntryNo);
