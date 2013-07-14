@@ -19,6 +19,8 @@ namespace Timekeeper
 
         private FileUpgradeOptions Options;
 
+        private DateTime FileCreateDate;
+
         //---------------------------------------------------------------------
         // Upgrading Functions
         //---------------------------------------------------------------------
@@ -53,7 +55,7 @@ namespace Timekeeper
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
                     CreateNewTable("Diary", CurrentSchemaVersion, false);
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
-                    CreateNewTable("FilterOptions", CurrentSchemaVersion, Populate);
+                    CreateNewTable("FilterOptions", CurrentSchemaVersion, false);
                     CreateNewTable("GridOptions", CurrentSchemaVersion, false);
                     CreateNewTable("ReportOptions", CurrentSchemaVersion, false);
 
@@ -79,7 +81,7 @@ namespace Timekeeper
                     // Create 3.0 tables
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
-                    CreateNewTable("ReportOptionks", CurrentSchemaVersion, false);
+                    CreateNewTable("ReportOptions", CurrentSchemaVersion, false);
 
                     return true;
                 }
@@ -157,15 +159,25 @@ namespace Timekeeper
             string Id = "";
 
             foreach (Row Item in Meta) {
-                if (Item["key"] == "version")
+                if (Item["key"] == "version") {
                     // A bug prior to TK3 sometimes had the create
                     // date on the timestamp of the version row and 
                     // not (ironically) on the create row. For safety
                     // always use version.timestamp_c to get the actual
                     // create date of a database.
+                    // Actually: not always a bug: TK 2.0 *only* had
+                    // a verion key and nothing else.
                     Created = ConvertTime(Item["timestamp_c"]);
+                    this.FileCreateDate = Item["timestamp_c"];
+                }
                 if (Item["key"] == "id")
                     Id = Item["value"];
+            }
+
+            // Older versions may not have had a GUID. Fill one in now
+            // if an existing one could not be found
+            if (Id == "") {
+                Id = UUID.Get();
             }
 
             // Create new table
@@ -385,7 +397,7 @@ namespace Timekeeper
                 RowId = OldRow["id"];
 
                 if (OldRow["timestamp_c"] == null) {
-                    OldRow["timestamp_c"] = OldRow["timestamp_m"];
+                    OldRow["timestamp_c"] = this.FileCreateDate;
                 }
 
                 Row NewRow = new Row() {
@@ -520,12 +532,28 @@ namespace Timekeeper
             foreach (Row OldRow in Journal) {
                 RowId = OldRow["id"];
 
+                if (OldRow["is_locked"] == null) {
+                    OldRow["is_locked"] = false;
+                    Timekeeper.Info(String.Format("Conversion Note: row {0} had a null is_locked value. Assumed false and processing continued.", RowId));
+                }
+
                 if (OldRow["is_locked"] == true) {
                     // Automatically unlock any locked rows
                     OldRow["timestamp_e"] = OldRow["timestamp_s"];
                     OldRow["seconds"] = 0;
                     OldRow["is_locked"] = false;
                     Timekeeper.Info(String.Format("Conversion Note: row {0} was locked. The row was safely unlocked and processing continued.", RowId));
+                }
+
+                if (OldRow["timestamp_e"] == null) {
+                    if (OldRow["seconds"] == null) {
+                        OldRow["timestamp_e"] = OldRow["timestamp_s"];
+                    } else {
+                        int Seconds = (int)OldRow["seconds"];
+                        TimeSpan Elapsed = new System.TimeSpan(0, 0, Seconds);
+                        OldRow["timestamp_e"] = OldRow["timestamp_s"].Add(Elapsed);
+                    }
+                    Timekeeper.Info(String.Format("Conversion Note: row {0} had no StopTime value. A value based on StartTime was calculated and used.", RowId));
                 }
 
                 Row NewRow = new Row() {
