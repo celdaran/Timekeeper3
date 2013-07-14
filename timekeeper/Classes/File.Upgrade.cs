@@ -702,32 +702,86 @@ namespace Timekeeper
         // General Helpers
         //---------------------------------------------------------------------
 
+        /*
         private string ConvertTime(DateTime time)
         {
-            return ConvertTime(time.ToString(Common.DATETIME_FORMAT));
+            string converted = ConvertTime(time.ToString());
+            return converted;
         }
+        */
 
         //---------------------------------------------------------------------
 
-        private string ConvertTime(string time)
+        private string ConvertTime(DateTime time)
         {
             /*
-            Convert:  2010-11-23 16:30:48
-            To.....:  2010-11-23T16:30:48-06:00
+            time = TimeZoneInfo.ConvertTimeToUtc(time, Options.LocationTimeZoneInfo);
+            time = TimeZoneInfo.ConvertTimeFromUtc(time, Options.LocationTimeZoneInfo);
+            DateTimeOffset DtOffset = new DateTimeOffset(time);
+            string converted = DtOffset.ToString(Common.DATETIME_FORMAT);
+//            string converted = time.ToString(Common.DATETIME_FORMAT);
+            return converted;
             */
 
-            string ConvertedTime = time;
+            /*
+            Given a current time zone of US Central Time:
+
+            Convert:  2013-01-01 20:00:00
+            To.....:  2013-01-02 02:00:00-06:00
+
+            Convert:  2013-07-01 20:00:00
+            To.....:  2013-07-02 01:00:00-05:00
+            */
+
+            // Get time into standard string format
+            string ConvertedTime = time.ToString(Common.LOCAL_DATETIME_FORMAT);
             string TimeZoneOffset;
 
+            //time = TimeZoneInfo.ConvertTimeToUtc(time, Options.LocationTimeZoneInfo);
+
             // Make sure we have the right date/time delimeter (for backward compatability)
-             ConvertedTime = ConvertedTime.Replace(' ', 'T');
+            ConvertedTime = ConvertedTime.Replace(' ', 'T');
 
-            // Calculate the timezone offset
+            /*
+            Adjustment Rules:
+
+               From 1/1/0001 12:00:00 AM to 12/31/2006 12:00:00 AM
+               Delta: 01:00:00
+               Begins at 2:00 AM on Sunday of week 1 of April
+               Ends at 2:00 AM on Sunday of week 5 of October
+
+               From 1/1/2007 12:00:00 AM to 12/31/9999 12:00:00 AM
+               Delta: 01:00:00
+               Begins at 2:00 AM on Sunday of week 2 of March
+               Ends at 2:00 AM on Sunday of week 1 of November
+             */
+
+             // Calculate the timezone & dst offset
             TimeSpan Offset = Options.LocationTimeZoneInfo.BaseUtcOffset;
-//            TimeZoneInfo.AdjustmentRule[] Adjustments = Options.LocationTimeZoneInfo.GetAdjustmentRules();
-            TimeZoneOffset = String.Format("{0:00}:{1:00}", Offset.Hours, Offset.Minutes);
+            TimeZoneInfo TimeZone = Options.LocationTimeZoneInfo;
 
-            // Now tack on the timezone (utc offset)
+            if (TimeZone.SupportsDaylightSavingTime) {
+                /*
+                TimeZoneInfo.AdjustmentRule[] Adjustments = TimeZone.GetAdjustmentRules();
+                foreach (TimeZoneInfo.AdjustmentRule Rule in Adjustments) {
+
+                    TimeZoneInfo.TransitionTime TransTimeStart = Rule.DaylightTransitionStart;
+                    TimeZoneInfo.TransitionTime TransTimeEnd = Rule.DaylightTransitionEnd;
+
+                    DateTime TimeStart = 
+
+                }
+                */
+                if (TimeZone.IsDaylightSavingTime(time)) {
+                    TimeZoneOffset = String.Format("{0:00}:{1:00}", Offset.Hours + 1, Offset.Minutes);
+                } else {
+                    TimeZoneOffset = String.Format("{0:00}:{1:00}", Offset.Hours, Offset.Minutes);
+                }
+            } else {
+                TimeZoneOffset = String.Format("{0:00}:{1:00}", Offset.Hours, Offset.Minutes);
+            }
+
+            // Now tack on the timezone (utc offset, with dst factored in)
             ConvertedTime += TimeZoneOffset;
 
             // Done
