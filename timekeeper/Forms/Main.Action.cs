@@ -662,7 +662,7 @@ namespace Timekeeper.Forms
                 string NewDataFile = GetBackupFileName();
 
                 // Open dialog box
-                Forms.Upgrade Dialog = new Forms.Upgrade();
+                Forms.UpgradeWizard Dialog = new Forms.UpgradeWizard();
                 Dialog.BackUpFileLabel.Text = NewDataFile;
                 //Dialog.StepLabel.Text = "Click the Start button to begin the database upgrade...";
                 if (Dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {

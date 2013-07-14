@@ -15,7 +15,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Forms
 {
-    public partial class Upgrade : Form
+    public partial class UpgradeWizard : Form
     {
         private File File;
         private bool UpgradeSucceeded;
@@ -25,7 +25,7 @@ namespace Timekeeper.Forms
         // Constructor
         //---------------------------------------------------------------------
 
-        public Upgrade()
+        public UpgradeWizard()
         {
             InitializeComponent();
 
