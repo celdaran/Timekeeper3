@@ -702,27 +702,8 @@ namespace Timekeeper
         // General Helpers
         //---------------------------------------------------------------------
 
-        /*
         private string ConvertTime(DateTime time)
         {
-            string converted = ConvertTime(time.ToString());
-            return converted;
-        }
-        */
-
-        //---------------------------------------------------------------------
-
-        private string ConvertTime(DateTime time)
-        {
-            /*
-            time = TimeZoneInfo.ConvertTimeToUtc(time, Options.LocationTimeZoneInfo);
-            time = TimeZoneInfo.ConvertTimeFromUtc(time, Options.LocationTimeZoneInfo);
-            DateTimeOffset DtOffset = new DateTimeOffset(time);
-            string converted = DtOffset.ToString(Common.DATETIME_FORMAT);
-//            string converted = time.ToString(Common.DATETIME_FORMAT);
-            return converted;
-            */
-
             /*
             Given a current time zone of US Central Time:
 
@@ -735,51 +716,22 @@ namespace Timekeeper
 
             // Get time into standard string format
             string ConvertedTime = time.ToString(Common.LOCAL_DATETIME_FORMAT);
-            string TimeZoneOffset;
 
-            //time = TimeZoneInfo.ConvertTimeToUtc(time, Options.LocationTimeZoneInfo);
-
-            // Make sure we have the right date/time delimeter (for backward compatability)
+            // Make sure we have the right date/time delimeter
             ConvertedTime = ConvertedTime.Replace(' ', 'T');
 
-            /*
-            Adjustment Rules:
-
-               From 1/1/0001 12:00:00 AM to 12/31/2006 12:00:00 AM
-               Delta: 01:00:00
-               Begins at 2:00 AM on Sunday of week 1 of April
-               Ends at 2:00 AM on Sunday of week 5 of October
-
-               From 1/1/2007 12:00:00 AM to 12/31/9999 12:00:00 AM
-               Delta: 01:00:00
-               Begins at 2:00 AM on Sunday of week 2 of March
-               Ends at 2:00 AM on Sunday of week 1 of November
-             */
-
-             // Calculate the timezone & dst offset
+            // Calculate the timezone & dst (if any) offset
             TimeSpan Offset = Options.LocationTimeZoneInfo.BaseUtcOffset;
-            TimeZoneInfo TimeZone = Options.LocationTimeZoneInfo;
+            int OffsetHours = Offset.Hours;
+            TimeZoneInfo TimeZoneInfo = Options.LocationTimeZoneInfo;
 
-            if (TimeZone.SupportsDaylightSavingTime) {
-                /*
-                TimeZoneInfo.AdjustmentRule[] Adjustments = TimeZone.GetAdjustmentRules();
-                foreach (TimeZoneInfo.AdjustmentRule Rule in Adjustments) {
-
-                    TimeZoneInfo.TransitionTime TransTimeStart = Rule.DaylightTransitionStart;
-                    TimeZoneInfo.TransitionTime TransTimeEnd = Rule.DaylightTransitionEnd;
-
-                    DateTime TimeStart = 
-
+            if (TimeZoneInfo.SupportsDaylightSavingTime) {
+                if (TimeZoneInfo.IsDaylightSavingTime(time)) {
+                    OffsetHours++;
                 }
-                */
-                if (TimeZone.IsDaylightSavingTime(time)) {
-                    TimeZoneOffset = String.Format("{0:00}:{1:00}", Offset.Hours + 1, Offset.Minutes);
-                } else {
-                    TimeZoneOffset = String.Format("{0:00}:{1:00}", Offset.Hours, Offset.Minutes);
-                }
-            } else {
-                TimeZoneOffset = String.Format("{0:00}:{1:00}", Offset.Hours, Offset.Minutes);
             }
+
+            string TimeZoneOffset = String.Format("{0:00}:{1:00}", OffsetHours, Offset.Minutes);
 
             // Now tack on the timezone (utc offset, with dst factored in)
             ConvertedTime += TimeZoneOffset;
