@@ -127,11 +127,11 @@
     <Compile Include="Forms\Report.Designer.cs">
       <DependentUpon>Report.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Upgrade.cs">
+    <Compile Include="Forms\UpgradeWizard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Upgrade.Designer.cs">
-      <DependentUpon>Upgrade.cs</DependentUpon>
+    <Compile Include="Forms\UpgradeWizard.Designer.cs">
+      <DependentUpon>UpgradeWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Classes\Activities.cs" />
@@ -401,8 +401,8 @@
     <EmbeddedResource Include="Forms\Report.resx">
       <DependentUpon>Report.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Upgrade.resx">
-      <DependentUpon>Upgrade.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\UpgradeWizard.resx">
+      <DependentUpon>UpgradeWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
