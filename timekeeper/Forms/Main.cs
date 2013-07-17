@@ -116,7 +116,7 @@ namespace Timekeeper.Forms
         private void MenuFileRecentFile_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
-            Action_LoadFile(menuItem.Text);
+            Action_OpenFile(menuItem.Text);
         }
 
         // File | Exit

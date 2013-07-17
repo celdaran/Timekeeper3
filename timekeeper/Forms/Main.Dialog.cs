@@ -68,16 +68,16 @@ namespace Timekeeper.Forms
 
         private void Dialog_NewFile()
         {
-            bool ShowNewDatabaseWizard = true; // this will be an option
+            bool ShowNewDatabaseWizard = true; // FIXME: this will be an option
 
             if (ShowNewDatabaseWizard) {
                 NewWizard NewWizardDialog = new NewWizard();
                 if (NewWizardDialog.ShowDialog(this) == DialogResult.OK) {
-                    Action_LoadFile(NewWizardDialog.FileName, DatabaseCheckAction.CreateIfMissing);
+                    Action_OpenFile(NewWizardDialog.FileName, DatabaseCheckAction.CreateIfMissing);
                 }
             } else {
                 if (NewFileDialog.ShowDialog(this) == DialogResult.OK) {
-                    Action_LoadFile(NewFileDialog.FileName, DatabaseCheckAction.CreateIfMissing);
+                    Action_OpenFile(NewFileDialog.FileName, DatabaseCheckAction.CreateIfMissing);
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace Timekeeper.Forms
         private void Dialog_OpenFile()
         {
             if (OpenFileDialog.ShowDialog(this) == DialogResult.OK) {
-                Action_LoadFile(OpenFileDialog.FileName);
+                Action_OpenFile(OpenFileDialog.FileName);
             }
         }
 

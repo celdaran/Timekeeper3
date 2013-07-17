@@ -243,14 +243,13 @@ namespace Timekeeper.Forms
             }
 
             if (DatabaseFileName != null) {
-                // for now, do not open any files upon launch
-                //Action_OpenFile();
+                Action_LoadFile();
             }
 
             //----------------------------------------------
             // Extras to do at app startup, for fun
             //----------------------------------------------
-            EnumerateTimeZones();
+            // EnumerateTimeZones();
 
             // short cut
             //Forms.Report Report = new Forms.Report();
@@ -343,18 +342,18 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_LoadFile(string fileName)
+        private void Action_OpenFile(string fileName)
         {
-            Action_LoadFile(fileName, DatabaseCheckAction.NoAction);
+            Action_OpenFile(fileName, DatabaseCheckAction.NoAction);
         }
 
         //---------------------------------------------------------------------
 
-        private void Action_LoadFile(string fileName, DatabaseCheckAction action)
+        private void Action_OpenFile(string fileName, DatabaseCheckAction action)
         {
             Action_CloseFile();
             DatabaseFileName = fileName;
-            Action_OpenFile(action);
+            Action_LoadFile(action);
         }
 
         //---------------------------------------------------------------------
@@ -581,14 +580,14 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private bool Action_OpenFile()
+        private bool Action_LoadFile()
         {
-            return Action_OpenFile(DatabaseCheckAction.NoAction);
+            return Action_LoadFile(DatabaseCheckAction.NoAction);
         }
 
         //---------------------------------------------------------------------
 
-        private bool Action_OpenFile(DatabaseCheckAction action)
+        private bool Action_LoadFile(DatabaseCheckAction action)
         {
             try {
                 if (!Action_CheckDatabase(action)) {
