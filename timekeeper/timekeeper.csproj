@@ -121,6 +121,12 @@
     <Compile Include="Forms\Filtering.Designer.cs">
       <DependentUpon>Filtering.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\NewWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewWizard.Designer.cs">
+      <DependentUpon>NewWizard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Report.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -379,6 +385,9 @@
     <EmbeddedResource Include="Forms\fItem.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewWizard.resx">
+      <DependentUpon>NewWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Options.resx">
       <SubType>Designer</SubType>

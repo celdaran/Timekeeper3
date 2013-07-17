@@ -34,6 +34,9 @@
             this.ButtonPanel = new System.Windows.Forms.Panel();
             this.BackButton = new System.Windows.Forms.Button();
             this.NextButton = new System.Windows.Forms.Button();
+            this.WizardPicture = new System.Windows.Forms.PictureBox();
+            this.TopPanel = new System.Windows.Forms.Panel();
+            this.FileDialog = new System.Windows.Forms.OpenFileDialog();
             this.tablessControl1 = new Forms.Controls.TablessControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.IntroductionInstructions = new System.Windows.Forms.Label();
@@ -62,10 +65,9 @@
             this.FinalizeInstructions = new System.Windows.Forms.Label();
             this.UpgradeProgress = new System.Windows.Forms.ProgressBar();
             this.StepLabel = new System.Windows.Forms.Label();
-            this.WizardPicture = new System.Windows.Forms.PictureBox();
-            this.TopPanel = new System.Windows.Forms.Panel();
-            this.FileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ButtonPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WizardPicture)).BeginInit();
+            this.TopPanel.SuspendLayout();
             this.tablessControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -73,13 +75,11 @@
             this.tabPage4.SuspendLayout();
             this.MemoOption.SuspendLayout();
             this.tabPage5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.WizardPicture)).BeginInit();
-            this.TopPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartButton
             // 
-            this.StartButton.Location = new System.Drawing.Point(12, 6);
+            this.StartButton.Location = new System.Drawing.Point(12, 9);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(43, 23);
             this.StartButton.TabIndex = 2;
@@ -91,7 +91,7 @@
             // LaterButton
             // 
             this.LaterButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.LaterButton.Location = new System.Drawing.Point(431, 6);
+            this.LaterButton.Location = new System.Drawing.Point(431, 9);
             this.LaterButton.Name = "LaterButton";
             this.LaterButton.Size = new System.Drawing.Size(75, 23);
             this.LaterButton.TabIndex = 4;
@@ -100,7 +100,7 @@
             // 
             // OkayButton
             // 
-            this.OkayButton.Location = new System.Drawing.Point(61, 6);
+            this.OkayButton.Location = new System.Drawing.Point(61, 9);
             this.OkayButton.Name = "OkayButton";
             this.OkayButton.Size = new System.Drawing.Size(43, 23);
             this.OkayButton.TabIndex = 3;
@@ -125,7 +125,7 @@
             // BackButton
             // 
             this.BackButton.Enabled = false;
-            this.BackButton.Location = new System.Drawing.Point(269, 6);
+            this.BackButton.Location = new System.Drawing.Point(269, 9);
             this.BackButton.Name = "BackButton";
             this.BackButton.Size = new System.Drawing.Size(75, 23);
             this.BackButton.TabIndex = 5;
@@ -135,13 +135,39 @@
             // 
             // NextButton
             // 
-            this.NextButton.Location = new System.Drawing.Point(344, 6);
+            this.NextButton.Location = new System.Drawing.Point(344, 9);
             this.NextButton.Name = "NextButton";
             this.NextButton.Size = new System.Drawing.Size(75, 23);
             this.NextButton.TabIndex = 1;
             this.NextButton.Text = "&Next >";
             this.NextButton.UseVisualStyleBackColor = true;
             this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
+            // 
+            // WizardPicture
+            // 
+            this.WizardPicture.Dock = System.Windows.Forms.DockStyle.Left;
+            this.WizardPicture.Image = global::Timekeeper.Properties.Resources.PictureSetup;
+            this.WizardPicture.Location = new System.Drawing.Point(0, 0);
+            this.WizardPicture.Name = "WizardPicture";
+            this.WizardPicture.Size = new System.Drawing.Size(163, 273);
+            this.WizardPicture.TabIndex = 13;
+            this.WizardPicture.TabStop = false;
+            // 
+            // TopPanel
+            // 
+            this.TopPanel.Controls.Add(this.tablessControl1);
+            this.TopPanel.Controls.Add(this.WizardPicture);
+            this.TopPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TopPanel.Location = new System.Drawing.Point(0, 0);
+            this.TopPanel.Name = "TopPanel";
+            this.TopPanel.Size = new System.Drawing.Size(518, 273);
+            this.TopPanel.TabIndex = 15;
+            // 
+            // FileDialog
+            // 
+            this.FileDialog.CheckFileExists = false;
+            this.FileDialog.DefaultExt = "tkdb";
+            this.FileDialog.FileName = "openFileDialog1";
             // 
             // tablessControl1
             // 
@@ -448,33 +474,7 @@
             this.StepLabel.TabIndex = 20;
             this.StepLabel.Text = "Progress:";
             // 
-            // WizardPicture
-            // 
-            this.WizardPicture.Dock = System.Windows.Forms.DockStyle.Left;
-            this.WizardPicture.Image = global::Timekeeper.Properties.Resources.PictureSetup;
-            this.WizardPicture.Location = new System.Drawing.Point(0, 0);
-            this.WizardPicture.Name = "WizardPicture";
-            this.WizardPicture.Size = new System.Drawing.Size(163, 273);
-            this.WizardPicture.TabIndex = 13;
-            this.WizardPicture.TabStop = false;
-            // 
-            // TopPanel
-            // 
-            this.TopPanel.Controls.Add(this.tablessControl1);
-            this.TopPanel.Controls.Add(this.WizardPicture);
-            this.TopPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TopPanel.Location = new System.Drawing.Point(0, 0);
-            this.TopPanel.Name = "TopPanel";
-            this.TopPanel.Size = new System.Drawing.Size(518, 273);
-            this.TopPanel.TabIndex = 15;
-            // 
-            // FileDialog
-            // 
-            this.FileDialog.CheckFileExists = false;
-            this.FileDialog.DefaultExt = "tkdb";
-            this.FileDialog.FileName = "openFileDialog1";
-            // 
-            // Upgrade
+            // UpgradeWizard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -482,9 +482,10 @@
             this.ClientSize = new System.Drawing.Size(518, 314);
             this.Controls.Add(this.TopPanel);
             this.Controls.Add(this.ButtonPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Upgrade";
+            this.Name = "UpgradeWizard";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
@@ -492,6 +493,8 @@
             this.Text = "Upgrade Database";
             this.Load += new System.EventHandler(this.Upgrade_Load);
             this.ButtonPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.WizardPicture)).EndInit();
+            this.TopPanel.ResumeLayout(false);
             this.tablessControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -505,8 +508,6 @@
             this.MemoOption.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.WizardPicture)).EndInit();
-            this.TopPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

@@ -160,33 +160,8 @@ namespace Timekeeper.Forms
 
         private void Upgrade_Load(object sender, EventArgs e)
         {
-            EnumerateTimeZones();
-        }
-
-        //---------------------------------------------------------------------
-
-        private void EnumerateTimeZones()
-        {
-            try {
-                ReadOnlyCollection<TimeZoneInfo> TimeZones = TimeZoneInfo.GetSystemTimeZones();
-
-                TimeZone CurrentTimeZone = TimeZone.CurrentTimeZone;
-                int CurrentIndex = 0;
-
-                foreach (TimeZoneInfo timeZone in TimeZones) {
-
-                    IdObjectPair Pair = new IdObjectPair(CurrentIndex + 1, timeZone);
-
-                    LocationTimeZone.Items.Add(Pair);
-                    if (CurrentTimeZone.StandardName == timeZone.StandardName) {
-                        LocationTimeZone.SelectedIndex = CurrentIndex;
-                    }
-                    CurrentIndex++;
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
+            Classes.Widgets Widgets = new Classes.Widgets();
+            Widgets.PopulateTimeZoneComboBox(LocationTimeZone);
         }
 
         //---------------------------------------------------------------------

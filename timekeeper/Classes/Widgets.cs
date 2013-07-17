@@ -5,6 +5,8 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
+using System.Collections.ObjectModel;
+
 using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
@@ -79,7 +81,7 @@ namespace Timekeeper.Classes
         {
             TreeNode Node = new TreeNode();
             Node.Tag = item;
-            Node.Text = item.Name + String.Format(" ({0})", item.ItemId);
+            Node.Text = item.Name; // +String.Format(" ({0})", item.ItemId);
             Node.ToolTipText = item.Description;
             if (item.IsHidden) {
                 Node.ForeColor = Color.Gray;
@@ -190,6 +192,34 @@ namespace Timekeeper.Classes
             tree.ShowRootLines = Projects.HasParents();
 
             // FIXME: this is very unfinished
+        }
+
+        //---------------------------------------------------------------------
+        // Populate a TimeZone drop down
+        //---------------------------------------------------------------------
+
+        public void PopulateTimeZoneComboBox(ComboBox box)
+        {
+            try {
+                ReadOnlyCollection<TimeZoneInfo> TimeZones = TimeZoneInfo.GetSystemTimeZones();
+
+                TimeZone CurrentTimeZone = TimeZone.CurrentTimeZone;
+                int CurrentIndex = 0;
+
+                foreach (TimeZoneInfo timeZone in TimeZones) {
+
+                    IdObjectPair Pair = new IdObjectPair(CurrentIndex + 1, timeZone);
+
+                    box.Items.Add(Pair);
+                    if (CurrentTimeZone.StandardName == timeZone.StandardName) {
+                        box.SelectedIndex = CurrentIndex;
+                    }
+                    CurrentIndex++;
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
         }
 
         //---------------------------------------------------------------------

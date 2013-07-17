@@ -68,8 +68,17 @@ namespace Timekeeper.Forms
 
         private void Dialog_NewFile()
         {
-            if (NewFileDialog.ShowDialog(this) == DialogResult.OK) {
-                Action_LoadFile(NewFileDialog.FileName, DatabaseCheckAction.CreateIfMissing);
+            bool ShowNewDatabaseWizard = true; // this will be an option
+
+            if (ShowNewDatabaseWizard) {
+                NewWizard NewWizardDialog = new NewWizard();
+                if (NewWizardDialog.ShowDialog(this) == DialogResult.OK) {
+                    Action_LoadFile(NewWizardDialog.FileName, DatabaseCheckAction.CreateIfMissing);
+                }
+            } else {
+                if (NewFileDialog.ShowDialog(this) == DialogResult.OK) {
+                    Action_LoadFile(NewFileDialog.FileName, DatabaseCheckAction.CreateIfMissing);
+                }
             }
         }
 
