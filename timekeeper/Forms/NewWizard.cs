@@ -19,6 +19,7 @@ namespace Timekeeper.Forms
         //----------------------------------------------------------------------
 
         private string _FileName;
+        private FileCreateOptions _CreateOptions;
 
         //----------------------------------------------------------------------
 
@@ -63,6 +64,14 @@ namespace Timekeeper.Forms
         {
             get { return _FileName; }
             set { _FileName = value; }
+        }
+
+        //----------------------------------------------------------------------
+
+        public FileCreateOptions CreateOptions
+        {
+            get { return _CreateOptions; }
+            set { _CreateOptions = value; }
         }
 
         //----------------------------------------------------------------------
@@ -152,6 +161,19 @@ namespace Timekeeper.Forms
                     FinishButton.Location = NextButton.Location;
                     FinishButton.Size = NextButton.Size;
                     FinishButton.Focus();
+
+                    IdObjectPair Pair = (IdObjectPair)LocationTimeZone.SelectedItem;
+
+                    FileCreateOptions Options = new FileCreateOptions();
+                    Options.FileName = NewDatabaseFileName.Text;
+                    Options.UseProjects = UseProjects.Checked;
+                    Options.UseActivities = UseActivities.Checked;
+                    Options.ItemPreset = ItemPreset.SelectedIndex;
+                    Options.LocationName = LocationName.Text;
+                    Options.LocationDescription = LocationDescription.Text;
+                    Options.LocationTimeZoneId = Pair.Id;
+                    Options.LocationTimeZoneInfo = (TimeZoneInfo)Pair.Object;
+                    this.CreateOptions = Options;
                 }
 
             }

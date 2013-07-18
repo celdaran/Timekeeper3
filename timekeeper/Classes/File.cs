@@ -27,6 +27,8 @@ namespace Timekeeper
         private FileInfo FileInfo;
         private ResourceManager Resources;
 
+        private FileCreateOptions _CreateOptions;
+
         //---------------------------------------------------------------------
         // Constructor
         //---------------------------------------------------------------------
@@ -39,12 +41,23 @@ namespace Timekeeper
             this.Name = FileInfo.Name;
             this.FullPath = FileInfo.DirectoryName + "\\" + FileInfo.Name;
             this.Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(File).Assembly);
+            this.CreateOptions = new FileCreateOptions();
         }
 
         // New/future constructor
         // Calling the old for compatability purposes
         public File() : this(Timekeeper.Database)
         {
+        }
+
+        //---------------------------------------------------------------------
+        // Accessors
+        //---------------------------------------------------------------------
+
+        public FileCreateOptions CreateOptions
+        {
+            get { return _CreateOptions; }
+            set { _CreateOptions = value; }
         }
 
         //---------------------------------------------------------------------
@@ -99,6 +112,7 @@ namespace Timekeeper
         // Database Creation & Population
         //---------------------------------------------------------------------
 
+        /*
         public bool Create(Version version)
         {
             return Create(VersionToString(version), true);
@@ -110,19 +124,34 @@ namespace Timekeeper
         {
             return Create(VersionToString(version), populate);
         }
+        */
 
         //---------------------------------------------------------------------
 
-        public bool Create(string version)
+        // TRANSITIONAL
+
+        /*
+        public bool Create(Version desiredVersion, bool populate)
         {
-            return Create(version, true);
+            FileCreateOptions Options = new FileCreateOptions();
+            return Create(desiredVersion, Options, populate);
+        }
+        */
+
+        //---------------------------------------------------------------------
+
+        public bool Create(Version desiredVersion) //string version)
+        {
+            return Create(desiredVersion, true);
         }
 
         //---------------------------------------------------------------------
 
-        public bool Create(string version, bool populate)
+        public bool Create(Version desiredVersion, bool populate) //string version, bool populate)
         {
             try {
+                string version = VersionToString(desiredVersion);
+
                 // Note: due to FK constraints, the order
                 // of table creation below matters.
 

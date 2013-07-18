@@ -79,6 +79,14 @@ namespace Timekeeper.Forms
 
         private bool Action_CheckDatabase(DatabaseCheckAction action)
         {
+            FileCreateOptions Options = new FileCreateOptions();
+            return Action_CheckDatabase(action, Options);
+        }
+
+        //---------------------------------------------------------------------
+
+        private bool Action_CheckDatabase(DatabaseCheckAction action, FileCreateOptions fileCreateOptions)
+        {
             try {
                 // FIXME: Options overhaul is going to need two logging
                 // levels. Set one for Timekeeper and one for Toolbox.DBI.
@@ -96,6 +104,7 @@ namespace Timekeeper.Forms
                 if (!Database.FileExists) {
                     if (action == DatabaseCheckAction.CreateIfMissing) {
                         Timekeeper.Info("Database does not exist. Creating: " + DatabaseFileName);
+                        File.CreateOptions = fileCreateOptions;
                         File.Create(Version);
                     } else {
                         Common.Warn("File " + DatabaseFileName + " not found");
@@ -143,6 +152,12 @@ namespace Timekeeper.Forms
             }
 
             return true;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_CreateFile()
+        {
         }
 
         //---------------------------------------------------------------------
@@ -342,22 +357,6 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_OpenFile(string fileName)
-        {
-            Action_OpenFile(fileName, DatabaseCheckAction.NoAction);
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_OpenFile(string fileName, DatabaseCheckAction action)
-        {
-            Action_CloseFile();
-            DatabaseFileName = fileName;
-            Action_LoadFile(action);
-        }
-
-        //---------------------------------------------------------------------
-
         private void Action_LoadOptions()
         {
             // TODO: Move all of this to the Options.cs class.
@@ -458,6 +457,23 @@ namespace Timekeeper.Forms
             splitTrees.Panel1.Controls.Add(this.wProjects);
             splitTrees.Panel2.Controls.Add(this.wTasks);
             */
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_OpenFile(string fileName)
+        {
+            FileCreateOptions CreateOptions = new FileCreateOptions();
+            Action_OpenFile(fileName, DatabaseCheckAction.NoAction, CreateOptions);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_OpenFile(string fileName, DatabaseCheckAction action, FileCreateOptions createOptions)
+        {
+            Action_CloseFile();
+            DatabaseFileName = fileName;
+            Action_LoadFile(action, createOptions);
         }
 
         //---------------------------------------------------------------------
@@ -582,15 +598,16 @@ namespace Timekeeper.Forms
 
         private bool Action_LoadFile()
         {
-            return Action_LoadFile(DatabaseCheckAction.NoAction);
+            FileCreateOptions CreateOptions = new FileCreateOptions();
+            return Action_LoadFile(DatabaseCheckAction.NoAction, CreateOptions);
         }
 
         //---------------------------------------------------------------------
 
-        private bool Action_LoadFile(DatabaseCheckAction action)
+        private bool Action_LoadFile(DatabaseCheckAction action, FileCreateOptions createOptions)
         {
             try {
-                if (!Action_CheckDatabase(action)) {
+                if (!Action_CheckDatabase(action, createOptions)) {
                     return false;
                 }
 
