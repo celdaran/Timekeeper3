@@ -97,6 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Datatypes.cs" />
     <Compile Include="Classes\File.cs" />
     <Compile Include="Classes\File.Downgrade.cs" />
     <Compile Include="Classes\File.Upgrade.cs" />
