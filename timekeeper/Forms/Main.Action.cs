@@ -77,15 +77,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private bool Action_CheckDatabase(DatabaseCheckAction action)
-        {
-            FileCreateOptions Options = new FileCreateOptions();
-            return Action_CheckDatabase(action, Options);
-        }
-
-        //---------------------------------------------------------------------
-
-        private bool Action_CheckDatabase(DatabaseCheckAction action, FileCreateOptions fileCreateOptions)
+        private bool Action_CheckDatabase()
         {
             try {
                 // FIXME: Options overhaul is going to need two logging
@@ -95,25 +87,18 @@ namespace Timekeeper.Forms
 
                 options.wSQLtracing.Checked = true;
                 int LogLevel = Log.INFO;
-                Database = Timekeeper.OpenDatabase(DatabaseFileName, LogLevel);
-                Timekeeper.Info("Opening Database: " + DatabaseFileName);
 
-                File File = new File();
-                Version Version = new Version(File.SCHEMA_VERSION);
+                Timekeeper.Info("Opening Database: " + DatabaseFileName);
+                Database = Timekeeper.OpenDatabase(DatabaseFileName, LogLevel);
 
                 if (!Database.FileExists) {
-                    if (action == DatabaseCheckAction.CreateIfMissing) {
-                        Timekeeper.Info("Database does not exist. Creating: " + DatabaseFileName);
-                        File.CreateOptions = fileCreateOptions;
-                        File.Create(Version);
-                    } else {
-                        Common.Warn("File " + DatabaseFileName + " not found");
-                    }
+                    Common.Warn("File " + DatabaseFileName + " not found");
+                    return false;
                 }
 
-                int Status = File.Check();
+                File File = new File();
 
-                switch (Status) {
+                switch (File.Check()) {
                     case File.ERROR_UNEXPECTED:
                         Common.Warn("An error occurred during the database check. Cannot open file.");
                         return false;
@@ -128,6 +113,7 @@ namespace Timekeeper.Forms
 
                     case File.ERROR_EMPTY_DB:
                         //Common.Warn("This appears to be an empty database. A future version of Timekeeper will allow you to claim it.");
+                        /*
                         if (Common.WarnPrompt("This appears to be an empty database. Would you like Timekeeper to claim it?") == System.Windows.Forms.DialogResult.Yes) {
                             if (File.Create(Version)) {
                                 return true;
@@ -135,10 +121,11 @@ namespace Timekeeper.Forms
                                 return false;
                             }
                         }
+                        */
+                        Common.Warn("This is not a Timekeeper database. File not opened.");
                         return false;
 
                     case File.ERROR_REQUIRES_UPGRADE:
-                        //Common.Warn("This database is from a prior version of Timekeeper and needs to be updated.");
                         if (Action_ConvertPriorVersion()) {
                             return true;
                         } else {
@@ -156,8 +143,21 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_CreateFile()
+        private void Action_CreateFile(string fileName, FileCreateOptions createOptions)
         {
+            Timekeeper.Info("Creating Database: " + fileName);
+
+            // FIXME: a bit of doubled-up code between here and above
+            int LogLevel = Log.INFO;
+            Database = Timekeeper.OpenDatabase(fileName, LogLevel);
+
+            File File = new File();
+            Version Version = new Version(File.SCHEMA_VERSION);
+
+            File.CreateOptions = createOptions;
+            File.Create(Version);
+
+            Database = Timekeeper.CloseDatabase();
         }
 
         //---------------------------------------------------------------------
@@ -463,17 +463,9 @@ namespace Timekeeper.Forms
 
         private void Action_OpenFile(string fileName)
         {
-            FileCreateOptions CreateOptions = new FileCreateOptions();
-            Action_OpenFile(fileName, DatabaseCheckAction.NoAction, CreateOptions);
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_OpenFile(string fileName, DatabaseCheckAction action, FileCreateOptions createOptions)
-        {
             Action_CloseFile();
             DatabaseFileName = fileName;
-            Action_LoadFile(action, createOptions);
+            Action_LoadFile();
         }
 
         //---------------------------------------------------------------------
@@ -594,20 +586,10 @@ namespace Timekeeper.Forms
             Trees_ShowRootLines();
         }
 
-        //---------------------------------------------------------------------
-
         private bool Action_LoadFile()
         {
-            FileCreateOptions CreateOptions = new FileCreateOptions();
-            return Action_LoadFile(DatabaseCheckAction.NoAction, CreateOptions);
-        }
-
-        //---------------------------------------------------------------------
-
-        private bool Action_LoadFile(DatabaseCheckAction action, FileCreateOptions createOptions)
-        {
             try {
-                if (!Action_CheckDatabase(action, createOptions)) {
+                if (!Action_CheckDatabase()) {
                     return false;
                 }
 

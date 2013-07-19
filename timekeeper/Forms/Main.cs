@@ -60,13 +60,6 @@ namespace Timekeeper.Forms
         private long elapsedTodayAll;
 
         //---------------------------------------------------------------------
-        // Enumerated types
-        //---------------------------------------------------------------------
-
-        //private enum FileMode { FileOpened, FileClosed, TimerStarted, TimerStopped };
-        private enum DatabaseCheckAction { NoAction, CreateIfMissing };
-
-        //---------------------------------------------------------------------
         // Constants
         //---------------------------------------------------------------------
 
