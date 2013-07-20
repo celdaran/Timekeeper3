@@ -378,4 +378,7 @@
   <data name="SQL_3001_RefTimeDisplay_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefTimeDisplay.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="Item_Presets" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\XML\Item.Presets.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>

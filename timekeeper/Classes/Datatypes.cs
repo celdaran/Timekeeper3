@@ -48,19 +48,62 @@ namespace Timekeeper
     }
 
     //---------------------------------------------------------------------
+    // Base Class for File New/Upgrade Options
+    //---------------------------------------------------------------------
+
+    public class FileBaseOptions
+    {
+        private string _LocationName;
+        private string _LocationDescription;
+        private long _LocationTimeZoneId;
+        private TimeZoneInfo _LocationTimeZoneInfo;
+
+        //---------------------------------------------------------------------
+        // Accessors
+        //---------------------------------------------------------------------
+
+        public string LocationName
+        {
+            get { return _LocationName; }
+            set { _LocationName = value; }
+        }
+
+        //---------------------------------------------------------------------
+
+        public string LocationDescription
+        {
+            get { return _LocationDescription; }
+            set { _LocationDescription = value; }
+        }
+
+        //---------------------------------------------------------------------
+
+        public long LocationTimeZoneId
+        {
+            get { return _LocationTimeZoneId; }
+            set { _LocationTimeZoneId = value; }
+        }
+
+        //---------------------------------------------------------------------
+
+        public TimeZoneInfo LocationTimeZoneInfo
+        {
+            get { return _LocationTimeZoneInfo; }
+            set { _LocationTimeZoneInfo = value; }
+        }
+
+    }
+
+    //---------------------------------------------------------------------
     // Structure to hold File Creation Options
     //---------------------------------------------------------------------
 
-    public struct FileCreateOptions
+    public class FileCreateOptions : FileBaseOptions
     {
         private string _FileName;
         private bool _UseProjects;
         private bool _UseActivities;
         private int _ItemPreset;
-        private string _LocationName;
-        private string _LocationDescription;
-        private int _LocationTimeZoneId;
-        private TimeZoneInfo _LocationTimeZoneInfo;
 
         //---------------------------------------------------------------------
         // Accessors
@@ -95,86 +138,18 @@ namespace Timekeeper
             get { return _ItemPreset; }
             set { _ItemPreset = value; }
         }
-
-        //---------------------------------------------------------------------
-
-        public string LocationName
-        {
-            get { return _LocationName; }
-            set { _LocationName = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public string LocationDescription
-        {
-            get { return _LocationDescription; }
-            set { _LocationDescription = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public int LocationTimeZoneId
-        {
-            get { return _LocationTimeZoneId; }
-            set { _LocationTimeZoneId = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public TimeZoneInfo LocationTimeZoneInfo
-        {
-            get { return _LocationTimeZoneInfo; }
-            set { _LocationTimeZoneInfo = value; }
-        }
     }
 
     //---------------------------------------------------------------------
     // Structure to hold File Upgrade Options
     //---------------------------------------------------------------------
 
-    public struct FileUpgradeOptions
+    public class FileUpgradeOptions : FileBaseOptions
     {
-        private string _LocationName;
-        private string _LocationDescription;
-        private int _LocationTimeZoneId;
-        private TimeZoneInfo _LocationTimeZoneInfo;
         private int _MemoMergeTypeId;
 
         //---------------------------------------------------------------------
         // Accessors
-        //---------------------------------------------------------------------
-
-        public string LocationName
-        {
-            get { return _LocationName; }
-            set { _LocationName = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public string LocationDescription
-        {
-            get { return _LocationDescription; }
-            set { _LocationDescription = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public int LocationTimeZoneId
-        {
-            get { return _LocationTimeZoneId; }
-            set { _LocationTimeZoneId = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public TimeZoneInfo LocationTimeZoneInfo
-        {
-            get { return _LocationTimeZoneInfo; }
-            set { _LocationTimeZoneInfo = value; }
-        }
-
         //---------------------------------------------------------------------
 
         public int MemoMergeTypeId
@@ -185,7 +160,7 @@ namespace Timekeeper
     }
 
     //---------------------------------------------------------------------
-    // Structure to hold File Upgrade Options
+    // Next Big Thing
     //---------------------------------------------------------------------
 
 }

@@ -92,7 +92,7 @@ namespace Timekeeper.Forms
                 Database = Timekeeper.OpenDatabase(DatabaseFileName, LogLevel);
 
                 if (!Database.FileExists) {
-                    Common.Warn("File " + DatabaseFileName + " not found");
+                    Timekeeper.DoubleWarn("File " + DatabaseFileName + " not found");
                     return false;
                 }
 
@@ -100,29 +100,19 @@ namespace Timekeeper.Forms
 
                 switch (File.Check()) {
                     case File.ERROR_UNEXPECTED:
-                        Common.Warn("An error occurred during the database check. Cannot open file.");
+                        Timekeeper.DoubleWarn("An error occurred during the database check. Cannot open file.");
                         return false;
 
                     case File.ERROR_NEWER_VERSION_DETECTED:
-                        Common.Warn("This database is from a newer version of Timekeeper. Cannot open file.");
+                        Timekeeper.DoubleWarn("This database is from a newer version of Timekeeper. Cannot open file.");
                         return false;
 
                     case File.ERROR_NOT_TKDB:
-                        Common.Warn("This is not a Timekeeper database. File not opened.");
+                        Timekeeper.DoubleWarn("This is not a Timekeeper database. File not opened.");
                         return false;
 
                     case File.ERROR_EMPTY_DB:
-                        //Common.Warn("This appears to be an empty database. A future version of Timekeeper will allow you to claim it.");
-                        /*
-                        if (Common.WarnPrompt("This appears to be an empty database. Would you like Timekeeper to claim it?") == System.Windows.Forms.DialogResult.Yes) {
-                            if (File.Create(Version)) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
-                        */
-                        Common.Warn("This is not a Timekeeper database. File not opened.");
+                        Timekeeper.DoubleWarn("This is not a Timekeeper database. File not opened.");
                         return false;
 
                     case File.ERROR_REQUIRES_UPGRADE:

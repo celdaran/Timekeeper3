@@ -68,7 +68,7 @@ namespace Timekeeper.Forms
 
         private void Dialog_NewFile()
         {
-            bool ShowNewDatabaseWizard = true; // FIXME: this will be an option
+            bool ShowNewDatabaseWizard = false; // FIXME: this will be an option
 
             string FileName;
             FileCreateOptions CreateOptions;
@@ -76,7 +76,7 @@ namespace Timekeeper.Forms
             if (ShowNewDatabaseWizard) {
                 NewWizard NewWizardDialog = new NewWizard();
                 if (NewWizardDialog.ShowDialog(this) == DialogResult.OK) {
-                    FileName = NewWizardDialog.FileName;
+                    FileName = NewWizardDialog.CreateOptions.FileName;
                     CreateOptions = NewWizardDialog.CreateOptions;
                 } else {
                     return;
@@ -85,10 +85,18 @@ namespace Timekeeper.Forms
                 if (NewFileDialog.ShowDialog(this) == DialogResult.OK) {
                     FileName = NewFileDialog.FileName;
                     CreateOptions = new FileCreateOptions();
+                    CreateOptions.UseProjects = true;
+                    CreateOptions.UseActivities = true;
+                    CreateOptions.ItemPreset = 1;
+                    CreateOptions.LocationName = "Default";
+                    CreateOptions.LocationDescription = "Default Location";
+                    CreateOptions.LocationTimeZoneId = Timekeeper.CurrentTimeZoneId();
                 } else {
                     return;
                 }
             }
+
+            Application.DoEvents();
 
             Action_CloseFile();
             Action_CreateFile(FileName, CreateOptions);

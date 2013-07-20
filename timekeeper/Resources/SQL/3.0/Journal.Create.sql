@@ -28,8 +28,8 @@ CREATE TABLE Journal
     IsLocked                BOOLEAN     NOT NULL,
 
     -- NOT PERMANENT COLUMNS, ONLY HERE DURING UTC TRANSITION DEVELOPMENT
-    OriginalStartTime       DATETIME    NOT NULL,
-    OriginalStopTime        DATETIME    NOT NULL,
+    OriginalStartTime       DATETIME        NULL,
+    OriginalStopTime        DATETIME        NULL,
 
     FOREIGN KEY(LocationId)             REFERENCES Location(LocationId)
     FOREIGN KEY(ActivityId)             REFERENCES Activity(ActivityId)

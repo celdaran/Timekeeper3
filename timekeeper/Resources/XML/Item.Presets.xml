@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<presets>
+
+    <preset id="1" name="Generic">
+
+        <projects>
+
+            <project>
+                <name>Generic Project Group One</name>
+                <description>This is the first project group.</description>
+                <isfolder>true</isfolder>
+                <parent></parent>
+            </project>
+
+            <project>
+                <name>Generic Project One</name>
+                <description>This is the first project.</description>
+                <isfolder>false</isfolder>
+                <parent>Generic Project Group One</parent>
+            </project>
+
+            <project>
+                <name>Generic Project Two</name>
+                <description>This is the second project.</description>
+                <isfolder>false</isfolder>
+                <parent>Generic Project Group One</parent>
+            </project>
+
+            <project>
+                <name>Generic Project Group Two</name>
+                <description>This is the second project group.</description>
+                <isfolder>true</isfolder>
+                <parent></parent>
+            </project>
+
+            <project>
+                <name>Generic Project Three</name>
+                <description>This is the third project.</description>
+                <isfolder>false</isfolder>
+                <parent>Generic Project Group Two</parent>
+            </project>
+
+            <project>
+                <name>Generic Project Four</name>
+                <description>This is the fourth project.</description>
+                <isfolder>false</isfolder>
+                <parent>Generic Project Group Two</parent>
+            </project>
+
+        </projects>
+      
+        <activities>
+
+            <activity>
+                <name>Generic Activity One</name>
+                <description>This is the first activity.</description>
+                <isfolder>false</isfolder>
+                <parent></parent>
+            </activity>
+
+            <activity>
+                <name>Generic Activity Two</name>
+                <description>This is the second activity.</description>
+                <isfolder>false</isfolder>
+                <parent></parent>
+            </activity>
+
+            <activity>
+                <name>Generic Activity Three</name>
+                <description>This is the third activity.</description>
+                <isfolder>false</isfolder>
+                <parent></parent>
+            </activity>
+
+        </activities>
+        
+    </preset>
+
+    <preset id="2" name="Manager">
+
+        <projects>
+
+            <project>
+                <name>Manager Project Group One</name>
+                <description>This is the first project group.</description>
+                <isfolder>true</isfolder>
+                <parent></parent>
+            </project>
+
+            <project>
+                <name>Manager Project One</name>
+                <description>This is the first project.</description>
+                <isfolder>false</isfolder>
+                <parent>Manager Project Group One</parent>
+            </project>
+
+            <project>
+                <name>Manager Project Two</name>
+                <description>This is the second project.</description>
+                <isfolder>false</isfolder>
+                <parent>Manager Project Group One</parent>
+            </project>
+
+            <project>
+                <name>Manager Project Group Two</name>
+                <description>This is the second project group.</description>
+                <isfolder>true</isfolder>
+                <parent></parent>
+            </project>
+
+            <project>
+                <name>Manager Project Three</name>
+                <description>This is the third project.</description>
+                <isfolder>false</isfolder>
+                <parent>Manager Project Group Two</parent>
+            </project>
+
+            <project>
+                <name>Manager Project Four</name>
+                <description>This is the fourth project.</description>
+                <isfolder>false</isfolder>
+                <parent>Manager Project Group Two</parent>
+            </project>
+
+        </projects>
+      
+        <activities>
+
+            <activity>
+                <name>Manager Activity One</name>
+                <description>This is the first activity.</description>
+                <isfolder>false</isfolder>
+                <parent></parent>
+            </activity>
+
+            <activity>
+                <name>Manager Activity Two</name>
+                <description>This is the second activity.</description>
+                <isfolder>false</isfolder>
+                <parent></parent>
+            </activity>
+
+            <activity>
+                <name>Manager Activity Three</name>
+                <description>This is the third activity.</description>
+                <isfolder>false</isfolder>
+                <parent></parent>
+            </activity>
+
+        </activities>
+        
+    </preset>
+
+    <preset id="3" name="Musician">
+
+        <projects>
+
+            <project>
+                <name>Musician Project Group One</name>
+                <description>This is the first project group.</description>
+                <isfolder>true</isfolder>
+                <parent></parent>
+            </project>
+
+            <project>
+                <name>Musician Project One</name>
+                <description>This is the first project.</description>
+                <isfolder>false</isfolder>
+                <parent>Musician Project Group One</parent>
+            </project>
+
+            <project>
+                <name>Musician Project Two</name>
+                <description>This is the second project.</description>
+                <isfolder>false</isfolder>
+                <parent>Musician Project Group One</parent>
+            </project>
+
+            <project>
+                <name>Musician Project Group Two</name>
+                <description>This is the second project group.</description>
+                <isfolder>true</isfolder>
+                <parent></parent>
+            </project>
+
+            <project>
+                <name>Musician Project Three</name>
+                <description>This is the third project.</description>
+                <isfolder>false</isfolder>
+                <parent>Musician Project Group Two</parent>
+            </project>
+
+            <project>
+                <name>Musician Project Four</name>
+                <description>This is the fourth project.</description>
+                <isfolder>false</isfolder>
+                <parent>Musician Project Group Two</parent>
+            </project>
+
+        </projects>
+      
+        <activities>
+
+            <activity>
+                <name>Musician Activity One</name>
+                <description>This is the first activity.</description>
+                <isfolder>false</isfolder>
+                <parent></parent>
+            </activity>
+
+            <activity>
+                <name>Musician Activity Two</name>
+                <description>This is the second activity.</description>
+                <isfolder>false</isfolder>
+                <parent></parent>
+            </activity>
+
+            <activity>
+                <name>Musician Activity Three</name>
+                <description>This is the third activity.</description>
+                <isfolder>false</isfolder>
+                <parent></parent>
+            </activity>
+
+        </activities>
+        
+    </preset>
+
+</presets>

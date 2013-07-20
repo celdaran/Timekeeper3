@@ -18,7 +18,7 @@ namespace Timekeeper.Forms
         // Properties
         //----------------------------------------------------------------------
 
-        private string _FileName;
+//        private string _FileName;
         private FileCreateOptions _CreateOptions;
 
         //----------------------------------------------------------------------
@@ -60,11 +60,13 @@ namespace Timekeeper.Forms
         // Accessors for Public Properties
         //----------------------------------------------------------------------
 
+        /*
         public string FileName
         {
             get { return _FileName; }
             set { _FileName = value; }
         }
+        */
 
         //----------------------------------------------------------------------
 
@@ -129,7 +131,7 @@ namespace Timekeeper.Forms
                     }
 
                     // Lastly, sync everything up
-                    this.FileName = NewDatabaseFileName.Text;
+                    //this.FileName = NewDatabaseFileName.Text;
                     IsDirty = true;
                 }
 

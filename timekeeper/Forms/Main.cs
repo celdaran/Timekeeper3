@@ -9,6 +9,9 @@ using System.Text.RegularExpressions;
 
 using Technitivity.Toolbox;
 
+using System.Resources;
+using System.Xml;
+
 namespace Timekeeper.Forms
 {
     public partial class Main : Form
@@ -755,6 +758,93 @@ namespace Timekeeper.Forms
 
             Forms.Report Report = new Forms.Report();
             Report.Show(this);
+        }
+
+        private void menuToolsXmlTest_Click(object sender, EventArgs e)
+        {
+            ResourceManager Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(File).Assembly);
+
+            XmlDocument Presets = new XmlDocument();
+            Presets.LoadXml(Resources.GetString("Item_Presets"));
+
+            XmlNodeList PresetDefinitions = Presets.DocumentElement.GetElementsByTagName("preset");
+
+            foreach (XmlNode Preset in PresetDefinitions) {
+                XmlAttributeCollection Attributes = Preset.Attributes;
+                foreach (XmlAttribute Attribute in Attributes) {
+                    //Common.Info(Attribute.Name);
+                }
+            }
+
+            XmlNode Foo = Presets.SelectSingleNode("/presets/preset[@name='Manager']");
+
+            XmlNodeList Items = Foo.ChildNodes;
+
+            XmlNode Projects = Items[0];
+            XmlNode Activities = Items[1];
+
+            foreach (XmlElement Project in Projects.ChildNodes) {
+
+                //Common.Info(Project.Name + " = " + Project.InnerText);
+
+                // This works, but it's positional
+                XmlNode ProjectName = Project.ChildNodes.Item(0);
+                XmlNode ProjectDescription = Project.ChildNodes.Item(1);
+                //Common.Info(ProjectName.InnerText + ": " + ProjectDescription.InnerText);
+
+                // This doesn't work, stupid
+                /*
+                string XPath = String.Format("/presets/preset/projects/{0}/", Project.Name);
+                XmlNode ProjectName = Project.SelectSingleNode(XPath + "/name");
+                Common.Info(ProjectName.InnerText);
+                */
+
+                // This works, but is cumbersome
+                /*
+                XmlNodeList ProjectAttributes = Projects.ChildNodes;
+                foreach (XmlElement Tag in Project) {
+                    //Common.Info(Tag.Name + " = " + Tag.InnerText);
+                }
+                */
+
+            }
+
+            foreach (XmlNode Project in Projects.ChildNodes) {
+
+                //Common.Info(Project["name"].InnerText + ": " + Project["description"].InnerText);
+
+                Project NewProject = new Project(Database);
+
+                NewProject.Name = Project["name"].InnerText;
+                NewProject.Description = Project["description"].InnerText;
+                NewProject.IsFolder = Project["isfolder"].InnerText == "true";
+
+                if (Project["parent"].InnerText != "") {
+                    Project ParentProject = new Project(Database, Project["parent"].InnerText);
+                    if (ParentProject.ItemId == 0) {
+                        Timekeeper.Warn("Could not find parent item: '" + Project["parent"].InnerText + "'");
+                    } else {
+                        NewProject.ParentId = ParentProject.ItemId;
+                    }
+                }
+
+                NewProject.Create();
+            }
+
+            /*
+            Project Project = new Project(Database);
+
+            Project.LocationId = 1;
+            Project.Name = "First Project";
+            Project.Description = "This Project was created in C# by my new PopulateItems() method.";
+            Project.ParentId = 0;
+            Project.SortOrderNo = 0;
+            Project.FollowedItemId = 0;
+            Project.IsFolder = false;
+
+            Project.Create();
+            */
+
         }
 
         //---------------------------------------------------------------------

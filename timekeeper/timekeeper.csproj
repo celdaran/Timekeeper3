@@ -91,6 +91,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Technitivity.Toolbox, Version=3.0.0.6, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\Technitivity.Toolbox.dll</HintPath>
@@ -457,6 +458,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Images\Buttons\CloseStartGap.png" />
+    <None Include="Resources\XML\Item.Presets.xml" />
     <None Include="Resources\SQL\3.0\RefTimeDisplay.Insert.sql" />
     <None Include="Resources\SQL\3.0\RefItemType.Insert.sql" />
     <None Include="Resources\SQL\3.0\RefGroupBy.Insert.sql" />

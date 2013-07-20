@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Resources;
+
 using System.Collections.ObjectModel;
+using System.Xml;
 
 using Technitivity.Toolbox;
 
@@ -168,9 +170,12 @@ namespace Timekeeper
 
                 // User Reference Tables
                 CreateTable("Location", version, false);
-                CreateTable("Activity", version, populate);
-                CreateTable("Project",  version, populate);
+                PopulateLocation((FileBaseOptions)this.CreateOptions);
                 CreateTable("Category", version, populate);
+
+                CreateTable("Activity", version, false);
+                CreateTable("Project",  version, false);
+                PopulateItems();
 
                 // Journal Tables
                 CreateTable("Journal", version, false);
@@ -271,16 +276,16 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public void PopulateLocation()
+        public void PopulateLocation(FileBaseOptions options)
         {
             Row Location = new Row();
 
             Location["CreateTime"] = Common.Now();
             Location["ModifyTime"] = Common.Now();
             Location["LocationGuid"] = UUID.Get();
-            Location["Name"] = Options.LocationName;
-            Location["Description"] = Options.LocationDescription;
-            Location["RefTimeZoneId"] = Options.LocationTimeZoneId;
+            Location["Name"] = options.LocationName;
+            Location["Description"] = options.LocationDescription;
+            Location["RefTimeZoneId"] = options.LocationTimeZoneId;
             Location["SortOrderNo"] = 0;
             Location["IsHidden"] = 0;
             Location["IsDeleted"] = 0;
@@ -289,6 +294,112 @@ namespace Timekeeper
 
             this.InsertedRowId = Database.Insert("Location", Location);
             if (InsertedRowId == 0) throw new Exception("Insert failed");
+        }
+
+        //---------------------------------------------------------------------
+
+        public void PopulateItems()
+        {
+            int PresetId = CreateOptions.ItemPreset;
+
+            try {
+                // Open XML and get requested preset.
+                XmlDocument Presets = new XmlDocument();
+                Presets.LoadXml(Properties.Resources.Item_Presets);
+                string XmlPath = String.Format("/presets/preset[@id='{0}']", PresetId.ToString());
+
+                // Find the Projects and Activities
+                XmlNode Preset = Presets.SelectSingleNode(XmlPath);
+                XmlNode Projects = Preset.ChildNodes[0];
+                XmlNode Activities = Preset.ChildNodes[1];
+
+                // Create Projects (new method)
+                foreach (XmlNode ProjectNode in Projects.ChildNodes) {
+
+                    Project Project = new Project(Database);
+                    Project ParentProject = new Project(Database, ProjectNode["parent"].InnerText);
+
+                    CreateItem(ProjectNode, (Item)Project, (Item)ParentProject);
+                }
+
+                // Create Activities (new method)
+                foreach (XmlNode ActivityNode in Activities.ChildNodes) {
+
+                    Activity Activity = new Activity(Database);
+                    Activity ParentActivity = new Activity(Database, ActivityNode["parent"].InnerText);
+
+                    CreateItem(ActivityNode, (Item)Activity, (Item)ParentActivity);
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Warn("Failure in PopulateItems(). Database schema likely corrupt.");
+                Timekeeper.Exception(x);
+                throw;
+            }
+
+            /*
+            // Create Projects
+            foreach (XmlNode ProjectNode in Projects.ChildNodes) {
+
+                Project Project = new Project(Database);
+
+                Project.Name = ProjectNode["name"].InnerText;
+                Project.Description = ProjectNode["description"].InnerText;
+                Project.IsFolder = ProjectNode["isfolder"].InnerText == "true";
+
+                if (ProjectNode["parent"].InnerText != "") {
+                    Project ParentProject = new Project(Database, ProjectNode["parent"].InnerText);
+                    if (ParentProject.ItemId == 0) {
+                        Timekeeper.Warn("Could not find parent item: '" + ProjectNode["parent"].InnerText + "'");
+                    } else {
+                        Project.ParentId = ParentProject.ItemId;
+                    }
+                }
+
+                Project.Create();
+            }
+
+            // Create Activities
+            foreach (XmlNode ActivityNode in Activities.ChildNodes) {
+
+                Activity Activity = new Activity(Database);
+
+                Activity.Name = ActivityNode["name"].InnerText;
+                Activity.Description = ActivityNode["description"].InnerText;
+                Activity.IsFolder = ActivityNode["isfolder"].InnerText == "true";
+
+                if (ActivityNode["parent"].InnerText != "") {
+                    Activity ParentActivity = new Activity(Database, ActivityNode["parent"].InnerText);
+                    if (ParentActivity.ItemId == 0) {
+                        Timekeeper.Warn("Could not find parent item: '" + ActivityNode["parent"].InnerText + "'");
+                    } else {
+                        Activity.ParentId = ParentActivity.ItemId;
+                    }
+                }
+
+                Activity.Create();
+            }
+            */
+        }
+
+        //---------------------------------------------------------------------
+
+        private void CreateItem(XmlNode itemNode, Item item, Item parentItem)
+        {
+            item.Name = itemNode["name"].InnerText;
+            item.Description = itemNode["description"].InnerText;
+            item.LocationId = 1;
+            item.IsFolder = itemNode["isfolder"].InnerText == "true";
+
+            if (itemNode["parent"].InnerText != "") {
+                if (parentItem.ItemId == 0) {
+                    Timekeeper.Warn("Could not find parent item: '" + itemNode["parent"].InnerText + "'");
+                } else {
+                    item.ParentId = parentItem.ItemId;
+                }
+            }
+
+            item.Create();
         }
 
         //---------------------------------------------------------------------

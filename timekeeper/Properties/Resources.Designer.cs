@@ -321,6 +321,32 @@ namespace Timekeeper.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;presets&gt;
+        ///
+        ///    &lt;preset id=&quot;1&quot; name=&quot;Generic&quot;&gt;
+        ///
+        ///        &lt;projects&gt;
+        ///
+        ///            &lt;project&gt;
+        ///                &lt;name&gt;Project Group One&lt;/name&gt;
+        ///                &lt;description&gt;This is the first project group.&lt;description&gt;
+        ///                &lt;isfolder&gt;true&lt;/isfolder&gt;
+        ///                &lt;parent&gt;&lt;/parent&gt;
+        ///            &lt;/project&gt;
+        ///
+        ///            &lt;project&gt;
+        ///                &lt;name&gt;Project One&lt;/name&gt;
+        ///                &lt;description&gt;This is the first project.&lt;description&gt;
+        ///                &lt;isfolder&gt;fals [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Item_Presets {
+            get {
+                return ResourceManager.GetString("Item_Presets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap PictureSetup {
@@ -936,6 +962,7 @@ namespace Timekeeper.Properties {
         ///(
         ///    CreateTime,
         ///    ModifyTime,
+        ///    LocationId,
         ///    ActivityGuid,
         ///
         ///    Name,
@@ -953,8 +980,7 @@ namespace Timekeeper.Properties {
         ///    DeletedTime
         ///
         ///) VALUES (
-        ///    &apos;{0}&apos;,
-        ///    &apos;{0 [rest of string was truncated]&quot;;.
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3001_Activity_Insert {
             get {
@@ -992,6 +1018,7 @@ namespace Timekeeper.Properties {
         ///(
         ///    CreateTime,
         ///    ModifyTime,
+        ///    LocationId,
         ///    CategoryGuid,
         ///
         ///    Name,
@@ -1007,10 +1034,11 @@ namespace Timekeeper.Properties {
         ///) VALUES (
         ///    &apos;{0}&apos;,
         ///    &apos;{0}&apos;,
+        ///    1,
         ///    &apos;{1}&apos;,
         ///
         ///    &apos;Follow Up&apos;,
-        ///    &apos;Follow Up on this Journal  [rest of string was truncated]&quot;;.
+        ///    &apos;F [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3001_Category_Insert {
             get {
@@ -1151,10 +1179,10 @@ namespace Timekeeper.Properties {
         ///INSERT INTO AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300 (
         ///    Key, Value
         ///) VALUES (
-        ///    &apos;Upgraded&apos;, &apos;0001-01-01 00:00:00&apos;
+        ///    &apos;Upgraded&apos;, &apos;0001-01-01T00:00:00+00:00&apos;
         ///);
         ///
-        ///INSERT INTO AA9FFC4E_5 [rest of string was truncated]&quot;;.
+        ///INSERT INTO AA9F [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3001_Meta_Insert {
             get {
@@ -1190,12 +1218,14 @@ namespace Timekeeper.Properties {
         ///(
         ///    CreateTime,
         ///    ModifyTime,
+        ///    LocationId,
         ///    Key,
         ///    Value
         ///
         ///) VALUES (
         ///    &apos;{0}&apos;,
         ///    &apos;{0}&apos;,
+        ///    1,
         ///    &apos;LastActivity&apos;,
         ///    null
         ///);
@@ -1204,14 +1234,12 @@ namespace Timekeeper.Properties {
         ///(
         ///    CreateTime,
         ///    ModifyTime,
+        ///    LocationId,
         ///    Key,
         ///    Value
         ///
         ///) VALUES (
-        ///    &apos;{0}&apos;,
-        ///    &apos;{0}&apos;,
-        ///    &apos;LastProject&apos;,
-        ///    n [rest of string was truncated]&quot;;.
+        ///    &apos;{0 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3001_Options_Insert {
             get {
@@ -1247,6 +1275,7 @@ namespace Timekeeper.Properties {
         ///(
         ///    CreateTime,
         ///    ModifyTime,
+        ///    LocationId,
         ///    ProjectGuid,
         ///
         ///    Name,
@@ -1264,8 +1293,7 @@ namespace Timekeeper.Properties {
         ///    DeletedTime
         ///
         ///) VALUES (
-        ///    &apos;{0}&apos;,
-        ///    &apos;{0}&apos;, [rest of string was truncated]&quot;;.
+        ///    &apos; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3001_Project_Insert {
             get {

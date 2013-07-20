@@ -123,7 +123,7 @@ namespace Timekeeper.Classes
 
             int Result = TREES_ITEM_CREATED;
 
-            int CreateStatus = item.Create();
+            long CreateStatus = item.Create();
             switch (CreateStatus) {
                 case 1:
                     TreeNode foo = AddItemToTree(tree, ParentNode, item, imageIndex);

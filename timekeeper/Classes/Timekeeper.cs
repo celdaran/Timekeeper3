@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Diagnostics;
 
+using System.Collections.ObjectModel;
+
 using Technitivity.Toolbox;
 
 namespace Timekeeper
@@ -133,6 +135,15 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
+        public static void DoubleWarn(string msg)
+        {
+            Log = GetLog();
+            Log.Warn(msg);
+            Common.Warn(msg);
+        }
+
+        //---------------------------------------------------------------------
+
         public static void Error(string msg)
         {
             Log = GetLog();
@@ -184,8 +195,30 @@ namespace Timekeeper
                 return "";
             }
         }
-    }
 
-    //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+
+        public static long CurrentTimeZoneId()
+        {
+            ReadOnlyCollection<TimeZoneInfo> TimeZones = TimeZoneInfo.GetSystemTimeZones();
+
+            TimeZone CurrentTimeZone = TimeZone.CurrentTimeZone;
+            long CurrentIndex = 0;
+
+            foreach (TimeZoneInfo Enumerated in TimeZones) {
+
+                if (CurrentTimeZone.StandardName == Enumerated.StandardName) {
+                    return CurrentIndex;
+                } else {
+                    CurrentIndex++;
+                }
+            }
+
+            return 0;
+        }
+
+        //---------------------------------------------------------------------
+
+    }
 
 }

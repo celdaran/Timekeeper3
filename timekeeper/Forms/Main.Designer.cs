@@ -191,6 +191,8 @@ namespace Timekeeper.Forms
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuToolsXmlTest = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
@@ -556,7 +558,9 @@ namespace Timekeeper.Forms
             this.menuToolsDatecalc,
             this.menuToolsReminders,
             this.toolStripMenuItem8,
-            this.menuToolsOptions});
+            this.menuToolsOptions,
+            this.toolStripMenuItem2,
+            this.menuToolsXmlTest});
             this.menuTool.Enabled = false;
             this.menuTool.Name = "menuTool";
             this.menuTool.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
@@ -805,26 +809,26 @@ namespace Timekeeper.Forms
             // 
             this.menuHelpContents.Name = "menuHelpContents";
             this.menuHelpContents.ShortcutKeyDisplayString = "F1";
-            this.menuHelpContents.Size = new System.Drawing.Size(137, 22);
+            this.menuHelpContents.Size = new System.Drawing.Size(152, 22);
             this.menuHelpContents.Text = "&Contents";
             this.menuHelpContents.Click += new System.EventHandler(this.menuHelpContents_Click);
             // 
             // menuHelpWeb
             // 
             this.menuHelpWeb.Name = "menuHelpWeb";
-            this.menuHelpWeb.Size = new System.Drawing.Size(137, 22);
+            this.menuHelpWeb.Size = new System.Drawing.Size(152, 22);
             this.menuHelpWeb.Text = "&Web Support";
             this.menuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
             // 
             // menuHelpSep
             // 
             this.menuHelpSep.Name = "menuHelpSep";
-            this.menuHelpSep.Size = new System.Drawing.Size(134, 6);
+            this.menuHelpSep.Size = new System.Drawing.Size(149, 6);
             // 
             // menuHelpAbout
             // 
             this.menuHelpAbout.Name = "menuHelpAbout";
-            this.menuHelpAbout.Size = new System.Drawing.Size(137, 22);
+            this.menuHelpAbout.Size = new System.Drawing.Size(152, 22);
             this.menuHelpAbout.Text = "&About...";
             this.menuHelpAbout.Click += new System.EventHandler(this.menuHelpAbout_Click);
             // 
@@ -1703,7 +1707,19 @@ namespace Timekeeper.Forms
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
             this.SaveAsDialog.Title = "Save As";
             // 
-            // fMain
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(158, 6);
+            // 
+            // menuToolsXmlTest
+            // 
+            this.menuToolsXmlTest.Name = "menuToolsXmlTest";
+            this.menuToolsXmlTest.Size = new System.Drawing.Size(161, 22);
+            this.menuToolsXmlTest.Text = "XML Test";
+            this.menuToolsXmlTest.Click += new System.EventHandler(this.menuToolsXmlTest_Click);
+            // 
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1713,7 +1729,7 @@ namespace Timekeeper.Forms
             this.Controls.Add(this.MenuMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MenuMain;
-            this.Name = "fMain";
+            this.Name = "Main";
             this.Text = "Timekeeper";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.fMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.fMain_FormClosed);
@@ -1910,6 +1926,8 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem menuToolControlUnlock;
         private System.Windows.Forms.ToolStripMenuItem toolbarHelperToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog SaveAsDialog;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem menuToolsXmlTest;
     }
 }
 

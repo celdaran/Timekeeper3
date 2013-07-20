@@ -17,7 +17,7 @@ namespace Timekeeper
         private long RowId;
         private long InsertedRowId;
 
-        private FileUpgradeOptions Options;
+        private FileUpgradeOptions UpgradeOptions;
 
         private DateTime FileCreateDate;
 
@@ -29,7 +29,7 @@ namespace Timekeeper
         {
             this.Step = step;
             this.Progress = progressBar;
-            this.Options = options;
+            this.UpgradeOptions = options;
 
             bool Populate = true;
 
@@ -135,7 +135,7 @@ namespace Timekeeper
             PopulateRefTimeZone();
 
             CreateNewTable("Location", version, false);
-            PopulateLocation();
+            PopulateLocation((FileBaseOptions)this.UpgradeOptions);
         }
 
         //---------------------------------------------------------------------
@@ -573,12 +573,12 @@ namespace Timekeeper
                     {"OriginalStopTime", OldRow["timestamp_e"].ToString(Common.LOCAL_DATETIME_FORMAT)},
                 };
 
-                switch (Options.MemoMergeTypeId) {
+                switch (UpgradeOptions.MemoMergeTypeId) {
                     case 1: NewRow["Memo"] = OldRow["pre_log"] + "\n\n<!--SEPARATOR-->\n\n" + OldRow["post_log"]; break;
                     case 2: NewRow["Memo"] = OldRow["pre_log"] + "\n\n<!--CUSTOM SEP-->\n\n" + OldRow["post_log"]; break;
                     case 3: NewRow["Memo"] = OldRow["post_log"]; break;
                     case 4: NewRow["Memo"] = OldRow["pre_log"]; break;
-                    default: throw new Exception("Invalid MemoMergeTypeId Found: " + Options.MemoMergeTypeId.ToString());
+                    default: throw new Exception("Invalid MemoMergeTypeId Found: " + UpgradeOptions.MemoMergeTypeId.ToString());
                 }
 
                 InsertedRowId = this.Database.Insert("Journal", NewRow);
@@ -721,9 +721,9 @@ namespace Timekeeper
             ConvertedTime = ConvertedTime.Replace(' ', 'T');
 
             // Calculate the timezone & dst (if any) offset
-            TimeSpan Offset = Options.LocationTimeZoneInfo.BaseUtcOffset;
+            TimeSpan Offset = UpgradeOptions.LocationTimeZoneInfo.BaseUtcOffset;
             int OffsetHours = Offset.Hours;
-            TimeZoneInfo TimeZoneInfo = Options.LocationTimeZoneInfo;
+            TimeZoneInfo TimeZoneInfo = UpgradeOptions.LocationTimeZoneInfo;
 
             if (TimeZoneInfo.SupportsDaylightSavingTime) {
                 if (TimeZoneInfo.IsDaylightSavingTime(time)) {

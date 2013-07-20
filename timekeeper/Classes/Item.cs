@@ -12,21 +12,25 @@ namespace Timekeeper
         // Public Properties
         //---------------------------------------------------------------------
 
-        public long ItemId;
-        public DateTime CreateTime;
-        public DateTime ModifyTime;
-        public string ItemGuid;
+        private long _ItemId;
+        private DateTime _CreateTime;
+        private DateTime _ModifyTime;
+        private long _LocationId;
+        private string _ItemGuid;
 
-        public string Name;
-        public string Description;
-        public long ParentId;
-        public long SortOrderNo;
-        public long FollowedItemId;
-        public bool IsFolder;
-        public bool IsHidden;
-        public bool IsDeleted;
-        public DateTime HiddenTime;
-        public DateTime DeletedTime;
+        private string _Name;
+        private string _Description;
+        private long _ParentId;
+        private long _SortOrderNo;
+        private long _FollowedItemId;
+        private bool _IsFolder;
+        private bool _IsFolderOpened;
+        private bool _IsHidden;
+        private bool _IsDeleted;
+        private DateTime _HiddenTime;
+        private DateTime _DeletedTime;
+
+        private string _ExternalEntryNo;
 
         // In-memory only
         public DateTime StartTime;
@@ -83,7 +87,7 @@ namespace Timekeeper
                 itemName);
 
             Row row = data.SelectRow(query);
-            long itemId = row[this.IdColumnName];
+            long itemId = row[this.IdColumnName] == null ? 0 : row[this.IdColumnName];
 
             /*
             Row Row = Timekeeper.DB.SelectRow(query);
@@ -102,9 +106,35 @@ namespace Timekeeper
             
             */
 
-
             Load(itemId);
         }
+
+        //---------------------------------------------------------------------
+        // Accessors
+        //---------------------------------------------------------------------
+
+        public long     ItemId { get { return _ItemId; } private set { _ItemId = value; } }
+        public DateTime CreateTime { get { return _CreateTime; } private set { _CreateTime = value; } }
+        public DateTime ModifyTime { get { return _ModifyTime; } private set { _ModifyTime = value; } }
+        public string   ItemGuid { get { return _ItemGuid; } private set { _ItemGuid = value; } }
+        // FIXME: Something about LocationId still isn't working for me. I'm starting to think
+        // I should pull back and only use it in Journal: do I *really* care in what location
+        // each and every row in the database was created? Feels like an over-complication.
+        public long LocationId { get { return _LocationId; } set { _LocationId = value; } }
+
+        public string   Name { get { return _Name; } set { _Name = value; } }
+        public string   Description { get { return _Description; } set { _Description = value; } }
+        public long     ParentId { get { return _ParentId; } set { _ParentId = value; } }
+        public long     SortOrderNo { get { return _SortOrderNo; } set { _SortOrderNo = value; } }
+        public long     FollowedItemId { get { return _FollowedItemId; } set { _FollowedItemId = value; } }
+        public bool     IsFolder { get { return _IsFolder; } set { _IsFolder = value; } }
+        public bool     IsFolderOpened { get { return _IsFolderOpened; } set { _IsFolderOpened = value; } }
+        public bool     IsHidden { get { return _IsHidden; } set { _IsHidden = value; } }
+        public bool     IsDeleted { get { return _IsDeleted; } set { _IsDeleted = value; } }
+        public DateTime HiddenTime { get { return _HiddenTime; } set { _HiddenTime = value; } }
+        public DateTime DeletedTime { get { return _DeletedTime; } set { _DeletedTime = value; } }
+
+        public string   ExternalEntryNo { get { return _ExternalEntryNo; } set { _ExternalEntryNo = value; } }
 
         //---------------------------------------------------------------------
         // Property-Like Methods
@@ -203,7 +233,7 @@ namespace Timekeeper
         // Methods
         //---------------------------------------------------------------------
 
-        public int Create()
+        public long Create()
         {
             if (Exists(this.Name) == true) {
                 return -1;
@@ -213,6 +243,7 @@ namespace Timekeeper
 
             Row["CreateTime"] = Common.Now();
             Row["ModifyTime"] = Common.Now();
+            Row["LocationId"] = this.LocationId;
             Row[this.TableName + "Guid"] = UUID.Get();
 
             Row["Name"] = this.Name;
@@ -221,18 +252,19 @@ namespace Timekeeper
             Row["SortOrderNo"] = this.SortOrderNo;
             Row["Last" + OtherTableName + "Id"] = this.FollowedItemId;
             Row["IsFolder"] = this.IsFolder ? 1 : 0;
+            Row["IsFolderOpened"] = this.IsFolder ? 1 : 0;
             Row["IsHidden"] = 0;
             Row["IsDeleted"] = 0;
             Row["HiddenTime"] = null;
             Row["DeletedTime"] = null;
 
+            if (this.TableName == "Project") {
+                Row["ExternalProjectNo"] = this.ExternalEntryNo ?? UUID.Get();
+            }
+
             this.ItemId = this.Data.Insert(this.TableName, Row);
 
-            if (this.ItemId > 0) {
-                return 1;
-            } else {
-                return 0;
-            }
+            return this.ItemId;
         }
 
         //---------------------------------------------------------------------
@@ -306,6 +338,11 @@ namespace Timekeeper
 
         protected void Load(long itemId)
         {
+            if (itemId == 0) {
+                // Invalid item id
+                return;
+            }
+
             // fetch row from db
             string Query = String.Format(@"
                 select * from {0}
@@ -458,20 +495,35 @@ namespace Timekeeper
 
         protected void SetSecondsElapsedToday(long offset)
         {
-            // fetch seconds from the db for this node
-            string today = DateTime.Today.ToString(Common.DATE_FORMAT);
-            string midnight = "00:00:00";
+            try {
+                if (!this.Data.TableExists("Journal")) {
+                    // If no Journal table exists, don't bother to
+                    // fetch any time data. Note: the only place
+                    // where this is an issue is during database
+                    // creation, because Projects and Activities
+                    // can be populated and loaded before the
+                    // Journal table has been created.
+                    return;
+                }
 
-            string query = String.Format(@"
-                select sum(Seconds) as Seconds
-                from Journal
-                where StartTime > '{0} {1}'
-                  and {2} = {3}",
-                today, midnight, this.IdColumnName, this.ItemId);
-            Row row = this.Data.SelectRow(query);
+                // fetch seconds from the db for this node
+                string today = DateTime.Today.ToString(Common.DATE_FORMAT);
+                string midnight = "00:00:00";
 
-            if (row["Seconds"] > 0) {
-                this.SecondsElapsedToday = row["Seconds"] + offset;
+                string query = String.Format(@"
+                    select sum(Seconds) as Seconds
+                    from Journal
+                    where StartTime > '{0} {1}'
+                      and {2} = {3}",
+                    today, midnight, this.IdColumnName, this.ItemId);
+                Row row = this.Data.SelectRow(query);
+
+                if (row["Seconds"] > 0) {
+                    this.SecondsElapsedToday = row["Seconds"] + offset;
+                }
+            }
+            catch {
+                this.SecondsElapsedToday = 0;
             }
         }
 
