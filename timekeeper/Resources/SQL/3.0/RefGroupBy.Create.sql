@@ -8,7 +8,7 @@
 
 CREATE TABLE RefGroupBy
 (
-    RefGroupById    INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    RefGroupById        INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
     Name                TEXT        NOT NULL,

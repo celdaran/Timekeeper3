@@ -12,7 +12,6 @@ CREATE TABLE ReportOptions
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
-    LocationId          INTEGER         NULL,
 
     Name                TEXT        NOT NULL,
     Description         TEXT            NULL,
@@ -25,6 +24,5 @@ CREATE TABLE ReportOptions
     SortBy3             INTEGER         NULL,
     SortBy4             INTEGER         NULL,
 
-    FOREIGN KEY(LocationId)         REFERENCES Location(LocationId)
     FOREIGN KEY(FilterOptionsId)    REFERENCES FilterOptions(FilterOptionsId)
 );

@@ -13,8 +13,6 @@ CREATE TABLE Category
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
-    LocationId          INTEGER         NULL,
-
     CategoryGuid        TEXT        NOT NULL,
 
     Name                TEXT        NOT NULL,
@@ -24,9 +22,7 @@ CREATE TABLE Category
     IsHidden            BOOLEAN     NOT NULL,
     IsDeleted           BOOLEAN     NOT NULL,
     HiddenTime          DATETIME        NULL,
-    DeletedTime         DATETIME        NULL,
-
-    FOREIGN KEY(LocationId)         REFERENCES Location(LocationId)
+    DeletedTime         DATETIME        NULL
 );
 
 CREATE UNIQUE INDEX idx_Category_CategoryId ON Category(CategoryId);

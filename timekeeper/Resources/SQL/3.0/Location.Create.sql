@@ -14,7 +14,6 @@ CREATE TABLE Location
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
-
     LocationGuid        TEXT        NOT NULL,
 
     Name                TEXT        NOT NULL,

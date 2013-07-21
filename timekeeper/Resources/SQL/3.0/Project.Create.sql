@@ -15,8 +15,6 @@ CREATE TABLE Project
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
-    LocationId          INTEGER         NULL,
-
     ProjectGuid         TEXT        NOT NULL,
 
     Name                TEXT        NOT NULL,
@@ -34,7 +32,6 @@ CREATE TABLE Project
 
     ExternalProjectNo   TEXT            NULL,
 
-    FOREIGN KEY(LocationId)         REFERENCES Location(LocationId)
     FOREIGN KEY(ParentId)           REFERENCES Project(ProjectId)
     FOREIGN KEY(LastActivityId)     REFERENCES Activity(ActivityId)
 );

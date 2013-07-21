@@ -15,10 +15,7 @@ CREATE TABLE Options
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
-    LocationId          INTEGER         NULL,
 
     Key                 TEXT        NOT NULL,
-    Value               TEXT            NULL,
-
-    FOREIGN KEY(LocationId)         REFERENCES Location(LocationId)
+    Value               TEXT            NULL
 );

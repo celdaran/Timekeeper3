@@ -15,8 +15,6 @@ CREATE TABLE Activity
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
-    LocationId          INTEGER         NULL,
-
     ActivityGuid        TEXT        NOT NULL,
 
     Name                TEXT        NOT NULL,
@@ -32,7 +30,6 @@ CREATE TABLE Activity
     HiddenTime          DATETIME        NULL,
     DeletedTime         DATETIME        NULL,
 
-    FOREIGN KEY(LocationId)         REFERENCES Location(LocationId)
     FOREIGN KEY(ParentId)           REFERENCES Activity(ActivityId)
     FOREIGN KEY(LastProjectId)      REFERENCES Project(ProjectId)
 );

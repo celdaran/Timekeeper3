@@ -13,7 +13,6 @@ CREATE TABLE GridOptions
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
-    LocationId          INTEGER         NULL,
     
     Name                TEXT        NOT NULL,
     Description         TEXT            NULL,
@@ -25,7 +24,6 @@ CREATE TABLE GridOptions
     RefGroupById        INTEGER         NULL,
     RefTimeDisplayId    INTEGER         NULL,
 
-    FOREIGN KEY(LocationId)         REFERENCES Location(LocationId)
     FOREIGN KEY(FilterOptionsId)    REFERENCES FilterOptions(FilterOptionsId)
     FOREIGN KEY(RefItemTypeId)      REFERENCES RefItemType(RefItemTypeId)
     FOREIGN KEY(RefGroupById)       REFERENCES RefGroupBy(RefGroupById)

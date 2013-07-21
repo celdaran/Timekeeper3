@@ -10,20 +10,20 @@
 
 CREATE TABLE Journal
 (
-    JournalEntryId          INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    JournalId               INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
 
     CreateTime              DATETIME    NOT NULL,
     ModifyTime              DATETIME    NOT NULL,
-    LocationId              INTEGER         NULL,
 
-    JournalEntryGuid        TEXT        NOT NULL,
+    JournalGuid             TEXT        NOT NULL,
 
-    ActivityId              INTEGER     NOT NULL,
     ProjectId               INTEGER     NOT NULL,
+    ActivityId              INTEGER     NOT NULL,
     StartTime               DATETIME    NOT NULL,
     StopTime                DATETIME        NULL,
     Seconds                 INTEGER     NOT NULL,
     Memo                    TEXT            NULL,
+    LocationId              INTEGER         NULL,
     CategoryId              INTEGER         NULL,
     IsLocked                BOOLEAN     NOT NULL,
 
@@ -31,14 +31,14 @@ CREATE TABLE Journal
     OriginalStartTime       DATETIME        NULL,
     OriginalStopTime        DATETIME        NULL,
 
-    FOREIGN KEY(LocationId)             REFERENCES Location(LocationId)
-    FOREIGN KEY(ActivityId)             REFERENCES Activity(ActivityId)
     FOREIGN KEY(ProjectId)              REFERENCES Project(ProjectId)
+    FOREIGN KEY(ActivityId)             REFERENCES Activity(ActivityId)
+    FOREIGN KEY(LocationId)             REFERENCES Location(LocationId)
     FOREIGN KEY(CategoryId)             REFERENCES Category(CategoryId)
 );
 
-CREATE UNIQUE INDEX idx_Journal_JournalEntryId      ON Journal(JournalEntryId);
-CREATE UNIQUE INDEX idx_Journal_JournalEntryGuid    ON Journal(JournalEntryGuid);
+CREATE UNIQUE INDEX idx_Journal_JournalId           ON Journal(JournalId);
+CREATE UNIQUE INDEX idx_Journal_JournalGuid         ON Journal(JournalGuid);
 CREATE UNIQUE INDEX idx_Journal_StartTime           ON Journal(StartTime);
-CREATE        INDEX idx_Journal_ActivityId          ON Journal(ActivityId);
 CREATE        INDEX idx_Journal_ProjectId           ON Journal(ProjectId);
+CREATE        INDEX idx_Journal_ActivityId          ON Journal(ActivityId);
