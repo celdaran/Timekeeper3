@@ -16,7 +16,7 @@ namespace Timekeeper
 
         public const string TITLE = "Timekeeper";
         public const string VERSION = "3.0.0.0";
-        public const string IDENTIFIER = "AA9FFC4E-5CEB-4E3F-83FE-7EC5D1A33300";
+        public const string IDENTIFIER = "7EFF6E35-2448-4AA8-BBB0-441536BE592F";
 
         public const int SUCCESS = 1;
         public const int FAILURE = 0;
@@ -71,7 +71,7 @@ namespace Timekeeper
 
         public static string MetaTableName()
         {
-            return IDENTIFIER.Replace("-", "_");
+            return "[" + IDENTIFIER + "]";
         }
 
         //---------------------------------------------------------------------

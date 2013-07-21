@@ -42,7 +42,7 @@ namespace Timekeeper
         // Private
         private DateTime CreateTime;
         private DateTime ModifyTime;
-        private string JournalEntryGuid;
+        private string JournalGuid;
 
         //---------------------------------------------------------------------
         // Constructors
@@ -95,7 +95,7 @@ namespace Timekeeper
             copy.CurrentStartTime = this.CurrentStartTime;
             copy.CreateTime = this.CreateTime;
             copy.ModifyTime = this.ModifyTime;
-            copy.JournalEntryGuid = UUID.Get();
+            copy.JournalGuid = UUID.Get();
 
             // copy public properties
             copy.EntryId = this.EntryId;
@@ -152,7 +152,7 @@ namespace Timekeeper
                 } else {
                     string Query = @"
                         select
-                            j.JournalEntryId,
+                            j.JournalId,
                             j.ActivityId, a.Name as ActivityName,
                             j.ProjectId, p.Name as ProjectName,
                             j.StartTime,
@@ -162,13 +162,13 @@ namespace Timekeeper
                             j.LocationId, l.Name as LocationName,
                             j.CategoryId, c.Name as CategoryName,
                             j.IsLocked,
-                            j.CreateTime, j.ModifyTime, j.JournalEntryGuid
+                            j.CreateTime, j.ModifyTime, j.JournalGuid
                         from Journal j
                         join Activity a on a.ActivityId  = j.ActivityId
                         join Project p  on p.ProjectId   = j.ProjectId
                         left outer join Location l on l.LocationId  = j.LocationId
                         left outer join Category c      on c.CategoryId       = c.CategoryId
-                        where j.JournalEntryId = " + entryId;
+                        where j.JournalId = " + entryId;
                     SetAttributes(Data.SelectRow(Query));
                 }
             }
@@ -189,7 +189,7 @@ namespace Timekeeper
         public void Save()
         {
             try {
-                Data.Update("Journal", GetAttributes(Mode.Update), "JournalEntryId", EntryId);
+                Data.Update("Journal", GetAttributes(Mode.Update), "JournalId", EntryId);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -203,7 +203,7 @@ namespace Timekeeper
             try {
                 Row row = new Row();
                 row["IsLocked"] = 0;
-                Data.Update("Journal", row, "JournalEntryId", EntryId);
+                Data.Update("Journal", row, "JournalId", EntryId);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -307,7 +307,7 @@ namespace Timekeeper
                 Row["CreateTime"] = Common.Now();
             }
             Row["ModifyTime"] = Common.Now();
-            Row["JournalEntryGuid"] = UUID.Get();
+            Row["JournalGuid"] = UUID.Get();
 
             Row["ActivityId"] = ActivityId;
             Row["ProjectId"] = ProjectId;
@@ -331,7 +331,7 @@ namespace Timekeeper
 
             row["StartTime"] = DateTime.Now;
 
-            row["JournalEntryId"] = 0;
+            row["JournalId"] = 0;
             row["ActivityId"] = 0;
             row["ProjectId"] = 0;
             row["StartTime"] = DateTime.Now;
@@ -349,7 +349,7 @@ namespace Timekeeper
 
             row["CreateTime"] = DateTime.Now;
             row["ModifyTime"] = DateTime.Now;
-            row["JournalEntryGuid"] = UUID.Get();
+            row["JournalGuid"] = UUID.Get();
 
             SetAttributes(row);
         }
@@ -360,7 +360,7 @@ namespace Timekeeper
         {
             CurrentStartTime = row["StartTime"];
 
-            EntryId = row["JournalEntryId"];
+            EntryId = row["JournalId"];
             ActivityId = row["ActivityId"];
             ProjectId = row["ProjectId"];
             StartTime = row["StartTime"];
@@ -378,7 +378,7 @@ namespace Timekeeper
 
             CreateTime = row["CreateTime"];
             ModifyTime = row["ModifyTime"];
-            JournalEntryGuid = row["JournalEntryGuid"];
+            JournalGuid = row["JournalGuid"];
         }
 
         //---------------------------------------------------------------------
@@ -388,7 +388,7 @@ namespace Timekeeper
         public bool AtEnd()
         {
             string Query = String.Format(@"
-                select JournalEntryId from Journal 
+                select JournalId from Journal 
                 order by StartTime desc 
                 limit 1");
             return EdgeTest(Query);
@@ -399,7 +399,7 @@ namespace Timekeeper
         public bool AtBeginning()
         {
             string Query = String.Format(@"
-                select JournalEntryId from Journal 
+                select JournalId from Journal 
                 order by StartTime asc
                 limit 1");
             return EdgeTest(Query);
@@ -412,7 +412,7 @@ namespace Timekeeper
         private bool EdgeTest(string query)
         {
             Row Row = Data.SelectRow(query);
-            if ((Row["JournalEntryId"] != null) && (Row["JournalEntryId"] == this.EntryId)) {
+            if ((Row["JournalId"] != null) && (Row["JournalId"] == this.EntryId)) {
                 return true;
             } else {
                 return false;
@@ -426,7 +426,7 @@ namespace Timekeeper
         private void SetFirstId()
         {
             string query = String.Format(@"
-                select JournalEntryId, StartTime from Journal 
+                select JournalId, StartTime from Journal 
                 order by StartTime asc
                 limit 1");
             SetId(query);
@@ -437,7 +437,7 @@ namespace Timekeeper
         private void SetPrevId()
         {
             string query = String.Format(@"
-                select JournalEntryId, StartTime from Journal 
+                select JournalId, StartTime from Journal 
                 where StartTime < '{0}'
                 order by StartTime desc
                 limit 1", this.CurrentStartTime.ToString(Common.DATETIME_FORMAT));
@@ -451,7 +451,7 @@ namespace Timekeeper
             if (this.CurrentStartTime == DateTime.MinValue)
                 return;
             string query = String.Format(@"
-                select JournalEntryId, StartTime from Journal 
+                select JournalId, StartTime from Journal 
                 where StartTime > '{0}'
                 order by StartTime asc
                 limit 1", this.CurrentStartTime.ToString(Common.DATETIME_FORMAT));
@@ -463,7 +463,7 @@ namespace Timekeeper
         private void SetLastId()
         {
             string query = String.Format(@"
-                select JournalEntryId, StartTime from Journal 
+                select JournalId, StartTime from Journal 
                 order by StartTime desc 
                 limit 1");
             SetId(query);
@@ -482,7 +482,7 @@ namespace Timekeeper
 
             try {
                 Row row = Data.SelectRow(query);
-                this.EntryId = row["JournalEntryId"];
+                this.EntryId = row["JournalId"];
                 this.CurrentStartTime = row["StartTime"];
             }
             catch {

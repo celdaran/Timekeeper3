@@ -215,7 +215,7 @@ namespace Timekeeper.Forms
                 string Styles = Resources.GetString("ReportCssTemplate");
                 string Document = Resources.GetString("ReportTemplate");
                 string TextFileTest = Resources.GetString("TextFileTest");
-                string MetaTableName = Resources.GetString("AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300");
+                string MetaTableName = Resources.GetString(Timekeeper.MetaTableName());
 
                 //Common.Info(Styles);
                 //Common.Info(Document);
@@ -347,7 +347,7 @@ namespace Timekeeper.Forms
                     case 5: OrderBy = "l.Name"; break;
                     case 6: OrderBy = "t.Name"; break;
                     case 7: OrderBy = "p.ExternalProjectNo"; break;
-                    case 8: OrderBy = "log.JournalEntryId"; break;
+                    case 8: OrderBy = "log.JournalId"; break;
                 }
             }
 

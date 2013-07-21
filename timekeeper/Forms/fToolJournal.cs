@@ -14,7 +14,7 @@ namespace Timekeeper
     {
         public bool is_dirty = false;
         private DBI data;
-        private Classes.Diary Diary;
+        private Classes.Notebook Notebook;
 
         public fToolJournal(DBI data)
         {
@@ -24,8 +24,8 @@ namespace Timekeeper
 
         private void fToolJournal_Load(object sender, EventArgs e)
         {
-            Diary = new Classes.Diary();
-            Table Entries = Diary.Entries();
+            Notebook = new Classes.Notebook();
+            Table Entries = Notebook.Entries();
 
             foreach (Row Entry in Entries) {
                 wJumpBox.Items.Add(Entry["EntryTime"].ToString(Common.DATETIME_FORMAT));
@@ -72,7 +72,7 @@ namespace Timekeeper
             DateTime dt;
             dt = Convert.ToDateTime(CreateTime);
 
-            string query = "select * from Diary where CreateTime = '" + dt.ToString(Common.DATETIME_FORMAT) + "'";
+            string query = "select * from Notebook where CreateTime = '" + dt.ToString(Common.DATETIME_FORMAT) + "'";
             Row row = data.SelectRow(query);
             wEntry.Text = row["Memo"];
 

@@ -15,7 +15,6 @@ namespace Timekeeper
         private long _ItemId;
         private DateTime _CreateTime;
         private DateTime _ModifyTime;
-        private long _LocationId;
         private string _ItemGuid;
 
         private string _Name;
@@ -117,10 +116,6 @@ namespace Timekeeper
         public DateTime CreateTime { get { return _CreateTime; } private set { _CreateTime = value; } }
         public DateTime ModifyTime { get { return _ModifyTime; } private set { _ModifyTime = value; } }
         public string   ItemGuid { get { return _ItemGuid; } private set { _ItemGuid = value; } }
-        // FIXME: Something about LocationId still isn't working for me. I'm starting to think
-        // I should pull back and only use it in Journal: do I *really* care in what location
-        // each and every row in the database was created? Feels like an over-complication.
-        public long LocationId { get { return _LocationId; } set { _LocationId = value; } }
 
         public string   Name { get { return _Name; } set { _Name = value; } }
         public string   Description { get { return _Description; } set { _Description = value; } }
@@ -243,7 +238,6 @@ namespace Timekeeper
 
             Row["CreateTime"] = Common.Now();
             Row["ModifyTime"] = Common.Now();
-            Row["LocationId"] = this.LocationId;
             Row[this.TableName + "Guid"] = UUID.Get();
 
             Row["Name"] = this.Name;

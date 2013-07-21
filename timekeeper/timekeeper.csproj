@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -146,7 +146,7 @@
     <Compile Include="Classes\Activity.cs" />
     <Compile Include="Classes\Entries.cs" />
     <Compile Include="Classes\Entry.cs" />
-    <Compile Include="Classes\Diary.cs" />
+    <Compile Include="Classes\Notebook.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\Items.cs" />
     <Compile Include="Classes\Project.cs" />
@@ -473,7 +473,7 @@
     <None Include="Resources\SQL\2.0\Project.Insert.sql" />
     <None Include="Resources\SQL\2.1\Activity.Create.sql" />
     <None Include="Resources\SQL\2.1\Activity.Insert.sql" />
-    <None Include="Resources\SQL\2.1\Diary.Create.sql" />
+    <None Include="Resources\SQL\2.1\Notebook.Create.sql" />
     <None Include="Resources\SQL\2.1\GridOptions.Create.sql" />
     <None Include="Resources\SQL\2.1\Journal.Create.sql" />
     <None Include="Resources\SQL\2.1\Meta.Create.sql" />
@@ -482,7 +482,7 @@
     <None Include="Resources\SQL\2.1\Project.Insert.sql" />
     <None Include="Resources\SQL\2.2\Activity.Create.sql" />
     <None Include="Resources\SQL\2.2\Activity.Insert.sql" />
-    <None Include="Resources\SQL\2.2\Diary.Create.sql" />
+    <None Include="Resources\SQL\2.2\Notebook.Create.sql" />
     <None Include="Resources\SQL\2.2\GridOptions.Create.sql" />
     <None Include="Resources\SQL\2.2\Journal.Create.sql" />
     <None Include="Resources\SQL\2.2\Meta.Create.sql" />
@@ -493,7 +493,7 @@
     <None Include="Resources\SQL\3.0\Activity.Insert.sql" />
     <None Include="Resources\SQL\3.0\Category.Create.sql" />
     <None Include="Resources\SQL\3.0\Category.Insert.sql" />
-    <None Include="Resources\SQL\3.0\Diary.Create.sql" />
+    <None Include="Resources\SQL\3.0\Notebook.Create.sql" />
     <None Include="Resources\SQL\3.0\FilterOptions.Create.sql" />
     <None Include="Resources\SQL\3.0\GridOptions.Create.sql" />
     <None Include="Resources\SQL\3.0\Journal.Create.sql" />

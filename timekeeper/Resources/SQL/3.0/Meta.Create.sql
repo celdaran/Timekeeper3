@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------
--- Table..: AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300
+-- Table..: [7EFF6E35-2448-4AA8-BBB0-441536BE592F]
 -- Purpose: This is the table containing meta information about the
 --          database. It also serves as a unique identifier to help
 --          immediately distinguish a Timekeeper database from any
@@ -10,7 +10,7 @@
 -- AKA....: This table was known as 'meta' prior to Timekeeper 3.0
 ------------------------------------------------------------------------
 
-CREATE TABLE AA9FFC4E_5CEB_4E3F_83FE_7EC5D1A33300
+CREATE TABLE [7EFF6E35-2448-4AA8-BBB0-441536BE592F]
 (
     MetaId	            INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     Key                 TEXT    NOT NULL,

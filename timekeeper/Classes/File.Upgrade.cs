@@ -53,7 +53,7 @@ namespace Timekeeper
 
                     // Create remaining 3.0 tables
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
-                    CreateNewTable("Diary", CurrentSchemaVersion, false);
+                    CreateNewTable("Notebook", CurrentSchemaVersion, false);
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
                     CreateNewTable("FilterOptions", CurrentSchemaVersion, false);
                     CreateNewTable("GridOptions", CurrentSchemaVersion, false);
@@ -74,7 +74,7 @@ namespace Timekeeper
                     UpgradeMeta();
                     UpgradeActivity(PriorVersion);
                     UpgradeProject(PriorVersion);
-                    UpgradeDiary();
+                    UpgradeNotebook();
                     UpgradeGridOptions();
                     UpgradeJournal();
 
@@ -98,7 +98,7 @@ namespace Timekeeper
                     UpgradeMeta();
                     UpgradeActivity(PriorVersion);
                     UpgradeProject(PriorVersion);
-                    UpgradeDiary();
+                    UpgradeNotebook();
                     UpgradeGridOptions();
                     UpgradeJournal();
 
@@ -264,7 +264,6 @@ namespace Timekeeper
                     {"ActivityId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_c"])},
                     {"ModifyTime", ConvertTime(OldRow["timestamp_c"])}, // didn't exist in this schema, set to 'c'
-                    {"LocationId", 1}, // There's only 1, and we just created it
                     {"ActivityGuid", UUID.Get()},
                     {"Name", OldRow["name"]},
                     {"Description", OldRow["descr"]},
@@ -300,7 +299,6 @@ namespace Timekeeper
                     {"ActivityId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_c"])},
                     {"ModifyTime", ConvertTime(OldRow["timestamp_m"])},
-                    {"LocationId", 1},
                     {"ActivityGuid", UUID.Get()},
                     {"Name", OldRow["name"]},
                     {"Description", OldRow["descr"]},
@@ -336,7 +334,6 @@ namespace Timekeeper
                     {"ActivityId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_c"])},
                     {"ModifyTime", ConvertTime(OldRow["timestamp_m"])},
-                    {"LocationId", 1},
                     {"ActivityGuid", UUID.Get()},
                     {"Name", OldRow["name"]},
                     {"Description", OldRow["descr"]},
@@ -404,7 +401,6 @@ namespace Timekeeper
                     {"ProjectId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_c"])},
                     {"ModifyTime", ConvertTime(OldRow["timestamp_c"])}, // didn't exist in this schema, set to 'c'
-                    {"LocationId", 1},
                     {"ProjectGuid", UUID.Get()},
                     {"Name", OldRow["name"]},
                     {"Description", OldRow["descr"]},
@@ -445,7 +441,6 @@ namespace Timekeeper
                     {"ProjectId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_c"])},
                     {"ModifyTime", ConvertTime(OldRow["timestamp_m"])},
-                    {"LocationId", 1},
                     {"ProjectGuid", UUID.Get()},
                     {"Name", OldRow["name"]},
                     {"Description", OldRow["descr"]},
@@ -487,7 +482,6 @@ namespace Timekeeper
                     {"ProjectId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_c"])},
                     {"ModifyTime", ConvertTime(OldRow["timestamp_m"])},
-                    {"LocationId", 1},
                     {"ProjectGuid", UUID.Get()},
                     {"Name", OldRow["name"]},
                     {"Description", OldRow["descr"]},
@@ -557,16 +551,16 @@ namespace Timekeeper
                 }
 
                 Row NewRow = new Row() {
-                    {"JournalEntryId", OldRow["id"]},
+                    {"JournalId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_s"])}, // column didn't exist until TK3
                     {"ModifyTime", ConvertTime(OldRow["timestamp_e"])}, // column didn't exist until TK3
-                    {"LocationId", 1},
-                    {"JournalEntryGuid", UUID.Get()},
+                    {"JournalGuid", UUID.Get()},
                     {"ActivityId", OldRow["task_id"]},
                     {"ProjectId", OldRow["project_id"]},
                     {"StartTime", ConvertTime(OldRow["timestamp_s"])},
                     {"StopTime", ConvertTime(OldRow["timestamp_e"])},
                     {"Seconds", OldRow["seconds"]},
+                    {"LocationId", 1},
                     {"CategoryId", null},
                     {"IsLocked", OldRow["is_locked"] ? 1 : 0},
                     {"OriginalStartTime", OldRow["timestamp_s"].ToString(Common.LOCAL_DATETIME_FORMAT)},
@@ -597,34 +591,34 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        // Upgrade Diary Table
+        // Upgrade Notebook Table
         //---------------------------------------------------------------------
 
-        private void UpgradeDiary()
+        private void UpgradeNotebook()
         {
             // Notify user
-            SetStep("Diary Entries");
+            SetStep("Notebook Entries");
 
             // Save old table in memory
-            Table Diary = this.Database.Select("select * from journal order by id");
+            Table Notebook = this.Database.Select("select * from journal order by id");
 
             // Create new table
-            this.CreateTable("Diary", CurrentSchemaVersion, false);
+            this.CreateTable("Notebook", CurrentSchemaVersion, false);
 
             // Migrate rows
-            foreach (Row OldRow in Diary) {
+            foreach (Row OldRow in Notebook) {
                 RowId = OldRow["id"];
                 Row NewRow = new Row() {
-                    {"DiaryEntryId", OldRow["id"]},
+                    {"NotebookId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_c"])},
                     {"ModifyTime", ConvertTime(OldRow["timestamp_m"])},
-                    {"LocationId", 1},
-                    {"DiaryEntryGuid", UUID.Get()},
+                    {"NotebookGuid", UUID.Get()},
                     {"EntryTime", ConvertTime(OldRow["timestamp_entry"])},
                     {"Memo", OldRow["description"]},
+                    {"LocationId", 1},
                     {"CategoryId", null},
                 };
-                InsertedRowId = this.Database.Insert("Diary", NewRow);
+                InsertedRowId = this.Database.Insert("Notebook", NewRow);
                 if (InsertedRowId == 0) throw new Exception("Insert failed");
                 this.Progress.Value++;
 
@@ -680,7 +674,6 @@ namespace Timekeeper
                     {"GridOptionsId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_c"])},
                     {"ModifyTime", ConvertTime(OldRow["timestamp_m"])},
-                    {"LocationId", 1},
                     {"Name", OldRow["name"]},
                     {"Description", OldRow["description"]},
                     {"SortOrderNo", OldRow["sort_index"]},

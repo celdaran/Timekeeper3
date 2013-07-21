@@ -1081,20 +1081,20 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_UpdateDiary(string memo, DateTime entryTime, bool create)
+        private void Action_UpdateNotebook(string memo, DateTime entryTime, bool create)
         {
-            var Diary = new Classes.Diary();
+            var Notebook = new Classes.Notebook();
 
-            Diary.Memo = memo;
-            Diary.EntryTime = entryTime;
+            Notebook.Memo = memo;
+            Notebook.EntryTime = entryTime;
 
             if (create) {
-                Diary.Create();
+                Notebook.Create();
                 Common.Info("Journal entry created.");
             } else {
                 // FIXME: what was this? what that value?
                 // dlg.wJumpBox.Items[dlg.wJumpBox.SelectedIndex].ToString();
-                Diary.Update();
+                Notebook.Update();
                 Common.Info("Journal entry updated.");
             }
         }

@@ -357,7 +357,7 @@ namespace Timekeeper.Forms
             fToolJournal dlg = new fToolJournal(Database);
             dlg.ActiveControl = dlg.wEntry;
             if (dlg.ShowDialog(this) == DialogResult.OK && dlg.is_dirty) {
-                Action_UpdateDiary(dlg.wEntry.Text, dlg.wEntryDate.Value, dlg.wJumpBox.SelectedIndex == -1);
+                Action_UpdateNotebook(dlg.wEntry.Text, dlg.wEntryDate.Value, dlg.wJumpBox.SelectedIndex == -1);
             }
         }
 

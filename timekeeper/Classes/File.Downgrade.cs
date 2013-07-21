@@ -84,7 +84,7 @@ namespace Timekeeper
             foreach (Row Row in Journal) {
 
                 Row NewRow = new Row() {
-                    {"id", Row["JournalEntryId"]},
+                    {"id", Row["JournalId"]},
                     {"task_id", Row["ActivityId"]},
                     {"project_id", Row["ProjectId"]},
                     {"timestamp_s", Row["StartTime"].ToString(Common.DATETIME_FORMAT)},
@@ -98,12 +98,12 @@ namespace Timekeeper
                 newFile.Database.Insert("timekeeper", NewRow);
             }
 
-            // Diary table
-            Table Diary = this.Database.Select("select * from Diary");
-            foreach (Row Row in Diary) {
+            // Notebook table
+            Table Notebook = this.Database.Select("select * from Notebook");
+            foreach (Row Row in Notebook) {
 
                 Row NewRow = new Row() {
-                    {"id", Row["DiaryEntryId"]},
+                    {"id", Row["NotebookId"]},
                     {"timestamp_entry", Row["EntryTime"].ToString(Common.DATETIME_FORMAT)},
                     {"description", Row["Memo"]},
                     {"timestamp_c", Row["CreateTime"].ToString(Common.DATETIME_FORMAT)},
@@ -202,7 +202,7 @@ namespace Timekeeper
             foreach (Row Row in Journal) {
 
                 Row NewRow = new Row() {
-                    {"id", Row["JournalEntryId"]},
+                    {"id", Row["JournalId"]},
                     {"task_id", Row["ActivityId"]},
                     {"project_id", Row["ProjectId"]},
                     {"timestamp_s", Row["StartTime"].ToString(Common.DATETIME_FORMAT)},
@@ -216,12 +216,12 @@ namespace Timekeeper
                 newFile.Database.Insert("timekeeper", NewRow);
             }
 
-            // Diary table
-            Table Diary = this.Database.Select("select * from Diary");
-            foreach (Row Row in Diary) {
+            // Notebook table
+            Table Notebook = this.Database.Select("select * from Notebook");
+            foreach (Row Row in Notebook) {
 
                 Row NewRow = new Row() {
-                    {"id", Row["DiaryEntryId"]},
+                    {"id", Row["NotebookId"]},
                     {"timestamp_entry", Row["EntryTime"].ToString(Common.DATETIME_FORMAT)},
                     {"description", Row["Memo"]},
                     {"timestamp_c", Row["CreateTime"].ToString(Common.DATETIME_FORMAT)},

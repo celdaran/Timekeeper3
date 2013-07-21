@@ -18,7 +18,7 @@ namespace Timekeeper
         public readonly string Name;
         public readonly string FullPath;
 
-        public const string SCHEMA_VERSION = "3.0.0.1";
+        public const string SCHEMA_VERSION = "3.0.0.2";
 
         public const int ERROR_UNEXPECTED = -1;
         public const int ERROR_NEWER_VERSION_DETECTED = -2;
@@ -179,7 +179,7 @@ namespace Timekeeper
 
                 // Journal Tables
                 CreateTable("Journal", version, false);
-                CreateTable("Diary", version, false);
+                CreateTable("Notebook", version, false);
 
                 // User Options
                 CreateTable("Options", version, populate);
@@ -388,7 +388,6 @@ namespace Timekeeper
         {
             item.Name = itemNode["name"].InnerText;
             item.Description = itemNode["description"].InnerText;
-            item.LocationId = 1;
             item.IsFolder = itemNode["isfolder"].InnerText == "true";
 
             if (itemNode["parent"].InnerText != "") {
@@ -416,7 +415,7 @@ namespace Timekeeper
                 // Grab a few handy objects
                 Activities Tasks = new Activities(Database, "");
                 Projects Projects = new Projects(Database, "");
-                Classes.Diary Diary = new Classes.Diary();
+                Classes.Notebook Notebook = new Classes.Notebook();
                 Entries Entries = new Entries(Database);
 
                 // convert meta rows to rows (note order by above)
@@ -430,7 +429,7 @@ namespace Timekeeper
                 row.Add("filesize", Database.FileSize);
                 row.Add("taskcount", Tasks.Count());
                 row.Add("projectcount", Projects.Count());
-                row.Add("journalcount", Diary.Count());
+                row.Add("journalcount", Notebook.Count());
                 row.Add("logcount", Entries.Count());
                 row.Add("totalseconds", Timekeeper.FormatSeconds(Entries.TotalSeconds()));
             }

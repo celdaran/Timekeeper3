@@ -6,7 +6,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class Diary
+    class Notebook
     {
         //---------------------------------------------------------------------
         // Properties
@@ -16,10 +16,10 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public int DiaryEntryId;
+        public int NotebookId;
         public DateTime CreateTime;
         public DateTime ModifyTime;
-        public string DiaryEntryGuid;
+        public string NotebookGuid;
 
         private DateTime _EntryTime;
         private string _Memo;
@@ -30,7 +30,7 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public Diary()
+        public Notebook()
         {
             this.Data = Timekeeper.Database;
         }
@@ -41,24 +41,24 @@ namespace Timekeeper.Classes
 
         public int Count()
         {
-            string Query = "select count(*) as Count from Diary";
+            string Query = "select count(*) as Count from Notebook";
             Row Row = Data.SelectRow(Query);
             return (int)Row["Count"];
         }
 
         //---------------------------------------------------------------------
 
-        public void Load(int diaryEntryId)
+        public void Load(int notebookId)
         {
-            DiaryEntryId = diaryEntryId;
+            NotebookId = notebookId;
 
             try {
                 Row Row = new Row();
-                Row = this.Data.SelectRow("select * from Diary where DiaryEntryId = " + diaryEntryId);
+                Row = this.Data.SelectRow("select * from Notebook where NotebookId = " + notebookId);
 
                 this.CreateTime = Row["CreateTime"];
                 this.ModifyTime = Row["ModifyTime"];
-                this.DiaryEntryGuid = Row["DiaryEntryGuid"];
+                this.NotebookGuid = Row["NotebookGuid"];
 
                 this._EntryTime = Row["EntryTime"];
                 this._Memo = Row["Memo"];
@@ -74,7 +74,7 @@ namespace Timekeeper.Classes
 
         public Table Entries()
         {
-            string Query = "select DiaryEntryId, EntryTime from Diary order by EntryTime";
+            string Query = "select NotebookId, EntryTime from Notebook order by EntryTime";
             return Data.Select(Query);
         }
 
@@ -125,14 +125,14 @@ namespace Timekeeper.Classes
 
             Row["CreateTime"] = Common.Now();
             Row["ModifyTime"] = Common.Now();
-            Row["DiaryEntryGuid"] = UUID.Get();
+            Row["NotebookGuid"] = UUID.Get();
 
             Row["EntryTime"] = this.EntryTime.ToString(Common.DATETIME_FORMAT);
             Row["Memo"] = this.Memo;
             Row["LocationId"] = this.LocationId;
             Row["CategoryId"] = this.CategoryId;
 
-            Data.Insert("Diary", Row);
+            Data.Insert("Notebook", Row);
         }
 
         //---------------------------------------------------------------------
@@ -148,7 +148,7 @@ namespace Timekeeper.Classes
             Row["LocationId"] = this.LocationId;
             Row["CategoryId"] = this.CategoryId;
 
-            Data.Update("Diary", Row, "DiaryEntryId", this.DiaryEntryId);
+            Data.Update("Notebook", Row, "NotebookId", this.NotebookId);
         }
 
         //---------------------------------------------------------------------
