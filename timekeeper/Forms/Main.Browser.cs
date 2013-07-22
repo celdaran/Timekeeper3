@@ -269,7 +269,7 @@ namespace Timekeeper.Forms
             TimeSpan ts = wStopTime.Value.Subtract(wStartTime.Value);
 
             // Update browserEntry with current form data
-            entry.EntryId = entryId;
+            entry.JournalId = entryId;
             entry.ActivityId = task.ItemId;
             entry.ProjectId = project.ItemId;
             entry.StartTime = wStartTime.Value;
@@ -302,7 +302,7 @@ namespace Timekeeper.Forms
             wMemo.Text = entry.Memo;
 
             // And any other relevant values
-            toolControlEntryId.Text = entry.EntryId > 0 ? entry.EntryId.ToString() : "";
+            toolControlEntryId.Text = entry.JournalId > 0 ? entry.JournalId.ToString() : "";
         }
 
         //---------------------------------------------------------------------
@@ -313,7 +313,7 @@ namespace Timekeeper.Forms
                 Browser_SaveRow(false);
                 browserEntry.LoadFirst();
                 priorLoadedBrowserEntry = browserEntry.Copy();
-                if (browserEntry.EntryId > 0) {
+                if (browserEntry.JournalId > 0) {
                     Browser_DisplayRow();
                     Browser_EnableLast(true);
                     Browser_EnableNext(true);
@@ -336,7 +336,7 @@ namespace Timekeeper.Forms
                 Browser_SaveRow(false);
                 browserEntry.LoadLast();
                 priorLoadedBrowserEntry = browserEntry.Copy();
-                if (browserEntry.EntryId > 0) {
+                if (browserEntry.JournalId > 0) {
                     Browser_DisplayRow();
                     Browser_EnableFirst(true);
                     Browser_EnablePrev(true);
@@ -361,7 +361,7 @@ namespace Timekeeper.Forms
                 Browser_SaveRow(false);
                 browserEntry.LoadNext();
                 priorLoadedBrowserEntry = browserEntry.Copy();
-                if (browserEntry.EntryId > 0) {
+                if (browserEntry.JournalId > 0) {
                     Browser_DisplayRow();
                     Browser_EnableFirst(true);
                     Browser_EnablePrev(true);
@@ -398,7 +398,7 @@ namespace Timekeeper.Forms
                 Browser_SaveRow(false);
                 browserEntry.LoadPrevious();
                 priorLoadedBrowserEntry = browserEntry.Copy();
-                if (browserEntry.EntryId > 0) {
+                if (browserEntry.JournalId > 0) {
                     Browser_DisplayRow();
                     Browser_EnableLast(true);
                     Browser_EnableNext(true);
@@ -484,12 +484,12 @@ namespace Timekeeper.Forms
         public void Browser_SaveRow(bool forceSave)
         {
             // Bail if we have no entry
-            if ((browserEntry == null) || (browserEntry.EntryId == 0)) {
+            if ((browserEntry == null) || (browserEntry.JournalId == 0)) {
                 return;
             }
 
             // Copy form values to browser entry
-            Browser_FormToEntry(ref browserEntry, browserEntry.EntryId);
+            Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
 
             // Now bail if nothing's changed
             if (!forceSave) {

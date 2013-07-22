@@ -767,6 +767,13 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Action_ResizeSplitter()
+        {
+            splitTrees.SplitterDistance = splitTrees.Width / 2;
+        }
+
+        //---------------------------------------------------------------------
+
         private void Action_SaveAs(int fileType)
         {
             DBI NewDatabase = new DBI(SaveAsDialog.FileName);

@@ -100,6 +100,8 @@ namespace Timekeeper.Forms
             this.menuToolsReminders = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
             this.menuToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuToolsXmlTest = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelpContents = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelpWeb = new System.Windows.Forms.ToolStripMenuItem();
@@ -191,8 +193,6 @@ namespace Timekeeper.Forms
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuToolsXmlTest = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
@@ -299,28 +299,28 @@ namespace Timekeeper.Forms
             // 
             this.menuFileUtilitiesImport.Enabled = false;
             this.menuFileUtilitiesImport.Name = "menuFileUtilitiesImport";
-            this.menuFileUtilitiesImport.Size = new System.Drawing.Size(120, 22);
+            this.menuFileUtilitiesImport.Size = new System.Drawing.Size(152, 22);
             this.menuFileUtilitiesImport.Text = "Import...";
             // 
             // menuFileUtilitiesExport
             // 
             this.menuFileUtilitiesExport.Enabled = false;
             this.menuFileUtilitiesExport.Name = "menuFileUtilitiesExport";
-            this.menuFileUtilitiesExport.Size = new System.Drawing.Size(120, 22);
+            this.menuFileUtilitiesExport.Size = new System.Drawing.Size(152, 22);
             this.menuFileUtilitiesExport.Text = "Export...";
             // 
             // menuFileUtilitiesBackup
             // 
             this.menuFileUtilitiesBackup.Enabled = false;
             this.menuFileUtilitiesBackup.Name = "menuFileUtilitiesBackup";
-            this.menuFileUtilitiesBackup.Size = new System.Drawing.Size(120, 22);
+            this.menuFileUtilitiesBackup.Size = new System.Drawing.Size(152, 22);
             this.menuFileUtilitiesBackup.Text = "Backup...";
             // 
             // menuFileUtilitiesRepair
             // 
             this.menuFileUtilitiesRepair.Enabled = false;
             this.menuFileUtilitiesRepair.Name = "menuFileUtilitiesRepair";
-            this.menuFileUtilitiesRepair.Size = new System.Drawing.Size(120, 22);
+            this.menuFileUtilitiesRepair.Size = new System.Drawing.Size(152, 22);
             this.menuFileUtilitiesRepair.Text = "Repair...";
             // 
             // MenuFileSep2
@@ -343,19 +343,19 @@ namespace Timekeeper.Forms
             this.MenuActionOpenBrowser,
             this.MenuActionCloseBrowser,
             this.MenuActionSep1,
-            this.menuTasksNewTask,
-            this.menuTasksNewTaskFolder,
-            this.menuTasksEditTask,
-            this.menuTasksHideTask,
-            this.menuTasksUnhideTask,
-            this.menuTasksDeleteTask,
-            this.MenuActionSep2,
             this.menuTasksNewProject,
             this.menuTasksNewProjectFolder,
             this.menuTasksEditProject,
             this.menuTasksHideProject,
             this.menuTasksUnhideProject,
-            this.menuTasksDeleteProject});
+            this.menuTasksDeleteProject,
+            this.MenuActionSep2,
+            this.menuTasksNewTask,
+            this.menuTasksNewTaskFolder,
+            this.menuTasksEditTask,
+            this.menuTasksHideTask,
+            this.menuTasksUnhideTask,
+            this.menuTasksDeleteTask});
             this.MenuAction.Enabled = false;
             this.MenuAction.Name = "MenuAction";
             this.MenuAction.Size = new System.Drawing.Size(49, 20);
@@ -365,7 +365,7 @@ namespace Timekeeper.Forms
             // 
             this.MenuActionStartTimer.Image = global::Timekeeper.Properties.Resources.ImageButtonGo;
             this.MenuActionStartTimer.Name = "MenuActionStartTimer";
-            this.MenuActionStartTimer.Size = new System.Drawing.Size(177, 22);
+            this.MenuActionStartTimer.Size = new System.Drawing.Size(179, 22);
             this.MenuActionStartTimer.Text = "&Start Timer";
             this.MenuActionStartTimer.Click += new System.EventHandler(this.MenuActionStartTimer_Click);
             // 
@@ -373,7 +373,7 @@ namespace Timekeeper.Forms
             // 
             this.MenuActionStopTimer.Image = global::Timekeeper.Properties.Resources.ImageButtonStop;
             this.MenuActionStopTimer.Name = "MenuActionStopTimer";
-            this.MenuActionStopTimer.Size = new System.Drawing.Size(177, 22);
+            this.MenuActionStopTimer.Size = new System.Drawing.Size(179, 22);
             this.MenuActionStopTimer.Text = "&Stop Timer";
             this.MenuActionStopTimer.Visible = false;
             this.MenuActionStopTimer.Click += new System.EventHandler(this.MenuActionStopTimer_Click);
@@ -381,14 +381,14 @@ namespace Timekeeper.Forms
             // MenuActionOpenBrowser
             // 
             this.MenuActionOpenBrowser.Name = "MenuActionOpenBrowser";
-            this.MenuActionOpenBrowser.Size = new System.Drawing.Size(177, 22);
+            this.MenuActionOpenBrowser.Size = new System.Drawing.Size(179, 22);
             this.MenuActionOpenBrowser.Text = "Open &Browser";
             this.MenuActionOpenBrowser.Click += new System.EventHandler(this.MenuActionOpenBrowser_Click);
             // 
             // MenuActionCloseBrowser
             // 
             this.MenuActionCloseBrowser.Name = "MenuActionCloseBrowser";
-            this.MenuActionCloseBrowser.Size = new System.Drawing.Size(177, 22);
+            this.MenuActionCloseBrowser.Size = new System.Drawing.Size(179, 22);
             this.MenuActionCloseBrowser.Text = "Close &Browser";
             this.MenuActionCloseBrowser.Visible = false;
             this.MenuActionCloseBrowser.Click += new System.EventHandler(this.MenuActionCloseBrowser_Click);
@@ -396,15 +396,15 @@ namespace Timekeeper.Forms
             // MenuActionSep1
             // 
             this.MenuActionSep1.Name = "MenuActionSep1";
-            this.MenuActionSep1.Size = new System.Drawing.Size(174, 6);
+            this.MenuActionSep1.Size = new System.Drawing.Size(176, 6);
             // 
             // menuTasksNewTask
             // 
             this.menuTasksNewTask.Image = global::Timekeeper.Properties.Resources.ImageIconSmallActivity;
             this.menuTasksNewTask.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewTask.Name = "menuTasksNewTask";
-            this.menuTasksNewTask.Size = new System.Drawing.Size(177, 22);
-            this.menuTasksNewTask.Text = "&New Task...";
+            this.menuTasksNewTask.Size = new System.Drawing.Size(179, 22);
+            this.menuTasksNewTask.Text = "&New Activity...";
             this.menuTasksNewTask.Click += new System.EventHandler(this.menuTasksNewTask_Click);
             // 
             // menuTasksNewTaskFolder
@@ -413,50 +413,50 @@ namespace Timekeeper.Forms
             this.menuTasksNewTaskFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewTaskFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.menuTasksNewTaskFolder.Name = "menuTasksNewTaskFolder";
-            this.menuTasksNewTaskFolder.Size = new System.Drawing.Size(177, 22);
-            this.menuTasksNewTaskFolder.Text = "New Task Folder...";
+            this.menuTasksNewTaskFolder.Size = new System.Drawing.Size(179, 22);
+            this.menuTasksNewTaskFolder.Text = "New Activity Folder...";
             this.menuTasksNewTaskFolder.Click += new System.EventHandler(this.menuTasksNewTaskFolder_Click);
             // 
             // menuTasksEditTask
             // 
             this.menuTasksEditTask.Name = "menuTasksEditTask";
-            this.menuTasksEditTask.Size = new System.Drawing.Size(177, 22);
-            this.menuTasksEditTask.Text = "&Edit Task...";
+            this.menuTasksEditTask.Size = new System.Drawing.Size(179, 22);
+            this.menuTasksEditTask.Text = "&Edit Activity...";
             this.menuTasksEditTask.Click += new System.EventHandler(this.menuTasksEdit_Click);
             // 
             // menuTasksHideTask
             // 
             this.menuTasksHideTask.Name = "menuTasksHideTask";
-            this.menuTasksHideTask.Size = new System.Drawing.Size(177, 22);
-            this.menuTasksHideTask.Text = "&Hide Task...";
+            this.menuTasksHideTask.Size = new System.Drawing.Size(179, 22);
+            this.menuTasksHideTask.Text = "&Hide Activity...";
             this.menuTasksHideTask.Click += new System.EventHandler(this.menuTasksHideTask_Click);
             // 
             // menuTasksUnhideTask
             // 
             this.menuTasksUnhideTask.Name = "menuTasksUnhideTask";
-            this.menuTasksUnhideTask.Size = new System.Drawing.Size(177, 22);
-            this.menuTasksUnhideTask.Text = "Un&hide Task...";
+            this.menuTasksUnhideTask.Size = new System.Drawing.Size(179, 22);
+            this.menuTasksUnhideTask.Text = "Un&hide Activity...";
             this.menuTasksUnhideTask.Visible = false;
             this.menuTasksUnhideTask.Click += new System.EventHandler(this.menuTasksUnhideTask_Click);
             // 
             // menuTasksDeleteTask
             // 
             this.menuTasksDeleteTask.Name = "menuTasksDeleteTask";
-            this.menuTasksDeleteTask.Size = new System.Drawing.Size(177, 22);
-            this.menuTasksDeleteTask.Text = "&Delete Task...";
+            this.menuTasksDeleteTask.Size = new System.Drawing.Size(179, 22);
+            this.menuTasksDeleteTask.Text = "&Delete Activity...";
             this.menuTasksDeleteTask.Click += new System.EventHandler(this.menuTasksDeleteTask_Click);
             // 
             // MenuActionSep2
             // 
             this.MenuActionSep2.Name = "MenuActionSep2";
-            this.MenuActionSep2.Size = new System.Drawing.Size(174, 6);
+            this.MenuActionSep2.Size = new System.Drawing.Size(176, 6);
             // 
             // menuTasksNewProject
             // 
             this.menuTasksNewProject.Image = global::Timekeeper.Properties.Resources.ImageIconSmallProject;
             this.menuTasksNewProject.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewProject.Name = "menuTasksNewProject";
-            this.menuTasksNewProject.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksNewProject.Size = new System.Drawing.Size(179, 22);
             this.menuTasksNewProject.Text = "New &Project...";
             this.menuTasksNewProject.Click += new System.EventHandler(this.menuTasksNewProject_Click);
             // 
@@ -466,28 +466,28 @@ namespace Timekeeper.Forms
             this.menuTasksNewProjectFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.menuTasksNewProjectFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.menuTasksNewProjectFolder.Name = "menuTasksNewProjectFolder";
-            this.menuTasksNewProjectFolder.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksNewProjectFolder.Size = new System.Drawing.Size(179, 22);
             this.menuTasksNewProjectFolder.Text = "New Project Folder...";
             this.menuTasksNewProjectFolder.Click += new System.EventHandler(this.menuTasksNewProjectFolder_Click);
             // 
             // menuTasksEditProject
             // 
             this.menuTasksEditProject.Name = "menuTasksEditProject";
-            this.menuTasksEditProject.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksEditProject.Size = new System.Drawing.Size(179, 22);
             this.menuTasksEditProject.Text = "Edit P&roject...";
             this.menuTasksEditProject.Click += new System.EventHandler(this.menuTasksEditProject_Click);
             // 
             // menuTasksHideProject
             // 
             this.menuTasksHideProject.Name = "menuTasksHideProject";
-            this.menuTasksHideProject.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksHideProject.Size = new System.Drawing.Size(179, 22);
             this.menuTasksHideProject.Text = "H&ide Project...";
             this.menuTasksHideProject.Click += new System.EventHandler(this.menuTasksHideProject_Click);
             // 
             // menuTasksUnhideProject
             // 
             this.menuTasksUnhideProject.Name = "menuTasksUnhideProject";
-            this.menuTasksUnhideProject.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksUnhideProject.Size = new System.Drawing.Size(179, 22);
             this.menuTasksUnhideProject.Text = "Unh&ide Project...";
             this.menuTasksUnhideProject.Visible = false;
             this.menuTasksUnhideProject.Click += new System.EventHandler(this.menuTasksUnhideProject_Click);
@@ -495,7 +495,7 @@ namespace Timekeeper.Forms
             // menuTasksDeleteProject
             // 
             this.menuTasksDeleteProject.Name = "menuTasksDeleteProject";
-            this.menuTasksDeleteProject.Size = new System.Drawing.Size(177, 22);
+            this.menuTasksDeleteProject.Size = new System.Drawing.Size(179, 22);
             this.menuTasksDeleteProject.Text = "Delete Pr&oject...";
             this.menuTasksDeleteProject.Click += new System.EventHandler(this.menuTasksDeleteProject_Click);
             // 
@@ -737,7 +737,7 @@ namespace Timekeeper.Forms
             // 
             this.menuToolsJournal.Name = "menuToolsJournal";
             this.menuToolsJournal.Size = new System.Drawing.Size(161, 22);
-            this.menuToolsJournal.Text = "&Journal...";
+            this.menuToolsJournal.Text = "&Notebook...";
             this.menuToolsJournal.Click += new System.EventHandler(this.menuToolsJournal_Click);
             // 
             // menuToolsCalendar
@@ -794,6 +794,18 @@ namespace Timekeeper.Forms
             this.menuToolsOptions.Text = "Op&tions...";
             this.menuToolsOptions.Click += new System.EventHandler(this.menuToolsOptions_Click);
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(158, 6);
+            // 
+            // menuToolsXmlTest
+            // 
+            this.menuToolsXmlTest.Name = "menuToolsXmlTest";
+            this.menuToolsXmlTest.Size = new System.Drawing.Size(161, 22);
+            this.menuToolsXmlTest.Text = "XML Test";
+            this.menuToolsXmlTest.Click += new System.EventHandler(this.menuToolsXmlTest_Click);
+            // 
             // menuHelp
             // 
             this.menuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -809,26 +821,26 @@ namespace Timekeeper.Forms
             // 
             this.menuHelpContents.Name = "menuHelpContents";
             this.menuHelpContents.ShortcutKeyDisplayString = "F1";
-            this.menuHelpContents.Size = new System.Drawing.Size(152, 22);
+            this.menuHelpContents.Size = new System.Drawing.Size(137, 22);
             this.menuHelpContents.Text = "&Contents";
             this.menuHelpContents.Click += new System.EventHandler(this.menuHelpContents_Click);
             // 
             // menuHelpWeb
             // 
             this.menuHelpWeb.Name = "menuHelpWeb";
-            this.menuHelpWeb.Size = new System.Drawing.Size(152, 22);
+            this.menuHelpWeb.Size = new System.Drawing.Size(137, 22);
             this.menuHelpWeb.Text = "&Web Support";
             this.menuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
             // 
             // menuHelpSep
             // 
             this.menuHelpSep.Name = "menuHelpSep";
-            this.menuHelpSep.Size = new System.Drawing.Size(149, 6);
+            this.menuHelpSep.Size = new System.Drawing.Size(134, 6);
             // 
             // menuHelpAbout
             // 
             this.menuHelpAbout.Name = "menuHelpAbout";
-            this.menuHelpAbout.Size = new System.Drawing.Size(152, 22);
+            this.menuHelpAbout.Size = new System.Drawing.Size(137, 22);
             this.menuHelpAbout.Text = "&About...";
             this.menuHelpAbout.Click += new System.EventHandler(this.menuHelpAbout_Click);
             // 
@@ -928,15 +940,16 @@ namespace Timekeeper.Forms
             // 
             // splitTrees.Panel1
             // 
-            this.splitTrees.Panel1.Controls.Add(this.wTasks);
+            this.splitTrees.Panel1.Controls.Add(this.wProjects);
             // 
             // splitTrees.Panel2
             // 
-            this.splitTrees.Panel2.Controls.Add(this.wProjects);
+            this.splitTrees.Panel2.Controls.Add(this.wTasks);
             this.splitTrees.Size = new System.Drawing.Size(620, 115);
             this.splitTrees.SplitterDistance = 350;
             this.splitTrees.TabIndex = 2;
             this.splitTrees.TabStop = false;
+            this.splitTrees.DoubleClick += new System.EventHandler(this.splitTrees_DoubleClick);
             // 
             // wTasks
             // 
@@ -951,7 +964,7 @@ namespace Timekeeper.Forms
             this.wTasks.SelectedImageIndex = 0;
             this.wTasks.ShowLines = false;
             this.wTasks.ShowNodeToolTips = true;
-            this.wTasks.Size = new System.Drawing.Size(350, 115);
+            this.wTasks.Size = new System.Drawing.Size(266, 115);
             this.wTasks.TabIndex = 0;
             this.wTasks.Tag = "tasks";
             this.wTasks.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.wTasks_AfterLabelEdit);
@@ -1084,7 +1097,7 @@ namespace Timekeeper.Forms
             this.wProjects.SelectedImageIndex = 0;
             this.wProjects.ShowLines = false;
             this.wProjects.ShowNodeToolTips = true;
-            this.wProjects.Size = new System.Drawing.Size(266, 115);
+            this.wProjects.Size = new System.Drawing.Size(350, 115);
             this.wProjects.TabIndex = 1;
             this.wProjects.Tag = "projects";
             this.wProjects.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.wProjects_AfterLabelEdit);
@@ -1706,18 +1719,6 @@ namespace Timekeeper.Forms
             this.SaveAsDialog.Filter = "Timekeeper 3.0 Database|*.tkdb|Timekeeper 2.3 Database|*.tkdb|Timekeeper 2.2 Data" +
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
             this.SaveAsDialog.Title = "Save As";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(158, 6);
-            // 
-            // menuToolsXmlTest
-            // 
-            this.menuToolsXmlTest.Name = "menuToolsXmlTest";
-            this.menuToolsXmlTest.Size = new System.Drawing.Size(161, 22);
-            this.menuToolsXmlTest.Text = "XML Test";
-            this.menuToolsXmlTest.Click += new System.EventHandler(this.menuToolsXmlTest_Click);
             // 
             // Main
             // 

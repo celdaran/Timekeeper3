@@ -555,6 +555,11 @@ namespace Timekeeper.Forms
             Action_StartTimer();
         }
 
+        private void splitTrees_DoubleClick(object sender, EventArgs e)
+        {
+            Action_ResizeSplitter();
+        }
+
         //---------------------------------------------------------------------
         // Timer Events
         //---------------------------------------------------------------------
