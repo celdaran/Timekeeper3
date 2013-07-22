@@ -5,9 +5,9 @@ using System.Text;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Classes
 {
-    class Entries
+    class JournalEntries
     {
         //---------------------------------------------------------------------
         // Properties
@@ -19,7 +19,7 @@ namespace Timekeeper
         // Constructor
         //---------------------------------------------------------------------
 
-        public Entries(DBI data)
+        public JournalEntries(DBI data)
         {
             this.Data = data;
         }

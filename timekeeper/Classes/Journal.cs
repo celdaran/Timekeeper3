@@ -4,9 +4,9 @@ using System.Text;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Classes
 {
-    class Entry
+    class Journal
     {
         //---------------------------------------------------------------------
         // Properties
@@ -48,7 +48,7 @@ namespace Timekeeper
         // Constructors
         //---------------------------------------------------------------------
 
-        public Entry(DBI data)
+        public Journal(DBI data)
         {
             this.Data = data;
             this.SetAttributes();
@@ -56,7 +56,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public Entry(DBI data, long entryId) : this(data)
+        public Journal(DBI data, long entryId) : this(data)
         {
             this.Load(entryId);
         }
@@ -87,9 +87,9 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public Entry Copy()
+        public Journal Copy()
         {
-            Entry copy = new Entry(this.Data);
+            Journal copy = new Journal(this.Data);
 
             // copy private properties
             copy.CurrentStartTime = this.CurrentStartTime;
@@ -118,7 +118,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public bool Equals(Entry copy)
+        public bool Equals(Journal copy)
         {
             if (copy == null) {
                 return false;

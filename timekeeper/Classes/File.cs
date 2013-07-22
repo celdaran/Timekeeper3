@@ -416,7 +416,7 @@ namespace Timekeeper
                 Activities Tasks = new Activities(Database, "");
                 Projects Projects = new Projects(Database, "");
                 Classes.Notebook Notebook = new Classes.Notebook();
-                Entries Entries = new Entries(Database);
+                Classes.JournalEntries Entries = new Classes.JournalEntries(Database);
 
                 // convert meta rows to rows (note order by above)
                 Classes.Meta Meta = new Classes.Meta();

@@ -16,9 +16,9 @@ namespace Timekeeper.Forms
         //---------------------------------------------------------------------
 
         // Browser Objects
-        private Entry browserEntry;
-        private Entry priorLoadedBrowserEntry;
-        private Entry newBrowserEntry;
+        private Classes.Journal browserEntry;
+        private Classes.Journal priorLoadedBrowserEntry;
+        private Classes.Journal newBrowserEntry;
         private bool isBrowsing = false;
 
         //---------------------------------------------------------------------
@@ -256,7 +256,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Browser_FormToEntry(ref Entry entry, long entryId)
+        private void Browser_FormToEntry(ref Classes.Journal entry, long entryId)
         {
             // Don't update the browser entry if nothing is selected
             if ((wTasks.SelectedNode == null) || (wProjects.SelectedNode == null)) {
@@ -280,7 +280,7 @@ namespace Timekeeper.Forms
             entry.ProjectName = wProjects.SelectedNode.Text;
         }
 
-        private void Browser_EntryToForm(Entry entry)
+        private void Browser_EntryToForm(Classes.Journal entry)
         {
             // Now select tasks and projects while browsing.
             TreeNode node = Widgets.FindTreeNode(wTasks.Nodes, entry.ActivityName);
@@ -612,10 +612,10 @@ namespace Timekeeper.Forms
                 Browser_SetCreateState();
 
                 // Create browser objects
-                browserEntry = new Entry(Database);
-                priorLoadedBrowserEntry = new Entry(Database);
+                browserEntry = new Classes.Journal(Database);
+                priorLoadedBrowserEntry = new Classes.Journal(Database);
                 if (newBrowserEntry == null) {
-                    newBrowserEntry = new Entry(Database);
+                    newBrowserEntry = new Classes.Journal(Database);
                 }
                 isBrowsing = false;
 
@@ -807,7 +807,7 @@ namespace Timekeeper.Forms
         private DateTime Browser_GetPreviousEndTime()
         {
             try {
-                Entry copy = browserEntry.Copy();
+                Classes.Journal copy = browserEntry.Copy();
                 copy.LoadPrevious();
                 return copy.StopTime;
             }
@@ -821,7 +821,7 @@ namespace Timekeeper.Forms
         private DateTime Browser_GetNextStartTime()
         {
             try {
-                Entry copy = browserEntry.Copy();
+                Classes.Journal copy = browserEntry.Copy();
                 copy.LoadNext();
                 return copy.StartTime;
             }

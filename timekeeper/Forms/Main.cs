@@ -43,13 +43,13 @@ namespace Timekeeper.Forms
         private string lastGridView;
 
         // objects
-        private Entries Entries;
+        private Classes.JournalEntries Entries;
         private Classes.Meta Meta;
         private Classes.Options Options;
         private Classes.Widgets Widgets;
 
         // current objects
-        private Entry currentEntry;
+        private Classes.Journal currentEntry;
         private Activity currentTask;
         private Project currentProject;
         private TreeNode currentTaskNode;

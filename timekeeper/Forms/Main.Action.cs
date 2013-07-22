@@ -587,7 +587,7 @@ namespace Timekeeper.Forms
                 Widgets.BuildActivityTree(wTasks.Nodes, null, 0);
                 Widgets.BuildProjectTree(wProjects.Nodes, null, 0);
 
-                Entries = new Entries(Database);
+                Entries = new Classes.JournalEntries(Database);
                 Meta = new Classes.Meta();
                 Options = new Classes.Options();
 
@@ -909,7 +909,7 @@ namespace Timekeeper.Forms
             currentTask.StartTiming(StartTime);
             currentTask.FollowedItemId = currentProject.ItemId; // FIXME: needs to work both ways
 
-            currentEntry = new Entry(Database);
+            currentEntry = new Classes.Journal(Database);
             currentEntry.ActivityId = currentTask.ItemId;
             currentEntry.ProjectId = currentProject.ItemId;
             currentEntry.StartTime = StartTime;
