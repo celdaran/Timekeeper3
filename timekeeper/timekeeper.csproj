@@ -144,8 +144,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Classes\Activities.cs" />
     <Compile Include="Classes\Activity.cs" />
-    <Compile Include="Classes\Entries.cs" />
-    <Compile Include="Classes\Entry.cs" />
+    <Compile Include="Classes\JournalEntries.cs" />
+    <Compile Include="Classes\Journal.cs" />
     <Compile Include="Classes\Notebook.cs" />
     <Compile Include="Classes\Item.cs" />
     <Compile Include="Classes\Items.cs" />
