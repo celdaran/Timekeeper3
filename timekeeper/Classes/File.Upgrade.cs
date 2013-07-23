@@ -522,6 +522,9 @@ namespace Timekeeper
             // Create new table
             this.CreateTable("Journal", CurrentSchemaVersion, false);
 
+            // Delta Bucket
+            int CumulativeDrift = 0;
+
             // Migrate rows
             foreach (Row OldRow in Journal) {
                 RowId = OldRow["id"];
@@ -550,6 +553,25 @@ namespace Timekeeper
                     Timekeeper.Info(String.Format("Conversion Note: row {0} had no StopTime value. A value based on StartTime was calculated and used.", RowId));
                 }
 
+                // Due to various reasons, the value of timekeeper.seconds isn't always the
+                // exact delta between timestamp_s and timestamp_e. For that reason, the file
+                // upgrade path recalculates seconds, thus ensuring this value matches the
+                // visible start/end times of the journal entry.
+                DateTime StartTime = OldRow["timestamp_s"];
+                DateTime StopTime = OldRow["timestamp_e"];
+                TimeSpan Delta = StopTime.Subtract(StartTime);
+                int DeltaSeconds = Convert.ToInt32(Delta.TotalSeconds);
+
+                if (OldRow["seconds"] != DeltaSeconds) {
+                    CumulativeDrift += DeltaSeconds - OldRow["seconds"];
+                    Timekeeper.Info(
+                        String.Format("Row {0}: saved 'seconds' ({1}) does not equal recalculated value ({2})", 
+                            OldRow["id"],
+                            OldRow["seconds"],
+                            DeltaSeconds)
+                        );
+                }
+
                 Row NewRow = new Row() {
                     {"JournalId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_s"])}, // column didn't exist until TK3
@@ -559,7 +581,7 @@ namespace Timekeeper
                     {"ProjectId", OldRow["project_id"]},
                     {"StartTime", ConvertTime(OldRow["timestamp_s"])},
                     {"StopTime", ConvertTime(OldRow["timestamp_e"])},
-                    {"Seconds", OldRow["seconds"]},
+                    {"Seconds", DeltaSeconds},
                     {"LocationId", 1},
                     {"CategoryId", null},
                     {"IsLocked", OldRow["is_locked"] ? 1 : 0},
@@ -585,6 +607,9 @@ namespace Timekeeper
                     Application.DoEvents();
                 }
             }
+
+            // How'd we do?
+            Timekeeper.Info(String.Format("Total time drift: {0}", CumulativeDrift));
 
             // Drop old table
             this.Database.Exec("drop table timekeeper");
