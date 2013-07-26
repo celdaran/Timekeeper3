@@ -517,10 +517,19 @@ namespace Timekeeper
 
             // Save old table in memory
             // FIXME: Really? In memory?
-            Table Journal = this.Database.Select("select * from timekeeper order by id");
+            Table Journal = this.Database.Select("select * from timekeeper order by timestamp_s");
 
             // Create new table
             this.CreateTable("Journal", CurrentSchemaVersion, false);
+
+            // Journal Index
+            // This value is used primarily for navigational purposes. We don't use the
+            // JournalId identity column, because this does not indicate chronology (and
+            // is also immutable). We don't use StartTime, because it's unpredictable.
+            // Therefore, JournalIndex acts like a JournalId value that can be updated
+            // as StartTime is updated: it's both chronologically correct and predictable,
+            // which makes for lightning-fast navigation when browsing Journal entries.
+            int JournalIndex = 1;
 
             // Delta Bucket
             int CumulativeDrift = 0;
@@ -564,12 +573,17 @@ namespace Timekeeper
 
                 if (OldRow["seconds"] != DeltaSeconds) {
                     CumulativeDrift += DeltaSeconds - OldRow["seconds"];
-                    Timekeeper.Info(
-                        String.Format("Row {0}: saved 'seconds' ({1}) does not equal recalculated value ({2})", 
+                    string Message = String.Format("Row {0}: saved 'seconds' ({1}) does not equal recalculated value ({2})",
                             OldRow["id"],
                             OldRow["seconds"],
-                            DeltaSeconds)
-                        );
+                            DeltaSeconds);
+                    if (Math.Abs(DeltaSeconds) > 5) {
+                        // Report the large ones
+                        Timekeeper.Info(Message);
+                    } else {
+                        // "Ignore" the small ones: it can get very noisy
+                        Timekeeper.Debug(Message);
+                    }
                 }
 
                 Row NewRow = new Row() {
@@ -585,6 +599,7 @@ namespace Timekeeper
                     {"LocationId", 1},
                     {"CategoryId", null},
                     {"IsLocked", OldRow["is_locked"] ? 1 : 0},
+                    {"JournalIndex", JournalIndex},
                     {"OriginalStartTime", OldRow["timestamp_s"].ToString(Common.LOCAL_DATETIME_FORMAT)},
                     {"OriginalStopTime", OldRow["timestamp_e"].ToString(Common.LOCAL_DATETIME_FORMAT)},
                 };
@@ -601,6 +616,8 @@ namespace Timekeeper
                 if (InsertedRowId == 0) {
                     throw new Exception("Insert failed");
                 }
+
+                JournalIndex++;
                 this.Progress.Value++;
 
                 if (RowId % 10 == 0) {

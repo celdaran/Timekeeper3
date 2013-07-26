@@ -5,6 +5,10 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
+//using System.Timers;
+using System.Diagnostics;
+
+
 using Technitivity.Toolbox;
 
 namespace Timekeeper.Forms
@@ -94,6 +98,12 @@ namespace Timekeeper.Forms
 
         private void Browser_DisplayRow()
         {
+            /*
+             * Run just this part for performance testing purposes.
+            Browser_EntryToForm(browserEntry);
+            return;
+            */
+
             try {
                 Browser_SetBrowseState();
 
@@ -288,10 +298,29 @@ namespace Timekeeper.Forms
                 wTasks.SelectedNode = node;
                 wTasks.SelectedNode.Expand();
             }
+            if ((node == null) && (entry.JournalId !=0)) {
+                // If we didn't find the node, it's been hidden. So
+                // load it from the database and display it as hidden.
 
+                Activity HiddenActivity = new Activity(Database, entry.ActivityName);
+                TreeNode HiddenNode = Widgets.AddHiddenActivityToTree(wTasks.Nodes, HiddenActivity);
+
+                wTasks.SelectedNode = HiddenNode;
+                wTasks.SelectedNode.Expand();
+            }
+
+            // Yes, this is a nice copy/paste job from above.
             node = Widgets.FindTreeNode(wProjects.Nodes, entry.ProjectName);
             if (node != null) {
                 wProjects.SelectedNode = node;
+                wProjects.SelectedNode.Expand();
+            }
+            if ((node == null) && (entry.JournalId != 0)) {
+
+                Project HiddenProject = new Project(Database, entry.ProjectName);
+                TreeNode HiddenNode = Widgets.AddHiddenProjectToTree(wProjects.Nodes, HiddenProject);
+
+                wProjects.SelectedNode = HiddenNode;
                 wProjects.SelectedNode.Expand();
             }
 
@@ -388,6 +417,8 @@ namespace Timekeeper.Forms
 
         private void Browser_GotoPreviousEntry()
         {
+            var t = new Stopwatch();
+
             try {
                 if (!isBrowsing) {
                     // If we're not browsing, this is a new row. If it's a new
@@ -395,11 +426,26 @@ namespace Timekeeper.Forms
                     Browser_FormToEntry(ref newBrowserEntry, 0);
                 }
 
+                /* Bench(t); */
                 Browser_SaveRow(false);
+                //Bench(t, "Browser_SaveRow");
+
+                //Bench(t);
+                // This is the second most expensive step (~150 ms)
                 browserEntry.LoadPrevious();
+                //Bench(t, "browserEntry.LoadPrevious");
+
+                //Bench(t);
                 priorLoadedBrowserEntry = browserEntry.Copy();
+                //Bench(t, "browserEntry.Copy");
+
                 if (browserEntry.JournalId > 0) {
+                    //Bench(t);
+                    // This is the most expensive step (~250 ms)
                     Browser_DisplayRow();
+                    //Bench(t, "Browser_DisplayRow");
+
+                    //Bench(t);
                     Browser_EnableLast(true);
                     Browser_EnableNext(true);
                     if (browserEntry.AtBeginning()) {
@@ -411,6 +457,7 @@ namespace Timekeeper.Forms
                         Browser_EnableLast(false);
                     }
                     isBrowsing = true;
+                    //Bench(t, "Updating Toolbar Buttons");
                 } else {
                     Browser_EnableFirst(false);
                     Browser_EnablePrev(false);
@@ -419,6 +466,22 @@ namespace Timekeeper.Forms
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
+
+            //t.Stop();
+            //StatusBarDebugging.Text = t.ElapsedMilliseconds.ToString();
+            /* Bench(t, "Previous row displayed"); */
+        }
+
+        private void Bench(Stopwatch t)
+        {
+            t.Start();
+        }
+
+        private void Bench(Stopwatch t, string message)
+        {
+            t.Stop();
+            Timekeeper.Info(message + ": " + t.ElapsedMilliseconds.ToString()); 
+            t.Reset();
         }
 
         //---------------------------------------------------------------------
@@ -493,7 +556,19 @@ namespace Timekeeper.Forms
 
             // Now bail if nothing's changed
             if (!forceSave) {
+                /*
                 if (browserEntry.Equals(priorLoadedBrowserEntry)) {
+                    return;
+                }
+                */
+                if (toolControlRevert.Enabled == false) {
+                    // Instead of comparing the current to previous browser
+                    // entry, let's just check the revert button, which
+                    // is a user-facing visual indication that something
+                    // has changed. This should prevent the problem where
+                    // setting a hidden Project or Activity automatically
+                    // resets the value. (Still not sure what to do about
+                    // that in general: it's still an issue.)
                     return;
                 }
             }
@@ -507,6 +582,9 @@ namespace Timekeeper.Forms
             */
 
             // If we've made it this far, save the row
+            string Message = String.Format("Entry.Save(). Id = {0}, Entry Seconds = {1}, Prior Entry Seconds = {2}",
+                browserEntry.JournalId, browserEntry.Seconds, priorLoadedBrowserEntry.Seconds);
+            Timekeeper.Warn(Message);
             browserEntry.Save();
 
             // And disable reverting, just in case
@@ -613,6 +691,7 @@ namespace Timekeeper.Forms
 
                 // Create browser objects
                 browserEntry = new Classes.Journal(Database);
+                //browserEntry.JournalId = 5000;
                 priorLoadedBrowserEntry = new Classes.Journal(Database);
                 if (newBrowserEntry == null) {
                     newBrowserEntry = new Classes.Journal(Database);

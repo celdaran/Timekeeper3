@@ -1001,7 +1001,7 @@ namespace Timekeeper.Forms
             currentEntry.ProjectId = currentProject.ItemId;
             currentEntry.StartTime = wStartTime.Value;
             currentEntry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
-            currentEntry.Seconds = currentTask.StopTiming();
+            currentEntry.Seconds = currentTask.StopTiming(wStopTime.Value);
             currentEntry.Memo = wMemo.Text;
             currentEntry.IsLocked = false;
             currentEntry.LocationId = 1;

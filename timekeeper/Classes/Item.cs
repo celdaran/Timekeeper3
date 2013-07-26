@@ -446,7 +446,7 @@ namespace Timekeeper
         public void StartTiming(DateTime setStartTime)
         {
             // Simply record the time we start
-            StartTime = setStartTime;
+            this.StartTime = setStartTime;
 
             // Update (in memory) elapsed seconds for today
             this.SetSecondsElapsedToday();
@@ -454,18 +454,24 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public int StopTiming()
+        public int StopTiming(DateTime setStopTime)
         {
+            /*
+            DateTime StartTime = OldRow["timestamp_s"];
+            DateTime StopTime = OldRow["timestamp_e"];
+            TimeSpan Delta = StopTime.Subtract(StartTime);
+            int DeltaSeconds = Convert.ToInt32(Delta.TotalSeconds);
+            */
+             
             // Calculate elapsed seconds
-            DateTime endTime = DateTime.Now;
-            TimeSpan ts = new TimeSpan(endTime.Ticks - StartTime.Ticks);
-            int elapsedSeconds = Convert.ToInt32(ts.TotalSeconds);
+            TimeSpan Delta = setStopTime.Subtract(this.StartTime);
+            int ElapsedSeconds = Convert.ToInt32(Delta.TotalSeconds);
 
             // Update (in memory) elapsed seconds for today
-            this.SetSecondsElapsedToday(elapsedSeconds);
+            this.SetSecondsElapsedToday(ElapsedSeconds);
 
             // Return the elapsed time
-            return elapsedSeconds;
+            return ElapsedSeconds;
         }
 
         //---------------------------------------------------------------------
@@ -519,6 +525,12 @@ namespace Timekeeper
             catch {
                 this.SecondsElapsedToday = 0;
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        public override string ToString() {
+            return this.Name + " (" + this.ItemId.ToString() + ")";
         }
 
         //---------------------------------------------------------------------

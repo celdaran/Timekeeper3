@@ -98,9 +98,13 @@ namespace Timekeeper.Forms
 
             Application.DoEvents();
 
+            Cursor.Current = Cursors.WaitCursor;
+
             Action_CloseFile();
             Action_CreateFile(FileName, CreateOptions);
             Action_OpenFile(FileName);
+
+            Cursor.Current = Cursors.Default;
         }
 
         //---------------------------------------------------------------------

@@ -106,6 +106,65 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        public TreeNode AddHiddenProjectToTree(TreeNodeCollection tree, Project project) //, Project parentProject)
+        {
+            Project parentProject = new Project(Database, project.ParentId);
+
+            if (parentProject.ItemId == 0) {
+                // If we've gone all the way up, add the item itself as a root
+                return AddItemToTree(tree, null, project, Timekeeper.IMG_TASK_HIDDEN);
+            } else {
+                // Otherwise, try to add the item to the found parent
+
+                string parentName = parentProject.Name;
+
+                TreeNode ParentNode = FindTreeNode(tree, parentName);
+                if (ParentNode != null) {
+                    // If we got one, add it
+                    return AddItemToTree(tree, ParentNode, project, Timekeeper.IMG_TASK_HIDDEN);
+                } else {
+                    // Otherwise, attempt to add the parent, recursively
+                    //Project grandparentProject = new Project(Database, parentProject.ParentId);
+                    TreeNode NewNode = AddHiddenProjectToTree(tree, parentProject); //, grandparentProject);
+                    return AddItemToTree(tree, NewNode, project, Timekeeper.IMG_TASK_HIDDEN);
+                }
+            }
+
+        }
+
+        //---------------------------------------------------------------------
+
+        public TreeNode AddHiddenActivityToTree(TreeNodeCollection tree, Activity activity)
+        {
+            // Yes, this is a complete copy/paste of the above.
+            // Yes, I tried to genericize this with the Item type.
+            // Yes, I ran into problems.
+            // Brute forcing it now, just to get on with life.
+
+            Activity parentActivity = new Activity(Database, activity.ParentId);
+
+            if (parentActivity.ItemId == 0) {
+                // If we've gone all the way up, add the item itself as a root
+                return AddItemToTree(tree, null, activity, Timekeeper.IMG_TASK_HIDDEN);
+            } else {
+                // Otherwise, try to add the item to the found parent
+
+                string parentName = parentActivity.Name;
+
+                TreeNode ParentNode = FindTreeNode(tree, parentName);
+                if (ParentNode != null) {
+                    // If we got one, add it
+                    return AddItemToTree(tree, ParentNode, activity, Timekeeper.IMG_TASK_HIDDEN);
+                } else {
+                    // Otherwise, attempt to add the parent, recursively
+                    TreeNode NewNode = AddHiddenActivityToTree(tree, parentActivity);
+                    return AddItemToTree(tree, NewNode, activity, Timekeeper.IMG_TASK_HIDDEN);
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         public int CreateTreeItem(TreeNodeCollection tree, Item item, string parentName, int imageIndex)
         {
             TreeNode ParentNode = null;

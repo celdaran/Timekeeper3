@@ -946,9 +946,9 @@ namespace Timekeeper.Properties {
         ///-- AKA....: This table was known as &apos;tasks&apos; prior to Timekeeper 3.0
         ///---------------------------------------- [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Activity_Create {
+        internal static string SQL_3003_Activity_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_Activity_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Activity_Create", resourceCulture);
             }
         }
         
@@ -966,9 +966,9 @@ namespace Timekeeper.Properties {
         ///(
         ///    CategoryId          INTEGER     NOT NULL PRIM [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Category_Create {
+        internal static string SQL_3003_Category_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_Category_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Category_Create", resourceCulture);
             }
         }
         
@@ -1002,9 +1002,9 @@ namespace Timekeeper.Properties {
         ///    &apos;Follow Up&apos;,
         ///    &apos;Follow Up on this Journal  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Category_Insert {
+        internal static string SQL_3003_Category_Insert {
             get {
-                return ResourceManager.GetString("SQL_3002_Category_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Category_Insert", resourceCulture);
             }
         }
         
@@ -1020,9 +1020,9 @@ namespace Timekeeper.Properties {
         ///-- AKA....: This table was known as &apos;journal&apos; prior to Timekeeper 3.0
         ///------------------------------------------------ [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Notebook_Create {
+        internal static string SQL_3003_Notebook_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_Notebook_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Notebook_Create", resourceCulture);
             }
         }
         
@@ -1036,9 +1036,9 @@ namespace Timekeeper.Properties {
         ///--          filtering. For example, both the Report and Grid forms
         ///--          support filtering, but each of these also has [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_FilterOptions_Create {
+        internal static string SQL_3003_FilterOptions_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_FilterOptions_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_FilterOptions_Create", resourceCulture);
             }
         }
         
@@ -1056,9 +1056,9 @@ namespace Timekeeper.Properties {
         ///(
         ///    GridOptionsId       INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT, [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_GridOptions_Create {
+        internal static string SQL_3003_GridOptions_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_GridOptions_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_GridOptions_Create", resourceCulture);
             }
         }
         
@@ -1073,9 +1073,9 @@ namespace Timekeeper.Properties {
         ///-- AKA....: This table was known as &apos;timekeeper&apos; prior to Timekeeper 3.0
         ///------------------------------------------------------------------------        /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Journal_Create {
+        internal static string SQL_3003_Journal_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_Journal_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Journal_Create", resourceCulture);
             }
         }
         
@@ -1090,9 +1090,9 @@ namespace Timekeeper.Properties {
         ///-- Updated: Timekeeper 3.0
         ///------------------------------------------------------------------------ [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Location_Create {
+        internal static string SQL_3003_Location_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_Location_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Location_Create", resourceCulture);
             }
         }
         
@@ -1107,9 +1107,9 @@ namespace Timekeeper.Properties {
         ///-- Added..: Timekeeper 2.0
         ///-- Updated: Timekeeper 3.0 [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Meta_Create {
+        internal static string SQL_3003_Meta_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_Meta_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Meta_Create", resourceCulture);
             }
         }
         
@@ -1133,9 +1133,9 @@ namespace Timekeeper.Properties {
         ///
         ///INSERT INTO AA9F [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Meta_Insert {
+        internal static string SQL_3003_Meta_Insert {
             get {
-                return ResourceManager.GetString("SQL_3002_Meta_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Meta_Insert", resourceCulture);
             }
         }
         
@@ -1151,9 +1151,9 @@ namespace Timekeeper.Properties {
         ///-- Updated: Timekeeper 3.0
         ///--------------------------------------------------------- [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Options_Create {
+        internal static string SQL_3003_Options_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_Options_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Options_Create", resourceCulture);
             }
         }
         
@@ -1190,9 +1190,9 @@ namespace Timekeeper.Properties {
         ///    &apos;LastProject&apos;,
         ///    n [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Options_Insert {
+        internal static string SQL_3003_Options_Insert {
             get {
-                return ResourceManager.GetString("SQL_3002_Options_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Options_Insert", resourceCulture);
             }
         }
         
@@ -1208,9 +1208,9 @@ namespace Timekeeper.Properties {
         ///-- AKA....: This table was known as &apos;projects&apos; prior to Timekeeper 3.0
         ///---------------------------------------- [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_Project_Create {
+        internal static string SQL_3003_Project_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_Project_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_Project_Create", resourceCulture);
             }
         }
         
@@ -1228,9 +1228,9 @@ namespace Timekeeper.Properties {
         ///CREATE TABLE RefDatePreset
         /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_RefDatePreset_Create {
+        internal static string SQL_3003_RefDatePreset_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_RefDatePreset_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_RefDatePreset_Create", resourceCulture);
             }
         }
         
@@ -1264,9 +1264,9 @@ namespace Timekeeper.Properties {
         ///) VALUES (
         ///    [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_RefDatePreset_Insert {
+        internal static string SQL_3003_RefDatePreset_Insert {
             get {
-                return ResourceManager.GetString("SQL_3002_RefDatePreset_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_RefDatePreset_Insert", resourceCulture);
             }
         }
         
@@ -1284,9 +1284,9 @@ namespace Timekeeper.Properties {
         ///    RefGroupById        INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
         ///    CreateTime          DATETIME    NOT  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_RefGroupBy_Create {
+        internal static string SQL_3003_RefGroupBy_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_RefGroupBy_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_RefGroupBy_Create", resourceCulture);
             }
         }
         
@@ -1321,9 +1321,9 @@ namespace Timekeeper.Properties {
         ///    &apos;{0}&apos;,
         /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_RefGroupBy_Insert {
+        internal static string SQL_3003_RefGroupBy_Insert {
             get {
-                return ResourceManager.GetString("SQL_3002_RefGroupBy_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_RefGroupBy_Insert", resourceCulture);
             }
         }
         
@@ -1342,9 +1342,9 @@ namespace Timekeeper.Properties {
         ///    ModifyTime          DATETIME    NOT NULL,
         ///    Name                [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_RefItemType_Create {
+        internal static string SQL_3003_RefItemType_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_RefItemType_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_RefItemType_Create", resourceCulture);
             }
         }
         
@@ -1373,9 +1373,9 @@ namespace Timekeeper.Properties {
         ///    CreateTime,
         ///    ModifyTime,        /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_RefItemType_Insert {
+        internal static string SQL_3003_RefItemType_Insert {
             get {
-                return ResourceManager.GetString("SQL_3002_RefItemType_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_RefItemType_Insert", resourceCulture);
             }
         }
         
@@ -1393,9 +1393,9 @@ namespace Timekeeper.Properties {
         ///(
         ///    RefTimeDisplayId    INTEGER     NOT NULL [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_RefTimeDisplay_Create {
+        internal static string SQL_3003_RefTimeDisplay_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_RefTimeDisplay_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_RefTimeDisplay_Create", resourceCulture);
             }
         }
         
@@ -1424,9 +1424,9 @@ namespace Timekeeper.Properties {
         ///    CreateTime,
         ///    ModifyTime [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_RefTimeDisplay_Insert {
+        internal static string SQL_3003_RefTimeDisplay_Insert {
             get {
-                return ResourceManager.GetString("SQL_3002_RefTimeDisplay_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_RefTimeDisplay_Insert", resourceCulture);
             }
         }
         
@@ -1447,9 +1447,9 @@ namespace Timekeeper.Properties {
         ///
         ///CREATE  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_RefTimeZone_Create {
+        internal static string SQL_3003_RefTimeZone_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_RefTimeZone_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_RefTimeZone_Create", resourceCulture);
             }
         }
         
@@ -1469,9 +1469,9 @@ namespace Timekeeper.Properties {
         ///    CreateTime          DATETIME    NOT NULL,
         ///    ModifyTime     [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3002_ReportOptions_Create {
+        internal static string SQL_3003_ReportOptions_Create {
             get {
-                return ResourceManager.GetString("SQL_3002_ReportOptions_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3003_ReportOptions_Create", resourceCulture);
             }
         }
     }
