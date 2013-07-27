@@ -408,30 +408,31 @@ namespace Timekeeper
         public Row Info()
         {
             // stub in row to return
-            Row row = new Row();
+            Row Info = new Row();
 
             try
             {
                 // Grab a few handy objects
-                Activities Tasks = new Activities(Database, "");
                 Projects Projects = new Projects(Database, "");
+                Activities Activities = new Activities(Database, "");
                 Classes.Notebook Notebook = new Classes.Notebook();
                 Classes.JournalEntries Entries = new Classes.JournalEntries(Database);
 
                 // convert meta rows to rows (note order by above)
                 Classes.Meta Meta = new Classes.Meta();
-                row.Add("created", Meta.Created);
-                row.Add("id", Meta.Id);
-                row.Add("version", Meta.Version);
+                Info.Add("Created", Meta.Created);
+                Info.Add("Upgraded", Meta.Upgraded);
+                Info.Add("Id", Meta.Id);
+                Info.Add("Version", Meta.Version);
 
                 // now grab individual attributes
-                row.Add("filename", Database.FileName);
-                row.Add("filesize", Database.FileSize);
-                row.Add("taskcount", Tasks.Count());
-                row.Add("projectcount", Projects.Count());
-                row.Add("journalcount", Notebook.Count());
-                row.Add("logcount", Entries.Count());
-                row.Add("totalseconds", Timekeeper.FormatSeconds(Entries.TotalSeconds()));
+                Info.Add("FileName", Database.FileName);
+                Info.Add("FileSize", Database.FileSize);
+                Info.Add("EntryCount", Entries.Count());
+                Info.Add("NotebookCount", Notebook.Count());
+                Info.Add("ProjectCount", Projects.Count());
+                Info.Add("ActivityCount", Activities.Count());
+                Info.Add("TotalTime", Timekeeper.FormatSeconds(Entries.TotalSeconds()));
             }
             catch (Exception x)
             {
@@ -440,24 +441,25 @@ namespace Timekeeper
 
                 // Return empty Data on any sort of error
 
-                row = new Row();
+                Info = new Row();
 
                 // convert meta rows to rows
-                row.Add("created", "");
-                row.Add("version", "");
-                row.Add("id", "");
+                Info.Add("Created", "");
+                Info.Add("Upgraded", "");
+                Info.Add("Id", "");
+                Info.Add("Version", "");
 
                 // now grab individual attributes
-                row.Add("filename", "No file opened");
-                row.Add("filesize", 0);
-                row.Add("taskcount", 0);
-                row.Add("projectcount", 0);
-                row.Add("journalcount", 0);
-                row.Add("logcount", 0);
-                row.Add("totalseconds", 0);
+                Info.Add("FileName", "No file opened");
+                Info.Add("FileSize", 0);
+                Info.Add("EntryCount", 0);
+                Info.Add("NotebookCount", 0);
+                Info.Add("ActivityCount", 0);
+                Info.Add("ProjectCount", 0);
+                Info.Add("TotalSeconds", 0);
             }
 
-            return row;
+            return Info;
         }
 
         //---------------------------------------------------------------------

@@ -269,13 +269,13 @@ namespace Timekeeper.Forms
         private void Browser_FormToEntry(ref Classes.Journal entry, long entryId)
         {
             // Don't update the browser entry if nothing is selected
-            if ((wTasks.SelectedNode == null) || (wProjects.SelectedNode == null)) {
+            if ((ActivityTree.SelectedNode == null) || (ProjectTree.SelectedNode == null)) {
                 return;
             }
 
             // First translate some necessary data from the form 
-            Activity task = (Activity)wTasks.SelectedNode.Tag;
-            Project project = (Project)wProjects.SelectedNode.Tag;
+            Activity task = (Activity)ActivityTree.SelectedNode.Tag;
+            Project project = (Project)ProjectTree.SelectedNode.Tag;
             TimeSpan ts = wStopTime.Value.Subtract(wStartTime.Value);
 
             // Update browserEntry with current form data
@@ -286,42 +286,42 @@ namespace Timekeeper.Forms
             entry.StopTime = wStopTime.Value;
             entry.Seconds = (long)ts.TotalSeconds;
             entry.Memo = wMemo.Text;
-            entry.ActivityName = wTasks.SelectedNode.Text;
-            entry.ProjectName = wProjects.SelectedNode.Text;
+            entry.ActivityName = ActivityTree.SelectedNode.Text;
+            entry.ProjectName = ProjectTree.SelectedNode.Text;
         }
 
         private void Browser_EntryToForm(Classes.Journal entry)
         {
             // Now select tasks and projects while browsing.
-            TreeNode node = Widgets.FindTreeNode(wTasks.Nodes, entry.ActivityName);
+            TreeNode node = Widgets.FindTreeNode(ActivityTree.Nodes, entry.ActivityName);
             if (node != null) {
-                wTasks.SelectedNode = node;
-                wTasks.SelectedNode.Expand();
+                ActivityTree.SelectedNode = node;
+                ActivityTree.SelectedNode.Expand();
             }
             if ((node == null) && (entry.JournalId !=0)) {
                 // If we didn't find the node, it's been hidden. So
                 // load it from the database and display it as hidden.
 
                 Activity HiddenActivity = new Activity(Database, entry.ActivityName);
-                TreeNode HiddenNode = Widgets.AddHiddenActivityToTree(wTasks.Nodes, HiddenActivity);
+                TreeNode HiddenNode = Widgets.AddHiddenActivityToTree(ActivityTree.Nodes, HiddenActivity);
 
-                wTasks.SelectedNode = HiddenNode;
-                wTasks.SelectedNode.Expand();
+                ActivityTree.SelectedNode = HiddenNode;
+                ActivityTree.SelectedNode.Expand();
             }
 
             // Yes, this is a nice copy/paste job from above.
-            node = Widgets.FindTreeNode(wProjects.Nodes, entry.ProjectName);
+            node = Widgets.FindTreeNode(ProjectTree.Nodes, entry.ProjectName);
             if (node != null) {
-                wProjects.SelectedNode = node;
-                wProjects.SelectedNode.Expand();
+                ProjectTree.SelectedNode = node;
+                ProjectTree.SelectedNode.Expand();
             }
             if ((node == null) && (entry.JournalId != 0)) {
 
                 Project HiddenProject = new Project(Database, entry.ProjectName);
-                TreeNode HiddenNode = Widgets.AddHiddenProjectToTree(wProjects.Nodes, HiddenProject);
+                TreeNode HiddenNode = Widgets.AddHiddenProjectToTree(ProjectTree.Nodes, HiddenProject);
 
-                wProjects.SelectedNode = HiddenNode;
-                wProjects.SelectedNode.Expand();
+                ProjectTree.SelectedNode = HiddenNode;
+                ProjectTree.SelectedNode.Expand();
             }
 
             // Display entry

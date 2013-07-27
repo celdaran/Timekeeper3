@@ -22,7 +22,7 @@ namespace Timekeeper.Forms
         private void Action_ChangedActivity()
         {
             // Get current activty
-            Activity Activity = (Activity)wTasks.SelectedNode.Tag;
+            Activity Activity = (Activity)ActivityTree.SelectedNode.Tag;
 
             // Update status bar
             if (timerRunning == false) {
@@ -32,9 +32,9 @@ namespace Timekeeper.Forms
             // Auto-follow
             if (options.wProjectFollow.Checked) {
                 if (Activity.FollowedItemId > 0) {
-                    TreeNode node = Widgets.FindTreeNode(wProjects.Nodes, Activity.FollowedItemId);
+                    TreeNode node = Widgets.FindTreeNode(ProjectTree.Nodes, Activity.FollowedItemId);
                     if (node != null) {
-                        wProjects.SelectedNode = node;
+                        ProjectTree.SelectedNode = node;
                     }
                 }
             }
@@ -43,7 +43,7 @@ namespace Timekeeper.Forms
             MenuBar_ShowHideActivity(!Activity.IsHidden);
 
             // Update calendar to reflect change
-            Action_UpdateCalendar(wTasks);
+            Action_UpdateCalendar(ActivityTree);
         }
 
         //---------------------------------------------------------------------
@@ -51,7 +51,7 @@ namespace Timekeeper.Forms
         private void Action_ChangedProject()
         {
             // Get current project
-            Project project = (Project)wProjects.SelectedNode.Tag;
+            Project project = (Project)ProjectTree.SelectedNode.Tag;
 
             // Status bar updates?
 
@@ -60,7 +60,7 @@ namespace Timekeeper.Forms
             MenuBar_ShowHideProject(!project.IsHidden);
 
             // Update calendar to reflect change
-            Action_UpdateCalendar(wProjects);
+            Action_UpdateCalendar(ProjectTree);
         }
 
         //---------------------------------------------------------------------
@@ -155,8 +155,8 @@ namespace Timekeeper.Forms
         private void Action_CloseFile()
         {
             if (Database != null) {
-                wTasks.Nodes.Clear();
-                wProjects.Nodes.Clear();
+                ActivityTree.Nodes.Clear();
+                ProjectTree.Nodes.Clear();
 
                 StatusBar_FileClosed();
                 MenuBar_FileClosed();
@@ -438,14 +438,14 @@ namespace Timekeeper.Forms
             // NEW:
 
             // experimental: swapping Tasks/Projects (see TKT #1266)
-            //this.splitTrees.Panel1.Controls.Add(this.wTasks);
+            //this.splitTrees.Panel1.Controls.Add(this.ActivityTree);
 
             /*
-            splitTrees.Panel1.Controls.Remove(this.wTasks);
-            splitTrees.Panel1.Controls.Remove(this.wProjects);
+            splitTrees.Panel1.Controls.Remove(this.ActivityTree);
+            splitTrees.Panel1.Controls.Remove(this.ProjectTree);
 
-            splitTrees.Panel1.Controls.Add(this.wProjects);
-            splitTrees.Panel2.Controls.Add(this.wTasks);
+            splitTrees.Panel1.Controls.Add(this.ProjectTree);
+            splitTrees.Panel2.Controls.Add(this.ActivityTree);
             */
         }
 
@@ -523,11 +523,11 @@ namespace Timekeeper.Forms
             key.Close();
 
             // Save DB-specific state
-            if (wTasks.SelectedNode != null) {
-                Options.LastActivity = wTasks.SelectedNode.Text;
+            if (ActivityTree.SelectedNode != null) {
+                Options.LastActivity = ActivityTree.SelectedNode.Text;
             }
-            if (wProjects.SelectedNode != null) {
-                Options.LastProject = wProjects.SelectedNode.Text;
+            if (ProjectTree.SelectedNode != null) {
+                Options.LastProject = ProjectTree.SelectedNode.Text;
             }
             if (lastGridView != null) {
                 Options.LastGridView = lastGridView;
@@ -584,8 +584,8 @@ namespace Timekeeper.Forms
                 }
 
                 Widgets = new Classes.Widgets();
-                Widgets.BuildActivityTree(wTasks.Nodes, null, 0);
-                Widgets.BuildProjectTree(wProjects.Nodes, null, 0);
+                Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
+                Widgets.BuildProjectTree(ProjectTree.Nodes, null, 0);
 
                 Entries = new Classes.JournalEntries(Database);
                 Meta = new Classes.Meta();
@@ -606,17 +606,17 @@ namespace Timekeeper.Forms
                 lastGridView = Options.LastGridView ?? "Last View";
 
                 // Re-select last selected task
-                TreeNode lastNode = Widgets.FindTreeNode(wTasks.Nodes, lastTask);
+                TreeNode lastNode = Widgets.FindTreeNode(ActivityTree.Nodes, lastTask);
                 if (lastNode != null) {
-                    wTasks.SelectedNode = lastNode;
-                    wTasks.SelectedNode.Expand();
+                    ActivityTree.SelectedNode = lastNode;
+                    ActivityTree.SelectedNode.Expand();
                 }
 
                 // Re-select last selected project
-                lastNode = Widgets.FindTreeNode(wProjects.Nodes, lastProject);
+                lastNode = Widgets.FindTreeNode(ProjectTree.Nodes, lastProject);
                 if (lastNode != null) {
-                    wProjects.SelectedNode = lastNode;
-                    wProjects.SelectedNode.Expand();
+                    ProjectTree.SelectedNode = lastNode;
+                    ProjectTree.SelectedNode.Expand();
                 }
 
                 //------------------------------------------------------------
@@ -752,10 +752,10 @@ namespace Timekeeper.Forms
             // BEGIN WTF: this sucks...
             tree.Nodes.Clear();
             // FIXME: bit of a hack, here (okay, more than a bit)
-            if (tree.Name == "wTasks") {
-                Widgets.BuildActivityTree(wTasks.Nodes, null, 0);
+            if (tree.Name == "ActivityTree") {
+                Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
             } else {
-                Widgets.BuildProjectTree(wProjects.Nodes, null, 0);
+                Widgets.BuildProjectTree(ProjectTree.Nodes, null, 0);
             }
             // FIXME: don't always collapse/expand all: do this intelligently
             tree.ExpandAll();
@@ -885,9 +885,9 @@ namespace Timekeeper.Forms
             }
 
             // Find the currently selected project
-            if (wProjects.SelectedNode == null) {
-                if (wProjects.Nodes.Count == 1) {
-                    wProjects.SelectedNode = wProjects.Nodes[0];
+            if (ProjectTree.SelectedNode == null) {
+                if (ProjectTree.Nodes.Count == 1) {
+                    ProjectTree.SelectedNode = ProjectTree.Nodes[0];
                 } else {
                     Common.Warn("No project selected.");
                     return;
@@ -895,14 +895,14 @@ namespace Timekeeper.Forms
             }
 
             // Check for a currently selected task
-            if (wTasks.SelectedNode == null) {
+            if (ActivityTree.SelectedNode == null) {
                 Common.Warn("No task selected.");
                 return;
             }
 
             // Grab instances of currently selected objects
-            currentTaskNode = wTasks.SelectedNode;
-            currentProjectNode = wProjects.SelectedNode;
+            currentTaskNode = ActivityTree.SelectedNode;
+            currentProjectNode = ProjectTree.SelectedNode;
             currentTask = (Activity)currentTaskNode.Tag;
             currentProject = (Project)currentProjectNode.Tag;
 
@@ -961,14 +961,14 @@ namespace Timekeeper.Forms
             menuToolControlStop.ShortcutKeys = saveKeys;
             */
 
-            StatusBar_TimerStarted(wTasks.SelectedNode.Text);
+            StatusBar_TimerStarted(ActivityTree.SelectedNode.Text);
 
-            Text = wTasks.SelectedNode.Text;
-            menuTasksDeleteTask.Enabled = false;
-            pmenuTasksDelete.Enabled = false;
+            Text = ActivityTree.SelectedNode.Text;
+            MenuActionDeleteActivity.Enabled = false;
+            PopupMenuActivityDelete.Enabled = false;
             wNotifyIcon.Text = Common.Abbreviate(Text, 63);
 
-            menuFile.Enabled = false;
+            MenuFile.Enabled = false;
             MenuFileNew.Enabled = false;
             MenuFileOpen.Enabled = false;
             MenuFileSaveAs.Enabled = false;
@@ -1045,10 +1045,10 @@ namespace Timekeeper.Forms
             currentTaskNode.ImageIndex = Timekeeper.IMG_TASK;
             currentTaskNode.SelectedImageIndex = Timekeeper.IMG_TASK;
 
-            menuTasksDeleteTask.Enabled = true;
-            pmenuTasksDelete.Enabled = true;
+            MenuActionDeleteActivity.Enabled = true;
+            PopupMenuActivityDelete.Enabled = true;
 
-            menuFile.Enabled = true;
+            MenuFile.Enabled = true;
             MenuFileNew.Enabled = true;
             MenuFileOpen.Enabled = true;
             MenuFileSaveAs.Enabled = true;

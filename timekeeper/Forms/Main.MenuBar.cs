@@ -62,12 +62,12 @@ namespace Timekeeper.Forms
         {
             if (options.wViewHiddenTasks.Checked) {
                 // Set main menu items
-                menuTasksHideTask.Visible = visible;
-                menuTasksUnhideTask.Visible = !visible;
+                MenuActionHideActivity.Visible = visible;
+                MenuActionUnhideActivity.Visible = !visible;
 
                 // Mirror popup menu items
-                pmenuTasksHide.Visible = visible;
-                pmenuTasksUnhide.Visible = !visible;
+                PopupMenuActivityHide.Visible = visible;
+                PopupMenuActivityUnhide.Visible = !visible;
             }
         }
 
@@ -75,12 +75,12 @@ namespace Timekeeper.Forms
         {
             if (options.wViewHiddenProjects.Checked) {
                 // set main menu items
-                menuTasksHideProject.Visible = visible;
-                menuTasksUnhideProject.Visible = !visible;
+                MenuActionHideProject.Visible = visible;
+                MenuActionUnhideProject.Visible = !visible;
 
                 // mirror popup menu items
-                pmenuProjectsHide.Visible = visible;
-                pmenuProjectsUnhide.Visible = !visible;
+                PopupMenuProjectHide.Visible = visible;
+                PopupMenuProjectUnhide.Visible = !visible;
             }
         }
 

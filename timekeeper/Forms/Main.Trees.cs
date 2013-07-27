@@ -28,10 +28,10 @@ namespace Timekeeper.Forms
         private void Trees_ShowRootLines()
         {
             Activities Activities = new Activities(Database);
-            wTasks.ShowRootLines = Activities.HasParents();
+            ActivityTree.ShowRootLines = Activities.HasParents();
 
             Projects Projects = new Projects(Database);
-            wProjects.ShowRootLines = Projects.HasParents();
+            ProjectTree.ShowRootLines = Projects.HasParents();
         }
 
         //---------------------------------------------------------------------

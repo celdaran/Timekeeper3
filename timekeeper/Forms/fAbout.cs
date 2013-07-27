@@ -16,16 +16,25 @@ namespace Timekeeper
         {
             InitializeComponent();
 
-            wStats.Rows.Add("Opened File", info["filename"]);
-            wStats.Rows.Add("File Created", info["created"]);
-            wStats.Rows.Add("File Schema Version", info["version"]);
-            wStats.Rows.Add("File Identifier", info["id"]);
-            wStats.Rows.Add("File Size", info["filesize"]);
-            wStats.Rows.Add("Number of Tasks", info["taskcount"]);
-            wStats.Rows.Add("Number of Projects", info["projectcount"]);
-            wStats.Rows.Add("Number of Journal Entries", info["journalcount"]);
-            wStats.Rows.Add("Number of Log Entries", info["logcount"]);
-            wStats.Rows.Add("Total Time Logged", info["totalseconds"]);
+            string Upgraded;
+            DateTime t = info["Upgraded"];
+            if (t.Year == 1) {
+                Upgraded = "Never";
+            } else {
+                Upgraded = t.ToString(Common.LOCAL_DATETIME_FORMAT);
+            }
+
+            wStats.Rows.Add("Opened File", info["FileName"]);
+            wStats.Rows.Add("File Created", info["Created"].ToString(Common.LOCAL_DATETIME_FORMAT));
+            wStats.Rows.Add("File Upgraded", Upgraded);
+            wStats.Rows.Add("File Schema Version", info["Version"]);
+            wStats.Rows.Add("File Identifier", info["Id"]);
+            wStats.Rows.Add("File Size", info["FileSize"]);
+            wStats.Rows.Add("Number of Journal Entries", info["EntryCount"]);
+            wStats.Rows.Add("Number of Notebook Entries", info["NotebookCount"]);
+            wStats.Rows.Add("Number of Projects", info["ProjectCount"]);
+            wStats.Rows.Add("Number of Activities", info["ActivityCount"]);
+            wStats.Rows.Add("Total Time Logged", info["TotalTime"]);
         }
     }
 }
