@@ -50,10 +50,10 @@ namespace Timekeeper.Forms
 
         // current objects
         private Classes.Journal currentEntry;
-        private Activity currentActivity;
         private Project currentProject;
-        private TreeNode currentActivityNode;
+        private Activity currentActivity;
         private TreeNode currentProjectNode;
+        private TreeNode currentActivityNode;
 
         // timer properties
         private bool timerRunning = false;
@@ -482,20 +482,6 @@ namespace Timekeeper.Forms
         // Keyboard events
         //---------------------------------------------------------------------
 
-        // Action window keys
-        private void ActivityTree_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F2) {
-                ActivityTree.SelectedNode.BeginEdit();
-            }
-            else if (e.KeyCode == Keys.Delete) {
-                Action_DeleteItem(ActivityTree);
-            }
-            else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
-                PopupMenuActivityProperties_Click(sender, e);
-            }
-        }
-
         // Project window keys
         private void wProjects_KeyDown(object sender, KeyEventArgs e)
         {
@@ -507,6 +493,20 @@ namespace Timekeeper.Forms
             }
             else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
                 PopupMenuProjectProperties_Click(sender, e);
+            }
+        }
+
+        // Action window keys
+        private void ActivityTree_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F2) {
+                ActivityTree.SelectedNode.BeginEdit();
+            }
+            else if (e.KeyCode == Keys.Delete) {
+                Action_DeleteItem(ActivityTree);
+            }
+            else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
+                PopupMenuActivityProperties_Click(sender, e);
             }
         }
 
@@ -528,14 +528,6 @@ namespace Timekeeper.Forms
         // Mouse events
         //---------------------------------------------------------------------
 
-        // Allow right-click selection in ActivityTree window
-        private void ActivityTree_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right) {
-                ActivityTree.SelectedNode = ActivityTree.GetNodeAt(e.X, e.Y);
-            }
-        }
-
         // Ditto for ProjectTree
         private void wProjects_MouseDown(object sender, MouseEventArgs e)
         {
@@ -544,13 +536,21 @@ namespace Timekeeper.Forms
             }
         }
 
-        // Mouse shortcut
-        private void ActivityTree_DoubleClick(object sender, EventArgs e)
+        // Allow right-click selection in ActivityTree window
+        private void ActivityTree_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right) {
+                ActivityTree.SelectedNode = ActivityTree.GetNodeAt(e.X, e.Y);
+            }
+        }
+
+        private void wProjects_DoubleClick(object sender, EventArgs e)
         {
             Action_StartTimer();
         }
 
-        private void wProjects_DoubleClick(object sender, EventArgs e)
+        // Mouse shortcut
+        private void ActivityTree_DoubleClick(object sender, EventArgs e)
         {
             Action_StartTimer();
         }
@@ -609,17 +609,18 @@ namespace Timekeeper.Forms
         // Label-Editing Events
         //---------------------------------------------------------------------
 
-        private void ActivityTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        private void wProjects_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            TreeNode node  = ActivityTree.SelectedNode;
+            TreeNode node  = ProjectTree.SelectedNode;
             Item item = (Item)node.Tag;
             e.CancelEdit = !Action_RenameItem(node, item, e.Label);
         }
 
         //---------------------------------------------------------------------
-        private void wProjects_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+
+        private void ActivityTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            TreeNode node  = ProjectTree.SelectedNode;
+            TreeNode node  = ActivityTree.SelectedNode;
             Item item = (Item)node.Tag;
             e.CancelEdit = !Action_RenameItem(node, item, e.Label);
         }
@@ -751,107 +752,7 @@ namespace Timekeeper.Forms
         // Experimental Area
         //---------------------------------------------------------------------
 
-        private void menuToolFind_Click(object sender, EventArgs e)
-        {
-            /*
-            try {
-                throw new System.ApplicationException("Doing this on purpose");
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
-            */
-
-            Forms.Report Report = new Forms.Report();
-            Report.Show(this);
-        }
-
-        private void menuToolsXmlTest_Click(object sender, EventArgs e)
-        {
-            ResourceManager Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(File).Assembly);
-
-            XmlDocument Presets = new XmlDocument();
-            Presets.LoadXml(Resources.GetString("Item_Presets"));
-
-            XmlNodeList PresetDefinitions = Presets.DocumentElement.GetElementsByTagName("preset");
-
-            foreach (XmlNode Preset in PresetDefinitions) {
-                XmlAttributeCollection Attributes = Preset.Attributes;
-                foreach (XmlAttribute Attribute in Attributes) {
-                    //Common.Info(Attribute.Name);
-                }
-            }
-
-            XmlNode Foo = Presets.SelectSingleNode("/presets/preset[@name='Manager']");
-
-            XmlNodeList Items = Foo.ChildNodes;
-
-            XmlNode Projects = Items[0];
-            XmlNode Activities = Items[1];
-
-            foreach (XmlElement Project in Projects.ChildNodes) {
-
-                //Common.Info(Project.Name + " = " + Project.InnerText);
-
-                // This works, but it's positional
-                XmlNode ProjectName = Project.ChildNodes.Item(0);
-                XmlNode ProjectDescription = Project.ChildNodes.Item(1);
-                //Common.Info(ProjectName.InnerText + ": " + ProjectDescription.InnerText);
-
-                // This doesn't work, stupid
-                /*
-                string XPath = String.Format("/presets/preset/projects/{0}/", Project.Name);
-                XmlNode ProjectName = Project.SelectSingleNode(XPath + "/name");
-                Common.Info(ProjectName.InnerText);
-                */
-
-                // This works, but is cumbersome
-                /*
-                XmlNodeList ProjectAttributes = Projects.ChildNodes;
-                foreach (XmlElement Tag in Project) {
-                    //Common.Info(Tag.Name + " = " + Tag.InnerText);
-                }
-                */
-
-            }
-
-            foreach (XmlNode Project in Projects.ChildNodes) {
-
-                //Common.Info(Project["name"].InnerText + ": " + Project["description"].InnerText);
-
-                Project NewProject = new Project(Database);
-
-                NewProject.Name = Project["name"].InnerText;
-                NewProject.Description = Project["description"].InnerText;
-                NewProject.IsFolder = Project["isfolder"].InnerText == "true";
-
-                if (Project["parent"].InnerText != "") {
-                    Project ParentProject = new Project(Database, Project["parent"].InnerText);
-                    if (ParentProject.ItemId == 0) {
-                        Timekeeper.Warn("Could not find parent item: '" + Project["parent"].InnerText + "'");
-                    } else {
-                        NewProject.ParentId = ParentProject.ItemId;
-                    }
-                }
-
-                NewProject.Create();
-            }
-
-            /*
-            Project Project = new Project(Database);
-
-            Project.LocationId = 1;
-            Project.Name = "First Project";
-            Project.Description = "This Project was created in C# by my new PopulateItems() method.";
-            Project.ParentId = 0;
-            Project.SortOrderNo = 0;
-            Project.FollowedItemId = 0;
-            Project.IsFolder = false;
-
-            Project.Create();
-            */
-
-        }
+            /* currently empty */
 
         //---------------------------------------------------------------------
 

@@ -129,13 +129,13 @@ namespace Timekeeper.Forms
                 item.IsFolder = isFolder;
                 int CreateResult = Widgets.CreateTreeItem(tree.Nodes, item, Dialog.wParent.Text, imageIndex);
                 switch (CreateResult) {
-                    case TREES_ITEM_CREATED:
+                    case Classes.Widgets.TREES_ITEM_CREATED:
                         //Common.Info("Item created");
                         break;
-                    case TREES_ERROR_CREATING_ITEM:
+                    case Classes.Widgets.TREES_ERROR_CREATING_ITEM:
                         Common.Warn("There was an error creating the item.");
                         break;
-                    case TREES_DUPLICATE_ITEM:
+                    case Classes.Widgets.TREES_DUPLICATE_ITEM:
                         Common.Warn("An item with that name already exists.");
                         break;
                     default:
@@ -158,8 +158,8 @@ namespace Timekeeper.Forms
 
         private void Dialog_Options()
         {
-            bool prevViewHiddenTasks = options.wViewHiddenTasks.Checked;
             bool prevViewHiddenProjects = options.wViewHiddenProjects.Checked;
+            bool prevViewHiddenTasks = options.wViewHiddenTasks.Checked;
 
             options.ShowDialog(this);
             if (options.saved) {
@@ -206,8 +206,8 @@ namespace Timekeeper.Forms
                             Common.Info("Cannot reorder items while the timer is running. Items will be reordered when Timekeeper restarts.");
                         } else {
                             options.reordered = false;
-                            reloadActivities();
                             reloadProjects();
+                            reloadActivities();
                         }
                     }
 

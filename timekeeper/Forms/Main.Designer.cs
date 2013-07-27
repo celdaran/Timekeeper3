@@ -100,8 +100,6 @@ namespace Timekeeper.Forms
             this.menuToolsReminders = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripSeparator();
             this.menuToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuToolsXmlTest = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelpContents = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelpWeb = new System.Windows.Forms.ToolStripMenuItem();
@@ -558,9 +556,7 @@ namespace Timekeeper.Forms
             this.menuToolsDatecalc,
             this.menuToolsReminders,
             this.toolStripMenuItem8,
-            this.menuToolsOptions,
-            this.toolStripMenuItem2,
-            this.menuToolsXmlTest});
+            this.menuToolsOptions});
             this.menuTool.Enabled = false;
             this.menuTool.Name = "menuTool";
             this.menuTool.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
@@ -714,7 +710,6 @@ namespace Timekeeper.Forms
             this.menuToolFind.Name = "menuToolFind";
             this.menuToolFind.Size = new System.Drawing.Size(161, 22);
             this.menuToolFind.Text = "&Find...";
-            this.menuToolFind.Click += new System.EventHandler(this.menuToolFind_Click);
             // 
             // toolStripSeparator1
             // 
@@ -793,18 +788,6 @@ namespace Timekeeper.Forms
             this.menuToolsOptions.Size = new System.Drawing.Size(161, 22);
             this.menuToolsOptions.Text = "Op&tions...";
             this.menuToolsOptions.Click += new System.EventHandler(this.menuToolsOptions_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(158, 6);
-            // 
-            // menuToolsXmlTest
-            // 
-            this.menuToolsXmlTest.Name = "menuToolsXmlTest";
-            this.menuToolsXmlTest.Size = new System.Drawing.Size(161, 22);
-            this.menuToolsXmlTest.Text = "XML Test";
-            this.menuToolsXmlTest.Click += new System.EventHandler(this.menuToolsXmlTest_Click);
             // 
             // menuHelp
             // 
@@ -1927,8 +1910,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem menuToolControlUnlock;
         private System.Windows.Forms.ToolStripMenuItem toolbarHelperToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog SaveAsDialog;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem menuToolsXmlTest;
         public System.Windows.Forms.ImageList imgSmall;
     }
 }

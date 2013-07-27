@@ -58,19 +58,6 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void MenuBar_ShowHideActivity(bool visible)
-        {
-            if (options.wViewHiddenTasks.Checked) {
-                // Set main menu items
-                MenuActionHideActivity.Visible = visible;
-                MenuActionUnhideActivity.Visible = !visible;
-
-                // Mirror popup menu items
-                PopupMenuActivityHide.Visible = visible;
-                PopupMenuActivityUnhide.Visible = !visible;
-            }
-        }
-
         private void MenuBar_ShowHideProject(bool visible)
         {
             if (options.wViewHiddenProjects.Checked) {
@@ -85,10 +72,19 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
+
+        private void MenuBar_ShowHideActivity(bool visible)
+        {
+            if (options.wViewHiddenTasks.Checked) {
+                // Set main menu items
+                MenuActionHideActivity.Visible = visible;
+                MenuActionUnhideActivity.Visible = !visible;
+
+                // Mirror popup menu items
+                PopupMenuActivityHide.Visible = visible;
+                PopupMenuActivityUnhide.Visible = !visible;
+            }
+        }
 
     }
 }

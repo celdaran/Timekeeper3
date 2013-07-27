@@ -19,6 +19,23 @@ namespace Timekeeper.Forms
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
 
+        private void Action_ChangedProject()
+        {
+            // Get current project
+            Project project = (Project)ProjectTree.SelectedNode.Tag;
+
+            // Status bar updates?
+
+            // TODO: Implement auto-follow the other direction
+            // Set hide mode based on projects's IsHidden property
+            MenuBar_ShowHideProject(!project.IsHidden);
+
+            // Update calendar to reflect change
+            Action_UpdateCalendar(ProjectTree);
+        }
+
+        //---------------------------------------------------------------------
+
         private void Action_ChangedActivity()
         {
             // Get current activty
@@ -44,23 +61,6 @@ namespace Timekeeper.Forms
 
             // Update calendar to reflect change
             Action_UpdateCalendar(ActivityTree);
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_ChangedProject()
-        {
-            // Get current project
-            Project project = (Project)ProjectTree.SelectedNode.Tag;
-
-            // Status bar updates?
-
-            // TODO: Implement auto-follow the other direction
-            // Set hide mode based on projects's IsHidden property
-            MenuBar_ShowHideProject(!project.IsHidden);
-
-            // Update calendar to reflect change
-            Action_UpdateCalendar(ProjectTree);
         }
 
         //---------------------------------------------------------------------
@@ -155,8 +155,8 @@ namespace Timekeeper.Forms
         private void Action_CloseFile()
         {
             if (Database != null) {
-                ActivityTree.Nodes.Clear();
                 ProjectTree.Nodes.Clear();
+                ActivityTree.Nodes.Clear();
 
                 StatusBar_FileClosed();
                 MenuBar_FileClosed();
@@ -192,7 +192,7 @@ namespace Timekeeper.Forms
             tree.SelectedNode.Remove();
 
             // Display root lines?
-            Trees_ShowRootLines();
+            Action_ShowRootLines();
 
             //tree.ShowRootLines = Activities.HasParents();
         }
@@ -554,7 +554,7 @@ namespace Timekeeper.Forms
                 tree.SelectedNode.Remove();
             }
 
-            Trees_ShowRootLines();
+            Action_ShowRootLines();
         }
 
         //---------------------------------------------------------------------
@@ -573,7 +573,7 @@ namespace Timekeeper.Forms
             // Update the UI
             tree.SelectedNode.ForeColor = Color.Black;
 
-            Trees_ShowRootLines();
+            Action_ShowRootLines();
         }
 
         private bool Action_LoadFile()
@@ -584,8 +584,8 @@ namespace Timekeeper.Forms
                 }
 
                 Widgets = new Classes.Widgets();
-                Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
                 Widgets.BuildProjectTree(ProjectTree.Nodes, null, 0);
+                Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
 
                 Entries = new Classes.JournalEntries(Database);
                 Meta = new Classes.Meta();
@@ -601,22 +601,22 @@ namespace Timekeeper.Forms
                 // and save name for next Ctrl+O
                 OpenFileDialog.FileName = DatabaseFileName;
 
-                string lastActivity = Options.LastActivity;
                 string lastProject = Options.LastProject;
+                string lastActivity = Options.LastActivity;
                 lastGridView = Options.LastGridView ?? "Last View";
 
-                // Re-select last selected activity
-                TreeNode lastNode = Widgets.FindTreeNode(ActivityTree.Nodes, lastActivity);
-                if (lastNode != null) {
-                    ActivityTree.SelectedNode = lastNode;
-                    ActivityTree.SelectedNode.Expand();
-                }
-
                 // Re-select last selected project
-                lastNode = Widgets.FindTreeNode(ProjectTree.Nodes, lastProject);
+                TreeNode lastNode = Widgets.FindTreeNode(ProjectTree.Nodes, lastProject);
                 if (lastNode != null) {
                     ProjectTree.SelectedNode = lastNode;
                     ProjectTree.SelectedNode.Expand();
+                }
+
+                // Re-select last selected activity
+                lastNode = Widgets.FindTreeNode(ActivityTree.Nodes, lastActivity);
+                if (lastNode != null) {
+                    ActivityTree.SelectedNode = lastNode;
+                    ActivityTree.SelectedNode.Expand();
                 }
 
                 //------------------------------------------------------------
@@ -624,7 +624,7 @@ namespace Timekeeper.Forms
                 //------------------------------------------------------------
 
                 // View root lines?
-                Trees_ShowRootLines();
+                Action_ShowRootLines();
 
                 // View or hide the project pane
                 _toggleProjects(); // TODO: slated for refactoring
@@ -752,17 +752,17 @@ namespace Timekeeper.Forms
             // BEGIN WTF: this sucks...
             tree.Nodes.Clear();
             // FIXME: bit of a hack, here (okay, more than a bit)
-            if (tree.Name == "ActivityTree") {
-                Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
-            } else {
+            if (tree.Name == "ProjectTree") {
                 Widgets.BuildProjectTree(ProjectTree.Nodes, null, 0);
+            } else {
+                Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
             }
             // FIXME: don't always collapse/expand all: do this intelligently
             tree.ExpandAll();
             // END WTF
 
             // display root lines?
-            Trees_ShowRootLines();
+            Action_ShowRootLines();
         }
 
         //---------------------------------------------------------------------
@@ -896,17 +896,21 @@ namespace Timekeeper.Forms
 
             // Check for a currently selected activity
             if (ActivityTree.SelectedNode == null) {
-                Common.Warn("No Activity selected.");
-                return;
+                if (ActivityTree.Nodes.Count == 1) {
+                    ActivityTree.SelectedNode = ActivityTree.Nodes[0];
+                } else {
+                    Common.Warn("No Activity selected.");
+                    return;
+                }
             }
 
             // Grab instances of currently selected objects
-            currentActivityNode = ActivityTree.SelectedNode;
             currentProjectNode = ProjectTree.SelectedNode;
-            currentActivity = (Activity)currentActivityNode.Tag;
+            currentActivityNode = ActivityTree.SelectedNode;
             currentProject = (Project)currentProjectNode.Tag;
+            currentActivity = (Activity)currentActivityNode.Tag;
 
-            if ((currentActivity.IsFolder == true) || (currentProject.IsFolder)) {
+            if ((currentProject.IsFolder == true) || (currentActivity.IsFolder)) {
                 Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
                 return;
             }
@@ -917,8 +921,8 @@ namespace Timekeeper.Forms
             currentActivity.FollowedItemId = currentProject.ItemId; // FIXME: needs to work both ways
 
             currentEntry = new Classes.Journal(Database);
-            currentEntry.ActivityId = currentActivity.ItemId;
             currentEntry.ProjectId = currentProject.ItemId;
+            currentEntry.ActivityId = currentActivity.ItemId;
             currentEntry.StartTime = StartTime;
             currentEntry.StopTime = StartTime;
             currentEntry.Seconds = 0; // default to zero
@@ -995,8 +999,8 @@ namespace Timekeeper.Forms
         private void Action_StopTimer()
         {
             // Close off timer
-            currentEntry.ActivityId = currentActivity.ItemId;
             currentEntry.ProjectId = currentProject.ItemId;
+            currentEntry.ActivityId = currentActivity.ItemId;
             currentEntry.StartTime = wStartTime.Value;
             currentEntry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
             currentEntry.Seconds = currentActivity.StopTiming(wStopTime.Value);
@@ -1010,8 +1014,8 @@ namespace Timekeeper.Forms
             //timerLastRunNotified = false;
 
             // Clear instances of current object
-            currentActivity = null;
             currentProject = null;
+            currentActivity = null;
             currentEntry = null;
 
             // Make any UI changes 
@@ -1116,6 +1120,17 @@ namespace Timekeeper.Forms
                     Browser_EnableRevert(true);
                 }
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_ShowRootLines()
+        {
+            Projects Projects = new Projects(Database);
+            ProjectTree.ShowRootLines = Projects.HasParents();
+
+            Activities Activities = new Activities(Database);
+            ActivityTree.ShowRootLines = Activities.HasParents();
         }
 
         //---------------------------------------------------------------------

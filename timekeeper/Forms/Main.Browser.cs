@@ -269,25 +269,25 @@ namespace Timekeeper.Forms
         private void Browser_FormToEntry(ref Classes.Journal entry, long entryId)
         {
             // Don't update the browser entry if nothing is selected
-            if ((ActivityTree.SelectedNode == null) || (ProjectTree.SelectedNode == null)) {
+            if ((ProjectTree.SelectedNode == null) || (ActivityTree.SelectedNode == null)) {
                 return;
             }
 
             // First translate some necessary data from the form 
-            Activity Activity = (Activity)ActivityTree.SelectedNode.Tag;
             Project Project = (Project)ProjectTree.SelectedNode.Tag;
+            Activity Activity = (Activity)ActivityTree.SelectedNode.Tag;
             TimeSpan Delta = wStopTime.Value.Subtract(wStartTime.Value);
 
             // Update browserEntry with current form data
             entry.JournalId = entryId;
-            entry.ActivityId = Activity.ItemId;
             entry.ProjectId = Project.ItemId;
+            entry.ActivityId = Activity.ItemId;
             entry.StartTime = wStartTime.Value;
             entry.StopTime = wStopTime.Value;
             entry.Seconds = (long)Delta.TotalSeconds;
             entry.Memo = wMemo.Text;
-            entry.ActivityName = ActivityTree.SelectedNode.Text;
             entry.ProjectName = ProjectTree.SelectedNode.Text;
+            entry.ActivityName = ActivityTree.SelectedNode.Text;
         }
 
         private void Browser_EntryToForm(Classes.Journal entry)
