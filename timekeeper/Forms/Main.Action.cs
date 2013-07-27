@@ -39,7 +39,7 @@ namespace Timekeeper.Forms
                 }
             }
 
-            // Set hide mode based on task's IsHidden property
+            // Set hide mode based on Activity's IsHidden property
             MenuBar_ShowHideActivity(!Activity.IsHidden);
 
             // Update calendar to reflect change
@@ -437,7 +437,7 @@ namespace Timekeeper.Forms
 
             // NEW:
 
-            // experimental: swapping Tasks/Projects (see TKT #1266)
+            // experimental: swapping Activities/Projects (see TKT #1266)
             //this.splitTrees.Panel1.Controls.Add(this.ActivityTree);
 
             /*
@@ -601,12 +601,12 @@ namespace Timekeeper.Forms
                 // and save name for next Ctrl+O
                 OpenFileDialog.FileName = DatabaseFileName;
 
-                string lastTask = Options.LastActivity;
+                string lastActivity = Options.LastActivity;
                 string lastProject = Options.LastProject;
                 lastGridView = Options.LastGridView ?? "Last View";
 
-                // Re-select last selected task
-                TreeNode lastNode = Widgets.FindTreeNode(ActivityTree.Nodes, lastTask);
+                // Re-select last selected activity
+                TreeNode lastNode = Widgets.FindTreeNode(ActivityTree.Nodes, lastActivity);
                 if (lastNode != null) {
                     ActivityTree.SelectedNode = lastNode;
                     ActivityTree.SelectedNode.Expand();
@@ -791,12 +791,12 @@ namespace Timekeeper.Forms
         {
             //---------------------------------------------------------
             // Short tick is once per second: it controls the animated
-            // timer on the task tree node as well as updating the 
+            // timer on the activity tree node as well as updating the 
             // status bar and form window text.
             //---------------------------------------------------------
 
             // Calculate status and window bar display values
-            if ((currentTask != null) && (timerRunning == true)) {
+            if ((currentActivity != null) && (timerRunning == true)) {
 
                 // Simple increment for the one-second timer
                 elapsed++;
@@ -819,27 +819,27 @@ namespace Timekeeper.Forms
                     timeToShow = StatusBarItemsTimeToday.Text;
                 }
 
-                // Text = currentTaskNode.Text + " (Timer Running)";
-                // Text = currentTaskNode.Text + " (" + currentProjectNode.Text + ") - " + timeToShow;
                 string tmp = options.wTitleBarTemplate.Text;
-                tmp = tmp.Replace("%task", "{0}");
+                tmp = tmp.Replace("%task", "{0}"); // FIXME: take care of this later
                 tmp = tmp.Replace("%project", "{1}");
                 tmp = tmp.Replace("%time", "{2}");
-                Text = String.Format(tmp, currentTaskNode.Text, currentProjectNode.Text, timeToShow);
+                Text = String.Format(tmp, currentActivityNode.Text, currentProjectNode.Text, timeToShow);
                 //wNotifyIcon.Text = Text;
                 wNotifyIcon.Text = Common.Abbreviate(Text, 63);
             }
 
-            // Animate the task icon
+            // Animate the selected item icons
             if (timerRunning == true) {
-                int currentIndex = currentTaskNode.SelectedImageIndex;
-                if (currentIndex > Timekeeper.IMG_TASK_TIMER_END - 1) {
-                    currentTaskNode.ImageIndex = Timekeeper.IMG_TASK_TIMER_START;
-                    currentTaskNode.SelectedImageIndex = Timekeeper.IMG_TASK_TIMER_START;
+                int currentIndex = currentActivityNode.SelectedImageIndex;
+                if (currentIndex > Timekeeper.IMG_TIMER_END - 1) {
+                    currentActivityNode.ImageIndex = Timekeeper.IMG_TIMER_START;
+                    currentActivityNode.SelectedImageIndex = Timekeeper.IMG_TIMER_START;
                 } else {
-                    currentTaskNode.ImageIndex++;
-                    currentTaskNode.SelectedImageIndex++;
+                    currentActivityNode.ImageIndex++;
+                    currentActivityNode.SelectedImageIndex++;
                 }
+                currentProjectNode.ImageIndex = currentActivityNode.ImageIndex;
+                currentProjectNode.SelectedImageIndex = currentActivityNode.SelectedImageIndex;
             }
         }
 
@@ -849,8 +849,8 @@ namespace Timekeeper.Forms
         {
             if (timerRunning) {
                 // Refresh actual time values from database to correct for drift
-                elapsed = Convert.ToInt32(currentTask.Elapsed().TotalSeconds);
-                elapsedToday = Convert.ToInt32(currentTask.ElapsedToday().TotalSeconds);
+                elapsed = Convert.ToInt32(currentActivity.Elapsed().TotalSeconds);
+                elapsedToday = Convert.ToInt32(currentActivity.ElapsedToday().TotalSeconds);
                 elapsedTodayAll = Convert.ToInt32(Entries.ElapsedToday());
             }
 
@@ -889,35 +889,35 @@ namespace Timekeeper.Forms
                 if (ProjectTree.Nodes.Count == 1) {
                     ProjectTree.SelectedNode = ProjectTree.Nodes[0];
                 } else {
-                    Common.Warn("No project selected.");
+                    Common.Warn("No Project selected.");
                     return;
                 }
             }
 
-            // Check for a currently selected task
+            // Check for a currently selected activity
             if (ActivityTree.SelectedNode == null) {
-                Common.Warn("No task selected.");
+                Common.Warn("No Activity selected.");
                 return;
             }
 
             // Grab instances of currently selected objects
-            currentTaskNode = ActivityTree.SelectedNode;
+            currentActivityNode = ActivityTree.SelectedNode;
             currentProjectNode = ProjectTree.SelectedNode;
-            currentTask = (Activity)currentTaskNode.Tag;
+            currentActivity = (Activity)currentActivityNode.Tag;
             currentProject = (Project)currentProjectNode.Tag;
 
-            if ((currentTask.IsFolder == true) || (currentProject.IsFolder)) {
-                Common.Warn("Folders cannot be timed. Please select a task before starting the timer.");
+            if ((currentActivity.IsFolder == true) || (currentProject.IsFolder)) {
+                Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
                 return;
             }
 
             // Now start timing
             DateTime StartTime = IsBrowserOpen() ? wStartTime.Value : DateTime.Now;
-            currentTask.StartTiming(StartTime);
-            currentTask.FollowedItemId = currentProject.ItemId; // FIXME: needs to work both ways
+            currentActivity.StartTiming(StartTime);
+            currentActivity.FollowedItemId = currentProject.ItemId; // FIXME: needs to work both ways
 
             currentEntry = new Classes.Journal(Database);
-            currentEntry.ActivityId = currentTask.ItemId;
+            currentEntry.ActivityId = currentActivity.ItemId;
             currentEntry.ProjectId = currentProject.ItemId;
             currentEntry.StartTime = StartTime;
             currentEntry.StopTime = StartTime;
@@ -928,15 +928,13 @@ namespace Timekeeper.Forms
             currentEntry.CategoryId = 1;
             currentEntry.Create();
 
-            //currentEntry.Begin(wMemo.Text, currentTask.id, currentProject.id);
-
             timerShort.Enabled = true; // Are this line and the next line the same thing?
             timerRunning = true;
             timerLastRun = DateTime.Now;
 
             // Grab times (this is a database hit)
-            elapsed = (long)currentTask.Elapsed().TotalSeconds;
-            elapsedToday = (long)currentTask.ElapsedToday().TotalSeconds;
+            elapsed = (long)currentActivity.Elapsed().TotalSeconds;
+            elapsedToday = (long)currentActivity.ElapsedToday().TotalSeconds;
             elapsedTodayAll = (long)Entries.ElapsedToday();
 
             // Make any UI changes based on the timer starting
@@ -997,11 +995,11 @@ namespace Timekeeper.Forms
         private void Action_StopTimer()
         {
             // Close off timer
-            currentEntry.ActivityId = currentTask.ItemId;
+            currentEntry.ActivityId = currentActivity.ItemId;
             currentEntry.ProjectId = currentProject.ItemId;
             currentEntry.StartTime = wStartTime.Value;
             currentEntry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
-            currentEntry.Seconds = currentTask.StopTiming(wStopTime.Value);
+            currentEntry.Seconds = currentActivity.StopTiming(wStopTime.Value);
             currentEntry.Memo = wMemo.Text;
             currentEntry.IsLocked = false;
             currentEntry.LocationId = 1;
@@ -1012,7 +1010,7 @@ namespace Timekeeper.Forms
             //timerLastRunNotified = false;
 
             // Clear instances of current object
-            currentTask = null;
+            currentActivity = null;
             currentProject = null;
             currentEntry = null;
 
@@ -1042,8 +1040,10 @@ namespace Timekeeper.Forms
             menuToolControlStop.ShortcutKeys = Keys.None;
             menuToolControlStart.ShortcutKeys = saveKeys;
             */
-            currentTaskNode.ImageIndex = Timekeeper.IMG_TASK;
-            currentTaskNode.SelectedImageIndex = Timekeeper.IMG_TASK;
+            currentProjectNode.ImageIndex = Timekeeper.IMG_PROJECT;
+            currentProjectNode.SelectedImageIndex = Timekeeper.IMG_PROJECT;
+            currentActivityNode.ImageIndex = Timekeeper.IMG_ACTIVITY;
+            currentActivityNode.SelectedImageIndex = Timekeeper.IMG_ACTIVITY;
 
             MenuActionDeleteActivity.Enabled = true;
             PopupMenuActivityDelete.Enabled = true;

@@ -206,17 +206,17 @@ namespace Timekeeper.Forms
                             Common.Info("Cannot reorder items while the timer is running. Items will be reordered when Timekeeper restarts.");
                         } else {
                             options.reordered = false;
-                            reloadTasks();
+                            reloadActivities();
                             reloadProjects();
                         }
                     }
 
-                    // Reload tasks and projects, if hidden options changed
-                    if (prevViewHiddenTasks != options.wViewHiddenTasks.Checked) {
-                        reloadTasks();
-                    }
+                    // Reload Projects and Activities, if hidden options changed
                     if (prevViewHiddenProjects != options.wViewHiddenProjects.Checked) {
                         reloadProjects();
+                    }
+                    if (prevViewHiddenTasks != options.wViewHiddenTasks.Checked) {
+                        reloadActivities();
                     }
 
                     // Keyboard customizations

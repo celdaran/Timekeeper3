@@ -121,7 +121,7 @@ namespace Timekeeper.Forms
             string Query = String.Format(@"
                 select
                     log.StartTime, log.StopTime, log.Seconds, 
-                    a.Name as task_name, p.Name as project_name,
+                    p.Name as ProjectName, a.Name as ActivityName,
                     log.Memo
                 from Journal log
                 join Activity a on a.ActivityId = log.ActivityId
@@ -190,7 +190,7 @@ namespace Timekeeper.Forms
                     <p>{0} - {1} (<b>{2}</b>): {3}</p>
                     <p>{4}</p>",
                     start.ToString("HH:mm:ss"), end.ToString("HH:mm:ss"),
-                    Timekeeper.FormatSeconds(seconds), row["task_name"] + " / " + row["project_name"],
+                    Timekeeper.FormatSeconds(seconds), row["ActivityName"] + " / " + row["ProjectName"],
                     MemoArea, hr);
                 Body += rpt;
 

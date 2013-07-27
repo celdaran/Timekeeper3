@@ -24,10 +24,10 @@ namespace Timekeeper
         public const int IMG_FOLDER_OPEN = 0;
         public const int IMG_FOLDER_CLOSED = 1;
         public const int IMG_PROJECT = 2;
-        public const int IMG_TASK = 3;
-        public const int IMG_TASK_TIMER_START = 4;
-        public const int IMG_TASK_TIMER_END = 7;
-        public const int IMG_TASK_HIDDEN = 8; // UNUSED (2013-07-26: I'm about to use it, with the auto-unhiding feature in changeset 310)
+        public const int IMG_ACTIVITY = 3;
+        public const int IMG_TIMER_START = 4;
+        public const int IMG_TIMER_END = 7;
+        public const int IMG_ITEM_HIDDEN = 8;
 
         //---------------------------------------------------------------------
         // Properties

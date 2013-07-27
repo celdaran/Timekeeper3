@@ -458,7 +458,7 @@ namespace Timekeeper.Forms
             this.MenuActionNewActivity.Name = "MenuActionNewActivity";
             this.MenuActionNewActivity.Size = new System.Drawing.Size(179, 22);
             this.MenuActionNewActivity.Text = "&New Activity...";
-            this.MenuActionNewActivity.Click += new System.EventHandler(this.MenuActionNewTask_Click);
+            this.MenuActionNewActivity.Click += new System.EventHandler(this.MenuActionNewActivity_Click);
             // 
             // MenuActionNewActivityFolder
             // 
@@ -468,7 +468,7 @@ namespace Timekeeper.Forms
             this.MenuActionNewActivityFolder.Name = "MenuActionNewActivityFolder";
             this.MenuActionNewActivityFolder.Size = new System.Drawing.Size(179, 22);
             this.MenuActionNewActivityFolder.Text = "New Activity Folder...";
-            this.MenuActionNewActivityFolder.Click += new System.EventHandler(this.MenuActionNewTaskFolder_Click);
+            this.MenuActionNewActivityFolder.Click += new System.EventHandler(this.MenuActionNewActivityFolder_Click);
             // 
             // MenuActionEditActivity
             // 
@@ -482,7 +482,7 @@ namespace Timekeeper.Forms
             this.MenuActionHideActivity.Name = "MenuActionHideActivity";
             this.MenuActionHideActivity.Size = new System.Drawing.Size(179, 22);
             this.MenuActionHideActivity.Text = "&Hide Activity...";
-            this.MenuActionHideActivity.Click += new System.EventHandler(this.MenuActionHideTask_Click);
+            this.MenuActionHideActivity.Click += new System.EventHandler(this.MenuActionHideActivity_Click);
             // 
             // MenuActionUnhideActivity
             // 
@@ -490,14 +490,14 @@ namespace Timekeeper.Forms
             this.MenuActionUnhideActivity.Size = new System.Drawing.Size(179, 22);
             this.MenuActionUnhideActivity.Text = "Un&hide Activity...";
             this.MenuActionUnhideActivity.Visible = false;
-            this.MenuActionUnhideActivity.Click += new System.EventHandler(this.MenuActionUnhideTask_Click);
+            this.MenuActionUnhideActivity.Click += new System.EventHandler(this.MenuActionUnhideActivity_Click);
             // 
             // MenuActionDeleteActivity
             // 
             this.MenuActionDeleteActivity.Name = "MenuActionDeleteActivity";
             this.MenuActionDeleteActivity.Size = new System.Drawing.Size(179, 22);
             this.MenuActionDeleteActivity.Text = "&Delete Activity...";
-            this.MenuActionDeleteActivity.Click += new System.EventHandler(this.MenuActionDeleteTask_Click);
+            this.MenuActionDeleteActivity.Click += new System.EventHandler(this.MenuActionDeleteActivity_Click);
             // 
             // menuReport
             // 
@@ -1020,7 +1020,7 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectRename.Name = "PopupMenuProjectRename";
             this.PopupMenuProjectRename.Size = new System.Drawing.Size(164, 22);
             this.PopupMenuProjectRename.Text = "&Rename";
-            this.PopupMenuProjectRename.Click += new System.EventHandler(this.pmenuProjectsRename_Click);
+            this.PopupMenuProjectRename.Click += new System.EventHandler(this.PopupMenuProjectRename_Click);
             // 
             // PopupMenuProjectHide
             // 
@@ -1054,7 +1054,7 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectProperties.Name = "PopupMenuProjectProperties";
             this.PopupMenuProjectProperties.Size = new System.Drawing.Size(164, 22);
             this.PopupMenuProjectProperties.Text = "&Properties...";
-            this.PopupMenuProjectProperties.Click += new System.EventHandler(this.pmenuProjectsProperties_Click);
+            this.PopupMenuProjectProperties.Click += new System.EventHandler(this.PopupMenuProjectProperties_Click);
             // 
             // PopupMenuProjectSep2
             // 
@@ -1066,7 +1066,7 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectHideProjectsPane.Name = "PopupMenuProjectHideProjectsPane";
             this.PopupMenuProjectHideProjectsPane.Size = new System.Drawing.Size(164, 22);
             this.PopupMenuProjectHideProjectsPane.Text = "H&ide Projects Pane";
-            this.PopupMenuProjectHideProjectsPane.Click += new System.EventHandler(this.pmenuProjectsHidePane_Click);
+            this.PopupMenuProjectHideProjectsPane.Click += new System.EventHandler(this.PopupMenuProjectHidePane_Click);
             // 
             // imgSmall
             // 
@@ -1128,7 +1128,7 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityNewActivity.Name = "PopupMenuActivityNewActivity";
             this.PopupMenuActivityNewActivity.Size = new System.Drawing.Size(142, 22);
             this.PopupMenuActivityNewActivity.Text = "&New Task...";
-            this.PopupMenuActivityNewActivity.Click += new System.EventHandler(this.MenuActionNewTask_Click);
+            this.PopupMenuActivityNewActivity.Click += new System.EventHandler(this.MenuActionNewActivity_Click);
             // 
             // PopupMenuActivityNewFolder
             // 
@@ -1137,7 +1137,7 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityNewFolder.Name = "PopupMenuActivityNewFolder";
             this.PopupMenuActivityNewFolder.Size = new System.Drawing.Size(142, 22);
             this.PopupMenuActivityNewFolder.Text = "New &Folder...";
-            this.PopupMenuActivityNewFolder.Click += new System.EventHandler(this.MenuActionNewTaskFolder_Click);
+            this.PopupMenuActivityNewFolder.Click += new System.EventHandler(this.MenuActionNewActivityFolder_Click);
             // 
             // PopupMenuActivityEdit
             // 
@@ -1151,14 +1151,14 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityRename.Name = "PopupMenuActivityRename";
             this.PopupMenuActivityRename.Size = new System.Drawing.Size(142, 22);
             this.PopupMenuActivityRename.Text = "&Rename";
-            this.PopupMenuActivityRename.Click += new System.EventHandler(this.pmenuTasksRename_Click);
+            this.PopupMenuActivityRename.Click += new System.EventHandler(this.PopupMenuActivityRename_Click);
             // 
             // PopupMenuActivityHide
             // 
             this.PopupMenuActivityHide.Name = "PopupMenuActivityHide";
             this.PopupMenuActivityHide.Size = new System.Drawing.Size(142, 22);
             this.PopupMenuActivityHide.Text = "&Hide";
-            this.PopupMenuActivityHide.Click += new System.EventHandler(this.MenuActionHideTask_Click);
+            this.PopupMenuActivityHide.Click += new System.EventHandler(this.MenuActionHideActivity_Click);
             // 
             // PopupMenuActivityUnhide
             // 
@@ -1166,14 +1166,14 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityUnhide.Size = new System.Drawing.Size(142, 22);
             this.PopupMenuActivityUnhide.Text = "Un&hide";
             this.PopupMenuActivityUnhide.Visible = false;
-            this.PopupMenuActivityUnhide.Click += new System.EventHandler(this.MenuActionUnhideTask_Click);
+            this.PopupMenuActivityUnhide.Click += new System.EventHandler(this.MenuActionUnhideActivity_Click);
             // 
             // PopupMenuActivityDelete
             // 
             this.PopupMenuActivityDelete.Name = "PopupMenuActivityDelete";
             this.PopupMenuActivityDelete.Size = new System.Drawing.Size(142, 22);
             this.PopupMenuActivityDelete.Text = "&Delete";
-            this.PopupMenuActivityDelete.Click += new System.EventHandler(this.MenuActionDeleteTask_Click);
+            this.PopupMenuActivityDelete.Click += new System.EventHandler(this.MenuActionDeleteActivity_Click);
             // 
             // PopupMenuActivitySep1
             // 
@@ -1185,7 +1185,7 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityProperties.Name = "PopupMenuActivityProperties";
             this.PopupMenuActivityProperties.Size = new System.Drawing.Size(142, 22);
             this.PopupMenuActivityProperties.Text = "&Properties...";
-            this.PopupMenuActivityProperties.Click += new System.EventHandler(this.pmenuTasksProperties_Click);
+            this.PopupMenuActivityProperties.Click += new System.EventHandler(this.PopupMenuActivityProperties_Click);
             // 
             // PopupMenuActivitySep2
             // 
@@ -1200,7 +1200,7 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityShowProjects.Size = new System.Drawing.Size(142, 22);
             this.PopupMenuActivityShowProjects.Text = "S&how Projects";
             this.PopupMenuActivityShowProjects.Visible = false;
-            this.PopupMenuActivityShowProjects.Click += new System.EventHandler(this.pmenuTasksShowProjects_Click);
+            this.PopupMenuActivityShowProjects.Click += new System.EventHandler(this.PopupMenuActivityShowProjects_Click);
             // 
             // OpenFileDialog
             // 
@@ -1790,7 +1790,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarFileName;
         private System.Windows.Forms.TreeView ProjectTree;
-        private System.Windows.Forms.ImageList imgSmall;
         private System.Windows.Forms.ToolStripMenuItem menuReport;
         private System.Windows.Forms.ToolStripMenuItem menuReportsGrid;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
@@ -1930,6 +1929,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.SaveFileDialog SaveAsDialog;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem menuToolsXmlTest;
+        public System.Windows.Forms.ImageList imgSmall;
     }
 }
-

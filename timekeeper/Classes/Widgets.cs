@@ -44,7 +44,7 @@ namespace Timekeeper.Classes
             // Iterate over Activities
             foreach (Activity Activity in Activities.Fetch(parentId, showHidden)) {
                 // Create the new node
-                TreeNode Node = AddItemToTree(tree, parentNode, Activity, Timekeeper.IMG_TASK);
+                TreeNode Node = AddItemToTree(tree, parentNode, Activity, Timekeeper.IMG_ACTIVITY);
 
                 // Then recurse
                 if (Activity.ItemId != parentId) {
@@ -112,7 +112,7 @@ namespace Timekeeper.Classes
 
             if (parentProject.ItemId == 0) {
                 // If we've gone all the way up, add the item itself as a root
-                return AddItemToTree(tree, null, project, Timekeeper.IMG_TASK_HIDDEN);
+                return AddItemToTree(tree, null, project, Timekeeper.IMG_ITEM_HIDDEN);
             } else {
                 // Otherwise, try to add the item to the found parent
 
@@ -121,12 +121,12 @@ namespace Timekeeper.Classes
                 TreeNode ParentNode = FindTreeNode(tree, parentName);
                 if (ParentNode != null) {
                     // If we got one, add it
-                    return AddItemToTree(tree, ParentNode, project, Timekeeper.IMG_TASK_HIDDEN);
+                    return AddItemToTree(tree, ParentNode, project, Timekeeper.IMG_ITEM_HIDDEN);
                 } else {
                     // Otherwise, attempt to add the parent, recursively
                     //Project grandparentProject = new Project(Database, parentProject.ParentId);
                     TreeNode NewNode = AddHiddenProjectToTree(tree, parentProject); //, grandparentProject);
-                    return AddItemToTree(tree, NewNode, project, Timekeeper.IMG_TASK_HIDDEN);
+                    return AddItemToTree(tree, NewNode, project, Timekeeper.IMG_ITEM_HIDDEN);
                 }
             }
 
@@ -145,7 +145,7 @@ namespace Timekeeper.Classes
 
             if (parentActivity.ItemId == 0) {
                 // If we've gone all the way up, add the item itself as a root
-                return AddItemToTree(tree, null, activity, Timekeeper.IMG_TASK_HIDDEN);
+                return AddItemToTree(tree, null, activity, Timekeeper.IMG_ITEM_HIDDEN);
             } else {
                 // Otherwise, try to add the item to the found parent
 
@@ -154,11 +154,11 @@ namespace Timekeeper.Classes
                 TreeNode ParentNode = FindTreeNode(tree, parentName);
                 if (ParentNode != null) {
                     // If we got one, add it
-                    return AddItemToTree(tree, ParentNode, activity, Timekeeper.IMG_TASK_HIDDEN);
+                    return AddItemToTree(tree, ParentNode, activity, Timekeeper.IMG_ITEM_HIDDEN);
                 } else {
                     // Otherwise, attempt to add the parent, recursively
                     TreeNode NewNode = AddHiddenActivityToTree(tree, parentActivity);
-                    return AddItemToTree(tree, NewNode, activity, Timekeeper.IMG_TASK_HIDDEN);
+                    return AddItemToTree(tree, NewNode, activity, Timekeeper.IMG_ITEM_HIDDEN);
                 }
             }
         }

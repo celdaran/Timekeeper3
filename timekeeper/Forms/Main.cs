@@ -50,9 +50,9 @@ namespace Timekeeper.Forms
 
         // current objects
         private Classes.Journal currentEntry;
-        private Activity currentTask;
+        private Activity currentActivity;
         private Project currentProject;
-        private TreeNode currentTaskNode;
+        private TreeNode currentActivityNode;
         private TreeNode currentProjectNode;
 
         // timer properties
@@ -147,21 +147,21 @@ namespace Timekeeper.Forms
             Browser_Close();
         }
 
-        // Task | New Project
+        // Action | New Project
         private void MenuActionNewProject_Click(object sender, EventArgs e)
         {
             Project project = new Project(Database);
             Dialog_NewItem(ProjectTree, "New Project", false, (Item)project, Timekeeper.IMG_PROJECT);
         }
 
-        // Task | New Project Folder
+        // Action | New Project Folder
         private void MenuActionNewProjectFolder_Click(object sender, EventArgs e)
         {
             Project project = new Project(Database);
             Dialog_NewItem(ProjectTree, "New Project Folder", true, (Item)project, Timekeeper.IMG_PROJECT);
         }
 
-        // Task | Edit Project
+        // Action | Edit Project
         private void MenuActionEditProject_Click(object sender, EventArgs e)
         {
             if (ProjectTree.SelectedNode != null) {
@@ -196,31 +196,32 @@ namespace Timekeeper.Forms
                 Action_DeleteItem(ProjectTree);
             }
         }
-        // Action | New Task
-        private void MenuActionNewTask_Click(object sender, EventArgs e)
+
+        // Action | New Activity
+        private void MenuActionNewActivity_Click(object sender, EventArgs e)
         {
-            Activity task = new Activity(Database);
-            Dialog_NewItem(ActivityTree, "New Task", false, (Item)task, Timekeeper.IMG_TASK);
+            Activity Activity = new Activity(Database);
+            Dialog_NewItem(ActivityTree, "New Activity", false, (Item)Activity, Timekeeper.IMG_ACTIVITY);
         }
 
-        // Action | New Task Folder
-        private void MenuActionNewTaskFolder_Click(object sender, EventArgs e)
+        // Action | New Activity Folder
+        private void MenuActionNewActivityFolder_Click(object sender, EventArgs e)
         {
-            Activity task = new Activity(Database);
-            Dialog_NewItem(ActivityTree, "New Task Folder", true, (Item)task, Timekeeper.IMG_TASK);
+            Activity Activity = new Activity(Database);
+            Dialog_NewItem(ActivityTree, "New Activity Folder", true, (Item)Activity, Timekeeper.IMG_ACTIVITY);
         }
 
-        // Action | Edit Task
+        // Action | Edit Activity
         private void MenuActionEdit_Click(object sender, EventArgs e)
         {
             if (ActivityTree.SelectedNode != null) {
-                Activity task = new Activity(Database, ActivityTree.SelectedNode.Text);
-                Dialog_EditItem(ActivityTree, "Edit Task", (Item)task);
+                Activity Activity = new Activity(Database, ActivityTree.SelectedNode.Text);
+                Dialog_EditItem(ActivityTree, "Edit Activity", (Item)Activity);
             }
         }
 
-        // Action | Hide Task
-        private void MenuActionHideTask_Click(object sender, EventArgs e)
+        // Action | Hide Activity
+        private void MenuActionHideActivity_Click(object sender, EventArgs e)
         {
             if (ActivityTree.SelectedNode != null) {
                 Dialog_HideItem(ActivityTree, options.wViewHiddenTasks.Checked);
@@ -228,8 +229,8 @@ namespace Timekeeper.Forms
             }
         }
 
-        // Action | Unhide Task
-        private void MenuActionUnhideTask_Click(object sender, EventArgs e)
+        // Action | Unhide Activity
+        private void MenuActionUnhideActivity_Click(object sender, EventArgs e)
         {
             if (ActivityTree.SelectedNode != null) {
                 Action_UnhideItem(ActivityTree);
@@ -237,8 +238,8 @@ namespace Timekeeper.Forms
             }
         }
 
-        // Task | Delete Task
-        private void MenuActionDeleteTask_Click(object sender, EventArgs e)
+        // Action | Delete Activity
+        private void MenuActionDeleteActivity_Click(object sender, EventArgs e)
         {
             if (ActivityTree.SelectedNode != null) {
                 Action_DeleteItem(ActivityTree);
@@ -429,32 +430,8 @@ namespace Timekeeper.Forms
         // Context Menu Events
         //---------------------------------------------------------------------
 
-        // Popup Task | Rename
-        private void pmenuTasksRename_Click(object sender, EventArgs e)
-        {
-            if (ActivityTree.SelectedNode != null) {
-                ActivityTree.SelectedNode.BeginEdit();
-            }
-        }
-
-        // Poup Task | Show Projects
-        private void pmenuTasksShowProjects_Click(object sender, EventArgs e)
-        {
-            options.wViewProjectPane.Checked = true;
-            _toggleProjects();
-        }
-
-        // Poup Task | Properties
-        private void pmenuTasksProperties_Click(object sender, EventArgs e)
-        {
-            if (ActivityTree.SelectedNode != null) {
-                Activity item = (Activity)ActivityTree.SelectedNode.Tag;
-                Dialog_Properties((Item)item);
-            }
-        }
-
         // Popup Project | Rename
-        private void pmenuProjectsRename_Click(object sender, EventArgs e)
+        private void PopupMenuProjectRename_Click(object sender, EventArgs e)
         {
             if (ProjectTree.SelectedNode != null) {
                 ProjectTree.SelectedNode.BeginEdit();
@@ -462,17 +439,41 @@ namespace Timekeeper.Forms
         }
 
         // Popup Project | Hide Pane
-        private void pmenuProjectsHidePane_Click(object sender, EventArgs e)
+        private void PopupMenuProjectHidePane_Click(object sender, EventArgs e)
         {
             options.wViewProjectPane.Checked = false;
             _toggleProjects();
         }
 
         // Popup Projects | Properties
-        private void pmenuProjectsProperties_Click(object sender, EventArgs e)
+        private void PopupMenuProjectProperties_Click(object sender, EventArgs e)
         {
             if (ProjectTree.SelectedNode != null) {
                 Project item = (Project)ProjectTree.SelectedNode.Tag;
+                Dialog_Properties((Item)item);
+            }
+        }
+
+        // Popup Activity | Rename
+        private void PopupMenuActivityRename_Click(object sender, EventArgs e)
+        {
+            if (ActivityTree.SelectedNode != null) {
+                ActivityTree.SelectedNode.BeginEdit();
+            }
+        }
+
+        // Poup Activity | Show Projects
+        private void PopupMenuActivityShowProjects_Click(object sender, EventArgs e)
+        {
+            options.wViewProjectPane.Checked = true;
+            _toggleProjects();
+        }
+
+        // Poup Activity | Properties
+        private void PopupMenuActivityProperties_Click(object sender, EventArgs e)
+        {
+            if (ActivityTree.SelectedNode != null) {
+                Activity item = (Activity)ActivityTree.SelectedNode.Tag;
                 Dialog_Properties((Item)item);
             }
         }
@@ -481,7 +482,7 @@ namespace Timekeeper.Forms
         // Keyboard events
         //---------------------------------------------------------------------
 
-        // Task window keys
+        // Action window keys
         private void ActivityTree_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2) {
@@ -491,7 +492,7 @@ namespace Timekeeper.Forms
                 Action_DeleteItem(ActivityTree);
             }
             else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
-                pmenuTasksProperties_Click(sender, e);
+                PopupMenuActivityProperties_Click(sender, e);
             }
         }
 
@@ -505,7 +506,7 @@ namespace Timekeeper.Forms
                 Action_DeleteItem(ProjectTree);
             }
             else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
-                pmenuProjectsProperties_Click(sender, e);
+                PopupMenuProjectProperties_Click(sender, e);
             }
         }
 
@@ -527,7 +528,7 @@ namespace Timekeeper.Forms
         // Mouse events
         //---------------------------------------------------------------------
 
-        // Allow right-click selection in tasks window
+        // Allow right-click selection in ActivityTree window
         private void ActivityTree_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right) {
@@ -535,7 +536,7 @@ namespace Timekeeper.Forms
             }
         }
 
-        // Ditto for tasks
+        // Ditto for ProjectTree
         private void wProjects_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right) {
@@ -624,18 +625,19 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
-        // On Task Change
+        // On Item Change
+        //---------------------------------------------------------------------
+
+        private void wProjects_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            Action_ChangedProject();
+        }
+
         //---------------------------------------------------------------------
 
         private void ActivityTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             Action_ChangedActivity();
-        }
-
-        //---------------------------------------------------------------------
-        private void wProjects_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            Action_ChangedProject();
         }
 
         //---------------------------------------------------------------------
@@ -720,18 +722,18 @@ namespace Timekeeper.Forms
             MenuActionDeleteProject.Visible = show;
         }
 
-        private void reloadTasks()
-        {
-            ActivityTree.Nodes.Clear();
-            Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
-            ActivityTree.ExpandAll();
-        }
-
         private void reloadProjects()
         {
             ProjectTree.Nodes.Clear();
             Widgets.BuildProjectTree(ProjectTree.Nodes, null, 0);
             ProjectTree.ExpandAll();
+        }
+
+        private void reloadActivities()
+        {
+            ActivityTree.Nodes.Clear();
+            Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
+            ActivityTree.ExpandAll();
         }
 
         //---------------------------------------------------------------------

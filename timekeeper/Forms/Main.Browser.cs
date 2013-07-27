@@ -274,17 +274,17 @@ namespace Timekeeper.Forms
             }
 
             // First translate some necessary data from the form 
-            Activity task = (Activity)ActivityTree.SelectedNode.Tag;
-            Project project = (Project)ProjectTree.SelectedNode.Tag;
-            TimeSpan ts = wStopTime.Value.Subtract(wStartTime.Value);
+            Activity Activity = (Activity)ActivityTree.SelectedNode.Tag;
+            Project Project = (Project)ProjectTree.SelectedNode.Tag;
+            TimeSpan Delta = wStopTime.Value.Subtract(wStartTime.Value);
 
             // Update browserEntry with current form data
             entry.JournalId = entryId;
-            entry.ActivityId = task.ItemId;
-            entry.ProjectId = project.ItemId;
+            entry.ActivityId = Activity.ItemId;
+            entry.ProjectId = Project.ItemId;
             entry.StartTime = wStartTime.Value;
             entry.StopTime = wStopTime.Value;
-            entry.Seconds = (long)ts.TotalSeconds;
+            entry.Seconds = (long)Delta.TotalSeconds;
             entry.Memo = wMemo.Text;
             entry.ActivityName = ActivityTree.SelectedNode.Text;
             entry.ProjectName = ProjectTree.SelectedNode.Text;
@@ -292,13 +292,28 @@ namespace Timekeeper.Forms
 
         private void Browser_EntryToForm(Classes.Journal entry)
         {
-            // Now select tasks and projects while browsing.
-            TreeNode node = Widgets.FindTreeNode(ActivityTree.Nodes, entry.ActivityName);
-            if (node != null) {
-                ActivityTree.SelectedNode = node;
+            // Now select projects and activities while browsing.
+            TreeNode ProjectNode = Widgets.FindTreeNode(ProjectTree.Nodes, entry.ProjectName);
+            if (ProjectNode != null) {
+                ProjectTree.SelectedNode = ProjectNode;
+                ProjectTree.SelectedNode.Expand();
+            }
+            if ((ProjectNode == null) && (entry.JournalId != 0)) {
+
+                Project HiddenProject = new Project(Database, entry.ProjectName);
+                TreeNode HiddenNode = Widgets.AddHiddenProjectToTree(ProjectTree.Nodes, HiddenProject);
+
+                ProjectTree.SelectedNode = HiddenNode;
+                ProjectTree.SelectedNode.Expand();
+            }
+
+            // Yes, this is a nice copy/paste job from above.
+            TreeNode ActivityNode = Widgets.FindTreeNode(ActivityTree.Nodes, entry.ActivityName);
+            if (ActivityNode != null) {
+                ActivityTree.SelectedNode = ActivityNode;
                 ActivityTree.SelectedNode.Expand();
             }
-            if ((node == null) && (entry.JournalId !=0)) {
+            if ((ActivityNode == null) && (entry.JournalId != 0)) {
                 // If we didn't find the node, it's been hidden. So
                 // load it from the database and display it as hidden.
 
@@ -307,21 +322,6 @@ namespace Timekeeper.Forms
 
                 ActivityTree.SelectedNode = HiddenNode;
                 ActivityTree.SelectedNode.Expand();
-            }
-
-            // Yes, this is a nice copy/paste job from above.
-            node = Widgets.FindTreeNode(ProjectTree.Nodes, entry.ProjectName);
-            if (node != null) {
-                ProjectTree.SelectedNode = node;
-                ProjectTree.SelectedNode.Expand();
-            }
-            if ((node == null) && (entry.JournalId != 0)) {
-
-                Project HiddenProject = new Project(Database, entry.ProjectName);
-                TreeNode HiddenNode = Widgets.AddHiddenProjectToTree(ProjectTree.Nodes, HiddenProject);
-
-                ProjectTree.SelectedNode = HiddenNode;
-                ProjectTree.SelectedNode.Expand();
             }
 
             // Display entry
