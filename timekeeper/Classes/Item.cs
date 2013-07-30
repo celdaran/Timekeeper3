@@ -29,7 +29,7 @@ namespace Timekeeper
         private DateTime _HiddenTime;
         private DateTime _DeletedTime;
 
-        private string _ExternalEntryNo;
+        private string _ExternalProjectNo;
 
         // In-memory only
         public DateTime StartTime;
@@ -129,7 +129,7 @@ namespace Timekeeper
         public DateTime HiddenTime { get { return _HiddenTime; } set { _HiddenTime = value; } }
         public DateTime DeletedTime { get { return _DeletedTime; } set { _DeletedTime = value; } }
 
-        public string   ExternalEntryNo { get { return _ExternalEntryNo; } set { _ExternalEntryNo = value; } }
+        public string   ExternalProjectNo { get { return _ExternalProjectNo; } set { _ExternalProjectNo = value; } }
 
         //---------------------------------------------------------------------
         // Property-Like Methods
@@ -253,7 +253,7 @@ namespace Timekeeper
             Row["DeletedTime"] = null;
 
             if (this.TableName == "Project") {
-                Row["ExternalProjectNo"] = this.ExternalEntryNo ?? UUID.Get();
+                Row["ExternalProjectNo"] = this.ExternalProjectNo ?? UUID.Get();
             }
 
             this.ItemId = this.Data.Insert(this.TableName, Row);
@@ -294,6 +294,13 @@ namespace Timekeeper
             midnight = midnight.AddSeconds(this.SecondsElapsedToday);
             TimeSpan ts = new TimeSpan(midnight.Ticks - 0);
             return Timekeeper.FormatTimeSpan(ts);
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool Exists()
+        {
+            return this.Name != "";
         }
 
         //---------------------------------------------------------------------
@@ -362,6 +369,10 @@ namespace Timekeeper
                 this.HiddenTime = row["HiddenTime"];
             if (row["DeletedTime"] != null)
                 this.DeletedTime = row["DeletedTime"];
+
+            if (this.TableName == "Project") {
+                this.ExternalProjectNo = row["ExternalProjectNo"];
+            }
 
             // Initialize times
             this.SetSecondsElapsedToday();

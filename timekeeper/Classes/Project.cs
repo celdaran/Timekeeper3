@@ -26,5 +26,25 @@ namespace Timekeeper
             : base(data, projectName, ProjectTableName, ProjectIdColumnName)
         {}
 
+        //---------------------------------------------------------------------
+
+        public int Repoint(string externalProjectNo)
+            // TODO: Revisit this method, especially this odd return value approach
+        {
+            Projects Projects = new Projects(Data);
+
+            if (Projects.ExternalProjectNoExists(externalProjectNo)) {
+                return 0;
+            } else {
+                Row Project = new Row();
+                Project["ExternalProjectNo"] = externalProjectNo;
+                Project["ModifyTime"] = Common.Now();
+                long Count = Data.Update(this.TableName, Project, this.IdColumnName, this.ItemId);
+                return Count == 1 ? 1 : 0;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
     }
 } 

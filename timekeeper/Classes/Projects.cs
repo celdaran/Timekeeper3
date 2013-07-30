@@ -40,5 +40,27 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
+        public bool ExternalProjectNoExists(string externalProjectNo)
+        {
+            if (externalProjectNo == "") {
+                return false;
+            }
+
+            externalProjectNo = externalProjectNo.Replace("'", "''");
+
+            string Query = String.Format("select count(*) as Count from Project where ExternalProjectNo = '{0}'",
+                externalProjectNo);
+            Row Project = Data.SelectRow(Query);
+
+            if (Project["Count"] > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+        //---------------------------------------------------------------------
+
     }
 }

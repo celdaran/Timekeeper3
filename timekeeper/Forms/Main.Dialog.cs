@@ -18,28 +18,63 @@ namespace Timekeeper.Forms
         private void Dialog_EditItem(TreeView tree, string title, Item item)
         {
             string TableName = (string)tree.Tag;
-            fItem Dialog = new fItem(Database, TableName);
+            ItemEditor Dialog = new ItemEditor(Database, TableName);
 
+            // Set the title
             Dialog.Text = title;
-            if (tree.SelectedNode == null) {
-                Dialog.wParent.SelectedIndex = 0;
-            } else if (tree.SelectedNode.Parent == null) {
-                Dialog.wParent.SelectedIndex = 0;
-            } else {
-                int i = Dialog.wParent.FindString(tree.SelectedNode.Parent.Text);
-                if (i < 0) { i = 0; }
-                Dialog.wParent.SelectedIndex = i;
+
+            // Create an Item object
+            Project Project = null;
+            if (TableName == "Project") {
+                Project = new Project(Database, tree.SelectedNode.Text);
             }
 
-            Dialog.wNodeName.Text = tree.SelectedNode.Text;
-            Dialog.wNodeDescription.Text = tree.SelectedNode.ToolTipText;
+            // Previous values
+            string PreviousName = tree.SelectedNode.Text;
+            string PreviousDescription = tree.SelectedNode.ToolTipText;
+            string PreviousFolder = "";
+            string PreviousExternalProjectNo = "";
 
+            // Fill in defaults on the dialog box
+            Dialog.ItemName.Text = PreviousName;
+            Dialog.ItemDescription.Text = PreviousDescription;
+
+            if (tree.SelectedNode == null) {
+                Dialog.ItemParent.SelectedIndex = 0;
+            } else if (tree.SelectedNode.Parent == null) {
+                Dialog.ItemParent.SelectedIndex = 0;
+            } else {
+                PreviousFolder = tree.SelectedNode.Parent.Text;
+                int i = Dialog.ItemParent.FindString(PreviousFolder);
+                if (i < 0) i = 0;
+                Dialog.ItemParent.SelectedIndex = i;
+            }
+
+            if (TableName == "Project") {
+                PreviousExternalProjectNo = Project.ExternalProjectNo;
+                Dialog.ItemExternalProjectNo.Text = PreviousExternalProjectNo;
+            }
+
+            // Now display the dialog box and handle the results
             if (Dialog.ShowDialog(this) == DialogResult.OK) {
 
-                Action_RenameItem(tree.SelectedNode, item, Dialog.wNodeName.Text);
-                Action_RedescribeItem(tree.SelectedNode, item, Dialog.wNodeDescription.Text);
-                Action_ReparentItem(tree, item, Dialog.wParent.Text);
+                if (Dialog.ItemName.Text != PreviousName) {
+                    if (!Action_RenameItem(tree.SelectedNode, item, Dialog.ItemName.Text))
+                        return;
+                }
 
+                if (Dialog.ItemDescription.Text != PreviousDescription) {
+                    Action_RedescribeItem(tree.SelectedNode, item, Dialog.ItemDescription.Text);
+                }
+
+                // FIXME: I dislike the way I'm using this constant
+                if ((Dialog.ItemParent.Text != PreviousFolder) && (Dialog.ItemParent.Text != "(Top Level)")) {
+                    Action_ReparentItem(tree, item, Dialog.ItemParent.Text);
+                }
+
+                if ((TableName == "Project") && (Dialog.ItemExternalProjectNo.Text != PreviousExternalProjectNo)) {
+                    Action_RepointItem(tree.SelectedNode, Project, Dialog.ItemExternalProjectNo.Text);
+                }
             }
         }
 
@@ -112,22 +147,34 @@ namespace Timekeeper.Forms
         private void Dialog_NewItem(TreeView tree, string title, bool isFolder, Item item, int imageIndex)
         {
             string TableName = (string)tree.Tag;
-            fItem Dialog = new fItem(Database, TableName);
+            ItemEditor Dialog = new ItemEditor(Database, TableName);
 
+            // Set the title
             Dialog.Text = title;
-            if (tree.SelectedNode == null) {
-                Dialog.wParent.SelectedIndex = 0;
-            } else {
-                int i = Dialog.wParent.FindString(tree.SelectedNode.Text);
-                if (i < 0) { i = 0; }
-                Dialog.wParent.SelectedIndex = i;
+
+            // Determine preselected folder
+            int ParentIndex = 0;
+            if (tree.SelectedNode != null) {
+
+                Item SelectedItem = (Item)tree.SelectedNode.Tag;
+
+                if (SelectedItem.IsFolder) {
+                    ParentIndex = Dialog.ItemParent.FindString(tree.SelectedNode.Text);
+                } else if (tree.SelectedNode.Parent != null) {
+                    ParentIndex = Dialog.ItemParent.FindString(tree.SelectedNode.Parent.Text);
+                } else {
+                    // Do nothing?
+                }
             }
+            Dialog.ItemParent.SelectedIndex = ParentIndex;
 
             if (Dialog.ShowDialog(this) == DialogResult.OK) {
-                item.Name = Dialog.wNodeName.Text;
-                item.Description = Dialog.wNodeDescription.Text;
+                item.Name = Dialog.ItemName.Text;
+                item.Description = Dialog.ItemDescription.Text;
                 item.IsFolder = isFolder;
-                int CreateResult = Widgets.CreateTreeItem(tree.Nodes, item, Dialog.wParent.Text, imageIndex);
+                item.ExternalProjectNo = Dialog.ItemExternalProjectNo.Text;
+
+                int CreateResult = Widgets.CreateTreeItem(tree.Nodes, item, Dialog.ItemParent.Text, imageIndex);
                 switch (CreateResult) {
                     case Classes.Widgets.TREES_ITEM_CREATED:
                         //Common.Info("Item created");
@@ -195,9 +242,9 @@ namespace Timekeeper.Forms
 
                     // system try icon?
                     if (options.wShowInTray.Checked) {
-                        wNotifyIcon.Visible = true;
+                        TrayIcon.Visible = true;
                     } else {
-                        wNotifyIcon.Visible = false;
+                        TrayIcon.Visible = false;
                     }
 
                     // Reorder requested?

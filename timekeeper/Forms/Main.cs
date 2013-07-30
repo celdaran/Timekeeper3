@@ -659,7 +659,7 @@ namespace Timekeeper.Forms
         private void fMain_Resize(object sender, EventArgs e)
         {
             if (FormWindowState.Minimized == WindowState) {
-                if (wNotifyIcon.Visible && (options.wMinimizeToTray.Checked)) {
+                if (TrayIcon.Visible && (options.wMinimizeToTray.Checked)) {
                     Hide();
                 }
             }

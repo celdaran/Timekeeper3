@@ -339,9 +339,9 @@ namespace Timekeeper.Forms
 
             // Create tray icon if requested
             if (options.wShowInTray.Checked) {
-                wNotifyIcon.Visible = true;
+                TrayIcon.Visible = true;
             } else {
-                wNotifyIcon.Visible = false;
+                TrayIcon.Visible = false;
             }
         }
 
@@ -767,6 +767,17 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Action_RepointItem(TreeNode node, Project project, string newExternalProjectNo)
+        {
+            int result = project.Repoint(newExternalProjectNo);
+
+            if (result == 0) {
+                Common.Warn("Error updating External Project Number.");
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         private void Action_ResizeSplitter()
         {
             splitTrees.SplitterDistance = splitTrees.Width / 2;
@@ -825,7 +836,7 @@ namespace Timekeeper.Forms
                 tmp = tmp.Replace("%time", "{2}");
                 Text = String.Format(tmp, currentActivityNode.Text, currentProjectNode.Text, timeToShow);
                 //wNotifyIcon.Text = Text;
-                wNotifyIcon.Text = Common.Abbreviate(Text, 63);
+                TrayIcon.Text = Common.Abbreviate(Text, 63);
             }
 
             // Animate the selected item icons
@@ -860,8 +871,8 @@ namespace Timekeeper.Forms
             if (options.wPromptNoTimer.Checked) {
                 if (ts.TotalMinutes > (double)options.wPromptInterval.Value) {
                     if (timerRunning == false) {
-                        if (wNotifyIcon.Visible) {
-                            wNotifyIcon.ShowBalloonTip(30000,
+                        if (TrayIcon.Visible) {
+                            TrayIcon.ShowBalloonTip(30000,
                                 Timekeeper.TITLE,
                                 "No timer is currently running.\n\nYou can change the frequency of this notification, or disable it completly, in the Options dialog box.",
                                 ToolTipIcon.Info);
@@ -932,7 +943,7 @@ namespace Timekeeper.Forms
             currentEntry.CategoryId = 1;
             currentEntry.Create();
 
-            timerShort.Enabled = true; // Are this line and the next line the same thing?
+            ShortTimer.Enabled = true; // Are this line and the next line the same thing?
             timerRunning = true;
             timerLastRun = DateTime.Now;
 
@@ -968,7 +979,7 @@ namespace Timekeeper.Forms
             Text = ActivityTree.SelectedNode.Text;
             MenuActionDeleteActivity.Enabled = false;
             PopupMenuActivityDelete.Enabled = false;
-            wNotifyIcon.Text = Common.Abbreviate(Text, 63);
+            TrayIcon.Text = Common.Abbreviate(Text, 63);
 
             MenuFile.Enabled = false;
             MenuFileNew.Enabled = false;
@@ -1010,7 +1021,7 @@ namespace Timekeeper.Forms
             currentEntry.CategoryId = 1;
             currentEntry.Save();
             timerRunning = false;
-            timerShort.Enabled = false;
+            ShortTimer.Enabled = false;
             //timerLastRunNotified = false;
 
             // Clear instances of current object

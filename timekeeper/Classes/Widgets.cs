@@ -184,14 +184,14 @@ namespace Timekeeper.Classes
 
             long CreateStatus = item.Create();
             switch (CreateStatus) {
-                case 1:
-                    TreeNode foo = AddItemToTree(tree, ParentNode, item, imageIndex);
-                    break;
                 case 0:
                     Result = TREES_ERROR_CREATING_ITEM;
                     break;
                 case -1:
                     Result = TREES_DUPLICATE_ITEM;
+                    break;
+                default: 
+                    TreeNode foo = AddItemToTree(tree, ParentNode, item, imageIndex);
                     break;
             }
 
