@@ -462,13 +462,6 @@ namespace Timekeeper.Forms
             }
         }
 
-        // Poup Activity | Show Projects
-        private void PopupMenuActivityShowProjects_Click(object sender, EventArgs e)
-        {
-            options.wViewProjectPane.Checked = true;
-            _toggleProjects();
-        }
-
         // Poup Activity | Properties
         private void PopupMenuActivityProperties_Click(object sender, EventArgs e)
         {
@@ -712,8 +705,8 @@ namespace Timekeeper.Forms
             bool hide = !show;
 
             splitTrees.Panel2Collapsed = hide;
-            PopupMenuActivitySep2.Visible = hide;
-            PopupMenuActivityShowProjects.Visible = hide;
+            //PopupMenuActivitySep2.Visible = hide;
+            //PopupMenuActivityShowProjects.Visible = hide;
 
             MenuActionSep2.Visible = show;
             MenuActionNewProject.Visible = show;

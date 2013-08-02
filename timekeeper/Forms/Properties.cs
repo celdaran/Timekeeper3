@@ -15,19 +15,7 @@ namespace Timekeeper.Forms
             InitializeComponent();
         }
 
-        private void fProperties_Click(object sender, EventArgs e)
-        {
-            //Hide();
-        }
-
-        private void fProperties_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape) {
-                Hide();
-            }
-        }
-
-        private void fProperties_FormClosing(object sender, FormClosingEventArgs e)
+        private void Properties_FormClosing(object sender, FormClosingEventArgs e)
         {
             Hide();
             e.Cancel = true;
@@ -45,8 +33,10 @@ namespace Timekeeper.Forms
         private void widget_HelpRequested(object sender, HelpEventArgs hlpevent)
         {
             Control c = (Control)sender;
-            string topic = String.Format("html\\context\\fProperties\\{0}.html", c.Name);
-            Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
+            string Topic = String.Format("html\\context\\fProperties\\{0}.html", c.Name);
+            Timekeeper.Info("Calling help topic: " + Topic);
+            Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, Topic);
         }
+
     }
 }

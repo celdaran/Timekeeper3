@@ -28,6 +28,7 @@ namespace Timekeeper
         public const int IMG_TIMER_START = 4;
         public const int IMG_TIMER_END = 7;
         public const int IMG_ITEM_HIDDEN = 8;
+        public const int IMG_FOLDER_HIDDEN = 9;
 
         //---------------------------------------------------------------------
         // Properties

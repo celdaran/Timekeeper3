@@ -33,6 +33,36 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        public void BuildProjectTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
+        {
+            // TODO: pass this in
+            bool showHidden = true;
+
+            // Instantiate Activities object
+            Projects Projects = new Projects(Database);
+
+            // Iterate over Activities
+            foreach (Project Project in Projects.Fetch(parentId, showHidden)) {
+
+                // Choose icon
+                int Icon = Timekeeper.IMG_PROJECT;
+
+                if (Project.IsHidden) {
+                    Icon = Timekeeper.IMG_ITEM_HIDDEN;
+                }
+
+                // Create the new node
+                TreeNode Node = AddItemToTree(tree, parentNode, Project, Icon);
+
+                // Then recurse
+                if (Project.ItemId != parentId) {
+                    BuildProjectTree(tree, Node, Project.ItemId);
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         public void BuildActivityTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
         {
             // TODO: pass this in
@@ -43,34 +73,20 @@ namespace Timekeeper.Classes
 
             // Iterate over Activities
             foreach (Activity Activity in Activities.Fetch(parentId, showHidden)) {
+
+                // Choose icon
+                int Icon = Timekeeper.IMG_ACTIVITY;
+
+                if (Activity.IsHidden) {
+                    Icon = Timekeeper.IMG_ITEM_HIDDEN;
+                }
+
                 // Create the new node
-                TreeNode Node = AddItemToTree(tree, parentNode, Activity, Timekeeper.IMG_ACTIVITY);
+                TreeNode Node = AddItemToTree(tree, parentNode, Activity, Icon);
 
                 // Then recurse
                 if (Activity.ItemId != parentId) {
                     BuildActivityTree(tree, Node, Activity.ItemId);
-                }
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        public void BuildProjectTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
-        {
-            // TODO: pass this in
-            bool showHidden = false;
-
-            // Instantiate Activities object
-            Projects Projects = new Projects(Database);
-
-            // Iterate over Activities
-            foreach (Project Project in Projects.Fetch(parentId, showHidden)) {
-                // Create the new node
-                TreeNode Node = AddItemToTree(tree, parentNode, Project, Timekeeper.IMG_PROJECT);
-
-                // Then recurse
-                if (Project.ItemId != parentId) {
-                    BuildProjectTree(tree, Node, Project.ItemId);
                 }
             }
         }
@@ -88,8 +104,13 @@ namespace Timekeeper.Classes
             }
 
             if (item.IsFolder) {
-                Node.ImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
-                Node.SelectedImageIndex = Timekeeper.IMG_FOLDER_OPEN;
+                if (item.IsHidden) {
+                    Node.ImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
+                    Node.SelectedImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
+                } else {
+                    Node.ImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
+                    Node.SelectedImageIndex = Timekeeper.IMG_FOLDER_OPEN;
+                }
             } else {
                 Node.ImageIndex = imageIndex;
                 Node.SelectedImageIndex = imageIndex;

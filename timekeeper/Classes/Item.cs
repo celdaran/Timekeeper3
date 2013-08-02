@@ -31,6 +31,8 @@ namespace Timekeeper
 
         private string _ExternalProjectNo;
 
+        private ItemType _Type;
+
         // In-memory only
         public DateTime StartTime;
 
@@ -49,6 +51,8 @@ namespace Timekeeper
         private string OtherTableName;
         private long SecondsElapsedToday = 0;
 
+        public enum ItemType { Project, Activity };
+
         //---------------------------------------------------------------------
         // Constructors
         //---------------------------------------------------------------------
@@ -59,6 +63,12 @@ namespace Timekeeper
             this.TableName = tableName;
             this.IdColumnName = idColumnName;
             this.OtherTableName = this.TableName == "Project" ? "Activity" : "Project";
+
+            if (tableName == "Activity") {
+                this.Type = ItemType.Activity;
+            } else {
+                this.Type = ItemType.Project;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -130,6 +140,8 @@ namespace Timekeeper
         public DateTime DeletedTime { get { return _DeletedTime; } set { _DeletedTime = value; } }
 
         public string   ExternalProjectNo { get { return _ExternalProjectNo; } set { _ExternalProjectNo = value; } }
+
+        public ItemType Type { get { return _Type; } set { _Type = value; } }
 
         //---------------------------------------------------------------------
         // Property-Like Methods
@@ -257,6 +269,11 @@ namespace Timekeeper
             }
 
             this.ItemId = this.Data.Insert(this.TableName, Row);
+
+            if (this.ItemId > 0) {
+                // Load the newly-created row
+                this.Load(this.ItemId);
+            }
 
             return this.ItemId;
         }
@@ -571,7 +588,7 @@ namespace Timekeeper
             Row Row = new Row();
             Row[BooleanColumnName] = isSet ? 1 : 0;
             if (isSet) {
-                Row[TimeColumnName] = DateTime.Now;
+                Row[TimeColumnName] = Common.Now();
             } else {
                 Row[TimeColumnName] = null;
             }

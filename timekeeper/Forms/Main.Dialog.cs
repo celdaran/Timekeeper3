@@ -68,8 +68,11 @@ namespace Timekeeper.Forms
                 }
 
                 // FIXME: I dislike the way I'm using this constant
-                if ((Dialog.ItemParent.Text != PreviousFolder) && (Dialog.ItemParent.Text != "(Top Level)")) {
-                    Action_ReparentItem(tree, item, Dialog.ItemParent.Text);
+                if (Dialog.ItemParent.Text != PreviousFolder) {
+                    //if (Dialog.ItemParent.Text != "(Top Level)") {
+                        Action_ReparentItem(tree, item, Dialog.ItemParent.Text);
+                    //} else {
+                    //}
                 }
 
                 if ((TableName == "Project") && (Dialog.ItemExternalProjectNo.Text != PreviousExternalProjectNo)) {
@@ -284,17 +287,74 @@ namespace Timekeeper.Forms
 
         private void Dialog_Properties(Item item)
         {
+            // Set date range for time calculations
             string From = DateTime.Now.ToString(Common.DATE_FORMAT + " 00:00:00");
             string To = DateTime.Now.ToString(Common.DATE_FORMAT + " 23:59:59");
 
-            properties.Text = "Properties for " + item.Name;
+            // Determine the item type
+            string ItemType = item.Type == Item.ItemType.Project ? "Project" : "Activity";
+            if (item.IsFolder) ItemType += " Folder";
 
+            // Set dialog box title
+            properties.Text = ItemType + " Properties";
+
+            // Set description
+            string Description;
+            if (item.Description.Length > 0) {
+                Description = Common.Abbreviate(item.Description, 42);
+                properties.wDescription.Enabled = true;
+            } else {
+                Description = "No Description";
+                properties.wDescription.Enabled = false;
+            }
+
+            // Now fill in all the values
+            properties.wName.Text = Common.Abbreviate(item.Name, 42);
+            properties.wDescription.Text = Description;
+            properties.wType.Text = ItemType;
             properties.wID.Text = item.ItemId.ToString();
-            properties.wType.Text = item.IsFolder ? "Folder" : "Item"; ;
-            properties.wDescription.Text = item.Description.Length > 0 ? item.Description : "(none)";
+            properties.wGUID.Text = item.ItemGuid;
+
+            properties.wCreated.Text = item.CreateTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+            properties.wModified.Text = item.ModifyTime.ToString(Common.LOCAL_DATETIME_FORMAT);
             properties.wTotalTime.Text = Timekeeper.FormatSeconds(item.RecursiveSecondsElapsed(item.ItemId, "1900-01-01", "2999-01-01"));
             properties.wTimeToday.Text = Timekeeper.FormatSeconds(item.RecursiveSecondsElapsed(item.ItemId, From, To));
-            properties.wCreated.Text = item.CreateTime.ToString();
+
+            properties.wIsHidden.Checked = item.IsHidden;
+            properties.wIsDeleted.Checked = item.IsDeleted;
+            if (item.IsHidden)
+                properties.wHiddenTime.Text = item.HiddenTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+            if (item.IsDeleted)
+                properties.wDeletedTime.Text = item.DeletedTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+
+            if (item.Type == Item.ItemType.Project) {
+                long LastActivityId = item.FollowedItemId;
+                if (LastActivityId > 0) {
+                    Activity Activity = new Activity(Database, LastActivityId);
+                    properties.wLastItemName.Enabled = true;
+                    properties.wLastItemName.Text = Activity.Name;
+                    properties.wLastItemLabel.Text = "Last Activity:";
+                } else {
+                    properties.wLastItemName.Enabled = false;
+                    properties.wLastItemName.Text = "None";
+                }
+                properties.wExternalProjectNo.Text = item.ExternalProjectNo;
+                properties.wExternalProjectNoLabel.Visible = true;
+                properties.wExternalProjectNo.Visible = true;
+            } else {
+                long LastProjectId = item.FollowedItemId;
+                if (LastProjectId > 0) {
+                    Project Project = new Project(Database, LastProjectId);
+                    properties.wLastItemLabel.Text = "Last Project:";
+                    properties.wLastItemName.Enabled = true;
+                    properties.wLastItemName.Text = Project.Name;
+                } else {
+                    properties.wLastItemName.Enabled = false;
+                    properties.wLastItemName.Text = "None";
+                }
+                properties.wExternalProjectNoLabel.Visible = false;
+                properties.wExternalProjectNo.Visible = false;
+            }
 
             properties.ShowDialog(this);
         }

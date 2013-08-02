@@ -550,6 +550,13 @@ namespace Timekeeper.Forms
             // Now handle the UI
             if (viewingHiddenItems) {
                 tree.SelectedNode.ForeColor = Color.Gray;
+                if (Item.IsFolder) {
+                    tree.SelectedNode.ImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
+                    tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
+                } else {
+                    tree.SelectedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
+                    tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
+                }
             } else {
                 tree.SelectedNode.Remove();
             }
@@ -572,6 +579,17 @@ namespace Timekeeper.Forms
 
             // Update the UI
             tree.SelectedNode.ForeColor = Color.Black;
+            if (item.IsFolder) {
+                tree.SelectedNode.ImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
+                tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
+            } else {
+                int Icon = Timekeeper.IMG_PROJECT;
+                if (item.Type == Item.ItemType.Activity) {
+                    Icon = Timekeeper.IMG_ACTIVITY;
+                }
+                tree.SelectedNode.ImageIndex = Icon;
+                tree.SelectedNode.SelectedImageIndex = Icon;
+            }
 
             Action_ShowRootLines();
         }

@@ -20,6 +20,8 @@ namespace Timekeeper
         private string Table;
 
         private bool ClickedCancel = false;
+        private string PreviousItemName = "";
+        private string PreviousExternalProjectNo = "";
 
         //----------------------------------------------------------------------
         // Constructor
@@ -49,7 +51,8 @@ namespace Timekeeper
 
         private void ItemEditor_Load(object sender, EventArgs e)
         {
-            ItemName.Focus();
+            PreviousItemName = ItemName.Text;
+            PreviousExternalProjectNo = ItemExternalProjectNo.Text;
         }
 
         //----------------------------------------------------------------------
@@ -69,20 +72,31 @@ namespace Timekeeper
             string Messages = "";
 
             if (this.Table == "Project") {
-                Project Project = new Project(this.Database, ItemName.Text);
-                if (ItemName.Text == Project.Name) {
-                    Messages += this.Table + " '" + ItemName.Text + "' already exists." + Environment.NewLine;
+                if (PreviousItemName != ItemName.Text) {
+                    Project Project = new Project(this.Database, ItemName.Text);
+                    if (ItemName.Text == Project.Name) {
+                        Messages += this.Table + " '" + ItemName.Text + "' already exists." + Environment.NewLine;
+                    }
                 }
-                Projects Projects = new Projects(this.Database);
-                if (Projects.ExternalProjectNoExists(ItemExternalProjectNo.Text)) {
-                    Messages += "External ID '" + ItemExternalProjectNo.Text + "' already exists." + Environment.NewLine;
+
+                if (PreviousExternalProjectNo != ItemExternalProjectNo.Text) {
+                    Projects Projects = new Projects(this.Database);
+                    if (Projects.ExternalProjectNoExists(ItemExternalProjectNo.Text)) {
+                        Messages += "External ID '" + ItemExternalProjectNo.Text + "' already exists." + Environment.NewLine;
+                    }
+                }
+
+                if (ItemExternalProjectNo.Text == "") {
+                    ItemExternalProjectNo.Text = UUID.Get();
                 }
             }
 
             if (this.Table == "Activity") {
-                Activity Activity = new Activity(this.Database, ItemName.Text);
-                if (ItemName.Text == Activity.Name) {
-                    Messages += this.Table + " already exists." + Environment.NewLine;
+                if (PreviousItemName != ItemName.Text) {
+                    Activity Activity = new Activity(this.Database, ItemName.Text);
+                    if (ItemName.Text == Activity.Name) {
+                        Messages += this.Table + " already exists." + Environment.NewLine;
+                    }
                 }
             }
 
