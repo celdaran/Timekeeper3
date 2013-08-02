@@ -251,6 +251,8 @@ namespace Timekeeper.Forms
                 Action_LoadFile();
             }
 
+            this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
+
             //----------------------------------------------
             // Extras to do at app startup, for fun
             //----------------------------------------------

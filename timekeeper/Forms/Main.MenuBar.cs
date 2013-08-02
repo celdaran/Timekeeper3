@@ -21,6 +21,8 @@ namespace Timekeeper.Forms
             MenuAction.Enabled = true;
             menuReport.Enabled = true;
             menuTool.Enabled = true;
+            PopupMenuProject.Enabled = true;
+            PopupMenuActivity.Enabled = true;
 
             // MRU handling
 
@@ -54,6 +56,8 @@ namespace Timekeeper.Forms
             MenuAction.Enabled = false;
             menuReport.Enabled = false;
             menuTool.Enabled = false;
+            PopupMenuProject.Enabled = false;
+            PopupMenuActivity.Enabled = false;
         }
 
         //---------------------------------------------------------------------

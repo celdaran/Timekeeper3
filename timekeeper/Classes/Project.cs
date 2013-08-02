@@ -40,7 +40,13 @@ namespace Timekeeper
                 Project["ExternalProjectNo"] = externalProjectNo;
                 Project["ModifyTime"] = Common.Now();
                 long Count = Data.Update(this.TableName, Project, this.IdColumnName, this.ItemId);
-                return Count == 1 ? 1 : 0;
+
+                if (Count == 1) {
+                    this.ExternalProjectNo = externalProjectNo;
+                    return Timekeeper.SUCCESS;
+                } else {
+                    return Timekeeper.FAILURE;
+                }
             }
         }
 

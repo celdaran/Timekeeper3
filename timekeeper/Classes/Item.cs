@@ -454,12 +454,20 @@ namespace Timekeeper
 
         public int Reparent(long itemId)
         {
+            // Update database
             Row Row = new Row();
             Row["ParentId"] = itemId;
             Row["ModifyTime"] = Common.Now();
             long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
-            return Count == 1 ? 1 : 0;
+            if (Count == 1) {
+                // Update instance
+                this.ParentId = itemId;
+                return Timekeeper.SUCCESS;
+            } else {
+                // Otherwise, failure
+                return Timekeeper.FAILURE;
+            }
         }
 
         //---------------------------------------------------------------------
