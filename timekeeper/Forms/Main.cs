@@ -476,7 +476,7 @@ namespace Timekeeper.Forms
         //---------------------------------------------------------------------
 
         // Project window keys
-        private void wProjects_KeyDown(object sender, KeyEventArgs e)
+        private void ProjectTree_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2) {
                 ProjectTree.SelectedNode.BeginEdit();
@@ -521,8 +521,8 @@ namespace Timekeeper.Forms
         // Mouse events
         //---------------------------------------------------------------------
 
-        // Ditto for ProjectTree
-        private void wProjects_MouseDown(object sender, MouseEventArgs e)
+        // Allow right-click selection in ProjectTree window
+        private void ProjectTree_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right) {
                 ProjectTree.SelectedNode = ProjectTree.GetNodeAt(e.X, e.Y);
@@ -537,7 +537,64 @@ namespace Timekeeper.Forms
             }
         }
 
-        private void wProjects_DoubleClick(object sender, EventArgs e)
+        //---------------------------------------------------------------------
+
+        // Drag and Drop: Initiate drag sequence
+        private void ProjectTree_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left) {
+                DoDragDrop(e.Item, DragDropEffects.Move);
+            }
+        }
+
+        private void ActivityTree_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left) {
+                DoDragDrop(e.Item, DragDropEffects.Move);
+            }
+        }
+
+        // Drag and Drop: Set drag entry effect
+        private void Tree_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = e.AllowedEffect;
+        }
+
+        // Drag and Drop: Node selection on DragOver (Projects)
+        private void ProjectTree_DragOver(object sender, DragEventArgs e)
+        {
+            // Retrieve the client coordinates of the mouse position.
+            Point targetPoint = ProjectTree.PointToClient(new Point(e.X, e.Y));
+
+            // Select the node at the mouse position.
+            ProjectTree.SelectedNode = ProjectTree.GetNodeAt(targetPoint);
+        }
+
+        // Drag and Drop: Node selection on DragOver (Activities)
+        private void ActivityTree_DragOver(object sender, DragEventArgs e)
+        {
+            // Retrieve the client coordinates of the mouse position.
+            Point targetPoint = ActivityTree.PointToClient(new Point(e.X, e.Y));
+
+            // Select the node at the mouse position.
+            ActivityTree.SelectedNode = ActivityTree.GetNodeAt(targetPoint);
+        }
+
+        // Drag and Drop: Wrapper around the core drop logic
+        private void ProjectTree_DragDrop(object sender, DragEventArgs e)
+        {
+            Action_TreeView_DragDrop(ProjectTree, sender, e);
+        }
+
+        private void ActivityTree_DragDrop(object sender, DragEventArgs e)
+        {
+            Action_TreeView_DragDrop(ActivityTree, sender, e);
+        }
+
+        //---------------------------------------------------------------------
+
+        // Mouse shortcut
+        private void ProjectTree_DoubleClick(object sender, EventArgs e)
         {
             Action_StartTimer();
         }
@@ -548,9 +605,12 @@ namespace Timekeeper.Forms
             Action_StartTimer();
         }
 
+        //---------------------------------------------------------------------
+
+        // Center the splitter when double-clicked
         private void splitTrees_DoubleClick(object sender, EventArgs e)
         {
-            Action_ResizeSplitter();
+            Action_CenterSplitter();
         }
 
         //---------------------------------------------------------------------
@@ -602,7 +662,7 @@ namespace Timekeeper.Forms
         // Label-Editing Events
         //---------------------------------------------------------------------
 
-        private void wProjects_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        private void ProjectTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             TreeNode node  = ProjectTree.SelectedNode;
             Item item = (Item)node.Tag;
@@ -622,7 +682,7 @@ namespace Timekeeper.Forms
         // On Item Change
         //---------------------------------------------------------------------
 
-        private void wProjects_AfterSelect(object sender, TreeViewEventArgs e)
+        private void ProjectTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             Action_ChangedProject();
         }
@@ -649,7 +709,7 @@ namespace Timekeeper.Forms
         // System Tray Events
         //---------------------------------------------------------------------
 
-        private void fMain_Resize(object sender, EventArgs e)
+        private void Main_Resize(object sender, EventArgs e)
         {
             if (FormWindowState.Minimized == WindowState) {
                 if (TrayIcon.Visible && (options.wMinimizeToTray.Checked)) {
@@ -658,7 +718,7 @@ namespace Timekeeper.Forms
             }
         }
 
-        private void wNotifyIcon_DoubleClick(object sender, EventArgs e)
+        private void TrayIcon_DoubleClick(object sender, EventArgs e)
         {
             Show();
             WindowState = FormWindowState.Normal;
@@ -668,21 +728,21 @@ namespace Timekeeper.Forms
         // Form Events
         //---------------------------------------------------------------------
 
-        private void fMain_Load(object sender, EventArgs e)
+        private void Main_Load(object sender, EventArgs e)
         {
             Action_FormLoad();
         }
 
         //---------------------------------------------------------------------
 
-        private void fMain_FormClosed(object sender, FormClosedEventArgs e)
+        private void Main_FormClosed(object sender, FormClosedEventArgs e)
         {
             Action_FormClose();
         }
 
         //---------------------------------------------------------------------
         // Disable close if timer running
-        private void fMain_FormClosing(object sender, FormClosingEventArgs e)
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (timerRunning == true) {
                 Common.Warn("You must stop the timer before exiting.");
@@ -745,125 +805,7 @@ namespace Timekeeper.Forms
         // Experimental Area
         //---------------------------------------------------------------------
 
-        private void ProjectTree_ItemDrag(object sender, ItemDragEventArgs e)
-        {
-            // Move the dragged node when the left mouse button is used.
-            if (e.Button == MouseButtons.Left) {
-                DoDragDrop(e.Item, DragDropEffects.Move);
-            }
-        }
 
-        private void ProjectTree_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = e.AllowedEffect;
-        }
-
-        private void ProjectTree_DragOver(object sender, DragEventArgs e)
-        {
-            // Retrieve the client coordinates of the mouse position.
-            Point targetPoint = ProjectTree.PointToClient(new Point(e.X, e.Y));
-
-            // Select the node at the mouse position.
-            ProjectTree.SelectedNode = ProjectTree.GetNodeAt(targetPoint);
-        }
-
-        private void ProjectTree_DragDrop(object sender, DragEventArgs e)
-        {
-            // Retrieve the client coordinates of the drop location.
-            Point targetPoint = ProjectTree.PointToClient(new Point(e.X, e.Y));
-
-            // Retrieve the node at the drop location.
-            TreeNode targetNode = ProjectTree.GetNodeAt(targetPoint);
-
-            // Retrieve the node that was dragged.
-            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-
-            // Confirm that the node at the drop location is not 
-            // the dragged node or a descendant of the dragged node.
-            // Also confirm that a folder isn't being dropped on top
-            // of an item: items can only go into folders.
-            bool DropAllowed = false;
-            Item draggedItem = (Item)draggedNode.Tag;
-
-            if (targetNode == null) {
-                //if (draggedItem.IsFolder) {
-                    DropAllowed = true;
-                //}
-            } else {
-                Item targetItem = (Item)targetNode.Tag;
-                if (targetItem.IsFolder) { // && !draggedItem.IsFolder) {
-                    DropAllowed = true;
-                }
-            }
-
-            if (!draggedNode.Equals(targetNode) && !ContainsNode(draggedNode, targetNode) && (DropAllowed)) {
-                if (e.Effect == DragDropEffects.Move) {
-                    draggedNode.Remove();
-                    if (targetNode == null) {
-                        // Move to the root
-                        ProjectTree.Nodes.Add(draggedNode);
-                        // Update the database
-                        draggedItem.Reparent(0);
-                    } else {
-                        // Otherwise, drop it on the target
-                        targetNode.Nodes.Add(draggedNode);
-
-                        // Update the database
-                        Item targetItem = (Item)targetNode.Tag;
-                        draggedItem.Reparent(targetItem.ItemId);
-
-                        // Expand the node at the location 
-                        // to show the dropped node.
-                        targetNode.Expand();
-                    }
-                }
-            }
-
-            else if (!draggedNode.Equals(targetNode) && IsSibling(draggedNode, targetNode)) {
-                //Common.Info("Sibling drag!");
-
-                int OldIndex = targetNode.Index;
-                TreeNode Parent = targetNode.Parent;
-
-                draggedNode.Remove();
-                targetNode.Parent.Nodes.Insert(targetNode.Index + 1, draggedNode);
-                targetNode.Remove();
-                Parent.Nodes.Insert(OldIndex + 1, targetNode);
-            }
-
-        }
-
-        private bool ContainsNode(TreeNode node1, TreeNode node2)
-        {
-            if (node2 == null) {
-                // We're moving it to the top level
-                return false;
-            } else {
-                // Check the parent node of the second node.
-                if (node2.Parent == null) return false;
-                if (node2.Parent.Equals(node1)) return true;
-
-                // If the parent node is not null or equal to the first node, 
-                // call the ContainsNode method recursively using the parent of 
-                // the second node.
-                return ContainsNode(node1, node2.Parent);
-            }
-        }
-
-        private bool IsSibling(TreeNode node1, TreeNode node2)
-        {
-            if (node2 == null) {
-                return false;
-            } else {
-                Item draggedItem = (Item)node1.Tag;
-                Item targetItem = (Item)node2.Tag;
-                if (draggedItem.ParentId == targetItem.ParentId) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
 
         //---------------------------------------------------------------------
 

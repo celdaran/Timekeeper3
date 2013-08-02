@@ -192,7 +192,7 @@ namespace Timekeeper.Forms
             tree.SelectedNode.Remove();
 
             // Display root lines?
-            Action_ShowRootLines();
+            Action_TreeView_ShowRootLines();
 
             //tree.ShowRootLines = Activities.HasParents();
         }
@@ -251,7 +251,9 @@ namespace Timekeeper.Forms
                 Action_LoadFile();
             }
 
+            // Initialize drag drop operations
             this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
+            this.ActivityTree.ItemDrag += new ItemDragEventHandler(ActivityTree_ItemDrag);
 
             //----------------------------------------------
             // Extras to do at app startup, for fun
@@ -563,7 +565,7 @@ namespace Timekeeper.Forms
                 tree.SelectedNode.Remove();
             }
 
-            Action_ShowRootLines();
+            Action_TreeView_ShowRootLines();
         }
 
         //---------------------------------------------------------------------
@@ -593,7 +595,7 @@ namespace Timekeeper.Forms
                 tree.SelectedNode.SelectedImageIndex = Icon;
             }
 
-            Action_ShowRootLines();
+            Action_TreeView_ShowRootLines();
         }
 
         private bool Action_LoadFile()
@@ -644,7 +646,7 @@ namespace Timekeeper.Forms
                 //------------------------------------------------------------
 
                 // View root lines?
-                Action_ShowRootLines();
+                Action_TreeView_ShowRootLines();
 
                 // View or hide the project pane
                 _toggleProjects(); // TODO: slated for refactoring
@@ -782,7 +784,7 @@ namespace Timekeeper.Forms
             // END WTF
 
             // display root lines?
-            Action_ShowRootLines();
+            Action_TreeView_ShowRootLines();
         }
 
         //---------------------------------------------------------------------
@@ -798,7 +800,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_ResizeSplitter()
+        private void Action_CenterSplitter()
         {
             splitTrees.SplitterDistance = splitTrees.Width / 2;
         }
@@ -1101,6 +1103,189 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Action_TreeView_DragDrop(TreeView tree, object sender, DragEventArgs e)
+        {
+            // Retrieve the client coordinates of the drop location.
+            Point targetPoint = tree.PointToClient(new Point(e.X, e.Y));
+
+            // Retrieve the node at the drop location.
+            TreeNode targetNode = tree.GetNodeAt(targetPoint);
+
+            // Retrieve the node that was dragged.
+            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
+
+            // Get the Timekeeper Item of the node that was dragged.
+            Item draggedItem = (Item)draggedNode.Tag;
+
+            // Cross-tree dragging warning
+            bool CrossDragAccepted = false;
+            if (tree.Name != draggedNode.TreeView.Name) {
+                // TODO: Allow conversion via drag and drop. This means that once confirmed
+                string ToItem = (string)tree.Tag;
+                string FromItem = (ToItem == "Project") ? "Activity" : "Project";
+                string Message;
+                if (draggedItem.IsFolder) {
+                    Message = String.Format("You cannot drag this {0} folder to the {1} tree.", FromItem, ToItem);
+                    Common.Warn(Message);
+                    return;
+                } else {
+                    Message = "You are dragging an item to a different tree. ";
+                    Message += String.Format("Do you wish to convert this {0} to a {1}?", FromItem, ToItem);
+                    if (draggedItem.GetType() == typeof(Project)) {
+                        Message += Environment.NewLine + Environment.NewLine + 
+                            "Note that any External Project Number associated with this Project will be lost. This action cannot be undone.";
+                    }
+                    if (Common.WarnPrompt(Message) == DialogResult.Yes) {
+                        CrossDragAccepted = true;
+                    } else {
+                        return;
+                    }
+                }
+            }
+
+            // Confirm that the node at the drop location is not 
+            // the dragged node or a descendant of the dragged node.
+            // Also confirm that a folder isn't being dropped on top
+            // of an item: items can only go into folders.
+            bool DropAllowed = false;
+
+            if (targetNode == null) {
+                DropAllowed = true;
+            } else {
+                Item targetItem = (Item)targetNode.Tag;
+                if (targetItem.IsFolder) {
+                    DropAllowed = true;
+                }
+            }
+
+            if (!draggedNode.Equals(targetNode) && !Action_TreeView_ContainsNode(draggedNode, targetNode) && (DropAllowed)) {
+                if (e.Effect == DragDropEffects.Move) {
+                    draggedNode.Remove();
+                    if (targetNode == null) {
+                        // Move to the root
+                        tree.Nodes.Add(draggedNode);
+                        // Update the database
+                        draggedItem.Reparent(0);
+                    } else {
+                        // Otherwise, drop it on the target
+                        targetNode.Nodes.Add(draggedNode);
+
+                        // Update the database
+                        Item targetItem = (Item)targetNode.Tag;
+                        draggedItem.Reparent(targetItem.ItemId);
+
+                        // Expand the node at the location 
+                        // to show the dropped node.
+                        targetNode.Expand();
+                    }
+                }
+            }
+            else if (!draggedNode.Equals(targetNode) && Action_TreeView_IsSibling(draggedNode, targetNode)) {
+
+                int OldIndex = targetNode.Index;
+                TreeNode Parent = targetNode.Parent;
+
+                draggedNode.Remove();
+                targetNode.Parent.Nodes.Insert(targetNode.Index + 1, draggedNode);
+                targetNode.Remove();
+                Parent.Nodes.Insert(OldIndex + 1, targetNode);
+            }
+
+            if (CrossDragAccepted) {
+
+                // Conversion
+                if (draggedItem.GetType() == typeof(Project)) {
+
+                    // Create an Activity in the database
+                    Activity Activity = new Activity(Database);
+                    Activity.Copy(draggedItem);
+                    Activity.Create();
+
+                    draggedNode.Tag = (Item)Activity;
+
+                    // Update the UI
+                    if (Activity.IsHidden) {
+                        draggedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
+                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
+                    } else {
+                        draggedNode.ImageIndex = Timekeeper.IMG_ACTIVITY;
+                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ACTIVITY;
+                    }
+                } else {
+                    // Create a Project in the database
+                    Project Project = new Project(Database);
+                    Project.Copy(draggedItem);
+                    Project.Create();
+
+                    draggedNode.Tag = (Item)Project;
+
+                    // Update the UI
+                    if (Project.IsHidden) {
+                        draggedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
+                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
+                    } else {
+                        draggedNode.ImageIndex = Timekeeper.IMG_PROJECT;
+                        draggedNode.SelectedImageIndex = Timekeeper.IMG_PROJECT;
+                    }
+                }
+
+                // Removal
+                draggedItem.Delete();
+                draggedItem.Rename(draggedItem.ItemGuid); // Free up the name
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private bool Action_TreeView_ContainsNode(TreeNode node1, TreeNode node2)
+        {
+            // A TreeView Drag-and-Drop Helper method
+            if (node2 == null) {
+                // We're moving it to the top level
+                return false;
+            } else {
+                // Check the parent node of the second node.
+                if (node2.Parent == null) return false;
+                if (node2.Parent.Equals(node1)) return true;
+
+                // If the parent node is not null or equal to the first node, 
+                // call the ContainsNode method recursively using the parent of 
+                // the second node.
+                return Action_TreeView_ContainsNode(node1, node2.Parent);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private bool Action_TreeView_IsSibling(TreeNode node1, TreeNode node2)
+        {
+            // A TreeView Drag-and-Drop Helper method
+            if (node2 == null) {
+                return false;
+            } else {
+                Item draggedItem = (Item)node1.Tag;
+                Item targetItem = (Item)node2.Tag;
+                if (draggedItem.ParentId == targetItem.ParentId) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_TreeView_ShowRootLines()
+        {
+            Projects Projects = new Projects(Database);
+            ProjectTree.ShowRootLines = Projects.HasParents();
+
+            Activities Activities = new Activities(Database);
+            ActivityTree.ShowRootLines = Activities.HasParents();
+        }
+
+        //---------------------------------------------------------------------
+
         private void Action_UpdateCalendar(TreeView tree)
         {
             // unified
@@ -1151,17 +1336,6 @@ namespace Timekeeper.Forms
                     Browser_EnableRevert(true);
                 }
             }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_ShowRootLines()
-        {
-            Projects Projects = new Projects(Database);
-            ProjectTree.ShowRootLines = Projects.HasParents();
-
-            Activities Activities = new Activities(Database);
-            ActivityTree.ShowRootLines = Activities.HasParents();
         }
 
         //---------------------------------------------------------------------

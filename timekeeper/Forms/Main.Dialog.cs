@@ -304,7 +304,7 @@ namespace Timekeeper.Forms
                 Description = Common.Abbreviate(item.Description, 42);
                 properties.wDescription.Enabled = true;
             } else {
-                Description = "No Description";
+                Description = "None";
                 properties.wDescription.Enabled = false;
             }
 

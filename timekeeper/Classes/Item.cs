@@ -240,6 +240,25 @@ namespace Timekeeper
         // Methods
         //---------------------------------------------------------------------
 
+        public void Copy(Item source)
+        {
+            this.ItemId = 0;
+            this.Name = source.Name;
+            this.Description = source.Description;
+            this.ParentId = source.ParentId;
+            this.SortOrderNo = source.SortOrderNo;
+            this.FollowedItemId = source.FollowedItemId;
+            this.IsFolder = source.IsFolder;
+            this.IsFolderOpened = source.IsFolderOpened;
+            this.IsHidden = source.IsHidden;
+            this.HiddenTime = source.HiddenTime;
+            this.IsDeleted = source.IsDeleted;
+            this.DeletedTime = source.DeletedTime;
+            this.ExternalProjectNo = source.ExternalProjectNo;
+        }
+
+        //---------------------------------------------------------------------
+
         public long Create()
         {
             if (Exists(this.Name) == true) {
