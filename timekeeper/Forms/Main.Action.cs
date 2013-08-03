@@ -15,6 +15,10 @@ namespace Timekeeper.Forms
 {
     partial class Main
     {
+        // These prevent potentially infinite following
+        private bool DontChangeProject = false;
+        private bool DontChangeActivity = false;
+
         //---------------------------------------------------------------------
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
@@ -25,6 +29,19 @@ namespace Timekeeper.Forms
             Project project = (Project)ProjectTree.SelectedNode.Tag;
 
             // Status bar updates?
+            // (see below)
+
+            // Auto-follow
+            //if (options.wProjectFollow.Checked) {
+                if (project.FollowedItemId > 0) {
+                    TreeNode node = Widgets.FindTreeNode(ActivityTree.Nodes, project.FollowedItemId);
+                    if ((node != null) && (!DontChangeProject)) {
+                        DontChangeActivity = true;
+                        ActivityTree.SelectedNode = node;
+                        DontChangeActivity = false;
+                    }
+                }
+            //}
 
             // TODO: Implement auto-follow the other direction
             // Set hide mode based on projects's IsHidden property
@@ -32,6 +49,11 @@ namespace Timekeeper.Forms
 
             // Update calendar to reflect change
             Action_UpdateCalendar(ProjectTree);
+
+            // Set our dirty bit
+            if (isBrowsing) {
+                toolControlRevert.Enabled = true;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -50,8 +72,10 @@ namespace Timekeeper.Forms
             if (options.wProjectFollow.Checked) {
                 if (Activity.FollowedItemId > 0) {
                     TreeNode node = Widgets.FindTreeNode(ProjectTree.Nodes, Activity.FollowedItemId);
-                    if (node != null) {
+                    if ((node != null) && (!DontChangeActivity)) {
+                        DontChangeProject = true;
                         ProjectTree.SelectedNode = node;
+                        DontChangeProject = false;
                     }
                 }
             }
@@ -61,6 +85,11 @@ namespace Timekeeper.Forms
 
             // Update calendar to reflect change
             Action_UpdateCalendar(ActivityTree);
+
+            // Set our dirty bit
+            if (isBrowsing) {
+                toolControlRevert.Enabled = true;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -652,7 +681,7 @@ namespace Timekeeper.Forms
 
                 // View or hide the project pane
                 bool useProjects = true;
-                bool useActivities = false;
+                bool useActivities = true;
 
                 Action_UseProjects(useProjects); // options.wViewProjectPane.Checked);
                 Action_UseActivities(useActivities); // FIXME: Need an Option for this
@@ -946,6 +975,15 @@ namespace Timekeeper.Forms
                 currentProjectNode.ImageIndex = currentActivityNode.ImageIndex;
                 currentProjectNode.SelectedImageIndex = currentActivityNode.SelectedImageIndex;
             }
+
+            if (timerRunning == false) {
+                if (!isBrowsing) {
+                    if (!StartTimeManuallySet) {
+                        wStartTime.Value = DateTime.Now;
+                        wStopTime.Value = DateTime.Now;
+                    }
+                }
+            }
         }
 
         //---------------------------------------------------------------------
@@ -1044,7 +1082,7 @@ namespace Timekeeper.Forms
             // Grab times (this is a database hit)
             elapsed = (long)currentActivity.Elapsed().TotalSeconds;
             elapsedToday = (long)currentActivity.ElapsedToday().TotalSeconds;
-            elapsedTodayAll = (long)Entries.ElapsedToday();
+            elapsedTodayAll = (long)Entries.ElapsedToday() + elapsed; // worth a shot
 
             // Make any UI changes based on the timer starting
             MenuActionStartTimer.Visible = false;

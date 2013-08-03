@@ -328,6 +328,13 @@ namespace Timekeeper.Classes
 
         private Row GetAttributes(Mode mode)
         {
+            // Make sure everything's always localtime
+            // TODO: Something's not quite right here, I need to figure
+            // out where things are going wrong. This is nothing more
+            // than a band-aid.
+            StartTime = DateTime.SpecifyKind(StartTime, DateTimeKind.Local);
+            StopTime = DateTime.SpecifyKind(StopTime, DateTimeKind.Local);
+
             Row Journal = new Row();
 
             string Now = Common.Now();

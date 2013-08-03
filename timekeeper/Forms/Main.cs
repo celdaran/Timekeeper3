@@ -38,6 +38,9 @@ namespace Timekeeper.Forms
         private bool ProjectsVisible = false;
         private bool ActivitiesVisible = false;
 
+        // Misc
+        private bool StartTimeManuallySet = false;
+
         // form tracking
         private List<Form> OpenForms = new List<Form>();
 
@@ -619,13 +622,13 @@ namespace Timekeeper.Forms
         // Timer Events
         //---------------------------------------------------------------------
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void ShortTimer_Tick(object sender, EventArgs e)
         {
             Action_ShortTick();
         }
 
         //---------------------------------------------------------------------
-        private void timerLong_Tick(object sender, EventArgs e)
+        private void LongTimer_Tick(object sender, EventArgs e)
         {
             Action_LongTick();
         }
@@ -636,6 +639,8 @@ namespace Timekeeper.Forms
 
         private void wStartTime_Leave(object sender, EventArgs e)
         {
+            // FIXME: move this into Action
+            StartTimeManuallySet = (wStartTime.Value != priorLoadedBrowserEntry.StartTime);
             Action_UpdateDuration(wStartTime.Value, priorLoadedBrowserEntry.StartTime);
         }
 
@@ -859,6 +864,12 @@ namespace Timekeeper.Forms
         private void PopupMenuActivityShowActivities_Click(object sender, EventArgs e)
         {
             Action_UseActivities(!PopupMenuActivityShowActivities.Checked);
+        }
+
+        private void wStartTime_Enter(object sender, EventArgs e)
+        {
+            // This is in anticipation that the value will change
+            StartTimeManuallySet = true;
         }
 
         //---------------------------------------------------------------------

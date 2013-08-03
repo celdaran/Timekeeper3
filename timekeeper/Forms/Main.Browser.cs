@@ -63,6 +63,11 @@ namespace Timekeeper.Forms
                 if (isBrowsing) {
                     Browser_EnableRevert(true);
                 }
+
+                // Disable walking start
+                if (!isBrowsing) {
+                    StartTimeManuallySet = true;
+                }
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -158,6 +163,8 @@ namespace Timekeeper.Forms
                     }
                 }
 
+                // Set focus
+                wMemo.Focus();
             }
             catch (Exception x) {
                 Common.Warn(x.ToString());
@@ -686,6 +693,9 @@ namespace Timekeeper.Forms
         private void Browser_SetupForStarting()
         {
             try {
+                // Just in case
+                Browser_SaveRow(false);
+
                 // Set UI accordingly
                 Browser_SetCreateState();
 
@@ -697,6 +707,7 @@ namespace Timekeeper.Forms
                     newBrowserEntry = new Classes.Journal(Database);
                 }
                 isBrowsing = false;
+                StartTimeManuallySet = false;
 
                 // Load empty form
                 Browser_EntryToForm(newBrowserEntry);
