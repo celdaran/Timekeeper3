@@ -658,6 +658,11 @@ namespace Timekeeper
                 Row[TimeColumnName] = null;
             }
 
+            if (status == "Deleted") {
+                // Frees up name for reuse
+                Row["Name"] = this.Name + "\t" + UUID.Get();
+            }
+
             return Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
         }
 

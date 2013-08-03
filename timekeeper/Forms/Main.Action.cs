@@ -1241,7 +1241,7 @@ namespace Timekeeper.Forms
 
                 // Removal
                 draggedItem.Delete();
-                draggedItem.Rename(draggedItem.ItemGuid); // Free up the name
+                //draggedItem.Rename(draggedItem.ItemGuid);
             }
         }
 
