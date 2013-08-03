@@ -274,7 +274,7 @@ namespace Timekeeper
             Row["Name"] = this.Name;
             Row["Description"] = this.Description;
             Row["ParentId"] = this.ParentId;
-            Row["SortOrderNo"] = this.SortOrderNo;
+            Row["SortOrderNo"] = this.GetNextSortOrderNo(this.ParentId);
             Row["Last" + OtherTableName + "Id"] = this.FollowedItemId;
             Row["IsFolder"] = this.IsFolder ? 1 : 0;
             Row["IsFolderOpened"] = this.IsFolder ? 1 : 0;
@@ -471,12 +471,32 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
+        public int Reorder(long sortOrderNo)
+        {
+            // Update database
+            Row Row = new Row();
+            Row["SortOrderNo"] = sortOrderNo;
+            long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+
+            if (Count == 1) {
+                // Update instance
+                this.SortOrderNo = sortOrderNo;
+                return Timekeeper.SUCCESS;
+            } else {
+                // Otherwise, failure
+                return Timekeeper.FAILURE;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         public int Reparent(long itemId)
         {
             // Update database
             Row Row = new Row();
             Row["ParentId"] = itemId;
             Row["ModifyTime"] = Common.Now();
+            Row["SortOrderNo"] = this.GetNextSortOrderNo(itemId);
             long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
@@ -590,6 +610,24 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
         // Private Helpers
+        //---------------------------------------------------------------------
+
+        private long GetNextSortOrderNo(long parentId)
+        {
+            string Query = String.Format(@"
+                select max(SortOrderNo) as HighestSortOrderNo
+                from {0}
+                where ParentId = {1}
+                order by SortOrderNo",
+                this.TableName, parentId);
+            Row Row = Data.SelectRow(Query);
+            if (Row["HighestSortOrderNo"] != null) {
+                return Row["HighestSortOrderNo"] + 1;
+            } else {
+                return 1;
+            }
+        }
+
         //---------------------------------------------------------------------
 
         private Table FetchDatesUsed()

@@ -35,11 +35,12 @@ namespace Timekeeper.Classes
 
         public void BuildProjectTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
         {
-            // TODO: pass this in
+            // TODO: pass these options in
             bool showHidden = true;
+            string orderByClause = "SortOrderNo";
 
             // Instantiate Activities object
-            Projects Projects = new Projects(Database);
+            Projects Projects = new Projects(Database, orderByClause);
 
             // Iterate over Activities
             foreach (Project Project in Projects.Fetch(parentId, showHidden)) {
@@ -65,11 +66,12 @@ namespace Timekeeper.Classes
 
         public void BuildActivityTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
         {
-            // TODO: pass this in
-            bool showHidden = false;
+            // TODO: pass these options in
+            bool showHidden = true;
+            string orderByClause = "SortOrderNo";
 
             // Instantiate Activities object
-            Activities Activities = new Activities(Database);
+            Activities Activities = new Activities(Database, orderByClause);
 
             // Iterate over Activities
             foreach (Activity Activity in Activities.Fetch(parentId, showHidden)) {
@@ -97,7 +99,7 @@ namespace Timekeeper.Classes
         {
             TreeNode Node = new TreeNode();
             Node.Tag = item;
-            Node.Text = item.Name; // +String.Format(" ({0})", item.ItemId);
+            Node.Text = item.Name;
             Node.ToolTipText = item.Description;
             if (item.IsHidden) {
                 Node.ForeColor = Color.Gray;

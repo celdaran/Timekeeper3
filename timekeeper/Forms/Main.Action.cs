@@ -366,7 +366,8 @@ namespace Timekeeper.Forms
             Top = (int)key.GetValue("Top", 10);
             Width = (int)key.GetValue("Width", 426);
             Height = (int)key.GetValue("Height", 376);
-            splitTrees.SplitterDistance = (int)key.GetValue("Split", 300);
+            splitTrees.SplitterDistance = (int)key.GetValue("SplitTrees", 300);
+            splitMain.SplitterDistance = (int)key.GetValue("SplitMain", 300);
             int HideProjects = (int)key.GetValue("HideProjects", 1);
             reportHeight = (int)key.GetValue("ReportHeight", 380);
             reportWidth = (int)key.GetValue("ReportWidth", 580);
@@ -473,7 +474,8 @@ namespace Timekeeper.Forms
             key.SetValue("Top", Top, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("Width", Width, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("Height", Height, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("Split", splitTrees.SplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
+            key.SetValue("SplitTrees", splitTrees.SplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
+            key.SetValue("SplitMain", splitMain.SplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("HideProjects", splitTrees.Panel2Collapsed, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("ReportHeight", reportHeight, Microsoft.Win32.RegistryValueKind.DWord);
             key.SetValue("ReportWidth", reportWidth, Microsoft.Win32.RegistryValueKind.DWord);
@@ -800,9 +802,9 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_CenterSplitter()
+        private void Action_CenterSplitter(SplitContainer split)
         {
-            splitTrees.SplitterDistance = splitTrees.Width / 2;
+            split.SplitterDistance = split.Width / 2;
         }
 
         //---------------------------------------------------------------------
@@ -1189,6 +1191,14 @@ namespace Timekeeper.Forms
                 targetNode.Parent.Nodes.Insert(targetNode.Index + 1, draggedNode);
                 targetNode.Remove();
                 Parent.Nodes.Insert(OldIndex + 1, targetNode);
+
+                long Index = 1;
+                foreach (TreeNode node in Parent.Nodes) {
+                    Item Item = (Item)node.Tag;
+                    Item.Reorder(Index);
+                    Index++;
+                }
+
             }
 
             if (CrossDragAccepted) {

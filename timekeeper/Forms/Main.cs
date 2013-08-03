@@ -610,7 +610,12 @@ namespace Timekeeper.Forms
         // Center the splitter when double-clicked
         private void splitTrees_DoubleClick(object sender, EventArgs e)
         {
-            Action_CenterSplitter();
+            Action_CenterSplitter(splitTrees);
+        }
+
+        private void splitMain_DoubleClick(object sender, EventArgs e)
+        {
+            Action_CenterSplitter(splitMain);
         }
 
         //---------------------------------------------------------------------
