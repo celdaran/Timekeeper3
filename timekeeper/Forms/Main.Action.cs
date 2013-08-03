@@ -608,8 +608,8 @@ namespace Timekeeper.Forms
                 }
 
                 Widgets = new Classes.Widgets();
-                Widgets.BuildProjectTree(ProjectTree.Nodes, null, 0);
-                Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
+                Widgets.BuildProjectTree(ProjectTree.Nodes);
+                Widgets.BuildActivityTree(ActivityTree.Nodes);
 
                 Entries = new Classes.JournalEntries(Database);
                 Meta = new Classes.Meta();
@@ -777,9 +777,9 @@ namespace Timekeeper.Forms
             tree.Nodes.Clear();
             // FIXME: bit of a hack, here (okay, more than a bit)
             if (tree.Name == "ProjectTree") {
-                Widgets.BuildProjectTree(ProjectTree.Nodes, null, 0);
+                Widgets.BuildProjectTree(ProjectTree.Nodes);
             } else {
-                Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
+                Widgets.BuildActivityTree(ActivityTree.Nodes);
             }
             // FIXME: don't always collapse/expand all: do this intelligently
             tree.ExpandAll();

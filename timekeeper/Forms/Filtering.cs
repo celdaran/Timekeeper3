@@ -60,10 +60,10 @@ namespace Timekeeper.Forms
             Classes.Widgets Widgets = new Classes.Widgets();
 
             ActivityTree.Nodes.Clear();
-            Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
+            Widgets.BuildActivityTree(ActivityTree.Nodes);
 
             ProjectTree.Nodes.Clear();
-            Widgets.BuildProjectTree(ProjectTree.Nodes, null, 0);
+            Widgets.BuildProjectTree(ProjectTree.Nodes);
 
             //----------------------------------------
             // Populate duration boxes

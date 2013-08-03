@@ -141,6 +141,8 @@ namespace Timekeeper.Forms
             this.LongTimer = new System.Windows.Forms.Timer(this.components);
             this.NewFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.PopupMenuTrayIcon = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.helloToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitMain = new System.Windows.Forms.SplitContainer();
             this.panelMemo = new System.Windows.Forms.Panel();
             this.wMemo = new System.Windows.Forms.RichTextBox();
@@ -195,6 +197,7 @@ namespace Timekeeper.Forms
             this.splitTrees.SuspendLayout();
             this.PopupMenuProject.SuspendLayout();
             this.PopupMenuActivity.SuspendLayout();
+            this.PopupMenuTrayIcon.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitMain)).BeginInit();
             this.splitMain.Panel1.SuspendLayout();
             this.splitMain.Panel2.SuspendLayout();
@@ -948,6 +951,8 @@ namespace Timekeeper.Forms
             this.ProjectTree.TabIndex = 1;
             this.ProjectTree.Tag = "Project";
             this.ProjectTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ProjectTree_AfterLabelEdit);
+            this.ProjectTree.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.ProjectTree_AfterCollapse);
+            this.ProjectTree.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.ProjectTree_AfterExpand);
             this.ProjectTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ProjectTree_AfterSelect);
             this.ProjectTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.ProjectTree_DragDrop);
             this.ProjectTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.Tree_DragEnter);
@@ -1070,6 +1075,8 @@ namespace Timekeeper.Forms
             this.ActivityTree.TabIndex = 0;
             this.ActivityTree.Tag = "Activity";
             this.ActivityTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ActivityTree_AfterLabelEdit);
+            this.ActivityTree.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.ActivityTree_AfterCollapse);
+            this.ActivityTree.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.ActivityTree_AfterExpand);
             this.ActivityTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ActivityTree_AfterSelect);
             this.ActivityTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.ActivityTree_DragDrop);
             this.ActivityTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.Tree_DragEnter);
@@ -1189,10 +1196,24 @@ namespace Timekeeper.Forms
             // TrayIcon
             // 
             this.TrayIcon.BalloonTipText = "Restore Timekeeper";
+            this.TrayIcon.ContextMenuStrip = this.PopupMenuTrayIcon;
             this.TrayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("TrayIcon.Icon")));
             this.TrayIcon.Text = "Timekeeper";
             this.TrayIcon.Visible = true;
             this.TrayIcon.DoubleClick += new System.EventHandler(this.TrayIcon_DoubleClick);
+            // 
+            // PopupMenuTrayIcon
+            // 
+            this.PopupMenuTrayIcon.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.helloToolStripMenuItem});
+            this.PopupMenuTrayIcon.Name = "PopupMenuTrayIcon";
+            this.PopupMenuTrayIcon.Size = new System.Drawing.Size(102, 26);
+            // 
+            // helloToolStripMenuItem
+            // 
+            this.helloToolStripMenuItem.Name = "helloToolStripMenuItem";
+            this.helloToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.helloToolStripMenuItem.Text = "Hello!";
             // 
             // splitMain
             // 
@@ -1705,6 +1726,7 @@ namespace Timekeeper.Forms
             this.splitTrees.ResumeLayout(false);
             this.PopupMenuProject.ResumeLayout(false);
             this.PopupMenuActivity.ResumeLayout(false);
+            this.PopupMenuTrayIcon.ResumeLayout(false);
             this.splitMain.Panel1.ResumeLayout(false);
             this.splitMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitMain)).EndInit();
@@ -1882,5 +1904,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem toolbarHelperToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog SaveAsDialog;
         public System.Windows.Forms.ImageList TreeImageList;
+        private System.Windows.Forms.ContextMenuStrip PopupMenuTrayIcon;
+        private System.Windows.Forms.ToolStripMenuItem helloToolStripMenuItem;
     }
 }

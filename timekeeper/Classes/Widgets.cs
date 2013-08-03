@@ -33,7 +33,23 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void BuildProjectTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
+        public void BuildProjectTree(TreeNodeCollection tree)
+        {
+            BuildProjectTree(tree, null, 0);
+            ExpandTree(tree);
+        }
+
+        //---------------------------------------------------------------------
+
+        public void BuildActivityTree(TreeNodeCollection tree)
+        {
+            BuildActivityTree(tree, null, 0);
+            ExpandTree(tree);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void BuildProjectTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
         {
             // TODO: pass these options in
             bool showHidden = true;
@@ -64,7 +80,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void BuildActivityTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
+        private void BuildActivityTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
         {
             // TODO: pass these options in
             bool showHidden = true;
@@ -89,6 +105,23 @@ namespace Timekeeper.Classes
                 // Then recurse
                 if (Activity.ItemId != parentId) {
                     BuildActivityTree(tree, Node, Activity.ItemId);
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void ExpandTree(TreeNodeCollection tree)
+        {
+            foreach (TreeNode Node in tree) {
+                Item Item = (Item)Node.Tag;
+                if (Item.IsFolderOpened) {
+                    if (!Node.IsExpanded) {
+                        Node.Expand();
+                    }
+                }
+                if (Item.IsFolder) {
+                    ExpandTree(Node.Nodes);
                 }
             }
         }

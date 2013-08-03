@@ -784,15 +784,13 @@ namespace Timekeeper.Forms
         private void reloadProjects()
         {
             ProjectTree.Nodes.Clear();
-            Widgets.BuildProjectTree(ProjectTree.Nodes, null, 0);
-            ProjectTree.ExpandAll();
+            Widgets.BuildProjectTree(ProjectTree.Nodes);
         }
 
         private void reloadActivities()
         {
             ActivityTree.Nodes.Clear();
-            Widgets.BuildActivityTree(ActivityTree.Nodes, null, 0);
-            ActivityTree.ExpandAll();
+            Widgets.BuildActivityTree(ActivityTree.Nodes);
         }
 
         //---------------------------------------------------------------------
@@ -806,11 +804,55 @@ namespace Timekeeper.Forms
             Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
         }
 
+        private void ProjectTree_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Project Project = (Project)SelectedNode.Tag;
+                if (!Project.IsFolderOpened) {
+                    Project.OpenFolder();
+                }
+            }
+        }
+
+        private void ProjectTree_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Project Project = (Project)SelectedNode.Tag;
+                if (Project.IsFolderOpened) {
+                    Project.CloseFolder();
+                }
+            }
+        }
+
+        private void ActivityTree_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Activity Activity = (Activity)SelectedNode.Tag;
+                if (!Activity.IsFolderOpened) {
+                    Activity.OpenFolder();
+                }
+            }
+        }
+
+        private void ActivityTree_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Activity Activity = (Activity)SelectedNode.Tag;
+                if (Activity.IsFolderOpened) {
+                    Activity.CloseFolder();
+                }
+            }
+        }
+
         //---------------------------------------------------------------------
         // Experimental Area
         //---------------------------------------------------------------------
 
-
+        // Nothing today!
 
         //---------------------------------------------------------------------
 

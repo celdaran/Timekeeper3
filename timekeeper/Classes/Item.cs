@@ -240,6 +240,13 @@ namespace Timekeeper
         // Methods
         //---------------------------------------------------------------------
 
+        public void CloseFolder()
+        {
+            ChangeFolderOpenState(false);
+        }
+
+        //---------------------------------------------------------------------
+
         public void Copy(Item source)
         {
             this.ItemId = 0;
@@ -398,6 +405,7 @@ namespace Timekeeper
             this.SortOrderNo = row["SortOrderNo"];
             this.FollowedItemId = row["Last" + this.OtherTableName + "Id"];
             this.IsFolder = row["IsFolder"];
+            this.IsFolderOpened = row["IsFolderOpened"];
             this.IsHidden = row["IsHidden"];
             this.IsDeleted = row["IsDeleted"];
 
@@ -412,6 +420,13 @@ namespace Timekeeper
 
             // Initialize times
             this.SetSecondsElapsedToday();
+        }
+
+        //---------------------------------------------------------------------
+
+        public void OpenFolder()
+        {
+            ChangeFolderOpenState(true);
         }
 
         //---------------------------------------------------------------------
@@ -610,6 +625,22 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
         // Private Helpers
+        //---------------------------------------------------------------------
+
+        private void ChangeFolderOpenState(bool opened)
+        {
+            if (this.IsFolder) {
+                Row Row = new Row();
+                Row["IsFolderOpened"] = opened ? 1 : 0;
+                Row["ModifyTime"] = Common.Now();
+                long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+
+                if (Count == 1) {
+                    this.IsFolderOpened = opened;
+                }
+            }
+        }
+
         //---------------------------------------------------------------------
 
         private long GetNextSortOrderNo(long parentId)
