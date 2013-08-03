@@ -117,24 +117,27 @@ namespace Timekeeper.Forms
                 Browser_EntryToForm(browserEntry);
 
                 if (browserEntry.IsLocked) {
+                    ProjectTree.Enabled = false;
+                    ActivityTree.Enabled = false;
                     Browser_EnableCloseStartGap(false);
                     Browser_EnableCloseEndGap(false);
                     Browser_EnableStartEntry(false);
                     Browser_EnableStopEntry(false);
                     Browser_EnableDurationEntry(false);
-                    if (timerRunning) {
-                        Browser_EnableMemoEntry(true);
-                        Browser_ShowUnlock(false);
-                    } else {
-                        Browser_EnableMemoEntry(false);
-                        Browser_ShowUnlock(true);
-                    }
+                    Browser_EnableLocationEntry(false);
+                    Browser_EnableCategoryEntry(false);
+                    Browser_EnableMemoEntry(false);
+                    Browser_ShowUnlock(true);
                 } else {
+                    ProjectTree.Enabled = true;
+                    ActivityTree.Enabled = true;
                     Browser_EnableCloseStartGap(true);
                     Browser_EnableCloseEndGap(true);
                     Browser_EnableStartEntry(true);
                     Browser_EnableStopEntry(true);
                     Browser_EnableDurationEntry(true);
+                    Browser_EnableLocationEntry(true);
+                    Browser_EnableCategoryEntry(true);
                     Browser_EnableMemoEntry(true);
                     Browser_ShowUnlock(false);
                 }
@@ -203,49 +206,49 @@ namespace Timekeeper.Forms
         private void Browser_EnableFirst(bool enabled)
         {
             toolControlFirstEntry.Enabled = enabled;
-            menuToolControlFirst.Enabled = enabled;
+            MenuToolbarBrowserFirst.Enabled = enabled;
         }
 
         private void Browser_EnablePrev(bool enabled)
         {
             toolControlPrevEntry.Enabled = enabled;
-            menuToolControlPrev.Enabled = enabled;
+            MenuToolbarBrowserPrev.Enabled = enabled;
         }
 
         private void Browser_EnableNext(bool enabled)
         {
             toolControlNextEntry.Enabled = enabled;
-            menuToolControlNext.Enabled = enabled;
+            MenuToolbarBrowserNext.Enabled = enabled;
         }
 
         private void Browser_EnableLast(bool enabled)
         {
             toolControlLastEntry.Enabled = enabled;
-            menuToolControlLast.Enabled = enabled;
+            MenuToolbarBrowserLast.Enabled = enabled;
         }
 
         private void Browser_EnableNew(bool enabled)
         {
             toolControlNewEntry.Enabled = enabled;
-            menuToolControlNew.Enabled = enabled;
+            MenuToolbarBrowserNew.Enabled = enabled;
         }
 
         private void Browser_EnableCloseStartGap(bool enabled)
         {
             toolControlCloseStartGap.Enabled = enabled;
-            menuToolControlCloseStartGap.Enabled = enabled;
+            MenuToolbarBrowserCloseStartGap.Enabled = enabled;
         }
 
         private void Browser_EnableCloseEndGap(bool enabled)
         {
             toolControlCloseEndGap.Enabled = enabled;
-            menuToolControlCloseEndGap.Enabled = enabled;
+            MenuToolbarBrowserCloseEndGap.Enabled = enabled;
         }
 
         private void Browser_EnableRevert(bool enabled)
         {
             toolControlRevert.Enabled = enabled;
-            menuToolControlRevert.Enabled = enabled;
+            MenuToolbarBrowserRevert.Enabled = enabled;
         }
 
         private void Browser_EnableStartEntry(bool enabled)
@@ -264,6 +267,18 @@ namespace Timekeeper.Forms
         {
             wDuration.Enabled = enabled;
             labelDuration.Enabled = enabled;
+        }
+
+        private void Browser_EnableLocationEntry(bool enabled)
+        {
+            wLocation.Enabled = enabled;
+            labelLocation.Enabled = enabled;
+        }
+
+        private void Browser_EnableCategoryEntry(bool enabled)
+        {
+            wCategory.Enabled = enabled;
+            labelCategory.Enabled = enabled;
         }
 
         private void Browser_EnableMemoEntry(bool enabled)
@@ -505,10 +520,10 @@ namespace Timekeeper.Forms
             try {
                 // Add keyboard shortcuts to tooltips
                 var kc = new KeysConverter();
-                toolControlFirstEntry.ToolTipText += " (" + kc.ConvertToString(menuToolControlFirst.ShortcutKeys) + ")";
-                toolControlLastEntry.ToolTipText += " (" + kc.ConvertToString(menuToolControlLast.ShortcutKeys) + ")";
-                toolControlNextEntry.ToolTipText += " (" + kc.ConvertToString(menuToolControlNext.ShortcutKeys) + ")";
-                toolControlPrevEntry.ToolTipText += " (" + kc.ConvertToString(menuToolControlPrev.ShortcutKeys) + ")";
+                toolControlFirstEntry.ToolTipText += " (" + kc.ConvertToString(MenuToolbarBrowserFirst.ShortcutKeys) + ")";
+                toolControlLastEntry.ToolTipText += " (" + kc.ConvertToString(MenuToolbarBrowserLast.ShortcutKeys) + ")";
+                toolControlNextEntry.ToolTipText += " (" + kc.ConvertToString(MenuToolbarBrowserNext.ShortcutKeys) + ")";
+                toolControlPrevEntry.ToolTipText += " (" + kc.ConvertToString(MenuToolbarBrowserPrev.ShortcutKeys) + ")";
 
                 toolControlStart.ToolTipText += " (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
                 toolControlStop.ToolTipText += " (" + kc.ConvertToString(MenuActionStopTimer.ShortcutKeys) + ")";
@@ -622,6 +637,8 @@ namespace Timekeeper.Forms
             Browser_EnableStartEntry(true);
             Browser_EnableStopEntry(false);
             Browser_EnableDurationEntry(false);
+            Browser_EnableLocationEntry(true);
+            Browser_EnableCategoryEntry(true);
         }
 
         private void Browser_SetBrowseState()
@@ -644,6 +661,8 @@ namespace Timekeeper.Forms
                 Browser_EnableStartEntry(true);
                 Browser_EnableStopEntry(true);
                 Browser_EnableDurationEntry(true);
+                Browser_EnableLocationEntry(true);
+                Browser_EnableCategoryEntry(true);
             } else {
                 Browser_ShowStart(true);
                 Browser_ShowStop(false);
@@ -661,6 +680,8 @@ namespace Timekeeper.Forms
                 Browser_EnableStartEntry(true);
                 Browser_EnableStopEntry(true);
                 Browser_EnableDurationEntry(true);
+                Browser_EnableLocationEntry(true);
+                Browser_EnableCategoryEntry(true);
             }
         }
 
@@ -686,6 +707,8 @@ namespace Timekeeper.Forms
             Browser_EnableStartEntry(false);
             Browser_EnableStopEntry(false);
             Browser_EnableDurationEntry(false);
+            Browser_EnableLocationEntry(false);
+            Browser_EnableCategoryEntry(false);
         }
 
         //---------------------------------------------------------------------
@@ -767,7 +790,7 @@ namespace Timekeeper.Forms
         private void Browser_ShowUnlock(bool show)
         {
             toolControlUnlock.Visible = show;
-            menuToolControlUnlock.Visible = show;
+            MenuToolbarBrowserUnlock.Visible = show;
         }
 
         //---------------------------------------------------------------------

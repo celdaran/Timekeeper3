@@ -293,73 +293,14 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        // Tools | Control | First Entry
-        private void menuToolControlFirst_Click(object sender, EventArgs e)
+        // Tools | Find
+        private void MenuToolFind_Click(object sender, EventArgs e)
         {
-            Browser_GotoFirstEntry();
+            Common.Warn("Not implemented");
         }
 
-        // Tools | Control | Previous Entry
-        private void menuToolControlPrev_Click(object sender, EventArgs e)
-        {
-            Browser_GotoPreviousEntry();
-        }
-
-        // Tools | Control | Next Entry
-        private void menuToolControlNext_Click(object sender, EventArgs e)
-        {
-            Browser_GotoNextEntry();
-        }
-
-        // Tools | Control | Last Entry
-        private void menuToolControlLast_Click(object sender, EventArgs e)
-        {
-            Browser_GotoLastEntry();
-        }
-
-        private void menuToolControlNew_Click(object sender, EventArgs e)
-        {
-            Browser_SetupForStarting();
-        }
-
-        private void menuToolControlCloseStartGap_Click(object sender, EventArgs e)
-        {
-            Browser_CloseStartGap();
-        }
-
-        private void menuToolControlCloseEndGap_Click(object sender, EventArgs e)
-        {
-            Browser_CloseStopGap();
-        }
-
-        private void menuToolControlRevert_Click(object sender, EventArgs e)
-        {
-            Browser_RevertEntry();
-        }
-
-        private void menuToolControlUnlock_Click(object sender, EventArgs e)
-        {
-            Browser_UnlockEntry();
-        }
-
-        // Tools | Log/Tweak
-        private void menuToolsTweak_Click(object sender, EventArgs e)
-        {
-            var log = new fLog(Database);
-            log.isTimerRunning = timerRunning;
-            log.ShowDialog(this);
-        }
-
-        // Tools | Calendar
-        private void menuToolsCalendar_Click(object sender, EventArgs e)
-        {
-            calendar = new fToolCalendar();
-            calendar.Show(this);
-            OpenForms.Add(calendar);
-        }
-
-        // Tools | Journal
-        private void menuToolsJournal_Click(object sender, EventArgs e)
+        // Tools | Notebook
+        private void MenuToolNotebook_Click(object sender, EventArgs e)
         {
             fToolJournal dlg = new fToolJournal(Database);
             dlg.ActiveControl = dlg.wEntry;
@@ -368,8 +309,16 @@ namespace Timekeeper.Forms
             }
         }
 
+        // Tools | Calendar
+        private void MenuToolCalendar_Click(object sender, EventArgs e)
+        {
+            calendar = new fToolCalendar();
+            calendar.Show(this);
+            OpenForms.Add(calendar);
+        }
+
         // Tools | Stopwatch
-        private void menuToolsStopwatch_Click(object sender, EventArgs e)
+        private void MenuToolStopwatch_Click(object sender, EventArgs e)
         {
             // FIXME: proposed namespace for tools
 
@@ -383,7 +332,7 @@ namespace Timekeeper.Forms
         }
 
         // Tools | Countdown
-        private void menuToolsCountdown_Click(object sender, EventArgs e)
+        private void MenuToolCountdown_Click(object sender, EventArgs e)
         {
             fToolCountdown dlg = new fToolCountdown();
             dlg.ShowDialog(this);
@@ -398,14 +347,14 @@ namespace Timekeeper.Forms
         }
 
         // Tools | Reminders
-        private void menuToolsReminders_Click(object sender, EventArgs e)
+        private void MenuToolReminders_Click(object sender, EventArgs e)
         {
             fToolReminders dlg = new fToolReminders();
             dlg.ShowDialog(this);
         }
 
         // Tools | Options
-        private void menuToolsOptions_Click(object sender, EventArgs e)
+        private void MenuToolOptions_Click(object sender, EventArgs e)
         {
             Dialog_Options();
         }
@@ -434,6 +383,62 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
+
+        // Toolbar Functions | Browser | First Entry
+        private void MenuToolbarBrowserFirst_Click(object sender, EventArgs e)
+        {
+            Browser_GotoFirstEntry();
+        }
+
+        // Toolbar Functions | Browser | Previous Entry
+        private void MenuToolbarBrowserPrev_Click(object sender, EventArgs e)
+        {
+            Browser_GotoPreviousEntry();
+        }
+
+        // Toolbar Functions | Browser | Next Entry
+        private void MenuToolbarBrowserNext_Click(object sender, EventArgs e)
+        {
+            Browser_GotoNextEntry();
+        }
+
+        // Toolbar Functions | Browser | Last Entry
+        private void MenuToolbarBrowserLast_Click(object sender, EventArgs e)
+        {
+            Browser_GotoLastEntry();
+        }
+
+        // Toolbar Functions | Browser | New Entry
+        private void MenuToolbarBrowserNew_Click(object sender, EventArgs e)
+        {
+            Browser_SetupForStarting();
+        }
+
+        // Toolbar Functions | Browser | Close Start Gap
+        private void MenuToolbarBrowserCloseStartGap_Click(object sender, EventArgs e)
+        {
+            Browser_CloseStartGap();
+        }
+
+        // Toolbar Functions | Browser | Close End Gap
+        private void MenuToolbarBrowserCloseEndGap_Click(object sender, EventArgs e)
+        {
+            Browser_CloseStopGap();
+        }
+
+        // Toolbar Functions | Browser | Revert
+        private void MenuToolbarBrowserRevert_Click(object sender, EventArgs e)
+        {
+            Browser_RevertEntry();
+        }
+
+        // Toolbar Functions | Browser | Unlock
+        private void MenuToolbarBrowserUnlock_Click(object sender, EventArgs e)
+        {
+            Browser_UnlockEntry();
+        }
+
+        //---------------------------------------------------------------------
         // Context Menu Events
         //---------------------------------------------------------------------
 
@@ -443,6 +448,24 @@ namespace Timekeeper.Forms
             if (ProjectTree.SelectedNode != null) {
                 ProjectTree.SelectedNode.BeginEdit();
             }
+        }
+
+        // Popup Project | Use Projects
+        private void PopupMenuProjectUseProjects_Click(object sender, EventArgs e)
+        {
+            Action_UseProjects(!PopupMenuProjectUseProjects.Checked);
+        }
+
+        // Popup Project | Use Activities
+        private void PopupMenuProjectUseActivities_Click(object sender, EventArgs e)
+        {
+            Action_UseActivities(!PopupMenuProjectUseActivities.Checked);
+        }
+
+        // Poup Project | Swap Panes
+        private void PopupMenuProjectSwapPanes_Click(object sender, EventArgs e)
+        {
+            Action_SwapPanes();
         }
 
         // Popup Projects | Properties
@@ -460,6 +483,24 @@ namespace Timekeeper.Forms
             if (ActivityTree.SelectedNode != null) {
                 ActivityTree.SelectedNode.BeginEdit();
             }
+        }
+
+        // Popup Activity | Use Projects
+        private void PopupMenuActivityUseProjects_Click(object sender, EventArgs e)
+        {
+            Action_UseProjects(!PopupMenuActivityUseProjects.Checked);
+        }
+
+        // Popup Activity | Use Activities
+        private void PopupMenuActivityUseActivities_Click(object sender, EventArgs e)
+        {
+            Action_UseActivities(!PopupMenuActivityUseActivities.Checked);
+        }
+
+        // Poup Activity | Swap Panes
+        private void PopupMenuActivitySwapPanes_Click(object sender, EventArgs e)
+        {
+            Action_SwapPanes();
         }
 
         // Poup Activity | Properties
@@ -832,39 +873,6 @@ namespace Timekeeper.Forms
             }
         }
 
-        private void PopupMenuActivitySwapPanes_Click(object sender, EventArgs e)
-        {
-            Action_SwapPanes();
-        }
-
-        private void PopupMenuProjectSwapPanes_Click(object sender, EventArgs e)
-        {
-            Action_SwapPanes();
-        }
-
-        // MENU ITEM A: Projects | Use Projects
-        private void PopupMenuProjectShowProjects_Click(object sender, EventArgs e)
-        {
-            Action_UseProjects(!PopupMenuProjectShowProjects.Checked);
-        }
-
-        // MENU ITEM B: Project | Use Activities
-        private void PopupMenuProjectShowActivities_Click(object sender, EventArgs e)
-        {
-            Action_UseActivities(!PopupMenuProjectShowActivities.Checked);
-        }
-
-        // MENU ITEM D: Activities | Use Projects
-        private void PopupMenuActivityShowProjects_Click(object sender, EventArgs e)
-        {
-            Action_UseProjects(!PopupMenuActivityShowProjects.Checked);
-        }
-
-        // MENU ITEM E: Activities | Use Activities
-        private void PopupMenuActivityShowActivities_Click(object sender, EventArgs e)
-        {
-            Action_UseActivities(!PopupMenuActivityShowActivities.Checked);
-        }
 
         private void wStartTime_Enter(object sender, EventArgs e)
         {
@@ -873,10 +881,16 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
-        // Experimental Area
+        // Testing Area
         //---------------------------------------------------------------------
 
-        // Nothing today!
+        // Tools | Log/Tweak
+        private void menuToolsTweak_Click(object sender, EventArgs e)
+        {
+            var log = new fLog(Database);
+            log.isTimerRunning = timerRunning;
+            log.ShowDialog(this);
+        }
 
         //---------------------------------------------------------------------
 

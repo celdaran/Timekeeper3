@@ -32,6 +32,7 @@ namespace Timekeeper.Forms
             // (see below)
 
             // Auto-follow
+            if (!isBrowsing) {
             //if (options.wProjectFollow.Checked) {
                 if (project.FollowedItemId > 0) {
                     TreeNode node = Widgets.FindTreeNode(ActivityTree.Nodes, project.FollowedItemId);
@@ -42,6 +43,7 @@ namespace Timekeeper.Forms
                     }
                 }
             //}
+            }
 
             // TODO: Implement auto-follow the other direction
             // Set hide mode based on projects's IsHidden property
@@ -51,7 +53,7 @@ namespace Timekeeper.Forms
             Action_UpdateCalendar(ProjectTree);
 
             // Set our dirty bit
-            if (isBrowsing) {
+            if ((isBrowsing) && (project.ItemId != browserEntry.ProjectId)) {
                 toolControlRevert.Enabled = true;
             }
         }
@@ -69,6 +71,7 @@ namespace Timekeeper.Forms
             }
 
             // Auto-follow
+            if (!isBrowsing) {
             if (options.wProjectFollow.Checked) {
                 if (Activity.FollowedItemId > 0) {
                     TreeNode node = Widgets.FindTreeNode(ProjectTree.Nodes, Activity.FollowedItemId);
@@ -79,6 +82,7 @@ namespace Timekeeper.Forms
                     }
                 }
             }
+            }
 
             // Set hide mode based on Activity's IsHidden property
             MenuBar_ShowHideActivity(!Activity.IsHidden);
@@ -87,7 +91,7 @@ namespace Timekeeper.Forms
             Action_UpdateCalendar(ActivityTree);
 
             // Set our dirty bit
-            if (isBrowsing) {
+            if ((isBrowsing) && (Activity.ItemId != browserEntry.ActivityId)) {
                 toolControlRevert.Enabled = true;
             }
         }
@@ -715,12 +719,12 @@ namespace Timekeeper.Forms
             MenuActionDeleteProject.Visible = show;
 
             // Update the popup menu state accordingly
-            PopupMenuProjectShowProjects.Checked = show;
-            PopupMenuProjectShowActivities.Enabled = show;
+            PopupMenuProjectUseProjects.Checked = show;
+            PopupMenuProjectUseActivities.Enabled = show;
 
             // Mirror update the other popup menu accordingly
-            PopupMenuActivityShowProjects.Checked = show;
-            PopupMenuActivityShowActivities.Enabled = show;
+            PopupMenuActivityUseProjects.Checked = show;
+            PopupMenuActivityUseActivities.Enabled = show;
 
             // Swap menu handling is a bit different
             PopupMenuProjectSwapPanes.Enabled = this.ProjectsVisible && this.ActivitiesVisible;
@@ -748,12 +752,12 @@ namespace Timekeeper.Forms
             MenuActionDeleteActivity.Visible = show;
 
             // Update the popup menu state accordingly
-            PopupMenuActivityShowActivities.Checked = show;
-            PopupMenuActivityShowProjects.Enabled = show;
+            PopupMenuActivityUseActivities.Checked = show;
+            PopupMenuActivityUseProjects.Enabled = show;
 
             // Mirror update the other popup menu accordingly
-            PopupMenuProjectShowActivities.Checked = show;
-            PopupMenuProjectShowProjects.Enabled = show;
+            PopupMenuProjectUseActivities.Checked = show;
+            PopupMenuProjectUseProjects.Enabled = show;
 
             // Swap menu handling is a bit different
             PopupMenuProjectSwapPanes.Enabled = this.ProjectsVisible && this.ActivitiesVisible;

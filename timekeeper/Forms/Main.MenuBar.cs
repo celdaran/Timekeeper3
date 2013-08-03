@@ -19,8 +19,8 @@ namespace Timekeeper.Forms
         {
             // Enabled Settings
             MenuAction.Enabled = true;
-            menuReport.Enabled = true;
-            menuTool.Enabled = true;
+            MenuReport.Enabled = true;
+            MenuTool.Enabled = true;
             PopupMenuProject.Enabled = true;
             PopupMenuActivity.Enabled = true;
 
@@ -54,8 +54,8 @@ namespace Timekeeper.Forms
         private void MenuBar_FileClosed()
         {
             MenuAction.Enabled = false;
-            menuReport.Enabled = false;
-            menuTool.Enabled = false;
+            MenuReport.Enabled = false;
+            MenuTool.Enabled = false;
             PopupMenuProject.Enabled = false;
             PopupMenuActivity.Enabled = false;
         }
