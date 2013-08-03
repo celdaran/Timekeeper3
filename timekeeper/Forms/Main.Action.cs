@@ -651,7 +651,11 @@ namespace Timekeeper.Forms
                 Action_TreeView_ShowRootLines();
 
                 // View or hide the project pane
-                _toggleProjects(); // TODO: slated for refactoring
+                bool useProjects = true;
+                bool useActivities = false;
+
+                Action_UseProjects(useProjects); // options.wViewProjectPane.Checked);
+                Action_UseActivities(useActivities); // FIXME: Need an Option for this
 
                 return true;
             }
@@ -659,6 +663,72 @@ namespace Timekeeper.Forms
                 Timekeeper.Exception(x);
                 return false;
             }
+        }
+
+        //--
+
+        private void Action_UseProjects(bool show)
+        {
+            // Hide or Show the Project Pane
+            if (splitTrees.Panel1.Contains(this.ProjectTree)) {
+                splitTrees.Panel1Collapsed = !show;
+            } else {
+                splitTrees.Panel2Collapsed = !show;
+            }
+            this.ProjectsVisible = show;
+
+            // Update the action menu accordingly
+            MenuActionSep1.Visible = show;
+            MenuActionNewProject.Visible = show;
+            MenuActionNewProjectFolder.Visible = show;
+            MenuActionEditProject.Visible = show;
+            MenuActionHideProject.Visible = show;
+            MenuActionDeleteProject.Visible = show;
+
+            // Update the popup menu state accordingly
+            PopupMenuProjectShowProjects.Checked = show;
+            PopupMenuProjectShowActivities.Enabled = show;
+
+            // Mirror update the other popup menu accordingly
+            PopupMenuActivityShowProjects.Checked = show;
+            PopupMenuActivityShowActivities.Enabled = show;
+
+            // Swap menu handling is a bit different
+            PopupMenuProjectSwapPanes.Enabled = this.ProjectsVisible && this.ActivitiesVisible;
+            PopupMenuActivitySwapPanes.Enabled = this.ProjectsVisible && this.ActivitiesVisible;
+        }
+
+        //--
+
+        private void Action_UseActivities(bool show)
+        {
+            // Hide or Show the Activity Pane
+            if (splitTrees.Panel1.Contains(this.ActivityTree)) {
+                splitTrees.Panel1Collapsed = !show;
+            } else {
+                splitTrees.Panel2Collapsed = !show;
+            }
+            this.ActivitiesVisible = show;
+
+            // Update the action menu accordingly
+            MenuActionSep2.Visible = show;
+            MenuActionNewActivity.Visible = show;
+            MenuActionNewActivityFolder.Visible = show;
+            MenuActionEditActivity.Visible = show;
+            MenuActionHideActivity.Visible = show;
+            MenuActionDeleteActivity.Visible = show;
+
+            // Update the popup menu state accordingly
+            PopupMenuActivityShowActivities.Checked = show;
+            PopupMenuActivityShowProjects.Enabled = show;
+
+            // Mirror update the other popup menu accordingly
+            PopupMenuProjectShowActivities.Checked = show;
+            PopupMenuProjectShowProjects.Enabled = show;
+
+            // Swap menu handling is a bit different
+            PopupMenuProjectSwapPanes.Enabled = this.ProjectsVisible && this.ActivitiesVisible;
+            PopupMenuActivitySwapPanes.Enabled = this.ProjectsVisible && this.ActivitiesVisible;
         }
 
         //---------------------------------------------------------------------
@@ -1101,6 +1171,23 @@ namespace Timekeeper.Forms
 
             // FIXME: stopping the timer != opening the browser
             Browser_SetupForStarting();
+        }
+
+        private void Action_SwapPanes()
+        {
+            if (splitTrees.Panel1.Contains(this.ActivityTree)) {
+                splitTrees.Panel1.Controls.Remove(this.ActivityTree);
+                splitTrees.Panel2.Controls.Remove(this.ProjectTree);
+
+                splitTrees.Panel1.Controls.Add(this.ProjectTree);
+                splitTrees.Panel2.Controls.Add(this.ActivityTree);
+            } else {
+                splitTrees.Panel1.Controls.Remove(this.ProjectTree);
+                splitTrees.Panel2.Controls.Remove(this.ActivityTree);
+
+                splitTrees.Panel1.Controls.Add(this.ActivityTree);
+                splitTrees.Panel2.Controls.Add(this.ProjectTree);
+            }
         }
 
         //---------------------------------------------------------------------

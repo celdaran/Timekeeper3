@@ -34,6 +34,10 @@ namespace Timekeeper.Forms
       //private Forms.Grid.Main
       //private Forms.Grid.Filter
 
+        // TreeView Panel Visibility
+        private bool ProjectsVisible = false;
+        private bool ActivitiesVisible = false;
+
         // form tracking
         private List<Form> OpenForms = new List<Form>();
 
@@ -438,13 +442,6 @@ namespace Timekeeper.Forms
             }
         }
 
-        // Popup Project | Hide Pane
-        private void PopupMenuProjectHidePane_Click(object sender, EventArgs e)
-        {
-            options.wViewProjectPane.Checked = false;
-            _toggleProjects();
-        }
-
         // Popup Projects | Properties
         private void PopupMenuProjectProperties_Click(object sender, EventArgs e)
         {
@@ -763,24 +760,6 @@ namespace Timekeeper.Forms
         // Helpers
         //---------------------------------------------------------------------
 
-        private void _toggleProjects()
-        {
-            // TODO: this will be redone with TKT #1267
-            bool show = options.wViewProjectPane.Checked;
-            bool hide = !show;
-
-            splitTrees.Panel2Collapsed = hide;
-            //PopupMenuActivitySep2.Visible = hide;
-            //PopupMenuActivityShowProjects.Visible = hide;
-
-            MenuActionSep2.Visible = show;
-            MenuActionNewProject.Visible = show;
-            MenuActionNewProjectFolder.Visible = show;
-            MenuActionEditProject.Visible = show;
-            MenuActionHideProject.Visible = show;
-            MenuActionDeleteProject.Visible = show;
-        }
-
         private void reloadProjects()
         {
             ProjectTree.Nodes.Clear();
@@ -846,6 +825,40 @@ namespace Timekeeper.Forms
                     Activity.CloseFolder();
                 }
             }
+        }
+
+        private void PopupMenuActivitySwapPanes_Click(object sender, EventArgs e)
+        {
+            Action_SwapPanes();
+        }
+
+        private void PopupMenuProjectSwapPanes_Click(object sender, EventArgs e)
+        {
+            Action_SwapPanes();
+        }
+
+        // MENU ITEM A: Projects | Use Projects
+        private void PopupMenuProjectShowProjects_Click(object sender, EventArgs e)
+        {
+            Action_UseProjects(!PopupMenuProjectShowProjects.Checked);
+        }
+
+        // MENU ITEM B: Project | Use Activities
+        private void PopupMenuProjectShowActivities_Click(object sender, EventArgs e)
+        {
+            Action_UseActivities(!PopupMenuProjectShowActivities.Checked);
+        }
+
+        // MENU ITEM D: Activities | Use Projects
+        private void PopupMenuActivityShowProjects_Click(object sender, EventArgs e)
+        {
+            Action_UseProjects(!PopupMenuActivityShowProjects.Checked);
+        }
+
+        // MENU ITEM E: Activities | Use Activities
+        private void PopupMenuActivityShowActivities_Click(object sender, EventArgs e)
+        {
+            Action_UseActivities(!PopupMenuActivityShowActivities.Checked);
         }
 
         //---------------------------------------------------------------------

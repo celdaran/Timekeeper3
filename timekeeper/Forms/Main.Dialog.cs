@@ -215,7 +215,7 @@ namespace Timekeeper.Forms
             if (options.saved) {
                 try {
                     // view or hide projects pane
-                    _toggleProjects();
+                    // _toggleProjects();
 
                     StatusBar_SetVisibility();
 
