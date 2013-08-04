@@ -14,7 +14,6 @@ namespace Timekeeper.Classes
 
         private DBI Data;
 
-        //private DateTime CurrentStartTime;
         private long NextJournalIndex;
 
         private enum Mode { Insert, Update };
@@ -87,7 +86,7 @@ namespace Timekeeper.Classes
         // Primary Methods
         //---------------------------------------------------------------------
 
-        public void Create()
+        public bool Create()
         {
             try {
                 // Create the Row based on current object attributes
@@ -101,9 +100,16 @@ namespace Timekeeper.Classes
                 row = new Row();
                 row["LastActivityId"] = this.ActivityId;
                 Data.Update("Project", row, "ProjectId", this.ProjectId);
+
+                // Increment the NextJournalIndex, now that we have a new row
+                this.NextJournalIndex++;
+                //this.JournalIndex = this.NextJournalIndex;
+
+                return true;
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
+                return false;
             }
         }
 
@@ -294,7 +300,7 @@ namespace Timekeeper.Classes
 
         public void LoadFirst()
         {
-            this.SetFirstId();
+            this.JournalIndex = 1;
             this.Load();
         }
 
@@ -302,7 +308,7 @@ namespace Timekeeper.Classes
 
         public void LoadPrevious()
         {
-            this.SetPrevId();
+            this.JournalIndex--;
             this.Load();
         }
 
@@ -310,7 +316,7 @@ namespace Timekeeper.Classes
 
         public void LoadNext()
         {
-            this.SetNextId();
+            this.JournalIndex++;
             this.Load();
         }
 
@@ -318,7 +324,7 @@ namespace Timekeeper.Classes
 
         public void LoadLast()
         {
-            this.SetLastId();
+            this.JournalIndex = NextJournalIndex - 1;
             this.Load();
         }
 
@@ -342,7 +348,7 @@ namespace Timekeeper.Classes
             if (mode == Mode.Insert) {
                 Journal["CreateTime"] = Now;
                 Journal["JournalGuid"] = UUID.Get();
-                Journal["JournalIndex"] = JournalIndex;
+                Journal["JournalIndex"] = NextJournalIndex;
             }
             Journal["ModifyTime"] = Now;
 
@@ -415,9 +421,6 @@ namespace Timekeeper.Classes
                 Journal["StopTime"] = DateTime.SpecifyKind(Journal["StopTime"], DateTimeKind.Local);
             }
 
-            //CurrentStartTime = Journal["StartTime"];
-            //HighestJournalIndex = Journal["JournalIndex"];
-
             JournalId = Journal["JournalId"];
             ActivityId = Journal["ActivityId"];
             ProjectId = Journal["ProjectId"];
@@ -447,13 +450,6 @@ namespace Timekeeper.Classes
         public bool AtEnd()
         {
             return this.JournalIndex == this.NextJournalIndex - 1;
-            /*
-            string Query = String.Format(@"
-                select JournalId from Journal 
-                order by StartTime desc 
-                limit 1");
-            return EdgeTest(Query);
-            */
         }
 
         //---------------------------------------------------------------------
@@ -461,121 +457,7 @@ namespace Timekeeper.Classes
         public bool AtBeginning()
         {
             return this.JournalIndex == 1;
-            /*
-            string Query = String.Format(@"
-                select JournalId from Journal 
-                order by StartTime asc
-                limit 1");
-            return EdgeTest(Query);
-            */
         }
-
-        //---------------------------------------------------------------------
-        // Location Helpers
-        //---------------------------------------------------------------------
-
-        /*
-        private bool EdgeTest(string query)
-        {
-            Row Row = Data.SelectRow(query);
-            if ((Row["JournalId"] != null) && (Row["JournalId"] == this.JournalId)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        */
-
-        //---------------------------------------------------------------------
-        // Navigation Helpers
-        //---------------------------------------------------------------------
-
-        private void SetFirstId()
-        {
-            this.JournalIndex = 1;
-            /*
-            string query = String.Format(@"
-                select JournalId, datetime(StartTime, 'localtime') as StartTime
-                from Journal 
-                order by datetime(StartTime, 'localtime') asc
-                limit 1");
-            SetId(query);
-            */
-        }
-
-        //---------------------------------------------------------------------
-
-        private void SetPrevId()
-        {
-            this.JournalIndex--;
-            /*
-            string query = String.Format(@"
-                select JournalId, datetime(StartTime, 'localtime') as StartTime
-                from Journal 
-                where datetime(StartTime, 'localtime') < datetime('{0}', 'localtime')
-                order by datetime(StartTime, 'localtime') desc
-                limit 1", this.CurrentStartTime.ToString(Common.DATETIME_FORMAT));
-            SetId(query);
-            */
-        }
-
-        //---------------------------------------------------------------------
-
-        private void SetNextId()
-        {
-            this.JournalIndex++;
-            /*
-            if (this.CurrentStartTime == DateTime.MinValue)
-                return;
-            string query = String.Format(@"
-                select JournalId, datetime(StartTime, 'localtime') as StartTime
-                from Journal 
-                where datetime(StartTime, 'localtime') > datetime('{0}', 'localtime')
-                order by datetime(StartTime, 'localtime') asc
-                limit 1", this.CurrentStartTime.ToString(Common.DATETIME_FORMAT));
-            SetId(query);
-            */
-        }
-
-        //---------------------------------------------------------------------
-
-        private void SetLastId()
-        {
-            this.JournalIndex = NextJournalIndex - 1;
-            /*
-            string query = String.Format(@"
-                select JournalId, datetime(StartTime, 'localtime') as StartTime
-                from Journal 
-                order by datetime(StartTime, 'localtime') desc 
-                limit 1");
-            SetId(query);
-            */
-        }
-
-        //---------------------------------------------------------------------
-
-        /*
-        private void SetId(string query)
-        {
-            //-----------------------------------------------------------------
-            // A Note on JournalId Values
-            // Remember that the id does not imply chronology. Backfills, Data 
-            // migrations, and other Data changes can create "out of order" id 
-            // values. The value of StartTime (stored in UTC) is authoritative.
-            //-----------------------------------------------------------------
-
-            try {
-                Row row = Data.SelectRow(query);
-                this.JournalId = row["JournalId"];
-                this.CurrentStartTime = DateTime.Parse(row["StartTime"]);
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-                this.JournalId = 0;
-                this.CurrentStartTime = DateTime.MinValue;
-            }
-        }
-        */
 
         //---------------------------------------------------------------------
 

@@ -234,6 +234,7 @@ namespace Timekeeper.Forms
 
         private void Action_EnableRevert(string currentText, string previousText)
         {
+//            if ((isBrowsing) || (!isBrowsing && timerRunning)) {
             if (isBrowsing) {
                 if (currentText != previousText) {
                     Browser_EnableRevert(true);
@@ -647,6 +648,8 @@ namespace Timekeeper.Forms
                 Entries = new Classes.JournalEntries(Database);
                 Meta = new Classes.Meta();
                 Options = new Classes.Options();
+
+                Entry = new Classes.Journal(Database);
 
                 MenuBar_FileOpened();
                 StatusBar_FileOpened();
@@ -1067,19 +1070,22 @@ namespace Timekeeper.Forms
             currentActivity.StartTiming(StartTime);
             currentActivity.FollowedItemId = currentProject.ItemId; // FIXME: needs to work both ways
 
-            currentEntry = new Classes.Journal(Database);
-            currentEntry.ProjectId = currentProject.ItemId;
-            currentEntry.ActivityId = currentActivity.ItemId;
-            currentEntry.StartTime = StartTime;
-            currentEntry.StopTime = StartTime;
-            currentEntry.Seconds = 0; // default to zero
-            currentEntry.Memo = wMemo.Text;
-            currentEntry.IsLocked = true;
-            currentEntry.LocationId = 1;
-            currentEntry.CategoryId = 1;
-            currentEntry.Create();
+            //currentEntry = new Classes.Journal(Database);
+            Entry.ProjectId = currentProject.ItemId;
+            Entry.ActivityId = currentActivity.ItemId;
+            Entry.StartTime = StartTime;
+            Entry.StopTime = StartTime;
+            Entry.Seconds = 0; // default to zero
+            Entry.Memo = wMemo.Text;
+            Entry.IsLocked = true;
+            Entry.LocationId = 1; // FIXME
+            Entry.CategoryId = 1; // FIXME
+            if (!Entry.Create()) {
+                Common.Warn("There was an error starting the timer.");
+                return;
+            }
 
-            ShortTimer.Enabled = true; // Are this line and the next line the same thing?
+            //ShortTimer.Enabled = true; // Are this line and the next line the same thing?
             timerRunning = true;
             timerLastRun = DateTime.Now;
 
@@ -1093,6 +1099,7 @@ namespace Timekeeper.Forms
             //menuActionStartAdvanced.Visible = false;
             MenuActionStopTimer.Visible = true;
             //menuActionStopAdvanced.Visible = true;
+            //Browser_EnableRevert(false);
 
             // swap start/stop keystrokes
             // FIXME: this is a mess
@@ -1146,16 +1153,16 @@ namespace Timekeeper.Forms
         private void Action_StopTimer()
         {
             // Close off timer
-            currentEntry.ProjectId = currentProject.ItemId;
-            currentEntry.ActivityId = currentActivity.ItemId;
-            currentEntry.StartTime = wStartTime.Value;
-            currentEntry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
-            currentEntry.Seconds = currentActivity.StopTiming(wStopTime.Value);
-            currentEntry.Memo = wMemo.Text;
-            currentEntry.IsLocked = false;
-            currentEntry.LocationId = 1;
-            currentEntry.CategoryId = 1;
-            currentEntry.Save();
+            Entry.ProjectId = currentProject.ItemId;
+            Entry.ActivityId = currentActivity.ItemId;
+            Entry.StartTime = wStartTime.Value;
+            Entry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
+            Entry.Seconds = currentActivity.StopTiming(wStopTime.Value);
+            Entry.Memo = wMemo.Text;
+            Entry.IsLocked = false;
+            Entry.LocationId = 1;
+            Entry.CategoryId = 1;
+            Entry.Save();
             timerRunning = false;
             ShortTimer.Enabled = false;
             //timerLastRunNotified = false;
@@ -1163,7 +1170,7 @@ namespace Timekeeper.Forms
             // Clear instances of current object
             currentProject = null;
             currentActivity = null;
-            currentEntry = null;
+            //currentEntry = null;
 
             // Make any UI changes 
             Text = Timekeeper.TITLE;

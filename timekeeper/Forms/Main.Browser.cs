@@ -117,8 +117,6 @@ namespace Timekeeper.Forms
                 Browser_EntryToForm(browserEntry);
 
                 if (browserEntry.IsLocked) {
-                    ProjectTree.Enabled = false;
-                    ActivityTree.Enabled = false;
                     Browser_EnableCloseStartGap(false);
                     Browser_EnableCloseEndGap(false);
                     Browser_EnableStartEntry(false);
@@ -126,8 +124,15 @@ namespace Timekeeper.Forms
                     Browser_EnableDurationEntry(false);
                     Browser_EnableLocationEntry(false);
                     Browser_EnableCategoryEntry(false);
-                    Browser_EnableMemoEntry(false);
-                    Browser_ShowUnlock(true);
+                    if (timerRunning) {
+                        Browser_EnableMemoEntry(true);
+                        Browser_ShowUnlock(false);
+                    } else {
+                        ProjectTree.Enabled = false;
+                        ActivityTree.Enabled = false;
+                        Browser_EnableMemoEntry(false);
+                        Browser_ShowUnlock(true);
+                    }
                 } else {
                     ProjectTree.Enabled = true;
                     ActivityTree.Enabled = true;
@@ -384,6 +389,12 @@ namespace Timekeeper.Forms
         private void Browser_GotoLastEntry()
         {
             try {
+                /*
+                if (timerRunning) {
+                    browserEntry = currentEntry;
+                }
+                */
+
                 Browser_SaveRow(false);
                 browserEntry.LoadLast();
                 priorLoadedBrowserEntry = browserEntry.Copy();
@@ -395,6 +406,7 @@ namespace Timekeeper.Forms
                     Browser_EnableNext(false);
                     isBrowsing = true;
                 }
+
                 if (timerRunning) {
                     Browser_SetupForStopping();
                 }
@@ -416,15 +428,14 @@ namespace Timekeeper.Forms
                     Browser_DisplayRow();
                     Browser_EnableFirst(true);
                     Browser_EnablePrev(true);
+                    isBrowsing = true;
                     if (browserEntry.AtEnd()) {
                         Browser_EnableLast(false);
                         Browser_EnableNext(false);
                         if (timerRunning) {
-                            //Common.Info("special handling here");
                             Browser_SetupForStopping();
                         }
                     }
-                    isBrowsing = true;
                 } else {
                     Browser_EnableLast(false);
                     Browser_EnableNext(false);
@@ -540,7 +551,7 @@ namespace Timekeeper.Forms
         {
             Browser_Show(true);
 
-            if (timerRunning) {
+            if (timerRunning && Entry.AtEnd()) {
                 Browser_SetupForStopping();
             }
         }
@@ -560,8 +571,14 @@ namespace Timekeeper.Forms
             // Copy the prior entry to our internal representation
             browserEntry = priorLoadedBrowserEntry.Copy();
 
-            // Now display the row (which also handles toolbar button states)
-            Browser_DisplayRow();
+//            if (timerRunning) {
+                // Form is correct, except for this button
+//                Browser_EnableRevert(false);
+//            } else {
+                // Otherwise, do the full display logic (primarily)
+                // for the toolbar button state display
+//                Browser_DisplayRow();
+//            }
         }
 
         //---------------------------------------------------------------------
@@ -583,6 +600,7 @@ namespace Timekeeper.Forms
                     return;
                 }
                 */
+
                 if (toolControlRevert.Enabled == false) {
                     // Instead of comparing the current to previous browser
                     // entry, let's just check the revert button, which
@@ -591,7 +609,20 @@ namespace Timekeeper.Forms
                     // setting a hidden Project or Activity automatically
                     // resets the value. (Still not sure what to do about
                     // that in general: it's still an issue.)
-                    return;
+                    //return;
+
+                    // wait, one more test: special handling for the memo
+                    // block while the timer is running.
+                    if (timerRunning) {
+                        if (browserEntry.Memo == priorLoadedBrowserEntry.Memo) {
+                            return;
+                        } else {
+                            // The timer is running and the memo has changed, so
+                            // please proceed to the save code below
+                        }
+                    } else {
+                        return;
+                    }
                 }
             }
 
@@ -604,8 +635,11 @@ namespace Timekeeper.Forms
             */
 
             // If we've made it this far, save the row
-            string Message = String.Format("Entry.Save(). Id = {0}, Entry Seconds = {1}, Prior Entry Seconds = {2}",
-                browserEntry.JournalId, browserEntry.Seconds, priorLoadedBrowserEntry.Seconds);
+            string Message = String.Format("Entry.Save(). Id = {0}, Memo = \"{1}\", Prior Memo = \"{2}\"",
+                browserEntry.JournalId, 
+                Common.Abbreviate(browserEntry.Memo, 30), 
+                Common.Abbreviate(priorLoadedBrowserEntry.Memo, 30)
+                );
             Timekeeper.Warn(Message);
             browserEntry.Save();
 
@@ -723,8 +757,9 @@ namespace Timekeeper.Forms
                 Browser_SetCreateState();
 
                 // Create browser objects
-                browserEntry = new Classes.Journal(Database);
-                //browserEntry.JournalId = 5000;
+                //browserEntry = new Classes.Journal(Database);
+                browserEntry = Entry;
+
                 priorLoadedBrowserEntry = new Classes.Journal(Database);
                 if (newBrowserEntry == null) {
                     newBrowserEntry = new Classes.Journal(Database);

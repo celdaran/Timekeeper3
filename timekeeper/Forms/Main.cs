@@ -56,7 +56,7 @@ namespace Timekeeper.Forms
         private Classes.Widgets Widgets;
 
         // current objects
-        private Classes.Journal currentEntry;
+        private Classes.Journal Entry;
         private Project currentProject;
         private Activity currentActivity;
         private TreeNode currentProjectNode;
@@ -798,6 +798,10 @@ namespace Timekeeper.Forms
             } else {
                 // override settings in persistent dialogs
                 // TODO: no more "persistent dialog boxes" -- that should have been a red flag.
+
+                // Save row, just in case
+                Browser_SaveRow(false);
+
                 e.Cancel = false;
             }
         }
