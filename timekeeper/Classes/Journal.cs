@@ -86,6 +86,13 @@ namespace Timekeeper.Classes
         // Primary Methods
         //---------------------------------------------------------------------
 
+        public void AdvanceIndex()
+        {
+            this.JournalIndex++;
+        }
+
+        //---------------------------------------------------------------------
+
         public bool Create()
         {
             try {
@@ -101,9 +108,9 @@ namespace Timekeeper.Classes
                 row["LastActivityId"] = this.ActivityId;
                 Data.Update("Project", row, "ProjectId", this.ProjectId);
 
-                // Increment the NextJournalIndex, now that we have a new row
+                // Update JournalIndex and NextJournalIndex
+                this.JournalIndex = this.NextJournalIndex;
                 this.NextJournalIndex++;
-                //this.JournalIndex = this.NextJournalIndex;
 
                 return true;
             }

@@ -1164,7 +1164,7 @@ namespace Timekeeper.Forms
             Entry.CategoryId = 1;
             Entry.Save();
             timerRunning = false;
-            ShortTimer.Enabled = false;
+            //ShortTimer.Enabled = false;
             //timerLastRunNotified = false;
 
             // Clear instances of current object
@@ -1220,6 +1220,7 @@ namespace Timekeeper.Forms
 
             // FIXME: stopping the timer != opening the browser
             Browser_SetupForStarting();
+            Entry.AdvanceIndex(); // FIXME: EXPERIMENTAL
         }
 
         private void Action_SwapPanes()
