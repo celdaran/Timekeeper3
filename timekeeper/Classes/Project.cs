@@ -6,7 +6,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class Project : TreeAttribute
+    class Project : Classes.TreeAttribute
     {
         private static string ProjectTableName = "Project";
         private static string ProjectIdColumnName = "ProjectId";
@@ -31,7 +31,7 @@ namespace Timekeeper.Classes
         public int Repoint(string externalProjectNo)
             // TODO: Revisit this method, especially this odd return value approach
         {
-            Projects Projects = new Projects(Data);
+            ProjectCollection Projects = new ProjectCollection(Data);
 
             if (Projects.ExternalProjectNoExists(externalProjectNo)) {
                 return 0;

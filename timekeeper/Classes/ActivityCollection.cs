@@ -4,19 +4,19 @@ using System.Text;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Classes
 {
-    class Activities : Classes.TreeAttributeCollection
+    class ActivityCollection : Classes.TreeAttributeCollection
     {
         //---------------------------------------------------------------------
         // Constructor
         //---------------------------------------------------------------------
 
-        public Activities(DBI data, string orderByClause)
+        public ActivityCollection(DBI data, string orderByClause)
             : base(data, "Activity", orderByClause)
         {}
 
-        public Activities(DBI data)
+        public ActivityCollection(DBI data)
             : this (data, "CreateTime")
         {}
 

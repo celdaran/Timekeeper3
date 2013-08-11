@@ -80,7 +80,7 @@ namespace Timekeeper
                 }
 
                 if (PreviousExternalProjectNo != ItemExternalProjectNo.Text) {
-                    Projects Projects = new Projects(this.Database);
+                    Classes.ProjectCollection Projects = new Classes.ProjectCollection(this.Database);
                     if (Projects.ExternalProjectNoExists(ItemExternalProjectNo.Text)) {
                         Messages += "External ID '" + ItemExternalProjectNo.Text + "' already exists." + Environment.NewLine;
                     }

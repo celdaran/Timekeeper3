@@ -413,8 +413,8 @@ namespace Timekeeper
             try
             {
                 // Grab a few handy objects
-                Projects Projects = new Projects(Database);
-                Activities Activities = new Activities(Database);
+                Classes.ProjectCollection Projects = new Classes.ProjectCollection(Database);
+                Classes.ActivityCollection Activities = new Classes.ActivityCollection(Database);
                 Classes.Notebook Notebook = new Classes.Notebook();
                 Classes.JournalEntries Entries = new Classes.JournalEntries(Database);
 

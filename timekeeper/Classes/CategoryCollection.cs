@@ -7,7 +7,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class Categories
+    class CategoryCollection
     {
         private DBI Database;
 
@@ -15,7 +15,7 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public Categories()
+        public CategoryCollection()
         {
             this.Database = Timekeeper.Database;
         }

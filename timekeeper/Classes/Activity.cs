@@ -6,7 +6,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class Activity : TreeAttribute
+    class Activity : Classes.TreeAttribute
     {
         private static string ActivityTableName = "Activity";
         private static string ActivityIdColumnName = "ActivityId";

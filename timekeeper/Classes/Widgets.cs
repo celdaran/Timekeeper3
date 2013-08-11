@@ -56,7 +56,7 @@ namespace Timekeeper.Classes
             string orderByClause = "SortOrderNo";
 
             // Instantiate Activities object
-            Projects Projects = new Projects(Database, orderByClause);
+            ProjectCollection Projects = new ProjectCollection(Database, orderByClause);
 
             // Iterate over Activities
             foreach (Project Project in Projects.Fetch(parentId, showHidden)) {
@@ -87,7 +87,7 @@ namespace Timekeeper.Classes
             string orderByClause = "SortOrderNo";
 
             // Instantiate Activities object
-            Activities Activities = new Activities(Database, orderByClause);
+            ActivityCollection Activities = new ActivityCollection(Database, orderByClause);
 
             // Iterate over Activities
             foreach (Activity Activity in Activities.Fetch(parentId, showHidden)) {
@@ -299,10 +299,10 @@ namespace Timekeeper.Classes
 
         private void ShowRootLines(TreeView tree)
         {
-            Activities Activities = new Activities(Database);
+            ActivityCollection Activities = new ActivityCollection(Database);
             tree.ShowRootLines = Activities.HasParents();
 
-            Projects Projects = new Projects(Database);
+            ProjectCollection Projects = new ProjectCollection(Database);
             tree.ShowRootLines = Projects.HasParents();
 
             // FIXME: this is very unfinished
@@ -319,7 +319,7 @@ namespace Timekeeper.Classes
                 // Add items from database
                 //----------------------------------------
 
-                Locations Locations = new Locations();
+                LocationCollection Locations = new LocationCollection();
                 List<IdObjectPair> Items = Locations.Fetch();
 
                 PopulateGenericComboBox(box, Items);
@@ -351,7 +351,7 @@ namespace Timekeeper.Classes
                 // Add items from database
                 //----------------------------------------
 
-                Categories Categories = new Categories();
+                CategoryCollection Categories = new CategoryCollection();
                 List<IdObjectPair> Items = Categories.Fetch();
 
                 PopulateGenericComboBox(box, Items);

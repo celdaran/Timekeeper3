@@ -1490,10 +1490,10 @@ namespace Timekeeper.Forms
 
         private void Action_TreeView_ShowRootLines()
         {
-            Projects Projects = new Projects(Database);
+            Classes.ProjectCollection Projects = new Classes.ProjectCollection(Database);
             ProjectTree.ShowRootLines = Projects.HasParents();
 
-            Activities Activities = new Activities(Database);
+            Classes.ActivityCollection Activities = new Classes.ActivityCollection(Database);
             ActivityTree.ShowRootLines = Activities.HasParents();
         }
 

@@ -326,7 +326,7 @@ namespace Timekeeper.Forms
             ItemList.Items.Clear();
 
             // Get Locations
-            Classes.Locations Locations = new Classes.Locations();
+            Classes.LocationCollection Locations = new Classes.LocationCollection();
             List<IdObjectPair> Items = Locations.Fetch(true);
 
             // Now Populate List
