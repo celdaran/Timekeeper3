@@ -101,7 +101,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void StatusBar_Update(Activity activity)
+        private void StatusBar_Update(Classes.Activity activity)
         {
             // Only called when the timer isn't running
             StatusBarItemTime.Text = "0:00:00";

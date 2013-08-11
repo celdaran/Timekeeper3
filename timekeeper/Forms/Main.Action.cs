@@ -26,7 +26,7 @@ namespace Timekeeper.Forms
         private void Action_ChangedProject()
         {
             // Get current project
-            Project project = (Project)ProjectTree.SelectedNode.Tag;
+            Classes.Project project = (Classes.Project)ProjectTree.SelectedNode.Tag;
 
             // Status bar updates?
             // (see below)
@@ -63,7 +63,7 @@ namespace Timekeeper.Forms
         private void Action_ChangedActivity()
         {
             // Get current activty
-            Activity Activity = (Activity)ActivityTree.SelectedNode.Tag;
+            Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
 
             // Update status bar
             if (timerRunning == false) {
@@ -951,7 +951,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_RepointItem(TreeNode node, Project project, string newExternalProjectNo)
+        private void Action_RepointItem(TreeNode node, Classes.Project project, string newExternalProjectNo)
         {
             int result = project.Repoint(newExternalProjectNo);
 
@@ -1111,8 +1111,8 @@ namespace Timekeeper.Forms
             // Grab instances of currently selected objects
             currentProjectNode = ProjectTree.SelectedNode;
             currentActivityNode = ActivityTree.SelectedNode;
-            currentProject = (Project)currentProjectNode.Tag;
-            currentActivity = (Activity)currentActivityNode.Tag;
+            currentProject = (Classes.Project)currentProjectNode.Tag;
+            currentActivity = (Classes.Activity)currentActivityNode.Tag;
             currentLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
             currentCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
 
@@ -1336,7 +1336,7 @@ namespace Timekeeper.Forms
                 } else {
                     Message = "You are dragging an item to a different tree. ";
                     Message += String.Format("Do you wish to convert this {0} to a {1}?", FromItem, ToItem);
-                    if (draggedItem.GetType() == typeof(Project)) {
+                    if (draggedItem.GetType() == typeof(Classes.Project)) {
                         Message += Environment.NewLine + Environment.NewLine + 
                             "Note that any External Project Number associated with this Project will be lost. This action cannot be undone.";
                     }
@@ -1407,10 +1407,10 @@ namespace Timekeeper.Forms
             if (CrossDragAccepted) {
 
                 // Conversion
-                if (draggedItem.GetType() == typeof(Project)) {
+                if (draggedItem.GetType() == typeof(Classes.Project)) {
 
                     // Create an Activity in the database
-                    Activity Activity = new Activity(Database);
+                    Classes.Activity Activity = new Classes.Activity(Database);
                     Activity.Copy(draggedItem);
                     Activity.Create();
 
@@ -1426,7 +1426,7 @@ namespace Timekeeper.Forms
                     }
                 } else {
                     // Create a Project in the database
-                    Project Project = new Project(Database);
+                    Classes.Project Project = new Classes.Project(Database);
                     Project.Copy(draggedItem);
                     Project.Create();
 

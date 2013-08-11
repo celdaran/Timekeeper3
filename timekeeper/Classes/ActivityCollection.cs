@@ -24,14 +24,14 @@ namespace Timekeeper
         // Public Methods
         //---------------------------------------------------------------------
 
-        public List<Activity> Fetch(long parentId, bool showHidden)
+        public List<Classes.Activity> Fetch(long parentId, bool showHidden)
         {
             Table Rows = base.GetItems(parentId, showHidden);
 
-            List<Activity> Activities = new List<Activity>();
+            List<Classes.Activity> Activities = new List<Classes.Activity>();
 
             foreach (Row Row in Rows) {
-                var Activity = new Activity(Data, Row["ActivityId"]);
+                var Activity = new Classes.Activity(Data, Row["ActivityId"]);
                 Activities.Add(Activity);
             }
 

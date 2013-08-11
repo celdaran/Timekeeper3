@@ -73,7 +73,7 @@ namespace Timekeeper
 
             if (this.Table == "Project") {
                 if (PreviousItemName != ItemName.Text) {
-                    Project Project = new Project(this.Database, ItemName.Text);
+                    Classes.Project Project = new Classes.Project(this.Database, ItemName.Text);
                     if (ItemName.Text == Project.Name) {
                         Messages += this.Table + " '" + ItemName.Text + "' already exists." + Environment.NewLine;
                     }
@@ -93,7 +93,7 @@ namespace Timekeeper
 
             if (this.Table == "Activity") {
                 if (PreviousItemName != ItemName.Text) {
-                    Activity Activity = new Activity(this.Database, ItemName.Text);
+                    Classes.Activity Activity = new Classes.Activity(this.Database, ItemName.Text);
                     if (ItemName.Text == Activity.Name) {
                         Messages += this.Table + " already exists." + Environment.NewLine;
                     }

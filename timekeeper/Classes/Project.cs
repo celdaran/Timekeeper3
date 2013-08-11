@@ -4,7 +4,7 @@ using System.Text;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Classes
 {
     class Project : Item
     {

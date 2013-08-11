@@ -301,8 +301,8 @@ namespace Timekeeper.Forms
             }
 
             // First translate some necessary data from the form 
-            Project Project = (Project)ProjectTree.SelectedNode.Tag;
-            Activity Activity = (Activity)ActivityTree.SelectedNode.Tag;
+            Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+            Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
             TimeSpan Delta = wStopTime.Value.Subtract(wStartTime.Value);
 
             // Update browserEntry with current form data
@@ -337,7 +337,7 @@ namespace Timekeeper.Forms
             }
             if ((ProjectNode == null) && (entry.JournalId != 0)) {
 
-                Project HiddenProject = new Project(Database, entry.ProjectName);
+                Classes.Project HiddenProject = new Classes.Project(Database, entry.ProjectName);
                 TreeNode HiddenNode = Widgets.AddHiddenProjectToTree(ProjectTree.Nodes, HiddenProject);
 
                 ProjectTree.SelectedNode = HiddenNode;
@@ -354,7 +354,7 @@ namespace Timekeeper.Forms
                 // If we didn't find the node, it's been hidden. So
                 // load it from the database and display it as hidden.
 
-                Activity HiddenActivity = new Activity(Database, entry.ActivityName);
+                Classes.Activity HiddenActivity = new Classes.Activity(Database, entry.ActivityName);
                 TreeNode HiddenNode = Widgets.AddHiddenActivityToTree(ActivityTree.Nodes, HiddenActivity);
 
                 ActivityTree.SelectedNode = HiddenNode;

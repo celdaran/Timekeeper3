@@ -24,9 +24,9 @@ namespace Timekeeper.Forms
             Dialog.Text = title;
 
             // Create an Item object
-            Project Project = null;
+            Classes.Project Project = null;
             if (TableName == "Project") {
-                Project = new Project(Database, tree.SelectedNode.Text);
+                Project = new Classes.Project(Database, tree.SelectedNode.Text);
             }
 
             // Previous values
@@ -330,7 +330,7 @@ namespace Timekeeper.Forms
             if (item.Type == Item.ItemType.Project) {
                 long LastActivityId = item.FollowedItemId;
                 if (LastActivityId > 0) {
-                    Activity Activity = new Activity(Database, LastActivityId);
+                    Classes.Activity Activity = new Classes.Activity(Database, LastActivityId);
                     properties.wLastItemName.Enabled = true;
                     properties.wLastItemName.Text = Activity.Name;
                     properties.wLastItemLabel.Text = "Last Activity:";
@@ -344,7 +344,7 @@ namespace Timekeeper.Forms
             } else {
                 long LastProjectId = item.FollowedItemId;
                 if (LastProjectId > 0) {
-                    Project Project = new Project(Database, LastProjectId);
+                    Classes.Project Project = new Classes.Project(Database, LastProjectId);
                     properties.wLastItemLabel.Text = "Last Project:";
                     properties.wLastItemName.Enabled = true;
                     properties.wLastItemName.Text = Project.Name;

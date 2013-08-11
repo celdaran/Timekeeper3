@@ -98,15 +98,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Categories.cs" />
+    <Compile Include="Classes\CategoryCollection.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Datatypes.cs" />
     <Compile Include="Classes\File.cs" />
     <Compile Include="Classes\File.Downgrade.cs" />
     <Compile Include="Classes\File.Upgrade.cs" />
     <Compile Include="Classes\FilterOptions.cs" />
+    <Compile Include="Classes\ListAttribute.cs" />
+    <Compile Include="Classes\ListAttributeCollection.cs" />
     <Compile Include="Classes\Location.cs" />
-    <Compile Include="Classes\Locations.cs" />
+    <Compile Include="Classes\LocationCollection.cs" />
     <Compile Include="Classes\Meta.cs" />
     <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\SystemData.cs" />
@@ -151,7 +153,7 @@
       <DependentUpon>UpgradeWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Classes\Activities.cs" />
+    <Compile Include="Classes\ActivityCollection.cs" />
     <Compile Include="Classes\Activity.cs" />
     <Compile Include="Classes\JournalEntries.cs" />
     <Compile Include="Classes\Journal.cs" />
@@ -159,7 +161,7 @@
     <Compile Include="Classes\TreeAttribute.cs" />
     <Compile Include="Classes\TreeAttributeCollection.cs" />
     <Compile Include="Classes\Project.cs" />
-    <Compile Include="Classes\Projects.cs" />
+    <Compile Include="Classes\ProjectCollection.cs" />
     <Compile Include="Classes\Timekeeper.cs" />
     <Compile Include="Forms\fAbout.cs">
       <SubType>Form</SubType>

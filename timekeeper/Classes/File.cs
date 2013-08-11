@@ -316,8 +316,8 @@ namespace Timekeeper
                 // Create Projects (new method)
                 foreach (XmlNode ProjectNode in Projects.ChildNodes) {
 
-                    Project Project = new Project(Database);
-                    Project ParentProject = new Project(Database, ProjectNode["parent"].InnerText);
+                    Classes.Project Project = new Classes.Project(Database);
+                    Classes.Project ParentProject = new Classes.Project(Database, ProjectNode["parent"].InnerText);
 
                     CreateItem(ProjectNode, (Item)Project, (Item)ParentProject);
                 }
@@ -325,8 +325,8 @@ namespace Timekeeper
                 // Create Activities (new method)
                 foreach (XmlNode ActivityNode in Activities.ChildNodes) {
 
-                    Activity Activity = new Activity(Database);
-                    Activity ParentActivity = new Activity(Database, ActivityNode["parent"].InnerText);
+                    Classes.Activity Activity = new Classes.Activity(Database);
+                    Classes.Activity ParentActivity = new Classes.Activity(Database, ActivityNode["parent"].InnerText);
 
                     CreateItem(ActivityNode, (Item)Activity, (Item)ParentActivity);
                 }

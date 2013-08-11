@@ -57,8 +57,8 @@ namespace Timekeeper.Forms
 
         // current objects
         private Classes.Journal Entry;
-        private Project currentProject;
-        private Activity currentActivity;
+        private Classes.Project currentProject;
+        private Classes.Activity currentActivity;
         private Classes.Location currentLocation;
         private Classes.Category currentCategory;
 
@@ -161,14 +161,14 @@ namespace Timekeeper.Forms
         // Action | New Project
         private void MenuActionNewProject_Click(object sender, EventArgs e)
         {
-            Project project = new Project(Database);
+            Classes.Project project = new Classes.Project(Database);
             Dialog_NewItem(ProjectTree, "New Project", false, (Item)project, Timekeeper.IMG_PROJECT);
         }
 
         // Action | New Project Folder
         private void MenuActionNewProjectFolder_Click(object sender, EventArgs e)
         {
-            Project project = new Project(Database);
+            Classes.Project project = new Classes.Project(Database);
             Dialog_NewItem(ProjectTree, "New Project Folder", true, (Item)project, Timekeeper.IMG_PROJECT);
         }
 
@@ -176,8 +176,8 @@ namespace Timekeeper.Forms
         private void MenuActionEditProject_Click(object sender, EventArgs e)
         {
             if (ProjectTree.SelectedNode != null) {
-                Project project;
-                project = new Project(Database, ProjectTree.SelectedNode.Text);
+                Classes.Project project;
+                project = new Classes.Project(Database, ProjectTree.SelectedNode.Text);
                 Dialog_EditItem(ProjectTree, "Edit Project", (Item)project);
             }
         }
@@ -211,14 +211,14 @@ namespace Timekeeper.Forms
         // Action | New Activity
         private void MenuActionNewActivity_Click(object sender, EventArgs e)
         {
-            Activity Activity = new Activity(Database);
+            Classes.Activity Activity = new Classes.Activity(Database);
             Dialog_NewItem(ActivityTree, "New Activity", false, (Item)Activity, Timekeeper.IMG_ACTIVITY);
         }
 
         // Action | New Activity Folder
         private void MenuActionNewActivityFolder_Click(object sender, EventArgs e)
         {
-            Activity Activity = new Activity(Database);
+            Classes.Activity Activity = new Classes.Activity(Database);
             Dialog_NewItem(ActivityTree, "New Activity Folder", true, (Item)Activity, Timekeeper.IMG_ACTIVITY);
         }
 
@@ -226,7 +226,7 @@ namespace Timekeeper.Forms
         private void MenuActionEdit_Click(object sender, EventArgs e)
         {
             if (ActivityTree.SelectedNode != null) {
-                Activity Activity = new Activity(Database, ActivityTree.SelectedNode.Text);
+                Classes.Activity Activity = new Classes.Activity(Database, ActivityTree.SelectedNode.Text);
                 Dialog_EditItem(ActivityTree, "Edit Activity", (Item)Activity);
             }
         }
@@ -477,7 +477,7 @@ namespace Timekeeper.Forms
         private void PopupMenuProjectProperties_Click(object sender, EventArgs e)
         {
             if (ProjectTree.SelectedNode != null) {
-                Project item = (Project)ProjectTree.SelectedNode.Tag;
+                Classes.Project item = (Classes.Project)ProjectTree.SelectedNode.Tag;
                 Dialog_Properties((Item)item);
             }
         }
@@ -512,7 +512,7 @@ namespace Timekeeper.Forms
         private void PopupMenuActivityProperties_Click(object sender, EventArgs e)
         {
             if (ActivityTree.SelectedNode != null) {
-                Activity item = (Activity)ActivityTree.SelectedNode.Tag;
+                Classes.Activity item = (Classes.Activity)ActivityTree.SelectedNode.Tag;
                 Dialog_Properties((Item)item);
             }
         }
@@ -856,7 +856,7 @@ namespace Timekeeper.Forms
         {
             TreeNode SelectedNode = e.Node;
             if (SelectedNode != null) {
-                Project Project = (Project)SelectedNode.Tag;
+                Classes.Project Project = (Classes.Project)SelectedNode.Tag;
                 if (!Project.IsFolderOpened) {
                     Project.OpenFolder();
                 }
@@ -867,7 +867,7 @@ namespace Timekeeper.Forms
         {
             TreeNode SelectedNode = e.Node;
             if (SelectedNode != null) {
-                Project Project = (Project)SelectedNode.Tag;
+                Classes.Project Project = (Classes.Project)SelectedNode.Tag;
                 if (Project.IsFolderOpened) {
                     Project.CloseFolder();
                 }
@@ -878,7 +878,7 @@ namespace Timekeeper.Forms
         {
             TreeNode SelectedNode = e.Node;
             if (SelectedNode != null) {
-                Activity Activity = (Activity)SelectedNode.Tag;
+                Classes.Activity Activity = (Classes.Activity)SelectedNode.Tag;
                 if (!Activity.IsFolderOpened) {
                     Activity.OpenFolder();
                 }
@@ -889,7 +889,7 @@ namespace Timekeeper.Forms
         {
             TreeNode SelectedNode = e.Node;
             if (SelectedNode != null) {
-                Activity Activity = (Activity)SelectedNode.Tag;
+                Classes.Activity Activity = (Classes.Activity)SelectedNode.Tag;
                 if (Activity.IsFolderOpened) {
                     Activity.CloseFolder();
                 }
