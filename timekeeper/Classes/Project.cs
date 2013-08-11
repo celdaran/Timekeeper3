@@ -6,7 +6,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class Project : Item
+    class Project : TreeAttribute
     {
         private static string ProjectTableName = "Project";
         private static string ProjectIdColumnName = "ProjectId";

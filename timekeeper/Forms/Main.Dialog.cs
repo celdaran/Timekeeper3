@@ -15,7 +15,7 @@ namespace Timekeeper.Forms
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
 
-        private void Dialog_EditItem(TreeView tree, string title, Item item)
+        private void Dialog_EditItem(TreeView tree, string title, Classes.TreeAttribute item)
         {
             string TableName = (string)tree.Tag;
             ItemEditor Dialog = new ItemEditor(Database, TableName);
@@ -147,7 +147,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Dialog_NewItem(TreeView tree, string title, bool isFolder, Item item, int imageIndex)
+        private void Dialog_NewItem(TreeView tree, string title, bool isFolder, Classes.TreeAttribute item, int imageIndex)
         {
             string TableName = (string)tree.Tag;
             ItemEditor Dialog = new ItemEditor(Database, TableName);
@@ -159,7 +159,7 @@ namespace Timekeeper.Forms
             int ParentIndex = 0;
             if (tree.SelectedNode != null) {
 
-                Item SelectedItem = (Item)tree.SelectedNode.Tag;
+                Classes.TreeAttribute SelectedItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
 
                 if (SelectedItem.IsFolder) {
                     ParentIndex = Dialog.ItemParent.FindString(tree.SelectedNode.Text);
@@ -285,14 +285,14 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Dialog_Properties(Item item)
+        private void Dialog_Properties(Classes.TreeAttribute item)
         {
             // Set date range for time calculations
             string From = DateTime.Now.ToString(Common.DATE_FORMAT + " 00:00:00");
             string To = DateTime.Now.ToString(Common.DATE_FORMAT + " 23:59:59");
 
             // Determine the item type
-            string ItemType = item.Type == Item.ItemType.Project ? "Project" : "Activity";
+            string ItemType = item.Type == Classes.TreeAttribute.ItemType.Project ? "Project" : "Activity";
             if (item.IsFolder) ItemType += " Folder";
 
             // Set dialog box title
@@ -327,7 +327,7 @@ namespace Timekeeper.Forms
             if (item.IsDeleted)
                 properties.wDeletedTime.Text = item.DeletedTime.ToString(Common.LOCAL_DATETIME_FORMAT);
 
-            if (item.Type == Item.ItemType.Project) {
+            if (item.Type == Classes.TreeAttribute.ItemType.Project) {
                 long LastActivityId = item.FollowedItemId;
                 if (LastActivityId > 0) {
                     Classes.Activity Activity = new Classes.Activity(Database, LastActivityId);

@@ -162,14 +162,14 @@ namespace Timekeeper.Forms
         private void MenuActionNewProject_Click(object sender, EventArgs e)
         {
             Classes.Project project = new Classes.Project(Database);
-            Dialog_NewItem(ProjectTree, "New Project", false, (Item)project, Timekeeper.IMG_PROJECT);
+            Dialog_NewItem(ProjectTree, "New Project", false, (Classes.TreeAttribute)project, Timekeeper.IMG_PROJECT);
         }
 
         // Action | New Project Folder
         private void MenuActionNewProjectFolder_Click(object sender, EventArgs e)
         {
             Classes.Project project = new Classes.Project(Database);
-            Dialog_NewItem(ProjectTree, "New Project Folder", true, (Item)project, Timekeeper.IMG_PROJECT);
+            Dialog_NewItem(ProjectTree, "New Project Folder", true, (Classes.TreeAttribute)project, Timekeeper.IMG_PROJECT);
         }
 
         // Action | Edit Project
@@ -178,7 +178,7 @@ namespace Timekeeper.Forms
             if (ProjectTree.SelectedNode != null) {
                 Classes.Project project;
                 project = new Classes.Project(Database, ProjectTree.SelectedNode.Text);
-                Dialog_EditItem(ProjectTree, "Edit Project", (Item)project);
+                Dialog_EditItem(ProjectTree, "Edit Project", (Classes.TreeAttribute)project);
             }
         }
 
@@ -212,14 +212,14 @@ namespace Timekeeper.Forms
         private void MenuActionNewActivity_Click(object sender, EventArgs e)
         {
             Classes.Activity Activity = new Classes.Activity(Database);
-            Dialog_NewItem(ActivityTree, "New Activity", false, (Item)Activity, Timekeeper.IMG_ACTIVITY);
+            Dialog_NewItem(ActivityTree, "New Activity", false, (Classes.TreeAttribute)Activity, Timekeeper.IMG_ACTIVITY);
         }
 
         // Action | New Activity Folder
         private void MenuActionNewActivityFolder_Click(object sender, EventArgs e)
         {
             Classes.Activity Activity = new Classes.Activity(Database);
-            Dialog_NewItem(ActivityTree, "New Activity Folder", true, (Item)Activity, Timekeeper.IMG_ACTIVITY);
+            Dialog_NewItem(ActivityTree, "New Activity Folder", true, (Classes.TreeAttribute)Activity, Timekeeper.IMG_ACTIVITY);
         }
 
         // Action | Edit Activity
@@ -227,7 +227,7 @@ namespace Timekeeper.Forms
         {
             if (ActivityTree.SelectedNode != null) {
                 Classes.Activity Activity = new Classes.Activity(Database, ActivityTree.SelectedNode.Text);
-                Dialog_EditItem(ActivityTree, "Edit Activity", (Item)Activity);
+                Dialog_EditItem(ActivityTree, "Edit Activity", (Classes.TreeAttribute)Activity);
             }
         }
 
@@ -478,7 +478,7 @@ namespace Timekeeper.Forms
         {
             if (ProjectTree.SelectedNode != null) {
                 Classes.Project item = (Classes.Project)ProjectTree.SelectedNode.Tag;
-                Dialog_Properties((Item)item);
+                Dialog_Properties((Classes.TreeAttribute)item);
             }
         }
 
@@ -513,7 +513,7 @@ namespace Timekeeper.Forms
         {
             if (ActivityTree.SelectedNode != null) {
                 Classes.Activity item = (Classes.Activity)ActivityTree.SelectedNode.Tag;
-                Dialog_Properties((Item)item);
+                Dialog_Properties((Classes.TreeAttribute)item);
             }
         }
 
@@ -718,7 +718,7 @@ namespace Timekeeper.Forms
         private void ProjectTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             TreeNode node  = ProjectTree.SelectedNode;
-            Item item = (Item)node.Tag;
+            Classes.TreeAttribute item = (Classes.TreeAttribute)node.Tag;
             e.CancelEdit = !Action_RenameItem(node, item, e.Label);
         }
 
@@ -727,7 +727,7 @@ namespace Timekeeper.Forms
         private void ActivityTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             TreeNode node  = ActivityTree.SelectedNode;
-            Item item = (Item)node.Tag;
+            Classes.TreeAttribute item = (Classes.TreeAttribute)node.Tag;
             e.CancelEdit = !Action_RenameItem(node, item, e.Label);
         }
 

@@ -277,7 +277,7 @@ namespace Timekeeper.Forms
             List<long> CheckedNodes = new List<long>();
 
             foreach (TreeNode Node in nodes) {
-                Item Item = (Item)Node.Tag;
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)Node.Tag;
                 if (!Item.IsFolder && (Node.Checked || ancestorChecked)) {
                     CheckedNodes.Add(Item.ItemId);
                 }
@@ -308,7 +308,7 @@ namespace Timekeeper.Forms
             List<long> CheckedNodes = new List<long>();
 
             foreach (TreeNode Node in nodes) {
-                Item Item = (Item)Node.Tag;
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)Node.Tag;
                 if (Node.Checked) {
                     CheckedNodes.Add(Item.ItemId);
                 }
@@ -345,7 +345,7 @@ namespace Timekeeper.Forms
         private void SetSelectedValues(TreeNodeCollection nodes, List<long> checkedNodes)
         {
             foreach (TreeNode Node in nodes) {
-                Item Item = (Item)Node.Tag;
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)Node.Tag;
 
                 if (checkedNodes.IndexOf(Item.ItemId) >= 0) {
                     Node.Checked = true;

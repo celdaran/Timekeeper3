@@ -319,7 +319,7 @@ namespace Timekeeper
                     Classes.Project Project = new Classes.Project(Database);
                     Classes.Project ParentProject = new Classes.Project(Database, ProjectNode["parent"].InnerText);
 
-                    CreateItem(ProjectNode, (Item)Project, (Item)ParentProject);
+                    CreateItem(ProjectNode, (Classes.TreeAttribute)Project, (Classes.TreeAttribute)ParentProject);
                 }
 
                 // Create Activities (new method)
@@ -328,7 +328,7 @@ namespace Timekeeper
                     Classes.Activity Activity = new Classes.Activity(Database);
                     Classes.Activity ParentActivity = new Classes.Activity(Database, ActivityNode["parent"].InnerText);
 
-                    CreateItem(ActivityNode, (Item)Activity, (Item)ParentActivity);
+                    CreateItem(ActivityNode, (Classes.TreeAttribute)Activity, (Classes.TreeAttribute)ParentActivity);
                 }
             }
             catch (Exception x) {
@@ -384,7 +384,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        private void CreateItem(XmlNode itemNode, Item item, Item parentItem)
+        private void CreateItem(XmlNode itemNode, Classes.TreeAttribute item, Classes.TreeAttribute parentItem)
         {
             item.Name = itemNode["name"].InnerText;
             item.Description = itemNode["description"].InnerText;

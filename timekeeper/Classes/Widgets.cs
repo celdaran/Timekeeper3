@@ -114,7 +114,7 @@ namespace Timekeeper.Classes
         private void ExpandTree(TreeNodeCollection tree)
         {
             foreach (TreeNode Node in tree) {
-                Item Item = (Item)Node.Tag;
+                TreeAttribute Item = (TreeAttribute)Node.Tag;
                 if (Item.IsFolderOpened) {
                     if (!Node.IsExpanded) {
                         Node.Expand();
@@ -128,7 +128,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        private TreeNode AddItemToTree(TreeNodeCollection tree, TreeNode parentNode, Item item, int imageIndex)
+        private TreeNode AddItemToTree(TreeNodeCollection tree, TreeNode parentNode, TreeAttribute item, int imageIndex)
         {
             TreeNode Node = new TreeNode();
             Node.Tag = item;
@@ -220,7 +220,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public int CreateTreeItem(TreeNodeCollection tree, Item item, string parentName, int imageIndex)
+        public int CreateTreeItem(TreeNodeCollection tree, TreeAttribute item, string parentName, int imageIndex)
         {
             TreeNode ParentNode = null;
             item.ParentId = 0;
@@ -228,7 +228,7 @@ namespace Timekeeper.Classes
             if (parentName != "(Top Level)") {
                 ParentNode = FindTreeNode(tree, parentName);
                 if (ParentNode != null) {
-                    Item parentItem = (Item)ParentNode.Tag;
+                    TreeAttribute parentItem = (TreeAttribute)ParentNode.Tag;
                     item.ParentId = parentItem.ItemId;
                 } else {
                     return TREES_ERROR_CREATING_ITEM;
@@ -280,7 +280,7 @@ namespace Timekeeper.Classes
             TreeNode FoundNode = null;
 
             foreach (TreeNode Node in nodes) {
-                Item item = (Item)Node.Tag;
+                TreeAttribute item = (TreeAttribute)Node.Tag;
 
                 if (item.ItemId == itemId) {
                     FoundNode = Node;

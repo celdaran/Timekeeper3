@@ -4,9 +4,9 @@ using System.Text;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Classes
 {
-    class Item
+    class TreeAttribute
     {
         //---------------------------------------------------------------------
         // Public Properties
@@ -57,7 +57,7 @@ namespace Timekeeper
         // Constructors
         //---------------------------------------------------------------------
 
-        public Item(DBI data, string tableName, string idColumnName)
+        public TreeAttribute(DBI data, string tableName, string idColumnName)
         {
             this.Data = data;
             this.TableName = tableName;
@@ -73,7 +73,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public Item(DBI data, long itemId, string tableName, string idColumnName)
+        public TreeAttribute(DBI data, long itemId, string tableName, string idColumnName)
             : this(data, tableName, idColumnName)
         {
             Load(itemId);
@@ -81,7 +81,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public Item(DBI data, string itemName, string tableName, string idColumnName)
+        public TreeAttribute(DBI data, string itemName, string tableName, string idColumnName)
             : this(data, tableName, idColumnName)
         {
             // fetch row from db
@@ -247,7 +247,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public void Copy(Item source)
+        public void Copy(TreeAttribute source)
         {
             this.ItemId = 0;
             this.Name = source.Name;
@@ -526,7 +526,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public int Reparent(Item node)
+        public int Reparent(TreeAttribute node)
         {
             return this.Reparent(node.ItemId);
         }

@@ -265,7 +265,7 @@ namespace Timekeeper.Forms
             }
 
             // Remove item from the database
-            Item item = (Item)tree.SelectedNode.Tag;
+            Classes.TreeAttribute item = (Classes.TreeAttribute)tree.SelectedNode.Tag;
             long result = item.Delete();
 
             if (result == 0) {
@@ -632,7 +632,7 @@ namespace Timekeeper.Forms
         private void Action_HideItem(TreeView tree, bool viewingHiddenItems)
         {
             // Hide in the database
-            Item Item = (Item)tree.SelectedNode.Tag;
+            Classes.TreeAttribute Item = (Classes.TreeAttribute)tree.SelectedNode.Tag;
 
             if (Item.Hide() == 0) {
                 Common.Warn("There was a problem hiding the item.");
@@ -661,7 +661,7 @@ namespace Timekeeper.Forms
         private void Action_UnhideItem(TreeView tree)
         {
             // Unhide in the database
-            Item item = (Item)tree.SelectedNode.Tag;
+            Classes.TreeAttribute item = (Classes.TreeAttribute)tree.SelectedNode.Tag;
             long result = item.Unhide();
 
             if (result == 0) {
@@ -676,7 +676,7 @@ namespace Timekeeper.Forms
                 tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
             } else {
                 int Icon = Timekeeper.IMG_PROJECT;
-                if (item.Type == Item.ItemType.Activity) {
+                if (item.Type == Classes.TreeAttribute.ItemType.Activity) {
                     Icon = Timekeeper.IMG_ACTIVITY;
                 }
                 tree.SelectedNode.ImageIndex = Icon;
@@ -884,7 +884,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_RedescribeItem(TreeNode node, Item item, string newDescription)
+        private void Action_RedescribeItem(TreeNode node, Classes.TreeAttribute item, string newDescription)
         {
             int result = item.Redescribe(newDescription);
             if (result == Timekeeper.SUCCESS) {
@@ -897,13 +897,13 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private bool Action_RenameItem(TreeNode node, Item item, string newName)
+        private bool Action_RenameItem(TreeNode node, Classes.TreeAttribute item, string newName)
         {
             int result = item.Rename(newName);
             if (result == Timekeeper.SUCCESS) {
                 node.Text = item.Name;
                 return true;
-            } else if (result == Item.ERR_RENAME_EXISTS) {
+            } else if (result == Classes.TreeAttribute.ERR_RENAME_EXISTS) {
                 Common.Warn("An item with that name already exists.");
                 return false;
             } else if (result == Timekeeper.FAILURE) {
@@ -917,19 +917,19 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_ReparentItem(TreeView tree, Item item, string parentText)
+        private void Action_ReparentItem(TreeView tree, Classes.TreeAttribute item, string parentText)
         {
             TreeNode ParentNode = Widgets.FindTreeNode(tree.Nodes, parentText);
 
             if (ParentNode == null) {
                 item.Reparent(0);
             } else {
-                Item parentItem = (Item)ParentNode.Tag;
+                Classes.TreeAttribute parentItem = (Classes.TreeAttribute)ParentNode.Tag;
                 if (item.IsDescendentOf(parentItem.ItemId)) {
                     Common.Warn("Item renamed, but not reparented. Cannot reparent to a descendent.");
                     return;
                 }
-                item.Reparent((Item)ParentNode.Tag);
+                item.Reparent((Classes.TreeAttribute)ParentNode.Tag);
             }
 
             // and reload
@@ -1320,7 +1320,7 @@ namespace Timekeeper.Forms
             TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
 
             // Get the Timekeeper Item of the node that was dragged.
-            Item draggedItem = (Item)draggedNode.Tag;
+            Classes.TreeAttribute draggedItem = (Classes.TreeAttribute)draggedNode.Tag;
 
             // Cross-tree dragging warning
             bool CrossDragAccepted = false;
@@ -1357,7 +1357,7 @@ namespace Timekeeper.Forms
             if (targetNode == null) {
                 DropAllowed = true;
             } else {
-                Item targetItem = (Item)targetNode.Tag;
+                Classes.TreeAttribute targetItem = (Classes.TreeAttribute)targetNode.Tag;
                 if (targetItem.IsFolder) {
                     DropAllowed = true;
                 }
@@ -1376,7 +1376,7 @@ namespace Timekeeper.Forms
                         targetNode.Nodes.Add(draggedNode);
 
                         // Update the database
-                        Item targetItem = (Item)targetNode.Tag;
+                        Classes.TreeAttribute targetItem = (Classes.TreeAttribute)targetNode.Tag;
                         draggedItem.Reparent(targetItem.ItemId);
 
                         // Expand the node at the location 
@@ -1397,7 +1397,7 @@ namespace Timekeeper.Forms
 
                 long Index = 1;
                 foreach (TreeNode node in Parent.Nodes) {
-                    Item Item = (Item)node.Tag;
+                    Classes.TreeAttribute Item = (Classes.TreeAttribute)node.Tag;
                     Item.Reorder(Index);
                     Index++;
                 }
@@ -1414,7 +1414,7 @@ namespace Timekeeper.Forms
                     Activity.Copy(draggedItem);
                     Activity.Create();
 
-                    draggedNode.Tag = (Item)Activity;
+                    draggedNode.Tag = (Classes.TreeAttribute)Activity;
 
                     // Update the UI
                     if (Activity.IsHidden) {
@@ -1430,7 +1430,7 @@ namespace Timekeeper.Forms
                     Project.Copy(draggedItem);
                     Project.Create();
 
-                    draggedNode.Tag = (Item)Project;
+                    draggedNode.Tag = (Classes.TreeAttribute)Project;
 
                     // Update the UI
                     if (Project.IsHidden) {
@@ -1476,8 +1476,8 @@ namespace Timekeeper.Forms
             if (node2 == null) {
                 return false;
             } else {
-                Item draggedItem = (Item)node1.Tag;
-                Item targetItem = (Item)node2.Tag;
+                Classes.TreeAttribute draggedItem = (Classes.TreeAttribute)node1.Tag;
+                Classes.TreeAttribute targetItem = (Classes.TreeAttribute)node2.Tag;
                 if (draggedItem.ParentId == targetItem.ParentId) {
                     return true;
                 } else {
@@ -1503,7 +1503,7 @@ namespace Timekeeper.Forms
         {
             // unified
             if (calendar != null) {
-                Item CurrentItem = (Item)tree.SelectedNode.Tag;
+                Classes.TreeAttribute CurrentItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
                 DateTime LastUsed = CurrentItem.DateLastUsed();
 
                 calendar.wCalendar.TodayDate = LastUsed;
