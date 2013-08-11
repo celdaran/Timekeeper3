@@ -390,10 +390,8 @@
         #endregion
 
         private System.Windows.Forms.ListBox ItemList;
-        private System.Windows.Forms.ComboBox LocationTimeZone;
         private System.Windows.Forms.TextBox LocationDescription;
         private System.Windows.Forms.TextBox LocationName;
-        private System.Windows.Forms.Label LocationTimeZoneLabel;
         private System.Windows.Forms.Label LocationDescriptionLabel;
         private System.Windows.Forms.Label LocationNameLabel;
         private System.Windows.Forms.CheckBox LocationHiddenCheckBox;
@@ -416,5 +414,7 @@
         private System.Windows.Forms.TextBox LocationHiddenTime;
         private System.Windows.Forms.Button AcceptDialogButton;
         private System.Windows.Forms.ToolStripButton SaveItemButton;
+        protected System.Windows.Forms.ComboBox LocationTimeZone;
+        protected System.Windows.Forms.Label LocationTimeZoneLabel;
     }
 }

@@ -329,7 +329,7 @@ namespace Timekeeper.Classes
                 //----------------------------------------
 
                 Location Location = new Location();
-                Location.LocationId = -1;
+                Location.Id = -1;
                 Location.Name = "(Manage Entries...)";
 
                 IdObjectPair NewEntry = new IdObjectPair(-1, Location);
@@ -361,7 +361,7 @@ namespace Timekeeper.Classes
                 //----------------------------------------
 
                 Category Category = new Category();
-                Category.CategoryId = -1;
+                Category.Id = -1;
                 Category.Name = "(Manage Entries...)";
 
                 IdObjectPair NewEntry = new IdObjectPair(-1, Category);

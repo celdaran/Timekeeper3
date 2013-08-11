@@ -7,7 +7,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class LocationCollection
+    class LocationCollection : Classes.ListAttributeCollection
     {
         private DBI Database;
 
@@ -15,9 +15,8 @@ namespace Timekeeper.Classes
         // Constructor
         //----------------------------------------------------------------------
 
-        public LocationCollection()
+        public LocationCollection() : base("Location")
         {
-            this.Database = Timekeeper.Database;
         }
 
         //----------------------------------------------------------------------
@@ -33,22 +32,14 @@ namespace Timekeeper.Classes
 
         public List<IdObjectPair> Fetch(bool includeHidden)
         {
+            Table Locations = base.GetItems(includeHidden);
+
             List<IdObjectPair> Values = new List<IdObjectPair>();
 
-            try {
-                string Where = "IsDeleted <> 1";
-                       Where += includeHidden ? "" : " AND IsHidden <> 1";
-                string Query = String.Format(@"SELECT LocationId FROM Location WHERE {0} ORDER BY SortOrderNo, Name", Where);
-                Table Rows = Database.Select(Query);
-
-                foreach (Row Row in Rows) {
-                    Location Location = new Location(Row["LocationId"]);
-                    IdObjectPair Pair = new IdObjectPair((int)Row["LocationId"], Location);
-                    Values.Add(Pair);
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
+            foreach (Row Row in Locations) {
+                Location Location = new Location(Row["LocationId"]);
+                IdObjectPair Pair = new IdObjectPair((int)Row["LocationId"], Location);
+                Values.Add(Pair);
             }
 
             return Values;

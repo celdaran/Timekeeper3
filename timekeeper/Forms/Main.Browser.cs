@@ -319,11 +319,11 @@ namespace Timekeeper.Forms
             // Location & Category support
             if (wLocation.SelectedIndex > -1) {
                 Classes.Location Location = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
-                entry.LocationId = Location.LocationId;
+                entry.LocationId = Location.Id;
             }
             if (wCategory.SelectedIndex > -1) {
                 Classes.Category Category = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
-                entry.CategoryId = Category.CategoryId;
+                entry.CategoryId = Category.Id;
             }
         }
 
@@ -380,9 +380,10 @@ namespace Timekeeper.Forms
                 wLocation.SelectedIndex = -1;
             }
 
+            // FIXME: MORE COPY/PASTE CODE.  :(
             if (entry.CategoryId > 0) {
                 Classes.Category Category = new Classes.Category(entry.CategoryId);
-                if (Category.Exists) {
+                if (Category.Name != null) {
                     int CategoryIndex = wCategory.FindString(Category.Name);
                     wCategory.SelectedIndex = CategoryIndex;
                 } else {

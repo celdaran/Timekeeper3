@@ -113,6 +113,12 @@
     <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\SystemData.cs" />
     <Compile Include="Classes\Widgets.cs" />
+    <Compile Include="Forms\Category.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Category.Designer.cs">
+      <DependentUpon>Category.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Controls\DateRangePicker.cs">
       <SubType>UserControl</SubType>
     </Compile>

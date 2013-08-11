@@ -105,7 +105,7 @@ namespace Timekeeper.Forms
                 IdObjectPair Item = (IdObjectPair)wLocation.SelectedItem;
                 Classes.Location Location = (Classes.Location)Item.Object;
 
-                if (Location.LocationId == -1) {
+                if (Location.Id == -1) {
                     // Display Management Dialog box
                     Forms.Location Dialog = new Forms.Location();
                     Dialog.ShowDialog(this);
@@ -140,10 +140,9 @@ namespace Timekeeper.Forms
                 IdObjectPair Item = (IdObjectPair)wCategory.SelectedItem;
                 Classes.Category Category = (Classes.Category)Item.Object;
 
-                if (Category.CategoryId == -1) {
-                    Forms.Location Dialog = new Forms.Location();
+                if (Category.Id == -1) {
+                    Forms.Category Dialog = new Forms.Category();
                     Dialog.ShowDialog(this);
-                    //Common.Info("Create Category Dialog Box Goes Here");
                 }
             }
         }
@@ -1134,8 +1133,8 @@ namespace Timekeeper.Forms
             Entry.Seconds = 0; // default to zero
             Entry.Memo = wMemo.Text;
             Entry.IsLocked = true;
-            Entry.LocationId = currentLocation.LocationId;
-            Entry.CategoryId = currentCategory.CategoryId;
+            Entry.LocationId = currentLocation.Id;
+            Entry.CategoryId = currentCategory.Id;
             if (!Entry.Create()) {
                 Common.Warn("There was an error starting the timer.");
                 return;
@@ -1226,8 +1225,8 @@ namespace Timekeeper.Forms
             Entry.Seconds = currentActivity.StopTiming(wStopTime.Value);  // FIXME: wait, whut? currentActivity?
             Entry.Memo = wMemo.Text;
             Entry.IsLocked = false;
-            Entry.LocationId = currentLocation.LocationId;
-            Entry.CategoryId = currentCategory.CategoryId;
+            Entry.LocationId = currentLocation.Id;
+            Entry.CategoryId = currentCategory.Id;
             Entry.Save();
             timerRunning = false;
             //ShortTimer.Enabled = false;
