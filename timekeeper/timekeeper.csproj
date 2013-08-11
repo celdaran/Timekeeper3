@@ -156,8 +156,8 @@
     <Compile Include="Classes\JournalEntries.cs" />
     <Compile Include="Classes\Journal.cs" />
     <Compile Include="Classes\Notebook.cs" />
-    <Compile Include="Classes\Item.cs" />
-    <Compile Include="Classes\Items.cs" />
+    <Compile Include="Classes\TreeAttribute.cs" />
+    <Compile Include="Classes\TreeAttributeCollection.cs" />
     <Compile Include="Classes\Project.cs" />
     <Compile Include="Classes\Projects.cs" />
     <Compile Include="Classes\Timekeeper.cs" />

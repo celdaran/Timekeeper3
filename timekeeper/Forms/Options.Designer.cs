@@ -57,6 +57,8 @@ namespace Timekeeper.Forms
             this.wViewElapsedCurrent = new System.Windows.Forms.CheckBox();
             this.tabBehavior = new System.Windows.Forms.TabPage();
             this.wGroupTimer = new System.Windows.Forms.GroupBox();
+            this.wTitleBarTemplate = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.wShowCurrent = new System.Windows.Forms.RadioButton();
             this.wShowTodayAll = new System.Windows.Forms.RadioButton();
             this.wShowToday = new System.Windows.Forms.RadioButton();
@@ -88,8 +90,6 @@ namespace Timekeeper.Forms
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.wSQLtracing = new System.Windows.Forms.CheckBox();
             this.wTestMode = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.wTitleBarTemplate = new System.Windows.Forms.TextBox();
             this.wTabs.SuspendLayout();
             this.tabInterface.SuspendLayout();
             this.wGroupLayout.SuspendLayout();
@@ -194,10 +194,13 @@ namespace Timekeeper.Forms
             // 
             // wTabs
             // 
+            this.wTabs.Alignment = System.Windows.Forms.TabAlignment.Left;
             this.wTabs.Controls.Add(this.tabInterface);
             this.wTabs.Controls.Add(this.tabBehavior);
             this.wTabs.Controls.Add(this.tabKeyboard);
+            this.wTabs.HotTrack = true;
             this.wTabs.Location = new System.Drawing.Point(12, 12);
+            this.wTabs.Multiline = true;
             this.wTabs.Name = "wTabs";
             this.wTabs.SelectedIndex = 0;
             this.wTabs.Size = new System.Drawing.Size(550, 279);
@@ -207,10 +210,10 @@ namespace Timekeeper.Forms
             // 
             this.tabInterface.Controls.Add(this.wGroupLayout);
             this.tabInterface.Controls.Add(this.wGroupView);
-            this.tabInterface.Location = new System.Drawing.Point(4, 22);
+            this.tabInterface.Location = new System.Drawing.Point(23, 4);
             this.tabInterface.Name = "tabInterface";
             this.tabInterface.Padding = new System.Windows.Forms.Padding(3);
-            this.tabInterface.Size = new System.Drawing.Size(542, 253);
+            this.tabInterface.Size = new System.Drawing.Size(523, 271);
             this.tabInterface.TabIndex = 1;
             this.tabInterface.Text = "Interface";
             this.tabInterface.UseVisualStyleBackColor = true;
@@ -453,10 +456,10 @@ namespace Timekeeper.Forms
             this.tabBehavior.Controls.Add(this.wGroupOther);
             this.tabBehavior.Controls.Add(this.wGroupAnnotations);
             this.tabBehavior.Controls.Add(this.wGroupWindow);
-            this.tabBehavior.Location = new System.Drawing.Point(4, 22);
+            this.tabBehavior.Location = new System.Drawing.Point(23, 4);
             this.tabBehavior.Name = "tabBehavior";
             this.tabBehavior.Padding = new System.Windows.Forms.Padding(3);
-            this.tabBehavior.Size = new System.Drawing.Size(542, 253);
+            this.tabBehavior.Size = new System.Drawing.Size(523, 271);
             this.tabBehavior.TabIndex = 0;
             this.tabBehavior.Text = "Behavior";
             this.tabBehavior.UseVisualStyleBackColor = true;
@@ -474,6 +477,23 @@ namespace Timekeeper.Forms
             this.wGroupTimer.TabIndex = 1;
             this.wGroupTimer.TabStop = false;
             this.wGroupTimer.Text = "Title Bar";
+            // 
+            // wTitleBarTemplate
+            // 
+            this.wTitleBarTemplate.Location = new System.Drawing.Point(77, 90);
+            this.wTitleBarTemplate.Name = "wTitleBarTemplate";
+            this.wTitleBarTemplate.Size = new System.Drawing.Size(154, 20);
+            this.wTitleBarTemplate.TabIndex = 6;
+            this.wTitleBarTemplate.Text = "%task (%project) - %time";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(22, 93);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(54, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Template:";
             // 
             // wShowCurrent
             // 
@@ -685,10 +705,10 @@ namespace Timekeeper.Forms
             // tabKeyboard
             // 
             this.tabKeyboard.Controls.Add(this.groupBox1);
-            this.tabKeyboard.Location = new System.Drawing.Point(4, 22);
+            this.tabKeyboard.Location = new System.Drawing.Point(23, 4);
             this.tabKeyboard.Name = "tabKeyboard";
             this.tabKeyboard.Padding = new System.Windows.Forms.Padding(3);
-            this.tabKeyboard.Size = new System.Drawing.Size(542, 253);
+            this.tabKeyboard.Size = new System.Drawing.Size(523, 271);
             this.tabKeyboard.TabIndex = 3;
             this.tabKeyboard.Text = "Keyboard";
             this.tabKeyboard.UseVisualStyleBackColor = true;
@@ -861,24 +881,7 @@ namespace Timekeeper.Forms
             this.wTestMode.UseVisualStyleBackColor = true;
             this.wTestMode.Visible = false;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(22, 93);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(54, 13);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Template:";
-            // 
-            // wTitleBarTemplate
-            // 
-            this.wTitleBarTemplate.Location = new System.Drawing.Point(77, 90);
-            this.wTitleBarTemplate.Name = "wTitleBarTemplate";
-            this.wTitleBarTemplate.Size = new System.Drawing.Size(154, 20);
-            this.wTitleBarTemplate.TabIndex = 6;
-            this.wTitleBarTemplate.Text = "%task (%project) - %time";
-            // 
-            // fOptions
+            // Options
             // 
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -894,7 +897,7 @@ namespace Timekeeper.Forms
             this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "fOptions";
+            this.Name = "Options";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
