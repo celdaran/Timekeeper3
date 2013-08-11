@@ -6,7 +6,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
-    class Projects : Items
+    class Projects : Classes.TreeAttributeCollection
     {
         //---------------------------------------------------------------------
         // Constructor

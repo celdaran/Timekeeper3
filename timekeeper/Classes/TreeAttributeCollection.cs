@@ -4,9 +4,9 @@ using System.Text;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Classes
 {
-    class Items
+    class TreeAttributeCollection
     {
         //---------------------------------------------------------------------
         // Properties
@@ -20,7 +20,7 @@ namespace Timekeeper
         // Constructor
         //---------------------------------------------------------------------
 
-        public Items(DBI data, string tableName, string orderByClause)
+        public TreeAttributeCollection(DBI data, string tableName, string orderByClause)
         {
             this.Data = data;
             this.TableName = tableName;
