@@ -113,11 +113,11 @@
     <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\SystemData.cs" />
     <Compile Include="Classes\Widgets.cs" />
-    <Compile Include="Forms\Category.cs">
+    <Compile Include="Forms\CategoryManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Category.Designer.cs">
-      <DependentUpon>Category.cs</DependentUpon>
+    <Compile Include="Forms\CategoryManager.Designer.cs">
+      <DependentUpon>CategoryManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\DateRangePicker.cs">
       <SubType>UserControl</SubType>
@@ -139,6 +139,12 @@
     </Compile>
     <Compile Include="Forms\Location.Designer.cs">
       <DependentUpon>Location.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LocationManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LocationManager.Designer.cs">
+      <DependentUpon>LocationManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\NewWizard.cs">
       <SubType>Form</SubType>
@@ -332,6 +338,9 @@
       <DependentUpon>fToolStopwatch.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\CategoryManager.resx">
+      <DependentUpon>CategoryManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\DateRangePicker.resx">
       <DependentUpon>DateRangePicker.cs</DependentUpon>
     </EmbeddedResource>
@@ -399,6 +408,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Location.resx">
       <DependentUpon>Location.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LocationManager.resx">
+      <DependentUpon>LocationManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Main.resx">
       <SubType>Designer</SubType>

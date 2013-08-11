@@ -11,7 +11,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Forms
 {
-    public partial class Location : Form
+    public partial class ListAttributeManager : Form
     {
         //----------------------------------------------------------------------
         // Properties
@@ -21,11 +21,14 @@ namespace Timekeeper.Forms
         private bool IsNewItem;
         private bool ChangedOrder;
 
+        protected enum ListAttributeKind { Location, Category };
+        protected ListAttributeKind Kind;
+
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
 
-        public Location()
+        public ListAttributeManager()
         {
             InitializeComponent();
         }
@@ -40,18 +43,14 @@ namespace Timekeeper.Forms
         // Form Events
         //----------------------------------------------------------------------
 
-        private void Location_Load(object sender, EventArgs e)
+        private void ListAttributeManager_Load(object sender, EventArgs e)
         {
             PopulateList();
-
-            Classes.Widgets Widgets = new Classes.Widgets();
-            Widgets.PopulateTimeZoneComboBox(LocationTimeZone);
-            LocationTimeZone.SelectedIndex = -1;
         }
 
         //----------------------------------------------------------------------
 
-        private void Location_FormClosing(object sender, FormClosingEventArgs e)
+        private void ListAttributeManager_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Save new item ordering, unconditionally
             ReorderItems();
@@ -126,21 +125,21 @@ namespace Timekeeper.Forms
         // Dirty Events
         //----------------------------------------------------------------------
 
-        private void LocationName_KeyPress(object sender, KeyPressEventArgs e)
+        private void AttributeName_KeyPress(object sender, KeyPressEventArgs e)
         {
             SaveItemButton.Enabled = true;
         }
 
         //----------------------------------------------------------------------
 
-        private void LocationDescription_KeyPress(object sender, KeyPressEventArgs e)
+        private void AttributeDescription_KeyPress(object sender, KeyPressEventArgs e)
         {
             SaveItemButton.Enabled = true;
         }
 
         //----------------------------------------------------------------------
 
-        private void LocationTimeZone_SelectionChangeCommitted(object sender, EventArgs e)
+        protected void LocationTimeZone_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (LocationTimeZone.SelectedIndex != -1) {
                 SaveItemButton.Enabled = true;
@@ -149,9 +148,48 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
-        private void LocationHiddenCheckBox_MouseDown(object sender, MouseEventArgs e)
+        private void AttributeIsHiddenCheckBox_MouseDown(object sender, MouseEventArgs e)
         {
             SaveItemButton.Enabled = true;
+        }
+
+        //----------------------------------------------------------------------
+        // Keyboard Events
+        //----------------------------------------------------------------------
+
+        private void ItemList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete) {
+                DeleteItem();
+            }
+        }
+
+        //----------------------------------------------------------------------
+        // Unique Name Validator
+        //----------------------------------------------------------------------
+
+        private void AttributeName_Leave(object sender, EventArgs e)
+        {
+            string PreviousName;
+
+            if (CurrentItem == null) {
+                PreviousName = "";
+            } else {
+                Classes.ListAttribute ListAttribute = (Classes.ListAttribute)((IdObjectPair)CurrentItem).Object;
+                PreviousName = ListAttribute.Name;
+            }
+
+            if (AttributeName.Text != PreviousName) {
+
+                bool Exists = this.Kind == ListAttributeKind.Location ? 
+                    Classes.Location.Exists(AttributeName.Text) : 
+                    Classes.Category.Exists(AttributeName.Text);
+
+                if (Exists) {
+                    Common.Warn("This name already exists.");
+                    AttributeName.Focus();
+                }
+            }
         }
 
         //----------------------------------------------------------------------
@@ -172,8 +210,8 @@ namespace Timekeeper.Forms
                 NewItemButton.Enabled = !IsNewItem;
 
                 // Change displayed values
-                Classes.Location Location = (Classes.Location)((IdObjectPair)ItemList.SelectedItem).Object;
-                PopulateItem(Location);
+                Classes.ListAttribute ListAttribute = (Classes.ListAttribute)((IdObjectPair)ItemList.SelectedItem).Object;
+                PopulateItem(ListAttribute);
 
                 // Now make any necessary UI changes
 
@@ -206,30 +244,32 @@ namespace Timekeeper.Forms
 
         private void ClearForm()
         {
-            LocationName.Text = "";
-            LocationDescription.Text = "";
+            AttributeName.Text = "";
+            AttributeDescription.Text = "";
 
-            Classes.Widgets Widgets = new Classes.Widgets();
-            Widgets.SelectCurrentTimeZone(LocationTimeZone);
+            if (this.Kind == ListAttributeKind.Location) {
+                Classes.Widgets Widgets = new Classes.Widgets();
+                Widgets.SelectCurrentTimeZone(LocationTimeZone);
+            }
 
-            LocationCreateTime.Text = "";
-            LocationModifyTime.Text = "";
-            LocationHiddenCheckBox.Checked = false;
-            LocationHiddenTime.Text = "";
+            AttributeCreateTime.Text = "";
+            AttributeModifyTime.Text = "";
+            AttributeIsHiddenCheckBox.Checked = false;
+            AttributeHiddenTime.Text = "";
         }
 
         //----------------------------------------------------------------------
 
         private void DeleteItem()
         {
-            Classes.Location Location = (Classes.Location)((IdObjectPair)CurrentItem).Object;
+            Classes.ListAttribute ListAttribute = (Classes.ListAttribute)((IdObjectPair)CurrentItem).Object;
             int LastIndex = ItemList.SelectedIndex;
 
-            if (Common.WarnPrompt("Are you sure you want to delete \"" + Location.Name + "\"?") != DialogResult.Yes) {
+            if (Common.WarnPrompt("Are you sure you want to delete \"" + ListAttribute.Name + "\"?") != DialogResult.Yes) {
                 return;
             }
 
-            if (Location.Delete()) {
+            if (ListAttribute.Delete()) {
                 PopulateList();
 
                 if (ItemList.Items.Count == 0) {
@@ -274,18 +314,18 @@ namespace Timekeeper.Forms
         {
             Color Color = on ? SystemColors.Window : SystemColors.Control;
 
-            LocationName.BackColor = Color;
-            LocationDescription.BackColor = Color;
+            AttributeName.BackColor = Color;
+            AttributeDescription.BackColor = Color;
             LocationTimeZone.BackColor = Color;
 
-            LocationName.Enabled = on;
-            LocationDescription.Enabled = on;
+            AttributeName.Enabled = on;
+            AttributeDescription.Enabled = on;
             LocationTimeZone.Enabled = on;
 
-            LocationName.ReadOnly = !on;
-            LocationDescription.ReadOnly = !on;
+            AttributeName.ReadOnly = !on;
+            AttributeDescription.ReadOnly = !on;
 
-            LocationHiddenCheckBox.Enabled = on;
+            AttributeIsHiddenCheckBox.Enabled = on;
         }
 
         //----------------------------------------------------------------------
@@ -303,18 +343,22 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
-        private void PopulateItem(Classes.Location Location)
+        private void PopulateItem(Classes.ListAttribute ListAttribute)
         {
-            LocationName.Text = Location.Name;
-            LocationDescription.Text = Location.Description;
-            LocationTimeZone.SelectedIndex = (int)Location.RefTimeZoneId;
-            LocationCreateTime.Text = Location.CreateTime.ToString(Common.LOCAL_DATETIME_FORMAT);
-            LocationModifyTime.Text = Location.ModifyTime.ToString(Common.LOCAL_DATETIME_FORMAT);
-            LocationHiddenCheckBox.Checked = Location.IsHidden;
-            if (Location.IsHidden) {
-                LocationHiddenTime.Text = Location.HiddenTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+            AttributeName.Text = ListAttribute.Name;
+            AttributeDescription.Text = ListAttribute.Description;
+
+            if (this.Kind == ListAttributeKind.Location) {
+                LocationTimeZone.SelectedIndex = (int)ListAttribute.RefTimeZoneId;
+            }
+
+            AttributeCreateTime.Text = ListAttribute.CreateTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+            AttributeModifyTime.Text = ListAttribute.ModifyTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+            AttributeIsHiddenCheckBox.Checked = ListAttribute.IsHidden;
+            if (ListAttribute.IsHidden) {
+                AttributeHiddenTime.Text = ListAttribute.HiddenTime.ToString(Common.LOCAL_DATETIME_FORMAT);
             } else {
-                LocationHiddenTime.Text = "";
+                AttributeHiddenTime.Text = "";
             }
         }
 
@@ -325,9 +369,8 @@ namespace Timekeeper.Forms
             // Clear List
             ItemList.Items.Clear();
 
-            // Get Locations
-            Classes.LocationCollection Locations = new Classes.LocationCollection();
-            List<IdObjectPair> Items = Locations.Fetch(true);
+            // Get Items
+            List<IdObjectPair> Items = GetItems();
 
             // Now Populate List
             foreach (IdObjectPair Item in Items) {
@@ -340,19 +383,22 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
+        protected virtual List<IdObjectPair> GetItems()
+        {
+            // This method must be overridden by the child forms.
+            // While that sounds like the perfect time to use an
+            // abstract method, that runs into all sorts of issues,
+            // so we'll just leave it at this.
+            List<IdObjectPair> Items = new List<IdObjectPair>();
+            return Items;
+        }
+
+        //----------------------------------------------------------------------
+
         private void SaveItem()
         {
             if (IsNewItem) {
-                Classes.Location Location = new Classes.Location();
-                int LastIndex = ItemList.SelectedIndex;
-
-                Location.Name = LocationName.Text;
-                Location.Description = LocationDescription.Text;
-                Location.RefTimeZoneId = LocationTimeZone.SelectedIndex;
-                Location.SortOrderNo = ItemList.Items.Count;
-                Location.IsHidden = LocationHiddenCheckBox.Checked;
-
-                if (Location.Create()) {
+                if (CreateItem(ItemList.Items.Count)) {
                     SaveItemButton.Enabled = false;
                     PopulateList();
                     ItemList.SelectedIndex = ItemList.Items.Count - 1;
@@ -366,10 +412,10 @@ namespace Timekeeper.Forms
             else {
                 Classes.Location Location = (Classes.Location)((IdObjectPair)CurrentItem).Object;
 
-                Location.Name = LocationName.Text;
-                Location.Description = LocationDescription.Text;
+                Location.Name = AttributeName.Text;
+                Location.Description = AttributeDescription.Text;
                 Location.RefTimeZoneId = LocationTimeZone.SelectedIndex;
-                Location.IsHidden = LocationHiddenCheckBox.Checked;
+                Location.IsHidden = AttributeIsHiddenCheckBox.Checked;
 
                 if (Location.Save()) {
                     SaveItemButton.Enabled = false;
@@ -383,10 +429,18 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
+        protected virtual bool CreateItem(int sortOrderNo) { return false; }
+
+        //----------------------------------------------------------------------
+
+        protected virtual bool UpdateItem() { return false; }
+
+        //----------------------------------------------------------------------
+
         private bool SavePrompt()
         {
             if (SaveItemButton.Enabled) {
-                if (Common.WarnPrompt("Changes to this item have not been saved. Would you like to save them?") == DialogResult.Yes) {
+                if (Common.WarnPrompt("Changes have not been saved. Would you like to save your changes now?") == DialogResult.Yes) {
                     return true;
                 } else {
                     return false;
@@ -406,8 +460,8 @@ namespace Timekeeper.Forms
             int Index = 0;
             foreach (object Item in ItemList.Items) {
                 IdObjectPair Pair = (IdObjectPair)Item;
-                Classes.Location Location = (Classes.Location)Pair.Object;
-                Location.Reposition(Index);
+                Classes.ListAttribute ListAttribute = (Classes.ListAttribute)Pair.Object;
+                ListAttribute.Reposition(Index);
                 Index++;
             }
         }
@@ -422,14 +476,14 @@ namespace Timekeeper.Forms
                 return;
             }
 
-            Classes.Location Location = (Classes.Location)((IdObjectPair)ItemList.Items[e.Index]).Object;
+            Classes.ListAttribute ListAttribute = (Classes.ListAttribute)((IdObjectPair)ItemList.Items[e.Index]).Object;
 
             e.DrawBackground();
             Graphics g = e.Graphics;
 
             Color ItemColor;
 
-            if (Location.IsHidden) {
+            if (ListAttribute.IsHidden) {
                 ItemColor = Color.Gray;
             } else {
                 ItemColor = Color.Black;
@@ -439,55 +493,9 @@ namespace Timekeeper.Forms
                 ItemColor = Color.White;
             }
 
-            g.DrawString(Location.Name, e.Font, new SolidBrush(ItemColor), new PointF(e.Bounds.X, e.Bounds.Y));
+            g.DrawString(ListAttribute.Name, e.Font, new SolidBrush(ItemColor), new PointF(e.Bounds.X, e.Bounds.Y));
 
             e.DrawFocusRectangle();
-        }
-
-        /*
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            switch (keyData) {
-                case (Keys.Control | Keys.S):
-                    {
-                        SaveItem();
-                        break;
-                    }
-                }
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-        */
-
-        private void ItemList_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Delete) {
-                DeleteItem();
-            }
-        }
-
-        private void LocationName_Leave(object sender, EventArgs e)
-        {
-            string PreviousName;
-
-            if (CurrentItem == null) {
-                PreviousName = "";
-            } else {
-                Classes.Location Location = (Classes.Location)((IdObjectPair)CurrentItem).Object;
-                PreviousName = Location.Name;
-            }
-
-            if (LocationName.Text != PreviousName) {
-                bool Exists = Classes.Location.Exists(LocationName.Text);
-                if (Exists) {
-                    Common.Warn("This name already exists.");
-                    LocationName.Focus();
-                }
-            }
-        }
-
-        private void LocationName_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         //----------------------------------------------------------------------

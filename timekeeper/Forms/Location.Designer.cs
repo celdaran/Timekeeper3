@@ -1,6 +1,6 @@
 ﻿namespace Timekeeper.Forms
 {
-    partial class Location
+    partial class ListAttributeManager
     {
         /// <summary>
         /// Required designer variable.
@@ -27,65 +27,65 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.LocationHiddenCheckBox = new System.Windows.Forms.CheckBox();
-            this.LocationModifyTime = new System.Windows.Forms.TextBox();
-            this.LocationCreateTime = new System.Windows.Forms.TextBox();
+            this.AttributeIsHiddenCheckBox = new System.Windows.Forms.CheckBox();
+            this.AttributeModifyTime = new System.Windows.Forms.TextBox();
+            this.AttributeCreateTime = new System.Windows.Forms.TextBox();
             this.LocationTimeZone = new System.Windows.Forms.ComboBox();
-            this.LocationDescription = new System.Windows.Forms.TextBox();
-            this.LocationName = new System.Windows.Forms.TextBox();
+            this.AttributeDescription = new System.Windows.Forms.TextBox();
+            this.AttributeName = new System.Windows.Forms.TextBox();
             this.LocationTimeZoneLabel = new System.Windows.Forms.Label();
-            this.LocationDescriptionLabel = new System.Windows.Forms.Label();
-            this.LocationNameLabel = new System.Windows.Forms.Label();
+            this.AttributeDescriptionLabel = new System.Windows.Forms.Label();
+            this.AttributeNameLabel = new System.Windows.Forms.Label();
             this.ItemList = new System.Windows.Forms.ListBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.MoveToTopButton = new System.Windows.Forms.ToolStripButton();
             this.MoveUpButton = new System.Windows.Forms.ToolStripButton();
             this.MoveDownButton = new System.Windows.Forms.ToolStripButton();
             this.MoveToBottomButton = new System.Windows.Forms.ToolStripButton();
-            this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.NewItemButton = new System.Windows.Forms.ToolStripButton();
             this.SaveItemButton = new System.Windows.Forms.ToolStripButton();
             this.DeleteItemButton = new System.Windows.Forms.ToolStripButton();
             this.ListPanel = new System.Windows.Forms.Panel();
             this.FormPanel = new System.Windows.Forms.Panel();
             this.AcceptDialogButton = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.LocationHiddenTime = new System.Windows.Forms.TextBox();
+            this.AttributeHiddenTimeLabel = new System.Windows.Forms.Label();
+            this.AttributeIsHiddenLabel = new System.Windows.Forms.Label();
+            this.AttributeModifyTimeLabel = new System.Windows.Forms.Label();
+            this.AttributeCreateTimeLabel = new System.Windows.Forms.Label();
+            this.AttributeHiddenTime = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.ListPanel.SuspendLayout();
             this.FormPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // LocationHiddenCheckBox
+            // AttributeIsHiddenCheckBox
             // 
-            this.LocationHiddenCheckBox.AutoSize = true;
-            this.LocationHiddenCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.LocationHiddenCheckBox.Enabled = false;
-            this.LocationHiddenCheckBox.Location = new System.Drawing.Point(84, 169);
-            this.LocationHiddenCheckBox.Name = "LocationHiddenCheckBox";
-            this.LocationHiddenCheckBox.Size = new System.Drawing.Size(15, 14);
-            this.LocationHiddenCheckBox.TabIndex = 7;
-            this.LocationHiddenCheckBox.UseVisualStyleBackColor = true;
-            this.LocationHiddenCheckBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LocationHiddenCheckBox_MouseDown);
+            this.AttributeIsHiddenCheckBox.AutoSize = true;
+            this.AttributeIsHiddenCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.AttributeIsHiddenCheckBox.Enabled = false;
+            this.AttributeIsHiddenCheckBox.Location = new System.Drawing.Point(84, 169);
+            this.AttributeIsHiddenCheckBox.Name = "AttributeIsHiddenCheckBox";
+            this.AttributeIsHiddenCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.AttributeIsHiddenCheckBox.TabIndex = 7;
+            this.AttributeIsHiddenCheckBox.UseVisualStyleBackColor = true;
+            this.AttributeIsHiddenCheckBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AttributeIsHiddenCheckBox_MouseDown);
             // 
-            // LocationModifyTime
+            // AttributeModifyTime
             // 
-            this.LocationModifyTime.Location = new System.Drawing.Point(86, 140);
-            this.LocationModifyTime.Name = "LocationModifyTime";
-            this.LocationModifyTime.ReadOnly = true;
-            this.LocationModifyTime.Size = new System.Drawing.Size(260, 20);
-            this.LocationModifyTime.TabIndex = 6;
+            this.AttributeModifyTime.Location = new System.Drawing.Point(86, 140);
+            this.AttributeModifyTime.Name = "AttributeModifyTime";
+            this.AttributeModifyTime.ReadOnly = true;
+            this.AttributeModifyTime.Size = new System.Drawing.Size(260, 20);
+            this.AttributeModifyTime.TabIndex = 6;
             // 
-            // LocationCreateTime
+            // AttributeCreateTime
             // 
-            this.LocationCreateTime.Location = new System.Drawing.Point(86, 114);
-            this.LocationCreateTime.Name = "LocationCreateTime";
-            this.LocationCreateTime.ReadOnly = true;
-            this.LocationCreateTime.Size = new System.Drawing.Size(260, 20);
-            this.LocationCreateTime.TabIndex = 5;
+            this.AttributeCreateTime.Location = new System.Drawing.Point(86, 114);
+            this.AttributeCreateTime.Name = "AttributeCreateTime";
+            this.AttributeCreateTime.ReadOnly = true;
+            this.AttributeCreateTime.Size = new System.Drawing.Size(260, 20);
+            this.AttributeCreateTime.TabIndex = 5;
             // 
             // LocationTimeZone
             // 
@@ -99,30 +99,30 @@
             this.LocationTimeZone.TabIndex = 4;
             this.LocationTimeZone.SelectionChangeCommitted += new System.EventHandler(this.LocationTimeZone_SelectionChangeCommitted);
             // 
-            // LocationDescription
+            // AttributeDescription
             // 
-            this.LocationDescription.BackColor = System.Drawing.SystemColors.Control;
-            this.LocationDescription.Enabled = false;
-            this.LocationDescription.Location = new System.Drawing.Point(86, 36);
-            this.LocationDescription.Multiline = true;
-            this.LocationDescription.Name = "LocationDescription";
-            this.LocationDescription.ReadOnly = true;
-            this.LocationDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LocationDescription.Size = new System.Drawing.Size(260, 46);
-            this.LocationDescription.TabIndex = 3;
-            this.LocationDescription.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LocationDescription_KeyPress);
+            this.AttributeDescription.BackColor = System.Drawing.SystemColors.Control;
+            this.AttributeDescription.Enabled = false;
+            this.AttributeDescription.Location = new System.Drawing.Point(86, 36);
+            this.AttributeDescription.Multiline = true;
+            this.AttributeDescription.Name = "AttributeDescription";
+            this.AttributeDescription.ReadOnly = true;
+            this.AttributeDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.AttributeDescription.Size = new System.Drawing.Size(260, 46);
+            this.AttributeDescription.TabIndex = 3;
+            this.AttributeDescription.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AttributeDescription_KeyPress);
             // 
-            // LocationName
+            // AttributeName
             // 
-            this.LocationName.BackColor = System.Drawing.SystemColors.Control;
-            this.LocationName.Enabled = false;
-            this.LocationName.Location = new System.Drawing.Point(86, 10);
-            this.LocationName.Name = "LocationName";
-            this.LocationName.ReadOnly = true;
-            this.LocationName.Size = new System.Drawing.Size(260, 20);
-            this.LocationName.TabIndex = 2;
-            this.LocationName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LocationName_KeyPress);
-            this.LocationName.Leave += new System.EventHandler(this.LocationName_Leave);
+            this.AttributeName.BackColor = System.Drawing.SystemColors.Control;
+            this.AttributeName.Enabled = false;
+            this.AttributeName.Location = new System.Drawing.Point(86, 10);
+            this.AttributeName.Name = "AttributeName";
+            this.AttributeName.ReadOnly = true;
+            this.AttributeName.Size = new System.Drawing.Size(260, 20);
+            this.AttributeName.TabIndex = 2;
+            this.AttributeName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AttributeName_KeyPress);
+            this.AttributeName.Leave += new System.EventHandler(this.AttributeName_Leave);
             // 
             // LocationTimeZoneLabel
             // 
@@ -133,23 +133,23 @@
             this.LocationTimeZoneLabel.TabIndex = 31;
             this.LocationTimeZoneLabel.Text = "Time Zone: ";
             // 
-            // LocationDescriptionLabel
+            // AttributeDescriptionLabel
             // 
-            this.LocationDescriptionLabel.AutoSize = true;
-            this.LocationDescriptionLabel.Location = new System.Drawing.Point(12, 39);
-            this.LocationDescriptionLabel.Name = "LocationDescriptionLabel";
-            this.LocationDescriptionLabel.Size = new System.Drawing.Size(63, 13);
-            this.LocationDescriptionLabel.TabIndex = 30;
-            this.LocationDescriptionLabel.Text = "Description:";
+            this.AttributeDescriptionLabel.AutoSize = true;
+            this.AttributeDescriptionLabel.Location = new System.Drawing.Point(12, 39);
+            this.AttributeDescriptionLabel.Name = "AttributeDescriptionLabel";
+            this.AttributeDescriptionLabel.Size = new System.Drawing.Size(63, 13);
+            this.AttributeDescriptionLabel.TabIndex = 30;
+            this.AttributeDescriptionLabel.Text = "Description:";
             // 
-            // LocationNameLabel
+            // AttributeNameLabel
             // 
-            this.LocationNameLabel.AutoSize = true;
-            this.LocationNameLabel.Location = new System.Drawing.Point(12, 13);
-            this.LocationNameLabel.Name = "LocationNameLabel";
-            this.LocationNameLabel.Size = new System.Drawing.Size(38, 13);
-            this.LocationNameLabel.TabIndex = 29;
-            this.LocationNameLabel.Text = "Name:";
+            this.AttributeNameLabel.AutoSize = true;
+            this.AttributeNameLabel.Location = new System.Drawing.Point(12, 13);
+            this.AttributeNameLabel.Name = "AttributeNameLabel";
+            this.AttributeNameLabel.Size = new System.Drawing.Size(38, 13);
+            this.AttributeNameLabel.TabIndex = 29;
+            this.AttributeNameLabel.Text = "Name:";
             // 
             // ItemList
             // 
@@ -172,7 +172,7 @@
             this.MoveUpButton,
             this.MoveDownButton,
             this.MoveToBottomButton,
-            this.Separator1,
+            this.ToolStripSeparator1,
             this.NewItemButton,
             this.SaveItemButton,
             this.DeleteItemButton});
@@ -231,10 +231,10 @@
             this.MoveToBottomButton.ToolTipText = "Move Item to Bottom of List";
             this.MoveToBottomButton.Click += new System.EventHandler(this.MoveToBottomButton_Click);
             // 
-            // Separator1
+            // ToolStripSeparator1
             // 
-            this.Separator1.Name = "Separator1";
-            this.Separator1.Size = new System.Drawing.Size(6, 25);
+            this.ToolStripSeparator1.Name = "ToolStripSeparator1";
+            this.ToolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // NewItemButton
             // 
@@ -283,19 +283,19 @@
             // FormPanel
             // 
             this.FormPanel.Controls.Add(this.AcceptDialogButton);
-            this.FormPanel.Controls.Add(this.label4);
-            this.FormPanel.Controls.Add(this.label3);
-            this.FormPanel.Controls.Add(this.label2);
-            this.FormPanel.Controls.Add(this.label1);
-            this.FormPanel.Controls.Add(this.LocationHiddenTime);
-            this.FormPanel.Controls.Add(this.LocationHiddenCheckBox);
-            this.FormPanel.Controls.Add(this.LocationNameLabel);
-            this.FormPanel.Controls.Add(this.LocationModifyTime);
+            this.FormPanel.Controls.Add(this.AttributeHiddenTimeLabel);
+            this.FormPanel.Controls.Add(this.AttributeIsHiddenLabel);
+            this.FormPanel.Controls.Add(this.AttributeModifyTimeLabel);
+            this.FormPanel.Controls.Add(this.AttributeCreateTimeLabel);
+            this.FormPanel.Controls.Add(this.AttributeHiddenTime);
+            this.FormPanel.Controls.Add(this.AttributeIsHiddenCheckBox);
+            this.FormPanel.Controls.Add(this.AttributeNameLabel);
+            this.FormPanel.Controls.Add(this.AttributeModifyTime);
             this.FormPanel.Controls.Add(this.LocationTimeZoneLabel);
-            this.FormPanel.Controls.Add(this.LocationName);
-            this.FormPanel.Controls.Add(this.LocationDescription);
-            this.FormPanel.Controls.Add(this.LocationCreateTime);
-            this.FormPanel.Controls.Add(this.LocationDescriptionLabel);
+            this.FormPanel.Controls.Add(this.AttributeName);
+            this.FormPanel.Controls.Add(this.AttributeDescription);
+            this.FormPanel.Controls.Add(this.AttributeCreateTime);
+            this.FormPanel.Controls.Add(this.AttributeDescriptionLabel);
             this.FormPanel.Controls.Add(this.LocationTimeZone);
             this.FormPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.FormPanel.Location = new System.Drawing.Point(133, 25);
@@ -313,51 +313,51 @@
             this.AcceptDialogButton.UseVisualStyleBackColor = true;
             this.AcceptDialogButton.Click += new System.EventHandler(this.AcceptDialogButton_Click);
             // 
-            // label4
+            // AttributeHiddenTimeLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(107, 169);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 13);
-            this.label4.TabIndex = 42;
-            this.label4.Text = "Hidden On:";
+            this.AttributeHiddenTimeLabel.AutoSize = true;
+            this.AttributeHiddenTimeLabel.Location = new System.Drawing.Point(107, 169);
+            this.AttributeHiddenTimeLabel.Name = "AttributeHiddenTimeLabel";
+            this.AttributeHiddenTimeLabel.Size = new System.Drawing.Size(61, 13);
+            this.AttributeHiddenTimeLabel.TabIndex = 42;
+            this.AttributeHiddenTimeLabel.Text = "Hidden On:";
             // 
-            // label3
+            // AttributeIsHiddenLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 169);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 13);
-            this.label3.TabIndex = 41;
-            this.label3.Text = "Hidden:";
+            this.AttributeIsHiddenLabel.AutoSize = true;
+            this.AttributeIsHiddenLabel.Location = new System.Drawing.Point(12, 169);
+            this.AttributeIsHiddenLabel.Name = "AttributeIsHiddenLabel";
+            this.AttributeIsHiddenLabel.Size = new System.Drawing.Size(44, 13);
+            this.AttributeIsHiddenLabel.TabIndex = 41;
+            this.AttributeIsHiddenLabel.Text = "Hidden:";
             // 
-            // label2
+            // AttributeModifyTimeLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 143);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 13);
-            this.label2.TabIndex = 40;
-            this.label2.Text = "Modified On:";
+            this.AttributeModifyTimeLabel.AutoSize = true;
+            this.AttributeModifyTimeLabel.Location = new System.Drawing.Point(12, 143);
+            this.AttributeModifyTimeLabel.Name = "AttributeModifyTimeLabel";
+            this.AttributeModifyTimeLabel.Size = new System.Drawing.Size(67, 13);
+            this.AttributeModifyTimeLabel.TabIndex = 40;
+            this.AttributeModifyTimeLabel.Text = "Modified On:";
             // 
-            // label1
+            // AttributeCreateTimeLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 117);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 13);
-            this.label1.TabIndex = 39;
-            this.label1.Text = "Created On:";
+            this.AttributeCreateTimeLabel.AutoSize = true;
+            this.AttributeCreateTimeLabel.Location = new System.Drawing.Point(12, 117);
+            this.AttributeCreateTimeLabel.Name = "AttributeCreateTimeLabel";
+            this.AttributeCreateTimeLabel.Size = new System.Drawing.Size(64, 13);
+            this.AttributeCreateTimeLabel.TabIndex = 39;
+            this.AttributeCreateTimeLabel.Text = "Created On:";
             // 
-            // LocationHiddenTime
+            // AttributeHiddenTime
             // 
-            this.LocationHiddenTime.Location = new System.Drawing.Point(174, 166);
-            this.LocationHiddenTime.Name = "LocationHiddenTime";
-            this.LocationHiddenTime.ReadOnly = true;
-            this.LocationHiddenTime.Size = new System.Drawing.Size(172, 20);
-            this.LocationHiddenTime.TabIndex = 8;
+            this.AttributeHiddenTime.Location = new System.Drawing.Point(174, 166);
+            this.AttributeHiddenTime.Name = "AttributeHiddenTime";
+            this.AttributeHiddenTime.ReadOnly = true;
+            this.AttributeHiddenTime.Size = new System.Drawing.Size(172, 20);
+            this.AttributeHiddenTime.TabIndex = 8;
             // 
-            // Location
+            // ListAttributeManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -369,14 +369,14 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(500, 278);
-            this.Name = "Location";
+            this.Name = "ListAttributeManager";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Manage Locations";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Location_FormClosing);
-            this.Load += new System.EventHandler(this.Location_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ListAttributeManager_FormClosing);
+            this.Load += new System.EventHandler(this.ListAttributeManager_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ListPanel.ResumeLayout(false);
@@ -390,31 +390,31 @@
         #endregion
 
         private System.Windows.Forms.ListBox ItemList;
-        private System.Windows.Forms.TextBox LocationDescription;
-        private System.Windows.Forms.TextBox LocationName;
-        private System.Windows.Forms.Label LocationDescriptionLabel;
-        private System.Windows.Forms.Label LocationNameLabel;
-        private System.Windows.Forms.CheckBox LocationHiddenCheckBox;
-        private System.Windows.Forms.TextBox LocationModifyTime;
-        private System.Windows.Forms.TextBox LocationCreateTime;
+        private System.Windows.Forms.Label AttributeDescriptionLabel;
+        private System.Windows.Forms.Label AttributeNameLabel;
+        private System.Windows.Forms.TextBox AttributeModifyTime;
+        private System.Windows.Forms.TextBox AttributeCreateTime;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton MoveToTopButton;
         private System.Windows.Forms.ToolStripButton MoveUpButton;
         private System.Windows.Forms.ToolStripButton MoveDownButton;
         private System.Windows.Forms.ToolStripButton MoveToBottomButton;
-        private System.Windows.Forms.ToolStripSeparator Separator1;
+        private System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
         private System.Windows.Forms.ToolStripButton NewItemButton;
         private System.Windows.Forms.ToolStripButton DeleteItemButton;
         private System.Windows.Forms.Panel ListPanel;
         private System.Windows.Forms.Panel FormPanel;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox LocationHiddenTime;
+        private System.Windows.Forms.Label AttributeHiddenTimeLabel;
+        private System.Windows.Forms.Label AttributeIsHiddenLabel;
+        private System.Windows.Forms.Label AttributeModifyTimeLabel;
+        private System.Windows.Forms.Label AttributeCreateTimeLabel;
+        private System.Windows.Forms.TextBox AttributeHiddenTime;
         private System.Windows.Forms.Button AcceptDialogButton;
         private System.Windows.Forms.ToolStripButton SaveItemButton;
         protected System.Windows.Forms.ComboBox LocationTimeZone;
         protected System.Windows.Forms.Label LocationTimeZoneLabel;
+        protected System.Windows.Forms.TextBox AttributeDescription;
+        protected System.Windows.Forms.TextBox AttributeName;
+        protected System.Windows.Forms.CheckBox AttributeIsHiddenCheckBox;
     }
 }

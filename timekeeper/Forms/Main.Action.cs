@@ -100,34 +100,23 @@ namespace Timekeeper.Forms
 
         private void Action_ChangedLocation()
         {
-            // Get currently selected Location
-            if (wLocation.SelectedIndex > -1) {
-                IdObjectPair Item = (IdObjectPair)wLocation.SelectedItem;
-                Classes.Location Location = (Classes.Location)Item.Object;
+            // First make sure an item has been selected
+            if (Action_ItemSelected(wLocation)) {
 
-                if (Location.Id == -1) {
-                    // Display Management Dialog box
-                    Forms.Location Dialog = new Forms.Location();
-                    Dialog.ShowDialog(this);
+                // Display the Location Manager dialog box
+                Forms.LocationManager Dialog = new Forms.LocationManager();
+                Dialog.ShowDialog(this);
 
-                    // Rebuild the list (wait, can I do this here? In the ChangedLocation event handler?)
-                    wLocation.Items.Clear();
-                    Classes.Widgets Widgets = new Classes.Widgets();
-                    Widgets.PopulateLocationComboBox(wLocation);
+                // Rebuild the list
+                wLocation.Items.Clear();
+                Classes.Widgets Widgets = new Classes.Widgets();
+                Widgets.PopulateLocationComboBox(wLocation);
 
-                    if (Dialog.CurrentItem == null) {
-                        // Can't have nothing selected.
-                        wLocation.SelectedIndex = 0;
-                    } else {
-                        // Select a new item based on whatever was last selected in the Dialog box
-                        Location = (Classes.Location)((IdObjectPair)Dialog.CurrentItem).Object;
-                        int Index = wLocation.FindString(Location.Name);
-                        wLocation.SelectedIndex = Index;
-                    }
+                // Select whatever item was selected on the dialog box
+                Action_SelectItem(wLocation, Dialog.CurrentItem);
 
-                    // All done
-                    Dialog.Dispose();
-                }
+                // All done
+                Dialog.Dispose();
             }
         }
 
@@ -135,15 +124,58 @@ namespace Timekeeper.Forms
 
         private void Action_ChangedCategory()
         {
-            // Get currently selected Category
-            if (wCategory.SelectedIndex > -1) {
-                IdObjectPair Item = (IdObjectPair)wCategory.SelectedItem;
-                Classes.Category Category = (Classes.Category)Item.Object;
+            // First make sure an item has been selected
+            if (Action_ItemSelected(wCategory)) {
 
-                if (Category.Id == -1) {
-                    Forms.Category Dialog = new Forms.Category();
-                    Dialog.ShowDialog(this);
+                // Display the Category Manager dialog box
+                Forms.CategoryManager Dialog = new Forms.CategoryManager();
+                Dialog.ShowDialog(this);
+
+                // Rebuild the list
+                wCategory.Items.Clear();
+                Classes.Widgets Widgets = new Classes.Widgets();
+                Widgets.PopulateCategoryComboBox(wCategory);
+
+                // Select whatever item was selected on the dialog box
+                Action_SelectItem(wCategory, Dialog.CurrentItem);
+
+                // All done
+                Dialog.Dispose();
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // Next two are helpers for the change list attribute methods above
+        //---------------------------------------------------------------------
+
+        private bool Action_ItemSelected(ComboBox box)
+        {
+            if (box.SelectedIndex > -1) {
+                IdObjectPair Item = (IdObjectPair)box.SelectedItem;
+                Classes.ListAttribute ListAttribute = (Classes.ListAttribute)Item.Object;
+
+                if (ListAttribute.Id == -1) {
+                    return true;
+                } else {
+                    return false;
                 }
+            } else {
+                return false;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_SelectItem(ComboBox box, object currentItem)
+        {
+            // Select an appropriate value
+            if (currentItem == null) {
+                box.SelectedIndex = 0;
+            } else {
+                // Select a new item based on whatever was last selected in the Dialog box
+                Classes.ListAttribute ListAttribute = (Classes.ListAttribute)((IdObjectPair)currentItem).Object;
+                int Index = box.FindString(ListAttribute.Name);
+                box.SelectedIndex = Index;
             }
         }
 
