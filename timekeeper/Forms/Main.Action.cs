@@ -98,6 +98,58 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Action_ChangedLocation()
+        {
+            // Get currently selected Location
+            if (wLocation.SelectedIndex > -1) {
+                IdObjectPair Item = (IdObjectPair)wLocation.SelectedItem;
+                Classes.Location Location = (Classes.Location)Item.Object;
+
+                if (Location.LocationId == -1) {
+                    // Display Management Dialog box
+                    Forms.Location Dialog = new Forms.Location();
+                    Dialog.ShowDialog(this);
+
+                    // Rebuild the list (wait, can I do this here? In the ChangedLocation event handler?)
+                    wLocation.Items.Clear();
+                    Classes.Widgets Widgets = new Classes.Widgets();
+                    Widgets.PopulateLocationComboBox(wLocation);
+
+                    if (Dialog.CurrentItem == null) {
+                        // Can't have nothing selected.
+                        wLocation.SelectedIndex = 0;
+                    } else {
+                        // Select a new item based on whatever was last selected in the Dialog box
+                        Location = (Classes.Location)((IdObjectPair)Dialog.CurrentItem).Object;
+                        int Index = wLocation.FindString(Location.Name);
+                        wLocation.SelectedIndex = Index;
+                    }
+
+                    // All done
+                    Dialog.Dispose();
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_ChangedCategory()
+        {
+            // Get currently selected Category
+            if (wCategory.SelectedIndex > -1) {
+                IdObjectPair Item = (IdObjectPair)wCategory.SelectedItem;
+                Classes.Category Category = (Classes.Category)Item.Object;
+
+                if (Category.CategoryId == -1) {
+                    Forms.Location Dialog = new Forms.Location();
+                    Dialog.ShowDialog(this);
+                    //Common.Info("Create Category Dialog Box Goes Here");
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         private void Action_CopyFilenameToClipboard(string text)
         {
             // Strip instructions
@@ -644,6 +696,8 @@ namespace Timekeeper.Forms
                 Widgets = new Classes.Widgets();
                 Widgets.BuildProjectTree(ProjectTree.Nodes);
                 Widgets.BuildActivityTree(ActivityTree.Nodes);
+                Widgets.PopulateLocationComboBox(wLocation);
+                Widgets.PopulateCategoryComboBox(wCategory);
 
                 Entries = new Classes.JournalEntries(Database);
                 Meta = new Classes.Meta();
@@ -1059,6 +1113,8 @@ namespace Timekeeper.Forms
             currentActivityNode = ActivityTree.SelectedNode;
             currentProject = (Project)currentProjectNode.Tag;
             currentActivity = (Activity)currentActivityNode.Tag;
+            currentLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
+            currentCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
 
             if ((currentProject.IsFolder == true) || (currentActivity.IsFolder)) {
                 Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
@@ -1078,8 +1134,8 @@ namespace Timekeeper.Forms
             Entry.Seconds = 0; // default to zero
             Entry.Memo = wMemo.Text;
             Entry.IsLocked = true;
-            Entry.LocationId = 1; // FIXME
-            Entry.CategoryId = 1; // FIXME
+            Entry.LocationId = currentLocation.LocationId;
+            Entry.CategoryId = currentCategory.CategoryId;
             if (!Entry.Create()) {
                 Common.Warn("There was an error starting the timer.");
                 return;
@@ -1152,16 +1208,26 @@ namespace Timekeeper.Forms
 
         private void Action_StopTimer()
         {
+            // Grab instances of currently selected objects
+            /*
+            currentProjectNode = ProjectTree.SelectedNode;
+            currentActivityNode = ActivityTree.SelectedNode;
+            currentProject = (Project)currentProjectNode.Tag;
+            currentActivity = (Activity)currentActivityNode.Tag;
+            currentLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
+            currentCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
+            */
+
             // Close off timer
             Entry.ProjectId = currentProject.ItemId;
             Entry.ActivityId = currentActivity.ItemId;
             Entry.StartTime = wStartTime.Value;
             Entry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
-            Entry.Seconds = currentActivity.StopTiming(wStopTime.Value);
+            Entry.Seconds = currentActivity.StopTiming(wStopTime.Value);  // FIXME: wait, whut? currentActivity?
             Entry.Memo = wMemo.Text;
             Entry.IsLocked = false;
-            Entry.LocationId = 1;
-            Entry.CategoryId = 1;
+            Entry.LocationId = currentLocation.LocationId;
+            Entry.CategoryId = currentCategory.CategoryId;
             Entry.Save();
             timerRunning = false;
             //ShortTimer.Enabled = false;

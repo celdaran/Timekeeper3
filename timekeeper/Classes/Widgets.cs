@@ -185,7 +185,6 @@ namespace Timekeeper.Classes
                     return AddItemToTree(tree, NewNode, project, Timekeeper.IMG_ITEM_HIDDEN);
                 }
             }
-
         }
 
         //---------------------------------------------------------------------
@@ -310,7 +309,80 @@ namespace Timekeeper.Classes
         }
 
         //---------------------------------------------------------------------
-        // Populate a TimeZone drop down
+        // Drop Down Populators
+        //---------------------------------------------------------------------
+
+        public void PopulateLocationComboBox(ComboBox box)
+        {
+            try {
+                //----------------------------------------
+                // Add items from database
+                //----------------------------------------
+
+                Locations Locations = new Locations();
+                List<IdObjectPair> Items = Locations.Fetch();
+
+                PopulateGenericComboBox(box, Items);
+
+                //----------------------------------------
+                // Add special item
+                //----------------------------------------
+
+                Location Location = new Location();
+                Location.LocationId = -1;
+                Location.Name = "(Manage Entries...)";
+
+                IdObjectPair NewEntry = new IdObjectPair(-1, Location);
+                box.Items.Add(NewEntry);
+
+                box.SelectedIndex = -1;
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public void PopulateCategoryComboBox(ComboBox box)
+        {
+            try {
+                //----------------------------------------
+                // Add items from database
+                //----------------------------------------
+
+                Categories Categories = new Categories();
+                List<IdObjectPair> Items = Categories.Fetch();
+
+                PopulateGenericComboBox(box, Items);
+
+                //----------------------------------------
+                // Add special item
+                //----------------------------------------
+
+                Category Category = new Category();
+                Category.CategoryId = -1;
+                Category.Name = "(Manage Entries...)";
+
+                IdObjectPair NewEntry = new IdObjectPair(-1, Category);
+                box.Items.Add(NewEntry);
+
+                box.SelectedIndex = -1;
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void PopulateGenericComboBox(ComboBox box, List<IdObjectPair> items)
+        {
+            foreach (IdObjectPair Pair in items) {
+                box.Items.Add(Pair);
+            }
+        }
+
         //---------------------------------------------------------------------
 
         public void PopulateTimeZoneComboBox(ComboBox box)
@@ -335,6 +407,16 @@ namespace Timekeeper.Classes
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SelectCurrentTimeZone(ComboBox box)
+        {
+            TimeZone CurrentTimeZone = TimeZone.CurrentTimeZone;
+            TimeZoneInfo CurrentTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(CurrentTimeZone.StandardName);
+            int Index = box.FindString(CurrentTimeZoneInfo.DisplayName);
+            box.SelectedIndex = Index;
         }
 
         //---------------------------------------------------------------------

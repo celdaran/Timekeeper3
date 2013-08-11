@@ -390,6 +390,7 @@ namespace Timekeeper.Forms
             // 
             // MenuActionCloseBrowser
             // 
+            this.MenuActionCloseBrowser.Image = global::Timekeeper.Properties.Resources.ImageButtonClose;
             this.MenuActionCloseBrowser.Name = "MenuActionCloseBrowser";
             this.MenuActionCloseBrowser.Size = new System.Drawing.Size(179, 22);
             this.MenuActionCloseBrowser.Text = "Close &Browser";
@@ -1475,45 +1476,39 @@ namespace Timekeeper.Forms
             // 
             // labelCategory
             // 
-            this.labelCategory.Location = new System.Drawing.Point(225, 59);
+            this.labelCategory.Location = new System.Drawing.Point(210, 59);
             this.labelCategory.Name = "labelCategory";
-            this.labelCategory.Size = new System.Drawing.Size(58, 13);
+            this.labelCategory.Size = new System.Drawing.Size(52, 13);
             this.labelCategory.TabIndex = 15;
             this.labelCategory.Text = "Category:";
             // 
             // wCategory
             // 
+            this.wCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.wCategory.FormattingEnabled = true;
-            this.wCategory.Items.AddRange(new object[] {
-            "Important",
-            "Clean this Up",
-            "Delete this Later",
-            "(New Entry...)"});
-            this.wCategory.Location = new System.Drawing.Point(289, 56);
+            this.wCategory.Location = new System.Drawing.Point(265, 56);
             this.wCategory.Name = "wCategory";
-            this.wCategory.Size = new System.Drawing.Size(121, 21);
+            this.wCategory.Size = new System.Drawing.Size(151, 21);
             this.wCategory.TabIndex = 5;
+            this.wCategory.SelectedIndexChanged += new System.EventHandler(this.wCategory_SelectedIndexChanged);
             // 
             // labelLocation
             // 
-            this.labelLocation.Location = new System.Drawing.Point(225, 33);
+            this.labelLocation.Location = new System.Drawing.Point(210, 33);
             this.labelLocation.Name = "labelLocation";
-            this.labelLocation.Size = new System.Drawing.Size(58, 13);
+            this.labelLocation.Size = new System.Drawing.Size(52, 13);
             this.labelLocation.TabIndex = 13;
             this.labelLocation.Text = "&Location:";
             // 
             // wLocation
             // 
+            this.wLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.wLocation.FormattingEnabled = true;
-            this.wLocation.Items.AddRange(new object[] {
-            "Work",
-            "Home",
-            "On the Road",
-            "(New Location...)"});
-            this.wLocation.Location = new System.Drawing.Point(289, 30);
+            this.wLocation.Location = new System.Drawing.Point(265, 30);
             this.wLocation.Name = "wLocation";
-            this.wLocation.Size = new System.Drawing.Size(121, 21);
+            this.wLocation.Size = new System.Drawing.Size(151, 21);
             this.wLocation.TabIndex = 4;
+            this.wLocation.SelectedIndexChanged += new System.EventHandler(this.wLocation_SelectedIndexChanged);
             // 
             // wStopTime
             // 
@@ -1621,10 +1616,12 @@ namespace Timekeeper.Forms
             // 
             // toolControlClose
             // 
-            this.toolControlClose.Image = global::Timekeeper.Properties.Resources.ImageButtonCancel;
+            this.toolControlClose.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolControlClose.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolControlClose.Image = global::Timekeeper.Properties.Resources.ImageButtonClose;
             this.toolControlClose.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlClose.Name = "toolControlClose";
-            this.toolControlClose.Size = new System.Drawing.Size(95, 22);
+            this.toolControlClose.Size = new System.Drawing.Size(23, 22);
             this.toolControlClose.Text = "&Close Browser";
             this.toolControlClose.ToolTipText = "Close This Pane";
             this.toolControlClose.Click += new System.EventHandler(this.MenuActionCloseBrowser_Click);

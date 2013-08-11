@@ -175,7 +175,7 @@ namespace Timekeeper.Forms
                 wMemo.Focus();
             }
             catch (Exception x) {
-                Common.Warn(x.ToString());
+                //Common.Warn(x.ToString());
                 Timekeeper.Exception(x);
             }
         }
@@ -315,6 +315,16 @@ namespace Timekeeper.Forms
             entry.Memo = wMemo.Text;
             entry.ProjectName = ProjectTree.SelectedNode.Text;
             entry.ActivityName = ActivityTree.SelectedNode.Text;
+
+            // Location & Category support
+            if (wLocation.SelectedIndex > -1) {
+                Classes.Location Location = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
+                entry.LocationId = Location.LocationId;
+            }
+            if (wCategory.SelectedIndex > -1) {
+                Classes.Category Category = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
+                entry.CategoryId = Category.CategoryId;
+            }
         }
 
         private void Browser_EntryToForm(Classes.Journal entry)
@@ -356,6 +366,31 @@ namespace Timekeeper.Forms
             wStopTime.Value = entry.StopTime;
             wDuration.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
             wMemo.Text = entry.Memo;
+
+            // Handle Location
+            if (entry.LocationId > 0) {
+                Classes.Location Location = new Classes.Location(entry.LocationId);
+                if (Location.Name != null) {
+                    int LocationIndex = wLocation.FindString(Location.Name);
+                    wLocation.SelectedIndex = LocationIndex;
+                } else {
+                    wLocation.SelectedIndex = -1;
+                }
+            } else {
+                wLocation.SelectedIndex = -1;
+            }
+
+            if (entry.CategoryId > 0) {
+                Classes.Category Category = new Classes.Category(entry.CategoryId);
+                if (Category.Exists) {
+                    int CategoryIndex = wCategory.FindString(Category.Name);
+                    wCategory.SelectedIndex = CategoryIndex;
+                } else {
+                    wCategory.SelectedIndex = -1;
+                }
+            } else {
+                wCategory.SelectedIndex = -1;
+            }
 
             // And any other relevant values
             toolControlEntryId.Text = entry.JournalId > 0 ? entry.JournalId.ToString() : "";

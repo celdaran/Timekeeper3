@@ -98,11 +98,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Categories.cs" />
+    <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Datatypes.cs" />
     <Compile Include="Classes\File.cs" />
     <Compile Include="Classes\File.Downgrade.cs" />
     <Compile Include="Classes\File.Upgrade.cs" />
     <Compile Include="Classes\FilterOptions.cs" />
+    <Compile Include="Classes\Location.cs" />
+    <Compile Include="Classes\Locations.cs" />
     <Compile Include="Classes\OtherAttributes.cs" />
     <Compile Include="Classes\Meta.cs" />
     <Compile Include="Classes\Options.cs" />
@@ -122,6 +126,12 @@
     </Compile>
     <Compile Include="Forms\Filtering.Designer.cs">
       <DependentUpon>Filtering.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Location.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Location.Designer.cs">
+      <DependentUpon>Location.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\NewWizard.cs">
       <SubType>Form</SubType>
@@ -380,6 +390,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>fLog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Location.resx">
+      <DependentUpon>Location.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Main.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Main.cs</DependentUpon>
@@ -457,6 +470,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Images\Buttons\Save.png" />
+    <None Include="Resources\Images\Buttons\Up.png" />
+    <None Include="Resources\Images\Buttons\Top.png" />
+    <None Include="Resources\Images\Buttons\Down.png" />
+    <None Include="Resources\Images\Buttons\Close.png" />
+    <None Include="Resources\Images\Buttons\Bottom.png" />
     <Content Include="Resources\Images\Buttons\CloseStartGap.png" />
     <None Include="Resources\XML\Item.Presets.xml" />
     <None Include="Resources\SQL\3.0\RefTimeDisplay.Insert.sql" />

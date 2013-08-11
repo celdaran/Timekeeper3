@@ -31,3 +31,4 @@ CREATE TABLE Location
 
 CREATE UNIQUE INDEX idx_Location_LocationId ON Location(LocationId);
 CREATE UNIQUE INDEX idx_Location_LocationGuid ON Location(LocationGuid);
+CREATE UNIQUE INDEX idx_Location_Name ON Location(Name);

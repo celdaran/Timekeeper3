@@ -59,6 +59,10 @@ namespace Timekeeper.Forms
         private Classes.Journal Entry;
         private Project currentProject;
         private Activity currentActivity;
+        private Classes.Location currentLocation;
+        private Classes.Category currentCategory;
+
+        // FIXME: class-wide values?
         private TreeNode currentProjectNode;
         private TreeNode currentActivityNode;
 
@@ -741,6 +745,20 @@ namespace Timekeeper.Forms
         private void ActivityTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             Action_ChangedActivity();
+        }
+
+        //---------------------------------------------------------------------
+
+        private void wLocation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Action_ChangedLocation();
+        }
+
+        //---------------------------------------------------------------------
+
+        private void wCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Action_ChangedCategory();
         }
 
         //---------------------------------------------------------------------
