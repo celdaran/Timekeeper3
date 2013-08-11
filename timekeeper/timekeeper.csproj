@@ -134,11 +134,11 @@
     <Compile Include="Forms\Filtering.Designer.cs">
       <DependentUpon>Filtering.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Location.cs">
+    <Compile Include="Forms\ListAttributeManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Location.Designer.cs">
-      <DependentUpon>Location.cs</DependentUpon>
+    <Compile Include="Forms\ListAttributeManager.Designer.cs">
+      <DependentUpon>ListAttributeManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LocationManager.cs">
       <SubType>Form</SubType>
@@ -406,8 +406,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>fLog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Location.resx">
-      <DependentUpon>Location.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ListAttributeManager.resx">
+      <DependentUpon>ListAttributeManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LocationManager.resx">
       <DependentUpon>LocationManager.cs</DependentUpon>
