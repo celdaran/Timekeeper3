@@ -77,15 +77,16 @@ namespace Timekeeper.Forms
             // Populate Location & Category filters
             //----------------------------------------
 
-            OtherAttributes OtherAttributes = new OtherAttributes();
+            Classes.Locations Locations = new Classes.Locations()
+            Classes.Categories Categories = new Classes.Categories();
 
-            List<IdValuePair> Locations = OtherAttributes.Locations();
-            foreach (IdValuePair Location in Locations) {
+            List<IdObjectPair> FetchedLocations = Locations.Fetch();
+            foreach (IdObjectPair Location in FetchedLocations) {
                 LocationFilter.Items.Add(Location);
             }
 
-            List<IdValuePair> Categories = OtherAttributes.Categories();
-            foreach (IdValuePair Category in Categories) {
+            List<IdObjectPair> FetchedCategories = Categories.Fetch();
+            foreach (IdObjectPair Category in FetchedCategories) {
                 CategoryFilter.Items.Add(Category);
             }
 

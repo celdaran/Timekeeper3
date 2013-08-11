@@ -107,7 +107,6 @@
     <Compile Include="Classes\FilterOptions.cs" />
     <Compile Include="Classes\Location.cs" />
     <Compile Include="Classes\Locations.cs" />
-    <Compile Include="Classes\OtherAttributes.cs" />
     <Compile Include="Classes\Meta.cs" />
     <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\SystemData.cs" />
