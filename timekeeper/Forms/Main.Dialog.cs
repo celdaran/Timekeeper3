@@ -184,9 +184,10 @@ namespace Timekeeper.Forms
                 item.IsFolder = isFolder;
                 item.ExternalProjectNo = Dialog.ItemExternalProjectNo.Text;
 
-                Classes.TreeAttribute ParentItem = (Classes.TreeAttribute)Dialog.ItemParent.SelectedItem;
+                IdValuePair Pair = (IdValuePair)Dialog.ItemParent.SelectedItem;
+                int ParentItemId = Pair.Id;
 
-                int CreateResult = Widgets.CreateTreeItem(tree.Nodes, item, ParentItem.ItemId, imageIndex);
+                int CreateResult = Widgets.CreateTreeItem(tree.Nodes, item, ParentItemId, imageIndex);
                 switch (CreateResult) {
                     case Classes.Widgets.TREES_ITEM_CREATED:
                         //Common.Info("Item created");

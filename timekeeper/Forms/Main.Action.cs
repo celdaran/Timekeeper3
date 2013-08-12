@@ -26,34 +26,42 @@ namespace Timekeeper.Forms
         private void Action_ChangedProject()
         {
             // Get current project
-            Classes.Project project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+            Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
 
-            // Status bar updates?
-            // (see below)
+            // Update status bar
+            if (timerRunning == false) {
+                Classes.Activity Activity;
+                if (ActivityTree.SelectedNode != null) {
+                    Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
+                } else {
+                    Activity = new Classes.Activity(this.Database);
+                }
+                StatusBar_Update(Project, Activity);
+            }
 
             // Auto-follow
             if (!isBrowsing) {
-            //if (options.wProjectFollow.Checked) {
-                if (project.FollowedItemId > 0) {
-                    TreeNode node = Widgets.FindTreeNode(ActivityTree.Nodes, project.FollowedItemId);
+            if (options.wProjectFollow.Checked) {
+                if (Project.FollowedItemId > 0) {
+                    TreeNode node = Widgets.FindTreeNode(ActivityTree.Nodes, Project.FollowedItemId);
                     if ((node != null) && (!DontChangeProject)) {
                         DontChangeActivity = true;
                         ActivityTree.SelectedNode = node;
                         DontChangeActivity = false;
                     }
                 }
-            //}
+            }
             }
 
             // TODO: Implement auto-follow the other direction
             // Set hide mode based on projects's IsHidden property
-            MenuBar_ShowHideProject(!project.IsHidden);
+            MenuBar_ShowHideProject(!Project.IsHidden);
 
             // Update calendar to reflect change
             Action_UpdateCalendar(ProjectTree);
 
             // Set our dirty bit
-            if ((isBrowsing) && (project.ItemId != browserEntry.ProjectId)) {
+            if ((isBrowsing) && (Project.ItemId != browserEntry.ProjectId)) {
                 toolControlRevert.Enabled = true;
             }
         }
@@ -62,17 +70,29 @@ namespace Timekeeper.Forms
 
         private void Action_ChangedActivity()
         {
-            // Get current activty
+            // Get current items
             Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
 
             // Update status bar
             if (timerRunning == false) {
-                StatusBar_Update(Activity);
+                Classes.Project Project;
+                if (ProjectTree.SelectedNode != null) {
+                    Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+                } else {
+                    Project = new Classes.Project(this.Database);
+                }
+                StatusBar_Update(Project, Activity);
             }
 
             // Auto-follow
+
+            // FIXME: Can only be one other the other. This is just a rough simulation of that.
+            // TODO: Here's an idea. Have a single "follow" option, but the option is only based
+            // on whether that particular treeview has focus. e.g., if Project has focus then
+            // Activity follows Project. If Activity has focus, then it's the other way around.
+
             if (!isBrowsing) {
-            if (options.wProjectFollow.Checked) {
+            if (!options.wProjectFollow.Checked) {
                 if (Activity.FollowedItemId > 0) {
                     TreeNode node = Widgets.FindTreeNode(ProjectTree.Nodes, Activity.FollowedItemId);
                     if ((node != null) && (!DontChangeActivity)) {
@@ -1030,26 +1050,29 @@ namespace Timekeeper.Forms
             if ((currentActivity != null) && (timerRunning == true)) {
 
                 // Simple increment for the one-second timer
-                elapsed++;
-                elapsedToday++;
-                elapsedTodayAll++;
+                ElapsedSinceStart++;
+                ElapsedProjectToday++;
+                ElapsedActivityToday++;
+                ElapsedAllToday++;
 
                 StatusBar_Update();
 
                 if (!isBrowsing) {
-                    wDuration.Text = StatusBarItemTime.Text;
+                    wDuration.Text = StatusBarElapsedSinceStart.Text;
                     wStopTime.Value = DateTime.Now;
                 }
 
+                // FIXME: More Options Overhaul
                 string timeToShow;
                 if (options.wShowCurrent.Checked) {
-                    timeToShow = StatusBarItemTime.Text;
+                    timeToShow = StatusBarElapsedSinceStart.Text;
                 } else if (options.wShowToday.Checked) {
-                    timeToShow = StatusBarItemTimeToday.Text;
+                    timeToShow = StatusBarElapsedActivityToday.Text;
                 } else {
-                    timeToShow = StatusBarItemsTimeToday.Text;
+                    timeToShow = StatusBarElapsedAllToday.Text;
                 }
 
+                // FIXME: add this to Widgets?
                 string tmp = options.wTitleBarTemplate.Text;
                 tmp = tmp.Replace("%task", "{0}"); // FIXME: take care of this later
                 tmp = tmp.Replace("%project", "{1}");
@@ -1089,9 +1112,10 @@ namespace Timekeeper.Forms
         {
             if (timerRunning) {
                 // Refresh actual time values from database to correct for drift
-                elapsed = Convert.ToInt32(currentActivity.Elapsed().TotalSeconds);
-                elapsedToday = Convert.ToInt32(currentActivity.ElapsedToday().TotalSeconds);
-                elapsedTodayAll = Convert.ToInt32(Entries.ElapsedToday());
+                ElapsedSinceStart = Convert.ToInt32(currentActivity.Elapsed().TotalSeconds); // FIXME: CURRENT ACTIVITY?
+                ElapsedProjectToday = Convert.ToInt32(currentProject.ElapsedToday().TotalSeconds);
+                ElapsedActivityToday = Convert.ToInt32(currentActivity.ElapsedToday().TotalSeconds);
+                ElapsedAllToday = Convert.ToInt32(Entries.ElapsedToday());
             }
 
             // Annoyance support: if so desired, bug the user that the timer isn't running
@@ -1149,8 +1173,11 @@ namespace Timekeeper.Forms
             currentActivityNode = ActivityTree.SelectedNode;
             currentProject = (Classes.Project)currentProjectNode.Tag;
             currentActivity = (Classes.Activity)currentActivityNode.Tag;
-            currentLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
-            currentCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
+
+            if (wLocation.SelectedItem != null)
+                currentLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
+            if (wCategory.SelectedItem != null)
+                currentCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
 
             if ((currentProject.IsFolder == true) || (currentActivity.IsFolder)) {
                 Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
@@ -1160,7 +1187,10 @@ namespace Timekeeper.Forms
             // Now start timing
             DateTime StartTime = IsBrowserOpen() ? wStartTime.Value : DateTime.Now;
             currentActivity.StartTiming(StartTime);
-            currentActivity.FollowedItemId = currentProject.ItemId; // FIXME: needs to work both ways
+            currentActivity.FollowedItemId = currentProject.ItemId;
+
+            currentProject.StartTiming(StartTime);
+            currentProject.FollowedItemId = currentActivity.ItemId;
 
             //currentEntry = new Classes.Journal(Database);
             Entry.ProjectId = currentProject.ItemId;
@@ -1170,8 +1200,8 @@ namespace Timekeeper.Forms
             Entry.Seconds = 0; // default to zero
             Entry.Memo = wMemo.Text;
             Entry.IsLocked = true;
-            Entry.LocationId = currentLocation.Id;
-            Entry.CategoryId = currentCategory.Id;
+            Entry.LocationId = currentLocation == null ? 0 : currentLocation.Id; // FIXME: Location should be not null.
+            Entry.CategoryId = currentCategory == null ? 0 : currentCategory.Id;
             if (!Entry.Create()) {
                 Common.Warn("There was an error starting the timer.");
                 return;
@@ -1182,9 +1212,10 @@ namespace Timekeeper.Forms
             timerLastRun = DateTime.Now;
 
             // Grab times (this is a database hit)
-            elapsed = (long)currentActivity.Elapsed().TotalSeconds;
-            elapsedToday = (long)currentActivity.ElapsedToday().TotalSeconds;
-            elapsedTodayAll = (long)Entries.ElapsedToday() + elapsed; // worth a shot
+            ElapsedSinceStart = (long)currentActivity.Elapsed().TotalSeconds;
+            ElapsedProjectToday = (long)currentProject.ElapsedToday().TotalSeconds;
+            ElapsedActivityToday = (long)currentActivity.ElapsedToday().TotalSeconds;
+            ElapsedAllToday = (long)Entries.ElapsedToday() + ElapsedSinceStart;
 
             // Make any UI changes based on the timer starting
             MenuActionStartTimer.Visible = false;
@@ -1209,10 +1240,10 @@ namespace Timekeeper.Forms
             menuToolControlStop.ShortcutKeys = saveKeys;
             */
 
-            // FIXME: Need support for both Projects and Activities
-            StatusBar_TimerStarted(currentActivity.Name);
+            StatusBar_TimerStarted(currentProjectNode.Text, currentActivityNode.Text);
 
             Text = currentActivity.Name;
+
             MenuActionDeleteActivity.Enabled = false;
             PopupMenuActivityDelete.Enabled = false;
             TrayIcon.Text = Common.Abbreviate(Text, 63);
@@ -1245,26 +1276,20 @@ namespace Timekeeper.Forms
 
         private void Action_StopTimer()
         {
-            // Grab instances of currently selected objects
-            /*
-            currentProjectNode = ProjectTree.SelectedNode;
-            currentActivityNode = ActivityTree.SelectedNode;
-            currentProject = (Project)currentProjectNode.Tag;
-            currentActivity = (Activity)currentActivityNode.Tag;
-            currentLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
-            currentCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
-            */
+            // Close off the timer for both objects
+            long Seconds = currentActivity.StopTiming(wStopTime.Value);
+                           currentProject.StopTiming(wStopTime.Value);
 
             // Close off timer
             Entry.ProjectId = currentProject.ItemId;
             Entry.ActivityId = currentActivity.ItemId;
             Entry.StartTime = wStartTime.Value;
             Entry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
-            Entry.Seconds = currentActivity.StopTiming(wStopTime.Value);  // FIXME: wait, whut? currentActivity?
+            Entry.Seconds = Seconds;
             Entry.Memo = wMemo.Text;
             Entry.IsLocked = false;
-            Entry.LocationId = currentLocation.Id;
-            Entry.CategoryId = currentCategory.Id;
+//            Entry.LocationId = currentLocation.Id;
+//            Entry.CategoryId = currentCategory.Id;
             Entry.Save();
             timerRunning = false;
             //ShortTimer.Enabled = false;
@@ -1284,7 +1309,6 @@ namespace Timekeeper.Forms
             //menuActionStopAdvanced.Visible = false;
 
             StatusBar_TimerStopped();
-
 
             // swap start/stop keystrokes
             // FIXME: this is a mess

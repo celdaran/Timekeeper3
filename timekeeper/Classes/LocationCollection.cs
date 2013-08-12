@@ -9,7 +9,7 @@ namespace Timekeeper.Classes
 {
     class LocationCollection : Classes.ListAttributeCollection
     {
-        private DBI Database;
+        //private DBI Database;
 
         //----------------------------------------------------------------------
         // Constructor

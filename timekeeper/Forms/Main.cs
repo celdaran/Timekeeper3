@@ -69,9 +69,10 @@ namespace Timekeeper.Forms
         // timer properties
         private bool timerRunning = false;
         private DateTime timerLastRun;
-        private long elapsed;
-        private long elapsedToday;
-        private long elapsedTodayAll;
+        private long ElapsedSinceStart;
+        private long ElapsedProjectToday;
+        private long ElapsedActivityToday;
+        private long ElapsedAllToday;
 
         //---------------------------------------------------------------------
         // Constants

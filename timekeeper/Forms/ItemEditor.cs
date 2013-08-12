@@ -89,7 +89,7 @@ namespace Timekeeper
                 }
 
                 if (ItemExternalProjectNo.Text == "") {
-                    ItemExternalProjectNo.Text = UUID.Get();
+                    ItemExternalProjectNo.Text = null;
                 }
             }
 

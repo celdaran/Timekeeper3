@@ -9,7 +9,7 @@ namespace Timekeeper.Classes
 {
     class CategoryCollection : Classes.ListAttributeCollection
     {
-        private DBI Database;
+        //private DBI Database;
 
         //----------------------------------------------------------------------
         // Constructor

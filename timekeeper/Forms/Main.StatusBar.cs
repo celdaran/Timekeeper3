@@ -10,24 +10,51 @@ namespace Timekeeper.Forms
 {
     partial class Main
     {
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // Helper class to break up fMain.cs into manageable pieces
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
+
+        //----------------------------------------------------------------------
+        // FIXME/TODO: Apart from whatever individual visibility options have
+        // been set, the overall "Use Projects" and "Use Activities" options
+        // will ultimately dictate what appears on the status bar.
+        //----------------------------------------------------------------------
+
+        private void StatusBar_Inactive()
+        {
+            StatusBarCurrentProject.ForeColor = Color.Gray;
+            StatusBarCurrentActivity.ForeColor = Color.Gray;
+
+            StatusBarElapsedSinceStart.ForeColor = Color.Gray;
+            StatusBarElapsedProjectToday.ForeColor = Color.Gray;
+            StatusBarElapsedActivityToday.ForeColor = Color.Gray;
+            StatusBarElapsedAllToday.ForeColor = Color.Gray;
+        }
+
+        //----------------------------------------------------------------------
+
+        private void StatusBar_NullValues(bool includeTimers)
+        {
+            StatusBarCurrentProject.Text = "Project";
+            StatusBarCurrentActivity.Text = "Activity";
+
+            if (includeTimers) {
+                StatusBarElapsedSinceStart.Text = "0:00:00";
+                StatusBarElapsedProjectToday.Text = "0:00:00";
+                StatusBarElapsedActivityToday.Text = "0:00:00";
+                StatusBarElapsedAllToday.Text = "0:00:00";
+            }
+        }
+
+        //----------------------------------------------------------------------
 
         private void StatusBar_FileClosed()
         {
-            StatusBarItemName.Text = "No Timer Running";
-            StatusBarItemName.ForeColor = Color.Gray;
+            StatusBar_Inactive();
+            StatusBar_NullValues(true);
 
-            StatusBarItemTime.Text = "0:00:00";
-            StatusBarItemTimeToday.Text = "0:00:00";
-            StatusBarItemsTimeToday.Text = "0:00:00";
-            StatusBarItemTimeToday.ForeColor = Color.Gray;
-            StatusBarItemsTimeToday.ForeColor = Color.Gray;
-            StatusBarItemsTimeToday.ForeColor = Color.Gray;
-
-            StatusBarFileName.Text = "No File Loaded";
-            StatusBarFileName.ToolTipText = "No File Loaded";
+            StatusBarFileName.Text = "No File Open";
+            StatusBarFileName.ToolTipText = "No Timekeeper file has been opened. Use File|New or File|Open to begin.";
             StatusBarFileName.ForeColor = Color.Gray;
         }
 
@@ -35,15 +62,8 @@ namespace Timekeeper.Forms
 
         private void StatusBar_FileOpened()
         {
-            StatusBarItemName.Text = "No Timer Running";
-            StatusBarItemName.ForeColor = Color.Gray;
-
-            StatusBarItemTime.Text = "0:00:00";
-            StatusBarItemTimeToday.Text = "0:00:00";
-            StatusBarItemsTimeToday.Text = "0:00:00";
-            StatusBarItemTime.ForeColor = Color.Gray;
-            StatusBarItemTimeToday.ForeColor = Color.Gray;
-            StatusBarItemsTimeToday.ForeColor = Color.Gray;
+            StatusBar_Inactive();
+            StatusBar_NullValues(true);
 
             StatusBarFileName.Text = new File().Name;
             StatusBarFileName.ToolTipText = DatabaseFileName + "\n(Right-click to copy to clipboard)";
@@ -56,37 +76,37 @@ namespace Timekeeper.Forms
         {
             // view or hide status bar items
             StatusBar.Visible = options.wViewStatusBar.Checked;
-            StatusBarItemName.Visible = options.wViewCurrentTask.Checked;
-            StatusBarItemTime.Visible = options.wViewElapsedCurrent.Checked;
-            StatusBarItemTimeToday.Visible = options.wViewElapsedOne.Checked;
-            StatusBarItemsTimeToday.Visible = options.wViewElapsedAll.Checked;
+            StatusBarCurrentProject.Visible = options.wViewCurrentTask.Checked;
+            StatusBarCurrentActivity.Visible = options.wViewCurrentTask.Checked; // FIXME
+            StatusBarElapsedSinceStart.Visible = options.wViewElapsedCurrent.Checked;
+            StatusBarElapsedProjectToday.Visible = options.wViewElapsedOne.Checked; // FIXME
+            StatusBarElapsedActivityToday.Visible = options.wViewElapsedOne.Checked;
+            StatusBarElapsedAllToday.Visible = options.wViewElapsedAll.Checked;
             StatusBarFileName.Visible = options.wViewOpenedFile.Checked;
         }
 
         //---------------------------------------------------------------------
 
-        private void StatusBar_TimerStarted(string itemText)
+        private void StatusBar_TimerStarted(string projectName, string activityName)
         {
-            StatusBarItemName.Text = itemText;
-            StatusBarItemName.ForeColor = Color.Black;
-            StatusBarItemTime.ForeColor = Color.Black;
+            StatusBarCurrentProject.Text = projectName;
+            StatusBarCurrentProject.ForeColor = Color.Black;
 
-            StatusBarItemTimeToday.ForeColor = Color.Black;
-            StatusBarItemsTimeToday.ForeColor = Color.Black;
-            StatusBarItemsTimeToday.ForeColor = Color.Black;
+            StatusBarCurrentActivity.Text = activityName;
+            StatusBarCurrentActivity.ForeColor = Color.Black;
+
+            StatusBarElapsedSinceStart.ForeColor = Color.Black;
+            StatusBarElapsedProjectToday.ForeColor = Color.Black;
+            StatusBarElapsedActivityToday.ForeColor = Color.Black;
+            StatusBarElapsedAllToday.ForeColor = Color.Black;
         }
 
         //---------------------------------------------------------------------
 
         private void StatusBar_TimerStopped()
         {
-            StatusBarItemName.Text = "No Timer Running";
-            StatusBarItemName.ForeColor = Color.Gray;
-            StatusBarItemTime.ForeColor = Color.Gray;
-
-            StatusBarItemTimeToday.ForeColor = Color.Gray;
-            StatusBarItemsTimeToday.ForeColor = Color.Gray;
-            StatusBarItemsTimeToday.ForeColor = Color.Gray;
+            StatusBar_Inactive();
+            StatusBar_NullValues(false);
         }
 
         //---------------------------------------------------------------------
@@ -94,19 +114,21 @@ namespace Timekeeper.Forms
         private void StatusBar_Update()
         {
             // Called when the timer is running
-            StatusBarItemTime.Text = Timekeeper.FormatSeconds(elapsed);
-            StatusBarItemTimeToday.Text = Timekeeper.FormatSeconds(elapsedToday);
-            StatusBarItemsTimeToday.Text = Timekeeper.FormatSeconds(elapsedTodayAll);
+            StatusBarElapsedSinceStart.Text = Timekeeper.FormatSeconds(ElapsedSinceStart);
+            StatusBarElapsedProjectToday.Text = Timekeeper.FormatSeconds(ElapsedProjectToday);
+            StatusBarElapsedActivityToday.Text = Timekeeper.FormatSeconds(ElapsedActivityToday);
+            StatusBarElapsedAllToday.Text = Timekeeper.FormatSeconds(ElapsedAllToday);
         }
 
         //---------------------------------------------------------------------
 
-        private void StatusBar_Update(Classes.Activity activity)
+        private void StatusBar_Update(Classes.Project project, Classes.Activity activity)
         {
-            // Only called when the timer isn't running
-            StatusBarItemTime.Text = "0:00:00";
-            StatusBarItemTimeToday.Text = activity.ElapsedTodayFormatted();
-            StatusBarItemsTimeToday.Text = Entries.ElapsedTodayFormatted();
+            // Called when the timer isn't running
+            StatusBarElapsedSinceStart.Text = "0:00:00";
+            StatusBarElapsedProjectToday.Text = project.ElapsedTodayFormatted();
+            StatusBarElapsedActivityToday.Text = activity.ElapsedTodayFormatted();
+            StatusBarElapsedAllToday.Text = Entries.ElapsedTodayFormatted();
         }
 
         //---------------------------------------------------------------------
