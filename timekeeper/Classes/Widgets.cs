@@ -132,7 +132,7 @@ namespace Timekeeper.Classes
         {
             TreeNode Node = new TreeNode();
             Node.Tag = item;
-            Node.Text = item.Name;
+            Node.Text = item.DisplayName();
             Node.ToolTipText = item.Description;
             if (item.IsHidden) {
                 Node.ForeColor = Color.Gray;
@@ -172,9 +172,9 @@ namespace Timekeeper.Classes
             } else {
                 // Otherwise, try to add the item to the found parent
 
-                string parentName = parentProject.Name;
+                long parentId = parentProject.ItemId;
 
-                TreeNode ParentNode = FindTreeNode(tree, parentName);
+                TreeNode ParentNode = FindTreeNode(tree, parentId);
                 if (ParentNode != null) {
                     // If we got one, add it
                     return AddItemToTree(tree, ParentNode, project, Timekeeper.IMG_ITEM_HIDDEN);
@@ -204,9 +204,9 @@ namespace Timekeeper.Classes
             } else {
                 // Otherwise, try to add the item to the found parent
 
-                string parentName = parentActivity.Name;
+                long parentId = parentActivity.ItemId;
 
-                TreeNode ParentNode = FindTreeNode(tree, parentName);
+                TreeNode ParentNode = FindTreeNode(tree, parentId);
                 if (ParentNode != null) {
                     // If we got one, add it
                     return AddItemToTree(tree, ParentNode, activity, Timekeeper.IMG_ITEM_HIDDEN);
@@ -220,16 +220,15 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public int CreateTreeItem(TreeNodeCollection tree, TreeAttribute item, string parentName, int imageIndex)
+        public int CreateTreeItem(TreeNodeCollection tree, TreeAttribute item, long parentId, int imageIndex)
         {
             TreeNode ParentNode = null;
             item.ParentId = 0;
 
-            if (parentName != "(Top Level)") {
-                ParentNode = FindTreeNode(tree, parentName);
+            if (parentId != -1) {
+                ParentNode = FindTreeNode(tree, parentId);
                 if (ParentNode != null) {
-                    TreeAttribute parentItem = (TreeAttribute)ParentNode.Tag;
-                    item.ParentId = parentItem.ItemId;
+                    item.ParentId = parentId;
                 } else {
                     return TREES_ERROR_CREATING_ITEM;
                 }
@@ -251,26 +250,6 @@ namespace Timekeeper.Classes
             }
 
             return Result;
-        }
-
-        //---------------------------------------------------------------------
-
-        public TreeNode FindTreeNode(TreeNodeCollection nodes, string name)
-        {
-            TreeNode FoundNode = null;
-
-            foreach (TreeNode Node in nodes) {
-                if (Node.Text == name) {
-                    FoundNode = Node;
-                } else {
-                    FoundNode = FindTreeNode(Node.Nodes, name);
-                }
-                if (FoundNode != null) {
-                    break;
-                }
-            }
-
-            return FoundNode;
         }
 
         //---------------------------------------------------------------------

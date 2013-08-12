@@ -10,10 +10,13 @@ namespace Timekeeper.Classes
     {
         private DBI Database;
 
-        private string _LastActivity;
         private string _LastProject;
+        private string _LastActivity;
         private string _LastGridView;
         private string _LastReportView;
+
+        private long _LastProjectId;
+        private long _LastActivityId;
 
         //---------------------------------------------------------------------
         // Constructor
@@ -33,16 +36,28 @@ namespace Timekeeper.Classes
                 Row Row;
                 string Query;
 
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastProject");
+                Row = this.Database.SelectRow(Query);
+                if (Row.Count > 0) {
+                    this._LastProject = Row["Value"];
+                }
+
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastProjectId");
+                Row = this.Database.SelectRow(Query);
+                if (Row.Count > 0) {
+                    this._LastProjectId = (long)Row["Value"];
+                }
+
                 Query = String.Format(@"select Value from Options where Key = '{0}'", "LastActivity");
                 Row = this.Database.SelectRow(Query);
                 if (Row.Count > 0) {
                     this._LastActivity = Row["Value"];
                 }
 
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastProject");
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastActivityId");
                 Row = this.Database.SelectRow(Query);
                 if (Row.Count > 0) {
-                    this._LastProject = Row["Value"];
+                    this._LastActivityId = (long)Row["Value"];
                 }
 
                 Query = String.Format(@"select Value from Options where Key = '{0}'", "LastGridView");
@@ -64,6 +79,32 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        public string LastProject
+        {
+            get { return _LastProject; }
+
+            set
+            {
+                _LastProject = value;
+                Save("LastProject", value);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public long LastProjectId
+        {
+            get { return _LastProjectId; }
+
+            set
+            {
+                _LastProjectId = value;
+                Save("LastProjectId", value.ToString());
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         public string LastActivity
         {
             get { return _LastActivity; }
@@ -76,13 +117,14 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public string LastProject
+        public long LastActivityId
         {
-            get { return _LastProject; }
+            get { return _LastActivityId; }
 
-            set {
-                _LastProject = value;
-                Save("LastProject", value);
+            set
+            {
+                _LastActivityId = value;
+                Save("LastActivityId", value.ToString());
             }
         }
 

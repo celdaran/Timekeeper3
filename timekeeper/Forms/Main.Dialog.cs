@@ -20,18 +20,21 @@ namespace Timekeeper.Forms
             string TableName = (string)tree.Tag;
             ItemEditor Dialog = new ItemEditor(Database, TableName);
 
+            // Store the object in the dialog's tag
+            Dialog.Tag = item;
+
             // Set the title
             Dialog.Text = title;
 
-            // Create an Item object
+            // Create a Project object (needed for External)
             Classes.Project Project = null;
             if (TableName == "Project") {
-                Project = new Classes.Project(Database, tree.SelectedNode.Text);
+                Project = new Classes.Project(Database, item.Name);
             }
 
             // Previous values
-            string PreviousName = tree.SelectedNode.Text;
-            string PreviousDescription = tree.SelectedNode.ToolTipText;
+            string PreviousName = item.Name;
+            string PreviousDescription = item.Description;
             string PreviousFolder = "";
             string PreviousExternalProjectNo = "";
 
@@ -59,25 +62,29 @@ namespace Timekeeper.Forms
             if (Dialog.ShowDialog(this) == DialogResult.OK) {
 
                 if (Dialog.ItemName.Text != PreviousName) {
-                    if (!Action_RenameItem(tree.SelectedNode, item, Dialog.ItemName.Text))
+                    if (Action_RenameItem(tree.SelectedNode, item, Dialog.ItemName.Text)) {
+                        tree.SelectedNode.Text = item.DisplayName();
+                        tree.SelectedNode.Tag = item;
+                    } else {
                         return;
+                    }
                 }
 
                 if (Dialog.ItemDescription.Text != PreviousDescription) {
                     Action_RedescribeItem(tree.SelectedNode, item, Dialog.ItemDescription.Text);
                 }
 
-                // FIXME: I dislike the way I'm using this constant
                 if (Dialog.ItemParent.Text != PreviousFolder) {
-                    //if (Dialog.ItemParent.Text != "(Top Level)") {
-                        Action_ReparentItem(tree, item, Dialog.ItemParent.Text);
-                    //} else {
-                    //}
+                    IdValuePair Pair = (IdValuePair)Dialog.ItemParent.SelectedItem;
+                    Action_ReparentItem(tree, item, (long)Pair.Id);
                 }
 
                 if ((TableName == "Project") && (Dialog.ItemExternalProjectNo.Text != PreviousExternalProjectNo)) {
+                    Project.Name = Dialog.ItemName.Text;
                     Action_RepointItem(tree.SelectedNode, Project, Dialog.ItemExternalProjectNo.Text);
+                    tree.SelectedNode.Text = Project.DisplayName();
                 }
+
             }
         }
 
@@ -162,9 +169,9 @@ namespace Timekeeper.Forms
                 Classes.TreeAttribute SelectedItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
 
                 if (SelectedItem.IsFolder) {
-                    ParentIndex = Dialog.ItemParent.FindString(tree.SelectedNode.Text);
+                    ParentIndex = Dialog.ItemParent.FindString(SelectedItem.Name);
                 } else if (tree.SelectedNode.Parent != null) {
-                    ParentIndex = Dialog.ItemParent.FindString(tree.SelectedNode.Parent.Text);
+                    ParentIndex = Dialog.ItemParent.FindString(SelectedItem.Parent().Name);
                 } else {
                     // Do nothing?
                 }
@@ -177,7 +184,9 @@ namespace Timekeeper.Forms
                 item.IsFolder = isFolder;
                 item.ExternalProjectNo = Dialog.ItemExternalProjectNo.Text;
 
-                int CreateResult = Widgets.CreateTreeItem(tree.Nodes, item, Dialog.ItemParent.Text, imageIndex);
+                Classes.TreeAttribute ParentItem = (Classes.TreeAttribute)Dialog.ItemParent.SelectedItem;
+
+                int CreateResult = Widgets.CreateTreeItem(tree.Nodes, item, ParentItem.ItemId, imageIndex);
                 switch (CreateResult) {
                     case Classes.Widgets.TREES_ITEM_CREATED:
                         //Common.Info("Item created");

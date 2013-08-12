@@ -164,6 +164,28 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        public string DisplayName()
+        {
+            string DisplayName = this.Name;
+
+            // FIXME: Options control whether this happens or not,
+            // and if it happens, how it will be formatted. I'm 
+            // not sure how to get UI options at this layer of
+            // the codebase.  :-/
+
+            if (this.TableName == "Project") {
+                if (1 == 1) { // Option check here
+                    if (this.ExternalProjectNo != null) {
+                        DisplayName = this.ExternalProjectNo + " - " + this.Name;
+                    }
+                }
+            }
+
+            return DisplayName;
+        }
+
+        //---------------------------------------------------------------------
+
         public int NumberOfDaysUsed()
         {
             Table Rows = FetchDatesUsed();
@@ -236,6 +258,13 @@ namespace Timekeeper.Classes
             return Seconds;
         }
 
+        //----------------------------------------------------------------------
+
+        public Classes.TreeAttribute Parent()
+        {
+            return new Classes.TreeAttribute(this.Data, this.ParentId, this.TableName, this.IdColumnName);
+        }
+
         //---------------------------------------------------------------------
         // Methods
         //---------------------------------------------------------------------
@@ -291,7 +320,7 @@ namespace Timekeeper.Classes
             Row["DeletedTime"] = null;
 
             if (this.TableName == "Project") {
-                Row["ExternalProjectNo"] = this.ExternalProjectNo ?? UUID.Get();
+                Row["ExternalProjectNo"] = this.ExternalProjectNo;
             }
 
             this.ItemId = this.Data.Insert(this.TableName, Row);
@@ -440,6 +469,12 @@ namespace Timekeeper.Classes
 
             if (Count == 1) {
                 this.Description = newDescription;
+                // FIXME: maintaining the symmetry between the object and 
+                // what's currently in the database for this object is
+                // more than bothering me. This is likely a Timekeeper 4.0
+                // type project, but I'd really like to figure out a better
+                // ORM for Timekeeper. This method is fraught with issues.
+                this.ModifyTime = Convert.ToDateTime(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 return Timekeeper.FAILURE;
@@ -478,6 +513,7 @@ namespace Timekeeper.Classes
 
             if (Count == 1) {
                 this.Name = newName;
+                this.ModifyTime = Convert.ToDateTime(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 return Timekeeper.FAILURE;
@@ -491,11 +527,13 @@ namespace Timekeeper.Classes
             // Update database
             Row Row = new Row();
             Row["SortOrderNo"] = sortOrderNo;
+            Row["ModifyTime"] = Common.Now();
             long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 // Update instance
                 this.SortOrderNo = sortOrderNo;
+                this.ModifyTime = Convert.ToDateTime(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 // Otherwise, failure
@@ -517,6 +555,8 @@ namespace Timekeeper.Classes
             if (Count == 1) {
                 // Update instance
                 this.ParentId = itemId;
+                this.ModifyTime = Convert.ToDateTime(Row["ModifyTime"]);
+                this.SortOrderNo = Row["SortOrderNo"];
                 return Timekeeper.SUCCESS;
             } else {
                 // Otherwise, failure

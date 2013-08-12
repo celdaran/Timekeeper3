@@ -176,9 +176,8 @@ namespace Timekeeper.Forms
         private void MenuActionEditProject_Click(object sender, EventArgs e)
         {
             if (ProjectTree.SelectedNode != null) {
-                Classes.Project project;
-                project = new Classes.Project(Database, ProjectTree.SelectedNode.Text);
-                Dialog_EditItem(ProjectTree, "Edit Project", (Classes.TreeAttribute)project);
+                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+                Dialog_EditItem(ProjectTree, "Edit Project", (Classes.TreeAttribute)Project);
             }
         }
 
@@ -226,7 +225,7 @@ namespace Timekeeper.Forms
         private void MenuActionEdit_Click(object sender, EventArgs e)
         {
             if (ActivityTree.SelectedNode != null) {
-                Classes.Activity Activity = new Classes.Activity(Database, ActivityTree.SelectedNode.Text);
+                Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
                 Dialog_EditItem(ActivityTree, "Edit Activity", (Classes.TreeAttribute)Activity);
             }
         }
@@ -451,6 +450,8 @@ namespace Timekeeper.Forms
         private void PopupMenuProjectRename_Click(object sender, EventArgs e)
         {
             if (ProjectTree.SelectedNode != null) {
+                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+                ProjectTree.SelectedNode.Text = Project.Name;
                 ProjectTree.SelectedNode.BeginEdit();
             }
         }
@@ -525,6 +526,8 @@ namespace Timekeeper.Forms
         private void ProjectTree_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2) {
+                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+                ProjectTree.SelectedNode.Text = Project.Name;
                 ProjectTree.SelectedNode.BeginEdit();
             }
             else if (e.KeyCode == Keys.Delete) {
@@ -717,9 +720,22 @@ namespace Timekeeper.Forms
 
         private void ProjectTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            TreeNode node  = ProjectTree.SelectedNode;
-            Classes.TreeAttribute item = (Classes.TreeAttribute)node.Tag;
-            e.CancelEdit = !Action_RenameItem(node, item, e.Label);
+            TreeNode Node  = ProjectTree.SelectedNode;
+            Classes.Project Project = (Classes.Project)Node.Tag;
+
+            if (e.Label == null) {
+                // This means they hit escape, so just reset the
+                // node's text to what it was before this started.
+                Node.Text = Project.DisplayName();
+            } else {
+                if (Action_RenameItem(Node, Project, e.Label)) {
+                    Node.Text = Project.DisplayName();
+                }
+            }
+
+            // Edit's never cancelled: we're manually handling all cases,
+            // so don't give control back to the framework.
+            e.CancelEdit = true;
         }
 
         //---------------------------------------------------------------------

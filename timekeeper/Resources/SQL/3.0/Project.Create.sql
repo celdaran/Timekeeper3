@@ -39,4 +39,3 @@ CREATE TABLE Project
 CREATE UNIQUE INDEX idx_Project_ProjectId ON Project(ProjectId);
 CREATE UNIQUE INDEX idx_Project_ProjectGuid ON Project(ProjectGuid);
 CREATE UNIQUE INDEX idx_Project_Name ON Project(Name);
-CREATE UNIQUE INDEX idx_Project_ExternalProjectNo on Project(ExternalProjectNo);

@@ -313,8 +313,8 @@ namespace Timekeeper.Forms
             entry.StopTime = wStopTime.Value;
             entry.Seconds = (long)Delta.TotalSeconds;
             entry.Memo = wMemo.Text;
-            entry.ProjectName = ProjectTree.SelectedNode.Text;
-            entry.ActivityName = ActivityTree.SelectedNode.Text;
+            entry.ProjectName = Project.Name;
+            entry.ActivityName = Activity.Name;
 
             // Location & Category support
             if (wLocation.SelectedIndex > -1) {
@@ -330,7 +330,7 @@ namespace Timekeeper.Forms
         private void Browser_EntryToForm(Classes.Journal entry)
         {
             // Now select projects and activities while browsing.
-            TreeNode ProjectNode = Widgets.FindTreeNode(ProjectTree.Nodes, entry.ProjectName);
+            TreeNode ProjectNode = Widgets.FindTreeNode(ProjectTree.Nodes, entry.ProjectId);
             if (ProjectNode != null) {
                 ProjectTree.SelectedNode = ProjectNode;
                 ProjectTree.SelectedNode.Expand();
@@ -345,7 +345,7 @@ namespace Timekeeper.Forms
             }
 
             // Yes, this is a nice copy/paste job from above.
-            TreeNode ActivityNode = Widgets.FindTreeNode(ActivityTree.Nodes, entry.ActivityName);
+            TreeNode ActivityNode = Widgets.FindTreeNode(ActivityTree.Nodes, entry.ActivityId);
             if (ActivityNode != null) {
                 ActivityTree.SelectedNode = ActivityNode;
                 ActivityTree.SelectedNode.Expand();

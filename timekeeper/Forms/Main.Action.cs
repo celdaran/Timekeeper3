@@ -646,11 +646,15 @@ namespace Timekeeper.Forms
             key.Close();
 
             // Save DB-specific state
-            if (ActivityTree.SelectedNode != null) {
-                Options.LastActivity = ActivityTree.SelectedNode.Text;
-            }
             if (ProjectTree.SelectedNode != null) {
-                Options.LastProject = ProjectTree.SelectedNode.Text;
+                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+                Options.LastProjectId = Project.ItemId;
+                Options.LastProject = Project.Name;
+            }
+            if (ActivityTree.SelectedNode != null) {
+                Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
+                Options.LastActivityId = Activity.ItemId;
+                Options.LastActivity = Activity.Name;
             }
             if (lastGridView != null) {
                 Options.LastGridView = lastGridView;
@@ -746,19 +750,23 @@ namespace Timekeeper.Forms
                 // and save name for next Ctrl+O
                 OpenFileDialog.FileName = DatabaseFileName;
 
+                /* still used?
                 string lastProject = Options.LastProject;
                 string lastActivity = Options.LastActivity;
+                */
+
+                // also: still used?
                 lastGridView = Options.LastGridView ?? "Last View";
 
                 // Re-select last selected project
-                TreeNode lastNode = Widgets.FindTreeNode(ProjectTree.Nodes, lastProject);
+                TreeNode lastNode = Widgets.FindTreeNode(ProjectTree.Nodes, Options.LastProjectId);
                 if (lastNode != null) {
                     ProjectTree.SelectedNode = lastNode;
                     ProjectTree.SelectedNode.Expand();
                 }
 
                 // Re-select last selected activity
-                lastNode = Widgets.FindTreeNode(ActivityTree.Nodes, lastActivity);
+                lastNode = Widgets.FindTreeNode(ActivityTree.Nodes, Options.LastActivityId);
                 if (lastNode != null) {
                     ActivityTree.SelectedNode = lastNode;
                     ActivityTree.SelectedNode.Expand();
@@ -932,7 +940,6 @@ namespace Timekeeper.Forms
         {
             int result = item.Rename(newName);
             if (result == Timekeeper.SUCCESS) {
-                node.Text = item.Name;
                 return true;
             } else if (result == Classes.TreeAttribute.ERR_RENAME_EXISTS) {
                 Common.Warn("An item with that name already exists.");
@@ -948,9 +955,9 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_ReparentItem(TreeView tree, Classes.TreeAttribute item, string parentText)
+        private void Action_ReparentItem(TreeView tree, Classes.TreeAttribute item, long parentId)
         {
-            TreeNode ParentNode = Widgets.FindTreeNode(tree.Nodes, parentText);
+            TreeNode ParentNode = Widgets.FindTreeNode(tree.Nodes, parentId);
 
             if (ParentNode == null) {
                 item.Reparent(0);
@@ -964,7 +971,7 @@ namespace Timekeeper.Forms
             }
 
             // and reload
-            // BEGIN WTF: this sucks...
+            // FIXME! BEGIN WTF: this sucks...
             tree.Nodes.Clear();
             // FIXME: bit of a hack, here (okay, more than a bit)
             if (tree.Name == "ProjectTree") {
@@ -972,8 +979,6 @@ namespace Timekeeper.Forms
             } else {
                 Widgets.BuildActivityTree(ActivityTree.Nodes);
             }
-            // FIXME: don't always collapse/expand all: do this intelligently
-            tree.ExpandAll();
             // END WTF
 
             // display root lines?
@@ -1204,9 +1209,10 @@ namespace Timekeeper.Forms
             menuToolControlStop.ShortcutKeys = saveKeys;
             */
 
-            StatusBar_TimerStarted(ActivityTree.SelectedNode.Text);
+            // FIXME: Need support for both Projects and Activities
+            StatusBar_TimerStarted(currentActivity.Name);
 
-            Text = ActivityTree.SelectedNode.Text;
+            Text = currentActivity.Name;
             MenuActionDeleteActivity.Enabled = false;
             PopupMenuActivityDelete.Enabled = false;
             TrayIcon.Text = Common.Abbreviate(Text, 63);
