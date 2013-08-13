@@ -164,6 +164,23 @@ namespace Timekeeper.Forms
             }
         }
 
+        //----------------------------------------------------------------------
+
+        public bool Action_CheckRecentFile(ToolStripMenuItem menuItem)
+        {
+            if (System.IO.File.Exists(menuItem.Text)) {
+                return true;
+            } else {
+                string Message = String.Format(
+                    "File {0}  does not exist. Would you like to remove it from the Recent Files list?",
+                    menuItem.Text);
+                if (Common.WarnPrompt(Message) == DialogResult.Yes) {
+                    MenuFileRecent.DropDownItems.Remove(menuItem);
+                }
+                return false;
+            }
+        }
+
         //---------------------------------------------------------------------
         // Next two are helpers for the change list attribute methods above
         //---------------------------------------------------------------------
@@ -648,6 +665,8 @@ namespace Timekeeper.Forms
                     i++;
                 }
             }
+            // FIXME: this leaves stray entries above "i". We should probably
+            // clean those up along the way.
             key.SetValue("count", i, Microsoft.Win32.RegistryValueKind.DWord);
             key.Close();
 
