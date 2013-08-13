@@ -22,7 +22,7 @@ namespace Timekeeper
 
         private bool ClickedCancel = false;
         private string PreviousItemName = "";
-        private string PreviousExternalProjectNo = "";
+        private string PreviousExternalProjectNo = null;
 
         //----------------------------------------------------------------------
         // Constructor

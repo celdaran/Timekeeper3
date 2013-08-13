@@ -36,7 +36,7 @@ namespace Timekeeper.Forms
             string PreviousName = item.Name;
             string PreviousDescription = item.Description;
             string PreviousFolder = "";
-            string PreviousExternalProjectNo = "";
+            string PreviousExternalProjectNo = null;
 
             // Fill in defaults on the dialog box
             Dialog.ItemName.Text = PreviousName;
@@ -182,7 +182,7 @@ namespace Timekeeper.Forms
                 item.Name = Dialog.ItemName.Text;
                 item.Description = Dialog.ItemDescription.Text;
                 item.IsFolder = isFolder;
-                item.ExternalProjectNo = Dialog.ItemExternalProjectNo.Text;
+                item.ExternalProjectNo = Dialog.ItemExternalProjectNo.Text == "" ? null : Dialog.ItemExternalProjectNo.Text;
 
                 IdValuePair Pair = (IdValuePair)Dialog.ItemParent.SelectedItem;
                 int ParentItemId = Pair.Id;

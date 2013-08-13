@@ -1263,8 +1263,6 @@ namespace Timekeeper.Forms
 
             Text = currentActivity.Name;
 
-            MenuActionDeleteActivity.Enabled = false;
-            PopupMenuActivityDelete.Enabled = false;
             TrayIcon.Text = Common.Abbreviate(Text, 63);
 
             MenuFile.Enabled = false;
@@ -1348,9 +1346,6 @@ namespace Timekeeper.Forms
             currentProjectNode.SelectedImageIndex = Timekeeper.IMG_PROJECT;
             currentActivityNode.ImageIndex = Timekeeper.IMG_ACTIVITY;
             currentActivityNode.SelectedImageIndex = Timekeeper.IMG_ACTIVITY;
-
-            MenuActionDeleteActivity.Enabled = true;
-            PopupMenuActivityDelete.Enabled = true;
 
             MenuFile.Enabled = true;
             MenuFileNew.Enabled = true;

@@ -205,9 +205,16 @@ namespace Timekeeper.Forms
         // Action | Delete Project
         private void MenuActionDeleteProject_Click(object sender, EventArgs e)
         {
-            if (ProjectTree.SelectedNode != null) {
-                Action_DeleteItem(ProjectTree);
+            if (ProjectTree.SelectedNode == null) {
+                return;
             }
+
+            if (ProjectTree.SelectedNode.Text == currentProject.DisplayName()) {
+                Common.Warn("Cannot delete the item being timed.");
+                return;
+            }
+
+            Action_DeleteItem(ProjectTree);
         }
 
         // Action | New Activity
@@ -254,9 +261,16 @@ namespace Timekeeper.Forms
         // Action | Delete Activity
         private void MenuActionDeleteActivity_Click(object sender, EventArgs e)
         {
-            if (ActivityTree.SelectedNode != null) {
-                Action_DeleteItem(ActivityTree);
+            if (ActivityTree.SelectedNode == null) {
+                return;
             }
+
+            if (ActivityTree.SelectedNode.Text == currentActivity.DisplayName()) {
+                Common.Warn("Cannot delete the item being timed.");
+                return;
+            }
+
+            Action_DeleteItem(ActivityTree);
         }
 
         //---------------------------------------------------------------------
