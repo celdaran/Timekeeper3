@@ -1146,7 +1146,7 @@ namespace Timekeeper.Forms
                         if (TrayIcon.Visible) {
                             TrayIcon.ShowBalloonTip(30000,
                                 Timekeeper.TITLE,
-                                "No timer is currently running.\n\nYou can change the frequency of this notification, or disable it completly, in the Options dialog box.",
+                                "No timer is currently running.\n\nYou can change the frequency of this notification (or disable it completely) in the Options dialog box.",
                                 ToolTipIcon.Info);
                         }
                     }
