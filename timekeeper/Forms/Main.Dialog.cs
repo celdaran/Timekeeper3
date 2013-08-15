@@ -218,25 +218,29 @@ namespace Timekeeper.Forms
 
         private void Dialog_Options()
         {
-            // Instantiating Options loads saved options from the persistent data store
-            Options = new Classes.Options();
-
             // Pass the instantiated options to the dialog box
-            Forms.Options DialogBox = new Forms.Options(Options);
+            Forms.Options DialogBox = new Forms.Options(this.Options);
 
             // If the user clicked 'Save' . . .
             if (DialogBox.ShowDialog(this) == DialogResult.OK)
             {
                 // Retrieve any options changes made on the dialog box
-                Options = DialogBox.Values;
+                this.Options = DialogBox.Values;
 
                 // And save them back to the persistent store
-                Options.Save();
+                this.Options.Save();
+
+                this.Dialog_ApplyOptions();
             }
             else {
                 // JUST FOR NOW
                 Application.Exit();
             }
+        }
+
+        private void Dialog_ApplyOptions()
+        {
+            StatusBar_SetVisibility();
         }
 
         //---------------------------------------------------------------------

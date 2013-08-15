@@ -35,6 +35,7 @@ namespace Timekeeper
         //---------------------------------------------------------------------
 
         public static DBI Database;
+        public static Classes.Options Options;
         private static Log Log;
 
         //---------------------------------------------------------------------
@@ -55,6 +56,26 @@ namespace Timekeeper
                 Database = new DBI(dataFile, logLevel, GetLogPath());
             }
             return Database;
+        }
+
+        //---------------------------------------------------------------------
+        // Options I/O
+        //---------------------------------------------------------------------
+
+        public static Classes.Options CloseOptions()
+        {
+            Options = null;
+            return Options;
+        }
+
+        //---------------------------------------------------------------------
+
+        public static Classes.Options OpenOptions()
+        {
+            if (Options == null) {
+                Options = new Classes.Options();
+            }
+            return Options;
         }
 
         //---------------------------------------------------------------------

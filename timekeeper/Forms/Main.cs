@@ -53,7 +53,7 @@ namespace Timekeeper.Forms
         // objects
         private Classes.JournalEntries Entries;
         private Classes.Meta Meta;
-        private Classes.Options Options;
+        private Classes.Options Options; // This is a "global", just like Database. I should probably put them together.
         private Classes.Widgets Widgets;
 
         // current objects
@@ -837,7 +837,7 @@ namespace Timekeeper.Forms
         private void Main_Load(object sender, EventArgs e)
         {
             Action_FormLoad();
-            Dialog_Options();
+            //Dialog_Options();
         }
 
         //---------------------------------------------------------------------

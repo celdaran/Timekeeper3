@@ -60,6 +60,10 @@ namespace Timekeeper.Forms
             View_StatusBar.Checked = Values.View_StatusBar;
             View_StatusBar_ProjectName.Checked = Values.View_StatusBar_ProjectName;
             View_StatusBar_ActivityName.Checked = Values.View_StatusBar_ActivityName;
+            View_StatusBar_ElapsedSinceStart.Checked = Values.View_StatusBar_ElapsedSinceStart;
+            View_StatusBar_ElapsedProjectToday.Checked = Values.View_StatusBar_ElapsedProjectToday;
+            View_StatusBar_ElapsedActivityToday.Checked = Values.View_StatusBar_ElapsedActivityToday;
+            View_StatusBar_ElapsedAllToday.Checked = Values.View_StatusBar_ElapsedAllToday;
         }
 
         //----------------------------------------------------------------------
@@ -69,6 +73,10 @@ namespace Timekeeper.Forms
             Values.View_StatusBar = View_StatusBar.Checked;
             Values.View_StatusBar_ProjectName = View_StatusBar_ProjectName.Checked;
             Values.View_StatusBar_ActivityName = View_StatusBar_ActivityName.Checked;
+            Values.View_StatusBar_ElapsedSinceStart = View_StatusBar_ElapsedSinceStart.Checked;
+            Values.View_StatusBar_ElapsedProjectToday = View_StatusBar_ElapsedProjectToday.Checked;
+            Values.View_StatusBar_ElapsedActivityToday = View_StatusBar_ElapsedActivityToday.Checked;
+            Values.View_StatusBar_ElapsedAllToday = View_StatusBar_ElapsedAllToday.Checked;
         }
 
         //----------------------------------------------------------------------
@@ -85,6 +93,17 @@ namespace Timekeeper.Forms
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             OptionsPanelCollection.SelectedIndex = PanelSelector.SelectedIndex;
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            //Timekeeper.Info("Called OnPaintBackground");
+            if (TabRenderer.IsSupported && Application.RenderWithVisualStyles) {
+                TabRenderer.DrawTabPage(e.Graphics, this.ClientRectangle);
+            } else {
+                base.OnPaintBackground(e);
+                ControlPaint.DrawBorder3D(e.Graphics, this.ClientRectangle, Border3DStyle.Raised);
+            }
         }
 
         //----------------------------------------------------------------------

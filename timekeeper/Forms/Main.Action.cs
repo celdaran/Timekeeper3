@@ -317,6 +317,8 @@ namespace Timekeeper.Forms
                 Timekeeper.Info("Closing Database: " + DatabaseFileName);
                 Database = Timekeeper.CloseDatabase();
 
+                Options = Timekeeper.CloseOptions();
+
                 foreach (Form Form in OpenForms) {
                     Form.Close();
                 }
@@ -760,7 +762,14 @@ namespace Timekeeper.Forms
         private bool Action_LoadFile()
         {
             try {
-                if (!Action_CheckDatabase()) {
+                if (Action_CheckDatabase()) {
+                    // If the database is okay, make sure Options
+                    // is the very next thing we do: it's a prereq
+                    // for all other activity from this point out.
+                    this.Options = Timekeeper.OpenOptions();
+                } else {
+                    // Otherwise bail and head down a file not
+                    // loaded path.
                     return false;
                 }
 
@@ -772,7 +781,6 @@ namespace Timekeeper.Forms
 
                 Entries = new Classes.JournalEntries(Database);
                 Meta = new Classes.Meta();
-                Options = new Classes.Options();
 
                 Entry = new Classes.Journal(Database);
 
@@ -803,10 +811,6 @@ namespace Timekeeper.Forms
                     ActivityTree.SelectedNode.Expand();
                 }
 
-                //------------------------------------------------------------
-                // END:TODO
-                //------------------------------------------------------------
-
                 // View root lines?
                 Action_TreeView_ShowRootLines();
 
@@ -816,6 +820,9 @@ namespace Timekeeper.Forms
 
                 Action_UseProjects(useProjects); // options.wViewProjectPane.Checked);
                 Action_UseActivities(useActivities); // FIXME: Need an Option for this
+
+                // Apply other options
+                StatusBar_SetVisibility();
 
                 return true;
             }
