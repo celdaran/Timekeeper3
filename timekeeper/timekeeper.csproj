@@ -111,6 +111,7 @@
     <Compile Include="Classes\LocationCollection.cs" />
     <Compile Include="Classes\Meta.cs" />
     <Compile Include="Classes\Options.cs" />
+    <Compile Include="Classes\Options.Local.cs" />
     <Compile Include="Classes\SystemData.cs" />
     <Compile Include="Classes\Widgets.cs" />
     <Compile Include="Forms\CategoryManager.cs">
@@ -151,6 +152,12 @@
     </Compile>
     <Compile Include="Forms\NewWizard.Designer.cs">
       <DependentUpon>NewWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Options.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Options.Designer.cs">
+      <DependentUpon>Options.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Report.cs">
       <SubType>Form</SubType>
@@ -307,11 +314,11 @@
     <Compile Include="Forms\ItemEditor.Designer.cs">
       <DependentUpon>ItemEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Options.cs">
+    <Compile Include="Forms\OptionsLegacy.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Options.Designer.cs">
-      <DependentUpon>Options.cs</DependentUpon>
+    <Compile Include="Forms\OptionsLegacy.Designer.cs">
+      <DependentUpon>OptionsLegacy.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Properties.cs">
       <SubType>Form</SubType>
@@ -424,8 +431,11 @@
       <DependentUpon>NewWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Options.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>Options.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OptionsLegacy.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OptionsLegacy.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Properties.resx">
       <SubType>Designer</SubType>

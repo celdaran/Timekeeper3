@@ -495,7 +495,7 @@
         private System.Windows.Forms.PictureBox WizardPicture;
         private System.Windows.Forms.Panel TopPanel;
         private System.Windows.Forms.OpenFileDialog NewFileDialog;
-        private Controls.TablessControl tablessControl1;
+        private Forms.Controls.TablessControl tablessControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label IntroductionInstructions;

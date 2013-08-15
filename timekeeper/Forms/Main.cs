@@ -25,7 +25,7 @@ namespace Timekeeper.Forms
         private string DatabaseFileName;
 
         // Persistent dialog boxes
-        private Forms.Options options;
+        private Forms.OptionsLegacy options;
         private fToolCalendar calendar;
         private Forms.Properties properties;
 
@@ -47,7 +47,8 @@ namespace Timekeeper.Forms
         // dialog box attributes
         private int reportHeight;
         private int reportWidth;
-        private string lastGridView;
+        private long lastGridViewId;
+        private long lastReportViewId;
 
         // objects
         private Classes.JournalEntries Entries;
@@ -279,10 +280,10 @@ namespace Timekeeper.Forms
         private void menuReportsGrid_Click(object sender, EventArgs e)
         {
             fGrid grid = new fGrid(Database);
-            grid.lastGridView = lastGridView;
+            grid.lastGridViewId = lastGridViewId;
             grid.Show(this);
             OpenForms.Add(grid);
-            lastGridView = grid.lastGridView;
+            lastGridViewId = grid.lastGridViewId;
         }
 
         // Report | Quick List
@@ -377,6 +378,11 @@ namespace Timekeeper.Forms
         private void MenuToolOptions_Click(object sender, EventArgs e)
         {
             Dialog_Options();
+        }
+
+        private void MenuToolOptionsLegacy_Click(object sender, EventArgs e)
+        {
+            Dialog_Options_Legacy();
         }
 
         //---------------------------------------------------------------------
@@ -831,6 +837,7 @@ namespace Timekeeper.Forms
         private void Main_Load(object sender, EventArgs e)
         {
             Action_FormLoad();
+            Dialog_Options();
         }
 
         //---------------------------------------------------------------------

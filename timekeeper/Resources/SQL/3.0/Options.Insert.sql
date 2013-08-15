@@ -13,7 +13,7 @@ INSERT INTO Options
 ) VALUES (
     '{0}',
     '{0}',
-    'LastActivity',
+    'LastActivityId',
     null
 );
 
@@ -27,7 +27,7 @@ INSERT INTO Options
 ) VALUES (
     '{0}',
     '{0}',
-    'LastProject',
+    'LastProjectId',
     null
 );
 
@@ -41,7 +41,7 @@ INSERT INTO Options
 ) VALUES (
     '{0}',
     '{0}',
-    'LastGridView',
+    'LastGridViewId',
     null
 );
 
@@ -55,6 +55,6 @@ INSERT INTO Options
 ) VALUES (
     '{0}',
     '{0}',
-    'LastReportView',
+    'LastReportViewId',
     null
 );

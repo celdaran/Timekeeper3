@@ -27,7 +27,7 @@ namespace Timekeeper
 
         private fGridFilter dlgGridFilter;
 
-        public string lastGridView;
+        public long lastGridViewId;
 
         private int loopCount;
 
@@ -63,7 +63,7 @@ namespace Timekeeper
         private void fGrid_Load(object sender, EventArgs e)
         {
             _set_start_date();
-            _load_view_by_name(this.lastGridView);
+            _load_view_by_name(this.lastGridViewId);
             //_load_grid(sender, e);
             _load_grid2();
             _saveLastView(true);
@@ -764,20 +764,24 @@ namespace Timekeeper
 
         private void _load_view(object sender, EventArgs e)
         {
-            string name = sender.ToString().Replace("'", "''");
-            lastGridView = name;
-            _load_view_by_name(name);
+            //string name = sender.ToString().Replace("'", "''");
+
+            // FIXME: another casualty in the conversion of database-based options from strings to ints
+            // Hacked this together on 8/13/2013.
+
+            lastGridViewId = 1;
+            _load_view_by_name(1);
             //_load_grid(sender, e);
             _load_grid2();
         }
 
-        private void _load_view_by_name(string name)
+        private void _load_view_by_name(long id)
         {
             // Begin unit of work
             data.Begin();
 
             try {
-                string query = String.Format(@"select * from grid_views where name = '{0}'", name);
+                string query = String.Format(@"select * from grid_views where name = '{0}'", id);
                 Row row = this.data.SelectRow(query);
 
                 if (row["id"] != null) {

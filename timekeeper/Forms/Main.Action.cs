@@ -381,7 +381,7 @@ namespace Timekeeper.Forms
             Timekeeper.Info("Timekeeper Started");
 
             // Instantiate persistent dialog boxes
-            options = new Forms.Options(Database);
+            options = new Forms.OptionsLegacy(Database);
             properties = new Forms.Properties();
 
             // Load options from the Registry & TKDB
@@ -688,16 +688,13 @@ namespace Timekeeper.Forms
             if (ProjectTree.SelectedNode != null) {
                 Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
                 Options.LastProjectId = Project.ItemId;
-                Options.LastProject = Project.Name;
             }
             if (ActivityTree.SelectedNode != null) {
                 Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
                 Options.LastActivityId = Activity.ItemId;
-                Options.LastActivity = Activity.Name;
             }
-            if (lastGridView != null) {
-                Options.LastGridView = lastGridView;
-            }
+            Options.LastGridViewId = lastGridViewId;
+            Options.LastReportViewId = lastReportViewId;
 
         }
 
@@ -789,13 +786,8 @@ namespace Timekeeper.Forms
                 // and save name for next Ctrl+O
                 OpenFileDialog.FileName = DatabaseFileName;
 
-                /* still used?
-                string lastProject = Options.LastProject;
-                string lastActivity = Options.LastActivity;
-                */
-
-                // also: still used?
-                lastGridView = Options.LastGridView ?? "Last View";
+                lastGridViewId = Options.LastGridViewId;
+                lastReportViewId = Options.LastReportViewId;
 
                 // Re-select last selected project
                 TreeNode lastNode = Widgets.FindTreeNode(ProjectTree.Nodes, Options.LastProjectId);

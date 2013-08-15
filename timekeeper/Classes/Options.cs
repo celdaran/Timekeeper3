@@ -6,171 +6,89 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class Options
+    public partial class Options
     {
+        //----------------------------------------------------------------------
+        // Private Properties
+        //----------------------------------------------------------------------
+
         private DBI Database;
+        private Microsoft.Win32.RegistryKey Key;
 
-        private string _LastProject;
-        private string _LastActivity;
-        private string _LastGridView;
-        private string _LastReportView;
+        const string REGKEY = "Software\\Technitivity\\Timekeeper\\3.X\\";
 
-        private long _LastProjectId;
-        private long _LastActivityId;
+        //----------------------------------------------------------------------
+        // Public Properties (Registry)
+        //----------------------------------------------------------------------
 
-        //---------------------------------------------------------------------
+        public bool View_StatusBar { get; set; }
+        public bool View_StatusBar_ProjectName { get; set; }
+        public bool View_StatusBar_ActivityName { get; set; }
+        public bool View_StatusBar_ElapsedSinceStart { get; set; }
+        public bool View_StatusBar_ElapsedProjectToday { get; set; }
+        public bool View_StatusBar_ElapsedActivityToday { get; set; }
+        public bool View_StatusBar_ElapsedAllToday { get; set; }
+
+        //----------------------------------------------------------------------
+        // Public Properties (Database)
+        //----------------------------------------------------------------------
+
+        private long _Database_LastProjectId;
+        private long _Database_LastActivityId;
+        private long _Database_LastGridViewId;
+        private long _Database_LastReportViewId;
+
+        //----------------------------------------------------------------------
         // Constructor
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public Options()
         {
             this.Database = Timekeeper.Database;
-            this.Load();
+            this.LoadFromRegistry();
+            this.LoadFromDatabase();
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        private void Load()
+        public void Save()
         {
-            try {
-                Row Row;
-                string Query;
-
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastProject");
-                Row = this.Database.SelectRow(Query);
-                if (Row.Count > 0) {
-                    this._LastProject = Row["Value"];
-                }
-
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastProjectId");
-                Row = this.Database.SelectRow(Query);
-                if (Row.Count > 0) {
-                    this._LastProjectId = (long)Row["Value"];
-                }
-
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastActivity");
-                Row = this.Database.SelectRow(Query);
-                if (Row.Count > 0) {
-                    this._LastActivity = Row["Value"];
-                }
-
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastActivityId");
-                Row = this.Database.SelectRow(Query);
-                if (Row.Count > 0) {
-                    this._LastActivityId = (long)Row["Value"];
-                }
-
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastGridView");
-                Row = this.Database.SelectRow(Query);
-                if (Row.Count > 0) {
-                    this._LastGridView = Row["Value"];
-                }
-
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastReportView");
-                Row = this.Database.SelectRow(Query);
-                if (Row.Count > 0) {
-                    this._LastReportView = Row["Value"];
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
+            this.SaveToRegistry();
+            //this.SaveToDatabase();  FIXME/TBD
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        public string LastProject
+        private void LoadFromRegistry()
         {
-            get { return _LastProject; }
 
-            set
-            {
-                _LastProject = value;
-                Save("LastProject", value);
-            }
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "Options");
+
+            View_StatusBar = ((int)Key.GetValue("View_StatusBar", 1) == 1);
+            View_StatusBar_ProjectName = ((int)Key.GetValue("View_StatusBar_ProjectName", 1) == 1);
+            View_StatusBar_ActivityName = ((int)Key.GetValue("View_StatusBar_ActivityName", 1) == 1);
+            View_StatusBar_ElapsedSinceStart = ((int)Key.GetValue("View_StatusBar_ElapsedSinceStart", 1) == 1);
+            View_StatusBar_ElapsedProjectToday = ((int)Key.GetValue("View_StatusBar_ElapsedProjectToday", 1) == 1);
+            View_StatusBar_ElapsedActivityToday = ((int)Key.GetValue("View_StatusBar_ElapsedActivityToday", 1) == 1);
+            View_StatusBar_ElapsedAllToday = ((int)Key.GetValue("View_StatusBar_ElapsedAllToday", 1) == 1);
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        public long LastProjectId
+        private void SaveToRegistry()
         {
-            get { return _LastProjectId; }
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "Options");
 
-            set
-            {
-                _LastProjectId = value;
-                Save("LastProjectId", value.ToString());
-            }
+            Key.SetValue("View_StatusBar", View_StatusBar, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("View_StatusBar_ProjectName", View_StatusBar_ProjectName, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("View_StatusBar_ActivityName", View_StatusBar_ActivityName, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("View_StatusBar_ElapsedSinceStart", View_StatusBar_ElapsedSinceStart, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("View_StatusBar_ElapsedProjectToday", View_StatusBar_ElapsedProjectToday, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("View_StatusBar_ElapsedActivityToday", View_StatusBar_ElapsedActivityToday, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("View_StatusBar_ElapsedAllToday", View_StatusBar_ElapsedAllToday, Microsoft.Win32.RegistryValueKind.DWord);
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        public string LastActivity
-        {
-            get { return _LastActivity; }
-
-            set {
-                _LastActivity = value;
-                Save("LastActivity", value);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        public long LastActivityId
-        {
-            get { return _LastActivityId; }
-
-            set
-            {
-                _LastActivityId = value;
-                Save("LastActivityId", value.ToString());
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        public string LastGridView
-        {
-            get { return _LastGridView; }
-
-            set
-            {
-                _LastGridView = value;
-                Save("LastGridView", value);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        public string LastReportView
-        {
-            get { return _LastReportView; }
-
-            set
-            {
-                _LastReportView = value;
-                Save("LastReportView", value);
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // Private helpers
-        //---------------------------------------------------------------------
-
-        private void Save(string columnName, string columnValue)
-        {
-            try {
-                Row Row = new Row();
-                Row["Value"] = columnValue;
-                Row["ModifyTime"] = Common.Now();
-                this.Database.Update("Options", Row, "Key", columnName);
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
-        }
-
-        //---------------------------------------------------------------------
     }
 }

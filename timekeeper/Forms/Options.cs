@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Text;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -13,220 +13,81 @@ namespace Timekeeper.Forms
 {
     public partial class Options : Form
     {
-        public bool saved = false;
-        public bool reordered = false;
-        private DBI data;
+        //----------------------------------------------------------------------
+        // Properties
+        //----------------------------------------------------------------------
 
-        const int CTRL = (int)Keys.Control;
-        const int SHIFT = (int)Keys.Shift;
+        public Classes.Options Values { get; set; }
 
-        public Options(DBI data)
+        //----------------------------------------------------------------------
+        // Constructor
+        //----------------------------------------------------------------------
+
+        public Options(Classes.Options optionValues)
         {
             InitializeComponent();
-            this.data = data;
-
-            // Populate font box
-            InstalledFontCollection fonts = new InstalledFontCollection();
-            FontFamily[] fontFamilies = fonts.Families;
-
-            foreach (FontFamily font in fonts.Families) {
-                wFontList.Items.Add(font.Name);
-            }
-
-            // Populate function list
+            Values = optionValues;
         }
 
-        private void wViewStatusBar_CheckedChanged(object sender, EventArgs e)
+        //----------------------------------------------------------------------
+        // Event Handlers
+        //----------------------------------------------------------------------
+
+        private void Options_Load(object sender, EventArgs e)
         {
-            bool enabled = (wViewStatusBar.Checked == true);
-            wViewCurrentTask.Enabled = enabled;
-            wViewElapsedCurrent.Enabled = enabled;
-            wViewElapsedOne.Enabled = enabled;
-            wViewElapsedAll.Enabled = enabled;
-            wViewOpenedFile.Enabled = enabled;
+            OptionsToForm();
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        //----------------------------------------------------------------------
+
+        private void Options_FormClosing(object sender, FormClosingEventArgs e)
         {
-            saved = true;
-            Hide();
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            saved = false;
-            Hide();
-        }
-
-        private void wProfile_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (wProfile.Text) {
-                case "Basic":
-                    wViewStatusBar.Checked = false;
-                    wViewProjectPane.Checked = false;
-                    break;
-
-                case "Normal":
-                    wViewStatusBar.Checked = true;
-                    wViewOpenedFile.Checked = false;
-                    wViewProjectPane.Checked = false;
-                    break;
-
-                case "Advanced":
-                    wViewStatusBar.Checked = true;
-                    wViewOpenedFile.Checked = true;
-                    wViewProjectPane.Checked = true;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void fOptions_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Hide();
-            e.Cancel = true;
-        }
-
-        private void wShowInTray_CheckedChanged(object sender, EventArgs e)
-        {
-            wMinimizeToTray.Enabled = wShowInTray.Checked;
-            wMinimizeToTray.Checked = wShowInTray.Checked;
-        }
-
-        private void wMinimizeOnUse_CheckedChanged(object sender, EventArgs e)
-        {
-            //wMinimizeToTray.Enabled = wMinimizeOnUse.Checked;
-        }
-
-        private void wPromptNoTimer_CheckedChanged(object sender, EventArgs e)
-        {
-            labelMinutes.Enabled = wPromptNoTimer.Checked;
-            wPromptInterval.Enabled = wPromptNoTimer.Checked;
-        }
-
-        private void wOrderBy_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void wOrderBy_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            reordered = true;
-        }
-
-        //---------------------------------------------------------------------
-        // Context-sensitive help
-        //---------------------------------------------------------------------
-
-        private void widget_HelpRequested(object sender, HelpEventArgs hlpevent)
-        {
-            Control c = (Control)sender;
-            string topic = String.Format("html\\context\\fOptions\\{0}.html", c.Name);
-            Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
-        }
-
-        private void wFunctionList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ListView.SelectedListViewItemCollection items = wFunctionList.SelectedItems;
-            foreach (ListViewItem item in items)
-            {
-                int nShortcut = item.ImageIndex;
-                if (nShortcut == 0) {
-                    wCtrl.Checked = false;
-                    wShift.Checked = false;
-                    wKey.SelectedIndex = 26;
-                    continue;
-                }
-
-                wCtrl.Checked = ((nShortcut & CTRL) == CTRL);
-                wShift.Checked = ((nShortcut & SHIFT) == SHIFT);
-                int nKey = nShortcut;
-                if (wCtrl.Checked) {
-                    nKey -= CTRL;
-                }
-                if (wShift.Checked) {
-                    nKey -= SHIFT;
-                }
-                
-                if (nKey - (int)'A' < 26) {
-                    wKey.SelectedIndex = nKey - (int)'A';
-                } else {
-                    wKey.SelectedIndex = 26;
+            if (DialogResult == DialogResult.OK) {
+                FormToOptions();
+            } else {
+                if (Common.WarnPrompt("Are you sure?") != DialogResult.Yes) {
+                    e.Cancel = true;
                 }
             }
         }
 
-        private void wCtrl_MouseClick(object sender, MouseEventArgs e)
+        //----------------------------------------------------------------------
+        // Options Setter/Getters
+        //----------------------------------------------------------------------
+
+        private void OptionsToForm()
         {
-            ListView.SelectedListViewItemCollection items = wFunctionList.SelectedItems;
-            foreach (ListViewItem item in items)
-            {
-                if (wKey.SelectedIndex < 26) {
-                    if (wCtrl.Checked) {
-                        item.ImageIndex += CTRL;
-                    } else {
-                        item.ImageIndex -= CTRL;
-                    }
-                }
-            }
+            View_StatusBar.Checked = Values.View_StatusBar;
+            View_StatusBar_ProjectName.Checked = Values.View_StatusBar_ProjectName;
+            View_StatusBar_ActivityName.Checked = Values.View_StatusBar_ActivityName;
         }
 
-        private void wShift_MouseClick(object sender, MouseEventArgs e)
+        //----------------------------------------------------------------------
+
+        private void FormToOptions()
         {
-            ListView.SelectedListViewItemCollection items = wFunctionList.SelectedItems;
-            foreach (ListViewItem item in items)
-            {
-                if (wKey.SelectedIndex < 26) {
-                    if (wShift.Checked) {
-                        item.ImageIndex += SHIFT;
-                    } else {
-                        item.ImageIndex -= SHIFT;
-                    }
-                }
-            }
+            Values.View_StatusBar = View_StatusBar.Checked;
+            Values.View_StatusBar_ProjectName = View_StatusBar_ProjectName.Checked;
+            Values.View_StatusBar_ActivityName = View_StatusBar_ActivityName.Checked;
         }
 
-        private void wKey_SelectedIndexChanged(object sender, EventArgs e)
+        //----------------------------------------------------------------------
+
+        private void AcceptDialogButton_Click(object sender, EventArgs e)
         {
-            int newValue = 0;
-
-            ListView.SelectedListViewItemCollection items = wFunctionList.SelectedItems;
-            foreach (ListViewItem item in items)
-            {
-                if (wKey.SelectedIndex == 26) {
-                    item.ImageIndex = 0;
-                }
-                else
-                {
-                    if (wShift.Checked) {
-                        newValue += SHIFT;
-                    }
-
-                    if (wCtrl.Checked) {
-                        newValue += CTRL;
-                    }
-
-                    newValue += wKey.SelectedIndex + (int)'A';
-                    if (item.ImageIndex != newValue) {
-                        item.ImageIndex = newValue;
-                    }
-                }
-            }
-
+            DialogResult = DialogResult.OK;
         }
 
-        private void btnRemove_Click(object sender, EventArgs e)
+        //----------------------------------------------------------------------
+        // Testing
+        //----------------------------------------------------------------------
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ListView.SelectedListViewItemCollection items = wFunctionList.SelectedItems;
-            foreach (ListViewItem item in items) {
-                item.ImageIndex = 0;
-                wCtrl.Checked = false;
-                wShift.Checked = false;
-                wKey.SelectedIndex = 26;
-            }
+            OptionsPanelCollection.SelectedIndex = PanelSelector.SelectedIndex;
         }
 
-        // next one goes here
+        //----------------------------------------------------------------------
+
     }
 }

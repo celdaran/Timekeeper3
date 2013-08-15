@@ -517,7 +517,7 @@
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.Button LaterButton;
         private System.Windows.Forms.Button OkayButton;
-        private Controls.TablessControl tablessControl1;
+        private Forms.Controls.TablessControl tablessControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Panel ButtonPanel;

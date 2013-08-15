@@ -78,7 +78,7 @@ namespace Timekeeper.Forms
             this.menuToolsDatecalc = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolReminders = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolSep2 = new System.Windows.Forms.ToolStripSeparator();
-            this.MenuToolOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolOptionsLegacy = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuToolsTweak = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelp = new System.Windows.Forms.ToolStripMenuItem();
@@ -197,6 +197,7 @@ namespace Timekeeper.Forms
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
+            this.MenuToolOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
@@ -552,6 +553,7 @@ namespace Timekeeper.Forms
             this.MenuToolReminders,
             this.MenuToolSep2,
             this.MenuToolOptions,
+            this.MenuToolOptionsLegacy,
             this.MenuToolSep3,
             this.menuToolsTweak});
             this.MenuTool.Enabled = false;
@@ -626,13 +628,13 @@ namespace Timekeeper.Forms
             this.MenuToolSep2.Name = "MenuToolSep2";
             this.MenuToolSep2.Size = new System.Drawing.Size(187, 6);
             // 
-            // MenuToolOptions
+            // MenuToolOptionsLegacy
             // 
-            this.MenuToolOptions.Name = "MenuToolOptions";
-            this.MenuToolOptions.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.MenuToolOptions.Size = new System.Drawing.Size(190, 22);
-            this.MenuToolOptions.Text = "Op&tions (Legacy) ...";
-            this.MenuToolOptions.Click += new System.EventHandler(this.MenuToolOptions_Click);
+            this.MenuToolOptionsLegacy.Name = "MenuToolOptionsLegacy";
+            this.MenuToolOptionsLegacy.ShortcutKeys = System.Windows.Forms.Keys.F6;
+            this.MenuToolOptionsLegacy.Size = new System.Drawing.Size(190, 22);
+            this.MenuToolOptionsLegacy.Text = "Op&tions (Legacy) ...";
+            this.MenuToolOptionsLegacy.Click += new System.EventHandler(this.MenuToolOptionsLegacy_Click);
             // 
             // MenuToolSep3
             // 
@@ -1787,6 +1789,13 @@ namespace Timekeeper.Forms
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
             this.SaveAsDialog.Title = "Save As";
             // 
+            // MenuToolOptions
+            // 
+            this.MenuToolOptions.Name = "MenuToolOptions";
+            this.MenuToolOptions.Size = new System.Drawing.Size(190, 22);
+            this.MenuToolOptions.Text = "Options (New)";
+            this.MenuToolOptions.Click += new System.EventHandler(this.MenuToolOptions_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1865,7 +1874,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolCountdown;
         private System.Windows.Forms.ToolStripMenuItem menuToolsDatecalc;
         private System.Windows.Forms.ToolStripSeparator MenuToolSep2;
-        private System.Windows.Forms.ToolStripMenuItem MenuToolOptions;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolOptionsLegacy;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarElapsedAllToday;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarCurrentProject;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarElapsedActivityToday;
@@ -2001,5 +2010,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarFormatStrikethrough;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarElapsedProjectToday;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarCurrentActivity;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolOptions;
     }
 }
