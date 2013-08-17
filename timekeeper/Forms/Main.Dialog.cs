@@ -92,7 +92,7 @@ namespace Timekeeper.Forms
 
         private void Dialog_HideItem(TreeView tree, bool viewingHiddenItems)
         {
-            if (options.wPromptHide.Checked)
+            if (Options.Behavior_Annoy_PromptBeforeHiding)
             {
                 fPrompt Dialog = new fPrompt();
                 Dialog.wInstructions.Text = "Hide this item?\n\nTo display hidden items, go to Tools | Options and check the appropriate boxes on the View tab. Hidden items are always available on reports.";
@@ -101,7 +101,8 @@ namespace Timekeeper.Forms
                     return;
                 } else {
                     if (Dialog.wDontShowAgain.Checked) {
-                        options.wPromptHide.Checked = false;
+                        Common.Warn("Debug this. Not sure if this will get saved.");
+                        Options.Behavior_Annoy_PromptBeforeHiding = false;
                     }
                 }
             }
@@ -228,7 +229,7 @@ namespace Timekeeper.Forms
                 this.Options = DialogBox.Values;
 
                 // And save them back to the persistent store
-                this.Options.Save();
+                this.Options.SaveOptions();
 
                 this.Dialog_ApplyOptions();
             }
@@ -241,12 +242,15 @@ namespace Timekeeper.Forms
         private void Dialog_ApplyOptions()
         {
             StatusBar_SetVisibility();
+            Action_SetShortcuts();
+            Browser_SetShortcuts();
         }
 
         //---------------------------------------------------------------------
 
         private void Dialog_Options_Legacy()
         {
+            /*
             bool prevViewHiddenProjects = options.wViewHiddenProjects.Checked;
             bool prevViewHiddenTasks = options.wViewHiddenTasks.Checked;
 
@@ -320,6 +324,7 @@ namespace Timekeeper.Forms
                     Timekeeper.Exception(x);
                 }
             }
+            */
         }
 
         //---------------------------------------------------------------------

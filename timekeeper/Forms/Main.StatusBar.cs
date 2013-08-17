@@ -74,19 +74,14 @@ namespace Timekeeper.Forms
 
         private void StatusBar_SetVisibility()
         {
-            // view or hide status bar items
-            //StatusBar.Visible = options.wViewStatusBar.Checked;
-
-            // FIRST TIME USING NEW OPTIONS TECH TO CONTROL A UI ELEMENT
             StatusBar.Visible = Options.View_StatusBar;
-
-            StatusBarCurrentProject.Visible = options.wViewCurrentTask.Checked;
-            StatusBarCurrentActivity.Visible = options.wViewCurrentTask.Checked; // FIXME
-            StatusBarElapsedSinceStart.Visible = options.wViewElapsedCurrent.Checked;
-            StatusBarElapsedProjectToday.Visible = options.wViewElapsedOne.Checked; // FIXME
-            StatusBarElapsedActivityToday.Visible = options.wViewElapsedOne.Checked;
-            StatusBarElapsedAllToday.Visible = options.wViewElapsedAll.Checked;
-            StatusBarFileName.Visible = options.wViewOpenedFile.Checked;
+            StatusBarCurrentProject.Visible = Options.View_StatusBar_ProjectName;
+            StatusBarCurrentActivity.Visible = Options.View_StatusBar_ActivityName;
+            StatusBarElapsedSinceStart.Visible = Options.View_StatusBar_ElapsedSinceStart;
+            StatusBarElapsedProjectToday.Visible = Options.View_StatusBar_ElapsedProjectToday;
+            StatusBarElapsedActivityToday.Visible = Options.View_StatusBar_ElapsedActivityToday;
+            StatusBarElapsedAllToday.Visible = Options.View_StatusBar_ElapsedAllToday;
+            StatusBarFileName.Visible = Options.View_StatusBar_FileName;
         }
 
         //---------------------------------------------------------------------

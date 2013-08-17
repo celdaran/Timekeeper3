@@ -27,6 +27,7 @@ namespace Timekeeper.Forms
         {
             // Get current project
             Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+            Options.State_LastProjectId = Project.ItemId;
 
             // Update status bar
             if (timerRunning == false) {
@@ -41,16 +42,16 @@ namespace Timekeeper.Forms
 
             // Auto-follow
             if (!isBrowsing) {
-            if (options.wProjectFollow.Checked) {
-                if (Project.FollowedItemId > 0) {
-                    TreeNode node = Widgets.FindTreeNode(ActivityTree.Nodes, Project.FollowedItemId);
-                    if ((node != null) && (!DontChangeProject)) {
-                        DontChangeActivity = true;
-                        ActivityTree.SelectedNode = node;
-                        DontChangeActivity = false;
+                if (Options.Behavior_Annoy_ActivityFollowsProject) {
+                    if (Project.FollowedItemId > 0) {
+                        TreeNode node = Widgets.FindTreeNode(ActivityTree.Nodes, Project.FollowedItemId);
+                        if ((node != null) && (!DontChangeProject)) {
+                            DontChangeActivity = true;
+                            ActivityTree.SelectedNode = node;
+                            DontChangeActivity = false;
+                        }
                     }
                 }
-            }
             }
 
             // TODO: Implement auto-follow the other direction
@@ -72,6 +73,7 @@ namespace Timekeeper.Forms
         {
             // Get current items
             Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
+            Options.State_LastActivityId = Activity.ItemId;
 
             // Update status bar
             if (timerRunning == false) {
@@ -86,22 +88,21 @@ namespace Timekeeper.Forms
 
             // Auto-follow
 
-            // FIXME: Can only be one other the other. This is just a rough simulation of that.
             // TODO: Here's an idea. Have a single "follow" option, but the option is only based
             // on whether that particular treeview has focus. e.g., if Project has focus then
             // Activity follows Project. If Activity has focus, then it's the other way around.
 
             if (!isBrowsing) {
-            if (!options.wProjectFollow.Checked) {
-                if (Activity.FollowedItemId > 0) {
-                    TreeNode node = Widgets.FindTreeNode(ProjectTree.Nodes, Activity.FollowedItemId);
-                    if ((node != null) && (!DontChangeActivity)) {
-                        DontChangeProject = true;
-                        ProjectTree.SelectedNode = node;
-                        DontChangeProject = false;
+                if (Options.Behavior_Annoy_ProjectFollowsActivity) {
+                    if (Activity.FollowedItemId > 0) {
+                        TreeNode node = Widgets.FindTreeNode(ProjectTree.Nodes, Activity.FollowedItemId);
+                        if ((node != null) && (!DontChangeActivity)) {
+                            DontChangeProject = true;
+                            ProjectTree.SelectedNode = node;
+                            DontChangeProject = false;
+                        }
                     }
                 }
-            }
             }
 
             // Set hide mode based on Activity's IsHidden property
@@ -129,7 +130,6 @@ namespace Timekeeper.Forms
 
                 // Rebuild the list
                 wLocation.Items.Clear();
-                Classes.Widgets Widgets = new Classes.Widgets();
                 Widgets.PopulateLocationComboBox(wLocation);
 
                 // Select whatever item was selected on the dialog box
@@ -153,7 +153,6 @@ namespace Timekeeper.Forms
 
                 // Rebuild the list
                 wCategory.Items.Clear();
-                Classes.Widgets Widgets = new Classes.Widgets();
                 Widgets.PopulateCategoryComboBox(wCategory);
 
                 // Select whatever item was selected on the dialog box
@@ -235,10 +234,7 @@ namespace Timekeeper.Forms
             try {
                 // FIXME: Options overhaul is going to need two logging
                 // levels. Set one for Timekeeper and one for Toolbox.DBI.
-                // It might be helpful to have one set at debug and the
-                // other at warn, for example.
 
-                options.wSQLtracing.Checked = true;
                 int LogLevel = Log.INFO;
 
                 Timekeeper.Info("Opening Database: " + DatabaseFileName);
@@ -315,7 +311,7 @@ namespace Timekeeper.Forms
                 StatusBar_FileClosed();
                 MenuBar_FileClosed();
 
-                Options.SaveToDatabase();
+                Options.SaveLocal();
 
                 Timekeeper.Info("Closing Database: " + DatabaseFileName);
                 Database = Timekeeper.CloseDatabase();
@@ -367,8 +363,21 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Action_GetMetrics()
+        {
+            Options.Main_Height = Height;
+            Options.Main_Width = Width;
+            Options.Main_Top = Top;
+            Options.Main_Left = Left;
+            Options.Main_MainSplitterDistance = splitMain.SplitterDistance;
+            Options.Main_TreeSplitterDistance = splitTrees.SplitterDistance;
+        }
+
+        //---------------------------------------------------------------------
+
         private void Action_FormClose()
         {
+            Action_GetMetrics();
             Action_SaveOptions();
             Action_CloseFile();
 
@@ -386,7 +395,6 @@ namespace Timekeeper.Forms
             Timekeeper.Info("Timekeeper Started");
 
             // Instantiate persistent dialog boxes
-            options = new Forms.OptionsLegacy(Database);
             properties = new Forms.Properties();
 
             // Load options from the Registry & TKDB
@@ -417,7 +425,6 @@ namespace Timekeeper.Forms
             //----------------------------------------------
             // Extras to do at app startup, for fun
             //----------------------------------------------
-            // EnumerateTimeZones();
 
             // short cut
             //Forms.Report Report = new Forms.Report();
@@ -428,66 +435,6 @@ namespace Timekeeper.Forms
             //FilterDialog.Show(this);
 
             //Common.Info("Testing TBX 3.0.0.7");
-        }
-
-        public static void EnumerateTimeZones()
-        {
-            try {
-                string OUTPUTFILENAME = Timekeeper.GetLogPath() + ".timezones";
-
-                DateTimeFormatInfo dateFormats = CultureInfo.CurrentCulture.DateTimeFormat;
-                ReadOnlyCollection<TimeZoneInfo> timeZones = TimeZoneInfo.GetSystemTimeZones();
-                StreamWriter sw = new StreamWriter(OUTPUTFILENAME, false);
-
-                foreach (TimeZoneInfo timeZone in timeZones) {
-                    bool hasDST = timeZone.SupportsDaylightSavingTime;
-                    TimeSpan offsetFromUtc = timeZone.BaseUtcOffset;
-                    TimeZoneInfo.AdjustmentRule[] adjustRules;
-                    string offsetString;
-
-                    sw.WriteLine("ID: {0}", timeZone.Id);
-                    sw.WriteLine("   Display Name: {0, 40}", timeZone.DisplayName);
-                    sw.WriteLine("   Standard Name: {0, 39}", timeZone.StandardName);
-                    sw.Write("   Daylight Name: {0, 39}", timeZone.DaylightName);
-                    sw.Write(hasDST ? "   ***Has " : "   ***Does Not Have ");
-                    sw.WriteLine("Daylight Saving Time***");
-                    offsetString = String.Format("{0} hours, {1} minutes", offsetFromUtc.Hours, offsetFromUtc.Minutes);
-                    sw.WriteLine("   Offset from UTC: {0, 40}", offsetString);
-                    adjustRules = timeZone.GetAdjustmentRules();
-                    sw.WriteLine("   Number of adjustment rules: {0, 26}", adjustRules.Length);
-                    if (adjustRules.Length > 0) {
-                        sw.WriteLine("   Adjustment Rules:");
-                        foreach (TimeZoneInfo.AdjustmentRule rule in adjustRules) {
-                            TimeZoneInfo.TransitionTime transTimeStart = rule.DaylightTransitionStart;
-                            TimeZoneInfo.TransitionTime transTimeEnd = rule.DaylightTransitionEnd;
-
-                            sw.WriteLine("      From {0} to {1}", rule.DateStart, rule.DateEnd);
-                            sw.WriteLine("      Delta: {0}", rule.DaylightDelta);
-                            if (!transTimeStart.IsFixedDateRule) {
-                                sw.WriteLine("      Begins at {0:t} on {1} of week {2} of {3}", transTimeStart.TimeOfDay,
-                                                                                              transTimeStart.DayOfWeek,
-                                                                                              transTimeStart.Week,
-                                                                                              dateFormats.MonthNames[transTimeStart.Month - 1]);
-                                sw.WriteLine("      Ends at {0:t} on {1} of week {2} of {3}", transTimeEnd.TimeOfDay,
-                                                                                              transTimeEnd.DayOfWeek,
-                                                                                              transTimeEnd.Week,
-                                                                                              dateFormats.MonthNames[transTimeEnd.Month - 1]);
-                            } else {
-                                sw.WriteLine("      Begins at {0:t} on {1} {2}", transTimeStart.TimeOfDay,
-                                                                               transTimeStart.Day,
-                                                                               dateFormats.MonthNames[transTimeStart.Month - 1]);
-                                sw.WriteLine("      Ends at {0:t} on {1} {2}", transTimeEnd.TimeOfDay,
-                                                                             transTimeEnd.Day,
-                                                                             dateFormats.MonthNames[transTimeEnd.Month - 1]);
-                            }
-                        }
-                    }
-                }
-                sw.Close();
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
         }
 
         //---------------------------------------------------------------------
@@ -501,7 +448,7 @@ namespace Timekeeper.Forms
             // have a name for it yet, obviously.
 
             // Create tray icon if requested
-            if (options.wShowInTray.Checked) {
+            if (Options.Behavior_Window_ShowInTray) {
                 TrayIcon.Visible = true;
             } else {
                 TrayIcon.Visible = false;
@@ -512,106 +459,36 @@ namespace Timekeeper.Forms
 
         private void Action_LoadOptions()
         {
-            // New version
-            this.Options = Timekeeper.OpenOptions();
+            // Instantiate Options
+            Options = Timekeeper.OpenOptions();
 
-            // Everything here and below is deprecated
+            // Load up primary Options
+            Options.LoadOptions();
+            Options.LoadMetrics();
+            Options.LoadMRU();
 
-            // Read saved values from registry
-            Microsoft.Win32.RegistryKey key;
+            // Set Main window metrics
+            Left = Options.Main_Left;
+            Top = Options.Main_Top;
+            Width = Options.Main_Width;
+            Height = Options.Main_Height;
+            splitTrees.SplitterDistance = Options.Main_TreeSplitterDistance;
+            splitMain.SplitterDistance = Options.Main_MainSplitterDistance;
 
-            // Window metrics
-            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "WindowMetrics");
-            Left = (int)key.GetValue("Left", 10);
-            Top = (int)key.GetValue("Top", 10);
-            Width = (int)key.GetValue("Width", 426);
-            Height = (int)key.GetValue("Height", 376);
-            splitTrees.SplitterDistance = (int)key.GetValue("SplitTrees", 300);
-            splitMain.SplitterDistance = (int)key.GetValue("SplitMain", 300);
-            int HideProjects = (int)key.GetValue("HideProjects", 1);
-            reportHeight = (int)key.GetValue("ReportHeight", 380);
-            reportWidth = (int)key.GetValue("ReportWidth", 580);
-            key.Close();
-
-            // Initialize options & options dialog
-            options.wViewProjectPane.Checked = (HideProjects == 0);
-
-            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "Options");
-            int ShowInTray = (int)key.GetValue("ShowInTray", 1);
-            int MinimizeToTray = (int)key.GetValue("MinimizeToTray", 1);
-            int MinimizeOnUse = (int)key.GetValue("MinimizeOnUse", 0);
-            int PreLog = (int)key.GetValue("PreLog", 1);
-            int PostLog = (int)key.GetValue("PostLog", 1);
-            int PromptNoTimer = (int)key.GetValue("PromptNoTimer", 1);
-            int PromptHide = (int)key.GetValue("PromptHide", 1);
-            int OrderBy = (int)key.GetValue("OrderBy", 0);
-            string ReportFontName = (string)key.GetValue("ReportFontName", "Verdana");
-            int ReportFontSize = (int)key.GetValue("ReportFontSize", 8);
-            int ProjectFollow = (int)key.GetValue("ProjectFollow", 1);
-            int ShowHiddenTasks = (int)key.GetValue("ShowHiddenTasks", 0);
-            int ShowHiddenProjects = (int)key.GetValue("ShowHiddenProjects", 0);
-            string TitleBarTemplate = (string)key.GetValue("TitleBarTemplate", "%task (%project) - %time");
-            int SQLtracing = (int)key.GetValue("SQLtracing", 0);
-            int TestMode = (int)key.GetValue("TestMode", 0);
-
-            options.wShowInTray.Checked = (ShowInTray == 1);
-            options.wMinimizeToTray.Checked = (MinimizeToTray == 1);
-            options.wMinimizeOnUse.Checked = (MinimizeOnUse == 1);
-            options.wPreLog.Checked = (PreLog == 1);
-            options.wPostLog.Checked = (PostLog == 1);
-            options.wPromptInterval.Value = (int)key.GetValue("PromptInterval", 10);
-            options.wPromptNoTimer.Checked = (PromptNoTimer == 1);
-            options.wPromptHide.Checked = (PromptHide == 1);
-            options.wOrderBy.SelectedIndex = OrderBy;
-            options.wFontList.SelectedIndex = options.wFontList.Items.IndexOf(ReportFontName);
-            options.wFontSize.Value = ReportFontSize;
-            options.wProjectFollow.Checked = (ProjectFollow == 1);
-            options.wViewHiddenTasks.Checked = (ShowHiddenTasks == 1);
-            options.wViewHiddenProjects.Checked = (ShowHiddenProjects == 1);
-            options.wTitleBarTemplate.Text = TitleBarTemplate;
-            options.wSQLtracing.Checked = (SQLtracing == 1);
-            options.wTestMode.Checked = (TestMode == 1);
-            key.Close();
-
-            // Read MRU list
-            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "MRU");
-            int count = (int)key.GetValue("count", 0);
-            for (int i = 0; i < count; i++) {
-                string mru = (string)key.GetValue(i.ToString(), "");
-                ToolStripMenuItem item = new ToolStripMenuItem();
-                item.Click += new EventHandler(MenuFileRecentFile_Click);
-                item.Text = mru;
-                MenuFileRecent.DropDownItems.Add(item);
+            // Populate MRU List
+            foreach (string FileName in Options.MRU_List) {
+                ToolStripMenuItem Item = new ToolStripMenuItem();
+                Item.Click += new EventHandler(MenuFileRecentFile_Click);
+                Item.Text = FileName;
+                MenuFileRecent.DropDownItems.Add(Item);
             }
-            key.Close();
 
             // Load keyboard shortcuts
-            try {
-                key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "Keyboard");
-                foreach (string name in key.GetValueNames()) {
-                    foreach (ToolStripMenuItem item in MenuMain.Items.Find(name, true)) {
-                        item.ShortcutKeys = (Keys)key.GetValue(name);
-                        options.wFunctionList.Items.Add(name, (int)item.ShortcutKeys);
-                    }
-                }
-                key.Close();
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
+            Action_SetShortcuts();
 
-            // NEW:
-
-            // experimental: swapping Activities/Projects (see TKT #1266)
-            //this.splitTrees.Panel1.Controls.Add(this.ActivityTree);
-
-            /*
-            splitTrees.Panel1.Controls.Remove(this.ActivityTree);
-            splitTrees.Panel1.Controls.Remove(this.ProjectTree);
-
-            splitTrees.Panel1.Controls.Add(this.ProjectTree);
-            splitTrees.Panel2.Controls.Add(this.ActivityTree);
-            */
+            // FIXME/TODO: restore "hide projects", etc.,
+            // FIXME/TODO: sort order not yet supported
+            // FIXME/TODO: actually, many options aren't even used yet
         }
 
         //---------------------------------------------------------------------
@@ -621,94 +498,6 @@ namespace Timekeeper.Forms
             Action_CloseFile();
             DatabaseFileName = fileName;
             Action_LoadFile();
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_SaveOptions()
-        {
-            // FIXME: something's still not right here
-            // The DB-based options just aren't working
-            // for me, but I can't put my finger on it.
-            // I'm sure Future Charlie will figure it out.
-
-            // Save DB-specific state
-            if (ProjectTree.SelectedNode != null) {
-                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-                Options.LastProjectId = Project.ItemId;
-            }
-            if (ActivityTree.SelectedNode != null) {
-                Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
-                Options.LastActivityId = Activity.ItemId;
-            }
-            Options.LastGridViewId = lastGridViewId;
-            Options.LastReportViewId = lastReportViewId;
-
-            // Everything from here on down is deprecated
-
-            Microsoft.Win32.RegistryKey key;
-
-            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "WindowMetrics");
-            key.SetValue("Left", Left, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("Top", Top, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("Width", Width, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("Height", Height, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("SplitTrees", splitTrees.SplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("SplitMain", splitMain.SplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("HideProjects", splitTrees.Panel2Collapsed, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("ReportHeight", reportHeight, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("ReportWidth", reportWidth, Microsoft.Win32.RegistryValueKind.DWord);
-
-            key.Close();
-
-            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "Options");
-            key.SetValue("ShowInTray", options.wShowInTray.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("MinimizeToTray", options.wMinimizeToTray.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("MinimizeOnUse", options.wMinimizeOnUse.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("PreLog", options.wPreLog.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("PostLog", options.wPostLog.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("PromptNoTimer", options.wPromptNoTimer.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("PromptHide", options.wPromptHide.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("PromptInterval", options.wPromptInterval.Value, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("OrderBy", options.wOrderBy.SelectedIndex, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("ReportFontName", options.wFontList.SelectedItem.ToString());
-            key.SetValue("ReportFontSize", options.wFontSize.Value, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("ProjectFollow", options.wProjectFollow.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("ShowHiddenTasks", options.wViewHiddenTasks.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("ShowHiddenProjects", options.wViewHiddenProjects.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("TitleBarTemplate", options.wTitleBarTemplate.Text);
-            key.SetValue("SQLtracing", options.wSQLtracing.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.SetValue("TestMode", options.wTestMode.Checked, Microsoft.Win32.RegistryValueKind.DWord);
-            key.Close();
-
-            // Save MRU list
-            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "MRU");
-            int i = 0;
-            foreach (ToolStripMenuItem item in MenuFileRecent.DropDownItems) {
-                if (i < 10) { // arbitrary maximum
-                    key.SetValue(i.ToString(), item.Text);
-                    i++;
-                }
-            }
-            // FIXME: this leaves stray entries above "i". We should probably
-            // clean those up along the way.
-            key.SetValue("count", i, Microsoft.Win32.RegistryValueKind.DWord);
-            key.Close();
-
-            // Save Keyboard customizations
-            key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "Keyboard");
-            foreach (ToolStripMenuItem mainItem in MenuMain.Items) {
-                foreach (ToolStripItem item in mainItem.DropDownItems) {
-                    // Common.Info(item.GetType().ToString());
-                    if (item.GetType().ToString() == "System.Windows.Forms.ToolStripMenuItem") {
-                        ToolStripMenuItem menuItem = (ToolStripMenuItem)item;
-                        Keys keys = menuItem.ShortcutKeys;
-                        key.SetValue(menuItem.Name, menuItem.ShortcutKeys, Microsoft.Win32.RegistryValueKind.DWord);
-                    }
-                }
-            }
-            key.Close();
-
         }
 
         //---------------------------------------------------------------------
@@ -740,7 +529,7 @@ namespace Timekeeper.Forms
             Action_TreeView_ShowRootLines();
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private void Action_UnhideItem(TreeView tree)
         {
@@ -770,18 +559,38 @@ namespace Timekeeper.Forms
             Action_TreeView_ShowRootLines();
         }
 
+        //----------------------------------------------------------------------
+
         private bool Action_LoadFile()
         {
             try {
+                //------------------------------------------
+                // Perform database sanity check
+                //------------------------------------------
+
                 if (Action_CheckDatabase()) {
-                    // If the database is okay, make sure we load
-                    // up the database-based options
-                    this.Options.LoadFromDatabase();
+                    OpenFileDialog.FileName = DatabaseFileName;
                 } else {
-                    // Otherwise bail and head down a file not
-                    // loaded path.
                     return false;
                 }
+
+                //------------------------------------------
+                // Load Database-based options
+                //------------------------------------------
+
+                Options.LoadLocal();
+
+                //------------------------------------------
+                // Instatiate Classes
+                //------------------------------------------
+
+                Entries = new Classes.JournalEntries(Database);
+                Meta = new Classes.Meta();
+                Entry = new Classes.Journal(Database);
+
+                //------------------------------------------
+                // Prepare UI elements
+                //------------------------------------------
 
                 Widgets = new Classes.Widgets();
                 Widgets.BuildProjectTree(ProjectTree.Nodes);
@@ -789,50 +598,40 @@ namespace Timekeeper.Forms
                 Widgets.PopulateLocationComboBox(wLocation);
                 Widgets.PopulateCategoryComboBox(wCategory);
 
-                Entries = new Classes.JournalEntries(Database);
-                Meta = new Classes.Meta();
-
-                Entry = new Classes.Journal(Database);
+                Action_TreeView_ShowRootLines();
 
                 MenuBar_FileOpened();
                 StatusBar_FileOpened();
+                StatusBar_SetVisibility();
+
+                Action_UseProjects(Options.Layout_UseProjects);
+                Action_UseActivities(Options.Layout_UseActivities);
+
+                //------------------------------------------
+                // Prepare Browser
+                //------------------------------------------
 
                 Browser_Load();
                 Browser_SetupForStarting();
-                Browser_Show(true);
+                Browser_Show(Options.Main_BrowserOpen);
 
-                // and save name for next Ctrl+O
-                OpenFileDialog.FileName = DatabaseFileName;
-
-                lastGridViewId = Options.LastGridViewId;
-                lastReportViewId = Options.LastReportViewId;
+                //------------------------------------------
+                // Restore Prior State
+                //------------------------------------------
 
                 // Re-select last selected project
-                TreeNode lastNode = Widgets.FindTreeNode(ProjectTree.Nodes, Options.LastProjectId);
-                if (lastNode != null) {
-                    ProjectTree.SelectedNode = lastNode;
+                TreeNode LastNode = Widgets.FindTreeNode(ProjectTree.Nodes, Options.State_LastProjectId);
+                if (LastNode != null) {
+                    ProjectTree.SelectedNode = LastNode;
                     ProjectTree.SelectedNode.Expand();
                 }
 
                 // Re-select last selected activity
-                lastNode = Widgets.FindTreeNode(ActivityTree.Nodes, Options.LastActivityId);
-                if (lastNode != null) {
-                    ActivityTree.SelectedNode = lastNode;
+                LastNode = Widgets.FindTreeNode(ActivityTree.Nodes, Options.State_LastActivityId);
+                if (LastNode != null) {
+                    ActivityTree.SelectedNode = LastNode;
                     ActivityTree.SelectedNode.Expand();
                 }
-
-                // View root lines?
-                Action_TreeView_ShowRootLines();
-
-                // View or hide the project pane
-                bool useProjects = true;
-                bool useActivities = true;
-
-                Action_UseProjects(useProjects); // options.wViewProjectPane.Checked);
-                Action_UseActivities(useActivities); // FIXME: Need an Option for this
-
-                // Apply other options
-                StatusBar_SetVisibility();
 
                 return true;
             }
@@ -842,7 +641,7 @@ namespace Timekeeper.Forms
             }
         }
 
-        //--
+        //----------------------------------------------------------------------
 
         private void Action_UseProjects(bool show)
         {
@@ -852,7 +651,7 @@ namespace Timekeeper.Forms
             } else {
                 splitTrees.Panel2Collapsed = !show;
             }
-            this.ProjectsVisible = show;
+            Options.Layout_UseProjects = show;
 
             // Update the action menu accordingly
             MenuActionSep1.Visible = show;
@@ -871,11 +670,11 @@ namespace Timekeeper.Forms
             PopupMenuActivityUseActivities.Enabled = show;
 
             // Swap menu handling is a bit different
-            PopupMenuProjectSwapPanes.Enabled = this.ProjectsVisible && this.ActivitiesVisible;
-            PopupMenuActivitySwapPanes.Enabled = this.ProjectsVisible && this.ActivitiesVisible;
+            PopupMenuProjectSwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
+            PopupMenuActivitySwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
         }
 
-        //--
+        //----------------------------------------------------------------------
 
         private void Action_UseActivities(bool show)
         {
@@ -885,7 +684,7 @@ namespace Timekeeper.Forms
             } else {
                 splitTrees.Panel2Collapsed = !show;
             }
-            this.ActivitiesVisible = show;
+            Options.Layout_UseActivities = show;
 
             // Update the action menu accordingly
             MenuActionSep2.Visible = show;
@@ -904,8 +703,8 @@ namespace Timekeeper.Forms
             PopupMenuProjectUseProjects.Enabled = show;
 
             // Swap menu handling is a bit different
-            PopupMenuProjectSwapPanes.Enabled = this.ProjectsVisible && this.ActivitiesVisible;
-            PopupMenuActivitySwapPanes.Enabled = this.ProjectsVisible && this.ActivitiesVisible;
+            PopupMenuProjectSwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
+            PopupMenuActivitySwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
         }
 
         //---------------------------------------------------------------------
@@ -1066,6 +865,36 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Action_SaveOptions()
+        {
+            Options.SaveOptions();
+            Options.SaveMetrics();
+            Options.SaveMRU(MenuFileRecent.DropDownItems);
+            Options.SaveLocal();
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_SetShortcuts()
+        {
+            try {
+                foreach (NameObjectPair Pair in Options.Keyboard_FunctionList) {
+                    ToolStripItem[] Items = MenuMain.Items.Find(Pair.Name, true);
+                    if (Items.Length > 0) {
+                        ToolStripMenuItem Item = (ToolStripMenuItem)Items[0];
+                        Item.ShortcutKeys = (Keys)Pair.Object;
+                    } else {
+                        Timekeeper.Info("Menu Not Found: " + Pair.Name + ", " + Pair.Object.ToString());
+                    }
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         private void Action_ShortTick()
         {
             //---------------------------------------------------------
@@ -1091,19 +920,22 @@ namespace Timekeeper.Forms
                 }
 
                 // FIXME: More Options Overhaul
-                string timeToShow;
-                if (options.wShowCurrent.Checked) {
-                    timeToShow = StatusBarElapsedSinceStart.Text;
-                } else if (options.wShowToday.Checked) {
-                    timeToShow = StatusBarElapsedActivityToday.Text;
-                } else {
-                    timeToShow = StatusBarElapsedAllToday.Text;
+                string timeToShow = "";
+                switch (Options.Behavior_TitleBar) {
+                    case 0: timeToShow = StatusBarElapsedSinceStart.Text; break;
+                    case 1: timeToShow = StatusBarElapsedProjectToday.Text; break;
+                    case 2: timeToShow = StatusBarElapsedActivityToday.Text; break;
+                    case 3: timeToShow = StatusBarElapsedAllToday.Text; break;
                 }
 
                 // FIXME: add this to Widgets?
-                string tmp = options.wTitleBarTemplate.Text;
-                tmp = tmp.Replace("%task", "{0}"); // FIXME: take care of this later
+                // FIXME: I liked this updating-in-real-time feature (when it was directly accessing: options.wTitleBarTemplate.Text)
+                string tmp = Options.Behavior_TitleBar_Template; 
+                tmp = tmp.Replace("%a", "{0}");
+                tmp = tmp.Replace("%activity", "{0}");
+                tmp = tmp.Replace("%p", "{1}");
                 tmp = tmp.Replace("%project", "{1}");
+                tmp = tmp.Replace("%t", "{2}");
                 tmp = tmp.Replace("%time", "{2}");
                 Text = String.Format(tmp, currentActivityNode.Text, currentProjectNode.Text, timeToShow);
                 //wNotifyIcon.Text = Text;
@@ -1149,8 +981,8 @@ namespace Timekeeper.Forms
             // Annoyance support: if so desired, bug the user that the timer isn't running
             DateTime now = DateTime.Now;
             TimeSpan ts = new TimeSpan(now.Ticks - timerLastRun.Ticks);
-            if (options.wPromptNoTimer.Checked) {
-                if (ts.TotalMinutes > (double)options.wPromptInterval.Value) {
+            if (Options.Behavior_Annoy_NoRunningPrompt) {
+                if (ts.TotalMinutes > (double)Options.Behavior_Annoy_NoRunningPromptAmount) {
                     if (timerRunning == false) {
                         if (TrayIcon.Visible) {
                             TrayIcon.ShowBalloonTip(30000,
@@ -1255,13 +1087,15 @@ namespace Timekeeper.Forms
             // swap start/stop keystrokes
             // FIXME: this is a mess
             Keys saveKeys = new Keys();
-            Keys saveKeysAdvanced = new Keys();
+            //Keys saveKeysAdvanced = new Keys();
             saveKeys = MenuActionStartTimer.ShortcutKeys;
-            saveKeysAdvanced = MenuActionOpenBrowser.ShortcutKeys;
+            //saveKeysAdvanced = MenuActionOpenBrowser.ShortcutKeys;
             MenuActionStartTimer.ShortcutKeys = Keys.None;
-            MenuActionOpenBrowser.ShortcutKeys = Keys.None;
+            //MenuActionOpenBrowser.ShortcutKeys = Keys.None;
             MenuActionStopTimer.ShortcutKeys = saveKeys;
-            MenuActionCloseBrowser.ShortcutKeys = saveKeysAdvanced;
+            //MenuActionCloseBrowser.ShortcutKeys = saveKeysAdvanced;
+            Browser_SetShortcuts();
+
             /*
             saveKeys = menuToolControlStart.ShortcutKeys;
             menuToolControlStart.ShortcutKeys = Keys.None;
@@ -1283,7 +1117,7 @@ namespace Timekeeper.Forms
             MenuFileUtilities.Enabled = false;
             MenuFileExit.Enabled = false;
 
-            if (options.wMinimizeOnUse.Checked) {
+            if (Options.Behavior_Window_MinimizeOnUse) {
                 if ((ModifierKeys & Keys.Shift) == Keys.Shift) {
                     // Shift key temporarily overrides the minimize-on-use option
                 } else {

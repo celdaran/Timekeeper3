@@ -254,6 +254,7 @@ namespace Timekeeper.Forms
 
             Behavior_Annoy_ActivityFollowsProject.Checked = Values.Behavior_Annoy_ActivityFollowsProject;
             Behavior_Annoy_ProjectFollowsActivity.Checked = Values.Behavior_Annoy_ProjectFollowsActivity;
+            Behavior_Annoy_PromptBeforeHiding.Checked = Values.Behavior_Annoy_PromptBeforeHiding;
             Behavior_Annoy_NoRunningPrompt.Checked = Values.Behavior_Annoy_NoRunningPrompt;
             Behavior_Annoy_NoRunningPromptAmount.Value = Values.Behavior_Annoy_NoRunningPromptAmount;
 
@@ -265,7 +266,13 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
-            OptionsPanelCollection.SelectedIndex = Values.Internal_OptionTabIndex;
+            Advanced_Logging_Application.SelectedIndex = Values.Advanced_Logging_Application;
+            Advanced_Logging_Database.SelectedIndex = Values.Advanced_Logging_Database;
+
+            //----------------------------------------------------------------------
+
+            OptionsPanelCollection.SelectedIndex = Values.LastOptionTab;
+
         }
 
         //----------------------------------------------------------------------
@@ -317,6 +324,7 @@ namespace Timekeeper.Forms
 
             Values.Behavior_Annoy_ActivityFollowsProject = Behavior_Annoy_ActivityFollowsProject.Checked;
             Values.Behavior_Annoy_ProjectFollowsActivity = Behavior_Annoy_ProjectFollowsActivity.Checked;
+            Values.Behavior_Annoy_PromptBeforeHiding = Behavior_Annoy_PromptBeforeHiding.Checked;
             Values.Behavior_Annoy_NoRunningPrompt = Behavior_Annoy_NoRunningPrompt.Checked;
             Values.Behavior_Annoy_NoRunningPromptAmount = (int)Behavior_Annoy_NoRunningPromptAmount.Value;
 
@@ -326,7 +334,12 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
-            Values.Internal_OptionTabIndex = OptionsPanelCollection.SelectedIndex;
+            Values.Advanced_Logging_Application = Advanced_Logging_Application.SelectedIndex;
+            Values.Advanced_Logging_Database = Advanced_Logging_Database.SelectedIndex;
+
+            //----------------------------------------------------------------------
+
+            Values.LastOptionTab = OptionsPanelCollection.SelectedIndex;
         }
 
         //----------------------------------------------------------------------
@@ -353,11 +366,6 @@ namespace Timekeeper.Forms
         //----------------------------------------------------------------------
         // Uncategorized. Clean this up before submitting final revision.
         //----------------------------------------------------------------------
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            OptionsPanelCollection.SelectedIndex = PanelSelector.SelectedIndex;
-        }
 
         private void wFunctionList_SelectedIndexChanged(object sender, EventArgs e)
         {

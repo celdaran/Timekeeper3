@@ -64,7 +64,7 @@ namespace Timekeeper.Forms
 
         private void MenuBar_ShowHideProject(bool visible)
         {
-            if (options.wViewHiddenProjects.Checked) {
+            if (Options.View_HiddenProjects) {
                 // set main menu items
                 MenuActionHideProject.Visible = visible;
                 MenuActionUnhideProject.Visible = !visible;
@@ -79,7 +79,7 @@ namespace Timekeeper.Forms
 
         private void MenuBar_ShowHideActivity(bool visible)
         {
-            if (options.wViewHiddenTasks.Checked) {
+            if (Options.View_HiddenActivities) {
                 // Set main menu items
                 MenuActionHideActivity.Visible = visible;
                 MenuActionUnhideActivity.Visible = !visible;

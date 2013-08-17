@@ -565,20 +565,34 @@ namespace Timekeeper.Forms
         private void Browser_Load()
         {
             try {
-                // Add keyboard shortcuts to tooltips
-                var kc = new KeysConverter();
-                toolControlFirstEntry.ToolTipText += " (" + kc.ConvertToString(MenuToolbarBrowserFirst.ShortcutKeys) + ")";
-                toolControlLastEntry.ToolTipText += " (" + kc.ConvertToString(MenuToolbarBrowserLast.ShortcutKeys) + ")";
-                toolControlNextEntry.ToolTipText += " (" + kc.ConvertToString(MenuToolbarBrowserNext.ShortcutKeys) + ")";
-                toolControlPrevEntry.ToolTipText += " (" + kc.ConvertToString(MenuToolbarBrowserPrev.ShortcutKeys) + ")";
-
-                toolControlStart.ToolTipText += " (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
-                toolControlStop.ToolTipText += " (" + kc.ConvertToString(MenuActionStopTimer.ShortcutKeys) + ")";
-                toolControlClose.ToolTipText += " (Esc)";
+                Browser_SetShortcuts();
             }
             catch (Exception x) {
                 Common.Info("No file loaded.\n\n" + x.ToString());
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_SetShortcuts()
+        {
+            var kc = new KeysConverter();
+
+            toolControlStart.ToolTipText = "Start Timer (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
+            toolControlStop.ToolTipText = "Stop Timer (" + kc.ConvertToString(MenuActionStopTimer.ShortcutKeys) + ")";
+
+            toolControlFirstEntry.ToolTipText = "Go to First Entry (" + kc.ConvertToString(MenuToolbarBrowserFirst.ShortcutKeys) + ")";
+            toolControlLastEntry.ToolTipText = "Go to Last Entry (" + kc.ConvertToString(MenuToolbarBrowserLast.ShortcutKeys) + ")";
+            toolControlNextEntry.ToolTipText = "Go to Next Entry (" + kc.ConvertToString(MenuToolbarBrowserNext.ShortcutKeys) + ")";
+            toolControlPrevEntry.ToolTipText = "Go to Previous Entry (" + kc.ConvertToString(MenuToolbarBrowserPrev.ShortcutKeys) + ")";
+
+            toolControlNewEntry.ToolTipText = "Go to New Entry (" + kc.ConvertToString(MenuToolbarBrowserNew.ShortcutKeys) + ")";
+            toolControlCloseStartGap.ToolTipText = "Close Start Gap (" + kc.ConvertToString(MenuToolbarBrowserCloseStartGap.ShortcutKeys) + ")";
+            toolControlCloseEndGap.ToolTipText = "Close End Gap (" + kc.ConvertToString(MenuToolbarBrowserCloseEndGap.ShortcutKeys) + ")";
+
+            toolControlRevert.ToolTipText = "Revert Changes to Last Saved State (" + kc.ConvertToString(MenuToolbarBrowserRevert.ShortcutKeys) + ")";
+
+            toolControlClose.ToolTipText = "Close Browser (Esc)";
         }
 
         //---------------------------------------------------------------------
@@ -834,6 +848,7 @@ namespace Timekeeper.Forms
             MenuActionOpenBrowser.Visible = !show;
             MenuActionCloseBrowser.Visible = show;
             splitMain.Panel2Collapsed = !show;
+            Options.Main_BrowserOpen = show;
         }
 
         //---------------------------------------------------------------------

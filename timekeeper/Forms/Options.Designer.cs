@@ -30,12 +30,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Options));
             this.ButtonPanel = new System.Windows.Forms.Panel();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.CancelDialogButton = new System.Windows.Forms.Button();
             this.AcceptDialogButton = new System.Windows.Forms.Button();
-            this.PanelSelector = new System.Windows.Forms.ListBox();
-            this.SelectorPanel = new System.Windows.Forms.Panel();
-            this.ContentPanel = new System.Windows.Forms.Panel();
             this.OptionsPanelCollection = new System.Windows.Forms.TabControl();
             this.LayoutPage = new System.Windows.Forms.TabPage();
             this.Layout_SortProjectsByDirection = new System.Windows.Forms.ComboBox();
@@ -112,9 +108,17 @@
             this.wAlt = new System.Windows.Forms.CheckBox();
             this.AssignKey = new System.Windows.Forms.Button();
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Behavior_Annoy_PromptBeforeHiding = new System.Windows.Forms.CheckBox();
+            this.AdvancedPage = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.LoggingGroup = new System.Windows.Forms.GroupBox();
+            this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
+            this.Advanced_Logging_Database = new System.Windows.Forms.ComboBox();
+            this.ViewLog = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.ButtonPanel.SuspendLayout();
-            this.SelectorPanel.SuspendLayout();
-            this.ContentPanel.SuspendLayout();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.SortingGroup.SuspendLayout();
@@ -130,35 +134,25 @@
             ((System.ComponentModel.ISupportInitialize)(this.Report_FontSize)).BeginInit();
             this.KeyboardPage.SuspendLayout();
             this.ShortcutGroup.SuspendLayout();
+            this.AdvancedPage.SuspendLayout();
+            this.LoggingGroup.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ButtonPanel
             // 
-            this.ButtonPanel.Controls.Add(this.comboBox1);
             this.ButtonPanel.Controls.Add(this.CancelDialogButton);
             this.ButtonPanel.Controls.Add(this.AcceptDialogButton);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ButtonPanel.Location = new System.Drawing.Point(0, 428);
             this.ButtonPanel.Name = "ButtonPanel";
-            this.ButtonPanel.Size = new System.Drawing.Size(559, 39);
+            this.ButtonPanel.Size = new System.Drawing.Size(598, 39);
             this.ButtonPanel.TabIndex = 1;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Simple",
-            "Normal",
-            "The Works"});
-            this.comboBox1.Location = new System.Drawing.Point(172, 8);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 2;
             // 
             // CancelDialogButton
             // 
             this.CancelDialogButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelDialogButton.Location = new System.Drawing.Point(478, 6);
+            this.CancelDialogButton.Location = new System.Drawing.Point(103, 6);
             this.CancelDialogButton.Name = "CancelDialogButton";
             this.CancelDialogButton.Size = new System.Drawing.Size(75, 23);
             this.CancelDialogButton.TabIndex = 1;
@@ -167,52 +161,13 @@
             // 
             // AcceptDialogButton
             // 
-            this.AcceptDialogButton.Location = new System.Drawing.Point(397, 6);
+            this.AcceptDialogButton.Location = new System.Drawing.Point(12, 6);
             this.AcceptDialogButton.Name = "AcceptDialogButton";
             this.AcceptDialogButton.Size = new System.Drawing.Size(75, 23);
             this.AcceptDialogButton.TabIndex = 0;
             this.AcceptDialogButton.Text = "Save";
             this.AcceptDialogButton.UseVisualStyleBackColor = true;
             this.AcceptDialogButton.Click += new System.EventHandler(this.AcceptDialogButton_Click);
-            // 
-            // PanelSelector
-            // 
-            this.PanelSelector.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PanelSelector.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PanelSelector.FormattingEnabled = true;
-            this.PanelSelector.ItemHeight = 16;
-            this.PanelSelector.Items.AddRange(new object[] {
-            "Layout",
-            "View",
-            "Behavior",
-            "Report",
-            "Keyboard"});
-            this.PanelSelector.Location = new System.Drawing.Point(6, 6);
-            this.PanelSelector.Name = "PanelSelector";
-            this.PanelSelector.Size = new System.Drawing.Size(150, 416);
-            this.PanelSelector.TabIndex = 3;
-            this.PanelSelector.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            // 
-            // SelectorPanel
-            // 
-            this.SelectorPanel.Controls.Add(this.PanelSelector);
-            this.SelectorPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.SelectorPanel.Location = new System.Drawing.Point(0, 0);
-            this.SelectorPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.SelectorPanel.Name = "SelectorPanel";
-            this.SelectorPanel.Padding = new System.Windows.Forms.Padding(6);
-            this.SelectorPanel.Size = new System.Drawing.Size(162, 428);
-            this.SelectorPanel.TabIndex = 5;
-            // 
-            // ContentPanel
-            // 
-            this.ContentPanel.Controls.Add(this.OptionsPanelCollection);
-            this.ContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ContentPanel.Location = new System.Drawing.Point(162, 0);
-            this.ContentPanel.Name = "ContentPanel";
-            this.ContentPanel.Padding = new System.Windows.Forms.Padding(6);
-            this.ContentPanel.Size = new System.Drawing.Size(397, 428);
-            this.ContentPanel.TabIndex = 6;
             // 
             // OptionsPanelCollection
             // 
@@ -221,8 +176,9 @@
             this.OptionsPanelCollection.Controls.Add(this.BehaviorPage);
             this.OptionsPanelCollection.Controls.Add(this.ReportPage);
             this.OptionsPanelCollection.Controls.Add(this.KeyboardPage);
+            this.OptionsPanelCollection.Controls.Add(this.AdvancedPage);
             this.OptionsPanelCollection.ItemSize = new System.Drawing.Size(72, 18);
-            this.OptionsPanelCollection.Location = new System.Drawing.Point(6, 6);
+            this.OptionsPanelCollection.Location = new System.Drawing.Point(103, 9);
             this.OptionsPanelCollection.Name = "OptionsPanelCollection";
             this.OptionsPanelCollection.SelectedIndex = 0;
             this.OptionsPanelCollection.Size = new System.Drawing.Size(383, 413);
@@ -655,6 +611,7 @@
             // 
             // AnnoyGroup
             // 
+            this.AnnoyGroup.Controls.Add(this.Behavior_Annoy_PromptBeforeHiding);
             this.AnnoyGroup.Controls.Add(this.label10);
             this.AnnoyGroup.Controls.Add(this.Behavior_Annoy_NoRunningPromptAmount);
             this.AnnoyGroup.Controls.Add(this.Behavior_Annoy_NoRunningPrompt);
@@ -662,7 +619,7 @@
             this.AnnoyGroup.Controls.Add(this.Behavior_Annoy_ActivityFollowsProject);
             this.AnnoyGroup.Location = new System.Drawing.Point(6, 265);
             this.AnnoyGroup.Name = "AnnoyGroup";
-            this.AnnoyGroup.Size = new System.Drawing.Size(363, 100);
+            this.AnnoyGroup.Size = new System.Drawing.Size(363, 116);
             this.AnnoyGroup.TabIndex = 2;
             this.AnnoyGroup.TabStop = false;
             this.AnnoyGroup.Text = "Annoyances";
@@ -670,7 +627,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(251, 66);
+            this.label10.Location = new System.Drawing.Point(250, 89);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(43, 13);
             this.label10.TabIndex = 7;
@@ -678,7 +635,7 @@
             // 
             // Behavior_Annoy_NoRunningPromptAmount
             // 
-            this.Behavior_Annoy_NoRunningPromptAmount.Location = new System.Drawing.Point(192, 64);
+            this.Behavior_Annoy_NoRunningPromptAmount.Location = new System.Drawing.Point(191, 87);
             this.Behavior_Annoy_NoRunningPromptAmount.Name = "Behavior_Annoy_NoRunningPromptAmount";
             this.Behavior_Annoy_NoRunningPromptAmount.Size = new System.Drawing.Size(53, 20);
             this.Behavior_Annoy_NoRunningPromptAmount.TabIndex = 6;
@@ -686,7 +643,7 @@
             // Behavior_Annoy_NoRunningPrompt
             // 
             this.Behavior_Annoy_NoRunningPrompt.AutoSize = true;
-            this.Behavior_Annoy_NoRunningPrompt.Location = new System.Drawing.Point(17, 65);
+            this.Behavior_Annoy_NoRunningPrompt.Location = new System.Drawing.Point(16, 88);
             this.Behavior_Annoy_NoRunningPrompt.Name = "Behavior_Annoy_NoRunningPrompt";
             this.Behavior_Annoy_NoRunningPrompt.Size = new System.Drawing.Size(169, 17);
             this.Behavior_Annoy_NoRunningPrompt.TabIndex = 5;
@@ -955,27 +912,6 @@
             this.wKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.wKey.FormattingEnabled = true;
             this.wKey.Items.AddRange(new object[] {
-            "Space",
-            "PageUp",
-            "PageDown",
-            "End",
-            "Home",
-            "Left",
-            "Up",
-            "Right",
-            "Down",
-            "Insert",
-            "Delete",
-            "D0",
-            "D1",
-            "D2",
-            "D3",
-            "D4",
-            "D5",
-            "D6",
-            "D7",
-            "D8",
-            "D9",
             "A",
             "B",
             "C",
@@ -1043,7 +979,18 @@
             "F21",
             "F22",
             "F23",
-            "F24"});
+            "F24",
+            "Space",
+            "PageUp",
+            "PageDown",
+            "End",
+            "Home",
+            "Left",
+            "Up",
+            "Right",
+            "Down",
+            "Insert",
+            "Delete"});
             this.wKey.Location = new System.Drawing.Point(162, 34);
             this.wKey.Name = "wKey";
             this.wKey.Size = new System.Drawing.Size(75, 21);
@@ -1130,15 +1077,125 @@
             this.columnHeader3.Text = "Name";
             this.columnHeader3.Width = 0;
             // 
+            // Behavior_Annoy_PromptBeforeHiding
+            // 
+            this.Behavior_Annoy_PromptBeforeHiding.AutoSize = true;
+            this.Behavior_Annoy_PromptBeforeHiding.Location = new System.Drawing.Point(16, 65);
+            this.Behavior_Annoy_PromptBeforeHiding.Name = "Behavior_Annoy_PromptBeforeHiding";
+            this.Behavior_Annoy_PromptBeforeHiding.Size = new System.Drawing.Size(150, 17);
+            this.Behavior_Annoy_PromptBeforeHiding.TabIndex = 8;
+            this.Behavior_Annoy_PromptBeforeHiding.Text = "Prompt before hiding items";
+            this.Behavior_Annoy_PromptBeforeHiding.UseVisualStyleBackColor = true;
+            // 
+            // AdvancedPage
+            // 
+            this.AdvancedPage.Controls.Add(this.groupBox1);
+            this.AdvancedPage.Controls.Add(this.LoggingGroup);
+            this.AdvancedPage.Location = new System.Drawing.Point(4, 22);
+            this.AdvancedPage.Name = "AdvancedPage";
+            this.AdvancedPage.Padding = new System.Windows.Forms.Padding(3);
+            this.AdvancedPage.Size = new System.Drawing.Size(375, 387);
+            this.AdvancedPage.TabIndex = 5;
+            this.AdvancedPage.Text = "Advanced";
+            this.AdvancedPage.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(22, 32);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(62, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Application:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(22, 59);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Database:";
+            // 
+            // LoggingGroup
+            // 
+            this.LoggingGroup.Controls.Add(this.ViewLog);
+            this.LoggingGroup.Controls.Add(this.Advanced_Logging_Database);
+            this.LoggingGroup.Controls.Add(this.Advanced_Logging_Application);
+            this.LoggingGroup.Controls.Add(this.label1);
+            this.LoggingGroup.Controls.Add(this.label2);
+            this.LoggingGroup.Location = new System.Drawing.Point(6, 6);
+            this.LoggingGroup.Name = "LoggingGroup";
+            this.LoggingGroup.Size = new System.Drawing.Size(363, 95);
+            this.LoggingGroup.TabIndex = 2;
+            this.LoggingGroup.TabStop = false;
+            this.LoggingGroup.Text = "Logging";
+            // 
+            // Advanced_Logging_Application
+            // 
+            this.Advanced_Logging_Application.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Advanced_Logging_Application.FormattingEnabled = true;
+            this.Advanced_Logging_Application.Items.AddRange(new object[] {
+            "None",
+            "Debug",
+            "Info",
+            "Warn",
+            "Error"});
+            this.Advanced_Logging_Application.Location = new System.Drawing.Point(122, 29);
+            this.Advanced_Logging_Application.Name = "Advanced_Logging_Application";
+            this.Advanced_Logging_Application.Size = new System.Drawing.Size(121, 21);
+            this.Advanced_Logging_Application.TabIndex = 2;
+            // 
+            // Advanced_Logging_Database
+            // 
+            this.Advanced_Logging_Database.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Advanced_Logging_Database.FormattingEnabled = true;
+            this.Advanced_Logging_Database.Items.AddRange(new object[] {
+            "None",
+            "Debug",
+            "Info",
+            "Warn",
+            "Error"});
+            this.Advanced_Logging_Database.Location = new System.Drawing.Point(122, 56);
+            this.Advanced_Logging_Database.Name = "Advanced_Logging_Database";
+            this.Advanced_Logging_Database.Size = new System.Drawing.Size(121, 21);
+            this.Advanced_Logging_Database.TabIndex = 3;
+            // 
+            // ViewLog
+            // 
+            this.ViewLog.Location = new System.Drawing.Point(271, 42);
+            this.ViewLog.Name = "ViewLog";
+            this.ViewLog.Size = new System.Drawing.Size(75, 23);
+            this.ViewLog.TabIndex = 4;
+            this.ViewLog.Text = "View Log";
+            this.ViewLog.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Location = new System.Drawing.Point(6, 107);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(363, 100);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox1";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(51, 45);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(252, 20);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Text = "CUSTOM DATE/TIME FORMAT GOES HERE";
+            // 
             // Options
             // 
             this.AcceptButton = this.AcceptDialogButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelDialogButton;
-            this.ClientSize = new System.Drawing.Size(559, 467);
-            this.Controls.Add(this.ContentPanel);
-            this.Controls.Add(this.SelectorPanel);
+            this.ClientSize = new System.Drawing.Size(598, 467);
+            this.Controls.Add(this.OptionsPanelCollection);
             this.Controls.Add(this.ButtonPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.HelpButton = true;
@@ -1152,8 +1209,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Options_FormClosing);
             this.Load += new System.EventHandler(this.Options_Load);
             this.ButtonPanel.ResumeLayout(false);
-            this.SelectorPanel.ResumeLayout(false);
-            this.ContentPanel.ResumeLayout(false);
             this.OptionsPanelCollection.ResumeLayout(false);
             this.LayoutPage.ResumeLayout(false);
             this.SortingGroup.ResumeLayout(false);
@@ -1178,6 +1233,11 @@
             this.KeyboardPage.ResumeLayout(false);
             this.ShortcutGroup.ResumeLayout(false);
             this.ShortcutGroup.PerformLayout();
+            this.AdvancedPage.ResumeLayout(false);
+            this.LoggingGroup.ResumeLayout(false);
+            this.LoggingGroup.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1187,10 +1247,7 @@
         private System.Windows.Forms.Panel ButtonPanel;
         private System.Windows.Forms.Button CancelDialogButton;
         private System.Windows.Forms.Button AcceptDialogButton;
-        private System.Windows.Forms.ListBox PanelSelector;
         //        private Forms.Controls.TablessControl tablessControl1;
-        private System.Windows.Forms.Panel SelectorPanel;
-        private System.Windows.Forms.Panel ContentPanel;
         private System.Windows.Forms.TabControl OptionsPanelCollection;
         private System.Windows.Forms.TabPage ViewPage;
         private System.Windows.Forms.TabPage ReportPage;
@@ -1263,11 +1320,20 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox Layout_SortProjectsByDirection;
         private System.Windows.Forms.ComboBox Layout_SortItemsByDirection;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.CheckBox wAlt;
         private System.Windows.Forms.Button AssignKey;
         private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.CheckBox Behavior_Annoy_PromptBeforeHiding;
+        private System.Windows.Forms.TabPage AdvancedPage;
+        private System.Windows.Forms.GroupBox LoggingGroup;
+        private System.Windows.Forms.Button ViewLog;
+        private System.Windows.Forms.ComboBox Advanced_Logging_Database;
+        private System.Windows.Forms.ComboBox Advanced_Logging_Application;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox textBox1;
 
     }
 }

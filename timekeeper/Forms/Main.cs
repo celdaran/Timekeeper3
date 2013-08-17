@@ -24,36 +24,24 @@ namespace Timekeeper.Forms
         private DBI Database;
         private string DatabaseFileName;
 
+        // Options
+        private Classes.Options Options;
+
         // Persistent dialog boxes
-        private Forms.OptionsLegacy options;
+        // FIXME: why? Why these?
+        //private Forms.OptionsLegacy options;
         private fToolCalendar calendar;
         private Forms.Properties properties;
-
-      // Other Namespace Experiments
-      //private Forms.Tools.Calendar Calendar;
-      //private Forms.Grid.Main
-      //private Forms.Grid.Filter
-
-        // TreeView Panel Visibility
-        private bool ProjectsVisible = false;
-        private bool ActivitiesVisible = false;
 
         // Misc
         private bool StartTimeManuallySet = false;
 
-        // form tracking
+        // Open form tracking
         private List<Form> OpenForms = new List<Form>();
 
-        // dialog box attributes
-        private int reportHeight;
-        private int reportWidth;
-        private long lastGridViewId;
-        private long lastReportViewId;
-
-        // objects
+        // Persistent objects
         private Classes.JournalEntries Entries;
         private Classes.Meta Meta;
-        private Classes.Options Options; // This is a "global", just like Database. I should probably put them together.
         private Classes.Widgets Widgets;
 
         // current objects
@@ -67,7 +55,7 @@ namespace Timekeeper.Forms
         private TreeNode currentProjectNode;
         private TreeNode currentActivityNode;
 
-        // timer properties
+        // Timer properties
         private bool timerRunning = false;
         private DateTime timerLastRun;
         private long ElapsedSinceStart;
@@ -189,7 +177,7 @@ namespace Timekeeper.Forms
         private void MenuActionHideProject_Click(object sender, EventArgs e)
         {
             if (ProjectTree.SelectedNode != null) {
-                Dialog_HideItem(ProjectTree, options.wViewHiddenProjects.Checked);
+                Dialog_HideItem(ProjectTree, Options.View_HiddenProjects);
                 MenuBar_ShowHideProject(false);
             }
         }
@@ -245,7 +233,7 @@ namespace Timekeeper.Forms
         private void MenuActionHideActivity_Click(object sender, EventArgs e)
         {
             if (ActivityTree.SelectedNode != null) {
-                Dialog_HideItem(ActivityTree, options.wViewHiddenTasks.Checked);
+                Dialog_HideItem(ActivityTree, Options.View_HiddenActivities);
                 MenuBar_ShowHideActivity(false);
             }
         }
@@ -280,10 +268,10 @@ namespace Timekeeper.Forms
         private void menuReportsGrid_Click(object sender, EventArgs e)
         {
             fGrid grid = new fGrid(Database);
-            grid.lastGridViewId = lastGridViewId;
+            grid.lastGridViewId = Options.State_LastGridViewId;
             grid.Show(this);
             OpenForms.Add(grid);
-            lastGridViewId = grid.lastGridViewId;
+            Options.State_LastGridViewId = grid.lastGridViewId;
         }
 
         // Report | Quick List
@@ -818,7 +806,7 @@ namespace Timekeeper.Forms
         private void Main_Resize(object sender, EventArgs e)
         {
             if (FormWindowState.Minimized == WindowState) {
-                if (TrayIcon.Visible && (options.wMinimizeToTray.Checked)) {
+                if (TrayIcon.Visible && (Options.Behavior_Window_MinimizeToTray)) {
                     Hide();
                 }
             }
@@ -935,7 +923,6 @@ namespace Timekeeper.Forms
                 }
             }
         }
-
 
         private void wStartTime_Enter(object sender, EventArgs e)
         {

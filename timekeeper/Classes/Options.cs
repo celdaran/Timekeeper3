@@ -23,7 +23,7 @@ namespace Timekeeper.Classes
         const string REGKEY = @"Software\Technitivity\Timekeeper\3.X\";
 
         //----------------------------------------------------------------------
-        // Public Properties (Registry)
+        // Public Properties (Registry/Options)
         //----------------------------------------------------------------------
 
         public bool Layout_UseProjects { get; set; }
@@ -63,6 +63,7 @@ namespace Timekeeper.Classes
 
         public bool Behavior_Annoy_ActivityFollowsProject { get; set; }
         public bool Behavior_Annoy_ProjectFollowsActivity { get; set; }
+        public bool Behavior_Annoy_PromptBeforeHiding { get; set; }
         public bool Behavior_Annoy_NoRunningPrompt { get; set; }
         public int Behavior_Annoy_NoRunningPromptAmount { get; set; }
 
@@ -72,16 +73,56 @@ namespace Timekeeper.Classes
 
         public List<NameObjectPair> Keyboard_FunctionList { get; set; }
 
-        public int Internal_OptionTabIndex { get; set; }
+        public int Advanced_Logging_Application { get; set; }
+        public int Advanced_Logging_Database { get; set; }
+
+        public int LastOptionTab { get; set; }
+
+        //----------------------------------------------------------------------
+        // Public Properties (Registry/Metrics)
+        //----------------------------------------------------------------------
+
+        public int Main_Height { get; set; }
+        public int Main_Width { get; set; }
+        public int Main_Top { get; set; }
+        public int Main_Left { get; set; }
+        public int Main_MainSplitterDistance { get; set; }
+        public int Main_TreeSplitterDistance { get; set; }
+        public bool Main_BrowserOpen { get; set; }
+
+        public int Report_Height { get; set; }
+        public int Report_Width { get; set; }
+        public int Report_Top { get; set; }
+        public int Report_Left { get; set; }
+
+        public int Grid_Height { get; set; }
+        public int Grid_Width { get; set; }
+        public int Grid_Top { get; set; }
+        public int Grid_Left { get; set; }
+
+        //----------------------------------------------------------------------
+        // Public Properties (Registry/MRU)
+        //----------------------------------------------------------------------
+
+        public List<string> MRU_List { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Database)
         //----------------------------------------------------------------------
 
+        // deprecated
+        /*
         private long _Database_LastProjectId;
         private long _Database_LastActivityId;
         private long _Database_LastGridViewId;
         private long _Database_LastReportViewId;
+        */
+
+        // replaced by
+        public long State_LastProjectId { get; set; }
+        public long State_LastActivityId { get; set; }
+        public long State_LastGridViewId { get; set; }
+        public long State_LastReportViewId { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -89,19 +130,73 @@ namespace Timekeeper.Classes
 
         public Options()
         {
-            this.LoadFromRegistry();
         }
 
         //----------------------------------------------------------------------
+        // Load Methods
+        //----------------------------------------------------------------------
 
-        public void Save()
+        public void LoadOptions()
         {
-            this.SaveToRegistry();
+            this.LoadOptionsFromRegistry();
         }
 
         //----------------------------------------------------------------------
 
-        private void LoadFromRegistry()
+        public void LoadMetrics()
+        {
+            this.LoadMetricsFromRegistry();
+        }
+
+        //----------------------------------------------------------------------
+
+        public void LoadMRU()
+        {
+            this.LoadMRUFromRegistry();
+        }
+
+        //----------------------------------------------------------------------
+
+        public void LoadLocal()
+        {
+            this.LoadFromDatabase();
+        }
+
+        //----------------------------------------------------------------------
+        // Save Methods
+        //----------------------------------------------------------------------
+
+        public void SaveOptions()
+        {
+            this.SaveOptionsToRegistry();
+        }
+
+        //----------------------------------------------------------------------
+
+        public void SaveMetrics()
+        {
+            this.SaveMetricsToRegistry();
+        }
+
+        //----------------------------------------------------------------------
+
+        public void SaveMRU(ToolStripItemCollection items)
+        {
+            this.SaveMRUToRegistry(items);
+        }
+
+        //----------------------------------------------------------------------
+
+        public void SaveLocal()
+        {
+            this.SaveToDatabase();
+        }
+
+        //----------------------------------------------------------------------
+        // Private Load Methods
+        //----------------------------------------------------------------------
+
+        private void LoadOptionsFromRegistry()
         {
             Timekeeper.Info("Loading Options from Registry");
 
@@ -155,6 +250,7 @@ namespace Timekeeper.Classes
 
             Behavior_Annoy_ActivityFollowsProject = ((int)Key.GetValue("Annoy_ActivityFollowsProject", 0) == 1);
             Behavior_Annoy_ProjectFollowsActivity = ((int)Key.GetValue("Annoy_ProjectFollowsActivity", 0) == 1);
+            Behavior_Annoy_PromptBeforeHiding = ((int)Key.GetValue("Annoy_PromptBeforeHiding", 1) == 1);
             Behavior_Annoy_NoRunningPrompt = ((int)Key.GetValue("Annoy_NoRunningPrompt", 1) == 1);
             Behavior_Annoy_NoRunningPromptAmount = (int)Key.GetValue("Annoy_NoRunningPromptAmount", 10);
 
@@ -180,9 +276,16 @@ namespace Timekeeper.Classes
 
             //----------------------------------------------------------------------
 
-            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Internal");
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Advanced");
 
-            Internal_OptionTabIndex = (int)Key.GetValue("OptionTabIndex", 0);
+            Advanced_Logging_Application = (int)Key.GetValue("Logging_Application", 0);
+            Advanced_Logging_Database = (int)Key.GetValue("Logging_Database", 0);
+
+            //----------------------------------------------------------------------
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options");
+
+            LastOptionTab = (int)Key.GetValue("LastOptionTab", 0);
 
             //----------------------------------------------------------------------
 
@@ -191,7 +294,105 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        private void SaveToRegistry()
+        private void LoadMetricsFromRegistry()
+        {
+            Timekeeper.Info("Loading Metrics from Registry");
+
+            //----------------------------------------------------------------------
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Main");
+
+            Main_Height = (int)Key.GetValue("Height", 436);
+            Main_Width = (int)Key.GetValue("Width", 200);
+            Main_Top = (int)Key.GetValue("Top", 64);
+            Main_Left = (int)Key.GetValue("Left", 64);
+            Main_MainSplitterDistance = (int)Key.GetValue("MainSplitterDistance", 100);
+            Main_TreeSplitterDistance = (int)Key.GetValue("TreeSplitterDistance", 218);
+            Main_BrowserOpen = ((int)Key.GetValue("BrowserOpen", 0) == 1);
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Report");
+
+            Report_Height = (int)Key.GetValue("Height", 380);
+            Report_Width = (int)Key.GetValue("Width", 580);
+            Report_Top = (int)Key.GetValue("Top", 92);
+            Report_Left = (int)Key.GetValue("Left", 92);
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Grid");
+
+            Grid_Height = (int)Key.GetValue("Height", 100);
+            Grid_Width = (int)Key.GetValue("Width", 100);
+            Grid_Top = (int)Key.GetValue("Top", 100);
+            Grid_Left = (int)Key.GetValue("Left", 100);
+
+            Key.Close();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void LoadMRUFromRegistry()
+        {
+            Timekeeper.Info("Loading MRU from Registry");
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"MRU");
+
+            int Count = (int)Key.GetValue("Count", 0);
+
+            MRU_List = new List<string>();
+
+            for (int i = 0; i < Count; i++) {
+                string FileName = (string)Key.GetValue(i.ToString());
+                MRU_List.Add(FileName);
+            }
+
+            Key.Close();
+        }
+
+        //-----------------------------------------------------------------------
+
+        private void LoadFromDatabase()
+        {
+            this.Database = Timekeeper.Database;
+
+            Timekeeper.Info("Loading Options from Database");
+
+            try {
+                Row Option;
+                string Query;
+
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastProjectId");
+                Option = this.Database.SelectRow(Query);
+                if (Option.Count > 0) {
+                    State_LastProjectId = Convert.ToInt64(Option["Value"]);
+                }
+
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastActivityId");
+                Option = this.Database.SelectRow(Query);
+                if (Option.Count > 0) {
+                    State_LastActivityId = Convert.ToInt64(Option["Value"]);
+                }
+
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastReportViewId");
+                Option = this.Database.SelectRow(Query);
+                if (Option.Count > 0) {
+                    State_LastReportViewId = Convert.ToInt64(Option["Value"]);
+                }
+
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastGridViewId");
+                Option = this.Database.SelectRow(Query);
+                if (Option.Count > 0) {
+                    State_LastGridViewId = Convert.ToInt64(Option["Value"]);
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //----------------------------------------------------------------------
+        // Private Save Methods
+        //----------------------------------------------------------------------
+
+        private void SaveOptionsToRegistry()
         {
             Timekeeper.Info("Saving Options to Registry");
 
@@ -245,6 +446,7 @@ namespace Timekeeper.Classes
 
             Key.SetValue("Annoy_ActivityFollowsProject", Behavior_Annoy_ActivityFollowsProject, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_ProjectFollowsActivity", Behavior_Annoy_ProjectFollowsActivity, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Annoy_PromptBeforeHiding", Behavior_Annoy_PromptBeforeHiding, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_NoRunningPrompt", Behavior_Annoy_NoRunningPrompt, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_NoRunningPromptAmount", Behavior_Annoy_NoRunningPromptAmount, Microsoft.Win32.RegistryValueKind.DWord);
 
@@ -258,13 +460,105 @@ namespace Timekeeper.Classes
 
             //----------------------------------------------------------------------
 
-            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Internal");
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Advanced");
 
-            Key.SetValue("OptionTabIndex", Internal_OptionTabIndex, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Logging_Application", Advanced_Logging_Application, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Logging_Database", Advanced_Logging_Database, Microsoft.Win32.RegistryValueKind.DWord);
+
+            //----------------------------------------------------------------------
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options");
+
+            Key.SetValue("LastOptionTab", LastOptionTab, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 
             Key.Close();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SaveMetricsToRegistry()
+        {
+            Timekeeper.Info("Saving Metrics to Registry");
+
+            //----------------------------------------------------------------------
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Main");
+
+            Key.SetValue("Height", Main_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", Main_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", Main_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", Main_Left, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MainSplitterDistance", Main_MainSplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("TreeSplitterDistance", Main_TreeSplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("BrowserOpen", Main_BrowserOpen, Microsoft.Win32.RegistryValueKind.DWord); 
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Report");
+
+            Key.SetValue("Height", Report_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", Report_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", Report_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", Report_Left, Microsoft.Win32.RegistryValueKind.DWord);
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Grid");
+
+            Key.SetValue("Height", Grid_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", Grid_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", Grid_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", Grid_Left, Microsoft.Win32.RegistryValueKind.DWord);
+
+            Key.Close();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SaveMRUToRegistry(ToolStripItemCollection items)
+        {
+            Timekeeper.Info("Saving MRU to Registry");
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"MRU");
+
+            int i = 0;
+            foreach (ToolStripMenuItem Item in items) {
+                if (i < 10) { // arbitrary maximum (FIXME: Make this a user-settable option)
+                    Key.SetValue(i.ToString(), Item.Text);
+                    i++;
+                }
+            }
+
+            // FIXME: this leaves stray entries above "i". We should probably
+            // clean those up along the way.
+            Key.SetValue("Count", i, Microsoft.Win32.RegistryValueKind.DWord);
+
+            Key.Close();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SaveToDatabase()
+        {
+            SaveRow("LastProjectId", State_LastProjectId.ToString());
+            SaveRow("LastActivityId", State_LastActivityId.ToString());
+            SaveRow("LastReportViewId", State_LastReportViewId.ToString());
+            SaveRow("LastGridViewId", State_LastGridViewId.ToString());
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SaveRow(string columnName, string columnValue)
+        {
+            try {
+                Row Options = new Row();
+
+                Options["Value"] = columnValue;
+                Options["ModifyTime"] = Common.Now();
+
+                this.Database.Update("Options", Options, "Key", columnName);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
         }
 
         //----------------------------------------------------------------------
