@@ -48,6 +48,27 @@ namespace Timekeeper
     }
 
     //---------------------------------------------------------------------
+    // A structure to hold simple name/object pairings
+    //---------------------------------------------------------------------
+
+    public struct NameObjectPair
+    {
+        public string Name;
+        public object Object;
+
+        public NameObjectPair(string s, object o)
+        {
+            this.Name = s;
+            this.Object = o;
+        }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
+    }
+
+    //---------------------------------------------------------------------
     // Base Class for File New/Upgrade Options
     //---------------------------------------------------------------------
 

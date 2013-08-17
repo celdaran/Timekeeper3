@@ -219,7 +219,7 @@ namespace Timekeeper.Forms
         private void Dialog_Options()
         {
             // Pass the instantiated options to the dialog box
-            Forms.Options DialogBox = new Forms.Options(this.Options);
+            Forms.Options DialogBox = new Forms.Options(this.Options, this.MenuMain);
 
             // If the user clicked 'Save' . . .
             if (DialogBox.ShowDialog(this) == DialogResult.OK)

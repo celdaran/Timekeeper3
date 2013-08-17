@@ -13,8 +13,13 @@ namespace Timekeeper.Classes
         // Load Options
         //-----------------------------------------------------------------------
 
-        private void LoadFromDatabase()
+        public void LoadFromDatabase()
         {
+            // FIXME: I'm having problems with the symmetry here
+            this.Database = Timekeeper.Database;
+
+            Timekeeper.Info("Loading Options from Database");
+
             try {
                 Row Option;
                 string Query;
@@ -46,6 +51,14 @@ namespace Timekeeper.Classes
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        public void SaveToDatabase()
+        {
+            Timekeeper.Info("Saving Options to Database");
+            Common.Warn("FYI: Options.SaveToDatabase() not implemented");
         }
 
         //----------------------------------------------------------------------

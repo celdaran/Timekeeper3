@@ -308,16 +308,17 @@ namespace Timekeeper.Forms
         private void Action_CloseFile()
         {
             if (Database != null) {
+
                 ProjectTree.Nodes.Clear();
                 ActivityTree.Nodes.Clear();
 
                 StatusBar_FileClosed();
                 MenuBar_FileClosed();
 
+                Options.SaveToDatabase();
+
                 Timekeeper.Info("Closing Database: " + DatabaseFileName);
                 Database = Timekeeper.CloseDatabase();
-
-                Options = Timekeeper.CloseOptions();
 
                 foreach (Form Form in OpenForms) {
                     Form.Close();
@@ -370,6 +371,8 @@ namespace Timekeeper.Forms
         {
             Action_SaveOptions();
             Action_CloseFile();
+
+            Options = Timekeeper.CloseOptions();
 
             // Logging (TODO: should this be an option?)
             Timekeeper.Info("Timekeeper Closed");
@@ -509,9 +512,10 @@ namespace Timekeeper.Forms
 
         private void Action_LoadOptions()
         {
-            // TODO: Move all of this to the Options.cs class.
-            // I'd like a single class to handle all application options,
-            // whether stored in the Registry or in TKDB.Options.
+            // New version
+            this.Options = Timekeeper.OpenOptions();
+
+            // Everything here and below is deprecated
 
             // Read saved values from registry
             Microsoft.Win32.RegistryKey key;
@@ -623,6 +627,25 @@ namespace Timekeeper.Forms
 
         private void Action_SaveOptions()
         {
+            // FIXME: something's still not right here
+            // The DB-based options just aren't working
+            // for me, but I can't put my finger on it.
+            // I'm sure Future Charlie will figure it out.
+
+            // Save DB-specific state
+            if (ProjectTree.SelectedNode != null) {
+                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+                Options.LastProjectId = Project.ItemId;
+            }
+            if (ActivityTree.SelectedNode != null) {
+                Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
+                Options.LastActivityId = Activity.ItemId;
+            }
+            Options.LastGridViewId = lastGridViewId;
+            Options.LastReportViewId = lastReportViewId;
+
+            // Everything from here on down is deprecated
+
             Microsoft.Win32.RegistryKey key;
 
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + "WindowMetrics");
@@ -685,18 +708,6 @@ namespace Timekeeper.Forms
                 }
             }
             key.Close();
-
-            // Save DB-specific state
-            if (ProjectTree.SelectedNode != null) {
-                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-                Options.LastProjectId = Project.ItemId;
-            }
-            if (ActivityTree.SelectedNode != null) {
-                Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
-                Options.LastActivityId = Activity.ItemId;
-            }
-            Options.LastGridViewId = lastGridViewId;
-            Options.LastReportViewId = lastReportViewId;
 
         }
 
@@ -763,10 +774,9 @@ namespace Timekeeper.Forms
         {
             try {
                 if (Action_CheckDatabase()) {
-                    // If the database is okay, make sure Options
-                    // is the very next thing we do: it's a prereq
-                    // for all other activity from this point out.
-                    this.Options = Timekeeper.OpenOptions();
+                    // If the database is okay, make sure we load
+                    // up the database-based options
+                    this.Options.LoadFromDatabase();
                 } else {
                     // Otherwise bail and head down a file not
                     // loaded path.
