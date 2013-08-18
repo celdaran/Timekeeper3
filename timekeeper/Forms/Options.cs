@@ -37,8 +37,6 @@ namespace Timekeeper.Forms
 
             Values = optionValues;
             MainMenu = mainMenu;
-
-            panel2.Height = 0;
         }
 
         //----------------------------------------------------------------------
@@ -74,14 +72,10 @@ namespace Timekeeper.Forms
             }
         }
 
-        private void AddItems(CheckedListBox box, string[] strings)
+        private void AddItems(ComboBox box, List<IdValuePair> list)
         {
-            int Index = 0;
-            foreach (string Item in strings) {
-                IdValuePair Pair = new IdValuePair(Index, Item);
+            foreach (IdValuePair Pair in list) {
                 box.Items.Add(Pair);
-                //box.Items[Index];
-                Index++;
             }
         }
 
@@ -129,28 +123,24 @@ namespace Timekeeper.Forms
                 "Currently Opened File Name"};
             //AddItems(View_StatusBar_Collection, Entries);
 
-            //----------------------------------------------
-            // Populate Font List
-            //----------------------------------------------
-
-            InstalledFontCollection fonts = new InstalledFontCollection();
-            FontFamily[] fontFamilies = fonts.Families;
-
-            foreach (FontFamily font in fonts.Families) {
-                Report_FontList.Items.Add(font.Name);
-            }
-
-            //----------------------------------------------
-            // Populate Keyboard Function List
-            //----------------------------------------------
-
             try {
+                PopulateFontList();
                 PopulateFunctionList(MainMenu.Items, "");
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
 
+        }
+
+        private void PopulateFontList()
+        {
+            InstalledFontCollection fonts = new InstalledFontCollection();
+            FontFamily[] fontFamilies = fonts.Families;
+
+            foreach (FontFamily font in fonts.Families) {
+                Report_FontList.Items.Add(font.Name);
+            }
         }
 
         private void PopulateFunctionList(ToolStripItemCollection items, string parentText)
@@ -170,10 +160,21 @@ namespace Timekeeper.Forms
             }
         }
 
+        private void PopulateTitleBarTimeList()
+        {
+            Behavior_TitleBar_Time.Items.Clear();
+            List<IdValuePair> TitleBarTimes = new List<IdValuePair>();
+            TitleBarTimes.Add(new IdValuePair(0, "Elapsed time since timer last started"));
+            TitleBarTimes.Add(new IdValuePair(1, "Elapsed time today for current project"));
+            TitleBarTimes.Add(new IdValuePair(2, "Elapsed time today for current activity"));
+            TitleBarTimes.Add(new IdValuePair(3, "Total elapsed time today"));
+            AddItems(Behavior_TitleBar_Time, TitleBarTimes);
+        }
+
         private void AddKeyboardMapping(ToolStripMenuItem MenuItem, string MenuItemName)
         {
             // Add this menu item to the function list
-            ListViewItem NewItem = wFunctionList.Items.Add(MenuItemName);
+            ListViewItem NewItem = FunctionList.Items.Add(MenuItemName);
 
             if (Values.Keyboard_FunctionList.Count == 0) {
                 // If no items on function list, this is our first time through
@@ -273,13 +274,8 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
-            switch (Values.Behavior_TitleBar) {
-                case 0: Behavior_TitleBar_ElapsedSinceStart.Checked = true; break;
-                case 1: Behavior_TitleBar_ElapsedProjectToday.Checked = true; break;
-                case 2: Behavior_TitleBar_ElapsedActivityToday.Checked = true; break;
-                case 3: Behavior_TitleBar_ElapsedAllToday.Checked = true; break;
-            }
             Behavior_TitleBar_Template.Text = Values.Behavior_TitleBar_Template;
+            Behavior_TitleBar_Time.SelectedIndex = Values.Behavior_TitleBar_Time;
 
             Behavior_Window_ShowInTray.Checked = Values.Behavior_Window_ShowInTray;
             Behavior_Window_MinimizeToTray.Checked = Values.Behavior_Window_MinimizeToTray;
@@ -347,8 +343,7 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
-            RadioButton Selected = TitleBarGroup.Controls.OfType<RadioButton>().Where(r => r.Checked == true).FirstOrDefault();
-            Values.Behavior_TitleBar = Convert.ToInt32(Selected.Tag);
+            Values.Behavior_TitleBar_Time = Behavior_TitleBar_Time.SelectedIndex;
             Values.Behavior_TitleBar_Template = Behavior_TitleBar_Template.Text;
 
             Values.Behavior_Window_ShowInTray = Behavior_Window_ShowInTray.Checked;
@@ -381,7 +376,7 @@ namespace Timekeeper.Forms
         {
             List<NameObjectPair> Mappings = new List<NameObjectPair>();
 
-            foreach (ListViewItem Item in wFunctionList.Items) {
+            foreach (ListViewItem Item in FunctionList.Items) {
                 NameObjectPair Pair = new NameObjectPair(Item.SubItems[2].Text, Item.Tag);
                 Mappings.Add(Pair);
             }
@@ -411,9 +406,9 @@ namespace Timekeeper.Forms
             Keys Keys = (Keys)Item.Tag;
 
             // Update the UI
-            wCtrl.Checked = ((Keys & Keys.Control) == Keys.Control);
-            wAlt.Checked = ((Keys & Keys.Alt) == Keys.Alt);
-            wShift.Checked = ((Keys & Keys.Shift) == Keys.Shift);
+            ControlKey.Checked = ((Keys & Keys.Control) == Keys.Control);
+            AltKey.Checked = ((Keys & Keys.Alt) == Keys.Alt);
+            ShiftKey.Checked = ((Keys & Keys.Shift) == Keys.Shift);
 
             // Seriously? There's gotta be a better way to do this!
             if ((Keys & Keys.Control) == Keys.Control)
@@ -428,7 +423,7 @@ namespace Timekeeper.Forms
             // Disable the 'Remove' button if no key is assigned
             RemoveKey.Enabled = (Keys != 0);
 
-            wKey.SelectedIndex = wKey.FindStringExact(Keys.ToString());
+            KeyCode.SelectedIndex = KeyCode.FindStringExact(Keys.ToString());
         }
 
         private void RemoveKey_Click(object sender, EventArgs e)
@@ -442,10 +437,10 @@ namespace Timekeeper.Forms
             Item.SubItems[1].Text = ""; // was "None"
 
             // Clear out controls
-            wCtrl.Checked = false;
-            wAlt.Checked = false;
-            wShift.Checked = false;
-            wKey.SelectedIndex = -1;
+            ControlKey.Checked = false;
+            AltKey.Checked = false;
+            ShiftKey.Checked = false;
+            KeyCode.SelectedIndex = -1;
 
             // And disable button
             RemoveKey.Enabled = false;
@@ -457,15 +452,15 @@ namespace Timekeeper.Forms
 
             Keys Keys = 0;
 
-            if (wCtrl.Checked)
+            if (ControlKey.Checked)
                 Keys += (int)Keys.Control;
-            if (wAlt.Checked)
+            if (AltKey.Checked)
                 Keys += (int)Keys.Alt;
-            if (wShift.Checked)
+            if (ShiftKey.Checked)
                 Keys += (int)Keys.Shift;
 
             KeysConverter Converter = new KeysConverter();
-            Keys += (int)Converter.ConvertFromString((string)wKey.SelectedItem);
+            Keys += (int)Converter.ConvertFromString((string)KeyCode.SelectedItem);
 
             // Assign new keystroke
             Item.Tag = Keys;
@@ -477,25 +472,12 @@ namespace Timekeeper.Forms
 
         private ListViewItem SelectedItem()
         {
-            if (wFunctionList.SelectedItems.Count > 0) {
-                return wFunctionList.SelectedItems[0];
+            if (FunctionList.SelectedItems.Count > 0) {
+                return FunctionList.SelectedItems[0];
             } else {
                 return null;
             }
         }
-
-        /*
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            //Timekeeper.Info("Called OnPaintBackground");
-            if (TabRenderer.IsSupported && Application.RenderWithVisualStyles) {
-                TabRenderer.DrawTabPage(e.Graphics, this.ClientRectangle);
-            } else {
-                base.OnPaintBackground(e);
-                ControlPaint.DrawBorder3D(e.Graphics, this.ClientRectangle, Border3DStyle.Raised);
-            }
-        }
-        */
 
         //----------------------------------------------------------------------
 
@@ -549,7 +531,7 @@ namespace Timekeeper.Forms
 
         private void Layout_UseProjects_CheckedChanged(object sender, EventArgs e)
         {
-            if (!Layout_UseProjects.Checked && !Layout_UseProjects.Checked) {
+            if (!Layout_UseProjects.Checked && !Layout_UseActivities.Checked) {
                 if (!LeaveItAlone) {
                     LeaveItAlone = true;
                     Layout_UseActivities.Checked = true;
@@ -559,224 +541,106 @@ namespace Timekeeper.Forms
             _SetProjectVisibility();
         }
 
-        private void _SetProjectVisibility()
-        {
-            // Change Visibility
-            Label_SortProjects.Visible = Layout_UseProjects.Checked;
-            Layout_SortProjectsBy.Visible = Layout_UseProjects.Checked;
-            Layout_SortProjectsByDirection.Visible = Layout_UseProjects.Checked;
-            View_StatusBar_ProjectName.Visible = Layout_UseProjects.Checked;
-            View_StatusBar_ElapsedProjectToday.Visible = Layout_UseProjects.Checked;
-
-            /*
-            View_HiddenProjects.Visible = Layout_UseProjects.Checked;
-            View_HiddenProjectsSince.Visible = Layout_UseProjects.Checked;
-            */
-            // Replacement for Above
-            HiddenGroupPanelProject.Height = Layout_UseProjects.Checked ? 27 : 0;
-
-            Behavior_TitleBar_ElapsedProjectToday.Visible = Layout_UseProjects.Checked;
-            Behavior_Annoy_ActivityFollowsProject.Visible = Layout_UseProjects.Checked;
-            Behavior_Annoy_ProjectFollowsActivity.Visible = Layout_UseProjects.Checked;
-
-            // Change Location
-            int Offset = 23;
-            int Base = 42;
-
-            /* BOO!!! This won't work (even though visibility is set to true, .Visible is false)
-            // Array of checkboxes
-            List<CheckBox> View_StatusBar_Checkboxes = new List<CheckBox>();
-            View_StatusBar_Checkboxes.Add(View_StatusBar_ProjectName);
-            View_StatusBar_Checkboxes.Add(View_StatusBar_ActivityName);
-            View_StatusBar_Checkboxes.Add(View_StatusBar_ElapsedSinceStart);
-            View_StatusBar_Checkboxes.Add(View_StatusBar_ElapsedProjectToday);
-            View_StatusBar_Checkboxes.Add(View_StatusBar_ElapsedActivityToday);
-            View_StatusBar_Checkboxes.Add(View_StatusBar_ElapsedAllToday);
-            View_StatusBar_Checkboxes.Add(View_StatusBar_FileName);
-
-            int Index = 0;
-            foreach (CheckBox Box in View_StatusBar_Checkboxes) {
-                if (Box.Visible) {
-                    Box.Top = Base + (Offset * Index);
-                    Index++;
-                }
-            }
-            */
-
-            if (Layout_UseProjects.Checked) {
-                View_StatusBar_ProjectName.Top = Base;
-                View_StatusBar_ActivityName.Top = Base + (Offset * 1);
-                View_StatusBar_ElapsedSinceStart.Top = Base + (Offset * 2);
-                View_StatusBar_ElapsedProjectToday.Top = Base + (Offset * 3);
-                View_StatusBar_ElapsedActivityToday.Top = Base + (Offset * 4);
-                View_StatusBar_ElapsedAllToday.Top = Base + (Offset * 5);
-                View_StatusBar_FileName.Top = Base + (Offset * 6);
-                StatusBarGroup.Height = 215;
-                HiddenGroup.Top = 237;
-                SortingGroup.Height = 81;
-            } else {
-                View_StatusBar_ActivityName.Top = Base;
-                View_StatusBar_ElapsedSinceStart.Top = Base + (Offset * 1);
-                View_StatusBar_ElapsedActivityToday.Top = Base + (Offset * 2);
-                View_StatusBar_ElapsedAllToday.Top = Base + (Offset * 3);
-                View_StatusBar_FileName.Top = Base + (Offset * 4);
-                StatusBarGroup.Height = 215 - (Offset * 2);
-                HiddenGroup.Top = 237 - (Offset * 2);
-                SortingGroup.Height = 81 - Offset;
-            }
-
-            /*
-            Offset = 27;
-            Base = 19;
-
-            if (Layout_UseProjects.Checked) {
-                View_HiddenProjects.Top = Base;
-                View_HiddenProjectsSince.Top = Base;
-                View_HiddenActivities.Top = Base + (Offset * 1);
-                View_HiddenActivitiesSince.Top = Base + (Offset * 1);
-                View_HiddenLocations.Top = Base + (Offset * 2);
-                View_HiddenLocationsSince.Top = Base + (Offset * 2);
-                View_HiddenCategories.Top = Base + (Offset * 3);
-                View_HiddenCategoriesSince.Top = Base + (Offset * 3);
-                HiddenGroup.Height = 140;
-            } else {
-                View_HiddenActivities.Top = Base;
-                View_HiddenActivitiesSince.Top = Base;
-                View_HiddenLocations.Top = Base + (Offset * 1);
-                View_HiddenLocationsSince.Top = Base + (Offset * 1);
-                View_HiddenCategories.Top = Base + (Offset * 2);
-                View_HiddenCategoriesSince.Top = Base + (Offset * 2);
-                HiddenGroup.Height = 140 - Offset;
-            }
-            */
-
-            Offset = 23;
-            Base = 71;
-
-            if (Layout_UseProjects.Checked) {
-                Behavior_TitleBar_ElapsedProjectToday.Top = Base;
-                Behavior_TitleBar_ElapsedActivityToday.Top = Base + (Offset * 1);
-                Behavior_TitleBar_ElapsedAllToday.Top = Base + (Offset * 2);
-                TitleBarGroup.Height = 147;
-                AnnoyGroup.Height = 116;
-                WindowControlGroup.Top = 169;
-                AnnoyGroup.Top = 275;
-            } else {
-                Behavior_TitleBar_ElapsedActivityToday.Top = Base;
-                Behavior_TitleBar_ElapsedAllToday.Top = Base + (Offset * 1);
-                TitleBarGroup.Height = 147 - Offset;
-                AnnoyGroup.Height = 116 - (Offset * 2);
-                WindowControlGroup.Top = 169 - Offset;
-                AnnoyGroup.Top = 275 - Offset;
-            }
-        }
-
         private void Layout_UseActivities_CheckedChanged(object sender, EventArgs e)
         {
-            if (!Layout_UseProjects.Checked && !Layout_UseProjects.Checked) {
+            if (!Layout_UseProjects.Checked && !Layout_UseActivities.Checked) {
                 if (!LeaveItAlone) {
                     LeaveItAlone = true;
                     Layout_UseProjects.Checked = true;
                     LeaveItAlone = false;
                 }
             }
-
-            /*
-            View_StatusBar_ActivityName.Enabled = Layout_UseActivities.Checked;
-            View_StatusBar_ElapsedActivityToday.Enabled = Layout_UseActivities.Checked;
-            View_HiddenActivities.Enabled = Layout_UseActivities.Checked;
-            View_HiddenActivitiesSince.Enabled = Layout_UseActivities.Checked;
-            */
-
+            _DisableSortOther();
             _SetActivityVisibility();
+        }
+
+        private void Layout_UseLocations_CheckedChanged(object sender, EventArgs e)
+        {
+            int TallHeight = Layout_UseLocations.Checked ? 27 : 0;
+            HiddenGroup_LocationPanel.Height = TallHeight;
+            _DisableSortOther();
+            _Pizza();
+        }
+
+        private void Layout_UseCategories_CheckedChanged(object sender, EventArgs e)
+        {
+            int TallHeight = Layout_UseCategories.Checked ? 27 : 0;
+            HiddenGroup_CategoryPanel.Height = TallHeight;
+            _DisableSortOther();
+            _Pizza();
+        }
+
+        private void _DisableSortOther()
+        {
+            if (Layout_UseActivities.Checked || Layout_UseLocations.Checked || Layout_UseCategories.Checked) {
+                SortingGroup_BottomPanel.Height = 27;
+            } else {
+                SortingGroup_BottomPanel.Height = 0;
+            }
+        }
+
+        private void _SetProjectVisibility()
+        {
+            // Define Standard Heights
+            int TallHeight = Layout_UseProjects.Checked ? 27 : 0;
+            int ShortHeight = Layout_UseProjects.Checked ? 23 : 0;
+
+            // Set Heights
+            SortingGroup_ProjectPanel.Height = TallHeight;
+            StatusBarGroup_ProjectNamePanel.Height = ShortHeight;
+            StatusBarGroup_ProjectElapsedPanel.Height = ShortHeight;
+            HiddenGroup_ProjectPanel.Height = TallHeight;
+
+            if (Layout_UseProjects.Checked) {
+                PopulateTitleBarTimeList();
+            } else {
+                Behavior_TitleBar_Time.Items.RemoveAt(1);
+            }
+
+            AnnoyGroup_BottomPanel.Height = Layout_UseProjects.Checked ? 46 : 0;
+
+            _Pizza();
         }
 
         private void _SetActivityVisibility()
         {
-            // Change Visibility
-            View_StatusBar_ActivityName.Visible = Layout_UseActivities.Checked;
-            View_StatusBar_ElapsedActivityToday.Visible = Layout_UseActivities.Checked;
+            int TallHeight = Layout_UseActivities.Checked ? 27 : 0;
+            int ShortHeight = Layout_UseActivities.Checked ? 23 : 0;
 
-            /*
-            View_HiddenActivities.Visible = Layout_UseActivities.Checked;
-            View_HiddenActivitiesSince.Visible = Layout_UseActivities.Checked;
-            */
-            // Replacement for above
-            HiddenGroupPanelActivity.Height = Layout_UseActivities.Checked ? 27 : 0;
-
-            Behavior_TitleBar_ElapsedActivityToday.Visible = Layout_UseActivities.Checked;
-            Behavior_Annoy_ActivityFollowsProject.Visible = Layout_UseActivities.Checked;
-            Behavior_Annoy_ProjectFollowsActivity.Visible = Layout_UseActivities.Checked;
-
-            // Change Location
-            int Offset = 23;
-            int Base = 42;
+            StatusBarGroup_ActivityNamePanel.Height = ShortHeight;
+            StatusBarGroup_ActivityElapsedPanel.Height = ShortHeight;
+            HiddenGroup_ActivityPanel.Height = TallHeight;
 
             if (Layout_UseActivities.Checked) {
-                View_StatusBar_ProjectName.Top = Base;
-                View_StatusBar_ActivityName.Top = Base + (Offset * 1);
-                View_StatusBar_ElapsedSinceStart.Top = Base + (Offset * 2);
-                View_StatusBar_ElapsedProjectToday.Top = Base + (Offset * 3);
-                View_StatusBar_ElapsedActivityToday.Top = Base + (Offset * 4);
-                View_StatusBar_ElapsedAllToday.Top = Base + (Offset * 5);
-                View_StatusBar_FileName.Top = Base + (Offset * 6);
-                StatusBarGroup.Height = 215;
-                HiddenGroup.Top = 237;
+                PopulateTitleBarTimeList();
             } else {
-                View_StatusBar_ProjectName.Top = Base;
-                View_StatusBar_ElapsedSinceStart.Top = Base + (Offset * 1);
-                View_StatusBar_ElapsedProjectToday.Top = Base + (Offset * 2);
-                View_StatusBar_ElapsedAllToday.Top = Base + (Offset * 3);
-                View_StatusBar_FileName.Top = Base + (Offset * 4);
-                StatusBarGroup.Height = 215 - (Offset * 2);
-                HiddenGroup.Top = 237 - (Offset * 2);
+                Behavior_TitleBar_Time.Items.RemoveAt(2);
             }
 
-            /*
-            Offset = 27;
-            Base = 19;
+            AnnoyGroup_BottomPanel.Height = Layout_UseActivities.Checked ? 46 : 0;
 
-            if (Layout_UseActivities.Checked) {
-                View_HiddenProjects.Top = Base;
-                View_HiddenProjectsSince.Top = Base;
-                View_HiddenActivities.Top = Base + (Offset * 1);
-                View_HiddenActivitiesSince.Top = Base + (Offset * 1);
-                View_HiddenLocations.Top = Base + (Offset * 2);
-                View_HiddenLocationsSince.Top = Base + (Offset * 2);
-                View_HiddenCategories.Top = Base + (Offset * 3);
-                View_HiddenCategoriesSince.Top = Base + (Offset * 3);
-                HiddenGroup.Height = 140;
-            } else {
-                View_HiddenProjects.Top = Base;
-                View_HiddenProjectsSince.Top = Base;
-                View_HiddenLocations.Top = Base + (Offset * 1);
-                View_HiddenLocationsSince.Top = Base + (Offset * 1);
-                View_HiddenCategories.Top = Base + (Offset * 2);
-                View_HiddenCategoriesSince.Top = Base + (Offset * 2);
-                HiddenGroup.Height = 140 - Offset;
+            _Pizza();
+        }
+
+        private void _Pizza()
+        {
+            // Adjust GroupBox Heights
+            SortingGroup.Height = GetGroupHeight(SortingGroup);
+            StatusBarGroup.Height = GetGroupHeight(StatusBarGroup);
+            HiddenGroup.Height = GetGroupHeight(HiddenGroup);
+            AnnoyGroup.Height = GetGroupHeight(AnnoyGroup);
+
+            // One-off Adjustment
+            HiddenGroup.Top = StatusBarGroup.Height + 23;
+        }
+
+        private int GetGroupHeight(GroupBox box)
+        {
+            int GroupHeight = 23;
+            foreach (Control Control in box.Controls) {
+                GroupHeight += Control.Height;
             }
-            */
-
-            Offset = 23;
-            Base = 71;
-
-            if (Layout_UseActivities.Checked) {
-                Behavior_TitleBar_ElapsedProjectToday.Top = Base;
-                Behavior_TitleBar_ElapsedActivityToday.Top = Base + (Offset * 1);
-                Behavior_TitleBar_ElapsedAllToday.Top = Base + (Offset * 2);
-                TitleBarGroup.Height = 147;
-                AnnoyGroup.Height = 116;
-                WindowControlGroup.Top = 169;
-                AnnoyGroup.Top = 275;
-            } else {
-                Behavior_TitleBar_ElapsedProjectToday.Top = Base;
-                Behavior_TitleBar_ElapsedAllToday.Top = Base + (Offset * 1);
-                TitleBarGroup.Height = 147 - Offset;
-                AnnoyGroup.Height = 116 - (Offset * 2);
-                WindowControlGroup.Top = 169 - Offset;
-                AnnoyGroup.Top = 275 - Offset;
-            }
-
+            return GroupHeight;
         }
 
         private void View_StatusBar_CheckedChanged(object sender, EventArgs e)
@@ -817,16 +681,9 @@ namespace Timekeeper.Forms
             Behavior_Window_MinimizeToTray.Enabled = Behavior_Window_ShowInTray.Checked;
         }
 
-        private void Layout_UseLocations_CheckedChanged(object sender, EventArgs e)
+        private void Behavior_Annoy_NoRunningPrompt_CheckedChanged(object sender, EventArgs e)
         {
-            View_HiddenLocations.Visible = Layout_UseLocations.Checked;
-            View_HiddenLocationsSince.Visible = Layout_UseLocations.Checked;
-        }
-
-        private void Layout_UseCategories_CheckedChanged(object sender, EventArgs e)
-        {
-            View_HiddenCategories.Visible = Layout_UseCategories.Checked;
-            View_HiddenCategoriesSince.Visible = Layout_UseCategories.Checked;
+            Behavior_Annoy_NoRunningPromptAmount.Enabled = Behavior_Annoy_NoRunningPrompt.Checked;
         }
 
         //----------------------------------------------------------------------

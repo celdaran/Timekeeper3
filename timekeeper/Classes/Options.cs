@@ -54,8 +54,8 @@ namespace Timekeeper.Classes
         public int View_HiddenLocationsSince { get; set; }
         public int View_HiddenCategoriesSince { get; set; }
 
-        public int Behavior_TitleBar { get; set; }
         public string Behavior_TitleBar_Template { get; set; }
+        public int Behavior_TitleBar_Time { get; set; }
 
         public bool Behavior_Window_ShowInTray { get; set; }
         public bool Behavior_Window_MinimizeToTray { get; set; }
@@ -241,8 +241,8 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Behavior");
 
-            Behavior_TitleBar = (int)Key.GetValue("TitleBar", 0);
             Behavior_TitleBar_Template = (string)Key.GetValue("TitleBar_Template", "%time - %activity for %project");
+            Behavior_TitleBar_Time = (int)Key.GetValue("TitleBar_Time", 0);
 
             Behavior_Window_ShowInTray = ((int)Key.GetValue("Window_ShowInTray", 0) == 1);
             Behavior_Window_MinimizeToTray = ((int)Key.GetValue("Window_MinimizeToTray", 0) == 1);
@@ -437,8 +437,8 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Behavior");
 
-            Key.SetValue("TitleBar", Behavior_TitleBar, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("TitleBar_Template", Behavior_TitleBar_Template, Microsoft.Win32.RegistryValueKind.String);
+            Key.SetValue("TitleBar_Time", Behavior_TitleBar_Time, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.SetValue("Window_ShowInTray", Behavior_Window_ShowInTray, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Window_MinimizeToTray", Behavior_Window_MinimizeToTray, Microsoft.Win32.RegistryValueKind.DWord);

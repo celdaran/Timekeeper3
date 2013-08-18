@@ -921,7 +921,7 @@ namespace Timekeeper.Forms
 
                 // FIXME: More Options Overhaul
                 string timeToShow = "";
-                switch (Options.Behavior_TitleBar) {
+                switch (Options.Behavior_TitleBar_Time) {
                     case 0: timeToShow = StatusBarElapsedSinceStart.Text; break;
                     case 1: timeToShow = StatusBarElapsedProjectToday.Text; break;
                     case 2: timeToShow = StatusBarElapsedActivityToday.Text; break;
