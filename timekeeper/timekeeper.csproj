@@ -499,6 +499,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Images\Icons\Toolbar.png" />
+    <None Include="Resources\Images\Icons\Menu.png" />
     <None Include="Resources\Images\Buttons\Save.png" />
     <None Include="Resources\Images\Buttons\Up.png" />
     <None Include="Resources\Images\Buttons\Top.png" />

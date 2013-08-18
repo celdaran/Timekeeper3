@@ -353,6 +353,16 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ImageIconMenu {
+            get {
+                object obj = ResourceManager.GetObject("ImageIconMenu", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ImageIconSmallActivity {
             get {
                 object obj = ResourceManager.GetObject("ImageIconSmallActivity", resourceCulture);
@@ -376,6 +386,16 @@ namespace Timekeeper.Properties {
         internal static System.Drawing.Bitmap ImageIconSmallProject {
             get {
                 object obj = ResourceManager.GetObject("ImageIconSmallProject", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ImageIconToolbar {
+            get {
+                object obj = ResourceManager.GetObject("ImageIconToolbar", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1233,7 +1253,7 @@ namespace Timekeeper.Properties {
         ///) VALUES (
         ///    &apos;{0}&apos;,
         ///    &apos;{0}&apos;,
-        ///    &apos;LastActivity&apos;,
+        ///    &apos;LastActivityId&apos;,
         ///    null
         ///);
         ///
@@ -1247,8 +1267,8 @@ namespace Timekeeper.Properties {
         ///) VALUES (
         ///    &apos;{0}&apos;,
         ///    &apos;{0}&apos;,
-        ///    &apos;LastProject&apos;,
-        ///    n [rest of string was truncated]&quot;;.
+        ///    &apos;LastProjectId&apos;,
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3003_Options_Insert {
             get {
