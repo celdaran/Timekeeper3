@@ -694,7 +694,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowserRevert,
             this.MenuToolbarBrowserUnlock});
             this.MenuToolbarBrowser.Name = "MenuToolbarBrowser";
-            this.MenuToolbarBrowser.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowser.Size = new System.Drawing.Size(113, 22);
             this.MenuToolbarBrowser.Text = "&Browser";
             // 
             // MenuToolbarBrowserFirst
@@ -785,7 +785,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarFormatUnderline,
             this.MenuToolbarFormatStrikethrough});
             this.MenuToolbarFormat.Name = "MenuToolbarFormat";
-            this.MenuToolbarFormat.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarFormat.Size = new System.Drawing.Size(113, 22);
             this.MenuToolbarFormat.Text = "&Format";
             // 
             // MenuToolbarFormatBold
@@ -938,7 +938,7 @@ namespace Timekeeper.Forms
             // 
             this.splitTrees.Panel2.Controls.Add(this.ActivityTree);
             this.splitTrees.Size = new System.Drawing.Size(564, 115);
-            this.splitTrees.SplitterDistance = 317;
+            this.splitTrees.SplitterDistance = 500;
             this.splitTrees.TabIndex = 2;
             this.splitTrees.TabStop = false;
             this.splitTrees.DoubleClick += new System.EventHandler(this.splitTrees_DoubleClick);
@@ -957,7 +957,7 @@ namespace Timekeeper.Forms
             this.ProjectTree.SelectedImageIndex = 0;
             this.ProjectTree.ShowLines = false;
             this.ProjectTree.ShowNodeToolTips = true;
-            this.ProjectTree.Size = new System.Drawing.Size(317, 115);
+            this.ProjectTree.Size = new System.Drawing.Size(500, 115);
             this.ProjectTree.TabIndex = 0;
             this.ProjectTree.Tag = "Project";
             this.ProjectTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ProjectTree_AfterLabelEdit);
@@ -1115,7 +1115,7 @@ namespace Timekeeper.Forms
             this.ActivityTree.SelectedImageIndex = 0;
             this.ActivityTree.ShowLines = false;
             this.ActivityTree.ShowNodeToolTips = true;
-            this.ActivityTree.Size = new System.Drawing.Size(243, 115);
+            this.ActivityTree.Size = new System.Drawing.Size(60, 115);
             this.ActivityTree.TabIndex = 0;
             this.ActivityTree.Tag = "Activity";
             this.ActivityTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ActivityTree_AfterLabelEdit);

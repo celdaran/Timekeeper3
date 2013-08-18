@@ -21,6 +21,7 @@ namespace Timekeeper.Forms
         private MenuStrip MainMenu;
 
         public Classes.Options Values { get; set; }
+        public bool InterfaceChanged { get; set; }
 
         const int CTRL = (int)Keys.Control;
         const int SHIFT = (int)Keys.Shift;
@@ -35,8 +36,8 @@ namespace Timekeeper.Forms
 
             OptionsPanelCollection.DrawItem += new DrawItemEventHandler(OptionsPanelCollection_DrawItem);
 
-            Values = optionValues;
-            MainMenu = mainMenu;
+            this.Values = optionValues;
+            this.MainMenu = mainMenu;
         }
 
         //----------------------------------------------------------------------
@@ -47,6 +48,12 @@ namespace Timekeeper.Forms
         {
             PopulateForm();
             OptionsToForm();
+
+            // Last pass: dynamic interface changes
+            Layout_UseProjects_CheckedChanged(sender, e);
+            Layout_UseActivities_CheckedChanged(sender, e);
+            Layout_UseLocations_CheckedChanged(sender, e);
+            Layout_UseCategories_CheckedChanged(sender, e);
         }
 
         //----------------------------------------------------------------------
@@ -111,18 +118,6 @@ namespace Timekeeper.Forms
             AddItems(View_HiddenLocationsSince, Entries);
             AddItems(View_HiddenCategoriesSince, Entries);
 
-            // Populate View Status Bar Collection
-
-            Entries = new string[7] { 
-                "Project Name",
-                "Activity Name",
-                "Elapsed Since Start",
-                "Elapsed Time Today for Current Project",
-                "Elapsed Time Today for Current Activity",
-                "Total Elapsed Time Today",
-                "Currently Opened File Name"};
-            //AddItems(View_StatusBar_Collection, Entries);
-
             try {
                 PopulateFontList();
                 PopulateFunctionList(MainMenu.Items, "");
@@ -169,6 +164,8 @@ namespace Timekeeper.Forms
             TitleBarTimes.Add(new IdValuePair(2, "Elapsed time today for current activity"));
             TitleBarTimes.Add(new IdValuePair(3, "Total elapsed time today"));
             AddItems(Behavior_TitleBar_Time, TitleBarTimes);
+
+            Behavior_TitleBar_Time.SelectedIndex = Values.Behavior_TitleBar_Time;
         }
 
         private void AddKeyboardMapping(ToolStripMenuItem MenuItem, string MenuItemName)
@@ -630,8 +627,9 @@ namespace Timekeeper.Forms
             HiddenGroup.Height = GetGroupHeight(HiddenGroup);
             AnnoyGroup.Height = GetGroupHeight(AnnoyGroup);
 
-            // One-off Adjustment
+            // One-off Adjustments
             HiddenGroup.Top = StatusBarGroup.Height + 23;
+            SortingGroup.Top = AnnoyGroup.Bottom + 7;
         }
 
         private int GetGroupHeight(GroupBox box)
@@ -684,6 +682,90 @@ namespace Timekeeper.Forms
         private void Behavior_Annoy_NoRunningPrompt_CheckedChanged(object sender, EventArgs e)
         {
             Behavior_Annoy_NoRunningPromptAmount.Enabled = Behavior_Annoy_NoRunningPrompt.Checked;
+        }
+
+        private void Layout_Preset_Simple_Click(object sender, EventArgs e)
+        {
+            Layout_UseProjects.Checked = true;
+            Layout_UseActivities.Checked = false;
+            Layout_UseLocations.Checked = false;
+            Layout_UseCategories.Checked = false;
+
+            View_StatusBar.Checked = false;
+            View_StatusBar_ProjectName.Checked = false;
+            View_StatusBar_ActivityName.Checked = false;
+            View_StatusBar_ElapsedSinceStart.Checked = false;
+            View_StatusBar_ElapsedProjectToday.Checked = false;
+            View_StatusBar_ElapsedActivityToday.Checked = false;
+            View_StatusBar_ElapsedAllToday.Checked = false;
+            View_StatusBar_FileName.Checked = false;
+
+            View_HiddenProjects.Checked = false;
+            View_HiddenActivities.Checked = false;
+            View_HiddenLocations.Checked = false;
+            View_HiddenCategories.Checked = false;
+
+            Behavior_TitleBar_Template.Text = "%time - %project";
+            Behavior_TitleBar_Time.SelectedIndex = 0;
+
+            Values.InterfacePreset = 0;
+            InterfaceChanged = true;
+        }
+
+        private void Layout_Preset_Typical_Click(object sender, EventArgs e)
+        {
+            Layout_UseProjects.Checked = true;
+            Layout_UseActivities.Checked = true;
+            Layout_UseLocations.Checked = false;
+            Layout_UseCategories.Checked = false;
+
+            View_StatusBar.Checked = true;
+            View_StatusBar_ProjectName.Checked = true;
+            View_StatusBar_ActivityName.Checked = false;
+            View_StatusBar_ElapsedSinceStart.Checked = true;
+            View_StatusBar_ElapsedProjectToday.Checked = true;
+            View_StatusBar_ElapsedActivityToday.Checked = false;
+            View_StatusBar_ElapsedAllToday.Checked = true;
+            View_StatusBar_FileName.Checked = true;
+
+            View_HiddenProjects.Checked = false;
+            View_HiddenActivities.Checked = false;
+            View_HiddenLocations.Checked = false;
+            View_HiddenCategories.Checked = false;
+
+            Behavior_TitleBar_Template.Text = "%time - %activity for %project";
+            Behavior_TitleBar_Time.SelectedIndex = 0;
+
+            Values.InterfacePreset = 1;
+            InterfaceChanged = true;
+        }
+
+        private void Layout_Preset_TheWorks_Click(object sender, EventArgs e)
+        {
+            Layout_UseProjects.Checked = true;
+            Layout_UseActivities.Checked = true;
+            Layout_UseLocations.Checked = true;
+            Layout_UseCategories.Checked = true;
+
+            View_StatusBar.Checked = true;
+            View_StatusBar_ProjectName.Checked = true;
+            View_StatusBar_ActivityName.Checked = true;
+            View_StatusBar_ElapsedSinceStart.Checked = true;
+            View_StatusBar_ElapsedProjectToday.Checked = true;
+            View_StatusBar_ElapsedActivityToday.Checked = true;
+            View_StatusBar_ElapsedAllToday.Checked = true;
+            View_StatusBar_FileName.Checked = true;
+
+            View_HiddenProjects.Checked = true;
+            View_HiddenActivities.Checked = true;
+            View_HiddenLocations.Checked = true;
+            View_HiddenCategories.Checked = true;
+
+            Behavior_TitleBar_Template.Text = "%time - %activity for %project";
+            Behavior_TitleBar_Time.SelectedIndex = 0;
+
+            Values.InterfacePreset = 2;
+            InterfaceChanged = true;
         }
 
         //----------------------------------------------------------------------

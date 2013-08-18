@@ -117,6 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DimensionsInstructionsLabel.Text" xml:space="preserve">
+    <value>These presets allow you to quickly select a set
+of pre-defined options to suit your usage needs.
+Note that selecting one of these will reset any
+custom settings you have. If you inadvertantly
+do this, hit Cancel below.</value>
+  </data>
   <data name="PresetInstructionsLabel.Text" xml:space="preserve">
     <value>These presets allow you to quickly select a set
 of pre-defined options to suit your usage needs.
@@ -131,8 +138,8 @@ do this, hit Cancel below.</value>
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABe
-        CAAAAk1TRnQBSQFMAgEBAgEAASABAAEgAQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABc
+        CAAAAk1TRnQBSQFMAgEBAgEAASgBAAEoAQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAARADAAEBAQABCAYAAQQYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -161,13 +168,13 @@ do this, hit Cancel below.</value>
         AQABzAH/AWYBAAL/AZkBAAL/AcwBAAJmAf8BAAFmAf8BZgEAAWYC/wEAAf8CZgEAAf8BZgH/AQAC/wFm
         AQABIQEAAaUBAANfAQADdwEAA4YBAAOWAQADywEAA7IBAAPXAQAD3QEAA+MBAAPqAQAD8QEAA/gBAAHw
         AfsB/wEAAaQCoAEAA4ADAAH/AgAB/wMAAv8BAAH/AwAB/wEAAf8BAAL/AgAD/wMADBw0AAEcCv8BHDQA
-        ARwC/wcAAf8BHDQAARwK/wEcNAABHArVARwCAAEcD+siAAEcAtUD/wXVARwCAAHuD/QiAAEcCtUBHAIA
-        ARwB6wLzAfcDEwEbAfMBHAFKARMB+AHsARsiAAEcCv8BHAIAAe4DGwH3Av8BEwIbARwBUQEUAW0B6wEb
-        IgABHAL/BQAD/wEcAgABHAHrAhsB9wL/ARMCGwFzAe0C8gHsARsiAAEcCv8BHAIAAQcDGwH3Af8CEwIb
-        AXMB7ALwAewBGyIADBwCAAEcAesCGwP3AxsBvAEHAu4BBwEbIgABHAf/ARwFAAEHD/QiAAEcAf8EAAL/
-        ARwFABAcIgABHAf/ARw3AAkcdQABQgFNAT4HAAE+AwABKAMAAUADAAEQAwABAQEAAQEFAAGAFwAD/wEA
-        AcABAwL/BAABwAEDAv8EAAHAAQMC/wQAAcABAwL/BAABwAEDBgABwAEDBgABwAEDBgABwAEDBgABwAED
-        BgABwAEDBgABwAEDBgABwAEfBgABwAEfBgABwAEfAv8EAAHAAR8C/wQABP8EAAs=
+        ARwC/wcAAf8BHDQAARwK/wEcNAABHArVARwCAAEcD+siAAEcAtUD/wXVARwCAAG8D/QiAAEcCtUBHAIA
+        ARwB6wLzAfcDEwEbAfMBHAFKARMC7AEbIgABHAr/ARwCAAG8AxsB9wL/ARMCGwEcAVEBFAFtAesBGyIA
+        ARwC/wUAA/8BHAIAARwB6wIbAfcC/wETAhsBcwHtAvIB7AEbIgABHAr/ARwCAAEHAxsB9wH/AhMCGwFz
+        AewC8AHsARsiAAwcAgABHAHrAhsD9wMbAbwBBwK8AQcBGyIAARwH/wEcBQABBw/0IgABHAH/BAAC/wEc
+        BQAQHCIAARwH/wEcNwAJHHUAAUIBTQE+BwABPgMAASgDAAFAAwABEAMAAQEBAAEBBQABgBcAA/8BAAHA
+        AQMC/wQAAcABAwL/BAABwAEDAv8EAAHAAQMC/wQAAcABAwYAAcABAwYAAcABAwYAAcABAwYAAcABAwYA
+        AcABAwYAAcABAwYAAcABHwYAAcABHwYAAcABHwL/BAABwAEfAv8EAAT/BAAL
 </value>
   </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

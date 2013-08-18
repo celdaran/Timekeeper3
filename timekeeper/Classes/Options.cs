@@ -77,6 +77,7 @@ namespace Timekeeper.Classes
         public int Advanced_Logging_Database { get; set; }
 
         public int LastOptionTab { get; set; }
+        public int InterfacePreset { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Metrics)
@@ -286,6 +287,7 @@ namespace Timekeeper.Classes
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options");
 
             LastOptionTab = (int)Key.GetValue("LastOptionTab", 0);
+            InterfacePreset = (int)Key.GetValue("InterfacePreset", 0);
 
             //----------------------------------------------------------------------
 
@@ -470,6 +472,7 @@ namespace Timekeeper.Classes
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options");
 
             Key.SetValue("LastOptionTab", LastOptionTab, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("InterfacePreset", InterfacePreset, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 

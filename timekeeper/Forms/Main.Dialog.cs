@@ -231,7 +231,7 @@ namespace Timekeeper.Forms
                 // And save them back to the persistent store
                 this.Options.SaveOptions();
 
-                this.Dialog_ApplyOptions();
+                this.Dialog_ApplyOptions(DialogBox.InterfaceChanged);
             }
             else {
                 // JUST FOR NOW
@@ -239,11 +239,38 @@ namespace Timekeeper.Forms
             }
         }
 
-        private void Dialog_ApplyOptions()
+        private void Dialog_ApplyOptions(bool interfaceChanged)
         {
             StatusBar_SetVisibility();
             Action_SetShortcuts();
             Browser_SetShortcuts();
+
+            Action_UseProjects(Options.Layout_UseProjects);
+            Action_UseActivities(Options.Layout_UseActivities);
+
+            if (interfaceChanged) {
+                switch (Options.InterfacePreset) {
+                    case 0:
+                        Height = 200;
+                        Width = 364;
+                        Browser_Close();
+                        break;
+                    case 1:
+                        Height = 460;
+                        Width = 572;
+                        splitMain.SplitterDistance = 180;
+                        splitTrees.SplitterDistance = Width / 2;
+                        Browser_Open();
+                        break;
+                    case 2:
+                        Height = 460;
+                        Width = 572;
+                        splitMain.SplitterDistance = 180;
+                        splitTrees.SplitterDistance = Width / 2;
+                        Browser_Open();
+                        break;
+                }
+            }
         }
 
         //---------------------------------------------------------------------
