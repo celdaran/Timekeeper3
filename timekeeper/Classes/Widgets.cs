@@ -18,6 +18,7 @@ namespace Timekeeper.Classes
         //---------------------------------------------------------------------
 
         private DBI Database;
+        private Classes.Options Options;
 
         public const int TREES_ITEM_CREATED = 0;
         public const int TREES_ERROR_CREATING_ITEM = -1;
@@ -29,6 +30,7 @@ namespace Timekeeper.Classes
 
         public Widgets() {
             this.Database = Timekeeper.Database;
+            this.Options = Timekeeper.Options;
         }
 
         //---------------------------------------------------------------------
@@ -49,17 +51,66 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        private DateTime GetShowHiddenSinceTime()
+        {
+            DateTime showHiddenSince = DateTime.Now;
+            TimeSpan Offset;
+
+            switch (Options.View_HiddenProjectsSince) {
+                case 0: Offset = new TimeSpan(-1, 0, 0, 0); break;
+                case 1: Offset = new TimeSpan(-7, 0, 0, 0); break;
+                case 2: Offset = new TimeSpan(-30, 0, 0, 0); break;
+                case 3: Offset = new TimeSpan(-365, 0, 0, 0); break;
+                default: Offset = new TimeSpan(-3650, 0, 0, 0); break;
+            }
+
+            showHiddenSince = showHiddenSince.Add(Offset);
+
+            return showHiddenSince;
+        }
+
+        private string GetOrderBy(int sortBy, int sortDirection)
+        {
+            /*
+            string[] Entries = new string[5] { 
+                "Alphabetically",
+                "as Placed",
+                "by Created Date",
+                "by Modified Date",
+                "by External Project Number" };
+            AddItems(Behavior_SortProjectsBy, Entries);
+             */
+
+            string OrderBy;
+
+            switch (sortBy) {
+                case 0: OrderBy = "Name"; break;
+                case 1: OrderBy = "SortOrderNo"; break;
+                case 2: OrderBy = "CreateTime"; break;
+                case 3: OrderBy = "ModifyTime"; break;
+                case 4: OrderBy = "cast(ExternalProjectNo as int)"; break;
+                default: OrderBy = "SortOrderNo"; break;
+            }
+
+            //cast(some_integer_column as text)
+
+            string Direction = sortDirection == 0 ? "asc" : "desc";
+
+            return OrderBy + " " + Direction;
+        }
+
         private void BuildProjectTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
         {
-            // TODO: pass these options in
-            bool showHidden = true;
-            string orderByClause = "SortOrderNo";
+
+            bool showHidden = Options.View_HiddenProjects;
+            DateTime showHiddenSince = GetShowHiddenSinceTime();
+            string orderByClause = GetOrderBy(Options.Behavior_SortProjectsBy, Options.Behavior_SortProjectsByDirection);
 
             // Instantiate Activities object
             ProjectCollection Projects = new ProjectCollection(Database, orderByClause);
 
             // Iterate over Activities
-            foreach (Project Project in Projects.Fetch(parentId, showHidden)) {
+            foreach (Project Project in Projects.Fetch(parentId, showHidden, showHiddenSince)) {
 
                 // Choose icon
                 int Icon = Timekeeper.IMG_PROJECT;
@@ -82,15 +133,15 @@ namespace Timekeeper.Classes
 
         private void BuildActivityTree(TreeNodeCollection tree, TreeNode parentNode, long parentId)
         {
-            // TODO: pass these options in
             bool showHidden = true;
-            string orderByClause = "SortOrderNo";
+            DateTime showHiddenSince = GetShowHiddenSinceTime();
+            string orderByClause = GetOrderBy(Options.Behavior_SortProjectsBy, Options.Behavior_SortProjectsByDirection);
 
             // Instantiate Activities object
             ActivityCollection Activities = new ActivityCollection(Database, orderByClause);
 
             // Iterate over Activities
-            foreach (Activity Activity in Activities.Fetch(parentId, showHidden)) {
+            foreach (Activity Activity in Activities.Fetch(parentId, showHidden, showHiddenSince)) {
 
                 // Choose icon
                 int Icon = Timekeeper.IMG_ACTIVITY;

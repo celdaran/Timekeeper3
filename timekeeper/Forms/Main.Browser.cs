@@ -374,10 +374,10 @@ namespace Timekeeper.Forms
                     int LocationIndex = wLocation.FindString(Location.Name);
                     wLocation.SelectedIndex = LocationIndex;
                 } else {
-                    wLocation.SelectedIndex = -1;
+                    wLocation.SelectedIndex = 0;
                 }
             } else {
-                wLocation.SelectedIndex = -1;
+                wLocation.SelectedIndex = 0;
             }
 
             // FIXME: MORE COPY/PASTE CODE.  :(
@@ -387,10 +387,10 @@ namespace Timekeeper.Forms
                     int CategoryIndex = wCategory.FindString(Category.Name);
                     wCategory.SelectedIndex = CategoryIndex;
                 } else {
-                    wCategory.SelectedIndex = -1;
+                    wCategory.SelectedIndex = 0;
                 }
             } else {
-                wCategory.SelectedIndex = -1;
+                wCategory.SelectedIndex = 0;
             }
 
             // And any other relevant values
@@ -495,26 +495,13 @@ namespace Timekeeper.Forms
                     Browser_FormToEntry(ref newBrowserEntry, 0);
                 }
 
-                /* Bench(t); */
                 Browser_SaveRow(false);
-                //Bench(t, "Browser_SaveRow");
-
-                //Bench(t);
-                // This is the second most expensive step (~150 ms)
                 browserEntry.LoadPrevious();
-                //Bench(t, "browserEntry.LoadPrevious");
-
-                //Bench(t);
                 priorLoadedBrowserEntry = browserEntry.Copy();
-                //Bench(t, "browserEntry.Copy");
 
                 if (browserEntry.JournalId > 0) {
-                    //Bench(t);
-                    // This is the most expensive step (~250 ms)
                     Browser_DisplayRow();
-                    //Bench(t, "Browser_DisplayRow");
 
-                    //Bench(t);
                     Browser_EnableLast(true);
                     Browser_EnableNext(true);
                     if (browserEntry.AtBeginning()) {
@@ -526,7 +513,6 @@ namespace Timekeeper.Forms
                         Browser_EnableLast(false);
                     }
                     isBrowsing = true;
-                    //Bench(t, "Updating Toolbar Buttons");
                 } else {
                     Browser_EnableFirst(false);
                     Browser_EnablePrev(false);
@@ -535,22 +521,6 @@ namespace Timekeeper.Forms
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
-
-            //t.Stop();
-            //StatusBarDebugging.Text = t.ElapsedMilliseconds.ToString();
-            /* Bench(t, "Previous row displayed"); */
-        }
-
-        private void Bench(Stopwatch t)
-        {
-            t.Start();
-        }
-
-        private void Bench(Stopwatch t, string message)
-        {
-            t.Stop();
-            Timekeeper.Info(message + ": " + t.ElapsedMilliseconds.ToString()); 
-            t.Reset();
         }
 
         //---------------------------------------------------------------------
@@ -566,6 +536,7 @@ namespace Timekeeper.Forms
         {
             try {
                 Browser_SetShortcuts();
+                Browser_ViewOtherAttributes();
             }
             catch (Exception x) {
                 Common.Info("No file loaded.\n\n" + x.ToString());
@@ -593,6 +564,14 @@ namespace Timekeeper.Forms
             toolControlRevert.ToolTipText = "Revert Changes to Last Saved State (" + kc.ConvertToString(MenuToolbarBrowserRevert.ShortcutKeys) + ")";
 
             toolControlClose.ToolTipText = "Close Browser (Esc)";
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_ViewOtherAttributes()
+        {
+            LocationPanel.Height = Options.Layout_UseLocations ? 27 : 0;
+            CategoryPanel.Height = Options.Layout_UseCategories ? 27 : 0;
         }
 
         //---------------------------------------------------------------------

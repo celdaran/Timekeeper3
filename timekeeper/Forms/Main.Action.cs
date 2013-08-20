@@ -86,12 +86,6 @@ namespace Timekeeper.Forms
                 StatusBar_Update(Project, Activity);
             }
 
-            // Auto-follow
-
-            // TODO: Here's an idea. Have a single "follow" option, but the option is only based
-            // on whether that particular treeview has focus. e.g., if Project has focus then
-            // Activity follows Project. If Activity has focus, then it's the other way around.
-
             if (!isBrowsing) {
                 if (Options.Behavior_Annoy_ProjectFollowsActivity) {
                     if (Activity.FollowedItemId > 0) {
@@ -453,6 +447,10 @@ namespace Timekeeper.Forms
             } else {
                 TrayIcon.Visible = false;
             }
+
+            // Set date/time formats
+            wStartTime.CustomFormat = Options.Advanced_DateTimeFormat;
+            wStopTime.CustomFormat = Options.Advanced_DateTimeFormat;
         }
 
         //---------------------------------------------------------------------
@@ -1013,18 +1011,37 @@ namespace Timekeeper.Forms
                 if (ProjectTree.Nodes.Count == 1) {
                     ProjectTree.SelectedNode = ProjectTree.Nodes[0];
                 } else {
-                    Common.Warn("No Project selected.");
-                    return;
+                    if (Options.Layout_UseProjects) {
+                        Common.Warn("No Project selected.");
+                        return;
+                    } else {
+                        ProjectTree.SelectedNode = GetFirstNonFolder(ProjectTree.Nodes);
+                    }
                 }
             }
 
             // Check for a currently selected activity
             if (ActivityTree.SelectedNode == null) {
                 if (ActivityTree.Nodes.Count == 1) {
+                    // If there's only one, just select it. If it turns
+                    // out this is a folder, then the user can fix this
+                    // manually. But it's highly likely we're here 
+                    // because they're not using Activities and only
+                    // the default activity is present.
                     ActivityTree.SelectedNode = ActivityTree.Nodes[0];
                 } else {
-                    Common.Warn("No Activity selected.");
-                    return;
+                    if (Options.Layout_UseActivities) {
+                        // If there's more than one, and we're supposed
+                        // to be using activities at this point, then 
+                        // this is an error. Make them select one.
+                        Common.Warn("No Activity selected.");
+                        return;
+                    } else {
+                        // If activities aren't in use, just find the
+                        // first activity that isn't a folder and
+                        // select it.
+                        ActivityTree.SelectedNode = GetFirstNonFolder(ActivityTree.Nodes);
+                    }
                 }
             }
 
@@ -1130,6 +1147,24 @@ namespace Timekeeper.Forms
 
             // As soon as the timer has started, we have to paint "stop" mode.
             Browser_SetupForStopping();
+        }
+
+        private TreeNode GetFirstNonFolder(TreeNodeCollection nodes)
+        {
+            TreeNode ReturnValue = null;
+
+            foreach (TreeNode Node in nodes) {
+                Classes.TreeAttribute Temp = (Classes.TreeAttribute)Node.Tag;
+                if (Temp.IsFolder) {
+                    ReturnValue = GetFirstNonFolder(Node.Nodes);
+                    break;
+                } else {
+                    ReturnValue = Node;
+                    break;
+                }
+            }
+
+            return ReturnValue;
         }
 
         //---------------------------------------------------------------------

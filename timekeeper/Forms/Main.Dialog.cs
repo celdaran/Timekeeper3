@@ -244,6 +244,7 @@ namespace Timekeeper.Forms
             StatusBar_SetVisibility();
             Action_SetShortcuts();
             Browser_SetShortcuts();
+            Browser_ViewOtherAttributes();
 
             Action_UseProjects(Options.Layout_UseProjects);
             Action_UseActivities(Options.Layout_UseActivities);

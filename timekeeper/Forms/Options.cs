@@ -98,14 +98,14 @@ namespace Timekeeper.Forms
                 "by Created Date",
                 "by Modified Date",
                 "by External Project Number" };
-            AddItems(Layout_SortProjectsBy, Entries);
+            AddItems(Behavior_SortProjectsBy, Entries);
 
             Entries = new string[4] { 
                 "Alphabetically",
                 "as Placed",
                 "by Created Date",
                 "by Modified Date"};
-            AddItems(Layout_SortItemsBy, Entries);
+            AddItems(Behavior_SortItemsBy, Entries);
 
             Entries = new string[5] { 
                 "Today",
@@ -236,17 +236,14 @@ namespace Timekeeper.Forms
 
         private void OptionsToForm()
         {
+            OptionsPanelCollection.SelectedIndex = Values.LastOptionTab;
+
             //----------------------------------------------------------------------
 
             Layout_UseProjects.Checked = Values.Layout_UseProjects;
             Layout_UseActivities.Checked = Values.Layout_UseActivities;
             Layout_UseLocations.Checked = Values.Layout_UseLocations;
             Layout_UseCategories.Checked = Values.Layout_UseCategories;
-
-            Layout_SortProjectsBy.SelectedIndex = Values.Layout_SortProjectsBy;
-            Layout_SortProjectsByDirection.SelectedIndex = Values.Layout_SortProjectsByDirection;
-            Layout_SortItemsBy.SelectedIndex = Values.Layout_SortItemsBy;
-            Layout_SortItemsByDirection.SelectedIndex = Values.Layout_SortItemsByDirection;
 
             //----------------------------------------------------------------------
 
@@ -284,6 +281,11 @@ namespace Timekeeper.Forms
             Behavior_Annoy_NoRunningPrompt.Checked = Values.Behavior_Annoy_NoRunningPrompt;
             Behavior_Annoy_NoRunningPromptAmount.Value = Values.Behavior_Annoy_NoRunningPromptAmount;
 
+            Behavior_SortProjectsBy.SelectedIndex = Values.Behavior_SortProjectsBy;
+            Behavior_SortProjectsByDirection.SelectedIndex = Values.Behavior_SortProjectsByDirection;
+            Behavior_SortItemsBy.SelectedIndex = Values.Behavior_SortItemsBy;
+            Behavior_SortItemsByDirection.SelectedIndex = Values.Behavior_SortItemsByDirection;
+
             //----------------------------------------------------------------------
 
             Report_FontList.SelectedIndex = Report_FontList.FindString(Values.Report_FontName);
@@ -294,28 +296,20 @@ namespace Timekeeper.Forms
 
             Advanced_Logging_Application.SelectedIndex = Values.Advanced_Logging_Application;
             Advanced_Logging_Database.SelectedIndex = Values.Advanced_Logging_Database;
-
-            //----------------------------------------------------------------------
-
-            OptionsPanelCollection.SelectedIndex = Values.LastOptionTab;
-
         }
 
         //----------------------------------------------------------------------
 
         private void FormToOptions()
         {
+            Values.LastOptionTab = OptionsPanelCollection.SelectedIndex;
+
             //----------------------------------------------------------------------
 
             Values.Layout_UseProjects = Layout_UseProjects.Checked;
             Values.Layout_UseActivities = Layout_UseActivities.Checked;
             Values.Layout_UseLocations = Layout_UseLocations.Checked;
             Values.Layout_UseCategories = Layout_UseCategories.Checked;
-
-            Values.Layout_SortProjectsBy = Layout_SortProjectsBy.SelectedIndex;
-            Values.Layout_SortProjectsByDirection = Layout_SortProjectsByDirection.SelectedIndex;
-            Values.Layout_SortItemsBy = Layout_SortItemsBy.SelectedIndex;
-            Values.Layout_SortItemsByDirection = Layout_SortItemsByDirection.SelectedIndex;
 
             //----------------------------------------------------------------------
 
@@ -353,6 +347,11 @@ namespace Timekeeper.Forms
             Values.Behavior_Annoy_NoRunningPrompt = Behavior_Annoy_NoRunningPrompt.Checked;
             Values.Behavior_Annoy_NoRunningPromptAmount = (int)Behavior_Annoy_NoRunningPromptAmount.Value;
 
+            Values.Behavior_SortProjectsBy = Behavior_SortProjectsBy.SelectedIndex;
+            Values.Behavior_SortProjectsByDirection = Behavior_SortProjectsByDirection.SelectedIndex;
+            Values.Behavior_SortItemsBy = Behavior_SortItemsBy.SelectedIndex;
+            Values.Behavior_SortItemsByDirection = Behavior_SortItemsByDirection.SelectedIndex;
+
             //----------------------------------------------------------------------
 
             Values.Keyboard_FunctionList = GetKeyboardMappings();
@@ -361,10 +360,6 @@ namespace Timekeeper.Forms
 
             Values.Advanced_Logging_Application = Advanced_Logging_Application.SelectedIndex;
             Values.Advanced_Logging_Database = Advanced_Logging_Database.SelectedIndex;
-
-            //----------------------------------------------------------------------
-
-            Values.LastOptionTab = OptionsPanelCollection.SelectedIndex;
         }
 
         //----------------------------------------------------------------------

@@ -942,6 +942,100 @@ namespace Timekeeper.Forms
             log.ShowDialog(this);
         }
 
+        private void wStartTime_KeyDown(object sender, KeyEventArgs e)
+        {
+            Action_DateTimeClipboard(wStartTime, e);
+        }
+
+        private void wStopTime_KeyDown(object sender, KeyEventArgs e)
+        {
+            Action_DateTimeClipboard(wStopTime, e);
+        }
+
+        private void Action_DateTimeClipboard(DateTimePicker picker, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.C) && (e.Modifiers == Keys.Control)) {
+                Action_CopyDate(picker);
+            }
+
+            if ((e.KeyCode == Keys.V) && (e.Modifiers == Keys.Control)) {
+                Action_PasteDate(picker);
+            }
+        }
+
+        private void Action_CopyDate(DateTimePicker picker)
+        {
+            Clipboard.SetData(DataFormats.StringFormat, picker.Value.ToString(Options.Advanced_DateTimeFormat));
+        }
+
+        private void Action_PasteDate(DateTimePicker picker)
+        {
+            string ClipboardTime = (string)Clipboard.GetData(DataFormats.StringFormat);
+            try {
+                picker.Value = Convert.ToDateTime(ClipboardTime);
+            }
+            catch {
+                Timekeeper.Debug("Invalid date/time format: " + ClipboardTime);
+            }
+        }
+
+        private void PopupMenuDatesCopy_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem PopupItem = (ToolStripDropDownItem)sender;
+            DateTimePicker Picker = (DateTimePicker)((ContextMenuStrip)PopupItem.Owner).SourceControl;
+            Action_CopyDate((DateTimePicker)Picker);
+        }
+
+        private void PopupMenuDatesPaste_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem PopupItem = (ToolStripDropDownItem)sender;
+            DateTimePicker Picker = (DateTimePicker)((ContextMenuStrip)PopupItem.Owner).SourceControl;
+            Action_PasteDate((DateTimePicker)Picker);
+        }
+
+        private void wStopTime_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isBrowsing) {
+                return;
+            }
+
+            // Remember! This event gets fired while loading, browsing, etc.
+            // It's not just in response to the user typing a new value in.
+
+            // prototype for Date/Time sanity checks.
+            // basic rules: Stop Time has to be after start time.
+            // No part of the Start to Stop time range can overlap other entries.
+            // i.e., Stop Time <= Start Time next entry
+            //   and Start Time >= Stop Time of previous entry
+
+            if (wStopTime.Value < wStartTime.Value) {
+                Common.Warn("Stop time cannot be before Start time");
+                wStopTime.Value = priorLoadedBrowserEntry.StopTime;
+                return;
+            }
+
+            DateTime NextStartTime = Browser_GetNextStartTime();
+            if (wStopTime.Value > NextStartTime) {
+                Common.Warn("Stop time cannot be after Start time of next entry");
+                wStopTime.Value = priorLoadedBrowserEntry.StopTime;
+                return;
+            }
+        }
+
+        private void wStartTime_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isBrowsing) {
+                return;
+            }
+
+            DateTime PreviousEndTime = Browser_GetPreviousEndTime();
+            if (wStartTime.Value < PreviousEndTime) {
+                Common.Warn("Start time cannot be before Stop time of previous entry");
+                wStartTime.Value = priorLoadedBrowserEntry.StartTime;
+                return;
+            }
+        }
+
         //---------------------------------------------------------------------
 
     }

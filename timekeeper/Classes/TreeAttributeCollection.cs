@@ -63,14 +63,17 @@ namespace Timekeeper.Classes
         // Protected Methods
         //---------------------------------------------------------------------
 
-        protected Table GetItems(long parentId, bool showHidden)
+        protected Table GetItems(long parentId, bool showHidden, DateTime showHiddenSince)
         {
             if (OrderByClause == "") {
                 OrderByClause = "CreateTime";
             }
 
             string HiddenQualifier = "";
-            if (!showHidden) {
+            if (showHidden) {
+                string HiddenSince = showHiddenSince.ToString(Common.DATETIME_FORMAT);
+                HiddenQualifier = "and ((IsHidden = 0) or (IsHidden = 1 and HiddenTime > datetime('" + HiddenSince + "')))";
+            } else {
                 HiddenQualifier = "and IsHidden = 0";
             }
 

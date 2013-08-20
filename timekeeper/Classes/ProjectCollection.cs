@@ -24,13 +24,13 @@ namespace Timekeeper.Classes
         // Public Methods
         //---------------------------------------------------------------------
 
-        public List<Classes.Project> Fetch(long parentId, bool showHidden)
+        public List<Classes.Project> Fetch(long parentId, bool showHidden, DateTime showHiddenSince)
         {
-            Table Rows = base.GetItems(parentId, showHidden);
+            Table Table = base.GetItems(parentId, showHidden, showHiddenSince);
 
             List<Classes.Project> Projects = new List<Classes.Project>();
 
-            foreach (Row Row in Rows) {
+            foreach (Row Row in Table) {
                 var Project = new Classes.Project(Data, Row["ProjectId"]);
                 Projects.Add(Project);
             }

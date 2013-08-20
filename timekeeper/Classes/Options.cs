@@ -26,15 +26,13 @@ namespace Timekeeper.Classes
         // Public Properties (Registry/Options)
         //----------------------------------------------------------------------
 
+        public int LastOptionTab { get; set; }
+        public int InterfacePreset { get; set; }
+
         public bool Layout_UseProjects { get; set; }
         public bool Layout_UseActivities { get; set; }
         public bool Layout_UseLocations { get; set; }
         public bool Layout_UseCategories { get; set; }
-
-        public int Layout_SortProjectsBy { get; set; }
-        public int Layout_SortProjectsByDirection { get; set; }
-        public int Layout_SortItemsBy { get; set; }
-        public int Layout_SortItemsByDirection { get; set; }
 
         public bool View_StatusBar { get; set; }
         public bool View_StatusBar_ProjectName { get; set; }
@@ -67,6 +65,11 @@ namespace Timekeeper.Classes
         public bool Behavior_Annoy_NoRunningPrompt { get; set; }
         public int Behavior_Annoy_NoRunningPromptAmount { get; set; }
 
+        public int Behavior_SortProjectsBy { get; set; }
+        public int Behavior_SortProjectsByDirection { get; set; }
+        public int Behavior_SortItemsBy { get; set; }
+        public int Behavior_SortItemsByDirection { get; set; }
+
         public string Report_FontName { get; set; }
         public int Report_FontSize { get; set; }
         public string Report_StyleSheet { get; set; }
@@ -75,9 +78,7 @@ namespace Timekeeper.Classes
 
         public int Advanced_Logging_Application { get; set; }
         public int Advanced_Logging_Database { get; set; }
-
-        public int LastOptionTab { get; set; }
-        public int InterfacePreset { get; set; }
+        public string Advanced_DateTimeFormat { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Metrics)
@@ -210,11 +211,6 @@ namespace Timekeeper.Classes
             Layout_UseLocations = ((int)Key.GetValue("UseLocations", 0) == 1);
             Layout_UseCategories = ((int)Key.GetValue("UseCategories", 0) == 1);
 
-            Layout_SortProjectsBy = (int)Key.GetValue("SortProjectsBy", 0);
-            Layout_SortProjectsByDirection = (int)Key.GetValue("SortProjectsByDirection", 0);
-            Layout_SortItemsBy = (int)Key.GetValue("SortItemsBy", 0);
-            Layout_SortItemsByDirection = (int)Key.GetValue("SortItemsByDirection", 0);
-
             //----------------------------------------------------------------------
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\View");
@@ -255,6 +251,11 @@ namespace Timekeeper.Classes
             Behavior_Annoy_NoRunningPrompt = ((int)Key.GetValue("Annoy_NoRunningPrompt", 1) == 1);
             Behavior_Annoy_NoRunningPromptAmount = (int)Key.GetValue("Annoy_NoRunningPromptAmount", 10);
 
+            Behavior_SortProjectsBy = (int)Key.GetValue("SortProjectsBy", 0);
+            Behavior_SortProjectsByDirection = (int)Key.GetValue("SortProjectsByDirection", 0);
+            Behavior_SortItemsBy = (int)Key.GetValue("SortItemsBy", 0);
+            Behavior_SortItemsByDirection = (int)Key.GetValue("SortItemsByDirection", 0);
+
             //----------------------------------------------------------------------
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Report");
@@ -281,6 +282,7 @@ namespace Timekeeper.Classes
 
             Advanced_Logging_Application = (int)Key.GetValue("Logging_Application", 0);
             Advanced_Logging_Database = (int)Key.GetValue("Logging_Database", 0);
+            Advanced_DateTimeFormat = (string)Key.GetValue("DateTimeFormat", "yyyy-MM-dd HH:mm:ss");
 
             //----------------------------------------------------------------------
 
@@ -407,11 +409,6 @@ namespace Timekeeper.Classes
             Key.SetValue("UseLocations", Layout_UseLocations, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("UseCategories", Layout_UseCategories, Microsoft.Win32.RegistryValueKind.DWord);
 
-            Key.SetValue("SortProjectsBy", Layout_SortProjectsBy, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("SortProjectsByDirection", Layout_SortProjectsByDirection, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("SortItemsBy", Layout_SortItemsBy, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("SortItemsByDirection", Layout_SortItemsByDirection, Microsoft.Win32.RegistryValueKind.DWord);
-
             //----------------------------------------------------------------------
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\View");
@@ -452,6 +449,11 @@ namespace Timekeeper.Classes
             Key.SetValue("Annoy_NoRunningPrompt", Behavior_Annoy_NoRunningPrompt, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_NoRunningPromptAmount", Behavior_Annoy_NoRunningPromptAmount, Microsoft.Win32.RegistryValueKind.DWord);
 
+            Key.SetValue("SortProjectsBy", Behavior_SortProjectsBy, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("SortProjectsByDirection", Behavior_SortProjectsByDirection, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("SortItemsBy", Behavior_SortItemsBy, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("SortItemsByDirection", Behavior_SortItemsByDirection, Microsoft.Win32.RegistryValueKind.DWord);
+
             //----------------------------------------------------------------------
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Keyboard");
@@ -466,6 +468,7 @@ namespace Timekeeper.Classes
 
             Key.SetValue("Logging_Application", Advanced_Logging_Application, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Logging_Database", Advanced_Logging_Database, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("DateTimeFormat", Advanced_DateTimeFormat, Microsoft.Win32.RegistryValueKind.String);
 
             //----------------------------------------------------------------------
 

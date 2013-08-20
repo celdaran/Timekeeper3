@@ -167,8 +167,11 @@ namespace Timekeeper.Forms
             this.toolFormatBulletedList = new System.Windows.Forms.ToolStripButton();
             this.toolFormatNumberedList = new System.Windows.Forms.ToolStripButton();
             this.panelControls = new System.Windows.Forms.Panel();
+            this.LocationAndCategoryPanel = new System.Windows.Forms.Panel();
+            this.CategoryPanel = new System.Windows.Forms.Panel();
             this.labelCategory = new System.Windows.Forms.Label();
             this.wCategory = new System.Windows.Forms.ComboBox();
+            this.LocationPanel = new System.Windows.Forms.Panel();
             this.labelLocation = new System.Windows.Forms.Label();
             this.wLocation = new System.Windows.Forms.ComboBox();
             this.wStopTime = new System.Windows.Forms.DateTimePicker();
@@ -195,6 +198,9 @@ namespace Timekeeper.Forms
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
+            this.PopupMenuDates = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.PopupMenuDatesCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuDatesPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
@@ -212,7 +218,11 @@ namespace Timekeeper.Forms
             this.PopupMenuMemo.SuspendLayout();
             this.MemoToolbar.SuspendLayout();
             this.panelControls.SuspendLayout();
+            this.LocationAndCategoryPanel.SuspendLayout();
+            this.CategoryPanel.SuspendLayout();
+            this.LocationPanel.SuspendLayout();
             this.BrowserToolbar.SuspendLayout();
+            this.PopupMenuDates.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuMain
@@ -1471,10 +1481,7 @@ namespace Timekeeper.Forms
             // 
             this.panelControls.BackColor = System.Drawing.SystemColors.Control;
             this.panelControls.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panelControls.Controls.Add(this.labelCategory);
-            this.panelControls.Controls.Add(this.wCategory);
-            this.panelControls.Controls.Add(this.labelLocation);
-            this.panelControls.Controls.Add(this.wLocation);
+            this.panelControls.Controls.Add(this.LocationAndCategoryPanel);
             this.panelControls.Controls.Add(this.wStopTime);
             this.panelControls.Controls.Add(this.wStartTime);
             this.panelControls.Controls.Add(this.labelStartTime);
@@ -1489,9 +1496,28 @@ namespace Timekeeper.Forms
             this.panelControls.TabIndex = 0;
             this.panelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
+            // LocationAndCategoryPanel
+            // 
+            this.LocationAndCategoryPanel.Controls.Add(this.CategoryPanel);
+            this.LocationAndCategoryPanel.Controls.Add(this.LocationPanel);
+            this.LocationAndCategoryPanel.Location = new System.Drawing.Point(211, 28);
+            this.LocationAndCategoryPanel.Name = "LocationAndCategoryPanel";
+            this.LocationAndCategoryPanel.Size = new System.Drawing.Size(216, 74);
+            this.LocationAndCategoryPanel.TabIndex = 16;
+            // 
+            // CategoryPanel
+            // 
+            this.CategoryPanel.Controls.Add(this.labelCategory);
+            this.CategoryPanel.Controls.Add(this.wCategory);
+            this.CategoryPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.CategoryPanel.Location = new System.Drawing.Point(0, 27);
+            this.CategoryPanel.Name = "CategoryPanel";
+            this.CategoryPanel.Size = new System.Drawing.Size(216, 27);
+            this.CategoryPanel.TabIndex = 1;
+            // 
             // labelCategory
             // 
-            this.labelCategory.Location = new System.Drawing.Point(210, 59);
+            this.labelCategory.Location = new System.Drawing.Point(3, 4);
             this.labelCategory.Name = "labelCategory";
             this.labelCategory.Size = new System.Drawing.Size(52, 13);
             this.labelCategory.TabIndex = 15;
@@ -1501,15 +1527,25 @@ namespace Timekeeper.Forms
             // 
             this.wCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.wCategory.FormattingEnabled = true;
-            this.wCategory.Location = new System.Drawing.Point(265, 56);
+            this.wCategory.Location = new System.Drawing.Point(58, 1);
             this.wCategory.Name = "wCategory";
             this.wCategory.Size = new System.Drawing.Size(151, 21);
             this.wCategory.TabIndex = 5;
             this.wCategory.SelectedIndexChanged += new System.EventHandler(this.wCategory_SelectedIndexChanged);
             // 
+            // LocationPanel
+            // 
+            this.LocationPanel.Controls.Add(this.labelLocation);
+            this.LocationPanel.Controls.Add(this.wLocation);
+            this.LocationPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LocationPanel.Location = new System.Drawing.Point(0, 0);
+            this.LocationPanel.Name = "LocationPanel";
+            this.LocationPanel.Size = new System.Drawing.Size(216, 27);
+            this.LocationPanel.TabIndex = 0;
+            // 
             // labelLocation
             // 
-            this.labelLocation.Location = new System.Drawing.Point(210, 33);
+            this.labelLocation.Location = new System.Drawing.Point(3, 5);
             this.labelLocation.Name = "labelLocation";
             this.labelLocation.Size = new System.Drawing.Size(52, 13);
             this.labelLocation.TabIndex = 13;
@@ -1519,7 +1555,7 @@ namespace Timekeeper.Forms
             // 
             this.wLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.wLocation.FormattingEnabled = true;
-            this.wLocation.Location = new System.Drawing.Point(265, 30);
+            this.wLocation.Location = new System.Drawing.Point(58, 2);
             this.wLocation.Name = "wLocation";
             this.wLocation.Size = new System.Drawing.Size(151, 21);
             this.wLocation.TabIndex = 4;
@@ -1527,23 +1563,29 @@ namespace Timekeeper.Forms
             // 
             // wStopTime
             // 
+            this.wStopTime.ContextMenuStrip = this.PopupMenuDates;
             this.wStopTime.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.wStopTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.wStopTime.Location = new System.Drawing.Point(67, 56);
             this.wStopTime.Name = "wStopTime";
             this.wStopTime.Size = new System.Drawing.Size(127, 20);
             this.wStopTime.TabIndex = 2;
+            this.wStopTime.ValueChanged += new System.EventHandler(this.wStopTime_ValueChanged);
+            this.wStopTime.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wStopTime_KeyDown);
             this.wStopTime.Leave += new System.EventHandler(this.wStopTime_Leave);
             // 
             // wStartTime
             // 
+            this.wStartTime.ContextMenuStrip = this.PopupMenuDates;
             this.wStartTime.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.wStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.wStartTime.Location = new System.Drawing.Point(67, 30);
             this.wStartTime.Name = "wStartTime";
             this.wStartTime.Size = new System.Drawing.Size(127, 20);
             this.wStartTime.TabIndex = 1;
+            this.wStartTime.ValueChanged += new System.EventHandler(this.wStartTime_ValueChanged);
             this.wStartTime.Enter += new System.EventHandler(this.wStartTime_Enter);
+            this.wStartTime.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wStartTime_KeyDown);
             this.wStartTime.Leave += new System.EventHandler(this.wStartTime_Leave);
             // 
             // labelStartTime
@@ -1773,6 +1815,28 @@ namespace Timekeeper.Forms
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
             this.SaveAsDialog.Title = "Save As";
             // 
+            // PopupMenuDates
+            // 
+            this.PopupMenuDates.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PopupMenuDatesCopy,
+            this.PopupMenuDatesPaste});
+            this.PopupMenuDates.Name = "PopupMenuDates";
+            this.PopupMenuDates.Size = new System.Drawing.Size(102, 48);
+            // 
+            // PopupMenuDatesCopy
+            // 
+            this.PopupMenuDatesCopy.Name = "PopupMenuDatesCopy";
+            this.PopupMenuDatesCopy.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuDatesCopy.Text = "Copy";
+            this.PopupMenuDatesCopy.Click += new System.EventHandler(this.PopupMenuDatesCopy_Click);
+            // 
+            // PopupMenuDatesPaste
+            // 
+            this.PopupMenuDatesPaste.Name = "PopupMenuDatesPaste";
+            this.PopupMenuDatesPaste.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuDatesPaste.Text = "Paste";
+            this.PopupMenuDatesPaste.Click += new System.EventHandler(this.PopupMenuDatesPaste_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1811,8 +1875,12 @@ namespace Timekeeper.Forms
             this.MemoToolbar.PerformLayout();
             this.panelControls.ResumeLayout(false);
             this.panelControls.PerformLayout();
+            this.LocationAndCategoryPanel.ResumeLayout(false);
+            this.CategoryPanel.ResumeLayout(false);
+            this.LocationPanel.ResumeLayout(false);
             this.BrowserToolbar.ResumeLayout(false);
             this.BrowserToolbar.PerformLayout();
+            this.PopupMenuDates.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1985,5 +2053,11 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripStatusLabel StatusBarElapsedProjectToday;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarCurrentActivity;
         private System.Windows.Forms.ToolStripMenuItem MenuToolOptions;
+        private System.Windows.Forms.Panel LocationAndCategoryPanel;
+        private System.Windows.Forms.Panel CategoryPanel;
+        private System.Windows.Forms.Panel LocationPanel;
+        private System.Windows.Forms.ContextMenuStrip PopupMenuDates;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuDatesCopy;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuDatesPaste;
     }
 }
