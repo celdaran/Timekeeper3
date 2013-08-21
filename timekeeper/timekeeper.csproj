@@ -165,12 +165,6 @@
     <Compile Include="Forms\Report.Designer.cs">
       <DependentUpon>Report.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SplitEntry.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SplitEntry.Designer.cs">
-      <DependentUpon>SplitEntry.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\UpgradeWizard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -188,17 +182,11 @@
     <Compile Include="Classes\Project.cs" />
     <Compile Include="Classes\ProjectCollection.cs" />
     <Compile Include="Classes\Timekeeper.cs" />
-    <Compile Include="Forms\fAbout.cs">
+    <Compile Include="Forms\About.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fAbout.Designer.cs">
-      <DependentUpon>fAbout.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\fAnnotate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\fAnnotate.Designer.cs">
-      <DependentUpon>fAnnotate.cs</DependentUpon>
+    <Compile Include="Forms\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\fGridFilter.cs">
       <SubType>Form</SubType>
@@ -278,12 +266,6 @@
     <Compile Include="Forms\fToolJournal.Designer.cs">
       <DependentUpon>fToolJournal.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fLog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\fLog.Designer.cs">
-      <DependentUpon>fLog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -320,12 +302,6 @@
     <Compile Include="Forms\ItemEditor.Designer.cs">
       <DependentUpon>ItemEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\OptionsLegacy.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\OptionsLegacy.Designer.cs">
-      <DependentUpon>OptionsLegacy.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Properties.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -357,13 +333,9 @@
     <EmbeddedResource Include="Forms\Controls\DateRangePicker.resx">
       <DependentUpon>DateRangePicker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fAbout.resx">
-      <DependentUpon>fAbout.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fAnnotate.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>fAnnotate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fGridFilter.resx">
       <DependentUpon>fGridFilter.cs</DependentUpon>
@@ -415,10 +387,6 @@
       <DependentUpon>fToolJournal.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fLog.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>fLog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ListAttributeManager.resx">
       <DependentUpon>ListAttributeManager.cs</DependentUpon>
     </EmbeddedResource>
@@ -439,10 +407,6 @@
     <EmbeddedResource Include="Forms\Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\OptionsLegacy.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>OptionsLegacy.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Properties.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Properties.cs</DependentUpon>
@@ -459,9 +423,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Report.resx">
       <DependentUpon>Report.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SplitEntry.resx">
-      <DependentUpon>SplitEntry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UpgradeWizard.resx">
       <DependentUpon>UpgradeWizard.cs</DependentUpon>

@@ -934,14 +934,6 @@ namespace Timekeeper.Forms
         // Testing Area
         //---------------------------------------------------------------------
 
-        // Tools | Log/Tweak
-        private void menuToolsTweak_Click(object sender, EventArgs e)
-        {
-            var log = new fLog(Database);
-            log.isTimerRunning = timerRunning;
-            log.ShowDialog(this);
-        }
-
         private void wStartTime_KeyDown(object sender, KeyEventArgs e)
         {
             Action_DateTimeClipboard(wStartTime, e);
