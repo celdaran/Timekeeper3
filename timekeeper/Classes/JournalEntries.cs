@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 using Technitivity.Toolbox;
 
@@ -78,6 +79,73 @@ namespace Timekeeper.Classes
         }
 
         //---------------------------------------------------------------------
+
+        public void Reindex()
+        {
+            Reindex(new DateTime(1, 0, 0));
+        }
+
+        //---------------------------------------------------------------------
+
+        public void Reindex(DateTime since)
+        {
+            var t = new Stopwatch();
+
+            // FIXME: How about some error handling?
+            // FIXME2: This is brute-force and horribly inefficent. Come up with something better.
+
+            // First, get every row we need to update
+            Bench(t);
+            string Query = String.Format(
+                "select JournalId, JournalIndex from Journal where datetime(StartTime) >= datetime('{0}') order by StartTime",
+                since.ToString(Common.DATETIME_FORMAT));
+            Table Table = Data.Select(Query);
+            Bench(t, "[Reindex] Rows fetched");
+
+            // Then get our starting index
+            Bench(t);
+            Query = String.Format(
+                "select JournalIndex from Journal where datetime(StartTime) < datetime('{0}') order by StartTime desc limit 1",
+                since.ToString(Common.DATETIME_FORMAT));
+            Row LastGoodRow = Data.SelectRow(Query);
+            Bench(t, "[Reindex] Starting Index fetched");
+
+            // Drop the current database index
+            Bench(t);
+            Data.Exec("DROP INDEX idx_Journal_JournalIndex");
+            Bench(t, "[Reindex] Dropped database index");
+
+            // Rebuild JournalIndex
+            Bench(t);
+            long Index = LastGoodRow["JournalIndex"] + 1;
+            foreach (Row Row in Table) {
+                Row UpdatedRow = new Row();
+                UpdatedRow["JournalIndex"] = Index;
+                Data.Update("Journal", UpdatedRow, "JournalId", Row["JournalId"]);
+                Index++;
+            }
+            Bench(t, "[Reindex] Updated JournalIndex values");
+
+            // Recreate database index
+            Bench(t);
+            Data.Exec("CREATE UNIQUE INDEX idx_Journal_JournalIndex ON Journal(JournalIndex);");
+            Bench(t, "[Reindex] Re-created database index");
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Bench(Stopwatch t)
+        {
+            t.Start();
+        }
+
+        private void Bench(Stopwatch t, string message)
+        {
+            t.Stop();
+            Timekeeper.Info(message + ": " + t.ElapsedMilliseconds.ToString());
+            t.Reset();
+        }
+
 
     }
 }

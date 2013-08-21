@@ -43,7 +43,7 @@ namespace Timekeeper.Classes
         private DateTime CreateTime;
         private DateTime ModifyTime;
         private string JournalGuid;
-        private long JournalIndex;
+        public long JournalIndex; //FIXME! NOT PUBLIC! ONLY FOR TESTING!
 
         //---------------------------------------------------------------------
         // Constructors
@@ -98,6 +98,10 @@ namespace Timekeeper.Classes
             try {
                 // Create the Row based on current object attributes
                 JournalId = Data.Insert("Journal", GetAttributes(Mode.Insert));
+
+                if (JournalId == 0) {
+                    throw new Exception("Could not create journal entry.");
+                }
 
                 // Update bidirectional tracking
                 Row row = new Row();

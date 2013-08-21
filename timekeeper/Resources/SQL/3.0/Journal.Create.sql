@@ -28,6 +28,8 @@ CREATE TABLE Journal
     IsLocked                BOOLEAN     NOT NULL,
     JournalIndex            INTEGER     NOT NULL,
 
+    -- Thinking about a 'natural' flag: was this entry timed naturally? or otherwise subject to human intervention?
+    
     -- NOT PERMANENT COLUMNS, ONLY HERE DURING UTC TRANSITION DEVELOPMENT
     OriginalStartTime       DATETIME        NULL,
     OriginalStopTime        DATETIME        NULL,

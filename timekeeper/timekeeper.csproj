@@ -165,6 +165,12 @@
     <Compile Include="Forms\Report.Designer.cs">
       <DependentUpon>Report.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SplitEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplitEntry.Designer.cs">
+      <DependentUpon>SplitEntry.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UpgradeWizard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -453,6 +459,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Report.resx">
       <DependentUpon>Report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplitEntry.resx">
+      <DependentUpon>SplitEntry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UpgradeWizard.resx">
       <DependentUpon>UpgradeWizard.cs</DependentUpon>

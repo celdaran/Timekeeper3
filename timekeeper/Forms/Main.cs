@@ -1008,6 +1008,16 @@ namespace Timekeeper.Forms
             // i.e., Stop Time <= Start Time next entry
             //   and Start Time >= Stop Time of previous entry
 
+            // August 20, 2013 note. In a word, FIXME.
+            // More elaborately, the logic below is too
+            // simplistic. Here's the amended rule:
+            // 1. User can enter any start/stop time.
+            // 2. Once completed, the new Start and End time
+            //    together need to not overlap with any other
+            //    entries.
+            // 3. This is trickier than it sounds.
+            // Go!
+
             if (wStopTime.Value < wStartTime.Value) {
                 Common.Warn("Stop time cannot be before Start time");
                 wStopTime.Value = priorLoadedBrowserEntry.StopTime;
@@ -1020,13 +1030,6 @@ namespace Timekeeper.Forms
                 wStopTime.Value = priorLoadedBrowserEntry.StopTime;
                 return;
             }
-        }
-
-        private void wStartTime_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isBrowsing) {
-                return;
-            }
 
             DateTime PreviousEndTime = Browser_GetPreviousEndTime();
             if (wStartTime.Value < PreviousEndTime) {
@@ -1034,6 +1037,50 @@ namespace Timekeeper.Forms
                 wStartTime.Value = priorLoadedBrowserEntry.StartTime;
                 return;
             }
+
+            // TODO: Lastly, move this logic to Main.Action.cs
+        }
+
+        private void wStartTime_ValueChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void MenuToolbarBrowserSplitEntry_Click(object sender, EventArgs e)
+        {
+            /*
+             * 
+             * Already deprecated! But save this code for later. It took me a good
+             * little while to figure out (placing a window over top a toolstrip
+             * button as if it were a drop-down box.)
+             * 
+             */
+
+            /*
+            Forms.SplitEntry DialogBox = new SplitEntry();
+
+            Rectangle Rect = toolControlSplitEntry.Bounds;
+            Point StartPoint = BrowserToolbar.PointToScreen(new Point(Rect.X, Rect.Y));
+            StartPoint.Y += 23;
+
+            DialogBox.Location = StartPoint;
+
+            DialogBox.ShowDialog(this);
+            */
+        }
+
+        private void MenuToolbarBrowserSplitEntry2_Click(object sender, EventArgs e)
+        {
+            Action_SplitEntry(2);
+        }
+
+        private void toolControlSplitEntry3_Click(object sender, EventArgs e)
+        {
+            Action_SplitEntry(3);
+        }
+
+        private void toolControlSplitEntry4_Click(object sender, EventArgs e)
+        {
+            Action_SplitEntry(4);
         }
 
         //---------------------------------------------------------------------

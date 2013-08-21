@@ -1242,6 +1242,67 @@ namespace Timekeeper.Forms
             Entry.AdvanceIndex(); // FIXME: EXPERIMENTAL
         }
 
+        //----------------------------------------------------------------------
+
+        private void Action_SplitEntry(int parts)
+        {
+            try {
+                // Determine the duration of each split
+                long ChunkSize = (browserEntry.StopTime.Ticks - browserEntry.StartTime.Ticks) / parts;
+                long ChunkSizeInSeconds = (long)TimeSpan.FromTicks(ChunkSize).TotalSeconds;
+
+                // FIXME: this is an Advanced Option
+                if (ChunkSizeInSeconds <= 600) {
+                    long Minutes = ChunkSizeInSeconds / 60;
+                    long Seconds = ChunkSizeInSeconds % 60;
+                    string Message = String.Format(
+                        "Split entries will only be {0} minutes and {1} seconds long each. Are you sure you want to split this entry?",
+                        Minutes.ToString(), Seconds.ToString());
+                    if (Common.WarnPrompt(Message) == DialogResult.No) {
+                        return;
+                    }
+                }
+
+                // Next, adjust the current entry
+                browserEntry.StopTime = browserEntry.StartTime.AddTicks(ChunkSize);
+                browserEntry.Seconds = ChunkSizeInSeconds;
+                browserEntry.Save(); // FIXME: rethink a global "save" and support specific updates
+                DateTime LastChunkTime = browserEntry.StopTime;
+
+                // Clone the current entry
+                Classes.Journal SplitEntry = new Classes.Journal(Database);
+                SplitEntry = browserEntry.Copy();
+                SplitEntry.Seconds = ChunkSizeInSeconds;
+                SplitEntry.Memo = "Entry automatically split from Journal Entry Id: " + browserEntry.JournalId.ToString();
+
+                // Create the extra entries based on the clone
+                for (int i = 1; i < parts; i++) {
+
+                    SplitEntry.StartTime = LastChunkTime;
+                    SplitEntry.StopTime = SplitEntry.StartTime.AddTicks(ChunkSize);
+
+                    if (SplitEntry.Create()) {
+                        LastChunkTime = SplitEntry.StopTime;
+                    } else {
+                        throw new Exception("Failed to create split entry: Journal.Id = " + browserEntry.JournalId);
+                    }
+                }
+
+                // Reindex the Journal table
+                Entries.Reindex(browserEntry.StartTime);
+
+                // Copy the last-created split entry back to the browser
+                browserEntry = SplitEntry.Copy();
+                Browser_EntryToForm(browserEntry);
+            }
+            catch (Exception x) {
+                Common.Warn("There was a problem splitting the entry");
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
         private void Action_SwapPanes()
         {
             if (splitTrees.Panel1.Contains(this.ActivityTree)) {

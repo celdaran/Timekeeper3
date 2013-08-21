@@ -395,6 +395,7 @@ namespace Timekeeper.Forms
 
             // And any other relevant values
             toolControlEntryId.Text = entry.JournalId > 0 ? entry.JournalId.ToString() : "";
+            toolControlEntryIndex.Text = entry.JournalIndex > 0 ? entry.JournalIndex.ToString() : "";
         }
 
         //---------------------------------------------------------------------
@@ -664,13 +665,21 @@ namespace Timekeeper.Forms
             */
 
             // If we've made it this far, save the row
+            /*
             string Message = String.Format("Entry.Save(). Id = {0}, Memo = \"{1}\", Prior Memo = \"{2}\"",
                 browserEntry.JournalId, 
                 Common.Abbreviate(browserEntry.Memo, 30), 
                 Common.Abbreviate(priorLoadedBrowserEntry.Memo, 30)
                 );
             Timekeeper.Warn(Message);
+            */
             browserEntry.Save();
+
+            // Once the entry has been saved, we may need to reindex
+            if (browserEntry.StartTime != priorLoadedBrowserEntry.StartTime) {
+                Entries.Reindex(browserEntry.StartTime);
+                Timekeeper.Info("Reindexed Journal table starting at " + browserEntry.StartTime.ToString(Common.DATETIME_FORMAT));
+            }
 
             // And disable reverting, just in case
             Browser_EnableRevert(false);

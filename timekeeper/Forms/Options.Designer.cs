@@ -127,6 +127,7 @@
             this.SmallImages = new System.Windows.Forms.ImageList(this.components);
             this.AdvancedPage = new System.Windows.Forms.TabPage();
             this.OtherGroup = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.DateTimeFormatTemplate = new System.Windows.Forms.TextBox();
             this.LoggingGroup = new System.Windows.Forms.GroupBox();
@@ -135,7 +136,11 @@
             this.LoggingDatabaseLabel = new System.Windows.Forms.Label();
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -172,6 +177,7 @@
             this.AdvancedPage.SuspendLayout();
             this.OtherGroup.SuspendLayout();
             this.LoggingGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -1317,15 +1323,30 @@
             // 
             // OtherGroup
             // 
+            this.OtherGroup.Controls.Add(this.checkBox3);
+            this.OtherGroup.Controls.Add(this.checkBox2);
+            this.OtherGroup.Controls.Add(this.label3);
+            this.OtherGroup.Controls.Add(this.numericUpDown1);
+            this.OtherGroup.Controls.Add(this.label2);
             this.OtherGroup.Controls.Add(this.checkBox1);
             this.OtherGroup.Controls.Add(this.label1);
             this.OtherGroup.Controls.Add(this.DateTimeFormatTemplate);
             this.OtherGroup.Location = new System.Drawing.Point(17, 117);
             this.OtherGroup.Name = "OtherGroup";
-            this.OtherGroup.Size = new System.Drawing.Size(363, 100);
+            this.OtherGroup.Size = new System.Drawing.Size(363, 278);
             this.OtherGroup.TabIndex = 3;
             this.OtherGroup.TabStop = false;
             this.OtherGroup.Text = "Other";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(17, 64);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(229, 17);
+            this.checkBox1.TabIndex = 2;
+            this.checkBox1.Text = "Treat External Project Number as a number";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -1415,15 +1436,65 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
-            // checkBox1
+            // label2
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(17, 64);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(218, 17);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Treat External Project Number as Integer";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(14, 152);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(165, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Warn if splitting an entry less than";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(179, 150);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(53, 20);
+            this.numericUpDown1.TabIndex = 4;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(238, 152);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "minutes";
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(17, 87);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(152, 17);
+            this.checkBox2.TabIndex = 6;
+            this.checkBox2.Text = "Use New Database wizard";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(17, 110);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(224, 17);
+            this.checkBox3.TabIndex = 7;
+            this.checkBox3.Text = "Display journal entry ID on browser toolbar";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // Options
             // 
@@ -1505,6 +1576,7 @@
             this.OtherGroup.PerformLayout();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1619,6 +1691,11 @@
         private System.Windows.Forms.RadioButton Behavior_Annoy_ActivityFollowsProject;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox3;
 
     }
 }
