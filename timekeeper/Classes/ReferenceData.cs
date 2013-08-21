@@ -7,7 +7,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class SystemData
+    class ReferenceData
     {
         private DBI Database;
 
@@ -15,7 +15,7 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public SystemData()
+        public ReferenceData()
         {
             this.Database = Timekeeper.Database;
         }

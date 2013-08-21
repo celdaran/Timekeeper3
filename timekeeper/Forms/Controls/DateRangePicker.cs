@@ -93,7 +93,7 @@ namespace Timekeeper.Forms.Controls
 
         private void DateRangePicker_Load(object sender, EventArgs e)
         {
-            Classes.SystemData SystemData = new Classes.SystemData();
+            Classes.ReferenceData SystemData = new Classes.ReferenceData();
             List<IdValuePair> PresetValues = SystemData.DatePreset();
             foreach (IdValuePair Preset in PresetValues) {
                 Presets.Items.Add(Preset);
