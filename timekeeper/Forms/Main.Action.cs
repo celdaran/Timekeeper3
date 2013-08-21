@@ -582,9 +582,9 @@ namespace Timekeeper.Forms
                 // Instatiate Classes
                 //------------------------------------------
 
-                Entries = new Classes.JournalEntries(Database);
+                Entries = new Classes.JournalEntryCollection(Database);
                 Meta = new Classes.Meta();
-                Entry = new Classes.Journal(Database);
+                Entry = new Classes.JournalEntry(Database);
 
                 //------------------------------------------
                 // Prepare UI elements
@@ -1270,7 +1270,7 @@ namespace Timekeeper.Forms
                 DateTime LastChunkTime = browserEntry.StopTime;
 
                 // Clone the current entry
-                Classes.Journal SplitEntry = new Classes.Journal(Database);
+                Classes.JournalEntry SplitEntry = new Classes.JournalEntry(Database);
                 SplitEntry = browserEntry.Copy();
                 SplitEntry.Seconds = ChunkSizeInSeconds;
                 SplitEntry.Memo = "Entry automatically split from Journal Entry Id: " + browserEntry.JournalId.ToString();

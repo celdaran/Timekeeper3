@@ -111,7 +111,6 @@
     <Compile Include="Classes\LocationCollection.cs" />
     <Compile Include="Classes\Meta.cs" />
     <Compile Include="Classes\Options.cs" />
-    <Compile Include="Classes\Options.Local.cs" />
     <Compile Include="Classes\SystemData.cs" />
     <Compile Include="Classes\Widgets.cs" />
     <Compile Include="Forms\CategoryManager.cs">
@@ -174,8 +173,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Classes\ActivityCollection.cs" />
     <Compile Include="Classes\Activity.cs" />
-    <Compile Include="Classes\JournalEntries.cs" />
-    <Compile Include="Classes\Journal.cs" />
+    <Compile Include="Classes\JournalEntryCollection.cs" />
+    <Compile Include="Classes\JournalEntry.cs" />
     <Compile Include="Classes\Notebook.cs" />
     <Compile Include="Classes\TreeAttribute.cs" />
     <Compile Include="Classes\TreeAttributeCollection.cs" />
@@ -211,12 +210,6 @@
     </Compile>
     <Compile Include="Forms\fGridSave.Designer.cs">
       <DependentUpon>fGridSave.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\fNotify.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\fNotify.Designer.cs">
-      <DependentUpon>fNotify.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Form1.cs">
       <SubType>Form</SubType>
@@ -355,9 +348,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Filtering.resx">
       <DependentUpon>Filtering.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fNotify.resx">
-      <DependentUpon>fNotify.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

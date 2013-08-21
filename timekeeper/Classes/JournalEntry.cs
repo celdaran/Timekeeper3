@@ -6,7 +6,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class Journal
+    class JournalEntry
     {
         //---------------------------------------------------------------------
         // Properties
@@ -49,7 +49,7 @@ namespace Timekeeper.Classes
         // Constructors
         //---------------------------------------------------------------------
 
-        public Journal(DBI data)
+        public JournalEntry(DBI data)
         {
             this.Data = data;
             this.SetAttributes();
@@ -57,7 +57,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public Journal(DBI data, long journalId) : this(data)
+        public JournalEntry(DBI data, long journalId) : this(data)
         {
             this.Load(journalId);
         }
@@ -126,9 +126,9 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public Journal Copy()
+        public JournalEntry Copy()
         {
-            Journal copy = new Journal(this.Data);
+            JournalEntry copy = new JournalEntry(this.Data);
 
             // copy internals
             copy.NextJournalIndex = this.NextJournalIndex;
@@ -161,7 +161,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public bool Equals(Journal copy)
+        public bool Equals(JournalEntry copy)
         {
             if (copy == null) {
                 return false;

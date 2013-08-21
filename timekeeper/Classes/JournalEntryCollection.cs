@@ -8,7 +8,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class JournalEntries
+    class JournalEntryCollection
     {
         //---------------------------------------------------------------------
         // Properties
@@ -20,7 +20,7 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public JournalEntries(DBI data)
+        public JournalEntryCollection(DBI data)
         {
             this.Data = data;
         }

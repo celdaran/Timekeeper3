@@ -20,9 +20,9 @@ namespace Timekeeper.Forms
         //---------------------------------------------------------------------
 
         // Browser Objects
-        private Classes.Journal browserEntry;
-        private Classes.Journal priorLoadedBrowserEntry;
-        private Classes.Journal newBrowserEntry;
+        private Classes.JournalEntry browserEntry;
+        private Classes.JournalEntry priorLoadedBrowserEntry;
+        private Classes.JournalEntry newBrowserEntry;
         private bool isBrowsing = false;
 
         //---------------------------------------------------------------------
@@ -293,7 +293,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Browser_FormToEntry(ref Classes.Journal entry, long entryId)
+        private void Browser_FormToEntry(ref Classes.JournalEntry entry, long entryId)
         {
             // Don't update the browser entry if nothing is selected
             if ((ProjectTree.SelectedNode == null) || (ActivityTree.SelectedNode == null)) {
@@ -327,7 +327,7 @@ namespace Timekeeper.Forms
             }
         }
 
-        private void Browser_EntryToForm(Classes.Journal entry)
+        private void Browser_EntryToForm(Classes.JournalEntry entry)
         {
             // Now select projects and activities while browsing.
             TreeNode ProjectNode = Widgets.FindTreeNode(ProjectTree.Nodes, entry.ProjectId);
@@ -798,9 +798,9 @@ namespace Timekeeper.Forms
                 //browserEntry = new Classes.Journal(Database);
                 browserEntry = Entry;
 
-                priorLoadedBrowserEntry = new Classes.Journal(Database);
+                priorLoadedBrowserEntry = new Classes.JournalEntry(Database);
                 if (newBrowserEntry == null) {
-                    newBrowserEntry = new Classes.Journal(Database);
+                    newBrowserEntry = new Classes.JournalEntry(Database);
                 }
                 isBrowsing = false;
                 StartTimeManuallySet = false;
@@ -994,7 +994,7 @@ namespace Timekeeper.Forms
         private DateTime Browser_GetPreviousEndTime()
         {
             try {
-                Classes.Journal copy = browserEntry.Copy();
+                Classes.JournalEntry copy = browserEntry.Copy();
                 copy.LoadPrevious();
                 return copy.StopTime;
             }
@@ -1008,7 +1008,7 @@ namespace Timekeeper.Forms
         private DateTime Browser_GetNextStartTime()
         {
             try {
-                Classes.Journal copy = browserEntry.Copy();
+                Classes.JournalEntry copy = browserEntry.Copy();
                 copy.LoadNext();
                 return copy.StartTime;
             }

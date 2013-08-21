@@ -24,7 +24,7 @@ namespace Timekeeper.Forms.Controls
         public void SetDateRange()
         {
             DateTime Now = DateTime.Now;
-            Classes.Journal Entry;
+            Classes.JournalEntry Entry;
 
             switch (Presets.Text) {
                 case "Today":
@@ -38,7 +38,7 @@ namespace Timekeeper.Forms.Controls
                     break;
 
                 case "Previous Day":
-                    Entry = new Classes.Journal(Timekeeper.Database);
+                    Entry = new Classes.JournalEntry(Timekeeper.Database);
                     FromDate.Value = Entry.PreviousDay();
                     ToDate.Value = FromDate.Value;
                     break;
@@ -80,7 +80,7 @@ namespace Timekeeper.Forms.Controls
                     break;
 
                 case "All":
-                    Entry = new Classes.Journal(Timekeeper.Database);
+                    Entry = new Classes.JournalEntry(Timekeeper.Database);
                     FromDate.Value = Entry.FirstDay();
                     ToDate.Value = Entry.LastDay();
                     break;

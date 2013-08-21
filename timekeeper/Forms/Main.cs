@@ -40,12 +40,12 @@ namespace Timekeeper.Forms
         private List<Form> OpenForms = new List<Form>();
 
         // Persistent objects
-        private Classes.JournalEntries Entries;
+        private Classes.JournalEntryCollection Entries;
         private Classes.Meta Meta;
         private Classes.Widgets Widgets;
 
         // current objects
-        private Classes.Journal Entry;
+        private Classes.JournalEntry Entry;
         private Classes.Project currentProject;
         private Classes.Activity currentActivity;
         private Classes.Location currentLocation;
