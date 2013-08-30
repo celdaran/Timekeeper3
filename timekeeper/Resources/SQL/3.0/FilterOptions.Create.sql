@@ -21,17 +21,18 @@ CREATE TABLE FilterOptions
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
 
-    ActivityList        TEXT            NULL,
-    ProjectList         TEXT            NULL,
     RefDatePresetId     INTEGER         NULL,
     FromDate            DATETIME        NULL,
     ToDate              DATETIME        NULL,
-    Memo                TEXT            NULL,
+    MemoContains        TEXT            NULL,
+    ProjectList         TEXT            NULL,
+    ActivityList        TEXT            NULL,
+    LocationList        TEXT            NULL,
+    CategoryList        TEXT            NULL,
     DurationOperator    INTEGER         NULL,
     DurationAmount      INTEGER         NULL,
     DurationUnit        INTEGER         NULL,
-    LocationList        TEXT            NULL,
-    CategoryList        TEXT            NULL,
+    -- plus other 'Advanced' filtering features
 
     FOREIGN KEY(RefDatePresetId)    REFERENCES RefDatePreset(RefDatePresetId)
 );

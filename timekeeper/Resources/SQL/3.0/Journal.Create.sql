@@ -16,12 +16,12 @@ CREATE TABLE Journal
     ModifyTime              DATETIME    NOT NULL,
     JournalGuid             TEXT        NOT NULL,
 
-    ProjectId               INTEGER     NOT NULL,
-    ActivityId              INTEGER     NOT NULL,
     StartTime               DATETIME    NOT NULL,
     StopTime                DATETIME        NULL,
     Seconds                 INTEGER     NOT NULL,
     Memo                    TEXT            NULL,
+    ProjectId               INTEGER     NOT NULL,
+    ActivityId              INTEGER     NOT NULL,
     LocationId              INTEGER         NULL,
     CategoryId              INTEGER         NULL,
 

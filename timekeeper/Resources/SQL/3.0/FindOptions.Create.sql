@@ -1,32 +1,26 @@
 ------------------------------------------------------------------------
--- Table..: ReportOptions
+-- Table..: FindOptions
 -- Purpose: This table stores user options for saving a particular view
---          of the Report window.
+--          of the Find dialog box results.
 -- Added..: Timekeeper 3.0
 -- Updated: Timekeeper 3.0
 ------------------------------------------------------------------------
 
-CREATE TABLE ReportOptions
+CREATE TABLE FindOptions
 (
-    ReportOptionsId     INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    FindOptionsId       INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
-
+    
     Name                TEXT        NOT NULL,
     Description         TEXT            NULL,
     SortOrderNo         INTEGER         NULL,
 
     FilterOptionsId     INTEGER     NOT NULL,
 
-    SortBy1             INTEGER         NULL,
-    SortBy2             INTEGER         NULL,
-    SortBy3             INTEGER         NULL,
-    SortBy4             INTEGER         NULL,
-
     FOREIGN KEY(FilterOptionsId)    REFERENCES FilterOptions(FilterOptionsId)
 );
 
-
-CREATE UNIQUE INDEX idx_ReportOptions_ReportOptionsId ON ReportOptions(ReportOptionsId);
-CREATE UNIQUE INDEX idx_ReportOptions_Name ON ReportOptions(Name);
+CREATE UNIQUE INDEX idx_FindOptions_FindOptionsId ON FindOptions(FindOptionsId);
+CREATE UNIQUE INDEX idx_FindOptions_Name ON FindOptions(Name);

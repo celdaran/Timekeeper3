@@ -41,7 +41,7 @@ INSERT INTO Options
 ) VALUES (
     '{0}',
     '{0}',
-    'LastGridViewId',
+    'LastFindOptionsId',
     null
 );
 
@@ -55,6 +55,20 @@ INSERT INTO Options
 ) VALUES (
     '{0}',
     '{0}',
-    'LastReportViewId',
+    'LastGridOptionsId',
+    null
+);
+
+INSERT INTO Options
+(
+    CreateTime,
+    ModifyTime,
+    Key,
+    Value
+
+) VALUES (
+    '{0}',
+    '{0}',
+    'LastReportOptionsId',
     null
 );

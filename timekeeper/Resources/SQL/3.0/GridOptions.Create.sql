@@ -29,3 +29,7 @@ CREATE TABLE GridOptions
     FOREIGN KEY(RefGroupById)       REFERENCES RefGroupBy(RefGroupById)
     FOREIGN KEY(RefTimeDisplayId)   REFERENCES RefTimeDisplay(RefTimeDisplayId)
 );
+
+
+CREATE UNIQUE INDEX idx_GridOptions_GridOptionsId ON GridOptions(GridOptionsId);
+CREATE UNIQUE INDEX idx_GridOptions_Name ON GridOptions(Name);

@@ -18,7 +18,7 @@ namespace Timekeeper
         public readonly string Name;
         public readonly string FullPath;
 
-        public const string SCHEMA_VERSION = "3.0.0.3";
+        public const string SCHEMA_VERSION = "3.0.0.4";
 
         public const int ERROR_UNEXPECTED = -1;
         public const int ERROR_NEWER_VERSION_DETECTED = -2;
