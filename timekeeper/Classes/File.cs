@@ -184,6 +184,7 @@ namespace Timekeeper
                 // User Options
                 CreateTable("Options", version, populate);
                 CreateTable("FilterOptions", version, false);
+                CreateTable("FindOptions", version, false);
                 CreateTable("GridOptions", version, false);
                 CreateTable("ReportOptions", version, false);
 

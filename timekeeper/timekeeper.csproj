@@ -105,13 +105,14 @@
     <Compile Include="Classes\File.Downgrade.cs" />
     <Compile Include="Classes\File.Upgrade.cs" />
     <Compile Include="Classes\FilterOptions.cs" />
+    <Compile Include="Classes\FindOptions.cs" />
     <Compile Include="Classes\ListAttribute.cs" />
     <Compile Include="Classes\ListAttributeCollection.cs" />
     <Compile Include="Classes\Location.cs" />
     <Compile Include="Classes\LocationCollection.cs" />
     <Compile Include="Classes\Meta.cs" />
     <Compile Include="Classes\Options.cs" />
-    <Compile Include="Classes\SystemData.cs" />
+    <Compile Include="Classes\ReferenceData.cs" />
     <Compile Include="Classes\Widgets.cs" />
     <Compile Include="Forms\CategoryManager.cs">
       <SubType>Form</SubType>
@@ -133,6 +134,12 @@
     </Compile>
     <Compile Include="Forms\Filtering.Designer.cs">
       <DependentUpon>Filtering.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Find.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Find.Designer.cs">
+      <DependentUpon>Find.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ListAttributeManager.cs">
       <SubType>Form</SubType>
@@ -163,6 +170,12 @@
     </Compile>
     <Compile Include="Forms\Report.Designer.cs">
       <DependentUpon>Report.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SaveView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SaveView.Designer.cs">
+      <DependentUpon>SaveView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\UpgradeWizard.cs">
       <SubType>Form</SubType>
@@ -349,6 +362,9 @@
     <EmbeddedResource Include="Forms\Filtering.resx">
       <DependentUpon>Filtering.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Find.resx">
+      <DependentUpon>Find.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -414,6 +430,9 @@
     <EmbeddedResource Include="Forms\Report.resx">
       <DependentUpon>Report.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SaveView.resx">
+      <DependentUpon>SaveView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\UpgradeWizard.resx">
       <DependentUpon>UpgradeWizard.cs</DependentUpon>
     </EmbeddedResource>
@@ -459,6 +478,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SQL\3.0\FindOptions.Create.sql" />
     <None Include="Resources\Images\Icons\Toolbar.png" />
     <None Include="Resources\Images\Icons\Menu.png" />
     <None Include="Resources\Images\Buttons\Save.png" />

@@ -254,59 +254,17 @@ namespace Timekeeper.Classes
             }
         }
 
-        //---------------------------------------------------------------------
-
-        public DateTime PreviousDay()
-        {
-            DateTime PreviousDay;
-
-            string Query = @"
-                select distinct strftime('%Y-%m-%d', datetime(StartTime, 'localtime')) as Date 
-                from Journal 
-                order by Date desc";
-            Table Rows = Timekeeper.Database.Select(Query);
-
-            if (Rows.Count > 1) {
-                PreviousDay = DateTime.Parse(Rows[1]["Date"]);
-            } else {
-                PreviousDay = DateTime.Now;
-            }
-
-            return PreviousDay;
-        }
-
-        //---------------------------------------------------------------------
-
-        public DateTime FirstDay()
-        {
-            DateTime FirstDay;
-
-            string Query = @"
-                select min(datetime(StartTime, 'localtime')) as FirstDate 
-                from Journal";
-            Row Row = Timekeeper.Database.SelectRow(Query);
-            FirstDay = DateTime.Parse(Row["FirstDate"]);
-
-            return FirstDay;
-        }
-
-        //---------------------------------------------------------------------
-
-        public DateTime LastDay()
-        {
-            DateTime LastDay;
-
-            string Query = @"
-                select max(datetime(StartTime, 'localtime')) as LastDate 
-                from Journal";
-            Row Row = Timekeeper.Database.SelectRow(Query);
-            LastDay = DateTime.Parse(Row["LastDate"]);
-
-            return LastDay;
-        }
 
         //---------------------------------------------------------------------
         // Browsing Helper Methods
+        //---------------------------------------------------------------------
+
+        public void LoadByIndex(long journalIndex)
+        {
+            this.JournalIndex = journalIndex;
+            this.Load();
+        }
+
         //---------------------------------------------------------------------
 
         public void LoadFirst()

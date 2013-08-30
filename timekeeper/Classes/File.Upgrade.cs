@@ -56,6 +56,7 @@ namespace Timekeeper
                     CreateNewTable("Notebook", CurrentSchemaVersion, false);
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
                     CreateNewTable("FilterOptions", CurrentSchemaVersion, false);
+                    CreateNewTable("FindOptions", CurrentSchemaVersion, false);
                     CreateNewTable("GridOptions", CurrentSchemaVersion, false);
                     CreateNewTable("ReportOptions", CurrentSchemaVersion, false);
 

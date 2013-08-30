@@ -21,30 +21,39 @@ namespace Timekeeper.Classes
         }
 
         //---------------------------------------------------------------------
-        // DatePresets
+        // Date Presets
         //---------------------------------------------------------------------
 
         public List<IdValuePair> DatePreset()
         {
-            return Lookup("SystemDatePreset");
+            return Lookup("RefDatePreset");
         }
 
         //---------------------------------------------------------------------
-        // GridGroupBy
+        // Group By Values
         //---------------------------------------------------------------------
 
         public List<IdValuePair> GridGroupBy()
         {
-            return Lookup("SystemGridGroupBy");
+            return Lookup("RefGroupBy");
         }
 
         //---------------------------------------------------------------------
-        // GridTimeDisplay
+        // Item Types
         //---------------------------------------------------------------------
 
-        public List<IdValuePair> GridTimeDisplay()
+        public List<IdValuePair> ItemType()
         {
-            return Lookup("SystemGridTimeDisplay");
+            return Lookup("RefItemType");
+        }
+
+        //---------------------------------------------------------------------
+        // Time Display Formats
+        //---------------------------------------------------------------------
+
+        public List<IdValuePair> TimeDisplay()
+        {
+            return Lookup("RefTimeDisplay");
         }
 
         //---------------------------------------------------------------------

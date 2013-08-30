@@ -239,7 +239,19 @@ namespace Timekeeper
             return 0;
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
+
+        // TODO: TBX helper?
+        public static object GetValue(object value, object defaultValue)
+        {
+            if (value == null) {
+                return defaultValue;
+            } else {
+                return value;
+            }
+        }
+
+        //----------------------------------------------------------------------
 
     }
 

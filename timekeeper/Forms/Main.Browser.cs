@@ -291,7 +291,7 @@ namespace Timekeeper.Forms
             wMemo.Enabled = enabled;
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private void Browser_FormToEntry(ref Classes.JournalEntry entry, long entryId)
         {
@@ -398,6 +398,50 @@ namespace Timekeeper.Forms
             toolControlEntryIndex.Text = entry.JournalIndex > 0 ? entry.JournalIndex.ToString() : "";
         }
 
+        //----------------------------------------------------------------------
+
+        public void Browser_GotoSpecificEntry(long journalIndex)
+        {
+            // TODO: copy/paste from GotoPrevEntry here!
+            // I think I can clean up and/or generalize the 
+            // browser navigation code here. There has to
+            // be a single: 1) go to row and 2) 
+
+            try {
+                if (!isBrowsing) {
+                    // If we're not browsing, this is a new row. If it's a new
+                    // row, save it so we don't lose it later.
+                    Browser_FormToEntry(ref newBrowserEntry, 0);
+                }
+
+                Browser_SaveRow(false);
+                browserEntry.LoadByIndex(journalIndex); // ONLY LINE THAT'S DIFFERENT
+                priorLoadedBrowserEntry = browserEntry.Copy();
+
+                if (browserEntry.JournalId > 0) {
+                    Browser_DisplayRow();
+
+                    Browser_EnableLast(true);
+                    Browser_EnableNext(true);
+                    if (browserEntry.AtBeginning()) {
+                        Browser_EnableFirst(false);
+                        Browser_EnablePrev(false);
+                    }
+                    if (browserEntry.AtEnd()) {
+                        Browser_EnableNext(false);
+                        Browser_EnableLast(false);
+                    }
+                    isBrowsing = true;
+                } else {
+                    Browser_EnableFirst(false);
+                    Browser_EnablePrev(false);
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
         //---------------------------------------------------------------------
 
         private void Browser_GotoFirstEntry()
@@ -426,12 +470,6 @@ namespace Timekeeper.Forms
         private void Browser_GotoLastEntry()
         {
             try {
-                /*
-                if (timerRunning) {
-                    browserEntry = currentEntry;
-                }
-                */
-
                 Browser_SaveRow(false);
                 browserEntry.LoadLast();
                 priorLoadedBrowserEntry = browserEntry.Copy();
@@ -487,8 +525,6 @@ namespace Timekeeper.Forms
 
         private void Browser_GotoPreviousEntry()
         {
-            var t = new Stopwatch();
-
             try {
                 if (!isBrowsing) {
                     // If we're not browsing, this is a new row. If it's a new

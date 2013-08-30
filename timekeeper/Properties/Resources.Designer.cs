@@ -1106,6 +1106,28 @@ namespace Timekeeper.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: FindOptions
+        ///-- Purpose: This table stores user options for saving a particular view
+        ///--          of the Find dialog box results.
+        ///-- Added..: Timekeeper 3.0
+        ///-- Updated: Timekeeper 3.0
+        ///------------------------------------------------------------------------
+        ///
+        ///CREATE TABLE FindOptions
+        ///(
+        ///    FindOptionsId       INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+        ///
+        ///    CreateTime          DATETIME    NOT NULL,
+        ///    ModifyTi [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SQL_3003_FindOptions_Create {
+            get {
+                return ResourceManager.GetString("SQL_3003_FindOptions_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
         ///-- Table..: GridOptions
         ///-- Purpose: This table stores user options for saving a particular view
         ///--          of the Grid display.

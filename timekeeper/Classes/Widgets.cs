@@ -135,7 +135,7 @@ namespace Timekeeper.Classes
         {
             bool showHidden = true;
             DateTime showHiddenSince = GetShowHiddenSinceTime();
-            string orderByClause = GetOrderBy(Options.Behavior_SortProjectsBy, Options.Behavior_SortProjectsByDirection);
+            string orderByClause = GetOrderBy(Options.Behavior_SortItemsBy, Options.Behavior_SortItemsByDirection);
 
             // Instantiate Activities object
             ActivityCollection Activities = new ActivityCollection(Database, orderByClause);

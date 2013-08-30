@@ -117,20 +117,8 @@ namespace Timekeeper.Forms
         {
             // First make sure an item has been selected
             if (Action_ItemSelected(wLocation)) {
-
-                // Display the Location Manager dialog box
-                Forms.LocationManager Dialog = new Forms.LocationManager();
-                Dialog.ShowDialog(this);
-
-                // Rebuild the list
-                wLocation.Items.Clear();
-                Widgets.PopulateLocationComboBox(wLocation);
-
-                // Select whatever item was selected on the dialog box
-                Action_SelectItem(wLocation, Dialog.CurrentItem);
-
-                // All done
-                Dialog.Dispose();
+                IdObjectPair CurrentItem = Dialog_LocationManager();
+                Action_SelectItem(wLocation, CurrentItem);
             }
         }
 

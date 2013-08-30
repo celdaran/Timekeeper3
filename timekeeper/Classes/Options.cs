@@ -102,6 +102,21 @@ namespace Timekeeper.Classes
         public int Grid_Top { get; set; }
         public int Grid_Left { get; set; }
 
+        public int Find_Height { get; set; }
+        public int Find_Width { get; set; }
+        public int Find_Top { get; set; }
+        public int Find_Left { get; set; }
+        public int Find_Grid_JournalIdWidth { get; set; }
+        public int Find_Grid_ProjectNameWidth { get; set; }
+        public int Find_Grid_ActivityNameWidth { get; set; }
+        public int Find_Grid_StartTimeWidth { get; set; }
+        public int Find_Grid_StopTimeWidth { get; set; }
+        public int Find_Grid_SecondsWidth { get; set; }
+        public int Find_Grid_MemoWidth { get; set; }
+        public int Find_Grid_LocationNameWidth { get; set; }
+        public int Find_Grid_CategoryNameWidth { get; set; }
+        public int Find_Grid_IsLockedWidth { get; set; }
+
         //----------------------------------------------------------------------
         // Public Properties (Registry/MRU)
         //----------------------------------------------------------------------
@@ -112,19 +127,11 @@ namespace Timekeeper.Classes
         // Public Properties (Database)
         //----------------------------------------------------------------------
 
-        // deprecated
-        /*
-        private long _Database_LastProjectId;
-        private long _Database_LastActivityId;
-        private long _Database_LastGridViewId;
-        private long _Database_LastReportViewId;
-        */
-
-        // replaced by
         public long State_LastProjectId { get; set; }
         public long State_LastActivityId { get; set; }
-        public long State_LastGridViewId { get; set; }
-        public long State_LastReportViewId { get; set; }
+        public long State_LastFindOptionsId { get; set; }
+        public long State_LastGridOptionsId { get; set; }
+        public long State_LastReportOptionsId { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -328,6 +335,24 @@ namespace Timekeeper.Classes
             Grid_Top = (int)Key.GetValue("Top", 100);
             Grid_Left = (int)Key.GetValue("Left", 100);
 
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Find");
+
+            // TODO: come up with better defaults
+            Find_Height = (int)Key.GetValue("Height", 100);
+            Find_Width = (int)Key.GetValue("Width", 100);
+            Find_Top = (int)Key.GetValue("Top", 100);
+            Find_Left = (int)Key.GetValue("Left", 100);
+            Find_Grid_JournalIdWidth = (int)Key.GetValue("Grid_JournalIdWidth", 40);
+            Find_Grid_ProjectNameWidth = (int)Key.GetValue("Grid_ProjectNameWidth", 40);
+            Find_Grid_ActivityNameWidth = (int)Key.GetValue("Grid_ActivityNameWidth", 40);
+            Find_Grid_StartTimeWidth = (int)Key.GetValue("Grid_StartTimeWidth", 40);
+            Find_Grid_StopTimeWidth = (int)Key.GetValue("Grid_StopTimeWidth", 40);
+            Find_Grid_SecondsWidth = (int)Key.GetValue("Grid_SecondsWidth", 40);
+            Find_Grid_MemoWidth = (int)Key.GetValue("Grid_MemoWidth", 40);
+            Find_Grid_LocationNameWidth = (int)Key.GetValue("Grid_LocationNameWidth", 40);
+            Find_Grid_CategoryNameWidth = (int)Key.GetValue("Grid_CategoryNameWidth", 40);
+            Find_Grid_IsLockedWidth = (int)Key.GetValue("Grid_IsLockedWidth", 40);
+
             Key.Close();
         }
 
@@ -375,16 +400,22 @@ namespace Timekeeper.Classes
                     State_LastActivityId = Convert.ToInt64(Option["Value"]);
                 }
 
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastReportViewId");
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastFindOptionsId");
                 Option = this.Database.SelectRow(Query);
                 if (Option.Count > 0) {
-                    State_LastReportViewId = Convert.ToInt64(Option["Value"]);
+                    State_LastFindOptionsId = Convert.ToInt64(Option["Value"]);
                 }
 
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastGridViewId");
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastGridOptionsId");
                 Option = this.Database.SelectRow(Query);
                 if (Option.Count > 0) {
-                    State_LastGridViewId = Convert.ToInt64(Option["Value"]);
+                    State_LastGridOptionsId = Convert.ToInt64(Option["Value"]);
+                }
+
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastReportOptionsId");
+                Option = this.Database.SelectRow(Query);
+                if (Option.Count > 0) {
+                    State_LastReportOptionsId = Convert.ToInt64(Option["Value"]);
                 }
             }
             catch (Exception x) {
@@ -514,6 +545,23 @@ namespace Timekeeper.Classes
             Key.SetValue("Top", Grid_Top, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Left", Grid_Left, Microsoft.Win32.RegistryValueKind.DWord);
 
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Find");
+
+            Key.SetValue("Height", Find_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", Find_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", Find_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", Find_Left, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_JournalIdWidth", Find_Grid_JournalIdWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_ProjectNameWidth", Find_Grid_ProjectNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_ActivityNameWidth", Find_Grid_ActivityNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_StartTimeWidth", Find_Grid_StartTimeWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_StopTimeWidth", Find_Grid_StopTimeWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_SecondsWidth", Find_Grid_SecondsWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_MemoWidth", Find_Grid_MemoWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_LocationNameWidth", Find_Grid_LocationNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_CategoryNameWidth", Find_Grid_CategoryNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_IsLockedWidth", Find_Grid_IsLockedWidth, Microsoft.Win32.RegistryValueKind.DWord);
+
             Key.Close();
         }
 
@@ -546,8 +594,9 @@ namespace Timekeeper.Classes
         {
             SaveRow("LastProjectId", State_LastProjectId.ToString());
             SaveRow("LastActivityId", State_LastActivityId.ToString());
-            SaveRow("LastReportViewId", State_LastReportViewId.ToString());
-            SaveRow("LastGridViewId", State_LastGridViewId.ToString());
+            SaveRow("LastFindOptionsId", State_LastFindOptionsId.ToString());
+            SaveRow("LastGridOptionsId", State_LastGridOptionsId.ToString());
+            SaveRow("LastReportOptionsId", State_LastReportOptionsId.ToString());
         }
 
         //----------------------------------------------------------------------

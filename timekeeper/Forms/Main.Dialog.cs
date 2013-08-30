@@ -112,6 +112,33 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private IdObjectPair Dialog_LocationManager()
+        {
+            // Display the Location Manager dialog box
+            Forms.LocationManager DialogBox = new Forms.LocationManager();
+            DialogBox.ShowDialog(this);
+
+            // Rebuild the list
+            wLocation.Items.Clear();
+            Widgets.PopulateLocationComboBox(wLocation);
+
+            // Set the return value
+            IdObjectPair CurrentItem;
+            if (DialogBox.CurrentItem != null) {
+                CurrentItem = (IdObjectPair)DialogBox.CurrentItem;
+            } else {
+                CurrentItem = new IdObjectPair();
+            }
+
+            // Dispose of the dialog
+            DialogBox.Dispose();
+
+            // Return the selection
+            return CurrentItem;
+        }
+
+        //---------------------------------------------------------------------
+
         private void Dialog_NewFile()
         {
             bool ShowNewDatabaseWizard = false; // FIXME: this will be an option

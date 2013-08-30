@@ -18,18 +18,7 @@ namespace Timekeeper.Forms
         // Properties
         //---------------------------------------------------------------------
 
-        private Forms.Controls.DateRangePicker DateRangePicker;
-
-        //---------------------------------------------------------------------
-        // Constructor
-        //---------------------------------------------------------------------
-
-        public Filtering(Classes.FilterOptions filterOptions)
-        {
-            InitializeComponent();
-            FilterOptions = filterOptions;
-            // FIXME: load window metrics
-        }
+        private Classes.Widgets Widgets;
 
         //---------------------------------------------------------------------
         // Auto-Implemented Properties
@@ -38,44 +27,48 @@ namespace Timekeeper.Forms
         public Classes.FilterOptions FilterOptions { get; set; }
 
         //---------------------------------------------------------------------
+        // Constructor
+        //---------------------------------------------------------------------
+
+        public Filtering(Classes.FilterOptions filterOptions)
+        {
+            InitializeComponent();
+
+            FilterOptions = filterOptions;
+
+            // FIXME: load window metrics
+
+            // FIXME: find a place for this
+            Classes.ReferenceData Ref = new Classes.ReferenceData();
+            List<IdValuePair> PresetValues = Ref.DatePreset();
+            foreach (IdValuePair Preset in PresetValues) {
+                Presets.Items.Add(Preset);
+                if (Preset.Id != Classes.FilterOptions.DATE_PRESET_CUSTOM) {
+                    CreateTimePresets.Items.Add(Preset);
+                    ModifyTimePresets.Items.Add(Preset);
+                }
+            }
+        }
+
+        //---------------------------------------------------------------------
         // Event Handlers
         //---------------------------------------------------------------------
 
         private void Filtering_Load(object sender, EventArgs e)
         {
-            //----------------------------------------
-            // Custom controls
-            //----------------------------------------
+            Timekeeper.Info("Filtering_Load called");
 
-            // I'm having some design-time issues with this, loading up control at run time instead
-            DateRangePicker = new Forms.Controls.DateRangePicker();
-            DateRangePicker.Left = 17;
-            DateRangePicker.Top = 26;
-            DateGroupBox.Controls.Add(DateRangePicker);
-
-            //----------------------------------------
-            // Populate trees
-            //----------------------------------------
-
-            Classes.Widgets Widgets = new Classes.Widgets();
-
-            ActivityTree.Nodes.Clear();
-            Widgets.BuildActivityTree(ActivityTree.Nodes);
-
-            ProjectTree.Nodes.Clear();
-            Widgets.BuildProjectTree(ProjectTree.Nodes);
-
-            //----------------------------------------
-            // Populate duration boxes
-            //----------------------------------------
-
-            DurationOperator.SelectedIndex = 0;
-            DurationAmount.Value = 0;
-            DurationUnit.SelectedIndex = 0;
+            this.Widgets = new Classes.Widgets();
 
             //----------------------------------------
             // Populate Location & Category filters
             //----------------------------------------
+
+            ProjectTree.Nodes.Clear();
+            Widgets.BuildProjectTree(ProjectTree.Nodes);
+
+            ActivityTree.Nodes.Clear();
+            Widgets.BuildActivityTree(ActivityTree.Nodes);
 
             Classes.LocationCollection Locations = new Classes.LocationCollection();
             Classes.CategoryCollection Categories = new Classes.CategoryCollection();
@@ -94,21 +87,29 @@ namespace Timekeeper.Forms
             // Load up existing options
             //----------------------------------------
 
-            if (FilterOptions.DateRangePreset != -1) {
-                DateRangePicker.Presets.SelectedIndex = FilterOptions.DateRangePreset;
-                DateRangePicker.SetDateRange();
+            if (FilterOptions.DateRangePreset != Classes.FilterOptions.DATE_PRESET_NONE) {
+                Presets.SelectedIndex = FilterOptions.DateRangePreset - 1;
+                SetDateRange();
             }
 
-            if (FilterOptions.Activities != null) {
-                SetSelectedValues(ActivityTree.Nodes, FilterOptions.Activities);
+            if (FilterOptions.MemoContains != null) {
+                MemoFilter.Text = FilterOptions.MemoContains;
             }
 
             if (FilterOptions.Projects != null) {
                 SetSelectedValues(ProjectTree.Nodes, FilterOptions.Projects);
             }
 
-            if (FilterOptions.Memo != null) {
-                MemoFilter.Text = FilterOptions.Memo;
+            if (FilterOptions.Activities != null) {
+                SetSelectedValues(ActivityTree.Nodes, FilterOptions.Activities);
+            }
+
+            if (FilterOptions.Locations != null) {
+                SetSelectedValues(LocationFilter, FilterOptions.Locations);
+            }
+
+            if (FilterOptions.Categories != null) {
+                SetSelectedValues(CategoryFilter, FilterOptions.Categories);
             }
 
             if (FilterOptions.DurationOperator != -1) {
@@ -123,18 +124,6 @@ namespace Timekeeper.Forms
             if (FilterOptions.DurationUnit != -1) {
                 DurationUnit.SelectedIndex = FilterOptions.DurationUnit;
             }
-
-            if (FilterOptions.Locations != null) {
-                SetSelectedValues(LocationFilter, FilterOptions.Locations);
-            }
-
-            if (FilterOptions.Categories != null) {
-                SetSelectedValues(CategoryFilter, FilterOptions.Categories);
-            }
-
-            SortBy1.SelectedIndex = FilterOptions.SortBy1;
-            SortBy2.SelectedIndex = FilterOptions.SortBy2;
-            SortBy3.SelectedIndex = FilterOptions.SortBy3;
         }
 
         //---------------------------------------------------------------------
@@ -142,7 +131,7 @@ namespace Timekeeper.Forms
         private void Filtering_FormClosing(object sender, FormClosingEventArgs e)
         {
             // FIXME
-            if (DateRangePicker.ToDate.Value < DateRangePicker.FromDate.Value) {
+            if (ToDate.Value < FromDate.Value) {
                 //Common.Warn("Invalid date selection");
                 //e.Cancel = true;
             }
@@ -210,6 +199,7 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
+        /*
 
         private void SortBy1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -235,25 +225,26 @@ namespace Timekeeper.Forms
                     SortBy3.SelectedIndex = 0;
             }
         }
+        */
 
         //---------------------------------------------------------------------
 
         private void Splitter_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             // FIXME: move this to fMain too. I like it.
-            Splitter.SplitterDistance = Splitter.Width / 2;
+            //Splitter.SplitterDistance = Splitter.Width / 2;
         }
 
         //---------------------------------------------------------------------
 
         private void OkayButton_Click(object sender, EventArgs e)
         {
-            FilterOptions.DateRangePreset = DateRangePicker.Presets.SelectedIndex;
-            FilterOptions.StartTime = DateRangePicker.FromDate.Value;
-            FilterOptions.StopTime = DateRangePicker.ToDate.Value;
+            FilterOptions.DateRangePreset = Presets.SelectedIndex + 1;
+            FilterOptions.FromDate = FromDate.Value;
+            FilterOptions.ToDate = ToDate.Value;
             FilterOptions.Activities = GetActuallySelectedValues(ActivityTree.Nodes);
             FilterOptions.Projects = GetActuallySelectedValues(ProjectTree.Nodes);
-            FilterOptions.Memo = MemoFilter.Text;
+            FilterOptions.MemoContains = MemoFilter.Text;
             FilterOptions.DurationOperator = DurationOperator.SelectedIndex;
             FilterOptions.DurationAmount = (int)DurationAmount.Value;
             FilterOptions.DurationUnit = DurationUnit.SelectedIndex;
@@ -261,9 +252,6 @@ namespace Timekeeper.Forms
             FilterOptions.Categories = GetActuallySelectedValues(CategoryFilter);
             FilterOptions.ImpliedActivities = GetImpliedSelectedValues(ActivityTree.Nodes, false);
             FilterOptions.ImpliedProjects = GetImpliedSelectedValues(ProjectTree.Nodes, false);
-            FilterOptions.SortBy1 = SortBy1.SelectedIndex;
-            FilterOptions.SortBy2 = SortBy2.SelectedIndex;
-            FilterOptions.SortBy3 = SortBy3.SelectedIndex;
 
             DialogResult = DialogResult.OK;
         }
@@ -406,7 +394,7 @@ namespace Timekeeper.Forms
                         checkedListBox.SetItemCheckState(i, CheckState.Checked);
                     }
                 }
-            }     
+            }
 
         }
 
@@ -444,8 +432,75 @@ namespace Timekeeper.Forms
             return Result;
         }
 
+        //----------------------------------------------------------------------
 
-        //---------------------------------------------------------------------
+        public void SetDateRange()
+        {
+            FilterOptions.DateRangePreset = Presets.SelectedIndex + 1;
+            if (FilterOptions.DateRangePreset != Classes.FilterOptions.DATE_PRESET_CUSTOM) {
+                // If custom, don't whomp our From/To dates based on Preset
+                FilterOptions.SetDateRange();
+            }
+            if (ChangeDateRange) {
+                FromDate.Value = FilterOptions.FromDate;
+                ToDate.Value = FilterOptions.ToDate;
+            }
+        }
+
+        private void Presets_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetDateRange();
+        }
+
+        private void FilterOptionsTabControl_Selected(object sender, TabControlEventArgs e)
+        {
+            // Let's do the Project & Activity loading here (more "on demand");
+
+            if (e.TabPage.Name == "ProjectTab") {
+                // If we switched to this tab and the current number
+                // of nodes is zero, populate it.
+                if (ProjectTree.Nodes.Count == 0) {
+                }
+            } else if (e.TabPage.Name == "ActivityTab") {
+                if (ActivityTree.Nodes.Count == 0) {
+                }
+            }
+
+        }
+
+        private DateTime PreviousFromDate;
+        private DateTime PreviousToDate;
+        private Boolean ChangeDateRange = true;
+
+        private void FromDate_Enter(object sender, EventArgs e)
+        {
+            PreviousFromDate = FromDate.Value;
+        }
+
+        private void FromDate_Leave(object sender, EventArgs e)
+        {
+            if (PreviousFromDate != FromDate.Value) {
+                ChangeDateRange = false;
+                Presets.SelectedIndex = Classes.FilterOptions.DATE_PRESET_CUSTOM - 1;
+                ChangeDateRange = true;
+            }
+        }
+
+        private void ToDate_Enter(object sender, EventArgs e)
+        {
+            PreviousToDate = ToDate.Value;
+        }
+
+        private void ToDate_Leave(object sender, EventArgs e)
+        {
+            if (PreviousToDate != ToDate.Value) {
+                ChangeDateRange = false;
+                Presets.SelectedIndex = Classes.FilterOptions.DATE_PRESET_CUSTOM - 1;
+                ChangeDateRange = true;
+            }
+        }
+
+        //----------------------------------------------------------------------
 
     }
 }

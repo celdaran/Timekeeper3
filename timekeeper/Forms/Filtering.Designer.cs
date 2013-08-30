@@ -29,35 +29,20 @@ namespace Timekeeper.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Filtering));
-            this.BottomPanel = new System.Windows.Forms.Panel();
-            this.SortGroupBox = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.SortBy3 = new System.Windows.Forms.ComboBox();
-            this.SortBy2 = new System.Windows.Forms.ComboBox();
-            this.SortBy1 = new System.Windows.Forms.ComboBox();
-            this.DateGroupBox = new System.Windows.Forms.GroupBox();
-            this.FilterGroupBox = new System.Windows.Forms.GroupBox();
-            this.DurationLabel = new System.Windows.Forms.Label();
-            this.MemoLabel = new System.Windows.Forms.Label();
-            this.DurationOperator = new System.Windows.Forms.ComboBox();
-            this.MemoFilter = new System.Windows.Forms.TextBox();
-            this.DurationAmount = new System.Windows.Forms.NumericUpDown();
-            this.DurationUnit = new System.Windows.Forms.ComboBox();
+            this.ToDateLabel = new System.Windows.Forms.Label();
+            this.Presets = new System.Windows.Forms.ComboBox();
+            this.FromDateLabel = new System.Windows.Forms.Label();
+            this.PresetLabel = new System.Windows.Forms.Label();
+            this.ToDate = new System.Windows.Forms.DateTimePicker();
+            this.FromDate = new System.Windows.Forms.DateTimePicker();
             this.LocationFilter = new System.Windows.Forms.CheckedListBox();
             this.CheckedListBoxMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.CheckedListBoxMenuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.CheckedListBoxMenuSelectNone = new System.Windows.Forms.ToolStripMenuItem();
             this.CheckedListBoxMenuInvertSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.CheckedListBoxMenuShowHidden = new System.Windows.Forms.ToolStripMenuItem();
-            this.CategoryLabel = new System.Windows.Forms.Label();
-            this.CategoryFilter = new System.Windows.Forms.CheckedListBox();
-            this.LocationLabel = new System.Windows.Forms.Label();
             this.CloseButton = new System.Windows.Forms.Button();
             this.OkayButton = new System.Windows.Forms.Button();
-            this.TopPanel = new System.Windows.Forms.Panel();
-            this.Splitter = new System.Windows.Forms.SplitContainer();
             this.ActivityTree = new System.Windows.Forms.TreeView();
             this.TreeViewMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.TreeViewMenuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,236 +51,119 @@ namespace Timekeeper.Forms
             this.TreeViewMenuShowHiddenItems = new System.Windows.Forms.ToolStripMenuItem();
             this.imgSmall = new System.Windows.Forms.ImageList(this.components);
             this.ProjectTree = new System.Windows.Forms.TreeView();
-            this.BottomPanel.SuspendLayout();
-            this.SortGroupBox.SuspendLayout();
-            this.FilterGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DurationAmount)).BeginInit();
+            this.FilterOptionsTabControl = new System.Windows.Forms.TabControl();
+            this.CommonTab = new System.Windows.Forms.TabPage();
+            this.MemoGroup = new System.Windows.Forms.GroupBox();
+            this.MemoLabel = new System.Windows.Forms.Label();
+            this.MemoFilter = new System.Windows.Forms.TextBox();
+            this.DateRangeGroup = new System.Windows.Forms.GroupBox();
+            this.ProjectTab = new System.Windows.Forms.TabPage();
+            this.ActivityTab = new System.Windows.Forms.TabPage();
+            this.LocationTab = new System.Windows.Forms.TabPage();
+            this.CategoryTab = new System.Windows.Forms.TabPage();
+            this.CategoryFilter = new System.Windows.Forms.CheckedListBox();
+            this.AdvancedTab = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.IsLocked = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.DurationLabel = new System.Windows.Forms.Label();
+            this.DurationOperator = new System.Windows.Forms.ComboBox();
+            this.DurationAmount = new System.Windows.Forms.NumericUpDown();
+            this.DurationUnit = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ModifyTimePresets = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.CreateTimePresets = new System.Windows.Forms.ComboBox();
+            this.BottomPanel = new System.Windows.Forms.Panel();
+            this.ButtonPanel = new System.Windows.Forms.Panel();
             this.CheckedListBoxMenu.SuspendLayout();
-            this.TopPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Splitter)).BeginInit();
-            this.Splitter.Panel1.SuspendLayout();
-            this.Splitter.Panel2.SuspendLayout();
-            this.Splitter.SuspendLayout();
             this.TreeViewMenu.SuspendLayout();
+            this.FilterOptionsTabControl.SuspendLayout();
+            this.CommonTab.SuspendLayout();
+            this.MemoGroup.SuspendLayout();
+            this.DateRangeGroup.SuspendLayout();
+            this.ProjectTab.SuspendLayout();
+            this.ActivityTab.SuspendLayout();
+            this.LocationTab.SuspendLayout();
+            this.CategoryTab.SuspendLayout();
+            this.AdvancedTab.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DurationAmount)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.BottomPanel.SuspendLayout();
+            this.ButtonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // BottomPanel
+            // ToDateLabel
             // 
-            this.BottomPanel.Controls.Add(this.SortGroupBox);
-            this.BottomPanel.Controls.Add(this.DateGroupBox);
-            this.BottomPanel.Controls.Add(this.FilterGroupBox);
-            this.BottomPanel.Controls.Add(this.CloseButton);
-            this.BottomPanel.Controls.Add(this.OkayButton);
-            this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BottomPanel.Location = new System.Drawing.Point(0, 120);
-            this.BottomPanel.Name = "BottomPanel";
-            this.BottomPanel.Size = new System.Drawing.Size(612, 272);
-            this.BottomPanel.TabIndex = 17;
+            this.ToDateLabel.AutoSize = true;
+            this.ToDateLabel.Location = new System.Drawing.Point(14, 78);
+            this.ToDateLabel.Name = "ToDateLabel";
+            this.ToDateLabel.Size = new System.Drawing.Size(49, 13);
+            this.ToDateLabel.TabIndex = 9;
+            this.ToDateLabel.Text = "To Date:";
             // 
-            // SortGroupBox
+            // Presets
             // 
-            this.SortGroupBox.Controls.Add(this.label3);
-            this.SortGroupBox.Controls.Add(this.label2);
-            this.SortGroupBox.Controls.Add(this.label1);
-            this.SortGroupBox.Controls.Add(this.SortBy3);
-            this.SortGroupBox.Controls.Add(this.SortBy2);
-            this.SortGroupBox.Controls.Add(this.SortBy1);
-            this.SortGroupBox.Location = new System.Drawing.Point(12, 132);
-            this.SortGroupBox.Name = "SortGroupBox";
-            this.SortGroupBox.Size = new System.Drawing.Size(235, 104);
-            this.SortGroupBox.TabIndex = 18;
-            this.SortGroupBox.TabStop = false;
-            this.SortGroupBox.Text = "Sorting";
+            this.Presets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Presets.FormattingEnabled = true;
+            this.Presets.Location = new System.Drawing.Point(84, 25);
+            this.Presets.Name = "Presets";
+            this.Presets.Size = new System.Drawing.Size(121, 21);
+            this.Presets.TabIndex = 1;
+            this.Presets.SelectedIndexChanged += new System.EventHandler(this.Presets_SelectedIndexChanged);
             // 
-            // label3
+            // FromDateLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(20, 76);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "And Then By:";
+            this.FromDateLabel.AutoSize = true;
+            this.FromDateLabel.Location = new System.Drawing.Point(14, 52);
+            this.FromDateLabel.Name = "FromDateLabel";
+            this.FromDateLabel.Size = new System.Drawing.Size(59, 13);
+            this.FromDateLabel.TabIndex = 8;
+            this.FromDateLabel.Text = "From Date:";
             // 
-            // label2
+            // PresetLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(20, 49);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Then By:";
+            this.PresetLabel.AutoSize = true;
+            this.PresetLabel.Location = new System.Drawing.Point(14, 25);
+            this.PresetLabel.Name = "PresetLabel";
+            this.PresetLabel.Size = new System.Drawing.Size(40, 13);
+            this.PresetLabel.TabIndex = 7;
+            this.PresetLabel.Text = "Preset:";
             // 
-            // label1
+            // ToDate
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(20, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(44, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Sort By:";
+            this.ToDate.CustomFormat = "yyyy-MM-dd";
+            this.ToDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.ToDate.Location = new System.Drawing.Point(84, 78);
+            this.ToDate.Name = "ToDate";
+            this.ToDate.Size = new System.Drawing.Size(121, 20);
+            this.ToDate.TabIndex = 3;
+            this.ToDate.Enter += new System.EventHandler(this.ToDate_Enter);
+            this.ToDate.Leave += new System.EventHandler(this.ToDate_Leave);
             // 
-            // SortBy3
+            // FromDate
             // 
-            this.SortBy3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.SortBy3.Enabled = false;
-            this.SortBy3.FormattingEnabled = true;
-            this.SortBy3.Items.AddRange(new object[] {
-            "(none)",
-            "Date/Time",
-            "Activity",
-            "Project",
-            "Duration",
-            "Location",
-            "Category",
-            "External Id",
-            "Internal Id"});
-            this.SortBy3.Location = new System.Drawing.Point(93, 73);
-            this.SortBy3.Name = "SortBy3";
-            this.SortBy3.Size = new System.Drawing.Size(121, 21);
-            this.SortBy3.TabIndex = 2;
-            // 
-            // SortBy2
-            // 
-            this.SortBy2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.SortBy2.Enabled = false;
-            this.SortBy2.FormattingEnabled = true;
-            this.SortBy2.Items.AddRange(new object[] {
-            "(none)",
-            "Date/Time",
-            "Activity",
-            "Project",
-            "Duration",
-            "Location",
-            "Category",
-            "External Id",
-            "Internal Id"});
-            this.SortBy2.Location = new System.Drawing.Point(93, 46);
-            this.SortBy2.Name = "SortBy2";
-            this.SortBy2.Size = new System.Drawing.Size(121, 21);
-            this.SortBy2.TabIndex = 1;
-            this.SortBy2.SelectedIndexChanged += new System.EventHandler(this.SortBy2_SelectedIndexChanged);
-            // 
-            // SortBy1
-            // 
-            this.SortBy1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.SortBy1.FormattingEnabled = true;
-            this.SortBy1.Items.AddRange(new object[] {
-            "(none)",
-            "Date/Time",
-            "Activity",
-            "Project",
-            "Duration",
-            "Location",
-            "Category",
-            "External Id",
-            "Internal Id"});
-            this.SortBy1.Location = new System.Drawing.Point(93, 19);
-            this.SortBy1.Name = "SortBy1";
-            this.SortBy1.Size = new System.Drawing.Size(121, 21);
-            this.SortBy1.TabIndex = 0;
-            this.SortBy1.SelectedIndexChanged += new System.EventHandler(this.SortBy1_SelectedIndexChanged);
-            // 
-            // DateGroupBox
-            // 
-            this.DateGroupBox.Location = new System.Drawing.Point(12, 12);
-            this.DateGroupBox.Name = "DateGroupBox";
-            this.DateGroupBox.Size = new System.Drawing.Size(235, 113);
-            this.DateGroupBox.TabIndex = 17;
-            this.DateGroupBox.TabStop = false;
-            this.DateGroupBox.Text = "Date Range";
-            // 
-            // FilterGroupBox
-            // 
-            this.FilterGroupBox.Controls.Add(this.DurationLabel);
-            this.FilterGroupBox.Controls.Add(this.MemoLabel);
-            this.FilterGroupBox.Controls.Add(this.DurationOperator);
-            this.FilterGroupBox.Controls.Add(this.MemoFilter);
-            this.FilterGroupBox.Controls.Add(this.DurationAmount);
-            this.FilterGroupBox.Controls.Add(this.DurationUnit);
-            this.FilterGroupBox.Controls.Add(this.LocationFilter);
-            this.FilterGroupBox.Controls.Add(this.CategoryLabel);
-            this.FilterGroupBox.Controls.Add(this.CategoryFilter);
-            this.FilterGroupBox.Controls.Add(this.LocationLabel);
-            this.FilterGroupBox.Location = new System.Drawing.Point(253, 12);
-            this.FilterGroupBox.Name = "FilterGroupBox";
-            this.FilterGroupBox.Size = new System.Drawing.Size(347, 224);
-            this.FilterGroupBox.TabIndex = 14;
-            this.FilterGroupBox.TabStop = false;
-            this.FilterGroupBox.Text = "Additional Filtering";
-            // 
-            // DurationLabel
-            // 
-            this.DurationLabel.AutoSize = true;
-            this.DurationLabel.Location = new System.Drawing.Point(20, 53);
-            this.DurationLabel.Name = "DurationLabel";
-            this.DurationLabel.Size = new System.Drawing.Size(61, 13);
-            this.DurationLabel.TabIndex = 1;
-            this.DurationLabel.Text = "Duration Is:";
-            // 
-            // MemoLabel
-            // 
-            this.MemoLabel.AutoSize = true;
-            this.MemoLabel.Location = new System.Drawing.Point(20, 26);
-            this.MemoLabel.Name = "MemoLabel";
-            this.MemoLabel.Size = new System.Drawing.Size(83, 13);
-            this.MemoLabel.TabIndex = 13;
-            this.MemoLabel.Text = "Memo Contains:";
-            // 
-            // DurationOperator
-            // 
-            this.DurationOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DurationOperator.FormattingEnabled = true;
-            this.DurationOperator.Items.AddRange(new object[] {
-            "Any",
-            "Greater Than",
-            "Less Than",
-            "Equal To"});
-            this.DurationOperator.Location = new System.Drawing.Point(106, 49);
-            this.DurationOperator.Name = "DurationOperator";
-            this.DurationOperator.Size = new System.Drawing.Size(95, 21);
-            this.DurationOperator.TabIndex = 2;
-            this.DurationOperator.SelectedIndexChanged += new System.EventHandler(this.DurationOperator_SelectedIndexChanged);
-            // 
-            // MemoFilter
-            // 
-            this.MemoFilter.Location = new System.Drawing.Point(106, 23);
-            this.MemoFilter.Name = "MemoFilter";
-            this.MemoFilter.Size = new System.Drawing.Size(226, 20);
-            this.MemoFilter.TabIndex = 12;
-            // 
-            // DurationAmount
-            // 
-            this.DurationAmount.Enabled = false;
-            this.DurationAmount.Location = new System.Drawing.Point(207, 50);
-            this.DurationAmount.Maximum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            0});
-            this.DurationAmount.Name = "DurationAmount";
-            this.DurationAmount.Size = new System.Drawing.Size(45, 20);
-            this.DurationAmount.TabIndex = 3;
-            // 
-            // DurationUnit
-            // 
-            this.DurationUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DurationUnit.Enabled = false;
-            this.DurationUnit.FormattingEnabled = true;
-            this.DurationUnit.Items.AddRange(new object[] {
-            "Minutes",
-            "Hours"});
-            this.DurationUnit.Location = new System.Drawing.Point(258, 50);
-            this.DurationUnit.Name = "DurationUnit";
-            this.DurationUnit.Size = new System.Drawing.Size(74, 21);
-            this.DurationUnit.TabIndex = 4;
+            this.FromDate.CustomFormat = "yyyy-MM-dd";
+            this.FromDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.FromDate.Location = new System.Drawing.Point(84, 52);
+            this.FromDate.Name = "FromDate";
+            this.FromDate.Size = new System.Drawing.Size(121, 20);
+            this.FromDate.TabIndex = 2;
+            this.FromDate.Enter += new System.EventHandler(this.FromDate_Enter);
+            this.FromDate.Leave += new System.EventHandler(this.FromDate_Leave);
             // 
             // LocationFilter
             // 
             this.LocationFilter.ContextMenuStrip = this.CheckedListBoxMenu;
+            this.LocationFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LocationFilter.FormattingEnabled = true;
-            this.LocationFilter.Location = new System.Drawing.Point(106, 76);
+            this.LocationFilter.Location = new System.Drawing.Point(3, 3);
             this.LocationFilter.Name = "LocationFilter";
-            this.LocationFilter.Size = new System.Drawing.Size(226, 64);
+            this.LocationFilter.Size = new System.Drawing.Size(387, 246);
             this.LocationFilter.TabIndex = 5;
             // 
             // CheckedListBoxMenu
@@ -335,79 +203,25 @@ namespace Timekeeper.Forms
             this.CheckedListBoxMenuShowHidden.Size = new System.Drawing.Size(150, 22);
             this.CheckedListBoxMenuShowHidden.Text = "Show Hidden";
             // 
-            // CategoryLabel
-            // 
-            this.CategoryLabel.AutoSize = true;
-            this.CategoryLabel.Location = new System.Drawing.Point(20, 150);
-            this.CategoryLabel.Name = "CategoryLabel";
-            this.CategoryLabel.Size = new System.Drawing.Size(60, 13);
-            this.CategoryLabel.TabIndex = 8;
-            this.CategoryLabel.Text = "Categories:";
-            // 
-            // CategoryFilter
-            // 
-            this.CategoryFilter.ContextMenuStrip = this.CheckedListBoxMenu;
-            this.CategoryFilter.FormattingEnabled = true;
-            this.CategoryFilter.Location = new System.Drawing.Point(106, 150);
-            this.CategoryFilter.Name = "CategoryFilter";
-            this.CategoryFilter.Size = new System.Drawing.Size(226, 64);
-            this.CategoryFilter.TabIndex = 6;
-            // 
-            // LocationLabel
-            // 
-            this.LocationLabel.AutoSize = true;
-            this.LocationLabel.Location = new System.Drawing.Point(20, 76);
-            this.LocationLabel.Name = "LocationLabel";
-            this.LocationLabel.Size = new System.Drawing.Size(56, 13);
-            this.LocationLabel.TabIndex = 7;
-            this.LocationLabel.Text = "Locations:";
-            // 
             // CloseButton
             // 
             this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.Location = new System.Drawing.Point(525, 242);
+            this.CloseButton.Location = new System.Drawing.Point(84, 6);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(75, 23);
-            this.CloseButton.TabIndex = 16;
+            this.CloseButton.TabIndex = 99;
             this.CloseButton.Text = "Cancel";
             this.CloseButton.UseVisualStyleBackColor = true;
             // 
             // OkayButton
             // 
-            this.OkayButton.Location = new System.Drawing.Point(444, 242);
+            this.OkayButton.Location = new System.Drawing.Point(3, 6);
             this.OkayButton.Name = "OkayButton";
             this.OkayButton.Size = new System.Drawing.Size(75, 23);
-            this.OkayButton.TabIndex = 15;
+            this.OkayButton.TabIndex = 98;
             this.OkayButton.Text = "OK";
             this.OkayButton.UseVisualStyleBackColor = true;
             this.OkayButton.Click += new System.EventHandler(this.OkayButton_Click);
-            // 
-            // TopPanel
-            // 
-            this.TopPanel.Controls.Add(this.Splitter);
-            this.TopPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TopPanel.Location = new System.Drawing.Point(0, 0);
-            this.TopPanel.Name = "TopPanel";
-            this.TopPanel.Size = new System.Drawing.Size(612, 120);
-            this.TopPanel.TabIndex = 0;
-            // 
-            // Splitter
-            // 
-            this.Splitter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Splitter.Location = new System.Drawing.Point(0, 0);
-            this.Splitter.Name = "Splitter";
-            // 
-            // Splitter.Panel1
-            // 
-            this.Splitter.Panel1.Controls.Add(this.ActivityTree);
-            // 
-            // Splitter.Panel2
-            // 
-            this.Splitter.Panel2.Controls.Add(this.ProjectTree);
-            this.Splitter.Size = new System.Drawing.Size(612, 120);
-            this.Splitter.SplitterDistance = 306;
-            this.Splitter.TabIndex = 0;
-            this.Splitter.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Splitter_MouseDoubleClick);
             // 
             // ActivityTree
             // 
@@ -416,11 +230,11 @@ namespace Timekeeper.Forms
             this.ActivityTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ActivityTree.ImageIndex = 0;
             this.ActivityTree.ImageList = this.imgSmall;
-            this.ActivityTree.Location = new System.Drawing.Point(0, 0);
+            this.ActivityTree.Location = new System.Drawing.Point(3, 3);
             this.ActivityTree.Name = "ActivityTree";
             this.ActivityTree.SelectedImageIndex = 0;
             this.ActivityTree.ShowLines = false;
-            this.ActivityTree.Size = new System.Drawing.Size(306, 120);
+            this.ActivityTree.Size = new System.Drawing.Size(387, 246);
             this.ActivityTree.TabIndex = 0;
             // 
             // TreeViewMenu
@@ -481,12 +295,310 @@ namespace Timekeeper.Forms
             this.ProjectTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProjectTree.ImageIndex = 0;
             this.ProjectTree.ImageList = this.imgSmall;
-            this.ProjectTree.Location = new System.Drawing.Point(0, 0);
+            this.ProjectTree.Location = new System.Drawing.Point(3, 3);
             this.ProjectTree.Name = "ProjectTree";
             this.ProjectTree.SelectedImageIndex = 0;
-            this.ProjectTree.ShowRootLines = false;
-            this.ProjectTree.Size = new System.Drawing.Size(302, 120);
+            this.ProjectTree.Size = new System.Drawing.Size(387, 246);
             this.ProjectTree.TabIndex = 0;
+            // 
+            // FilterOptionsTabControl
+            // 
+            this.FilterOptionsTabControl.Controls.Add(this.CommonTab);
+            this.FilterOptionsTabControl.Controls.Add(this.ProjectTab);
+            this.FilterOptionsTabControl.Controls.Add(this.ActivityTab);
+            this.FilterOptionsTabControl.Controls.Add(this.LocationTab);
+            this.FilterOptionsTabControl.Controls.Add(this.CategoryTab);
+            this.FilterOptionsTabControl.Controls.Add(this.AdvancedTab);
+            this.FilterOptionsTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FilterOptionsTabControl.Location = new System.Drawing.Point(0, 0);
+            this.FilterOptionsTabControl.Name = "FilterOptionsTabControl";
+            this.FilterOptionsTabControl.SelectedIndex = 0;
+            this.FilterOptionsTabControl.Size = new System.Drawing.Size(401, 278);
+            this.FilterOptionsTabControl.TabIndex = 0;
+            this.FilterOptionsTabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.FilterOptionsTabControl_Selected);
+            // 
+            // CommonTab
+            // 
+            this.CommonTab.Controls.Add(this.MemoGroup);
+            this.CommonTab.Controls.Add(this.DateRangeGroup);
+            this.CommonTab.Location = new System.Drawing.Point(4, 22);
+            this.CommonTab.Name = "CommonTab";
+            this.CommonTab.Padding = new System.Windows.Forms.Padding(3);
+            this.CommonTab.Size = new System.Drawing.Size(393, 252);
+            this.CommonTab.TabIndex = 0;
+            this.CommonTab.Text = "Common";
+            this.CommonTab.UseVisualStyleBackColor = true;
+            // 
+            // MemoGroup
+            // 
+            this.MemoGroup.Controls.Add(this.MemoLabel);
+            this.MemoGroup.Controls.Add(this.MemoFilter);
+            this.MemoGroup.Location = new System.Drawing.Point(6, 130);
+            this.MemoGroup.Name = "MemoGroup";
+            this.MemoGroup.Size = new System.Drawing.Size(376, 100);
+            this.MemoGroup.TabIndex = 16;
+            this.MemoGroup.TabStop = false;
+            this.MemoGroup.Text = "Memo";
+            // 
+            // MemoLabel
+            // 
+            this.MemoLabel.AutoSize = true;
+            this.MemoLabel.Location = new System.Drawing.Point(14, 25);
+            this.MemoLabel.Name = "MemoLabel";
+            this.MemoLabel.Size = new System.Drawing.Size(51, 13);
+            this.MemoLabel.TabIndex = 15;
+            this.MemoLabel.Text = "Contains:";
+            // 
+            // MemoFilter
+            // 
+            this.MemoFilter.Location = new System.Drawing.Point(84, 22);
+            this.MemoFilter.Name = "MemoFilter";
+            this.MemoFilter.Size = new System.Drawing.Size(278, 20);
+            this.MemoFilter.TabIndex = 4;
+            // 
+            // DateRangeGroup
+            // 
+            this.DateRangeGroup.Controls.Add(this.PresetLabel);
+            this.DateRangeGroup.Controls.Add(this.ToDateLabel);
+            this.DateRangeGroup.Controls.Add(this.Presets);
+            this.DateRangeGroup.Controls.Add(this.FromDateLabel);
+            this.DateRangeGroup.Controls.Add(this.FromDate);
+            this.DateRangeGroup.Controls.Add(this.ToDate);
+            this.DateRangeGroup.Location = new System.Drawing.Point(6, 6);
+            this.DateRangeGroup.Name = "DateRangeGroup";
+            this.DateRangeGroup.Size = new System.Drawing.Size(376, 118);
+            this.DateRangeGroup.TabIndex = 13;
+            this.DateRangeGroup.TabStop = false;
+            this.DateRangeGroup.Text = "Date Range";
+            // 
+            // ProjectTab
+            // 
+            this.ProjectTab.Controls.Add(this.ProjectTree);
+            this.ProjectTab.Location = new System.Drawing.Point(4, 22);
+            this.ProjectTab.Name = "ProjectTab";
+            this.ProjectTab.Padding = new System.Windows.Forms.Padding(3);
+            this.ProjectTab.Size = new System.Drawing.Size(393, 252);
+            this.ProjectTab.TabIndex = 3;
+            this.ProjectTab.Text = "Projects";
+            this.ProjectTab.UseVisualStyleBackColor = true;
+            // 
+            // ActivityTab
+            // 
+            this.ActivityTab.Controls.Add(this.ActivityTree);
+            this.ActivityTab.Location = new System.Drawing.Point(4, 22);
+            this.ActivityTab.Name = "ActivityTab";
+            this.ActivityTab.Padding = new System.Windows.Forms.Padding(3);
+            this.ActivityTab.Size = new System.Drawing.Size(393, 252);
+            this.ActivityTab.TabIndex = 4;
+            this.ActivityTab.Text = "Activities";
+            this.ActivityTab.UseVisualStyleBackColor = true;
+            // 
+            // LocationTab
+            // 
+            this.LocationTab.Controls.Add(this.LocationFilter);
+            this.LocationTab.Location = new System.Drawing.Point(4, 22);
+            this.LocationTab.Name = "LocationTab";
+            this.LocationTab.Padding = new System.Windows.Forms.Padding(3);
+            this.LocationTab.Size = new System.Drawing.Size(393, 252);
+            this.LocationTab.TabIndex = 1;
+            this.LocationTab.Text = "Locations";
+            this.LocationTab.UseVisualStyleBackColor = true;
+            // 
+            // CategoryTab
+            // 
+            this.CategoryTab.Controls.Add(this.CategoryFilter);
+            this.CategoryTab.Location = new System.Drawing.Point(4, 22);
+            this.CategoryTab.Name = "CategoryTab";
+            this.CategoryTab.Padding = new System.Windows.Forms.Padding(3);
+            this.CategoryTab.Size = new System.Drawing.Size(393, 252);
+            this.CategoryTab.TabIndex = 5;
+            this.CategoryTab.Text = "Categories";
+            this.CategoryTab.UseVisualStyleBackColor = true;
+            // 
+            // CategoryFilter
+            // 
+            this.CategoryFilter.ContextMenuStrip = this.CheckedListBoxMenu;
+            this.CategoryFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CategoryFilter.FormattingEnabled = true;
+            this.CategoryFilter.Location = new System.Drawing.Point(3, 3);
+            this.CategoryFilter.Name = "CategoryFilter";
+            this.CategoryFilter.Size = new System.Drawing.Size(387, 246);
+            this.CategoryFilter.TabIndex = 7;
+            // 
+            // AdvancedTab
+            // 
+            this.AdvancedTab.Controls.Add(this.groupBox3);
+            this.AdvancedTab.Controls.Add(this.groupBox2);
+            this.AdvancedTab.Controls.Add(this.groupBox1);
+            this.AdvancedTab.Location = new System.Drawing.Point(4, 22);
+            this.AdvancedTab.Name = "AdvancedTab";
+            this.AdvancedTab.Padding = new System.Windows.Forms.Padding(3);
+            this.AdvancedTab.Size = new System.Drawing.Size(393, 252);
+            this.AdvancedTab.TabIndex = 2;
+            this.AdvancedTab.Text = "Advanced";
+            this.AdvancedTab.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.IsLocked);
+            this.groupBox3.Controls.Add(this.checkBox1);
+            this.groupBox3.Location = new System.Drawing.Point(6, 171);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(379, 68);
+            this.groupBox3.TabIndex = 15;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Special Needs";
+            // 
+            // IsLocked
+            // 
+            this.IsLocked.AutoSize = true;
+            this.IsLocked.Location = new System.Drawing.Point(20, 19);
+            this.IsLocked.Name = "IsLocked";
+            this.IsLocked.Size = new System.Drawing.Size(120, 17);
+            this.IsLocked.TabIndex = 6;
+            this.IsLocked.Text = "Find Locked Entries";
+            this.IsLocked.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(20, 42);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(141, 17);
+            this.checkBox1.TabIndex = 7;
+            this.checkBox1.Text = "Find Overlapping Entries";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.DurationLabel);
+            this.groupBox2.Controls.Add(this.DurationOperator);
+            this.groupBox2.Controls.Add(this.DurationAmount);
+            this.groupBox2.Controls.Add(this.DurationUnit);
+            this.groupBox2.Location = new System.Drawing.Point(6, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(379, 66);
+            this.groupBox2.TabIndex = 14;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Duration";
+            // 
+            // DurationLabel
+            // 
+            this.DurationLabel.AutoSize = true;
+            this.DurationLabel.Location = new System.Drawing.Point(12, 32);
+            this.DurationLabel.Name = "DurationLabel";
+            this.DurationLabel.Size = new System.Drawing.Size(61, 13);
+            this.DurationLabel.TabIndex = 5;
+            this.DurationLabel.Text = "Duration Is:";
+            // 
+            // DurationOperator
+            // 
+            this.DurationOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DurationOperator.FormattingEnabled = true;
+            this.DurationOperator.Items.AddRange(new object[] {
+            "Any",
+            "Greater Than",
+            "Less Than",
+            "Equal To"});
+            this.DurationOperator.Location = new System.Drawing.Point(79, 29);
+            this.DurationOperator.Name = "DurationOperator";
+            this.DurationOperator.Size = new System.Drawing.Size(121, 21);
+            this.DurationOperator.TabIndex = 1;
+            this.DurationOperator.SelectedIndexChanged += new System.EventHandler(this.DurationOperator_SelectedIndexChanged);
+            // 
+            // DurationAmount
+            // 
+            this.DurationAmount.Enabled = false;
+            this.DurationAmount.Location = new System.Drawing.Point(206, 30);
+            this.DurationAmount.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.DurationAmount.Name = "DurationAmount";
+            this.DurationAmount.Size = new System.Drawing.Size(45, 20);
+            this.DurationAmount.TabIndex = 2;
+            // 
+            // DurationUnit
+            // 
+            this.DurationUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DurationUnit.Enabled = false;
+            this.DurationUnit.FormattingEnabled = true;
+            this.DurationUnit.Items.AddRange(new object[] {
+            "Minutes",
+            "Hours"});
+            this.DurationUnit.Location = new System.Drawing.Point(257, 29);
+            this.DurationUnit.Name = "DurationUnit";
+            this.DurationUnit.Size = new System.Drawing.Size(81, 21);
+            this.DurationUnit.TabIndex = 3;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.ModifyTimePresets);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.CreateTimePresets);
+            this.groupBox1.Location = new System.Drawing.Point(6, 78);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(379, 87);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Entry Meta Data";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(14, 54);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(126, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Where entry last modified";
+            // 
+            // ModifyTimePresets
+            // 
+            this.ModifyTimePresets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ModifyTimePresets.FormattingEnabled = true;
+            this.ModifyTimePresets.Location = new System.Drawing.Point(146, 51);
+            this.ModifyTimePresets.Name = "ModifyTimePresets";
+            this.ModifyTimePresets.Size = new System.Drawing.Size(121, 21);
+            this.ModifyTimePresets.TabIndex = 5;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(14, 27);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(104, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Where entry created";
+            // 
+            // CreateTimePresets
+            // 
+            this.CreateTimePresets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CreateTimePresets.FormattingEnabled = true;
+            this.CreateTimePresets.Location = new System.Drawing.Point(146, 24);
+            this.CreateTimePresets.Name = "CreateTimePresets";
+            this.CreateTimePresets.Size = new System.Drawing.Size(121, 21);
+            this.CreateTimePresets.TabIndex = 4;
+            // 
+            // BottomPanel
+            // 
+            this.BottomPanel.Controls.Add(this.ButtonPanel);
+            this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.BottomPanel.Location = new System.Drawing.Point(0, 278);
+            this.BottomPanel.Name = "BottomPanel";
+            this.BottomPanel.Size = new System.Drawing.Size(401, 34);
+            this.BottomPanel.TabIndex = 17;
+            // 
+            // ButtonPanel
+            // 
+            this.ButtonPanel.Controls.Add(this.OkayButton);
+            this.ButtonPanel.Controls.Add(this.CloseButton);
+            this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ButtonPanel.Location = new System.Drawing.Point(237, 0);
+            this.ButtonPanel.Name = "ButtonPanel";
+            this.ButtonPanel.Size = new System.Drawing.Size(164, 34);
+            this.ButtonPanel.TabIndex = 0;
             // 
             // Filtering
             // 
@@ -494,52 +606,49 @@ namespace Timekeeper.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
-            this.ClientSize = new System.Drawing.Size(612, 392);
-            this.Controls.Add(this.TopPanel);
+            this.ClientSize = new System.Drawing.Size(401, 312);
+            this.Controls.Add(this.FilterOptionsTabControl);
             this.Controls.Add(this.BottomPanel);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Filtering";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Filtering";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Filtering_FormClosing);
             this.Load += new System.EventHandler(this.Filtering_Load);
-            this.BottomPanel.ResumeLayout(false);
-            this.SortGroupBox.ResumeLayout(false);
-            this.SortGroupBox.PerformLayout();
-            this.FilterGroupBox.ResumeLayout(false);
-            this.FilterGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DurationAmount)).EndInit();
             this.CheckedListBoxMenu.ResumeLayout(false);
-            this.TopPanel.ResumeLayout(false);
-            this.Splitter.Panel1.ResumeLayout(false);
-            this.Splitter.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Splitter)).EndInit();
-            this.Splitter.ResumeLayout(false);
             this.TreeViewMenu.ResumeLayout(false);
+            this.FilterOptionsTabControl.ResumeLayout(false);
+            this.CommonTab.ResumeLayout(false);
+            this.MemoGroup.ResumeLayout(false);
+            this.MemoGroup.PerformLayout();
+            this.DateRangeGroup.ResumeLayout(false);
+            this.DateRangeGroup.PerformLayout();
+            this.ProjectTab.ResumeLayout(false);
+            this.ActivityTab.ResumeLayout(false);
+            this.LocationTab.ResumeLayout(false);
+            this.CategoryTab.ResumeLayout(false);
+            this.AdvancedTab.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DurationAmount)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.BottomPanel.ResumeLayout(false);
+            this.ButtonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel BottomPanel;
-        private System.Windows.Forms.GroupBox FilterGroupBox;
-        private System.Windows.Forms.Label DurationLabel;
-        private System.Windows.Forms.ComboBox DurationOperator;
-        private System.Windows.Forms.NumericUpDown DurationAmount;
-        private System.Windows.Forms.ComboBox DurationUnit;
         private System.Windows.Forms.CheckedListBox LocationFilter;
-        private System.Windows.Forms.CheckedListBox CategoryFilter;
-        private System.Windows.Forms.Label LocationLabel;
-        private System.Windows.Forms.Label CategoryLabel;
-        private System.Windows.Forms.TextBox MemoFilter;
-        private System.Windows.Forms.Label MemoLabel;
         private System.Windows.Forms.Button OkayButton;
         private System.Windows.Forms.Button CloseButton;
-        private System.Windows.Forms.Panel TopPanel;
-        private System.Windows.Forms.SplitContainer Splitter;
         private System.Windows.Forms.TreeView ActivityTree;
         private System.Windows.Forms.TreeView ProjectTree;
         private System.Windows.Forms.ImageList imgSmall;
@@ -553,13 +662,38 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem CheckedListBoxMenuSelectNone;
         private System.Windows.Forms.ToolStripMenuItem CheckedListBoxMenuInvertSelection;
         private System.Windows.Forms.ToolStripMenuItem CheckedListBoxMenuShowHidden;
-        private System.Windows.Forms.GroupBox DateGroupBox;
-        private System.Windows.Forms.GroupBox SortGroupBox;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label ToDateLabel;
+        public System.Windows.Forms.ComboBox Presets;
+        private System.Windows.Forms.Label FromDateLabel;
+        private System.Windows.Forms.Label PresetLabel;
+        public System.Windows.Forms.DateTimePicker ToDate;
+        public System.Windows.Forms.DateTimePicker FromDate;
+        private System.Windows.Forms.TabControl FilterOptionsTabControl;
+        private System.Windows.Forms.TabPage CommonTab;
+        private System.Windows.Forms.TabPage LocationTab;
+        private System.Windows.Forms.TabPage AdvancedTab;
+        private System.Windows.Forms.GroupBox DateRangeGroup;
+        private System.Windows.Forms.TabPage ProjectTab;
+        private System.Windows.Forms.TabPage ActivityTab;
+        private System.Windows.Forms.GroupBox MemoGroup;
+        private System.Windows.Forms.Label MemoLabel;
+        private System.Windows.Forms.TextBox MemoFilter;
+        private System.Windows.Forms.Panel BottomPanel;
+        private System.Windows.Forms.Panel ButtonPanel;
+        private System.Windows.Forms.Label DurationLabel;
+        private System.Windows.Forms.ComboBox DurationOperator;
+        private System.Windows.Forms.ComboBox DurationUnit;
+        private System.Windows.Forms.NumericUpDown DurationAmount;
+        private System.Windows.Forms.TabPage CategoryTab;
+        private System.Windows.Forms.CheckedListBox CategoryFilter;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.ComboBox ModifyTimePresets;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox SortBy3;
-        private System.Windows.Forms.ComboBox SortBy2;
-        private System.Windows.Forms.ComboBox SortBy1;
+        public System.Windows.Forms.ComboBox CreateTimePresets;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox IsLocked;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }

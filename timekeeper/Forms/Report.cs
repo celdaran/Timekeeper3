@@ -116,7 +116,7 @@ namespace Timekeeper.Forms
         private void RunReport()
         {
             string WhereClause = GetWhereClause();
-            string OrderBy = GetOrderBy();
+            string OrderBy = "log.StartTime"; // TODO: reimplement this: GetOrderBy();
 
             string Query = String.Format(@"
                 select
@@ -266,13 +266,15 @@ namespace Timekeeper.Forms
 
         private string GetWhereClause()
         {
+            Common.Warn("You're still using the wrong GetWhereClause");
+
             string WhereClause = "";
 
             WhereClause += String.Format("log.StartTime >= '{0}'",
-                FilterOptions.StartTimeToString()) + System.Environment.NewLine;
+                FilterOptions.FromDateToString()) + System.Environment.NewLine;
 
             WhereClause += String.Format("and log.StopTime <= '{0}'",
-                FilterOptions.StopTimeToString()) + System.Environment.NewLine;
+                FilterOptions.ToDateToString()) + System.Environment.NewLine;
 
             if ((FilterOptions.ImpliedActivities != null) && (FilterOptions.ImpliedActivities.Count > 0)) {
                 WhereClause += String.Format("and log.ActivityId in ({0})",
@@ -282,8 +284,8 @@ namespace Timekeeper.Forms
                 WhereClause += String.Format("and log.ProjectId in ({0})",
                     FilterOptions.List(FilterOptions.ImpliedProjects)) + System.Environment.NewLine;
             }
-            if ((FilterOptions.Memo != null) && (FilterOptions.Memo != "")) {
-                WhereClause += String.Format("and log.Memo like '%{0}%'", FilterOptions.Memo) + System.Environment.NewLine;
+            if ((FilterOptions.MemoContains != null) && (FilterOptions.MemoContains != "")) {
+                WhereClause += String.Format("and log.Memo like '%{0}%'", FilterOptions.MemoContains) + System.Environment.NewLine;
             }
 
             if (FilterOptions.DurationOperator > 0) {
@@ -314,7 +316,7 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
-
+        /*
         private string GetOrderBy()
         {
             string OrderBy = GetOrderByInternal(FilterOptions.SortBy1);
@@ -327,6 +329,7 @@ namespace Timekeeper.Forms
 
             return OrderBy;
         }
+        */
 
         //---------------------------------------------------------------------
 

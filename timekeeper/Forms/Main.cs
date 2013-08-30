@@ -268,10 +268,10 @@ namespace Timekeeper.Forms
         private void menuReportsGrid_Click(object sender, EventArgs e)
         {
             fGrid grid = new fGrid(Database);
-            grid.lastGridViewId = Options.State_LastGridViewId;
+            grid.lastGridViewId = Options.State_LastGridOptionsId;
             grid.Show(this);
             OpenForms.Add(grid);
-            Options.State_LastGridViewId = grid.lastGridViewId;
+            Options.State_LastGridOptionsId = grid.lastGridViewId;
         }
 
         // Report | Quick List
@@ -305,7 +305,9 @@ namespace Timekeeper.Forms
         // Tools | Find
         private void MenuToolFind_Click(object sender, EventArgs e)
         {
-            Common.Warn("Not implemented");
+            Classes.FindOptions FindOptions = new Classes.FindOptions();
+            Forms.Find FindDialog = new Forms.Find(FindOptions, Browser_GotoSpecificEntry);
+            FindDialog.Show(this); // FIXME: why does this get flaky when "this" isn't specified?
         }
 
         // Tools | Notebook
@@ -1073,6 +1075,18 @@ namespace Timekeeper.Forms
         private void toolControlSplitEntry4_Click(object sender, EventArgs e)
         {
             Action_SplitEntry(4);
+        }
+
+        private void MenuActionManageLocations_Click(object sender, EventArgs e)
+        {
+            int SavedSelection = wLocation.SelectedIndex;
+            Dialog_LocationManager();
+            wLocation.SelectedIndex = SavedSelection;
+        }
+
+        private void MenuActionManageCategories_Click(object sender, EventArgs e)
+        {
+            Action_ChangedCategory();
         }
 
         //---------------------------------------------------------------------
