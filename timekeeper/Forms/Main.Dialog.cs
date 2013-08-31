@@ -141,12 +141,10 @@ namespace Timekeeper.Forms
 
         private void Dialog_NewFile()
         {
-            bool ShowNewDatabaseWizard = false; // FIXME: this will be an option
-
             string FileName;
             FileCreateOptions CreateOptions;
 
-            if (ShowNewDatabaseWizard) {
+            if (Options.Behavior_Annoy_UseNewDatabaseWizard) {
                 NewWizard NewWizardDialog = new NewWizard();
                 if (NewWizardDialog.ShowDialog(this) == DialogResult.OK) {
                     FileName = NewWizardDialog.CreateOptions.FileName;
@@ -159,8 +157,8 @@ namespace Timekeeper.Forms
                     FileName = NewFileDialog.FileName;
                     CreateOptions = new FileCreateOptions();
                     CreateOptions.UseProjects = true;
-                    CreateOptions.UseActivities = true;
-                    CreateOptions.ItemPreset = 1;
+                    CreateOptions.UseActivities = false;
+                    CreateOptions.ItemPreset = 0;
                     CreateOptions.LocationName = "Default";
                     CreateOptions.LocationDescription = "Default Location";
                     CreateOptions.LocationTimeZoneId = Timekeeper.CurrentTimeZoneId();
@@ -174,8 +172,11 @@ namespace Timekeeper.Forms
             Cursor.Current = Cursors.WaitCursor;
 
             Action_CloseFile();
-            Action_CreateFile(FileName, CreateOptions);
-            Action_OpenFile(FileName);
+            if (Action_CreateFile(FileName, CreateOptions)) {
+                Action_OpenFile(FileName);
+            } else {
+                Common.Warn("An error occurred creating the database");
+            }
 
             Cursor.Current = Cursors.Default;
         }

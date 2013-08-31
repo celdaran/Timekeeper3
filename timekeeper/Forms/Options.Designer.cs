@@ -127,6 +127,11 @@
             this.SmallImages = new System.Windows.Forms.ImageList(this.components);
             this.AdvancedPage = new System.Windows.Forms.TabPage();
             this.OtherGroup = new System.Windows.Forms.GroupBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.DateTimeFormatTemplate = new System.Windows.Forms.TextBox();
@@ -136,11 +141,7 @@
             this.LoggingDatabaseLabel = new System.Windows.Forms.Label();
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.Behavior_Annoy_UseNewDatabaseWizard = new System.Windows.Forms.CheckBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -176,8 +177,8 @@
             this.ShortcutGroup.SuspendLayout();
             this.AdvancedPage.SuspendLayout();
             this.OtherGroup.SuspendLayout();
-            this.LoggingGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.LoggingGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -703,6 +704,7 @@
             // 
             // BehaviorPage
             // 
+            this.BehaviorPage.AutoScroll = true;
             this.BehaviorPage.Controls.Add(this.SortingGroup);
             this.BehaviorPage.Controls.Add(this.AnnoyGroup);
             this.BehaviorPage.Controls.Add(this.WindowControlGroup);
@@ -719,9 +721,9 @@
             // 
             this.SortingGroup.Controls.Add(this.SortingGroup_BottomPanel);
             this.SortingGroup.Controls.Add(this.SortingGroup_ProjectPanel);
-            this.SortingGroup.Location = new System.Drawing.Point(17, 324);
+            this.SortingGroup.Location = new System.Drawing.Point(17, 349);
             this.SortingGroup.Name = "SortingGroup";
-            this.SortingGroup.Size = new System.Drawing.Size(363, 81);
+            this.SortingGroup.Size = new System.Drawing.Size(345, 81);
             this.SortingGroup.TabIndex = 4;
             this.SortingGroup.TabStop = false;
             this.SortingGroup.Text = "Sorting";
@@ -734,7 +736,7 @@
             this.SortingGroup_BottomPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.SortingGroup_BottomPanel.Location = new System.Drawing.Point(3, 43);
             this.SortingGroup_BottomPanel.Name = "SortingGroup_BottomPanel";
-            this.SortingGroup_BottomPanel.Size = new System.Drawing.Size(357, 27);
+            this.SortingGroup_BottomPanel.Size = new System.Drawing.Size(339, 27);
             this.SortingGroup_BottomPanel.TabIndex = 1;
             // 
             // Behavior_SortItemsBy
@@ -745,7 +747,7 @@
             this.Behavior_SortItemsBy.FormattingEnabled = true;
             this.Behavior_SortItemsBy.Location = new System.Drawing.Point(109, 3);
             this.Behavior_SortItemsBy.Name = "Behavior_SortItemsBy";
-            this.Behavior_SortItemsBy.Size = new System.Drawing.Size(146, 21);
+            this.Behavior_SortItemsBy.Size = new System.Drawing.Size(133, 21);
             this.Behavior_SortItemsBy.TabIndex = 18;
             // 
             // Behavior_SortItemsByDirection
@@ -757,9 +759,9 @@
             this.Behavior_SortItemsByDirection.Items.AddRange(new object[] {
             "Ascending",
             "Descending"});
-            this.Behavior_SortItemsByDirection.Location = new System.Drawing.Point(261, 3);
+            this.Behavior_SortItemsByDirection.Location = new System.Drawing.Point(248, 3);
             this.Behavior_SortItemsByDirection.Name = "Behavior_SortItemsByDirection";
-            this.Behavior_SortItemsByDirection.Size = new System.Drawing.Size(88, 21);
+            this.Behavior_SortItemsByDirection.Size = new System.Drawing.Size(75, 21);
             this.Behavior_SortItemsByDirection.TabIndex = 20;
             // 
             // SortItemsLabel
@@ -779,7 +781,7 @@
             this.SortingGroup_ProjectPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.SortingGroup_ProjectPanel.Location = new System.Drawing.Point(3, 16);
             this.SortingGroup_ProjectPanel.Name = "SortingGroup_ProjectPanel";
-            this.SortingGroup_ProjectPanel.Size = new System.Drawing.Size(357, 27);
+            this.SortingGroup_ProjectPanel.Size = new System.Drawing.Size(339, 27);
             this.SortingGroup_ProjectPanel.TabIndex = 0;
             // 
             // Behavior_SortProjectsByDirection
@@ -791,9 +793,9 @@
             this.Behavior_SortProjectsByDirection.Items.AddRange(new object[] {
             "Ascending",
             "Descending"});
-            this.Behavior_SortProjectsByDirection.Location = new System.Drawing.Point(261, 3);
+            this.Behavior_SortProjectsByDirection.Location = new System.Drawing.Point(248, 3);
             this.Behavior_SortProjectsByDirection.Name = "Behavior_SortProjectsByDirection";
-            this.Behavior_SortProjectsByDirection.Size = new System.Drawing.Size(88, 21);
+            this.Behavior_SortProjectsByDirection.Size = new System.Drawing.Size(75, 21);
             this.Behavior_SortProjectsByDirection.TabIndex = 19;
             // 
             // Behavior_SortProjectsBy
@@ -804,7 +806,7 @@
             this.Behavior_SortProjectsBy.FormattingEnabled = true;
             this.Behavior_SortProjectsBy.Location = new System.Drawing.Point(109, 3);
             this.Behavior_SortProjectsBy.Name = "Behavior_SortProjectsBy";
-            this.Behavior_SortProjectsBy.Size = new System.Drawing.Size(146, 21);
+            this.Behavior_SortProjectsBy.Size = new System.Drawing.Size(133, 21);
             this.Behavior_SortProjectsBy.TabIndex = 16;
             // 
             // SortProjectsLabel
@@ -822,7 +824,7 @@
             this.AnnoyGroup.Controls.Add(this.AnnoyGroup_TopPanel);
             this.AnnoyGroup.Location = new System.Drawing.Point(17, 201);
             this.AnnoyGroup.Name = "AnnoyGroup";
-            this.AnnoyGroup.Size = new System.Drawing.Size(363, 116);
+            this.AnnoyGroup.Size = new System.Drawing.Size(345, 142);
             this.AnnoyGroup.TabIndex = 2;
             this.AnnoyGroup.TabStop = false;
             this.AnnoyGroup.Text = "Annoyances";
@@ -832,9 +834,9 @@
             this.AnnoyGroup_BottomPanel.Controls.Add(this.Behavior_Annoy_ProjectFollowsActivity);
             this.AnnoyGroup_BottomPanel.Controls.Add(this.Behavior_Annoy_ActivityFollowsProject);
             this.AnnoyGroup_BottomPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnnoyGroup_BottomPanel.Location = new System.Drawing.Point(3, 63);
+            this.AnnoyGroup_BottomPanel.Location = new System.Drawing.Point(3, 86);
             this.AnnoyGroup_BottomPanel.Name = "AnnoyGroup_BottomPanel";
-            this.AnnoyGroup_BottomPanel.Size = new System.Drawing.Size(357, 46);
+            this.AnnoyGroup_BottomPanel.Size = new System.Drawing.Size(339, 46);
             this.AnnoyGroup_BottomPanel.TabIndex = 1;
             // 
             // Behavior_Annoy_ProjectFollowsActivity
@@ -861,6 +863,7 @@
             // 
             // AnnoyGroup_TopPanel
             // 
+            this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_UseNewDatabaseWizard);
             this.AnnoyGroup_TopPanel.Controls.Add(this.MinutesLabel);
             this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_PromptBeforeHiding);
             this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_NoRunningPrompt);
@@ -868,7 +871,7 @@
             this.AnnoyGroup_TopPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.AnnoyGroup_TopPanel.Location = new System.Drawing.Point(3, 16);
             this.AnnoyGroup_TopPanel.Name = "AnnoyGroup_TopPanel";
-            this.AnnoyGroup_TopPanel.Size = new System.Drawing.Size(357, 47);
+            this.AnnoyGroup_TopPanel.Size = new System.Drawing.Size(339, 70);
             this.AnnoyGroup_TopPanel.TabIndex = 0;
             // 
             // MinutesLabel
@@ -915,7 +918,7 @@
             this.WindowControlGroup.Controls.Add(this.Behavior_Window_ShowInTray);
             this.WindowControlGroup.Location = new System.Drawing.Point(17, 107);
             this.WindowControlGroup.Name = "WindowControlGroup";
-            this.WindowControlGroup.Size = new System.Drawing.Size(363, 88);
+            this.WindowControlGroup.Size = new System.Drawing.Size(345, 88);
             this.WindowControlGroup.TabIndex = 1;
             this.WindowControlGroup.TabStop = false;
             this.WindowControlGroup.Text = "Window Control";
@@ -960,7 +963,7 @@
             this.TitleBarGroup.Controls.Add(this.TitleBarTemplateLabel);
             this.TitleBarGroup.Location = new System.Drawing.Point(17, 16);
             this.TitleBarGroup.Name = "TitleBarGroup";
-            this.TitleBarGroup.Size = new System.Drawing.Size(363, 85);
+            this.TitleBarGroup.Size = new System.Drawing.Size(345, 85);
             this.TitleBarGroup.TabIndex = 0;
             this.TitleBarGroup.TabStop = false;
             this.TitleBarGroup.Text = "Title Bar";
@@ -980,14 +983,14 @@
             this.Behavior_TitleBar_Time.FormattingEnabled = true;
             this.Behavior_TitleBar_Time.Location = new System.Drawing.Point(111, 51);
             this.Behavior_TitleBar_Time.Name = "Behavior_TitleBar_Time";
-            this.Behavior_TitleBar_Time.Size = new System.Drawing.Size(241, 21);
+            this.Behavior_TitleBar_Time.Size = new System.Drawing.Size(215, 21);
             this.Behavior_TitleBar_Time.TabIndex = 6;
             // 
             // Behavior_TitleBar_Template
             // 
             this.Behavior_TitleBar_Template.Location = new System.Drawing.Point(111, 25);
             this.Behavior_TitleBar_Template.Name = "Behavior_TitleBar_Template";
-            this.Behavior_TitleBar_Template.Size = new System.Drawing.Size(240, 20);
+            this.Behavior_TitleBar_Template.Size = new System.Drawing.Size(215, 20);
             this.Behavior_TitleBar_Template.TabIndex = 5;
             // 
             // TitleBarTemplateLabel
@@ -1338,6 +1341,66 @@
             this.OtherGroup.TabStop = false;
             this.OtherGroup.Text = "Other";
             // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(17, 110);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(224, 17);
+            this.checkBox3.TabIndex = 7;
+            this.checkBox3.Text = "Display journal entry ID on browser toolbar";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(17, 87);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(152, 17);
+            this.checkBox2.TabIndex = 6;
+            this.checkBox2.Text = "Use New Database wizard";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(238, 152);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "minutes";
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(179, 150);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(53, 20);
+            this.numericUpDown1.TabIndex = 4;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(14, 152);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(165, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Warn if splitting an entry less than";
+            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
@@ -1353,13 +1416,13 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(14, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 13);
+            this.label1.Size = new System.Drawing.Size(96, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Application:";
+            this.label1.Text = "Date/Time Format:";
             // 
             // DateTimeFormatTemplate
             // 
-            this.DateTimeFormatTemplate.Location = new System.Drawing.Point(111, 25);
+            this.DateTimeFormatTemplate.Location = new System.Drawing.Point(125, 25);
             this.DateTimeFormatTemplate.Name = "DateTimeFormatTemplate";
             this.DateTimeFormatTemplate.Size = new System.Drawing.Size(224, 20);
             this.DateTimeFormatTemplate.TabIndex = 0;
@@ -1436,65 +1499,15 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
-            // label2
+            // Behavior_Annoy_UseNewDatabaseWizard
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 152);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(165, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Warn if splitting an entry less than";
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(179, 150);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(53, 20);
-            this.numericUpDown1.TabIndex = 4;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(238, 152);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "minutes";
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(17, 87);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(152, 17);
-            this.checkBox2.TabIndex = 6;
-            this.checkBox2.Text = "Use New Database wizard";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(17, 110);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(224, 17);
-            this.checkBox3.TabIndex = 7;
-            this.checkBox3.Text = "Display journal entry ID on browser toolbar";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.Behavior_Annoy_UseNewDatabaseWizard.AutoSize = true;
+            this.Behavior_Annoy_UseNewDatabaseWizard.Location = new System.Drawing.Point(14, 50);
+            this.Behavior_Annoy_UseNewDatabaseWizard.Name = "Behavior_Annoy_UseNewDatabaseWizard";
+            this.Behavior_Annoy_UseNewDatabaseWizard.Size = new System.Drawing.Size(152, 17);
+            this.Behavior_Annoy_UseNewDatabaseWizard.TabIndex = 9;
+            this.Behavior_Annoy_UseNewDatabaseWizard.Text = "Use New Database wizard";
+            this.Behavior_Annoy_UseNewDatabaseWizard.UseVisualStyleBackColor = true;
             // 
             // Options
             // 
@@ -1574,9 +1587,9 @@
             this.AdvancedPage.ResumeLayout(false);
             this.OtherGroup.ResumeLayout(false);
             this.OtherGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1696,6 +1709,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox Behavior_Annoy_UseNewDatabaseWizard;
 
     }
 }

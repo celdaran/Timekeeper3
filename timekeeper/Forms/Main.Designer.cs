@@ -257,7 +257,7 @@ namespace Timekeeper.Forms
             this.MenuToolbar});
             this.MenuMain.Location = new System.Drawing.Point(0, 0);
             this.MenuMain.Name = "MenuMain";
-            this.MenuMain.Size = new System.Drawing.Size(597, 24);
+            this.MenuMain.Size = new System.Drawing.Size(650, 24);
             this.MenuMain.TabIndex = 0;
             // 
             // MenuFile
@@ -950,10 +950,10 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedActivityToday,
             this.StatusBarElapsedAllToday,
             this.StatusBarFileName});
-            this.StatusBar.Location = new System.Drawing.Point(0, 351);
+            this.StatusBar.Location = new System.Drawing.Point(0, 386);
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.ShowItemToolTips = true;
-            this.StatusBar.Size = new System.Drawing.Size(597, 22);
+            this.StatusBar.Size = new System.Drawing.Size(650, 22);
             this.StatusBar.TabIndex = 12;
             // 
             // StatusBarCurrentProject
@@ -1059,8 +1059,8 @@ namespace Timekeeper.Forms
             // splitTrees.Panel2
             // 
             this.splitTrees.Panel2.Controls.Add(this.ActivityTree);
-            this.splitTrees.Size = new System.Drawing.Size(597, 115);
-            this.splitTrees.SplitterDistance = 528;
+            this.splitTrees.Size = new System.Drawing.Size(650, 115);
+            this.splitTrees.SplitterDistance = 250;
             this.splitTrees.TabIndex = 2;
             this.splitTrees.TabStop = false;
             this.splitTrees.DoubleClick += new System.EventHandler(this.splitTrees_DoubleClick);
@@ -1079,7 +1079,7 @@ namespace Timekeeper.Forms
             this.ProjectTree.SelectedImageIndex = 0;
             this.ProjectTree.ShowLines = false;
             this.ProjectTree.ShowNodeToolTips = true;
-            this.ProjectTree.Size = new System.Drawing.Size(528, 115);
+            this.ProjectTree.Size = new System.Drawing.Size(250, 115);
             this.ProjectTree.TabIndex = 0;
             this.ProjectTree.Tag = "Project";
             this.ProjectTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ProjectTree_AfterLabelEdit);
@@ -1251,7 +1251,7 @@ namespace Timekeeper.Forms
             this.ActivityTree.SelectedImageIndex = 0;
             this.ActivityTree.ShowLines = false;
             this.ActivityTree.ShowNodeToolTips = true;
-            this.ActivityTree.Size = new System.Drawing.Size(65, 115);
+            this.ActivityTree.Size = new System.Drawing.Size(396, 115);
             this.ActivityTree.TabIndex = 0;
             this.ActivityTree.Tag = "Activity";
             this.ActivityTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ActivityTree_AfterLabelEdit);
@@ -1285,13 +1285,13 @@ namespace Timekeeper.Forms
             this.PopupMenuActivitySep2,
             this.PopupMenuActivityProperties});
             this.PopupMenuActivity.Name = "menuTask";
-            this.PopupMenuActivity.Size = new System.Drawing.Size(147, 302);
+            this.PopupMenuActivity.Size = new System.Drawing.Size(153, 324);
             // 
             // PopupMenuActivityNewActivity
             // 
             this.PopupMenuActivityNewActivity.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.PopupMenuActivityNewActivity.Name = "PopupMenuActivityNewActivity";
-            this.PopupMenuActivityNewActivity.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityNewActivity.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityNewActivity.Text = "&New Activity...";
             this.PopupMenuActivityNewActivity.Click += new System.EventHandler(this.MenuActionNewActivity_Click);
             // 
@@ -1300,47 +1300,47 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityNewFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.PopupMenuActivityNewFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.PopupMenuActivityNewFolder.Name = "PopupMenuActivityNewFolder";
-            this.PopupMenuActivityNewFolder.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityNewFolder.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityNewFolder.Text = "New &Folder...";
             this.PopupMenuActivityNewFolder.Click += new System.EventHandler(this.MenuActionNewActivityFolder_Click);
             // 
             // PopupMenuActivityEdit
             // 
             this.PopupMenuActivityEdit.Name = "PopupMenuActivityEdit";
-            this.PopupMenuActivityEdit.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityEdit.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityEdit.Text = "&Edit...";
             this.PopupMenuActivityEdit.Click += new System.EventHandler(this.MenuActionEdit_Click);
             // 
             // PopupMenuActivityRename
             // 
             this.PopupMenuActivityRename.Name = "PopupMenuActivityRename";
-            this.PopupMenuActivityRename.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityRename.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityRename.Text = "&Rename";
             this.PopupMenuActivityRename.Click += new System.EventHandler(this.PopupMenuActivityRename_Click);
             // 
             // PopupMenuActivitySplit
             // 
             this.PopupMenuActivitySplit.Name = "PopupMenuActivitySplit";
-            this.PopupMenuActivitySplit.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivitySplit.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivitySplit.Text = "Split...";
             // 
             // PopupMenuActivityMerge
             // 
             this.PopupMenuActivityMerge.Name = "PopupMenuActivityMerge";
-            this.PopupMenuActivityMerge.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityMerge.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityMerge.Text = "Merge...";
             // 
             // PopupMenuActivityHide
             // 
             this.PopupMenuActivityHide.Name = "PopupMenuActivityHide";
-            this.PopupMenuActivityHide.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityHide.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityHide.Text = "&Hide";
             this.PopupMenuActivityHide.Click += new System.EventHandler(this.MenuActionHideActivity_Click);
             // 
             // PopupMenuActivityUnhide
             // 
             this.PopupMenuActivityUnhide.Name = "PopupMenuActivityUnhide";
-            this.PopupMenuActivityUnhide.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityUnhide.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityUnhide.Text = "Un&hide";
             this.PopupMenuActivityUnhide.Visible = false;
             this.PopupMenuActivityUnhide.Click += new System.EventHandler(this.MenuActionUnhideActivity_Click);
@@ -1348,21 +1348,21 @@ namespace Timekeeper.Forms
             // PopupMenuActivityDelete
             // 
             this.PopupMenuActivityDelete.Name = "PopupMenuActivityDelete";
-            this.PopupMenuActivityDelete.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityDelete.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityDelete.Text = "&Delete...";
             this.PopupMenuActivityDelete.Click += new System.EventHandler(this.MenuActionDeleteActivity_Click);
             // 
             // PopupMenuActivitySep1
             // 
             this.PopupMenuActivitySep1.Name = "PopupMenuActivitySep1";
-            this.PopupMenuActivitySep1.Size = new System.Drawing.Size(143, 6);
+            this.PopupMenuActivitySep1.Size = new System.Drawing.Size(149, 6);
             // 
             // PopupMenuActivityUseProjects
             // 
             this.PopupMenuActivityUseProjects.Checked = true;
             this.PopupMenuActivityUseProjects.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuActivityUseProjects.Name = "PopupMenuActivityUseProjects";
-            this.PopupMenuActivityUseProjects.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityUseProjects.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityUseProjects.Text = "Use Projects";
             this.PopupMenuActivityUseProjects.Click += new System.EventHandler(this.PopupMenuActivityUseProjects_Click);
             // 
@@ -1371,26 +1371,26 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityUseActivities.Checked = true;
             this.PopupMenuActivityUseActivities.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuActivityUseActivities.Name = "PopupMenuActivityUseActivities";
-            this.PopupMenuActivityUseActivities.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityUseActivities.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityUseActivities.Text = "Use Activities";
             this.PopupMenuActivityUseActivities.Click += new System.EventHandler(this.PopupMenuActivityUseActivities_Click);
             // 
             // PopupMenuActivitySwapPanes
             // 
             this.PopupMenuActivitySwapPanes.Name = "PopupMenuActivitySwapPanes";
-            this.PopupMenuActivitySwapPanes.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivitySwapPanes.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivitySwapPanes.Text = "Swap Panes";
             this.PopupMenuActivitySwapPanes.Click += new System.EventHandler(this.PopupMenuActivitySwapPanes_Click);
             // 
             // PopupMenuActivitySep2
             // 
             this.PopupMenuActivitySep2.Name = "PopupMenuActivitySep2";
-            this.PopupMenuActivitySep2.Size = new System.Drawing.Size(143, 6);
+            this.PopupMenuActivitySep2.Size = new System.Drawing.Size(149, 6);
             // 
             // PopupMenuActivityProperties
             // 
             this.PopupMenuActivityProperties.Name = "PopupMenuActivityProperties";
-            this.PopupMenuActivityProperties.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityProperties.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityProperties.Text = "&Properties...";
             this.PopupMenuActivityProperties.Click += new System.EventHandler(this.PopupMenuActivityProperties_Click);
             // 
@@ -1459,7 +1459,7 @@ namespace Timekeeper.Forms
             // 
             this.splitMain.Panel2.Controls.Add(this.panelMemo);
             this.splitMain.Panel2.Controls.Add(this.panelControls);
-            this.splitMain.Size = new System.Drawing.Size(597, 327);
+            this.splitMain.Size = new System.Drawing.Size(650, 362);
             this.splitMain.SplitterDistance = 115;
             this.splitMain.TabIndex = 4;
             this.splitMain.TabStop = false;
@@ -1473,7 +1473,7 @@ namespace Timekeeper.Forms
             this.panelMemo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMemo.Location = new System.Drawing.Point(0, 112);
             this.panelMemo.Name = "panelMemo";
-            this.panelMemo.Size = new System.Drawing.Size(597, 96);
+            this.panelMemo.Size = new System.Drawing.Size(650, 131);
             this.panelMemo.TabIndex = 0;
             // 
             // wMemo
@@ -1484,7 +1484,7 @@ namespace Timekeeper.Forms
             this.wMemo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wMemo.Location = new System.Drawing.Point(0, 25);
             this.wMemo.Name = "wMemo";
-            this.wMemo.Size = new System.Drawing.Size(593, 67);
+            this.wMemo.Size = new System.Drawing.Size(646, 102);
             this.wMemo.TabIndex = 6;
             this.wMemo.Text = "";
             this.wMemo.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
@@ -1545,7 +1545,7 @@ namespace Timekeeper.Forms
             this.MemoToolbar.Location = new System.Drawing.Point(0, 0);
             this.MemoToolbar.Name = "MemoToolbar";
             this.MemoToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.MemoToolbar.Size = new System.Drawing.Size(593, 25);
+            this.MemoToolbar.Size = new System.Drawing.Size(646, 25);
             this.MemoToolbar.TabIndex = 0;
             this.MemoToolbar.Text = "toolStrip1";
             // 
@@ -1631,7 +1631,7 @@ namespace Timekeeper.Forms
             this.panelControls.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelControls.Location = new System.Drawing.Point(0, 0);
             this.panelControls.Name = "panelControls";
-            this.panelControls.Size = new System.Drawing.Size(597, 112);
+            this.panelControls.Size = new System.Drawing.Size(650, 112);
             this.panelControls.TabIndex = 0;
             this.panelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
@@ -1809,7 +1809,7 @@ namespace Timekeeper.Forms
             this.BrowserToolbar.Location = new System.Drawing.Point(0, 0);
             this.BrowserToolbar.Name = "BrowserToolbar";
             this.BrowserToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.BrowserToolbar.Size = new System.Drawing.Size(593, 25);
+            this.BrowserToolbar.Size = new System.Drawing.Size(646, 25);
             this.BrowserToolbar.TabIndex = 0;
             this.BrowserToolbar.Text = "toolStrip2";
             // 
@@ -2023,7 +2023,7 @@ namespace Timekeeper.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(597, 373);
+            this.ClientSize = new System.Drawing.Size(650, 408);
             this.Controls.Add(this.splitMain);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.MenuMain);

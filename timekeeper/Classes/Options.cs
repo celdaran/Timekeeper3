@@ -20,7 +20,11 @@ namespace Timekeeper.Classes
         // Constants
         //----------------------------------------------------------------------
 
-        const string REGKEY = @"Software\Technitivity\Timekeeper\3.X\";
+        // TODO/FIXME!!!! DURING TESTING, USE A SPECIFIC, 4-DOT VERSION WHILE
+        // TRYING TO DIFFERENTIATE EACH TEST PHASE. FOR RELEASE: THIS SHOULD
+        // ONLY BE A 2-DOT VERSION (E.G., "3.0")
+
+        const string REGKEY = @"Software\Technitivity\Timekeeper\3.0.0.1\";
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Options)
@@ -64,6 +68,7 @@ namespace Timekeeper.Classes
         public bool Behavior_Annoy_PromptBeforeHiding { get; set; }
         public bool Behavior_Annoy_NoRunningPrompt { get; set; }
         public int Behavior_Annoy_NoRunningPromptAmount { get; set; }
+        public bool Behavior_Annoy_UseNewDatabaseWizard { get; set; }
 
         public int Behavior_SortProjectsBy { get; set; }
         public int Behavior_SortProjectsByDirection { get; set; }
@@ -207,8 +212,6 @@ namespace Timekeeper.Classes
 
         private void LoadOptionsFromRegistry()
         {
-            Timekeeper.Info("Loading Options from Registry");
-
             //----------------------------------------------------------------------
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Layout");
@@ -222,13 +225,13 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\View");
 
-            View_StatusBar = ((int)Key.GetValue("StatusBar", 1) == 1);
-            View_StatusBar_ProjectName = ((int)Key.GetValue("StatusBar_ProjectName", 1) == 1);
-            View_StatusBar_ActivityName = ((int)Key.GetValue("StatusBar_ActivityName", 1) == 1);
-            View_StatusBar_ElapsedSinceStart = ((int)Key.GetValue("StatusBar_ElapsedSinceStart", 1) == 1);
-            View_StatusBar_ElapsedProjectToday = ((int)Key.GetValue("StatusBar_ElapsedProjectToday", 1) == 1);
-            View_StatusBar_ElapsedActivityToday = ((int)Key.GetValue("StatusBar_ElapsedActivityToday", 1) == 1);
-            View_StatusBar_ElapsedAllToday = ((int)Key.GetValue("StatusBar_ElapsedAllToday", 1) == 1);
+            View_StatusBar = ((int)Key.GetValue("StatusBar", 0) == 1);
+            View_StatusBar_ProjectName = ((int)Key.GetValue("StatusBar_ProjectName", 0) == 1);
+            View_StatusBar_ActivityName = ((int)Key.GetValue("StatusBar_ActivityName", 0) == 1);
+            View_StatusBar_ElapsedSinceStart = ((int)Key.GetValue("StatusBar_ElapsedSinceStart", 0) == 1);
+            View_StatusBar_ElapsedProjectToday = ((int)Key.GetValue("StatusBar_ElapsedProjectToday", 0) == 1);
+            View_StatusBar_ElapsedActivityToday = ((int)Key.GetValue("StatusBar_ElapsedActivityToday", 0) == 1);
+            View_StatusBar_ElapsedAllToday = ((int)Key.GetValue("StatusBar_ElapsedAllToday", 0) == 1);
             View_StatusBar_FileName = ((int)Key.GetValue("StatusBar_FileName", 1) == 1);
 
             View_HiddenProjects = ((int)Key.GetValue("HiddenProjects", 0) == 1);
@@ -252,11 +255,12 @@ namespace Timekeeper.Classes
             Behavior_Window_MinimizeToTray = ((int)Key.GetValue("Window_MinimizeToTray", 0) == 1);
             Behavior_Window_MinimizeOnUse = ((int)Key.GetValue("Window_MinimizeOnUse", 0) == 1);
 
-            Behavior_Annoy_ActivityFollowsProject = ((int)Key.GetValue("Annoy_ActivityFollowsProject", 0) == 1);
+            Behavior_Annoy_ActivityFollowsProject = ((int)Key.GetValue("Annoy_ActivityFollowsProject", 1) == 1);
             Behavior_Annoy_ProjectFollowsActivity = ((int)Key.GetValue("Annoy_ProjectFollowsActivity", 0) == 1);
             Behavior_Annoy_PromptBeforeHiding = ((int)Key.GetValue("Annoy_PromptBeforeHiding", 1) == 1);
             Behavior_Annoy_NoRunningPrompt = ((int)Key.GetValue("Annoy_NoRunningPrompt", 1) == 1);
             Behavior_Annoy_NoRunningPromptAmount = (int)Key.GetValue("Annoy_NoRunningPromptAmount", 10);
+            Behavior_Annoy_UseNewDatabaseWizard = ((int)Key.GetValue("Annoy_UseNewDatabaseWizard", 1) == 1);
 
             Behavior_SortProjectsBy = (int)Key.GetValue("SortProjectsBy", 0);
             Behavior_SortProjectsByDirection = (int)Key.GetValue("SortProjectsByDirection", 0);
@@ -287,8 +291,8 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Advanced");
 
-            Advanced_Logging_Application = (int)Key.GetValue("Logging_Application", 0);
-            Advanced_Logging_Database = (int)Key.GetValue("Logging_Database", 0);
+            Advanced_Logging_Application = (int)Key.GetValue("Logging_Application", 2);
+            Advanced_Logging_Database = (int)Key.GetValue("Logging_Database", 2);
             Advanced_DateTimeFormat = (string)Key.GetValue("DateTimeFormat", "yyyy-MM-dd HH:mm:ss");
 
             //----------------------------------------------------------------------
@@ -301,20 +305,22 @@ namespace Timekeeper.Classes
             //----------------------------------------------------------------------
 
             Key.Close();
+
+            //----------------------------------------------------------------------
+
+            Timekeeper.Debug("Options Loaded from Registry");
         }
 
         //----------------------------------------------------------------------
 
         private void LoadMetricsFromRegistry()
         {
-            Timekeeper.Info("Loading Metrics from Registry");
-
             //----------------------------------------------------------------------
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Main");
 
-            Main_Height = (int)Key.GetValue("Height", 436);
-            Main_Width = (int)Key.GetValue("Width", 200);
+            Main_Height = (int)Key.GetValue("Height", 200);
+            Main_Width = (int)Key.GetValue("Width", 400);
             Main_Top = (int)Key.GetValue("Top", 64);
             Main_Left = (int)Key.GetValue("Left", 64);
             Main_MainSplitterDistance = (int)Key.GetValue("MainSplitterDistance", 100);
@@ -354,14 +360,16 @@ namespace Timekeeper.Classes
             Find_Grid_IsLockedWidth = (int)Key.GetValue("Grid_IsLockedWidth", 40);
 
             Key.Close();
+
+            //----------------------------------------------------------------------
+
+            Timekeeper.Debug("Metrics Loaded from Registry");
         }
 
         //----------------------------------------------------------------------
 
         private void LoadMRUFromRegistry()
         {
-            Timekeeper.Info("Loading MRU from Registry");
-
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"MRU");
 
             int Count = (int)Key.GetValue("Count", 0);
@@ -374,6 +382,10 @@ namespace Timekeeper.Classes
             }
 
             Key.Close();
+
+            //----------------------------------------------------------------------
+
+            Timekeeper.Debug("MRU Loaded from Registry");
         }
 
         //-----------------------------------------------------------------------
@@ -381,8 +393,6 @@ namespace Timekeeper.Classes
         private void LoadFromDatabase()
         {
             this.Database = Timekeeper.Database;
-
-            Timekeeper.Info("Loading Options from Database");
 
             try {
                 Row Option;
@@ -417,6 +427,8 @@ namespace Timekeeper.Classes
                 if (Option.Count > 0) {
                     State_LastReportOptionsId = Convert.ToInt64(Option["Value"]);
                 }
+
+                Timekeeper.Debug("Options Loadedfrom Database");
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -429,7 +441,7 @@ namespace Timekeeper.Classes
 
         private void SaveOptionsToRegistry()
         {
-            Timekeeper.Info("Saving Options to Registry");
+            Timekeeper.Debug("Saving Options to Registry");
 
             //----------------------------------------------------------------------
 
@@ -479,6 +491,7 @@ namespace Timekeeper.Classes
             Key.SetValue("Annoy_PromptBeforeHiding", Behavior_Annoy_PromptBeforeHiding, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_NoRunningPrompt", Behavior_Annoy_NoRunningPrompt, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_NoRunningPromptAmount", Behavior_Annoy_NoRunningPromptAmount, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Annoy_UseNewDatabaseWizard", Behavior_Annoy_UseNewDatabaseWizard, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.SetValue("SortProjectsBy", Behavior_SortProjectsBy, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("SortProjectsByDirection", Behavior_SortProjectsByDirection, Microsoft.Win32.RegistryValueKind.DWord);
@@ -517,7 +530,7 @@ namespace Timekeeper.Classes
 
         private void SaveMetricsToRegistry()
         {
-            Timekeeper.Info("Saving Metrics to Registry");
+            Timekeeper.Debug("Saving Metrics to Registry");
 
             //----------------------------------------------------------------------
 
@@ -569,7 +582,7 @@ namespace Timekeeper.Classes
 
         private void SaveMRUToRegistry(ToolStripItemCollection items)
         {
-            Timekeeper.Info("Saving MRU to Registry");
+            Timekeeper.Debug("Saving MRU to Registry");
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"MRU");
 
@@ -592,11 +605,13 @@ namespace Timekeeper.Classes
 
         private void SaveToDatabase()
         {
-            SaveRow("LastProjectId", State_LastProjectId.ToString());
-            SaveRow("LastActivityId", State_LastActivityId.ToString());
-            SaveRow("LastFindOptionsId", State_LastFindOptionsId.ToString());
-            SaveRow("LastGridOptionsId", State_LastGridOptionsId.ToString());
-            SaveRow("LastReportOptionsId", State_LastReportOptionsId.ToString());
+            if (this.Database != null) {
+                SaveRow("LastProjectId", State_LastProjectId.ToString());
+                SaveRow("LastActivityId", State_LastActivityId.ToString());
+                SaveRow("LastFindOptionsId", State_LastFindOptionsId.ToString());
+                SaveRow("LastGridOptionsId", State_LastGridOptionsId.ToString());
+                SaveRow("LastReportOptionsId", State_LastReportOptionsId.ToString());
+            }
         }
 
         //----------------------------------------------------------------------

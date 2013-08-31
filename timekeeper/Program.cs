@@ -29,8 +29,8 @@ namespace Timekeeper
             bool found = true;
 
             try {
-                CheckAssembly("Technitivity.Toolbox", new Version(3, 0, 7, 7));
-                CheckAssembly("System.Data.SQLite", new Version(1, 0, 86, 0));
+                CheckAssembly("Technitivity.Toolbox", new Version(3, 0, 7));
+                CheckAssembly("System.Data.SQLite", new Version(1, 0, 88));
             }
             catch {
                 found = false;

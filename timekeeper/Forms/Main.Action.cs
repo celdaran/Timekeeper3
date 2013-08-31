@@ -214,10 +214,7 @@ namespace Timekeeper.Forms
         private bool Action_CheckDatabase()
         {
             try {
-                // FIXME: Options overhaul is going to need two logging
-                // levels. Set one for Timekeeper and one for Toolbox.DBI.
-
-                int LogLevel = Log.INFO;
+                int LogLevel = Timekeeper.GetLogLevel(Options.Advanced_Logging_Database);
 
                 Timekeeper.Info("Opening Database: " + DatabaseFileName);
                 Database = Timekeeper.OpenDatabase(DatabaseFileName, LogLevel);
@@ -264,21 +261,24 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_CreateFile(string fileName, FileCreateOptions createOptions)
+        private bool Action_CreateFile(string fileName, FileCreateOptions createOptions)
         {
             Timekeeper.Info("Creating Database: " + fileName);
 
-            // FIXME: a bit of doubled-up code between here and above
-            int LogLevel = Log.INFO;
+            bool FileCreated = false;
+
+            int LogLevel = Timekeeper.GetLogLevel(Options.Advanced_Logging_Database);
             Database = Timekeeper.OpenDatabase(fileName, LogLevel);
 
             File File = new File();
             Version Version = new Version(File.SCHEMA_VERSION);
 
             File.CreateOptions = createOptions;
-            File.Create(Version);
+            FileCreated = File.Create(Version);
 
             Database = Timekeeper.CloseDatabase();
+
+            return FileCreated;
         }
 
         //---------------------------------------------------------------------
@@ -371,52 +371,43 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_FormLoad()
+        private bool Action_FormLoad()
         {
-            // Logging (TODO: should this be an option?)
-            Timekeeper.Info("Timekeeper Started");
+            try {
+                // Load options from the Registry & TKDB
+                Action_LoadOptions();
 
-            // Instantiate persistent dialog boxes
-            properties = new Forms.Properties();
+                // Instantiate persistent dialog boxes
+                properties = new Forms.Properties();
 
-            // Load options from the Registry & TKDB
-            Action_LoadOptions();
+                // Initialize timer
+                timerLastRun = DateTime.Now;
 
-            // Initialize timer
-            timerLastRun = DateTime.Now;
+                // Any system-wide (i.e., not file-based) UI options
+                Action_InitializeUI();
 
-            // Any system-wide (i.e., not file-based) UI options
-            Action_InitializeUI();
-
-            // If DatabaseFileName not already set (via command line) then
-            // get it from the MRU list.
-            if (DatabaseFileName == null) {
-                if (MenuFileRecent.DropDownItems.Count > 0) {
-                    DatabaseFileName = MenuFileRecent.DropDownItems[0].Text;
+                // If DatabaseFileName not already set (via command line) then
+                // get it from the MRU list.
+                if (DatabaseFileName == null) {
+                    if (MenuFileRecent.DropDownItems.Count > 0) {
+                        DatabaseFileName = MenuFileRecent.DropDownItems[0].Text;
+                    }
                 }
+
+                if (DatabaseFileName != null) {
+                    Action_LoadFile();
+                }
+
+                // Initialize drag drop operations
+                this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
+                this.ActivityTree.ItemDrag += new ItemDragEventHandler(ActivityTree_ItemDrag);
+            }
+            catch {
+                Common.Warn("There was an error loading the application. Depending on the error, additional information may exist in the application's log file.");
+                return false;
             }
 
-            if (DatabaseFileName != null) {
-                Action_LoadFile();
-            }
-
-            // Initialize drag drop operations
-            this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
-            this.ActivityTree.ItemDrag += new ItemDragEventHandler(ActivityTree_ItemDrag);
-
-            //----------------------------------------------
-            // Extras to do at app startup, for fun
-            //----------------------------------------------
-
-            // short cut
-            //Forms.Report Report = new Forms.Report();
-            //Report.Show(this);
-
-            // another short cut
-            //Forms.Filtering FilterDialog = new Forms.Filtering();
-            //FilterDialog.Show(this);
-
-            //Common.Info("Testing TBX 3.0.0.7");
+            return true;
         }
 
         //---------------------------------------------------------------------
@@ -428,6 +419,46 @@ namespace Timekeeper.Forms
             // into two parts so that Action always implies a user-
             // initiated action and that "XYZ" is the other. I don't
             // have a name for it yet, obviously.
+
+            // Set Main window metrics
+            Left = Options.Main_Left;
+            Top = Options.Main_Top;
+            Width = Options.Main_Width;
+            Height = Options.Main_Height;
+            splitTrees.SplitterDistance = Options.Main_TreeSplitterDistance;
+            splitMain.SplitterDistance = Options.Main_MainSplitterDistance;
+
+            // Make sure browser is closed when the app starts.
+            // We won't conditionally open it until a file is 
+            // loaded later on.
+            Browser_Close();
+
+            // Disable status bar by default
+            StatusBar_FileClosed();
+            StatusBar_SetVisibility();
+
+            // Using Projects and/or Activities?
+            Action_UseProjects(Options.Layout_UseProjects);
+            Action_UseActivities(Options.Layout_UseActivities);
+
+            // Populate MRU List
+            foreach (string FileName in Options.MRU_List) {
+                ToolStripMenuItem Item = new ToolStripMenuItem();
+                Item.Click += new EventHandler(MenuFileRecentFile_Click);
+                Item.Text = FileName;
+                MenuFileRecent.DropDownItems.Add(Item);
+            }
+
+            MenuFileSaveAs.Enabled = false;
+            MenuFileClose.Enabled = false;
+            MenuFileRecent.Enabled = (MenuFileRecent.DropDownItems.Count > 0);
+
+            // Load keyboard shortcuts
+            Action_SetShortcuts();
+
+            // FIXME/TODO: restore "hide projects", etc.,
+            // FIXME/TODO: sort order not yet supported
+            // FIXME/TODO: actually, many options aren't even used yet
 
             // Create tray icon if requested
             if (Options.Behavior_Window_ShowInTray) {
@@ -453,28 +484,8 @@ namespace Timekeeper.Forms
             Options.LoadMetrics();
             Options.LoadMRU();
 
-            // Set Main window metrics
-            Left = Options.Main_Left;
-            Top = Options.Main_Top;
-            Width = Options.Main_Width;
-            Height = Options.Main_Height;
-            splitTrees.SplitterDistance = Options.Main_TreeSplitterDistance;
-            splitMain.SplitterDistance = Options.Main_MainSplitterDistance;
-
-            // Populate MRU List
-            foreach (string FileName in Options.MRU_List) {
-                ToolStripMenuItem Item = new ToolStripMenuItem();
-                Item.Click += new EventHandler(MenuFileRecentFile_Click);
-                Item.Text = FileName;
-                MenuFileRecent.DropDownItems.Add(Item);
-            }
-
-            // Load keyboard shortcuts
-            Action_SetShortcuts();
-
-            // FIXME/TODO: restore "hide projects", etc.,
-            // FIXME/TODO: sort order not yet supported
-            // FIXME/TODO: actually, many options aren't even used yet
+            // TODO: should this itself be an option?
+            Timekeeper.Info("Timekeeper Started");
         }
 
         //---------------------------------------------------------------------
@@ -592,6 +603,17 @@ namespace Timekeeper.Forms
 
                 Action_UseProjects(Options.Layout_UseProjects);
                 Action_UseActivities(Options.Layout_UseActivities);
+
+                MenuFileSaveAs.Enabled = true;
+                MenuFileClose.Enabled = true;
+
+                /* Actually, don't do this yet. This is a Save thing.
+                ToolStripMenuItem Item = new ToolStripMenuItem();
+                Item.Click += new EventHandler(MenuFileRecentFile_Click);
+                Item.Text = DatabaseFileName;
+                MenuFileRecent.DropDownItems.Add(Item);
+                MenuFileRecent.Enabled = true;
+                */
 
                 //------------------------------------------
                 // Prepare Browser

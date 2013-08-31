@@ -386,7 +386,7 @@ namespace Timekeeper.Forms
         // Help | Web Support
         private void menuHelpWeb_Click(object sender, EventArgs e)
         {
-            Help.ShowHelp(this, "http://www.technitivity.com/timekeeper/help/?version=" + Timekeeper.VERSION);
+            Help.ShowHelp(this, "http://www.technitivity.com/timekeeper/help/" + Timekeeper.SHORT_VERSION + "/");
         }
 
         // Help | About
@@ -394,7 +394,7 @@ namespace Timekeeper.Forms
         {
             File db = new File(Database);
             Row dbinfo = db.Info();
-            fAbout dlg = new fAbout(dbinfo);
+            About dlg = new About(dbinfo);
             dlg.ShowDialog(this);
         }
 
@@ -826,8 +826,9 @@ namespace Timekeeper.Forms
 
         private void Main_Load(object sender, EventArgs e)
         {
-            Action_FormLoad();
-            //Dialog_Options();
+            if(!Action_FormLoad()) {
+                Environment.Exit(1);
+            }
         }
 
         //---------------------------------------------------------------------
@@ -838,7 +839,7 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
-        // Disable close if timer running
+
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (timerRunning == true) {

@@ -16,6 +16,7 @@ namespace Timekeeper
 
         public const string TITLE = "Timekeeper";
         public const string VERSION = "3.0.0.0";
+        public const string SHORT_VERSION = "3.0";
         public const string IDENTIFIER = "7EFF6E35-2448-4AA8-BBB0-441536BE592F";
 
         public const int SUCCESS = 1;
@@ -164,12 +165,29 @@ namespace Timekeeper
             Common.Warn(msg);
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public static void Error(string msg)
         {
             Log = GetLog();
             Log.Error(msg);
+        }
+
+        //----------------------------------------------------------------------
+
+        public static int GetLogLevel(int level)
+        {
+            int LogLevel = Log.NONE;
+
+            switch (level) {
+                case 0: LogLevel = Log.NONE; break;
+                case 1: LogLevel = Log.DEBUG; break;
+                case 2: LogLevel = Log.INFO; break;
+                case 3: LogLevel = Log.WARN; break;
+                case 4: LogLevel = Log.ERROR; break;
+            }
+
+            return LogLevel;
         }
 
         //---------------------------------------------------------------------
@@ -180,10 +198,8 @@ namespace Timekeeper
         {
             if (Log == null) {
                 Log = new Technitivity.Toolbox.Log(GetLogPath());
-                // Figure out how to set this globally and/or
-                // have this area access Timekeeper's options.
-                Log.Level = Technitivity.Toolbox.Log.INFO;
-                Log.Debug("log file opened");
+                Log.Level = GetLogLevel(Options.Advanced_Logging_Application);
+                Log.Debug("Log File Opened");
             }
             return Log;
         }

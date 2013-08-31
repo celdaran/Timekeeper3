@@ -27,4 +27,4 @@ CREATE TABLE Category
 
 CREATE UNIQUE INDEX idx_Category_CategoryId ON Category(CategoryId);
 CREATE UNIQUE INDEX idx_Category_CategoryGuid ON Category(CategoryGuid);
-CREATE UNIQUE INDEX idx_Category_Name ON Location(CategoryName);
+CREATE UNIQUE INDEX idx_Category_Name ON Category(Name);

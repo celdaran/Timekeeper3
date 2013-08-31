@@ -39,11 +39,13 @@ namespace Timekeeper
         public File(DBI data)
         {
             this.Database = data;
-            FileInfo = new FileInfo(this.Database.FileName);
-            this.Name = FileInfo.Name;
-            this.FullPath = FileInfo.DirectoryName + "\\" + FileInfo.Name;
-            this.Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(File).Assembly);
-            this.CreateOptions = new FileCreateOptions();
+            if ((Database != null) && (Database.FileName != null)) {
+                FileInfo = new FileInfo(this.Database.FileName);
+                this.Name = FileInfo.Name;
+                this.FullPath = FileInfo.DirectoryName + "\\" + FileInfo.Name;
+                this.Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(File).Assembly);
+                this.CreateOptions = new FileCreateOptions();
+            }
         }
 
         // New/future constructor
@@ -160,7 +162,8 @@ namespace Timekeeper
                 // Schema Metadata
                 CreateTable("Meta", version, populate);
 
-                // System Reference tables | FIXME: not FALSE for populate. wtf?
+                // System Reference tables
+                // FIXME: not FALSE for populate. wtf?
                 CreateTable("RefItemType", version, populate);
                 CreateTable("RefDatePreset", version, populate);
                 CreateTable("RefGroupBy", version, populate);
@@ -261,9 +264,10 @@ namespace Timekeeper
             // at database creation by copying the OS list
             // of time zones and assigning an identity value
             // to each (for use as FKs inside the tkdb).
-            // Note: there is currently no support for
+            //
+            // TODO: There is currently no support for
             // updating this list after its initial 
-            // generation. Future FIXME.
+            // generation.
             //----------------------------------------------
 
             ReadOnlyCollection<TimeZoneInfo> TimeZones = TimeZoneInfo.GetSystemTimeZones();
@@ -297,17 +301,36 @@ namespace Timekeeper
             if (InsertedRowId == 0) throw new Exception("Insert failed");
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public void PopulateItems()
         {
             int PresetId = CreateOptions.ItemPreset;
 
+            if (PresetId == 0) {
+                PopulateDefaultItems();
+            } else {
+                PopulatePresetItems(PresetId);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void PopulateDefaultItems()
+        {
+            CreateItem("Default Project", new Classes.Project(Database));
+            CreateItem("Default Activity", new Classes.Activity(Database));
+        }
+
+        //----------------------------------------------------------------------
+
+        private void PopulatePresetItems(int presetId)
+        {
             try {
                 // Open XML and get requested preset.
                 XmlDocument Presets = new XmlDocument();
                 Presets.LoadXml(Properties.Resources.Item_Presets);
-                string XmlPath = String.Format("/presets/preset[@id='{0}']", PresetId.ToString());
+                string XmlPath = String.Format("/presets/preset[@id='{0}']", presetId.ToString());
 
                 // Find the Projects and Activities
                 XmlNode Preset = Presets.SelectSingleNode(XmlPath);
@@ -383,7 +406,17 @@ namespace Timekeeper
             */
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
+
+        private void CreateItem(string itemName, Classes.TreeAttribute item)
+        {
+            item.Name = itemName;
+            item.Description = "Default item";
+            item.IsFolder = false;
+            item.Create();
+        }
+
+        //----------------------------------------------------------------------
 
         private void CreateItem(XmlNode itemNode, Classes.TreeAttribute item, Classes.TreeAttribute parentItem)
         {
@@ -408,11 +441,14 @@ namespace Timekeeper
 
         public Row Info()
         {
+            if (Database == null) {
+                return EmptyInfo();
+            }
+
             // stub in row to return
             Row Info = new Row();
 
-            try
-            {
+            try {
                 // Grab a few handy objects
                 Classes.ProjectCollection Projects = new Classes.ProjectCollection(Database);
                 Classes.ActivityCollection Activities = new Classes.ActivityCollection(Database);
@@ -434,31 +470,42 @@ namespace Timekeeper
                 Info.Add("ProjectCount", Projects.Count());
                 Info.Add("ActivityCount", Activities.Count());
                 Info.Add("TotalTime", Timekeeper.FormatSeconds(Entries.TotalSeconds()));
+
+                // Flag that we're good
+                Info.Add("FileOpened", true);
             }
             catch (Exception x)
             {
-                // Log the problem
                 Timekeeper.Exception(x);
-
-                // Return empty Data on any sort of error
-
-                Info = new Row();
-
-                // convert meta rows to rows
-                Info.Add("Created", "");
-                Info.Add("Upgraded", "");
-                Info.Add("Id", "");
-                Info.Add("Version", "");
-
-                // now grab individual attributes
-                Info.Add("FileName", "No file opened");
-                Info.Add("FileSize", 0);
-                Info.Add("EntryCount", 0);
-                Info.Add("NotebookCount", 0);
-                Info.Add("ActivityCount", 0);
-                Info.Add("ProjectCount", 0);
-                Info.Add("TotalSeconds", 0);
+                return EmptyInfo();
             }
+
+            return Info;
+        }
+
+        //----------------------------------------------------------------------
+
+        public Row EmptyInfo()
+        {
+            Row Info = new Row();
+
+            // convert meta rows to rows
+            Info.Add("Created", "");
+            Info.Add("Upgraded", "");
+            Info.Add("Id", "");
+            Info.Add("Version", "");
+
+            // now grab individual attributes
+            Info.Add("FileName", "No file opened");
+            Info.Add("FileSize", 0);
+            Info.Add("EntryCount", 0);
+            Info.Add("NotebookCount", 0);
+            Info.Add("ActivityCount", 0);
+            Info.Add("ProjectCount", 0);
+            Info.Add("TotalSeconds", 0);
+
+            // Flag that we're not good
+            Info.Add("FileOpened", false);
 
             return Info;
         }

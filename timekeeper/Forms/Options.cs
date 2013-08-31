@@ -280,6 +280,7 @@ namespace Timekeeper.Forms
             Behavior_Annoy_PromptBeforeHiding.Checked = Values.Behavior_Annoy_PromptBeforeHiding;
             Behavior_Annoy_NoRunningPrompt.Checked = Values.Behavior_Annoy_NoRunningPrompt;
             Behavior_Annoy_NoRunningPromptAmount.Value = Values.Behavior_Annoy_NoRunningPromptAmount;
+            Behavior_Annoy_UseNewDatabaseWizard.Checked = Values.Behavior_Annoy_UseNewDatabaseWizard;
 
             Behavior_SortProjectsBy.SelectedIndex = Values.Behavior_SortProjectsBy;
             Behavior_SortProjectsByDirection.SelectedIndex = Values.Behavior_SortProjectsByDirection;
@@ -346,6 +347,7 @@ namespace Timekeeper.Forms
             Values.Behavior_Annoy_PromptBeforeHiding = Behavior_Annoy_PromptBeforeHiding.Checked;
             Values.Behavior_Annoy_NoRunningPrompt = Behavior_Annoy_NoRunningPrompt.Checked;
             Values.Behavior_Annoy_NoRunningPromptAmount = (int)Behavior_Annoy_NoRunningPromptAmount.Value;
+            Values.Behavior_Annoy_UseNewDatabaseWizard = Behavior_Annoy_UseNewDatabaseWizard.Checked;
 
             Values.Behavior_SortProjectsBy = Behavior_SortProjectsBy.SelectedIndex;
             Values.Behavior_SortProjectsByDirection = Behavior_SortProjectsByDirection.SelectedIndex;
