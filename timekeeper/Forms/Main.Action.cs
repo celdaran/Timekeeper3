@@ -402,8 +402,9 @@ namespace Timekeeper.Forms
                 this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
                 this.ActivityTree.ItemDrag += new ItemDragEventHandler(ActivityTree_ItemDrag);
             }
-            catch {
+            catch (Exception x) {
                 Common.Warn("There was an error loading the application. Depending on the error, additional information may exist in the application's log file.");
+                Common.Warn(x.Message);
                 return false;
             }
 
@@ -428,12 +429,11 @@ namespace Timekeeper.Forms
             splitTrees.SplitterDistance = Options.Main_TreeSplitterDistance;
             splitMain.SplitterDistance = Options.Main_MainSplitterDistance;
 
-            // Make sure browser is closed when the app starts.
-            // We won't conditionally open it until a file is 
-            // loaded later on.
-            Browser_Close();
+            // Hide browser panel until file is opened
+            splitMain.Panel2Collapsed = true;
 
-            // Disable status bar by default
+            // Until a file is opened, treat it as closed
+            MenuBar_FileClosed();
             StatusBar_FileClosed();
             StatusBar_SetVisibility();
 
@@ -449,8 +449,6 @@ namespace Timekeeper.Forms
                 MenuFileRecent.DropDownItems.Add(Item);
             }
 
-            MenuFileSaveAs.Enabled = false;
-            MenuFileClose.Enabled = false;
             MenuFileRecent.Enabled = (MenuFileRecent.DropDownItems.Count > 0);
 
             // Load keyboard shortcuts
@@ -604,17 +602,6 @@ namespace Timekeeper.Forms
                 Action_UseProjects(Options.Layout_UseProjects);
                 Action_UseActivities(Options.Layout_UseActivities);
 
-                MenuFileSaveAs.Enabled = true;
-                MenuFileClose.Enabled = true;
-
-                /* Actually, don't do this yet. This is a Save thing.
-                ToolStripMenuItem Item = new ToolStripMenuItem();
-                Item.Click += new EventHandler(MenuFileRecentFile_Click);
-                Item.Text = DatabaseFileName;
-                MenuFileRecent.DropDownItems.Add(Item);
-                MenuFileRecent.Enabled = true;
-                */
-
                 //------------------------------------------
                 // Prepare Browser
                 //------------------------------------------
@@ -646,6 +633,26 @@ namespace Timekeeper.Forms
             catch (Exception x) {
                 Timekeeper.Exception(x);
                 return false;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Action_SetMenuAvailability(ToolStripMenuItem menu, bool enabled)
+        {
+            //------------------------------------
+            // Used to recursively disable all 
+            // menu items and child items for
+            // a given ToolStripMenuItem.
+            //------------------------------------
+
+            menu.Enabled = enabled;
+
+            foreach (ToolStripItem Item in menu.DropDownItems) {
+                if (Item.GetType().ToString() == "System.Windows.Forms.ToolStripMenuItem") {
+                    ToolStripMenuItem MenuItem = (ToolStripMenuItem)Item;
+                    Action_SetMenuAvailability(MenuItem, enabled);
+                }
             }
         }
 
@@ -1135,14 +1142,7 @@ namespace Timekeeper.Forms
 
             TrayIcon.Text = Common.Abbreviate(Text, 63);
 
-            MenuFile.Enabled = false;
-            MenuFileNew.Enabled = false;
-            MenuFileOpen.Enabled = false;
-            MenuFileSaveAs.Enabled = false;
-            MenuFileClose.Enabled = false;
-            MenuFileRecent.Enabled = false;
-            MenuFileUtilities.Enabled = false;
-            MenuFileExit.Enabled = false;
+            Action_SetMenuAvailability(MenuFile, false);
 
             if (Options.Behavior_Window_MinimizeOnUse) {
                 if ((ModifierKeys & Keys.Shift) == Keys.Shift) {
@@ -1235,14 +1235,7 @@ namespace Timekeeper.Forms
             currentActivityNode.ImageIndex = Timekeeper.IMG_ACTIVITY;
             currentActivityNode.SelectedImageIndex = Timekeeper.IMG_ACTIVITY;
 
-            MenuFile.Enabled = true;
-            MenuFileNew.Enabled = true;
-            MenuFileOpen.Enabled = true;
-            MenuFileSaveAs.Enabled = true;
-            MenuFileClose.Enabled = true;
-            MenuFileRecent.Enabled = true;
-            MenuFileUtilities.Enabled = true;
-            MenuFileExit.Enabled = true;
+            Action_SetMenuAvailability(MenuFile, true);
 
             // As soon as the timer has stopped, we have to paint "start" mode.
             newBrowserEntry = null;

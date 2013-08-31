@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Diagnostics;
-
+using System.Reflection;
 using System.Collections.ObjectModel;
 
 using Technitivity.Toolbox;
@@ -15,9 +15,10 @@ namespace Timekeeper
         //---------------------------------------------------------------------
 
         public const string TITLE = "Timekeeper";
-        public const string VERSION = "3.0.0.0";
-        public const string SHORT_VERSION = "3.0";
         public const string IDENTIFIER = "7EFF6E35-2448-4AA8-BBB0-441536BE592F";
+
+        public static readonly string VERSION = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public static readonly string SHORT_VERSION = VERSION.Substring(0, 3);
 
         public const int SUCCESS = 1;
         public const int FAILURE = 0;

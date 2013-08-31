@@ -18,11 +18,15 @@ namespace Timekeeper.Forms
         private void MenuBar_FileOpened()
         {
             // Enabled Settings
-            MenuAction.Enabled = true;
-            MenuReport.Enabled = true;
-            MenuTool.Enabled = true;
+            Action_SetMenuAvailability(MenuAction, true);
+            Action_SetMenuAvailability(MenuReport, true);
+            Action_SetMenuAvailability(MenuTool, true);
+
             PopupMenuProject.Enabled = true;
             PopupMenuActivity.Enabled = true;
+
+            MenuFileSaveAs.Enabled = true;
+            MenuFileClose.Enabled = true;
 
             // MRU handling
 
@@ -53,11 +57,15 @@ namespace Timekeeper.Forms
 
         private void MenuBar_FileClosed()
         {
-            MenuAction.Enabled = false;
-            MenuReport.Enabled = false;
-            MenuTool.Enabled = false;
+            Action_SetMenuAvailability(MenuAction, false);
+            Action_SetMenuAvailability(MenuReport, false);
+            Action_SetMenuAvailability(MenuTool, false);
+
             PopupMenuProject.Enabled = false;
             PopupMenuActivity.Enabled = false;
+
+            MenuFileSaveAs.Enabled = false;
+            MenuFileClose.Enabled = false;
         }
 
         //---------------------------------------------------------------------

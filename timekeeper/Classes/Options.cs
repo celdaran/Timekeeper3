@@ -24,7 +24,8 @@ namespace Timekeeper.Classes
         // TRYING TO DIFFERENTIATE EACH TEST PHASE. FOR RELEASE: THIS SHOULD
         // ONLY BE A 2-DOT VERSION (E.G., "3.0")
 
-        const string REGKEY = @"Software\Technitivity\Timekeeper\3.0.0.1\";
+        private readonly string REGKEY = String.Format(@"Software\Technitivity\Timekeeper\{0}\", Timekeeper.VERSION);
+        //const string REGKEY = String.Format(@"Software\Technitivity\Timekeeper\{0}\", Timekeeper.SHORT_VERSION);
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Options)
@@ -96,6 +97,7 @@ namespace Timekeeper.Classes
         public int Main_MainSplitterDistance { get; set; }
         public int Main_TreeSplitterDistance { get; set; }
         public bool Main_BrowserOpen { get; set; }
+        public int Main_BrowserHeight { get; set; }
 
         public int Report_Height { get; set; }
         public int Report_Width { get; set; }
@@ -326,6 +328,7 @@ namespace Timekeeper.Classes
             Main_MainSplitterDistance = (int)Key.GetValue("MainSplitterDistance", 100);
             Main_TreeSplitterDistance = (int)Key.GetValue("TreeSplitterDistance", 218);
             Main_BrowserOpen = ((int)Key.GetValue("BrowserOpen", 0) == 1);
+            Main_BrowserHeight = (int)Key.GetValue("BrowserHeight", 200);
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Report");
 
@@ -542,7 +545,8 @@ namespace Timekeeper.Classes
             Key.SetValue("Left", Main_Left, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("MainSplitterDistance", Main_MainSplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("TreeSplitterDistance", Main_TreeSplitterDistance, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("BrowserOpen", Main_BrowserOpen, Microsoft.Win32.RegistryValueKind.DWord); 
+            Key.SetValue("BrowserOpen", Main_BrowserOpen, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("BrowserHeight", Main_BrowserHeight, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Report");
 

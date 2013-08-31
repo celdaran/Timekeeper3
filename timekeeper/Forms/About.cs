@@ -22,6 +22,18 @@ namespace Timekeeper
 
         private void About_Load(object sender, EventArgs e)
         {
+            //----------------------------------------------
+            // Fill out Application info
+            //----------------------------------------------
+
+            ApplicationName.Text = Timekeeper.TITLE + " " + Timekeeper.SHORT_VERSION;
+            ApplicationRelease.Text = "Unreleased Development Version (" + Timekeeper.VERSION + ")";
+            ApplicationCopyright.Text = "Copyright © 1999-2013 by Charlie Hills";
+
+            //----------------------------------------------
+            // View or Hide Statistics
+            //----------------------------------------------
+
             if (Info["FileOpened"]) {
                 string Upgraded;
                 DateTime t = Info["Upgraded"];
@@ -49,6 +61,8 @@ namespace Timekeeper
                 FileStatsPanel.Visible = false;
                 Height = 247 - FileStatsPanel.Height;
             }
+
+            //----------------------------------------------
         }
     }
 }

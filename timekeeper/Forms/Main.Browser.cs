@@ -865,7 +865,7 @@ namespace Timekeeper.Forms
             wMemo.Focus();
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private void Browser_Show(bool show)
         {
@@ -873,6 +873,23 @@ namespace Timekeeper.Forms
             MenuActionCloseBrowser.Visible = show;
             splitMain.Panel2Collapsed = !show;
             Options.Main_BrowserOpen = show;
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Browser_Size(bool opening)
+        {
+            return;
+
+            // TODO: I'm going down an absolute rabbit hole here.
+            // First rule of holes: when you're in one, stop digging.
+
+            if (opening) {
+                this.Height += Options.Main_BrowserHeight;
+            } else {
+                Options.Main_BrowserHeight = splitMain.Height - splitMain.SplitterDistance;
+                this.Height -= Options.Main_BrowserHeight;
+            }
         }
 
         //---------------------------------------------------------------------

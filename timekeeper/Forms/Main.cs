@@ -142,12 +142,14 @@ namespace Timekeeper.Forms
         private void MenuActionOpenBrowser_Click(object sender, EventArgs e)
         {
             Browser_Open();
+            Browser_Size(true);
         }
 
         // Action | Close Browser
         private void MenuActionCloseBrowser_Click(object sender, EventArgs e)
         {
             Browser_Close();
+            Browser_Size(false);
         }
 
         // Action | New Project
