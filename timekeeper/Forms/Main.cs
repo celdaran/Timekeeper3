@@ -831,6 +831,9 @@ namespace Timekeeper.Forms
             if(!Action_FormLoad()) {
                 Environment.Exit(1);
             }
+
+            // Jump right to the new thing.
+            //MenuFileUtilitiesImport_Click(sender, e);
         }
 
         //---------------------------------------------------------------------
@@ -1090,6 +1093,12 @@ namespace Timekeeper.Forms
         private void MenuActionManageCategories_Click(object sender, EventArgs e)
         {
             Action_ChangedCategory();
+        }
+
+        private void MenuFileUtilitiesImport_Click(object sender, EventArgs e)
+        {
+            Forms.ImportWizard DialogBox = new Forms.ImportWizard();
+            DialogBox.ShowDialog(this);
         }
 
         //---------------------------------------------------------------------

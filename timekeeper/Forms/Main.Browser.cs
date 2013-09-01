@@ -884,12 +884,14 @@ namespace Timekeeper.Forms
             // TODO: I'm going down an absolute rabbit hole here.
             // First rule of holes: when you're in one, stop digging.
 
+            /*
             if (opening) {
                 this.Height += Options.Main_BrowserHeight;
             } else {
                 Options.Main_BrowserHeight = splitMain.Height - splitMain.SplitterDistance;
                 this.Height -= Options.Main_BrowserHeight;
             }
+            */
         }
 
         //---------------------------------------------------------------------
