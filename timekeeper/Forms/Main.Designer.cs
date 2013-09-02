@@ -332,7 +332,7 @@ namespace Timekeeper.Forms
             // MenuFileUtilitiesImport
             // 
             this.MenuFileUtilitiesImport.Name = "MenuFileUtilitiesImport";
-            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesImport.Text = "Import...";
             this.MenuFileUtilitiesImport.Click += new System.EventHandler(this.MenuFileUtilitiesImport_Click);
             // 
@@ -340,21 +340,21 @@ namespace Timekeeper.Forms
             // 
             this.MenuFileUtilitiesExport.Enabled = false;
             this.MenuFileUtilitiesExport.Name = "MenuFileUtilitiesExport";
-            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesExport.Text = "Export...";
             // 
             // MenuFileUtilitiesBackup
             // 
             this.MenuFileUtilitiesBackup.Enabled = false;
             this.MenuFileUtilitiesBackup.Name = "MenuFileUtilitiesBackup";
-            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesBackup.Text = "Backup...";
             // 
             // MenuFileUtilitiesRepair
             // 
             this.MenuFileUtilitiesRepair.Enabled = false;
             this.MenuFileUtilitiesRepair.Name = "MenuFileUtilitiesRepair";
-            this.MenuFileUtilitiesRepair.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesRepair.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesRepair.Text = "Repair...";
             // 
             // MenuFileSep2
@@ -1403,6 +1403,7 @@ namespace Timekeeper.Forms
             // 
             // ShortTimer
             // 
+            this.ShortTimer.Enabled = true;
             this.ShortTimer.Interval = 1000;
             this.ShortTimer.Tick += new System.EventHandler(this.ShortTimer_Tick);
             // 
@@ -1923,6 +1924,7 @@ namespace Timekeeper.Forms
             this.toolControlEntryIndex.Name = "toolControlEntryIndex";
             this.toolControlEntryIndex.Size = new System.Drawing.Size(31, 22);
             this.toolControlEntryIndex.Text = "1111";
+            this.toolControlEntryIndex.Visible = false;
             // 
             // toolControlSep2
             // 
@@ -1951,6 +1953,7 @@ namespace Timekeeper.Forms
             // 
             // toolControlSplitEntry
             // 
+            this.toolControlSplitEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolControlSplitEntry.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolControlSplitEntry2,
             this.toolControlSplitEntry3,
@@ -1958,28 +1961,28 @@ namespace Timekeeper.Forms
             this.toolControlSplitEntry.Image = ((System.Drawing.Image)(resources.GetObject("toolControlSplitEntry.Image")));
             this.toolControlSplitEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolControlSplitEntry.Name = "toolControlSplitEntry";
-            this.toolControlSplitEntry.Size = new System.Drawing.Size(59, 22);
+            this.toolControlSplitEntry.Size = new System.Drawing.Size(43, 22);
             this.toolControlSplitEntry.Text = "Split";
             this.toolControlSplitEntry.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry2_Click);
             // 
             // toolControlSplitEntry2
             // 
             this.toolControlSplitEntry2.Name = "toolControlSplitEntry2";
-            this.toolControlSplitEntry2.Size = new System.Drawing.Size(151, 22);
+            this.toolControlSplitEntry2.Size = new System.Drawing.Size(152, 22);
             this.toolControlSplitEntry2.Text = "Split in Halves";
             this.toolControlSplitEntry2.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry2_Click);
             // 
             // toolControlSplitEntry3
             // 
             this.toolControlSplitEntry3.Name = "toolControlSplitEntry3";
-            this.toolControlSplitEntry3.Size = new System.Drawing.Size(151, 22);
+            this.toolControlSplitEntry3.Size = new System.Drawing.Size(152, 22);
             this.toolControlSplitEntry3.Text = "Split in Thirds";
             this.toolControlSplitEntry3.Click += new System.EventHandler(this.toolControlSplitEntry3_Click);
             // 
             // toolControlSplitEntry4
             // 
             this.toolControlSplitEntry4.Name = "toolControlSplitEntry4";
-            this.toolControlSplitEntry4.Size = new System.Drawing.Size(151, 22);
+            this.toolControlSplitEntry4.Size = new System.Drawing.Size(152, 22);
             this.toolControlSplitEntry4.Text = "Split in Quarters";
             this.toolControlSplitEntry4.Click += new System.EventHandler(this.toolControlSplitEntry4_Click);
             // 

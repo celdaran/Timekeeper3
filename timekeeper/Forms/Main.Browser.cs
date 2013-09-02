@@ -81,8 +81,7 @@ namespace Timekeeper.Forms
             try {
                 // Set next start date
                 DateTime NextStartTime = Browser_GetNextStartTime();
-                if (NextStartTime == DateTime.MinValue) {
-                    // something went wrong, set it to now
+                if (NextStartTime == DateTime.MaxValue) {
                     wStopTime.Value = DateTime.Now;
                 } else {
                     wStopTime.Value = NextStartTime;
@@ -97,6 +96,31 @@ namespace Timekeeper.Forms
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_Disable()
+        {
+            splitMain.Panel2Collapsed = true;
+            Action_SetMenuAvailability(MenuToolbar, false);
+            browserEntry = null;
+            priorLoadedBrowserEntry = null;
+            newBrowserEntry = null;
+            isBrowsing = false;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_DisableNavigation()
+        {
+            Browser_EnableFirst(false);
+            Browser_EnablePrev(false);
+            Browser_EnableLast(false);
+            Browser_EnableNext(false);
+            Browser_EnableCloseStartGap(false);
+            Browser_EnableCloseEndGap(false);
+            Browser_EnableSplit(false);
         }
 
         //---------------------------------------------------------------------
@@ -133,6 +157,7 @@ namespace Timekeeper.Forms
                         Browser_EnableMemoEntry(false);
                         Browser_ShowUnlock(true);
                     }
+                    Browser_EnableSplit(false);
                 } else {
                     ProjectTree.Enabled = true;
                     ActivityTree.Enabled = true;
@@ -145,6 +170,7 @@ namespace Timekeeper.Forms
                     Browser_EnableCategoryEntry(true);
                     Browser_EnableMemoEntry(true);
                     Browser_ShowUnlock(false);
+                    Browser_EnableSplit(true);
                 }
 
                 // Enable/disable start gap button
@@ -178,6 +204,15 @@ namespace Timekeeper.Forms
                 //Common.Warn(x.ToString());
                 Timekeeper.Exception(x);
             }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_Enable()
+        {
+            // Do not show or hide the browser. Use this
+            // method in conjunction with Browser_Show()
+            Action_SetMenuAvailability(MenuToolbar, true);
         }
 
         //---------------------------------------------------------------------
@@ -254,6 +289,12 @@ namespace Timekeeper.Forms
         {
             toolControlRevert.Enabled = enabled;
             MenuToolbarBrowserRevert.Enabled = enabled;
+        }
+
+        private void Browser_EnableSplit(bool enabled)
+        {
+            toolControlSplitEntry.Enabled = enabled;
+            MenuToolbarBrowserSplitEntry.Enabled = enabled;
         }
 
         private void Browser_EnableStartEntry(bool enabled)
@@ -400,41 +441,66 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
-        public void Browser_GotoSpecificEntry(long journalIndex)
+        public void Browser_GotoEntry(long journalIndex)
         {
-            // TODO: copy/paste from GotoPrevEntry here!
-            // I think I can clean up and/or generalize the 
-            // browser navigation code here. There has to
-            // be a single: 1) go to row and 2) 
-
             try {
-                if (!isBrowsing) {
-                    // If we're not browsing, this is a new row. If it's a new
-                    // row, save it so we don't lose it later.
-                    Browser_FormToEntry(ref newBrowserEntry, 0);
+                if (journalIndex == 0) {
+                    // Degenerate case
+                    Browser_DisableNavigation();
+                    return;
                 }
 
+                if (!isBrowsing)
+                    Browser_FormToEntry(ref newBrowserEntry, 0);
+
                 Browser_SaveRow(false);
-                browserEntry.LoadByIndex(journalIndex); // ONLY LINE THAT'S DIFFERENT
+                browserEntry.LoadByIndex(journalIndex);
+                long LastJournalIndex = priorLoadedBrowserEntry.JournalIndex;
                 priorLoadedBrowserEntry = browserEntry.Copy();
 
-                if (browserEntry.JournalId > 0) {
+                if (browserEntry.JournalIndex > 0) {
+
                     Browser_DisplayRow();
 
-                    Browser_EnableLast(true);
-                    Browser_EnableNext(true);
-                    if (browserEntry.AtBeginning()) {
+                    isBrowsing = true;
+
+                    if (browserEntry.AtBeginning() && browserEntry.AtEnd()) {
+                        Browser_EnableFirst(false);
+                        Browser_EnablePrev(false);
+                        Browser_EnableLast(false);
+                        Browser_EnableNext(false);
+                    } else if (browserEntry.AtBeginning()) {
+                        Browser_EnableFirst(false);
+                        Browser_EnablePrev(false);
+                        Browser_EnableLast(true);
+                        Browser_EnableNext(true);
+                    } else if (browserEntry.AtEnd()) {
+                        Browser_EnableFirst(true);
+                        Browser_EnablePrev(true);
+                        Browser_EnableNext(false);
+                        Browser_EnableLast(false);
+                        if (timerRunning) {
+                            Browser_SetupForStopping();
+                        }
+                    } else {
+                        Browser_EnableFirst(true);
+                        Browser_EnablePrev(true);
+                        Browser_EnableNext(true);
+                        Browser_EnableLast(true);
+                    }
+                } else {
+                    Common.Warn("browserEntry.JournalIndex <= 0");
+
+                    /* wait, what is this code? When is the JournalId
+                       or JournalIndex ever going to be zero?
+                    if (LastJournalIndex < browserEntry.JournalIndex) {
+                        Browser_EnableLast(false);
+                        Browser_EnableNext(false);
+                    } else {
                         Browser_EnableFirst(false);
                         Browser_EnablePrev(false);
                     }
-                    if (browserEntry.AtEnd()) {
-                        Browser_EnableNext(false);
-                        Browser_EnableLast(false);
-                    }
-                    isBrowsing = true;
-                } else {
-                    Browser_EnableFirst(false);
-                    Browser_EnablePrev(false);
+                    */
                 }
             }
             catch (Exception x) {
@@ -446,118 +512,32 @@ namespace Timekeeper.Forms
 
         private void Browser_GotoFirstEntry()
         {
-            try {
-                Browser_SaveRow(false);
-                browserEntry.LoadFirst();
-                priorLoadedBrowserEntry = browserEntry.Copy();
-                if (browserEntry.JournalId > 0) {
-                    Browser_DisplayRow();
-                    Browser_EnableLast(true);
-                    Browser_EnableNext(true);
-                    Browser_EnableFirst(false);
-                    Browser_EnablePrev(false);
-                    isBrowsing = true;
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
+            browserEntry.SetFirstIndex();
+            Browser_GotoEntry(browserEntry.JournalIndex);
         }
-
 
         //---------------------------------------------------------------------
 
         private void Browser_GotoLastEntry()
         {
-            try {
-                Browser_SaveRow(false);
-                browserEntry.LoadLast();
-                priorLoadedBrowserEntry = browserEntry.Copy();
-                if (browserEntry.JournalId > 0) {
-                    Browser_DisplayRow();
-                    Browser_EnableFirst(true);
-                    Browser_EnablePrev(true);
-                    Browser_EnableLast(false);
-                    Browser_EnableNext(false);
-                    isBrowsing = true;
-                }
-
-                if (timerRunning) {
-                    Browser_SetupForStopping();
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
+            browserEntry.SetLastIndex();
+            Browser_GotoEntry(browserEntry.JournalIndex);
         }
 
         //---------------------------------------------------------------------
 
         private void Browser_GotoNextEntry()
         {
-            try {
-                Browser_SaveRow(false);
-                browserEntry.LoadNext();
-                priorLoadedBrowserEntry = browserEntry.Copy();
-                if (browserEntry.JournalId > 0) {
-                    Browser_DisplayRow();
-                    Browser_EnableFirst(true);
-                    Browser_EnablePrev(true);
-                    isBrowsing = true;
-                    if (browserEntry.AtEnd()) {
-                        Browser_EnableLast(false);
-                        Browser_EnableNext(false);
-                        if (timerRunning) {
-                            Browser_SetupForStopping();
-                        }
-                    }
-                } else {
-                    Browser_EnableLast(false);
-                    Browser_EnableNext(false);
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
+            browserEntry.SetNextIndex();
+            Browser_GotoEntry(browserEntry.JournalIndex);
         }
 
         //---------------------------------------------------------------------
 
         private void Browser_GotoPreviousEntry()
         {
-            try {
-                if (!isBrowsing) {
-                    // If we're not browsing, this is a new row. If it's a new
-                    // row, save it so we don't lose it later.
-                    Browser_FormToEntry(ref newBrowserEntry, 0);
-                }
-
-                Browser_SaveRow(false);
-                browserEntry.LoadPrevious();
-                priorLoadedBrowserEntry = browserEntry.Copy();
-
-                if (browserEntry.JournalId > 0) {
-                    Browser_DisplayRow();
-
-                    Browser_EnableLast(true);
-                    Browser_EnableNext(true);
-                    if (browserEntry.AtBeginning()) {
-                        Browser_EnableFirst(false);
-                        Browser_EnablePrev(false);
-                    }
-                    if (browserEntry.AtEnd()) {
-                        Browser_EnableNext(false);
-                        Browser_EnableLast(false);
-                    }
-                    isBrowsing = true;
-                } else {
-                    Browser_EnableFirst(false);
-                    Browser_EnablePrev(false);
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
+            browserEntry.SetPreviousIndex();
+            Browser_GotoEntry(browserEntry.JournalIndex);
         }
 
         //---------------------------------------------------------------------
@@ -576,7 +556,7 @@ namespace Timekeeper.Forms
                 Browser_ViewOtherAttributes();
             }
             catch (Exception x) {
-                Common.Info("No file loaded.\n\n" + x.ToString());
+                Common.Info("Error loading Browser.\n\n" + x.ToString());
             }
         }
 
@@ -637,14 +617,8 @@ namespace Timekeeper.Forms
             // Copy the prior entry to our internal representation
             browserEntry = priorLoadedBrowserEntry.Copy();
 
-//            if (timerRunning) {
-                // Form is correct, except for this button
-//                Browser_EnableRevert(false);
-//            } else {
-                // Otherwise, do the full display logic (primarily)
-                // for the toolbar button state display
-//                Browser_DisplayRow();
-//            }
+            // Turn off button
+            Browser_EnableRevert(false);
         }
 
         //---------------------------------------------------------------------
@@ -741,6 +715,7 @@ namespace Timekeeper.Forms
 
             Browser_EnableCloseStartGap(true);
             Browser_EnableCloseEndGap(false);
+            Browser_EnableSplit(false);
 
             Browser_EnableStartEntry(true);
             Browser_EnableStopEntry(false);
@@ -830,6 +805,12 @@ namespace Timekeeper.Forms
                 // Set UI accordingly
                 Browser_SetCreateState();
 
+                // Disable navigation if the database
+                // is empty of journal entries.
+                if (Entries.Count() == 0) {
+                    Browser_DisableNavigation();
+                }
+
                 // Create browser objects
                 //browserEntry = new Classes.Journal(Database);
                 browserEntry = Entry;
@@ -857,6 +838,12 @@ namespace Timekeeper.Forms
         {
             // Set UI accordingly 
             Browser_SetStopState();
+
+            // Disable navigation if there's
+            // only a single entry at this point.
+            if (Entries.Count() == 1) {
+                Browser_DisableNavigation();
+            }
 
             // Reset browser entry
             isBrowsing = false;
@@ -1049,9 +1036,13 @@ namespace Timekeeper.Forms
         private DateTime Browser_GetPreviousEndTime()
         {
             try {
-                Classes.JournalEntry copy = browserEntry.Copy();
-                copy.LoadPrevious();
-                return copy.StopTime;
+                if (browserEntry.AtBeginning()) {
+                    return DateTime.MinValue;
+                } else {
+                    Classes.JournalEntry copy = browserEntry.Copy();
+                    copy.LoadPrevious();
+                    return copy.StopTime;
+                }
             }
             catch {
                 return DateTime.MinValue;
@@ -1063,9 +1054,13 @@ namespace Timekeeper.Forms
         private DateTime Browser_GetNextStartTime()
         {
             try {
-                Classes.JournalEntry copy = browserEntry.Copy();
-                copy.LoadNext();
-                return copy.StartTime;
+                if (browserEntry.AtEnd()) {
+                    return DateTime.MaxValue;
+                } else {
+                    Classes.JournalEntry copy = browserEntry.Copy();
+                    copy.LoadNext();
+                    return copy.StartTime;
+                }
             }
             catch {
                 return DateTime.MinValue;

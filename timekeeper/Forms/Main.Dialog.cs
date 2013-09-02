@@ -149,6 +149,13 @@ namespace Timekeeper.Forms
                 if (NewWizardDialog.ShowDialog(this) == DialogResult.OK) {
                     FileName = NewWizardDialog.CreateOptions.FileName;
                     CreateOptions = NewWizardDialog.CreateOptions;
+                    if (NewWizardDialog.CreateOptions.UseActivities && NewWizardDialog.CreateOptions.UseProjects) {
+                        Options.Behavior_TitleBar_Template = "%time - %activity for %project";
+                    } else if (NewWizardDialog.CreateOptions.UseActivities) {
+                        Options.Behavior_TitleBar_Template = "%time - %activity";
+                    } else if (NewWizardDialog.CreateOptions.UseProjects) {
+                        Options.Behavior_TitleBar_Template = "%time - %project";
+                    }
                 } else {
                     return;
                 }
@@ -162,6 +169,7 @@ namespace Timekeeper.Forms
                     CreateOptions.LocationName = "Default";
                     CreateOptions.LocationDescription = "Default Location";
                     CreateOptions.LocationTimeZoneId = Timekeeper.CurrentTimeZoneId();
+                    Options.Behavior_TitleBar_Template = "%time - %project";
                 } else {
                     return;
                 }
@@ -270,12 +278,19 @@ namespace Timekeeper.Forms
         private void Dialog_ApplyOptions(bool interfaceChanged)
         {
             StatusBar_SetVisibility();
-            Action_SetShortcuts();
-            Browser_SetShortcuts();
             Browser_ViewOtherAttributes();
+
+            if (timerRunning) {
+                DeferShortcutAssignment = true;
+            } else {
+                Action_SetShortcuts();
+                Browser_SetShortcuts();
+            }
 
             Action_UseProjects(Options.Layout_UseProjects);
             Action_UseActivities(Options.Layout_UseActivities);
+
+            TrayIcon.Visible = Options.Behavior_Window_ShowInTray;
 
             if (interfaceChanged) {
                 switch (Options.InterfacePreset) {

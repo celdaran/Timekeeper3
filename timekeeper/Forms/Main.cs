@@ -308,7 +308,7 @@ namespace Timekeeper.Forms
         private void MenuToolFind_Click(object sender, EventArgs e)
         {
             Classes.FindOptions FindOptions = new Classes.FindOptions();
-            Forms.Find FindDialog = new Forms.Find(FindOptions, Browser_GotoSpecificEntry);
+            Forms.Find FindDialog = new Forms.Find(FindOptions, Browser_GotoEntry);
             FindDialog.Show(this); // FIXME: why does this get flaky when "this" isn't specified?
         }
 

@@ -19,31 +19,31 @@ namespace Timekeeper.Classes
         private enum Mode { Insert, Update };
 
         //---------------------------------------------------------------------
-        // Journal Attributes
+        // Attributes
         //---------------------------------------------------------------------
 
-        // Public
-        private long _JournalId;
-        private long _ProjectId;
-        private long _ActivityId;
-        private DateTime _StartTime;
-        private DateTime _StopTime;
-        private long _Seconds;
-        private string _Memo;
-        private long _LocationId;
-        private long _CategoryId;
-        private bool _IsLocked;
+        public long JournalId { get; set; }
 
-        private string _ProjectName;
-        private string _ActivityName;
-        private string _LocationName;
-        private string _CategoryName;
+        public DateTime CreateTime { get; private set; }
+        public DateTime ModifyTime { get; private set; }
+        public string JournalGuid { get; private set; }
 
-        // Private
-        private DateTime CreateTime;
-        private DateTime ModifyTime;
-        private string JournalGuid;
-        public long JournalIndex; //FIXME! NOT PUBLIC! ONLY FOR TESTING!
+        public DateTime StartTime { get; set; }
+        public DateTime StopTime { get; set; }
+        public long Seconds { get; set; }
+        public string Memo { get; set; }
+        public long ProjectId { get; set; }
+        public long ActivityId { get; set; }
+        public long LocationId { get; set; }
+        public long CategoryId { get; set; }
+        public bool IsLocked { get; set; }
+
+        public long JournalIndex { get; private set; }
+
+        public string ProjectName { get; set; }
+        public string ActivityName { get; set; }
+        public string LocationName { get; set; }
+        public string CategoryName { get; set; }
 
         //---------------------------------------------------------------------
         // Constructors
@@ -61,26 +61,6 @@ namespace Timekeeper.Classes
         {
             this.Load(journalId);
         }
-
-        //---------------------------------------------------------------------
-        // Accessors
-        //---------------------------------------------------------------------
-
-        public long JournalId { get { return _JournalId; } set { _JournalId = value; } }
-        public long ActivityId { get { return _ActivityId; } set { _ActivityId = value; } }
-        public long ProjectId { get { return _ProjectId; } set { _ProjectId = value; } }
-        public DateTime StartTime { get { return _StartTime; } set { _StartTime = value; } }
-        public DateTime StopTime { get { return _StopTime; } set { _StopTime = value; } }
-        public long Seconds { get { return _Seconds; } set { _Seconds = value; } }
-        public string Memo { get { return _Memo; } set { _Memo = value; } }
-        public long LocationId { get { return _LocationId; } set { _LocationId = value; } }
-        public long CategoryId { get { return _CategoryId; } set { _CategoryId = value; } }
-        public bool IsLocked { get { return _IsLocked; } set { _IsLocked = value; } }
-
-        public string ActivityName { get { return _ActivityName; } set { _ActivityName = value; } }
-        public string ProjectName { get { return _ProjectName; } set { _ProjectName = value; } }
-        public string LocationName { get { return _LocationName; } set { _LocationName = value; } }
-        public string CategoryName { get { return _CategoryName; } set { _CategoryName = value; } }
 
         //---------------------------------------------------------------------
         // Primary Methods
@@ -130,27 +110,28 @@ namespace Timekeeper.Classes
         {
             JournalEntry copy = new JournalEntry(this.Data);
 
-            // copy internals
+            // copy properties
             copy.NextJournalIndex = this.NextJournalIndex;
 
-            // copy private properties
-            //copy.CurrentStartTime = this.CurrentStartTime;
+            // copy attributes
+            copy.JournalId = this.JournalId;
             copy.CreateTime = this.CreateTime;
             copy.ModifyTime = this.ModifyTime;
             copy.JournalGuid = UUID.Get();
-            copy.JournalIndex = this.JournalIndex;
 
             // copy public properties
-            copy.JournalId = this.JournalId;
-            copy.ProjectId = this.ProjectId;
-            copy.ActivityId = this.ActivityId;
             copy.StartTime = this.StartTime;
             copy.StopTime = this.StopTime;
             copy.Seconds = this.Seconds;
             copy.Memo = this.Memo;
+            copy.ProjectId = this.ProjectId;
+            copy.ActivityId = this.ActivityId;
             copy.LocationId = this.LocationId;
             copy.CategoryId = this.CategoryId;
             copy.IsLocked = this.IsLocked;
+
+            copy.JournalIndex = this.JournalIndex;
+
             copy.ActivityName = this.ActivityName;
             copy.ProjectName = this.ProjectName;
             copy.LocationName = this.LocationName;
@@ -169,12 +150,12 @@ namespace Timekeeper.Classes
 
             if (
                 // Only compare public, non-PK, non-foreign members
-                (copy.ProjectId == this.ProjectId) &&
-                (copy.ActivityId == this.ActivityId) &&
                 (copy.StartTime == this.StartTime) &&
                 (copy.StopTime == this.StopTime) &&
                 (copy.Seconds == this.Seconds) &&
                 (copy.Memo == this.Memo) &&
+                (copy.ProjectId == this.ProjectId) &&
+                (copy.ActivityId == this.ActivityId) &&
                 (copy.LocationId == this.LocationId) &&
                 (copy.CategoryId == this.CategoryId) &&
                 (copy.IsLocked == this.IsLocked)
@@ -196,12 +177,12 @@ namespace Timekeeper.Classes
                     string Query = @"
                         select
                             j.JournalId,
-                            j.ProjectId, p.Name as ProjectName,
-                            j.ActivityId, a.Name as ActivityName,
                             datetime(j.StartTime, 'localtime') as StartTime,
                             datetime(j.StopTime, 'localtime') as StopTime,
                             j.Seconds,
                             j.Memo,
+                            j.ProjectId, p.Name as ProjectName,
+                            j.ActivityId, a.Name as ActivityName,
                             j.LocationId, l.Name as LocationName,
                             j.CategoryId, c.Name as CategoryName,
                             j.IsLocked,
@@ -254,9 +235,36 @@ namespace Timekeeper.Classes
             }
         }
 
-
         //---------------------------------------------------------------------
         // Browsing Helper Methods
+        //---------------------------------------------------------------------
+
+        public void SetFirstIndex()
+        {
+            this.JournalIndex = 1;
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SetPreviousIndex()
+        {
+            this.JournalIndex--;
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SetNextIndex()
+        {
+            this.JournalIndex++;
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SetLastIndex()
+        {
+            this.JournalIndex = NextJournalIndex - 1;
+        }
+
         //---------------------------------------------------------------------
 
         public void LoadByIndex(long journalIndex)
@@ -269,7 +277,7 @@ namespace Timekeeper.Classes
 
         public void LoadFirst()
         {
-            this.JournalIndex = 1;
+            this.SetFirstIndex();
             this.Load();
         }
 
@@ -277,7 +285,7 @@ namespace Timekeeper.Classes
 
         public void LoadPrevious()
         {
-            this.JournalIndex--;
+            this.SetPreviousIndex();
             this.Load();
         }
 
@@ -285,7 +293,7 @@ namespace Timekeeper.Classes
 
         public void LoadNext()
         {
-            this.JournalIndex++;
+            this.SetNextIndex();
             this.Load();
         }
 
@@ -293,7 +301,7 @@ namespace Timekeeper.Classes
 
         public void LoadLast()
         {
-            this.JournalIndex = NextJournalIndex - 1;
+            this.SetLastIndex();
             this.Load();
         }
 

@@ -19,6 +19,9 @@ namespace Timekeeper.Forms
         private bool DontChangeProject = false;
         private bool DontChangeActivity = false;
 
+        // Deferred keyboard shortcut setting
+        private bool DeferShortcutAssignment = false;
+
         //---------------------------------------------------------------------
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
@@ -292,6 +295,7 @@ namespace Timekeeper.Forms
 
                 StatusBar_FileClosed();
                 MenuBar_FileClosed();
+                Browser_Disable();
 
                 Options.SaveLocal();
 
@@ -608,6 +612,7 @@ namespace Timekeeper.Forms
 
                 Browser_Load();
                 Browser_SetupForStarting();
+                Browser_Enable();
                 Browser_Show(Options.Main_BrowserOpen);
 
                 //------------------------------------------
@@ -945,12 +950,9 @@ namespace Timekeeper.Forms
 
                 // FIXME: add this to Widgets?
                 // FIXME: I liked this updating-in-real-time feature (when it was directly accessing: options.wTitleBarTemplate.Text)
-                string tmp = Options.Behavior_TitleBar_Template; 
-                tmp = tmp.Replace("%a", "{0}");
+                string tmp = Options.Behavior_TitleBar_Template;
                 tmp = tmp.Replace("%activity", "{0}");
-                tmp = tmp.Replace("%p", "{1}");
                 tmp = tmp.Replace("%project", "{1}");
-                tmp = tmp.Replace("%t", "{2}");
                 tmp = tmp.Replace("%time", "{2}");
                 Text = String.Format(tmp, currentActivityNode.Text, currentProjectNode.Text, timeToShow);
                 //wNotifyIcon.Text = Text;
@@ -976,7 +978,10 @@ namespace Timekeeper.Forms
                     if (!StartTimeManuallySet) {
                         wStartTime.Value = DateTime.Now;
                         wStopTime.Value = DateTime.Now;
+                    } else {
+                        wStopTime.Value = DateTime.Now;
                     }
+                    wDuration.Text = Browser_CalculateDuration();
                 }
             }
         }
@@ -1242,7 +1247,17 @@ namespace Timekeeper.Forms
 
             // FIXME: stopping the timer != opening the browser
             Browser_SetupForStarting();
-            Entry.AdvanceIndex(); // FIXME: EXPERIMENTAL
+            // FIXME: EXPERIMENTAL
+            Entry.AdvanceIndex(); 
+
+            // In case any keyboard shortcuts were set while the timer
+            // was running, take care of those now.
+            if (DeferShortcutAssignment) {
+                Action_SetShortcuts();
+                Browser_SetShortcuts();
+                DeferShortcutAssignment = false;
+            }
+
         }
 
         //----------------------------------------------------------------------
