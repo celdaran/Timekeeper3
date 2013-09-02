@@ -37,7 +37,7 @@
             this.WizardPicture = new System.Windows.Forms.PictureBox();
             this.TopPanel = new System.Windows.Forms.Panel();
             this.FileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.tablessControl1 = new Forms.Controls.TablessControl();
+            this.tablessControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.IntroductionInstructions = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -517,7 +517,7 @@
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.Button LaterButton;
         private System.Windows.Forms.Button OkayButton;
-        private Forms.Controls.TablessControl tablessControl1;
+        private System.Windows.Forms.TabControl tablessControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Panel ButtonPanel;

@@ -117,18 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Until this becomes a real, full-blown import
-wizard, it's going to be my test bed for reading
-in Timekeeper 1.0 files.
-
-I'd still like to pull all that stuff together, from 
-1999 to 2008, across all jobs: Pioneer, Dice,
-CreditMinders, EDW, and NCsoft, into a single
-historical archive.
-
-And since I don't want to do any further TK
-development after 3.0 (at least for a long,
-long time), then this really is my shot.</value>
-  </data>
+  <metadata name="OpenFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>81</value>
+  </metadata>
 </root>

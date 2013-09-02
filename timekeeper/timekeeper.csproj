@@ -142,6 +142,7 @@
     <Compile Include="Classes\File.Upgrade.cs" />
     <Compile Include="Classes\FilterOptions.cs" />
     <Compile Include="Classes\FindOptions.cs" />
+    <Compile Include="Classes\Import.cs" />
     <Compile Include="Classes\ListAttribute.cs" />
     <Compile Include="Classes\ListAttributeCollection.cs" />
     <Compile Include="Classes\Location.cs" />
@@ -155,15 +156,6 @@
     </Compile>
     <Compile Include="Forms\CategoryManager.Designer.cs">
       <DependentUpon>CategoryManager.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\DateRangePicker.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Controls\DateRangePicker.Designer.cs">
-      <DependentUpon>DateRangePicker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Controls\TablessControl.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Filtering.cs">
       <SubType>Form</SubType>
@@ -224,6 +216,12 @@
     </Compile>
     <Compile Include="Forms\UpgradeWizard.Designer.cs">
       <DependentUpon>UpgradeWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WizardExperiment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WizardExperiment.Designer.cs">
+      <DependentUpon>WizardExperiment.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Classes\ActivityCollection.cs" />
@@ -378,9 +376,6 @@
     <EmbeddedResource Include="Forms\CategoryManager.resx">
       <DependentUpon>CategoryManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Controls\DateRangePicker.resx">
-      <DependentUpon>DateRangePicker.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -480,6 +475,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UpgradeWizard.resx">
       <DependentUpon>UpgradeWizard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WizardExperiment.resx">
+      <DependentUpon>WizardExperiment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

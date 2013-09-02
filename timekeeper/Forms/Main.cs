@@ -1098,7 +1098,9 @@ namespace Timekeeper.Forms
         private void MenuFileUtilitiesImport_Click(object sender, EventArgs e)
         {
             Forms.ImportWizard DialogBox = new Forms.ImportWizard();
-            DialogBox.ShowDialog(this);
+            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
+                reloadProjects();
+            }
         }
 
         //---------------------------------------------------------------------
