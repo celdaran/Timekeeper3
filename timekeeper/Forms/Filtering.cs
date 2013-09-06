@@ -34,7 +34,11 @@ namespace Timekeeper.Forms
         {
             InitializeComponent();
 
-            FilterOptions = filterOptions;
+            if (filterOptions == null) {
+                FilterOptions = new Classes.FilterOptions();
+            } else {
+                FilterOptions = filterOptions;
+            }
 
             // FIXME: load window metrics
 

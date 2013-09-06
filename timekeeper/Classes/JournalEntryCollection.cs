@@ -177,7 +177,11 @@ namespace Timekeeper.Classes
                 select min(datetime(StartTime, 'localtime')) as FirstDate 
                 from Journal";
             Row Row = Timekeeper.Database.SelectRow(Query);
-            FirstDay = DateTime.Parse(Row["FirstDate"]);
+            if (Row["FirstDate"] == null) {
+                FirstDay = DateTime.Now;
+            } else {
+                FirstDay = DateTime.Parse(Row["FirstDate"]);
+            }
 
             return FirstDay;
         }
@@ -192,7 +196,11 @@ namespace Timekeeper.Classes
                 select max(datetime(StartTime, 'localtime')) as LastDate 
                 from Journal";
             Row Row = Timekeeper.Database.SelectRow(Query);
-            LastDay = DateTime.Parse(Row["LastDate"]);
+            if (Row["LastDate"] == null) {
+                LastDay = DateTime.Now;
+            } else {
+                LastDay = DateTime.Parse(Row["LastDate"]);
+            }
 
             return LastDay;
         }
