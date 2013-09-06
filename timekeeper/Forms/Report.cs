@@ -285,7 +285,7 @@ namespace Timekeeper.Forms
                     FilterOptions.List(FilterOptions.ImpliedProjects)) + System.Environment.NewLine;
             }
             if ((FilterOptions.MemoContains != null) && (FilterOptions.MemoContains != "")) {
-                WhereClause += String.Format("and log.Memo like '%{0}%'", FilterOptions.MemoContains) + System.Environment.NewLine;
+                WhereClause += String.Format("and log.MemoContains like '%{0}%'", FilterOptions.MemoContains) + System.Environment.NewLine;
             }
 
             if (FilterOptions.DurationOperator > 0) {

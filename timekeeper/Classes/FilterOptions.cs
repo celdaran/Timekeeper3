@@ -96,7 +96,7 @@ namespace Timekeeper.Classes
                 DateRangePreset = (int)Timekeeper.GetValue(Options["RefDatePresetId"], DATE_PRESET_NONE);
                 FromDate = (DateTime)Timekeeper.GetValue(Options["FromDate"], DateTime.MinValue);
                 ToDate = (DateTime)Timekeeper.GetValue(Options["ToDate"], DateTime.MaxValue);
-                MemoContains = (string)Timekeeper.GetValue(Options["Memo"], "");  // TODO: SCHEMA 3.0.0.4 CHANGE MEMO TO MEMOCONTAINS
+                MemoContains = (string)Timekeeper.GetValue(Options["MemoContains"], "");
                 Projects = List((string)Timekeeper.GetValue(Options["ProjectList"], ""));
                 Activities = List((string)Timekeeper.GetValue(Options["ActivityList"], ""));
                 Locations = List((string)Timekeeper.GetValue(Options["LocationList"], ""));
@@ -142,7 +142,7 @@ namespace Timekeeper.Classes
                 Options["RefDatePresetId"] = DateRangePreset;
                 Options["FromDate"] = FromDate;
                 Options["ToDate"] = ToDate;
-                Options["Memo"] = MemoContains;  // FIXME: Should be Row["MemoContains"]
+                Options["MemoContains"] = MemoContains;
                 Options["ProjectList"] = List(Projects);
                 Options["ActivityList"] = List(Activities);
                 Options["LocationList"] = List(Locations);
@@ -289,7 +289,7 @@ namespace Timekeeper.Classes
                     this.List(this.ImpliedProjects)) + System.Environment.NewLine;
             }
             if ((this.MemoContains != null) && (this.MemoContains != "")) {
-                WhereClause += String.Format("and j.Memo like '%{0}%'", this.MemoContains) + System.Environment.NewLine;
+                WhereClause += String.Format("and j.MemoContains like '%{0}%'", this.MemoContains) + System.Environment.NewLine;
             }
 
             if (this.DurationOperator > 0) {

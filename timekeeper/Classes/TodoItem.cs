@@ -1,0 +1,267 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Technitivity.Toolbox;
+
+namespace Timekeeper.Classes
+{
+    public class TodoItem
+    {
+        //----------------------------------------------------------------------
+        // Properties
+        //----------------------------------------------------------------------
+
+        private DBI Database;
+
+        public long TodoId { get; private set; }
+        public DateTime CreateTime { get; private set; }
+        public DateTime ModifyTime { get; private set; }
+        public long ProjectId { get; set; }
+        public long RefTodoStatusId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime DueDate { get; set; }
+        public string Memo { get; set; }
+        public bool IsHidden { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime HiddenTime { get; set; }
+        public DateTime DeletedTime { get; set; }
+
+        public string ProjectName { get; private set; }
+        public string StatusName { get; private set; }
+        public string StatusDescription { get; private set; }
+
+        //----------------------------------------------------------------------
+
+        public TodoItem()
+        {
+            this.Database = Timekeeper.Database;
+        }
+
+        //----------------------------------------------------------------------
+
+        public TodoItem(long todoId) : this()
+        {
+            this.Load(todoId);
+        }
+
+        //----------------------------------------------------------------------
+
+        public void Load(long todoId)
+        {
+            // TODO: add hidden/deleted columns
+
+            string Query = String.Format(@"
+                SELECT
+                    t.TodoId, t.CreateTime, t.ModifyTime,
+                    p.ProjectId, p.Name as ProjectName,
+                    r.RefTodoStatusId, r.Name as StatusName , r.Description as StatusDescription,
+                    t.StartDate, t.DueDate, t.Memo,
+                    t.IsHidden, t.HiddenTime,
+                    t.IsDeleted, t.DeletedTime
+                FROM Todo t
+                JOIN RefTodoStatus r on r.RefTodoStatusId = t.RefTodoStatusId
+                JOIN Project p on p.ProjectId = t.ProjectId
+                WHERE t.TodoId = {0}
+                  AND t.IsDeleted = 0", todoId);
+            Row TodoItem = Database.SelectRow(Query);
+
+            if (TodoItem["TodoId"] != null)
+            {
+                this.TodoId = TodoItem["TodoId"];
+
+                this.CreateTime = TodoItem["CreateTime"];
+                this.ModifyTime = TodoItem["ModifyTime"];
+
+                this.ProjectId = TodoItem["ProjectId"];
+                this.ProjectName = TodoItem["ProjectName"];
+                this.RefTodoStatusId = TodoItem["RefTodoStatusId"];
+                this.StatusName = TodoItem["StatusName"];
+                this.StatusDescription = TodoItem["StatusDescription"];
+
+                if (TodoItem["StartDate"] != null)
+                    this.StartDate = TodoItem["StartDate"];
+                if (TodoItem["DueDate"] != null)
+                    this.DueDate = TodoItem["DueDate"];
+                if (TodoItem["Memo"] != null)
+                    this.Memo = TodoItem["Memo"];
+
+                this.IsHidden = TodoItem["IsHidden"];
+                this.IsDeleted = TodoItem["IsDeleted"];
+
+                if (TodoItem["HiddenTime"] != null)
+                    this.HiddenTime = TodoItem["HiddenTime"];
+                if (TodoItem["DeletedTime"] != null)
+                    this.DeletedTime = TodoItem["DeletedTime"];
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        public bool Create()
+        {
+            try {
+                Row TodoItem = new Row();
+
+                string Now = Common.Now();
+                TodoItem["CreateTime"] = Now;
+                TodoItem["ModifyTime"] = Now;
+
+                TodoItem["ProjectId"] = this.ProjectId;
+                TodoItem["RefTodoStatusId"] = this.RefTodoStatusId;
+
+                TodoItem["StartDate"] = this.StartDate.ToString(Common.DATETIME_FORMAT);
+                TodoItem["DueDate"] = this.DueDate.ToString(Common.DATETIME_FORMAT);
+                TodoItem["Memo"] = this.Memo;
+
+                TodoItem["IsHidden"] = 0;
+                TodoItem["IsDeleted"] = 0;
+
+                this.TodoId = Database.Insert("Todo", TodoItem);
+
+                if (this.TodoId == 0) {
+                    throw new Exception("Could not create Todo item.");
+                }
+
+                // Backfill instance with system-generated values
+                this.CreateTime = Convert.ToDateTime(TodoItem["CreateTime"]);
+                this.ModifyTime = Convert.ToDateTime(TodoItem["ModifyTime"]);
+
+                // And with foreign table information
+                this.ProjectName = (new Classes.Project(Database, this.ProjectId)).DisplayName();
+                string Query = @"SELECT Name, Description FROM RefTodoStatus WHERE RefTodoStatusId = " + this.RefTodoStatusId;
+                Row RefTodoStatus = Database.SelectRow(Query);
+                this.StatusName = RefTodoStatus["Name"];
+                this.StatusDescription = RefTodoStatus["Description"];
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                return false;
+            }
+
+            return true;
+        }
+
+        //----------------------------------------------------------------------
+
+        public bool Save()
+        {
+            try {
+                Row TodoItem = new Row();
+
+                TodoItem["ModifyTime"] = Common.Now();
+
+                TodoItem["ProjectId"] = this.ProjectId;
+                TodoItem["RefTodoStatusId"] = this.RefTodoStatusId;
+
+                TodoItem["StartDate"] = this.StartDate.ToString(Common.DATETIME_FORMAT);
+                TodoItem["DueDate"] = this.DueDate.ToString(Common.DATETIME_FORMAT);
+                TodoItem["Memo"] = this.Memo;
+
+                if (Database.Update("Todo", TodoItem, "TodoId", this.TodoId) != 1) {
+                    throw new Exception("Could not save Todo item.");
+                }
+
+                // Backfill instance with system-generated values
+                this.ModifyTime = Convert.ToDateTime(TodoItem["ModifyTime"]);
+
+                // And with foreign table information
+                this.ProjectName = (new Classes.Project(Database, this.ProjectId)).DisplayName();
+                string Query = @"SELECT Name, Description FROM RefTodoStatus WHERE RefTodoStatusId = " + this.RefTodoStatusId;
+                Row RefTodoStatus = Database.SelectRow(Query);
+                this.StatusName = RefTodoStatus["Name"];
+                this.StatusDescription = RefTodoStatus["Description"];
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                return false;
+            }
+
+            return true;
+        }
+
+        //----------------------------------------------------------------------
+
+        public void Delete()
+        {
+            Update("IsDeleted", 1);
+            Update("DeletedTime", Common.Now());
+            this.IsDeleted = true;
+            this.DeletedTime = DateTime.Now; // FIXME: this isn't right  :(
+        }
+
+        //----------------------------------------------------------------------
+
+        public void Hide()
+        {
+            Update("IsHidden", 1);
+            Update("HiddenTime", Common.Now());
+            this.IsHidden = true;
+            this.HiddenTime = DateTime.Now; // FIXME: this isn't right  :(
+        }
+
+        //----------------------------------------------------------------------
+
+        public void Unhide()
+        {
+            Update("IsHidden", 0);
+            Update("HiddenTime", null);
+            this.IsHidden = false;
+            this.HiddenTime = DateTime.MinValue;
+        }
+
+        //----------------------------------------------------------------------
+
+        public void MarkComplete()
+        {
+            // TODO: Come up with a constant
+            // AND/OR DEPRECATE THIS METHOD
+            UpdateStatus(5);
+        }
+
+        //----------------------------------------------------------------------
+
+        public void UpdateStatus(long refTodoStatusId)
+        {
+            Update("RefTodoStatusId", refTodoStatusId);
+            this.RefTodoStatusId = refTodoStatusId;
+
+            // TODO: clean this up, please.
+            string Query = @"SELECT Name, Description FROM RefTodoStatus WHERE RefTodoStatusId = " + this.RefTodoStatusId;
+            Row RefTodoStatus = Database.SelectRow(Query);
+            this.StatusName = RefTodoStatus["Name"];
+            this.StatusDescription = RefTodoStatus["Description"];
+        }
+
+        //----------------------------------------------------------------------
+        // Private Helpers
+        //----------------------------------------------------------------------
+
+        private bool Update(string columnName, object columnValue)
+        {
+            try {
+                Row TodoItem = new Row();
+
+                TodoItem["ModifyTime"] = Common.Now();
+
+                TodoItem[columnName] = columnValue;
+
+                if (Database.Update("Todo", TodoItem, "TodoId", this.TodoId) != 1) {
+                    throw new Exception("Could not update Todo column " + columnName);
+                }
+
+                this.ModifyTime = Convert.ToDateTime(TodoItem["ModifyTime"]);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                return false;
+            }
+
+            return true;
+        }
+
+        //----------------------------------------------------------------------
+
+    }
+}

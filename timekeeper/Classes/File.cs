@@ -18,7 +18,7 @@ namespace Timekeeper
         public readonly string Name;
         public readonly string FullPath;
 
-        public const string SCHEMA_VERSION = "3.0.0.4";
+        public const string SCHEMA_VERSION = "3.0.0.5";
 
         public const int ERROR_UNEXPECTED = -1;
         public const int ERROR_NEWER_VERSION_DETECTED = -2;
@@ -169,6 +169,7 @@ namespace Timekeeper
                 CreateTable("RefGroupBy", version, populate);
                 CreateTable("RefTimeDisplay", version, populate);
                 CreateTable("RefTimeZone", version, false);
+                CreateTable("RefTodoStatus", version, populate);
                 PopulateRefTimeZone();
 
                 // User Reference Tables
@@ -180,9 +181,10 @@ namespace Timekeeper
                 CreateTable("Project",  version, false);
                 PopulateItems();
 
-                // Journal Tables
+                // User Tables
                 CreateTable("Journal", version, false);
                 CreateTable("Notebook", version, false);
+                CreateTable("Todo", version, false);
 
                 // User Options
                 CreateTable("Options", version, populate);
