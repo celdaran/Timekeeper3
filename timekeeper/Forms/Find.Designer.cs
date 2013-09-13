@@ -81,7 +81,7 @@ namespace Timekeeper.Forms
             this.ManageOptionsButton});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
-            this.ToolStrip.Size = new System.Drawing.Size(524, 25);
+            this.ToolStrip.Size = new System.Drawing.Size(522, 25);
             this.ToolStrip.TabIndex = 0;
             this.ToolStrip.Text = "ToolStrip";
             // 
@@ -176,7 +176,7 @@ namespace Timekeeper.Forms
             this.FindResultsGrid.Location = new System.Drawing.Point(0, 25);
             this.FindResultsGrid.Name = "FindResultsGrid";
             this.FindResultsGrid.RowHeadersVisible = false;
-            this.FindResultsGrid.Size = new System.Drawing.Size(524, 248);
+            this.FindResultsGrid.Size = new System.Drawing.Size(522, 246);
             this.FindResultsGrid.TabIndex = 1;
             this.FindResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FindResults_CellDoubleClick);
             this.FindResultsGrid.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.FindResults_UserAddedRow);
@@ -300,9 +300,9 @@ namespace Timekeeper.Forms
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ResultCount});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 273);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 271);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(524, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(522, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -315,7 +315,7 @@ namespace Timekeeper.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(524, 295);
+            this.ClientSize = new System.Drawing.Size(522, 293);
             this.Controls.Add(this.FindResultsGrid);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.ToolStrip);

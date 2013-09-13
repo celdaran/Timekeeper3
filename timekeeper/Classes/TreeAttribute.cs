@@ -310,7 +310,7 @@ namespace Timekeeper.Classes
             Row["Name"] = this.Name;
             Row["Description"] = this.Description;
             Row["ParentId"] = this.ParentId;
-            Row["SortOrderNo"] = this.GetNextSortOrderNo(this.ParentId);
+            Row["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName, this.ParentId);
             Row["Last" + OtherTableName + "Id"] = this.FollowedItemId;
             Row["IsFolder"] = this.IsFolder ? 1 : 0;
             Row["IsFolderOpened"] = this.IsFolder ? 1 : 0;
@@ -549,7 +549,7 @@ namespace Timekeeper.Classes
             Row Row = new Row();
             Row["ParentId"] = itemId;
             Row["ModifyTime"] = Common.Now();
-            Row["SortOrderNo"] = this.GetNextSortOrderNo(itemId);
+            Row["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName, itemId);
             long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
@@ -683,6 +683,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        /*
         private long GetNextSortOrderNo(long parentId)
         {
             string Query = String.Format(@"
@@ -698,6 +699,7 @@ namespace Timekeeper.Classes
                 return 1;
             }
         }
+        */
 
         //---------------------------------------------------------------------
 

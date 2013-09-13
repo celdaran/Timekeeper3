@@ -345,6 +345,7 @@ namespace Timekeeper.Classes
             Main_TreeSplitterDistance = (int)Key.GetValue("TreeSplitterDistance", 218);
             Main_BrowserOpen = ((int)Key.GetValue("BrowserOpen", 0) == 1);
             Main_BrowserHeight = (int)Key.GetValue("BrowserHeight", 200);
+            // TODO: add window state as an option (minimized, maximized, etc.)
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Report");
 
@@ -355,16 +356,16 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Grid");
 
-            Grid_Height = (int)Key.GetValue("Height", 100);
-            Grid_Width = (int)Key.GetValue("Width", 100);
+            Grid_Height = (int)Key.GetValue("Height", 310);
+            Grid_Width = (int)Key.GetValue("Width", 480);
             Grid_Top = (int)Key.GetValue("Top", 100);
             Grid_Left = (int)Key.GetValue("Left", 100);
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Find");
 
             // TODO: come up with better defaults
-            Find_Height = (int)Key.GetValue("Height", 100);
-            Find_Width = (int)Key.GetValue("Width", 100);
+            Find_Height = (int)Key.GetValue("Height", 320);
+            Find_Width = (int)Key.GetValue("Width", 530);
             Find_Top = (int)Key.GetValue("Top", 100);
             Find_Left = (int)Key.GetValue("Left", 100);
             Find_Grid_JournalIdWidth = (int)Key.GetValue("Grid_JournalIdWidth", 40);
@@ -663,6 +664,7 @@ namespace Timekeeper.Classes
         private void SaveToDatabase()
         {
             if (this.Database != null) {
+                Timekeeper.Debug("Saving Options to Database");
                 SaveRow("LastProjectId", State_LastProjectId.ToString());
                 SaveRow("LastActivityId", State_LastActivityId.ToString());
                 SaveRow("LastFindOptionsId", State_LastFindOptionsId.ToString());

@@ -18,6 +18,7 @@ namespace Timekeeper.Forms
         // Properties
         //---------------------------------------------------------------------
 
+        private Classes.Options Options;
         private Classes.Widgets Widgets;
 
         //---------------------------------------------------------------------
@@ -33,6 +34,8 @@ namespace Timekeeper.Forms
         public Filtering(Classes.FilterOptions filterOptions)
         {
             InitializeComponent();
+
+            this.Options = Timekeeper.Options;
 
             if (filterOptions == null) {
                 FilterOptions = new Classes.FilterOptions();
@@ -68,23 +71,27 @@ namespace Timekeeper.Forms
             // Populate Location & Category filters
             //----------------------------------------
 
-            ProjectTree.Nodes.Clear();
-            Widgets.BuildProjectTree(ProjectTree.Nodes);
+            PopulateStuff();
 
-            ActivityTree.Nodes.Clear();
-            Widgets.BuildActivityTree(ActivityTree.Nodes);
+            //----------------------------------------
+            // Set Visibility
+            //----------------------------------------
 
-            Classes.LocationCollection Locations = new Classes.LocationCollection();
-            Classes.CategoryCollection Categories = new Classes.CategoryCollection();
-
-            List<IdObjectPair> FetchedLocations = Locations.Fetch();
-            foreach (IdObjectPair Location in FetchedLocations) {
-                LocationFilter.Items.Add(Location);
+            if (!Options.Layout_UseProjects) {
+                // TODO: I'm not sure I'm done with this
+                FilterOptionsTabControl.TabPages.RemoveByKey("ProjectTab");
             }
 
-            List<IdObjectPair> FetchedCategories = Categories.Fetch();
-            foreach (IdObjectPair Category in FetchedCategories) {
-                CategoryFilter.Items.Add(Category);
+            if (!Options.Layout_UseActivities) {
+                FilterOptionsTabControl.TabPages.RemoveByKey("ActivityTab");
+            }
+
+            if (!Options.Layout_UseLocations) {
+                FilterOptionsTabControl.TabPages.RemoveByKey("LocationTab");
+            }
+
+            if (!Options.Layout_UseCategories) {
+                FilterOptionsTabControl.TabPages.RemoveByKey("CategoryTab");
             }
 
             //----------------------------------------
@@ -94,6 +101,8 @@ namespace Timekeeper.Forms
             if (FilterOptions.DateRangePreset != Classes.FilterOptions.DATE_PRESET_NONE) {
                 Presets.SelectedIndex = FilterOptions.DateRangePreset - 1;
                 SetDateRange();
+            } else {
+                Timekeeper.Warn("DateRangePreset = DATE_PRESET_NONE");
             }
 
             if (FilterOptions.MemoContains != null) {
@@ -130,7 +139,31 @@ namespace Timekeeper.Forms
             }
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
+
+        private void PopulateStuff()
+        {
+            ProjectTree.Nodes.Clear();
+            Widgets.BuildProjectTree(ProjectTree.Nodes);
+
+            ActivityTree.Nodes.Clear();
+            Widgets.BuildActivityTree(ActivityTree.Nodes);
+
+            Classes.LocationCollection Locations = new Classes.LocationCollection();
+            Classes.CategoryCollection Categories = new Classes.CategoryCollection();
+
+            List<IdObjectPair> FetchedLocations = Locations.Fetch();
+            foreach (IdObjectPair Location in FetchedLocations) {
+                LocationFilter.Items.Add(Location);
+            }
+
+            List<IdObjectPair> FetchedCategories = Categories.Fetch();
+            foreach (IdObjectPair Category in FetchedCategories) {
+                CategoryFilter.Items.Add(Category);
+            }
+        }
+
+        //----------------------------------------------------------------------
 
         private void Filtering_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -246,9 +279,9 @@ namespace Timekeeper.Forms
             FilterOptions.DateRangePreset = Presets.SelectedIndex + 1;
             FilterOptions.FromDate = FromDate.Value;
             FilterOptions.ToDate = ToDate.Value;
+            FilterOptions.MemoContains = MemoFilter.Text;
             FilterOptions.Activities = GetActuallySelectedValues(ActivityTree.Nodes);
             FilterOptions.Projects = GetActuallySelectedValues(ProjectTree.Nodes);
-            FilterOptions.MemoContains = MemoFilter.Text;
             FilterOptions.DurationOperator = DurationOperator.SelectedIndex;
             FilterOptions.DurationAmount = (int)DurationAmount.Value;
             FilterOptions.DurationUnit = DurationUnit.SelectedIndex;
@@ -258,6 +291,15 @@ namespace Timekeeper.Forms
             FilterOptions.ImpliedProjects = GetImpliedSelectedValues(ProjectTree.Nodes, false);
 
             DialogResult = DialogResult.OK;
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            // TODO: need a better way to convert constants to combobox values
+            Presets.SelectedIndex = Classes.FilterOptions.DATE_PRESET_ALL - 1;
+            MemoFilter.Text = "";
+
+            PopulateStuff();
         }
 
         //---------------------------------------------------------------------

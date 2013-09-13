@@ -1,6 +1,6 @@
-namespace Timekeeper
+namespace Timekeeper.Forms.Reports
 {
-    partial class fGrid
+    partial class Grid
     {
         /// <summary>
         /// Required designer variable.
@@ -31,45 +31,41 @@ namespace Timekeeper
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fGrid));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Grid));
             this.wGrid = new System.Windows.Forms.DataGridView();
             this.task = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.wGroupOptions = new System.Windows.Forms.GroupBox();
-            this.wTimeFormat = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.wDataType = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.wGroupBy = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.wHideEmptyRows = new System.Windows.Forms.CheckBox();
-            this.wGroupDates = new System.Windows.Forms.GroupBox();
-            this.wDatePreset = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.wEndDate = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
-            this.wStartDate = new System.Windows.Forms.DateTimePicker();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.wToolbar = new System.Windows.Forms.ToolStrip();
-            this.btnFilter = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnLoadViewDropDown = new System.Windows.Forms.ToolStripDropDownButton();
-            this.btnSaveView2 = new System.Windows.Forms.ToolStripButton();
-            this.btnManageViews = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.ToolStrip = new System.Windows.Forms.ToolStrip();
+            this.FilterButton = new System.Windows.Forms.ToolStripButton();
+            this.GroupByMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.GroupByDayButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.GroupByWeekButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.GroupByMonthButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.GroupByYearButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.GroupByNoneButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.OptionsButton = new System.Windows.Forms.ToolStripButton();
+            this.RefreshButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.LoadMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.lastRunReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveOptionsButton = new System.Windows.Forms.ToolStripButton();
+            this.ManageOptionsButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.PrintMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.PrintReportButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.PrintSetupButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.PrintPreviewButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.wGroupBy = new System.Windows.Forms.ToolStripComboBox();
+            this.wDataType = new System.Windows.Forms.ToolStripComboBox();
+            this.wTimeFormat = new System.Windows.Forms.ToolStripComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.wGrid)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.wGroupOptions.SuspendLayout();
-            this.wGroupDates.SuspendLayout();
-            this.wToolbar.SuspendLayout();
+            this.ToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // wGrid
             // 
             this.wGrid.AllowUserToAddRows = false;
             this.wGrid.AllowUserToDeleteRows = false;
+            this.wGrid.BackgroundColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -102,7 +98,7 @@ namespace Timekeeper
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.wGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.wGrid.RowHeadersVisible = false;
-            this.wGrid.Size = new System.Drawing.Size(572, 198);
+            this.wGrid.Size = new System.Drawing.Size(837, 258);
             this.wGrid.TabIndex = 14;
             this.wGrid.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
@@ -118,320 +114,237 @@ namespace Timekeeper
             this.task.ReadOnly = true;
             this.task.Width = 56;
             // 
-            // panel1
+            // ToolStrip
             // 
-            this.panel1.Controls.Add(this.btnRefresh);
-            this.panel1.Controls.Add(this.wGroupOptions);
-            this.panel1.Controls.Add(this.wGroupDates);
-            this.panel1.Controls.Add(this.btnClose);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 223);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(572, 152);
-            this.panel1.TabIndex = 3;
+            this.ToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FilterButton,
+            this.OptionsButton,
+            this.GroupByMenuButton,
+            this.RefreshButton,
+            this.toolStripSeparator3,
+            this.LoadMenuButton,
+            this.SaveOptionsButton,
+            this.ManageOptionsButton,
+            this.toolStripSeparator4,
+            this.PrintMenuButton,
+            this.wGroupBy,
+            this.wDataType,
+            this.wTimeFormat});
+            this.ToolStrip.Location = new System.Drawing.Point(0, 0);
+            this.ToolStrip.Name = "ToolStrip";
+            this.ToolStrip.Size = new System.Drawing.Size(837, 25);
+            this.ToolStrip.TabIndex = 16;
+            this.ToolStrip.Text = "ToolStrip";
             // 
-            // btnRefresh
+            // FilterButton
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(485, 85);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(75, 23);
-            this.btnRefresh.TabIndex = 12;
-            this.btnRefresh.Text = "&Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            this.btnRefresh.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            this.FilterButton.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
+            this.FilterButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FilterButton.Name = "FilterButton";
+            this.FilterButton.Size = new System.Drawing.Size(77, 22);
+            this.FilterButton.Text = "Filtering...";
+            this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);
             // 
-            // wGroupOptions
+            // GroupByMenuButton
             // 
-            this.wGroupOptions.Controls.Add(this.wTimeFormat);
-            this.wGroupOptions.Controls.Add(this.label6);
-            this.wGroupOptions.Controls.Add(this.wDataType);
-            this.wGroupOptions.Controls.Add(this.label5);
-            this.wGroupOptions.Controls.Add(this.wGroupBy);
-            this.wGroupOptions.Controls.Add(this.label4);
-            this.wGroupOptions.Controls.Add(this.wHideEmptyRows);
-            this.wGroupOptions.Location = new System.Drawing.Point(240, 10);
-            this.wGroupOptions.Name = "wGroupOptions";
-            this.wGroupOptions.Size = new System.Drawing.Size(216, 130);
-            this.wGroupOptions.TabIndex = 2;
-            this.wGroupOptions.TabStop = false;
-            this.wGroupOptions.Text = "Grid Options";
-            this.wGroupOptions.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            this.GroupByMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.GroupByMenuButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.GroupByDayButton,
+            this.GroupByWeekButton,
+            this.GroupByMonthButton,
+            this.GroupByYearButton,
+            this.GroupByNoneButton});
+            this.GroupByMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("GroupByMenuButton.Image")));
+            this.GroupByMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.GroupByMenuButton.Name = "GroupByMenuButton";
+            this.GroupByMenuButton.Size = new System.Drawing.Size(64, 22);
+            this.GroupByMenuButton.Text = "Group By";
             // 
-            // wTimeFormat
+            // GroupByDayButton
             // 
-            this.wTimeFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.wTimeFormat.FormattingEnabled = true;
-            this.wTimeFormat.Items.AddRange(new object[] {
-            "hh:mm:ss",
-            "Hours",
-            "Minutes",
-            "Seconds"});
-            this.wTimeFormat.Location = new System.Drawing.Point(106, 75);
-            this.wTimeFormat.Name = "wTimeFormat";
-            this.wTimeFormat.Size = new System.Drawing.Size(90, 21);
-            this.wTimeFormat.TabIndex = 13;
+            this.GroupByDayButton.Name = "GroupByDayButton";
+            this.GroupByDayButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByDayButton.Text = "Day";
+            this.GroupByDayButton.Click += new System.EventHandler(this.GroupByDayButton_Click);
             // 
-            // label6
+            // GroupByWeekButton
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 81);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(80, 13);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Display time as:";
+            this.GroupByWeekButton.Name = "GroupByWeekButton";
+            this.GroupByWeekButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByWeekButton.Text = "Week";
+            this.GroupByWeekButton.Click += new System.EventHandler(this.GroupByWeekButton_Click);
             // 
-            // wDataType
+            // GroupByMonthButton
             // 
-            this.wDataType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.wDataType.FormattingEnabled = true;
-            this.wDataType.Items.AddRange(new object[] {
-            "Tasks",
-            "Projects"});
-            this.wDataType.Location = new System.Drawing.Point(105, 48);
-            this.wDataType.Name = "wDataType";
-            this.wDataType.Size = new System.Drawing.Size(90, 21);
-            this.wDataType.TabIndex = 10;
+            this.GroupByMonthButton.Name = "GroupByMonthButton";
+            this.GroupByMonthButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByMonthButton.Text = "Month";
+            this.GroupByMonthButton.Click += new System.EventHandler(this.GroupByMonthButton_Click);
             // 
-            // label5
+            // GroupByYearButton
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(18, 54);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(76, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Grid &data from:";
+            this.GroupByYearButton.Name = "GroupByYearButton";
+            this.GroupByYearButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByYearButton.Text = "Year";
+            this.GroupByYearButton.Click += new System.EventHandler(this.GroupByYearButton_Click);
+            // 
+            // GroupByNoneButton
+            // 
+            this.GroupByNoneButton.Checked = true;
+            this.GroupByNoneButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.GroupByNoneButton.Name = "GroupByNoneButton";
+            this.GroupByNoneButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByNoneButton.Text = "No Grouping";
+            this.GroupByNoneButton.Click += new System.EventHandler(this.GroupByNoneButton_Click);
+            // 
+            // OptionsButton
+            // 
+            this.OptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.OptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("OptionsButton.Image")));
+            this.OptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.OptionsButton.Name = "OptionsButton";
+            this.OptionsButton.Size = new System.Drawing.Size(60, 22);
+            this.OptionsButton.Text = "Options...";
+            this.OptionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
+            // 
+            // RefreshButton
+            // 
+            this.RefreshButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.RefreshButton.Image = global::Timekeeper.Properties.Resources.ImageButtonRefresh;
+            this.RefreshButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.RefreshButton.Name = "RefreshButton";
+            this.RefreshButton.Size = new System.Drawing.Size(23, 22);
+            this.RefreshButton.Text = "Refresh";
+            this.RefreshButton.ToolTipText = "Refresh";
+            this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // LoadMenuButton
+            // 
+            this.LoadMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.LoadMenuButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lastRunReportToolStripMenuItem});
+            this.LoadMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadMenuButton.Image")));
+            this.LoadMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LoadMenuButton.Name = "LoadMenuButton";
+            this.LoadMenuButton.Size = new System.Drawing.Size(43, 22);
+            this.LoadMenuButton.Text = "Load";
+            // 
+            // lastRunReportToolStripMenuItem
+            // 
+            this.lastRunReportToolStripMenuItem.Name = "lastRunReportToolStripMenuItem";
+            this.lastRunReportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.lastRunReportToolStripMenuItem.Text = "Last Run Report";
+            // 
+            // SaveOptionsButton
+            // 
+            this.SaveOptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SaveOptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveOptionsButton.Image")));
+            this.SaveOptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveOptionsButton.Name = "SaveOptionsButton";
+            this.SaveOptionsButton.Size = new System.Drawing.Size(47, 22);
+            this.SaveOptionsButton.Text = "Save...";
+            this.SaveOptionsButton.Click += new System.EventHandler(this.SaveOptionsButton_Click);
+            // 
+            // ManageOptionsButton
+            // 
+            this.ManageOptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ManageOptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("ManageOptionsButton.Image")));
+            this.ManageOptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ManageOptionsButton.Name = "ManageOptionsButton";
+            this.ManageOptionsButton.Size = new System.Drawing.Size(61, 22);
+            this.ManageOptionsButton.Text = "Manage...";
+            this.ManageOptionsButton.Click += new System.EventHandler(this.ManageOptionsButton_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // PrintMenuButton
+            // 
+            this.PrintMenuButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PrintReportButton,
+            this.PrintSetupButton,
+            this.PrintPreviewButton});
+            this.PrintMenuButton.Image = global::Timekeeper.Properties.Resources.ImageButtonPrinter;
+            this.PrintMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.PrintMenuButton.Name = "PrintMenuButton";
+            this.PrintMenuButton.Size = new System.Drawing.Size(58, 22);
+            this.PrintMenuButton.Text = "Print";
+            // 
+            // PrintReportButton
+            // 
+            this.PrintReportButton.Name = "PrintReportButton";
+            this.PrintReportButton.Size = new System.Drawing.Size(152, 22);
+            this.PrintReportButton.Text = "Print this Report";
+            // 
+            // PrintSetupButton
+            // 
+            this.PrintSetupButton.Name = "PrintSetupButton";
+            this.PrintSetupButton.Size = new System.Drawing.Size(152, 22);
+            this.PrintSetupButton.Text = "Print Setup...";
+            // 
+            // PrintPreviewButton
+            // 
+            this.PrintPreviewButton.Name = "PrintPreviewButton";
+            this.PrintPreviewButton.Size = new System.Drawing.Size(152, 22);
+            this.PrintPreviewButton.Text = "Print Preview...";
             // 
             // wGroupBy
             // 
             this.wGroupBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.wGroupBy.FormattingEnabled = true;
             this.wGroupBy.Items.AddRange(new object[] {
             "Day",
             "Week",
             "Month",
             "Year",
             "No Grouping"});
-            this.wGroupBy.Location = new System.Drawing.Point(105, 20);
             this.wGroupBy.Name = "wGroupBy";
-            this.wGroupBy.Size = new System.Drawing.Size(90, 21);
-            this.wGroupBy.TabIndex = 8;
+            this.wGroupBy.Size = new System.Drawing.Size(100, 25);
             // 
-            // label4
+            // wDataType
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 24);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "&Group data by:";
+            this.wDataType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.wDataType.Items.AddRange(new object[] {
+            "Projects",
+            "Activities"});
+            this.wDataType.Name = "wDataType";
+            this.wDataType.Size = new System.Drawing.Size(80, 25);
             // 
-            // wHideEmptyRows
+            // wTimeFormat
             // 
-            this.wHideEmptyRows.AutoSize = true;
-            this.wHideEmptyRows.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.wHideEmptyRows.Checked = true;
-            this.wHideEmptyRows.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.wHideEmptyRows.Location = new System.Drawing.Point(15, 104);
-            this.wHideEmptyRows.Name = "wHideEmptyRows";
-            this.wHideEmptyRows.Size = new System.Drawing.Size(104, 17);
-            this.wHideEmptyRows.TabIndex = 11;
-            this.wHideEmptyRows.Text = "Hide empty rows";
-            this.wHideEmptyRows.UseVisualStyleBackColor = true;
-            this.wHideEmptyRows.Visible = false;
-            this.wHideEmptyRows.Click += new System.EventHandler(this.wHideEmptyRows_Click);
+            this.wTimeFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.wTimeFormat.Items.AddRange(new object[] {
+            "hh:mm:ss",
+            "Hours",
+            "Minutes",
+            "Seconds"});
+            this.wTimeFormat.Name = "wTimeFormat";
+            this.wTimeFormat.Size = new System.Drawing.Size(75, 25);
             // 
-            // wGroupDates
+            // Grid
             // 
-            this.wGroupDates.Controls.Add(this.wDatePreset);
-            this.wGroupDates.Controls.Add(this.label3);
-            this.wGroupDates.Controls.Add(this.label2);
-            this.wGroupDates.Controls.Add(this.wEndDate);
-            this.wGroupDates.Controls.Add(this.label1);
-            this.wGroupDates.Controls.Add(this.wStartDate);
-            this.wGroupDates.Location = new System.Drawing.Point(10, 10);
-            this.wGroupDates.Name = "wGroupDates";
-            this.wGroupDates.Size = new System.Drawing.Size(220, 130);
-            this.wGroupDates.TabIndex = 1;
-            this.wGroupDates.TabStop = false;
-            this.wGroupDates.Text = "Date Range";
-            this.wGroupDates.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
-            // 
-            // wDatePreset
-            // 
-            this.wDatePreset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.wDatePreset.FormattingEnabled = true;
-            this.wDatePreset.Items.AddRange(new object[] {
-            "Today",
-            "Yesterday",
-            "Previous Day",
-            "This Week",
-            "This Month",
-            "Last Month",
-            "This Year",
-            "Last Year",
-            "All",
-            "Custom"});
-            this.wDatePreset.Location = new System.Drawing.Point(77, 20);
-            this.wDatePreset.Name = "wDatePreset";
-            this.wDatePreset.Size = new System.Drawing.Size(125, 21);
-            this.wDatePreset.TabIndex = 2;
-            this.wDatePreset.SelectedIndexChanged += new System.EventHandler(this.wDatePreset_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(18, 24);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Prese&t:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 76);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "&End date:";
-            // 
-            // wEndDate
-            // 
-            this.wEndDate.CustomFormat = "yyyy-MM-dd";
-            this.wEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.wEndDate.Location = new System.Drawing.Point(77, 74);
-            this.wEndDate.Name = "wEndDate";
-            this.wEndDate.Size = new System.Drawing.Size(125, 20);
-            this.wEndDate.TabIndex = 6;
-            this.wEndDate.Enter += new System.EventHandler(this.wStartDate_Enter);
-            this.wEndDate.Leave += new System.EventHandler(this.wStartDate_Leave);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 51);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "&Start date:";
-            // 
-            // wStartDate
-            // 
-            this.wStartDate.CustomFormat = "yyyy-MM-dd";
-            this.wStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.wStartDate.Location = new System.Drawing.Point(77, 48);
-            this.wStartDate.Name = "wStartDate";
-            this.wStartDate.Size = new System.Drawing.Size(125, 20);
-            this.wStartDate.TabIndex = 4;
-            this.wStartDate.Enter += new System.EventHandler(this.wStartDate_Enter);
-            this.wStartDate.Leave += new System.EventHandler(this.wStartDate_Leave);
-            // 
-            // btnClose
-            // 
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(485, 114);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 13;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            this.btnClose.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
-            // 
-            // wToolbar
-            // 
-            this.wToolbar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.wToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnFilter,
-            this.toolStripSeparator1,
-            this.btnLoadViewDropDown,
-            this.btnSaveView2,
-            this.btnManageViews,
-            this.toolStripSeparator2});
-            this.wToolbar.Location = new System.Drawing.Point(0, 0);
-            this.wToolbar.Name = "wToolbar";
-            this.wToolbar.Size = new System.Drawing.Size(572, 25);
-            this.wToolbar.TabIndex = 15;
-            this.wToolbar.Text = "toolStrip1";
-            this.wToolbar.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
-            // 
-            // btnFilter
-            // 
-            this.btnFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnFilter.Image")));
-            this.btnFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(111, 22);
-            this.btnFilter.Text = "Additional &Filtering...";
-            this.btnFilter.ToolTipText = "Filter data";
-            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnLoadViewDropDown
-            // 
-            this.btnLoadViewDropDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnLoadViewDropDown.Image = ((System.Drawing.Image)(resources.GetObject("btnLoadViewDropDown.Image")));
-            this.btnLoadViewDropDown.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnLoadViewDropDown.Name = "btnLoadViewDropDown";
-            this.btnLoadViewDropDown.Size = new System.Drawing.Size(68, 22);
-            this.btnLoadViewDropDown.Text = "&Load View";
-            // 
-            // btnSaveView2
-            // 
-            this.btnSaveView2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnSaveView2.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveView2.Image")));
-            this.btnSaveView2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSaveView2.Name = "btnSaveView2";
-            this.btnSaveView2.Size = new System.Drawing.Size(72, 22);
-            this.btnSaveView2.Text = "Save &View...";
-            this.btnSaveView2.Click += new System.EventHandler(this.btnSaveView2_Click);
-            // 
-            // btnManageViews
-            // 
-            this.btnManageViews.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnManageViews.Image = ((System.Drawing.Image)(resources.GetObject("btnManageViews.Image")));
-            this.btnManageViews.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnManageViews.Name = "btnManageViews";
-            this.btnManageViews.Size = new System.Drawing.Size(91, 22);
-            this.btnManageViews.Text = "&Manage Views...";
-            this.btnManageViews.Click += new System.EventHandler(this.btnManageViews_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // fGrid
-            // 
-            this.AcceptButton = this.btnRefresh;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(572, 375);
+            this.ClientSize = new System.Drawing.Size(837, 283);
             this.Controls.Add(this.wGrid);
-            this.Controls.Add(this.wToolbar);
-            this.Controls.Add(this.panel1);
-            this.MinimizeBox = false;
+            this.Controls.Add(this.ToolStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(8, 245);
-            this.Name = "fGrid";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Time Grid";
-            this.Load += new System.EventHandler(this.fGrid_Load);
+            this.Name = "Grid";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "Timekeeper Grid";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Grid_FormClosing);
+            this.Load += new System.EventHandler(this.Grid_Load);
             ((System.ComponentModel.ISupportInitialize)(this.wGrid)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.wGroupOptions.ResumeLayout(false);
-            this.wGroupOptions.PerformLayout();
-            this.wGroupDates.ResumeLayout(false);
-            this.wGroupDates.PerformLayout();
-            this.wToolbar.ResumeLayout(false);
-            this.wToolbar.PerformLayout();
+            this.ToolStrip.ResumeLayout(false);
+            this.ToolStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -440,31 +353,29 @@ namespace Timekeeper
         #endregion
 
         private System.Windows.Forms.DataGridView wGrid;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.GroupBox wGroupDates;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DateTimePicker wEndDate;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker wStartDate;
-        private System.Windows.Forms.GroupBox wGroupOptions;
-        private System.Windows.Forms.ComboBox wGroupBy;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox wHideEmptyRows;
-        private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.ComboBox wDataType;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridViewTextBoxColumn task;
-        private System.Windows.Forms.ToolStrip wToolbar;
-        private System.Windows.Forms.ToolStripButton btnFilter;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton btnSaveView2;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripDropDownButton btnLoadViewDropDown;
-        private System.Windows.Forms.ToolStripButton btnManageViews;
-        internal System.Windows.Forms.ComboBox wDatePreset;
-        private System.Windows.Forms.ComboBox wTimeFormat;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ToolStrip ToolStrip;
+        private System.Windows.Forms.ToolStripButton FilterButton;
+        private System.Windows.Forms.ToolStripButton OptionsButton;
+        private System.Windows.Forms.ToolStripButton RefreshButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripDropDownButton LoadMenuButton;
+        private System.Windows.Forms.ToolStripMenuItem lastRunReportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton SaveOptionsButton;
+        private System.Windows.Forms.ToolStripButton ManageOptionsButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripDropDownButton PrintMenuButton;
+        private System.Windows.Forms.ToolStripMenuItem PrintReportButton;
+        private System.Windows.Forms.ToolStripMenuItem PrintSetupButton;
+        private System.Windows.Forms.ToolStripMenuItem PrintPreviewButton;
+        private System.Windows.Forms.ToolStripComboBox wGroupBy;
+        private System.Windows.Forms.ToolStripComboBox wDataType;
+        private System.Windows.Forms.ToolStripComboBox wTimeFormat;
+        private System.Windows.Forms.ToolStripDropDownButton GroupByMenuButton;
+        private System.Windows.Forms.ToolStripMenuItem GroupByDayButton;
+        private System.Windows.Forms.ToolStripMenuItem GroupByWeekButton;
+        private System.Windows.Forms.ToolStripMenuItem GroupByMonthButton;
+        private System.Windows.Forms.ToolStripMenuItem GroupByYearButton;
+        private System.Windows.Forms.ToolStripMenuItem GroupByNoneButton;
     }
 }

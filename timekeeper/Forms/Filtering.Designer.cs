@@ -78,6 +78,7 @@ namespace Timekeeper.Forms
             this.CreateTimePresets = new System.Windows.Forms.ComboBox();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.ButtonPanel = new System.Windows.Forms.Panel();
+            this.ClearButton = new System.Windows.Forms.Button();
             this.CheckedListBoxMenu.SuspendLayout();
             this.TreeViewMenu.SuspendLayout();
             this.FilterOptionsTabControl.SuspendLayout();
@@ -583,6 +584,7 @@ namespace Timekeeper.Forms
             // 
             // BottomPanel
             // 
+            this.BottomPanel.Controls.Add(this.ClearButton);
             this.BottomPanel.Controls.Add(this.ButtonPanel);
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.BottomPanel.Location = new System.Drawing.Point(0, 278);
@@ -599,6 +601,16 @@ namespace Timekeeper.Forms
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(164, 34);
             this.ButtonPanel.TabIndex = 0;
+            // 
+            // ClearButton
+            // 
+            this.ClearButton.Location = new System.Drawing.Point(12, 6);
+            this.ClearButton.Name = "ClearButton";
+            this.ClearButton.Size = new System.Drawing.Size(75, 23);
+            this.ClearButton.TabIndex = 1;
+            this.ClearButton.Text = "Clear";
+            this.ClearButton.UseVisualStyleBackColor = true;
+            this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
             // Filtering
             // 
@@ -695,5 +707,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox IsLocked;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button ClearButton;
     }
 }

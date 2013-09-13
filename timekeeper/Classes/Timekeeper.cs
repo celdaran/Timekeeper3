@@ -270,6 +270,34 @@ namespace Timekeeper
 
         //----------------------------------------------------------------------
 
+        public static long GetNextSortOrderNo(string tableName)
+        {
+            return GetNextSortOrderNo(tableName, -1);
+        }
+
+        //----------------------------------------------------------------------
+
+        public static long GetNextSortOrderNo(string tableName, long parentId)
+        {
+            string WhereClause = parentId > -1 ? "ParentId = " + parentId : "";
+
+            string Query = String.Format(@"
+                select max(SortOrderNo) as HighestSortOrderNo
+                from {0}
+                {1}
+                order by SortOrderNo",
+                tableName, WhereClause);
+            Row Row = Database.SelectRow(Query);
+
+            if (Row["HighestSortOrderNo"] != null) {
+                return Row["HighestSortOrderNo"] + 1;
+            } else {
+                return 1;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
     }
 
 }

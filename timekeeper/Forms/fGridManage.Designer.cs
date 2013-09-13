@@ -1,6 +1,6 @@
-﻿namespace Timekeeper
+﻿namespace Timekeeper.Forms.Shared
 {
-    partial class fGridManage
+    partial class ManageViews
     {
         /// <summary>
         /// Required designer variable.
@@ -28,102 +28,106 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.wViewList = new System.Windows.Forms.CheckedListBox();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnMoveDown = new System.Windows.Forms.Button();
-            this.btnMoveUp = new System.Windows.Forms.Button();
-            this.btnRename = new System.Windows.Forms.Button();
+            this.SavedViewList = new System.Windows.Forms.ListBox();
+            this.CloseDialogButton = new System.Windows.Forms.Button();
+            this.DeleteButton = new System.Windows.Forms.Button();
+            this.MoveDownButton = new System.Windows.Forms.Button();
+            this.MoveUpButton = new System.Windows.Forms.Button();
+            this.RenameButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // wViewList
+            // SavedViewList
             // 
-            this.wViewList.FormattingEnabled = true;
-            this.wViewList.Location = new System.Drawing.Point(12, 12);
-            this.wViewList.Name = "wViewList";
-            this.wViewList.Size = new System.Drawing.Size(270, 139);
-            this.wViewList.TabIndex = 1;
-            this.wViewList.SelectedIndexChanged += new System.EventHandler(this.wViewList_SelectedIndexChanged);
-            this.wViewList.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            this.SavedViewList.FormattingEnabled = true;
+            this.SavedViewList.Location = new System.Drawing.Point(12, 12);
+            this.SavedViewList.Name = "SavedViewList";
+            this.SavedViewList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.SavedViewList.Size = new System.Drawing.Size(270, 134);
+            this.SavedViewList.TabIndex = 1;
+            this.SavedViewList.SelectedIndexChanged += new System.EventHandler(this.SavedViewList_SelectedIndexChanged);
+            this.SavedViewList.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
-            // btnOK
+            // CloseDialogButton
             // 
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnOK.Location = new System.Drawing.Point(207, 159);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 4;
-            this.btnOK.Text = "Close";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            this.CloseDialogButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CloseDialogButton.Location = new System.Drawing.Point(207, 159);
+            this.CloseDialogButton.Name = "CloseDialogButton";
+            this.CloseDialogButton.Size = new System.Drawing.Size(75, 23);
+            this.CloseDialogButton.TabIndex = 4;
+            this.CloseDialogButton.Text = "Close";
+            this.CloseDialogButton.UseVisualStyleBackColor = true;
+            this.CloseDialogButton.Click += new System.EventHandler(this.CloseDialogButton_Click);
+            this.CloseDialogButton.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
-            // btnDelete
+            // DeleteButton
             // 
-            this.btnDelete.Location = new System.Drawing.Point(93, 159);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 3;
-            this.btnDelete.Text = "&Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            this.btnDelete.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            this.DeleteButton.Location = new System.Drawing.Point(93, 159);
+            this.DeleteButton.Name = "DeleteButton";
+            this.DeleteButton.Size = new System.Drawing.Size(75, 23);
+            this.DeleteButton.TabIndex = 3;
+            this.DeleteButton.Text = "&Delete";
+            this.DeleteButton.UseVisualStyleBackColor = true;
+            this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
+            this.DeleteButton.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
-            // btnMoveDown
+            // MoveDownButton
             // 
-            this.btnMoveDown.Font = new System.Drawing.Font("Wingdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.btnMoveDown.ImageKey = "(none)";
-            this.btnMoveDown.Location = new System.Drawing.Point(288, 43);
-            this.btnMoveDown.Name = "btnMoveDown";
-            this.btnMoveDown.Size = new System.Drawing.Size(23, 23);
-            this.btnMoveDown.TabIndex = 6;
-            this.btnMoveDown.Text = "ò";
-            this.btnMoveDown.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnMoveDown.UseVisualStyleBackColor = true;
-            this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
-            this.btnMoveDown.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            this.MoveDownButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.MoveDownButton.Font = new System.Drawing.Font("Wingdings 3", 8F);
+            this.MoveDownButton.ImageKey = "(none)";
+            this.MoveDownButton.Location = new System.Drawing.Point(288, 31);
+            this.MoveDownButton.Name = "MoveDownButton";
+            this.MoveDownButton.Size = new System.Drawing.Size(23, 19);
+            this.MoveDownButton.TabIndex = 6;
+            this.MoveDownButton.Text = "q";
+            this.MoveDownButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.MoveDownButton.UseVisualStyleBackColor = true;
+            this.MoveDownButton.Click += new System.EventHandler(this.MoveDownButton_Click);
+            this.MoveDownButton.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
-            // btnMoveUp
+            // MoveUpButton
             // 
-            this.btnMoveUp.Font = new System.Drawing.Font("Wingdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.btnMoveUp.ImageKey = "(none)";
-            this.btnMoveUp.Location = new System.Drawing.Point(288, 12);
-            this.btnMoveUp.Name = "btnMoveUp";
-            this.btnMoveUp.Size = new System.Drawing.Size(23, 23);
-            this.btnMoveUp.TabIndex = 5;
-            this.btnMoveUp.Text = "ñ";
-            this.btnMoveUp.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnMoveUp.UseVisualStyleBackColor = true;
-            this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
-            this.btnMoveUp.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            this.MoveUpButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.MoveUpButton.Font = new System.Drawing.Font("Wingdings 3", 8F);
+            this.MoveUpButton.ImageKey = "(none)";
+            this.MoveUpButton.Location = new System.Drawing.Point(288, 12);
+            this.MoveUpButton.Name = "MoveUpButton";
+            this.MoveUpButton.Size = new System.Drawing.Size(23, 19);
+            this.MoveUpButton.TabIndex = 5;
+            this.MoveUpButton.Text = "p";
+            this.MoveUpButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.MoveUpButton.UseVisualStyleBackColor = true;
+            this.MoveUpButton.Click += new System.EventHandler(this.MoveUpButton_Click);
+            this.MoveUpButton.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
-            // btnRename
+            // RenameButton
             // 
-            this.btnRename.Location = new System.Drawing.Point(12, 159);
-            this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(75, 23);
-            this.btnRename.TabIndex = 2;
-            this.btnRename.Text = "&Rename";
-            this.btnRename.UseVisualStyleBackColor = true;
-            this.btnRename.Click += new System.EventHandler(this.btnRename_Click);
-            this.btnRename.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            this.RenameButton.Location = new System.Drawing.Point(12, 159);
+            this.RenameButton.Name = "RenameButton";
+            this.RenameButton.Size = new System.Drawing.Size(75, 23);
+            this.RenameButton.TabIndex = 2;
+            this.RenameButton.Text = "&Rename";
+            this.RenameButton.UseVisualStyleBackColor = true;
+            this.RenameButton.Click += new System.EventHandler(this.RenameButton_Click);
+            this.RenameButton.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
-            // fGridManage
+            // ManageViews
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnOK;
-            this.ClientSize = new System.Drawing.Size(323, 190);
-            this.Controls.Add(this.btnRename);
-            this.Controls.Add(this.btnMoveDown);
-            this.Controls.Add(this.btnMoveUp);
-            this.Controls.Add(this.btnDelete);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.wViewList);
+            this.CancelButton = this.CloseDialogButton;
+            this.ClientSize = new System.Drawing.Size(317, 190);
+            this.Controls.Add(this.RenameButton);
+            this.Controls.Add(this.MoveDownButton);
+            this.Controls.Add(this.MoveUpButton);
+            this.Controls.Add(this.DeleteButton);
+            this.Controls.Add(this.CloseDialogButton);
+            this.Controls.Add(this.SavedViewList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "fGridManage";
+            this.Name = "ManageViews";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -134,11 +138,11 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckedListBox wViewList;
-        private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.Button btnMoveDown;
-        private System.Windows.Forms.Button btnMoveUp;
-        private System.Windows.Forms.Button btnRename;
+        private System.Windows.Forms.ListBox SavedViewList;
+        private System.Windows.Forms.Button CloseDialogButton;
+        private System.Windows.Forms.Button DeleteButton;
+        private System.Windows.Forms.Button MoveDownButton;
+        private System.Windows.Forms.Button MoveUpButton;
+        private System.Windows.Forms.Button RenameButton;
     }
 }

@@ -890,7 +890,6 @@ namespace Timekeeper.Forms
             Options.SaveOptions();
             Options.SaveMetrics();
             Options.SaveMRU(MenuFileRecent.DropDownItems);
-            Options.SaveLocal();
         }
 
         //---------------------------------------------------------------------

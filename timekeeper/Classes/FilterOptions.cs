@@ -15,6 +15,7 @@ namespace Timekeeper.Classes
 
         private DBI Database;
         private Classes.Options Options;
+        private Classes.JournalEntryCollection JournalEntries;
 
         private string _WhereClause;
 
@@ -73,6 +74,7 @@ namespace Timekeeper.Classes
             Clear();
             this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
+            this.JournalEntries = new Classes.JournalEntryCollection(this.Database);
         }
 
         //---------------------------------------------------------------------
@@ -93,7 +95,7 @@ namespace Timekeeper.Classes
                 string Query = @"select * from FilterOptions where FilterOptionsId = " + filterOptionsId;
                 Row Options = this.Database.SelectRow(Query);
 
-                DateRangePreset = (int)Timekeeper.GetValue(Options["RefDatePresetId"], DATE_PRESET_NONE);
+                DateRangePreset = (int)Timekeeper.GetValue(Options["RefDatePresetId"], DATE_PRESET_ALL);
                 FromDate = (DateTime)Timekeeper.GetValue(Options["FromDate"], DateTime.MinValue);
                 ToDate = (DateTime)Timekeeper.GetValue(Options["ToDate"], DateTime.MaxValue);
                 MemoContains = (string)Timekeeper.GetValue(Options["MemoContains"], "");
@@ -140,8 +142,8 @@ namespace Timekeeper.Classes
                 Row Options = new Row();
 
                 Options["RefDatePresetId"] = DateRangePreset;
-                Options["FromDate"] = FromDate;
-                Options["ToDate"] = ToDate;
+                Options["FromDate"] = FromDate.ToString(Common.DATETIME_FORMAT);
+                Options["ToDate"] = ToDate.ToString(Common.DATETIME_FORMAT);
                 Options["MemoContains"] = MemoContains;
                 Options["ProjectList"] = List(Projects);
                 Options["ActivityList"] = List(Activities);
@@ -187,7 +189,7 @@ namespace Timekeeper.Classes
         public void Clear()
         {
             FilterOptionsId = -1;
-            DateRangePreset = DATE_PRESET_NONE;
+            DateRangePreset = DATE_PRESET_ALL;
             FromDate = DateTime.Now;
             ToDate = DateTime.Now;
             MemoContains = null;
@@ -242,7 +244,7 @@ namespace Timekeeper.Classes
             // The reverse of the above.
             // TODO: These two could be promoted to
             // either the Timekeeper or Toolbox level.
-            return String.Join(",", list);
+            return list == null ? "" : String.Join(",", list);
         }
 
         //---------------------------------------------------------------------
@@ -274,10 +276,10 @@ namespace Timekeeper.Classes
         {
             string WhereClause = "";
 
-            WhereClause += String.Format("j.StartTime >= '{0}'",
+            WhereClause += String.Format("datetime(j.StartTime) >= datetime('{0}')",
                 this.FromDateToString()) + System.Environment.NewLine;
 
-            WhereClause += String.Format("and j.StopTime <= '{0}'",
+            WhereClause += String.Format("and datetime(j.StopTime) <= datetime('{0}')",
                 this.ToDateToString()) + System.Environment.NewLine;
 
             if ((this.ImpliedActivities != null) && (this.ImpliedActivities.Count > 0)) {
@@ -289,7 +291,7 @@ namespace Timekeeper.Classes
                     this.List(this.ImpliedProjects)) + System.Environment.NewLine;
             }
             if ((this.MemoContains != null) && (this.MemoContains != "")) {
-                WhereClause += String.Format("and j.MemoContains like '%{0}%'", this.MemoContains) + System.Environment.NewLine;
+                WhereClause += String.Format("and j.Memo like '%{0}%'", this.MemoContains) + System.Environment.NewLine;
             }
 
             if (this.DurationOperator > 0) {

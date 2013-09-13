@@ -269,11 +269,25 @@ namespace Timekeeper.Forms
         // Report | Grid
         private void menuReportsGrid_Click(object sender, EventArgs e)
         {
-            fGrid grid = new fGrid(Database);
+            // FIXME: should this logic be in Main.Dialog.cs?
+
+            /*
+            Classes.GridOptions GridOptions = new Classes.GridOptions();
+            Forms.Reports.Grid GridDialog = new Forms.Reports.Grid(GridOptions);
+            GridDialog.Show(this);
+            */
+            Forms.Reports.Grid GridDialog = new Forms.Reports.Grid();
+            GridDialog.Show();
+
+            /*
+            Forms.Reports.Grid grid = new Forms.Reports.Grid(Database);
             grid.lastGridViewId = Options.State_LastGridOptionsId;
             grid.Show(this);
-            OpenForms.Add(grid);
-            Options.State_LastGridOptionsId = grid.lastGridViewId;
+            */
+            OpenForms.Add(GridDialog);
+
+            // FIXME: needed?
+            //Options.State_LastGridOptionsId = GridDialog.lastGridViewId;
         }
 
         // Report | Quick List

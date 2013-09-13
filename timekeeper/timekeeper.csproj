@@ -142,6 +142,8 @@
     <Compile Include="Classes\File.Upgrade.cs" />
     <Compile Include="Classes\FilterOptions.cs" />
     <Compile Include="Classes\FindOptions.cs" />
+    <Compile Include="Classes\GridOptions.cs" />
+    <Compile Include="Classes\GridOptionsCollection.cs" />
     <Compile Include="Classes\Import.cs" />
     <Compile Include="Classes\ListAttribute.cs" />
     <Compile Include="Classes\ListAttributeCollection.cs" />
@@ -202,11 +204,17 @@
     <Compile Include="Forms\Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Report.cs">
+    <Compile Include="Forms\Reports\GridOptions.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Report.Designer.cs">
-      <DependentUpon>Report.cs</DependentUpon>
+    <Compile Include="Forms\Reports\GridOptions.Designer.cs">
+      <DependentUpon>GridOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Reports\JournalEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Reports\JournalEntry.Designer.cs">
+      <DependentUpon>JournalEntry.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SaveView.cs">
       <SubType>Form</SubType>
@@ -291,11 +299,11 @@
     <Compile Include="Forms\fPrompt.Designer.cs">
       <DependentUpon>fPrompt.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fPunch.cs">
+    <Compile Include="Forms\Reports\PunchCard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fPunch.Designer.cs">
-      <DependentUpon>fPunch.cs</DependentUpon>
+    <Compile Include="Forms\Reports\PunchCard.Designer.cs">
+      <DependentUpon>PunchCard.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\fToolCalendar.cs">
       <SubType>Form</SubType>
@@ -303,11 +311,11 @@
     <Compile Include="Forms\fToolCalendar.Designer.cs">
       <DependentUpon>fToolCalendar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fGrid.cs">
+    <Compile Include="Forms\Reports\Grid.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fGrid.Designer.cs">
-      <DependentUpon>fGrid.cs</DependentUpon>
+    <Compile Include="Forms\Reports\Grid.Designer.cs">
+      <DependentUpon>Grid.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\fToolCountdown.cs">
       <SubType>Form</SubType>
@@ -423,17 +431,20 @@
     <EmbeddedResource Include="Forms\fPrompt.resx">
       <DependentUpon>fPrompt.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fPunch.resx">
-      <DependentUpon>fPunch.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Reports\GridOptions.resx">
+      <DependentUpon>GridOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Reports\PunchCard.resx">
+      <DependentUpon>PunchCard.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fToolCalendar.resx">
       <DependentUpon>fToolCalendar.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fGrid.resx">
+    <EmbeddedResource Include="Forms\Reports\Grid.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>fGrid.cs</DependentUpon>
+      <DependentUpon>Grid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\fToolCountdown.resx">
       <DependentUpon>fToolCountdown.cs</DependentUpon>
@@ -482,8 +493,8 @@
     <EmbeddedResource Include="Forms\fToolStopwatch.resx">
       <DependentUpon>fToolStopwatch.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Report.resx">
-      <DependentUpon>Report.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Reports\JournalEntry.resx">
+      <DependentUpon>JournalEntry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SaveView.resx">
       <DependentUpon>SaveView.cs</DependentUpon>
@@ -639,6 +650,11 @@
     <None Include="Resources\Images\Icons\SmallProject.png" />
     <None Include="Resources\Images\Icons\SmallFolder.png" />
     <Content Include="Properties\timekeeper.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Forms\Shared\" />
+    <Folder Include="Forms\Tools\" />
+    <Folder Include="Forms\Wizards\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
