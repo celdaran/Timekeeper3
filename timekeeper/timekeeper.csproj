@@ -134,8 +134,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\BaseOptions.cs" />
-    <Compile Include="Classes\BaseOptionsCollection.cs" />
+    <Compile Include="Classes\BaseView.cs" />
+    <Compile Include="Classes\BaseViewCollection.cs" />
     <Compile Include="Classes\CategoryCollection.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Datatypes.cs" />

@@ -7,7 +7,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class BaseOptionsCollection
+    class BaseViewCollection
     {
         //----------------------------------------------------------------------
         // Private Properties
@@ -21,7 +21,7 @@ namespace Timekeeper.Classes
         // Constructor
         //----------------------------------------------------------------------
 
-        public BaseOptionsCollection(string tableName)
+        public BaseViewCollection(string tableName)
         {
             this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
@@ -49,14 +49,14 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public List<Classes.BaseOptions> FetchObjects()
+        public List<Classes.BaseView> FetchObjects()
         {
-            List<Classes.BaseOptions> ReturnValue = new List<Classes.BaseOptions>();
+            List<Classes.BaseView> ReturnValue = new List<Classes.BaseView>();
 
             try {
                 Table Options = this.Fetch();
                 foreach (Row OptionRow in Options) {
-                    Classes.BaseOptions BaseOptions = new Classes.BaseOptions(this.TableName, OptionRow[this.TableName + "Id"]);
+                    Classes.BaseView BaseOptions = new Classes.BaseView(this.TableName, OptionRow[this.TableName + "Id"]);
                     ReturnValue.Add(BaseOptions);
                 }
             }

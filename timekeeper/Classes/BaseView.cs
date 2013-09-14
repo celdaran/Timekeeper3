@@ -7,7 +7,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    public class BaseOptions
+    public class BaseView
     {
         //----------------------------------------------------------------------
         // Private Properties
@@ -37,7 +37,7 @@ namespace Timekeeper.Classes
         // Constructor
         //----------------------------------------------------------------------
 
-        public BaseOptions(string tableName)
+        public BaseView(string tableName)
         {
             this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
@@ -46,7 +46,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public BaseOptions(string tableName, long id) : this(tableName)
+        public BaseView(string tableName, long id) : this(tableName)
         {
             this.LoadRow(id);
         }

@@ -62,8 +62,8 @@ namespace Timekeeper.Forms.Shared
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
                 int Index = SavedViewList.Items.IndexOf(CurrentItem);
                 IdObjectPair PreviousItem = (IdObjectPair)SavedViewList.Items[Index - 1];
-                Classes.BaseOptions CurrentBaseOptions = (Classes.BaseOptions)CurrentItem.Object;
-                Classes.BaseOptions PreviousBaseOptions = (Classes.BaseOptions)PreviousItem.Object;
+                Classes.BaseView CurrentBaseOptions = (Classes.BaseView)CurrentItem.Object;
+                Classes.BaseView PreviousBaseOptions = (Classes.BaseView)PreviousItem.Object;
 
                 // Swap them
                 SwapItems(CurrentBaseOptions, PreviousBaseOptions);
@@ -93,8 +93,8 @@ namespace Timekeeper.Forms.Shared
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
                 int Index = SavedViewList.Items.IndexOf(CurrentItem);
                 IdObjectPair NextItem = (IdObjectPair)SavedViewList.Items[Index + 1];
-                Classes.BaseOptions CurrentBaseOptions = (Classes.BaseOptions)CurrentItem.Object;
-                Classes.BaseOptions NextBaseOptions = (Classes.BaseOptions)NextItem.Object;
+                Classes.BaseView CurrentBaseOptions = (Classes.BaseView)CurrentItem.Object;
+                Classes.BaseView NextBaseOptions = (Classes.BaseView)NextItem.Object;
 
                 // Swap them
                 SwapItems(CurrentBaseOptions, NextBaseOptions);
@@ -127,7 +127,7 @@ namespace Timekeeper.Forms.Shared
                 // First delete from db
                 foreach (IdObjectPair Item in SavedViewList.SelectedItems) { //SavedViewList.CheckedItems) {
                     RemovedItems.Add(Item);
-                    Classes.BaseOptions BaseOptions = (Classes.BaseOptions)Item.Object;
+                    Classes.BaseView BaseOptions = (Classes.BaseView)Item.Object;
                     BaseOptions.Delete();
                     Count++;
                 }
@@ -155,7 +155,7 @@ namespace Timekeeper.Forms.Shared
 
             try {
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
-                Classes.BaseOptions BaseOptions = (Classes.BaseOptions)CurrentItem.Object;
+                Classes.BaseView BaseOptions = (Classes.BaseView)CurrentItem.Object;
 
                 fGridManageRename DialogBox = new fGridManageRename();
 
@@ -186,7 +186,7 @@ namespace Timekeeper.Forms.Shared
                     if (PreviousName != DialogBox.wNewName.Text) {
 
                         // Check for uniqueness
-                        Classes.BaseOptionsCollection BaseViewCollection = new Classes.BaseOptionsCollection(this.TableName);
+                        Classes.BaseViewCollection BaseViewCollection = new Classes.BaseViewCollection(this.TableName);
 
                         if (BaseViewCollection.ViewExists(DialogBox.wNewName.Text)) {
                             Common.Warn("A view with that name already exists.");
@@ -224,9 +224,9 @@ namespace Timekeeper.Forms.Shared
         {
             SavedViewList.Items.Clear();
 
-            List<Classes.BaseOptions> BaseOptionsCollection = new Classes.BaseOptionsCollection(this.TableName).FetchObjects();
+            List<Classes.BaseView> BaseOptionsCollection = new Classes.BaseViewCollection(this.TableName).FetchObjects();
 
-            foreach (Classes.BaseOptions Item in BaseOptionsCollection)
+            foreach (Classes.BaseView Item in BaseOptionsCollection)
             {
                 IdObjectPair Pair = new IdObjectPair((int)Item.Id, Item);
                 SavedViewList.Items.Add(Pair);
@@ -235,7 +235,7 @@ namespace Timekeeper.Forms.Shared
 
         //----------------------------------------------------------------------
 
-        private void SwapItems(Classes.BaseOptions firstItem, Classes.BaseOptions secondItem)
+        private void SwapItems(Classes.BaseView firstItem, Classes.BaseView secondItem)
         {
             try {
                 int SavedFirstSortOrderNo = firstItem.SortOrderNo;

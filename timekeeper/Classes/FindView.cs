@@ -7,7 +7,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    public class FindOptions
+    public class FindView
     {
         //----------------------------------------------------------------------
         // Private Properties
@@ -36,7 +36,7 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public FindOptions()
+        public FindView()
         {
             //Clear();
             this.Database = Timekeeper.Database;

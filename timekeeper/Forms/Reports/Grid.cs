@@ -23,8 +23,8 @@ namespace Timekeeper.Forms.Reports
         private DBI Database;
         private Classes.Options Options;
 
-        private Classes.GridOptions GridOptions;
-        private Classes.GridOptions AutoSavedGridOptions;
+        private Classes.GridView GridOptions;
+        private Classes.GridView AutoSavedGridOptions;
 
         public delegate void BrowserCallback(long entryId);
 
@@ -72,7 +72,7 @@ namespace Timekeeper.Forms.Reports
             this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
 
-            this.GridOptions = new Classes.GridOptions();
+            this.GridOptions = new Classes.GridView();
 
             // Some interface defaults
             wGroupBy.SelectedItem = "Month";
@@ -352,7 +352,7 @@ namespace Timekeeper.Forms.Reports
 
         private void AutoSaveView()
         {
-            AutoSavedGridOptions = new Classes.GridOptions(1); // 1 == Last Grid View
+            AutoSavedGridOptions = new Classes.GridView(1); // 1 == Last Grid View
             // TODO: Consider a load by name option
 
             /*
@@ -401,8 +401,8 @@ namespace Timekeeper.Forms.Reports
             ManageOptionsButton.Enabled = false;
 
             // Now grab new entries
-            List<Classes.BaseOptions> BaseOptionsCollection = new Classes.BaseOptionsCollection("GridOptions").FetchObjects();
-            foreach (Classes.BaseOptions BaseOptions in BaseOptionsCollection)
+            List<Classes.BaseView> BaseOptionsCollection = new Classes.BaseViewCollection("GridOptions").FetchObjects();
+            foreach (Classes.BaseView BaseOptions in BaseOptionsCollection)
             {
                 ToolStripItem Item = LoadMenuButton.DropDownItems.Add(BaseOptions.Name);
                 Item.Tag = BaseOptions;
@@ -421,7 +421,7 @@ namespace Timekeeper.Forms.Reports
         private void _load_view(object sender, EventArgs e)
         {
             ToolStripItem Item = (ToolStripItem)sender;
-            Classes.GridOptions GridOptions = (Classes.GridOptions)Item.Tag;
+            Classes.GridView GridOptions = (Classes.GridView)Item.Tag;
 
             ReallyRunGrid(GridOptions.Id);
         }

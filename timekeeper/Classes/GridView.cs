@@ -7,7 +7,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    public class GridOptions : BaseOptions
+    public class GridView : BaseView
     {
         //----------------------------------------------------------------------
         // Private Properties
@@ -28,14 +28,14 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public GridOptions()
+        public GridView()
             : base(OptionsTableName)
         {
         }
 
         //---------------------------------------------------------------------
 
-        public GridOptions(long gridOptionsId)
+        public GridView(long gridOptionsId)
             : this()
         {
             this.Load(gridOptionsId);

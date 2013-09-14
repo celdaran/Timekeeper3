@@ -22,7 +22,7 @@ namespace Timekeeper.Forms
         private DBI Database;
         private Classes.Options Options;
 
-        private Classes.FindOptions FindOptions;
+        private Classes.FindView FindOptions;
 
         public delegate void BrowserCallback(long entryId);
 
@@ -32,7 +32,7 @@ namespace Timekeeper.Forms
         // Constructor
         //---------------------------------------------------------------------
 
-        public Find(Classes.FindOptions findOptions, BrowserCallback f)
+        public Find(Classes.FindView findOptions, BrowserCallback f)
         {
             InitializeComponent();
             this.FindOptions = findOptions;
