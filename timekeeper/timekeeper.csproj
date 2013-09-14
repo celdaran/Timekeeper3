@@ -176,11 +176,11 @@
     <Compile Include="Forms\Find.Designer.cs">
       <DependentUpon>Find.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ImportWizard.cs">
+    <Compile Include="Forms\Wizards\Import.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ImportWizard.Designer.cs">
-      <DependentUpon>ImportWizard.cs</DependentUpon>
+    <Compile Include="Forms\Wizards\Import.Designer.cs">
+      <DependentUpon>Import.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ListAttributeManager.cs">
       <SubType>Form</SubType>
@@ -194,11 +194,11 @@
     <Compile Include="Forms\LocationManager.Designer.cs">
       <DependentUpon>LocationManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\NewWizard.cs">
+    <Compile Include="Forms\Wizards\NewDatabase.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\NewWizard.Designer.cs">
-      <DependentUpon>NewWizard.cs</DependentUpon>
+    <Compile Include="Forms\Wizards\NewDatabase.Designer.cs">
+      <DependentUpon>NewDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Options.cs">
       <SubType>Form</SubType>
@@ -230,17 +230,17 @@
     <Compile Include="Forms\TodoDetail.Designer.cs">
       <DependentUpon>TodoDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\UpgradeWizard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\UpgradeWizard.Designer.cs">
-      <DependentUpon>UpgradeWizard.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\WizardExperiment.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\WizardExperiment.Designer.cs">
       <DependentUpon>WizardExperiment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Wizards\UpgradeDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Wizards\UpgradeDatabase.Designer.cs">
+      <DependentUpon>UpgradeDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Classes\ActivityCollection.cs" />
@@ -283,11 +283,11 @@
     <Compile Include="Forms\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fPrompt.cs">
+    <Compile Include="Forms\Shared\Prompt.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fPrompt.Designer.cs">
-      <DependentUpon>fPrompt.cs</DependentUpon>
+    <Compile Include="Forms\Shared\Prompt.Designer.cs">
+      <DependentUpon>Prompt.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Reports\PunchCard.cs">
       <SubType>Form</SubType>
@@ -295,11 +295,11 @@
     <Compile Include="Forms\Reports\PunchCard.Designer.cs">
       <DependentUpon>PunchCard.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fToolCalendar.cs">
+    <Compile Include="Forms\Tools\Calendar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fToolCalendar.Designer.cs">
-      <DependentUpon>fToolCalendar.cs</DependentUpon>
+    <Compile Include="Forms\Tools\Calendar.Designer.cs">
+      <DependentUpon>Calendar.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Reports\Grid.cs">
       <SubType>Form</SubType>
@@ -307,23 +307,23 @@
     <Compile Include="Forms\Reports\Grid.Designer.cs">
       <DependentUpon>Grid.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fToolCountdown.cs">
+    <Compile Include="Forms\Tools\Countdown.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fToolCountdown.Designer.cs">
-      <DependentUpon>fToolCountdown.cs</DependentUpon>
+    <Compile Include="Forms\Tools\Countdown.Designer.cs">
+      <DependentUpon>Countdown.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fToolDatecalc.cs">
+    <Compile Include="Forms\Tools\DateCalculator.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fToolDatecalc.Designer.cs">
-      <DependentUpon>fToolDatecalc.cs</DependentUpon>
+    <Compile Include="Forms\Tools\DateCalculator.Designer.cs">
+      <DependentUpon>DateCalculator.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fToolJournal.cs">
+    <Compile Include="Forms\Tools\Notebook.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fToolJournal.Designer.cs">
-      <DependentUpon>fToolJournal.cs</DependentUpon>
+    <Compile Include="Forms\Tools\Notebook.Designer.cs">
+      <DependentUpon>Notebook.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Main.cs">
       <SubType>Form</SubType>
@@ -367,17 +367,17 @@
     <Compile Include="Forms\Properties.Designer.cs">
       <DependentUpon>Properties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fToolReminders.cs">
+    <Compile Include="Forms\Tools\Reminder.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fToolReminders.Designer.cs">
-      <DependentUpon>fToolReminders.cs</DependentUpon>
+    <Compile Include="Forms\Tools\Reminder.Designer.cs">
+      <DependentUpon>Reminder.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fToolStopwatch.cs">
+    <Compile Include="Forms\Tools\Stopwatch.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fToolStopwatch.Designer.cs">
-      <DependentUpon>fToolStopwatch.cs</DependentUpon>
+    <Compile Include="Forms\Tools\Stopwatch.Designer.cs">
+      <DependentUpon>Stopwatch.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\CategoryManager.resx">
@@ -408,8 +408,8 @@
     <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fPrompt.resx">
-      <DependentUpon>fPrompt.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Shared\Prompt.resx">
+      <DependentUpon>Prompt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Reports\GridOptions.resx">
       <DependentUpon>GridOptions.cs</DependentUpon>
@@ -418,26 +418,26 @@
       <DependentUpon>PunchCard.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fToolCalendar.resx">
-      <DependentUpon>fToolCalendar.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Tools\Calendar.resx">
+      <DependentUpon>Calendar.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Reports\Grid.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Grid.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fToolCountdown.resx">
-      <DependentUpon>fToolCountdown.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Tools\Countdown.resx">
+      <DependentUpon>Countdown.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fToolDatecalc.resx">
-      <DependentUpon>fToolDatecalc.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Tools\DateCalculator.resx">
+      <DependentUpon>DateCalculator.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fToolJournal.resx">
-      <DependentUpon>fToolJournal.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Tools\Notebook.resx">
+      <DependentUpon>Notebook.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ImportWizard.resx">
-      <DependentUpon>ImportWizard.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Wizards\Import.resx">
+      <DependentUpon>Import.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ListAttributeManager.resx">
       <DependentUpon>ListAttributeManager.cs</DependentUpon>
@@ -453,8 +453,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>ItemEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewWizard.resx">
-      <DependentUpon>NewWizard.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Wizards\NewDatabase.resx">
+      <DependentUpon>NewDatabase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Options.resx">
       <DependentUpon>Options.cs</DependentUpon>
@@ -463,20 +463,20 @@
       <SubType>Designer</SubType>
       <DependentUpon>Properties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fToolReminders.resx">
-      <DependentUpon>fToolReminders.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Tools\Reminder.resx">
+      <DependentUpon>Reminder.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fToolStopwatch.resx">
-      <DependentUpon>fToolStopwatch.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Tools\Stopwatch.resx">
+      <DependentUpon>Stopwatch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Reports\JournalEntry.resx">
       <DependentUpon>JournalEntry.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\UpgradeWizard.resx">
-      <DependentUpon>UpgradeWizard.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\WizardExperiment.resx">
       <DependentUpon>WizardExperiment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Wizards\UpgradeDatabase.resx">
+      <DependentUpon>UpgradeDatabase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -629,10 +629,7 @@
     <None Include="Resources\Images\Icons\SmallFolder.png" />
     <Content Include="Properties\timekeeper.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\Tools\" />
-    <Folder Include="Forms\Wizards\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
