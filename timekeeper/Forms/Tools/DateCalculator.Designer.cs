@@ -1,6 +1,6 @@
-﻿namespace Timekeeper
+﻿namespace Timekeeper.Forms.Tools
 {
-    partial class fToolDatecalc
+    partial class DateCalculator
     {
         /// <summary>
         /// Required designer variable.

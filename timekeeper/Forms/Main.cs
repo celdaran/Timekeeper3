@@ -30,7 +30,7 @@ namespace Timekeeper.Forms
         // Persistent dialog boxes
         // FIXME: why? Why these?
         //private Forms.OptionsLegacy options;
-        private fToolCalendar calendar;
+        private Forms.Tools.Calendar calendar;
         private Forms.Properties properties;
 
         // Misc
@@ -293,7 +293,7 @@ namespace Timekeeper.Forms
         // Report | Quick List
         private void menuReportsQuick_Click(object sender, EventArgs e)
         {
-            Forms.Report Report = new Forms.Report();
+            Forms.Reports.JournalEntry Report = new Forms.Reports.JournalEntry();
             Report.Show(this);
 
             /*
@@ -311,7 +311,7 @@ namespace Timekeeper.Forms
         // Report | Punch Card
         private void menuReportsPunch_Click(object sender, EventArgs e)
         {
-            fPunch punch = new fPunch(Database);
+            Forms.Reports.PunchCard punch = new Forms.Reports.PunchCard(Database);
             punch.Show(this);
             OpenForms.Add(punch);
         }
@@ -329,7 +329,7 @@ namespace Timekeeper.Forms
         // Tools | Notebook
         private void MenuToolNotebook_Click(object sender, EventArgs e)
         {
-            fToolJournal dlg = new fToolJournal(Database);
+            Forms.Tools.Notebook dlg = new Forms.Tools.Notebook(Database);
             dlg.ActiveControl = dlg.wEntry;
             if (dlg.ShowDialog(this) == DialogResult.OK && dlg.is_dirty) {
                 Action_UpdateNotebook(dlg.wEntry.Text, dlg.wEntryDate.Value, dlg.wJumpBox.SelectedIndex == -1);
@@ -339,7 +339,7 @@ namespace Timekeeper.Forms
         // Tools | Calendar
         private void MenuToolCalendar_Click(object sender, EventArgs e)
         {
-            calendar = new fToolCalendar();
+            calendar = new Forms.Tools.Calendar();
             calendar.Show(this);
             OpenForms.Add(calendar);
         }
@@ -353,7 +353,7 @@ namespace Timekeeper.Forms
             // Dialog.Show(this);
             // OpenForms.Add(Dialog);
 
-            fToolStopwatch dlg = new fToolStopwatch();
+            Forms.Tools.Stopwatch dlg = new Forms.Tools.Stopwatch();
             dlg.Show(this);
             OpenForms.Add(dlg);
         }
@@ -361,14 +361,14 @@ namespace Timekeeper.Forms
         // Tools | Countdown
         private void MenuToolCountdown_Click(object sender, EventArgs e)
         {
-            fToolCountdown dlg = new fToolCountdown();
+            Forms.Tools.Countdown dlg = new Forms.Tools.Countdown();
             dlg.ShowDialog(this);
         }
 
         // Tools | Date Calculator
         private void menuToolsDatecalc_Click(object sender, EventArgs e)
         {
-            fToolDatecalc dlg = new fToolDatecalc();
+            Forms.Tools.DateCalculator dlg = new Forms.Tools.DateCalculator();
             dlg.Show(this);
             OpenForms.Add(dlg);
         }
@@ -376,7 +376,7 @@ namespace Timekeeper.Forms
         // Tools | Reminders
         private void MenuToolReminders_Click(object sender, EventArgs e)
         {
-            fToolReminders dlg = new fToolReminders();
+            Forms.Tools.Reminder dlg = new Forms.Tools.Reminder();
             dlg.ShowDialog(this);
         }
 
@@ -1111,7 +1111,7 @@ namespace Timekeeper.Forms
 
         private void MenuFileUtilitiesImport_Click(object sender, EventArgs e)
         {
-            Forms.ImportWizard DialogBox = new Forms.ImportWizard();
+            Forms.Wizards.Import DialogBox = new Forms.Wizards.Import();
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
                 reloadProjects();
             }

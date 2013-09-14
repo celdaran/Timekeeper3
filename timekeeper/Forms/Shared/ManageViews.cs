@@ -157,7 +157,7 @@ namespace Timekeeper.Forms.Shared
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
                 Classes.BaseView View = (Classes.BaseView)CurrentItem.Object;
 
-                fGridManageRename DialogBox = new fGridManageRename();
+                RenameView DialogBox = new RenameView();
 
                 string PreviousName = View.Name;
                 string PreviousDescription = View.Description;

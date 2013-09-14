@@ -1,6 +1,6 @@
-﻿namespace Timekeeper.Forms
+﻿namespace Timekeeper.Forms.Wizards
 {
-    partial class UpgradeWizard
+    partial class UpgradeDatabase
     {
         /// <summary>
         /// Required designer variable.
@@ -27,7 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpgradeWizard));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpgradeDatabase));
             this.StartButton = new System.Windows.Forms.Button();
             this.LaterButton = new System.Windows.Forms.Button();
             this.OkayButton = new System.Windows.Forms.Button();

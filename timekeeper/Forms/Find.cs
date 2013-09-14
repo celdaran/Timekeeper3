@@ -90,7 +90,7 @@ namespace Timekeeper.Forms
 
         private void FilterButton_Click(object sender, EventArgs e)
         {
-            Forms.Filtering FilterDialog = new Forms.Filtering(FindOptions.FilterOptions);
+            Forms.Shared.Filtering FilterDialog = new Forms.Shared.Filtering(FindOptions.FilterOptions);
 
             if (FilterDialog.ShowDialog(this) == DialogResult.OK) {
                 FindOptions.FilterOptions = FilterDialog.FilterOptions;

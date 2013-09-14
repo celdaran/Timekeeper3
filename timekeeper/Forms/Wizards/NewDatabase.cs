@@ -10,9 +10,9 @@ using System.IO;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper.Forms
+namespace Timekeeper.Forms.Wizards
 {
-    public partial class NewWizard : Form
+    public partial class NewDatabase : Form
     {
         //----------------------------------------------------------------------
         // Properties
@@ -29,7 +29,7 @@ namespace Timekeeper.Forms
         // Constructor and Form Events
         //----------------------------------------------------------------------
 
-        public NewWizard()
+        public NewDatabase()
         {
             InitializeComponent();
         }

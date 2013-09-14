@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timekeeper
+namespace Timekeeper.Forms.Shared
 {
-    public partial class fGridManageRename : Form
+    public partial class RenameView : Form
     {
-        public fGridManageRename()
+        public RenameView()
         {
             InitializeComponent();
         }

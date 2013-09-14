@@ -1,6 +1,6 @@
-﻿namespace Timekeeper
+﻿namespace Timekeeper.Forms.Tools
 {
-    partial class fToolReminders
+    partial class Reminder
     {
         /// <summary>
         /// Required designer variable.

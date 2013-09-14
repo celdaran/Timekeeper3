@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timekeeper
+namespace Timekeeper.Forms.Tools
 {
-    public partial class fToolDatecalc : Form
+    public partial class DateCalculator : Form
     {
-        public fToolDatecalc()
+        public DateCalculator()
         {
             InitializeComponent();
         }

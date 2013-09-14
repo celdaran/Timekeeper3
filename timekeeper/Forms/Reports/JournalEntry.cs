@@ -11,9 +11,9 @@ using System.Resources;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper.Forms
+namespace Timekeeper.Forms.Reports
 {
-    public partial class Report : Form
+    public partial class JournalEntry : Form
     {
         //---------------------------------------------------------------------
         // Properties
@@ -27,7 +27,7 @@ namespace Timekeeper.Forms
         // Constructor
         //---------------------------------------------------------------------
 
-        public Report()
+        public JournalEntry()
         {
             InitializeComponent();
         }
@@ -53,7 +53,7 @@ namespace Timekeeper.Forms
 
         private void FilterButton_Click(object sender, EventArgs e)
         {
-            Forms.Filtering Dialog = new Forms.Filtering(FilterOptions);
+            Forms.Shared.Filtering Dialog = new Forms.Shared.Filtering(FilterOptions);
 
             if (Dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
                 FilterOptions = Dialog.FilterOptions;
@@ -207,7 +207,7 @@ namespace Timekeeper.Forms
             try {
                 //ResourceManager Resources = new ResourceManager(typeof(string));
                 //ResourceManager Resources = new ResourceManager(typeof(Timekeeper));
-                ResourceManager Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(Report).Assembly);
+                ResourceManager Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(JournalEntry).Assembly);
 
                 //var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
                 //var farewell = loader.GetString("Farewell");

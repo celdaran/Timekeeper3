@@ -1,6 +1,6 @@
-﻿namespace Timekeeper
+﻿namespace Timekeeper.Forms.Shared
 {
-    partial class fGridManageRename
+    partial class RenameView
     {
         /// <summary>
         /// Required designer variable.

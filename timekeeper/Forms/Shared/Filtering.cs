@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper.Forms
+namespace Timekeeper.Forms.Shared
 {
 
     public partial class Filtering : Form

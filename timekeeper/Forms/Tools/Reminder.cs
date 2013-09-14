@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timekeeper
+namespace Timekeeper.Forms.Tools
 {
-    public partial class fToolReminders : Form
+    public partial class Reminder : Form
     {
-        public fToolReminders()
+        public Reminder()
         {
             InitializeComponent();
         }

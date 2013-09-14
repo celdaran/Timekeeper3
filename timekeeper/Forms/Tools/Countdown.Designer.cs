@@ -1,6 +1,6 @@
-﻿namespace Timekeeper
+﻿namespace Timekeeper.Forms.Tools
 {
-    partial class fToolCountdown
+    partial class Countdown
     {
         /// <summary>
         /// Required designer variable.

@@ -1,6 +1,6 @@
-﻿namespace Timekeeper
+﻿namespace Timekeeper.Forms.Reports
 {
-    partial class fPunch
+    partial class PunchCard
     {
         /// <summary>
         /// Required designer variable.

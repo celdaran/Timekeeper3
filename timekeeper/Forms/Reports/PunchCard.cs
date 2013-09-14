@@ -8,13 +8,13 @@ using System.Windows.Forms;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Forms.Reports
 {
-    public partial class fPunch : Form
+    public partial class PunchCard : Form
     {
         DBI data;
 
-        public fPunch(DBI data)
+        public PunchCard(DBI data)
         {
             InitializeComponent();
             this.data = data;

@@ -1,6 +1,6 @@
-﻿namespace Timekeeper
+﻿namespace Timekeeper.Forms.Tools
 {
-    partial class fToolJournal
+    partial class Notebook
     {
         /// <summary>
         /// Required designer variable.

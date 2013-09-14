@@ -1,6 +1,6 @@
-﻿namespace Timekeeper
+﻿namespace Timekeeper.Forms.Tools
 {
-    partial class fToolStopwatch
+    partial class Stopwatch
     {
         /// <summary>
         /// Required designer variable.

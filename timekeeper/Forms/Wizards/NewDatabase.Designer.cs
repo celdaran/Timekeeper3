@@ -1,6 +1,6 @@
-﻿namespace Timekeeper.Forms
+﻿namespace Timekeeper.Forms.Wizards
 {
-    partial class NewWizard
+    partial class NewDatabase
     {
         /// <summary>
         /// Required designer variable.
@@ -27,7 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewWizard));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewDatabase));
             this.ButtonPanel = new System.Windows.Forms.Panel();
             this.FinishButton = new System.Windows.Forms.Button();
             this.BackButton = new System.Windows.Forms.Button();

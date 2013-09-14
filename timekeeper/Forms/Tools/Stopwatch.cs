@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Forms.Tools
 {
-    public partial class fToolStopwatch : Form
+    public partial class Stopwatch : Form
     {
         DateTime startTime;
         DateTime endTime;
@@ -18,7 +18,7 @@ namespace Timekeeper
         TimeSpan accumulated;
         TimeSpan ts;
 
-        public fToolStopwatch()
+        public Stopwatch()
         {
             InitializeComponent();
         }

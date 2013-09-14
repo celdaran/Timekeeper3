@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timekeeper
+namespace Timekeeper.Forms.Tools
 {
-    public partial class fToolCalendar : Form
+    public partial class Calendar : Form
     {
-        public fToolCalendar()
+        public Calendar()
         {
             InitializeComponent();
         }

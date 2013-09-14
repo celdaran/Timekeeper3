@@ -1,6 +1,6 @@
-namespace Timekeeper
+namespace Timekeeper.Forms.Tools
 {
-    partial class fToolCalendar
+    partial class Calendar
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@ namespace Timekeeper
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fToolCalendar));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Calendar));
             this.wCalendar = new System.Windows.Forms.MonthCalendar();
             this.panelBottom = new System.Windows.Forms.Panel();
             this.btnClose = new System.Windows.Forms.Button();

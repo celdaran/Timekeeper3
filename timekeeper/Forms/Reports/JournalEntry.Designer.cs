@@ -1,6 +1,6 @@
-﻿namespace Timekeeper.Forms
+﻿namespace Timekeeper.Forms.Reports
 {
-    partial class Report
+    partial class JournalEntry
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Report));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(JournalEntry));
             this.ReportWindow = new System.Windows.Forms.WebBrowser();
             this.TimerHack = new System.Windows.Forms.Timer(this.components);
             this.ToolStrip = new System.Windows.Forms.ToolStrip();

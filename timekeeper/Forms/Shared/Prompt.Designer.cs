@@ -1,6 +1,6 @@
-namespace Timekeeper
+namespace Timekeeper.Forms.Shared
 {
-    partial class fPrompt
+    partial class Prompt
     {
         /// <summary>
         /// Required designer variable.

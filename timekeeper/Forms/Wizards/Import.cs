@@ -11,9 +11,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Technitivity.Toolbox;
 
-namespace Timekeeper.Forms
+namespace Timekeeper.Forms.Wizards
 {
-    public partial class ImportWizard : Form
+    public partial class Import : Form
     {
         //----------------------------------------------------------------------
         // Properties
@@ -27,7 +27,7 @@ namespace Timekeeper.Forms
         // Constructor
         //----------------------------------------------------------------------
 
-        public ImportWizard()
+        public Import()
         {
             InitializeComponent();
             this.Database = Timekeeper.Database;

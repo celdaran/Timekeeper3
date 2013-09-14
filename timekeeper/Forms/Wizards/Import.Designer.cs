@@ -1,6 +1,6 @@
-﻿namespace Timekeeper.Forms
+﻿namespace Timekeeper.Forms.Wizards
 {
-    partial class ImportWizard
+    partial class Import
     {
         /// <summary>
         /// Required designer variable.

@@ -94,7 +94,7 @@ namespace Timekeeper.Forms
         {
             if (Options.Behavior_Annoy_PromptBeforeHiding)
             {
-                fPrompt Dialog = new fPrompt();
+                Forms.Shared.Prompt Dialog = new Forms.Shared.Prompt();
                 Dialog.wInstructions.Text = "Hide this item?\n\nTo display hidden items, go to Tools | Options and check the appropriate boxes on the View tab. Hidden items are always available on reports.";
 
                 if (Dialog.ShowDialog(this) != DialogResult.OK) {
@@ -145,7 +145,7 @@ namespace Timekeeper.Forms
             FileCreateOptions CreateOptions;
 
             if (Options.Behavior_Annoy_UseNewDatabaseWizard) {
-                NewWizard NewWizardDialog = new NewWizard();
+                Forms.Wizards.NewDatabase NewWizardDialog = new Forms.Wizards.NewDatabase();
                 if (NewWizardDialog.ShowDialog(this) == DialogResult.OK) {
                     FileName = NewWizardDialog.CreateOptions.FileName;
                     CreateOptions = NewWizardDialog.CreateOptions;

@@ -8,15 +8,15 @@ using System.Windows.Forms;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper
+namespace Timekeeper.Forms.Tools
 {
-    public partial class fToolJournal : Form
+    public partial class Notebook : Form
     {
         public bool is_dirty = false;
         private DBI data;
-        private Classes.Notebook Notebook;
+        private Classes.Notebook NotebookRenameMe;
 
-        public fToolJournal(DBI data)
+        public Notebook(DBI data)
         {
             InitializeComponent();
             this.data = data;
@@ -24,8 +24,8 @@ namespace Timekeeper
 
         private void fToolJournal_Load(object sender, EventArgs e)
         {
-            Notebook = new Classes.Notebook();
-            Table Entries = Notebook.Entries();
+            NotebookRenameMe = new Classes.Notebook();
+            Table Entries = NotebookRenameMe.Entries();
 
             foreach (Row Entry in Entries) {
                 wJumpBox.Items.Add(Entry["EntryTime"].ToString(Common.DATETIME_FORMAT));

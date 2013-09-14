@@ -230,12 +230,6 @@
     <Compile Include="Forms\TodoDetail.Designer.cs">
       <DependentUpon>TodoDetail.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\WizardExperiment.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\WizardExperiment.Designer.cs">
-      <DependentUpon>WizardExperiment.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Wizards\UpgradeDatabase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -471,9 +465,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Reports\JournalEntry.resx">
       <DependentUpon>JournalEntry.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\WizardExperiment.resx">
-      <DependentUpon>WizardExperiment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Wizards\UpgradeDatabase.resx">
       <DependentUpon>UpgradeDatabase.cs</DependentUpon>

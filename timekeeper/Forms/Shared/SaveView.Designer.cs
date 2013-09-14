@@ -1,6 +1,6 @@
-﻿namespace Timekeeper
+﻿namespace Timekeeper.Forms.Shared
 {
-    partial class fGridSave
+    partial class SaveView
     {
         /// <summary>
         /// Required designer variable.

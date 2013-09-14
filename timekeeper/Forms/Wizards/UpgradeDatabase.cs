@@ -13,9 +13,9 @@ using System.Collections.ObjectModel;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper.Forms
+namespace Timekeeper.Forms.Wizards
 {
-    public partial class UpgradeWizard : Form
+    public partial class UpgradeDatabase : Form
     {
         private File File;
         private bool UpgradeSucceeded;
@@ -25,7 +25,7 @@ namespace Timekeeper.Forms
         // Constructor
         //---------------------------------------------------------------------
 
-        public UpgradeWizard()
+        public UpgradeDatabase()
         {
             InitializeComponent();
 

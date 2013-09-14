@@ -468,7 +468,7 @@ namespace Timekeeper.Forms.Reports
 
         private void FilterButton_Click(object sender, EventArgs e)
         {
-            Forms.Filtering FilterDialog = new Forms.Filtering(GridView.FilterOptions);
+            Forms.Shared.Filtering FilterDialog = new Forms.Shared.Filtering(GridView.FilterOptions);
 
             if (FilterDialog.ShowDialog(this) == DialogResult.OK) {
                 GridView.FilterOptions = FilterDialog.FilterOptions;
@@ -541,7 +541,7 @@ namespace Timekeeper.Forms.Reports
 
         private void SaveViewButton_Click(object sender, EventArgs e)
         {
-            fGridSave DialogBox = new fGridSave();
+            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView();
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
                 GridView.Name = DialogBox.wName.Text;
                 GridView.Description = DialogBox.wDescription.Text;

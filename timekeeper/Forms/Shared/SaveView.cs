@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timekeeper
+namespace Timekeeper.Forms.Shared
 {
-    public partial class fGridSave : Form
+    public partial class SaveView : Form
     {
-        public fGridSave()
+        public SaveView()
         {
             InitializeComponent();
         }

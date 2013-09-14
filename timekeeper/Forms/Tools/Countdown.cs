@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timekeeper
+namespace Timekeeper.Forms.Tools
 {
-    public partial class fToolCountdown : Form
+    public partial class Countdown : Form
     {
-        public fToolCountdown()
+        public Countdown()
         {
             InitializeComponent();
         }

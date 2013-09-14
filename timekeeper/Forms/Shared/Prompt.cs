@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Timekeeper
+namespace Timekeeper.Forms.Shared
 {
-    public partial class fPrompt : Form
+    public partial class Prompt : Form
     {
-        public fPrompt()
+        public Prompt()
         {
             InitializeComponent();
         }
