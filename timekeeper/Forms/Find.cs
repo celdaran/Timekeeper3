@@ -369,12 +369,6 @@ namespace Timekeeper.Forms
 
         private void SaveOptionsButton_Click(object sender, EventArgs e)
         {
-            Forms.SaveView DialogBox = new Forms.SaveView();
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                FindOptions.Name = DialogBox.ViewName.Text;
-                FindOptions.Description = DialogBox.ViewDescription.Text;
-                FindOptions.Save();
-            }
         }
 
         //---------------------------------------------------------------------

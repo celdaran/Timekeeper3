@@ -164,10 +164,10 @@
     <Compile Include="Forms\CategoryManager.Designer.cs">
       <DependentUpon>CategoryManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Filtering.cs">
+    <Compile Include="Forms\Shared\Filtering.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Filtering.Designer.cs">
+    <Compile Include="Forms\Shared\Filtering.Designer.cs">
       <DependentUpon>Filtering.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Find.cs">
@@ -218,12 +218,6 @@
     <Compile Include="Forms\Reports\JournalEntry.Designer.cs">
       <DependentUpon>JournalEntry.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SaveView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SaveView.Designer.cs">
-      <DependentUpon>SaveView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Todo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -265,29 +259,23 @@
     <Compile Include="Forms\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fGridFilter.cs">
+    <Compile Include="Forms\Shared\ManageViews.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fGridFilter.Designer.cs">
-      <DependentUpon>fGridFilter.cs</DependentUpon>
+    <Compile Include="Forms\Shared\ManageViews.Designer.cs">
+      <DependentUpon>ManageViews.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fGridManage.cs">
+    <Compile Include="Forms\Shared\RenameView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fGridManage.Designer.cs">
-      <DependentUpon>fGridManage.cs</DependentUpon>
+    <Compile Include="Forms\Shared\RenameView.Designer.cs">
+      <DependentUpon>RenameView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\fGridManageRename.cs">
+    <Compile Include="Forms\Shared\SaveView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\fGridManageRename.Designer.cs">
-      <DependentUpon>fGridManageRename.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\fGridSave.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\fGridSave.Designer.cs">
-      <DependentUpon>fGridSave.cs</DependentUpon>
+    <Compile Include="Forms\Shared\SaveView.Designer.cs">
+      <DependentUpon>SaveView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Form1.cs">
       <SubType>Form</SubType>
@@ -405,23 +393,19 @@
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fGridFilter.resx">
-      <DependentUpon>fGridFilter.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Shared\ManageViews.resx">
+      <DependentUpon>ManageViews.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fGridManage.resx">
-      <DependentUpon>fGridManage.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Shared\RenameView.resx">
+      <DependentUpon>RenameView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fGridManageRename.resx">
-      <DependentUpon>fGridManageRename.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Shared\SaveView.resx">
+      <DependentUpon>SaveView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\fGridSave.resx">
-      <DependentUpon>fGridSave.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Filtering.resx">
+    <EmbeddedResource Include="Forms\Shared\Filtering.resx">
       <DependentUpon>Filtering.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Find.resx">
@@ -497,9 +481,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Reports\JournalEntry.resx">
       <DependentUpon>JournalEntry.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SaveView.resx">
-      <DependentUpon>SaveView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UpgradeWizard.resx">
       <DependentUpon>UpgradeWizard.cs</DependentUpon>
@@ -659,7 +640,6 @@
     <Content Include="Properties\timekeeper.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Forms\Shared\" />
     <Folder Include="Forms\Tools\" />
     <Folder Include="Forms\Wizards\" />
   </ItemGroup>
