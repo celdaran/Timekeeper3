@@ -29,6 +29,8 @@ namespace Timekeeper.Classes
         }
 
         //----------------------------------------------------------------------
+        // Public Methods
+        //----------------------------------------------------------------------
 
         public bool ViewExists(string optionName)
         {
@@ -41,23 +43,15 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public Table Fetch()
-        {
-            string Query = String.Format(@"SELECT * FROM {0} ORDER BY SortOrderNo, Name", this.TableName);
-            return this.Database.Select(Query);
-        }
-
-        //----------------------------------------------------------------------
-
-        public List<Classes.BaseView> FetchObjects()
+        public List<Classes.BaseView> Fetch()
         {
             List<Classes.BaseView> ReturnValue = new List<Classes.BaseView>();
 
             try {
-                Table Options = this.Fetch();
-                foreach (Row OptionRow in Options) {
-                    Classes.BaseView BaseOptions = new Classes.BaseView(this.TableName, OptionRow[this.TableName + "Id"]);
-                    ReturnValue.Add(BaseOptions);
+                Table Views = this.FetchRows();
+                foreach (Row View in Views) {
+                    Classes.BaseView BaseView = new Classes.BaseView(this.TableName, View[this.TableName + "Id"]);
+                    ReturnValue.Add(BaseView);
                 }
             }
             catch (Exception x) {
@@ -65,6 +59,16 @@ namespace Timekeeper.Classes
             }
 
             return ReturnValue;
+        }
+
+        //----------------------------------------------------------------------
+        // Private Helpers
+        //----------------------------------------------------------------------
+
+        private Table FetchRows()
+        {
+            string Query = String.Format(@"SELECT * FROM {0} ORDER BY SortOrderNo, Name", this.TableName);
+            return this.Database.Select(Query);
         }
 
         //----------------------------------------------------------------------

@@ -143,9 +143,9 @@
     <Compile Include="Classes\File.Downgrade.cs" />
     <Compile Include="Classes\File.Upgrade.cs" />
     <Compile Include="Classes\FilterOptions.cs" />
-    <Compile Include="Classes\FindOptions.cs" />
-    <Compile Include="Classes\GridOptions.cs" />
-    <Compile Include="Classes\GridOptionsCollection.cs" />
+    <Compile Include="Classes\FindView.cs" />
+    <Compile Include="Classes\GridView.cs" />
+    <Compile Include="Classes\GridViewCollection.cs" />
     <Compile Include="Classes\Import.cs" />
     <Compile Include="Classes\ListAttribute.cs" />
     <Compile Include="Classes\ListAttributeCollection.cs" />
@@ -555,6 +555,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SQL\3.0\ReportView.Create.sql" />
+    <None Include="Resources\SQL\3.0\FindView.Create.sql" />
+    <None Include="Resources\SQL\3.0\GridView.Create.sql" />
+    <None Include="Resources\SQL\2.2\GridView.Create.sql" />
+    <None Include="Resources\SQL\2.1\GridView.Create.sql" />
     <None Include="Resources\Images\Buttons\ViewTiles.png" />
     <None Include="Resources\Images\Buttons\ViewSmall.png" />
     <None Include="Resources\Images\Buttons\ViewList.png" />

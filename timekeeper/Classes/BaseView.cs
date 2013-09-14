@@ -57,21 +57,21 @@ namespace Timekeeper.Classes
 
         protected Row LoadRow(long id)
         {
-            Row Options = new Row();
+            Row View = new Row();
 
             try {
                 string Query = String.Format(@"select * from {0} where {0}Id = {1}",
                     this.TableName, id);
-                Options = this.Database.SelectRow(Query);
+                View = this.Database.SelectRow(Query);
 
-                if (Options[this.TableName + "Id"] != null) {
+                if (View[this.TableName + "Id"] != null) {
                     this.Id = id;
-                    this.CreateTime = Options["CreateTime"];
-                    this.ModifyTime = Options["ModifyTime"];
-                    this.Name = Options["Name"];
-                    this.Description = (string)Timekeeper.GetValue(Options["Description"], "");
-                    this.SortOrderNo = (int)Timekeeper.GetValue(Options["SortOrderNo"], 0);
-                    this.FilterOptionsId = Options["FilterOptionsId"];
+                    this.CreateTime = View["CreateTime"];
+                    this.ModifyTime = View["ModifyTime"];
+                    this.Name = View["Name"];
+                    this.Description = (string)Timekeeper.GetValue(View["Description"], "");
+                    this.SortOrderNo = (int)Timekeeper.GetValue(View["SortOrderNo"], 0);
+                    this.FilterOptionsId = View["FilterOptionsId"];
                     FilterOptions = new Classes.FilterOptions(FilterOptionsId);
                 } else {
                     FilterOptions = new Classes.FilterOptions();
@@ -81,7 +81,7 @@ namespace Timekeeper.Classes
                 Timekeeper.Exception(x);
             }
 
-            return Options;
+            return View;
         }
 
         //----------------------------------------------------------------------
@@ -89,11 +89,11 @@ namespace Timekeeper.Classes
         public bool SaveRow()
         {
             try {
-                Row Options = new Row();
+                Row View = new Row();
 
-                Options["Name"] = Name;
-                Options["Description"] = Description;
-                Options["SortOrderNo"] = SortOrderNo;
+                View["Name"] = Name;
+                View["Description"] = Description;
+                View["SortOrderNo"] = SortOrderNo;
 
                 // TODO: TBX/DBI needs a RowExists and/or Upsert statement
 
@@ -116,26 +116,26 @@ namespace Timekeeper.Classes
                     this.FilterOptions.Create();
 
                     // On insert, override any previously set SortOrderNo
-                    Options["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName);
+                    View["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName);
 
-                    Options["CreateTime"] = Common.Now();
-                    Options["ModifyTime"] = Common.Now();
-                    Options["FilterOptionsId"] = this.FilterOptions.FilterOptionsId;
+                    View["CreateTime"] = Common.Now();
+                    View["ModifyTime"] = Common.Now();
+                    View["FilterOptionsId"] = this.FilterOptions.FilterOptionsId;
 
-                    this.Id = this.Database.Insert(this.TableName, Options);
+                    this.Id = this.Database.Insert(this.TableName, View);
                     if (this.Id > 0) {
-                        CreateTime = Convert.ToDateTime(Options["CreateTime"]);
-                        ModifyTime = Convert.ToDateTime(Options["ModifyTime"]);
-                        FilterOptionsId = Options["FilterOptionsId"];
+                        CreateTime = Convert.ToDateTime(View["CreateTime"]);
+                        ModifyTime = Convert.ToDateTime(View["ModifyTime"]);
+                        FilterOptionsId = View["FilterOptionsId"];
                     } else {
                         throw new Exception("Error inserting into " + this.TableName);
                     }
                 } else {
                     this.FilterOptions.Save();
 
-                    Options["ModifyTime"] = Common.Now();
-                    if (this.Database.Update(this.TableName, Options, this.TableName + "Id", this.Id) == 1) {
-                        ModifyTime = Convert.ToDateTime(Options["ModifyTime"]);
+                    View["ModifyTime"] = Common.Now();
+                    if (this.Database.Update(this.TableName, View, this.TableName + "Id", this.Id) == 1) {
+                        ModifyTime = Convert.ToDateTime(View["ModifyTime"]);
                     } else {
                         throw new Exception("Error updating " + this.TableName);
                     }

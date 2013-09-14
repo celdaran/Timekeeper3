@@ -113,12 +113,12 @@ namespace Timekeeper
                 newFile.Database.Insert("journal", NewRow);
             }
 
-            // GridOptions table
-            Table GridOptions = this.Database.Select("select * from GridOptions");
-            foreach (Row Row in GridOptions) {
+            // GridView table
+            Table GridView = this.Database.Select("select * from GridView");
+            foreach (Row Row in GridView) {
 
                 Row NewRow = new Row() {
-                    {"id", Row["GridOptionsId"]},
+                    {"id", Row["GridViewId"]},
                     {"name", Row["Name"]},
                     {"description", Row["Description"]},
                     {"sort_index", Row["SortOrderNo"]},
@@ -231,12 +231,12 @@ namespace Timekeeper
                 newFile.Database.Insert("journal", NewRow);
             }
 
-            // GridOptions table
-            Table GridOptions = this.Database.Select("select * from GridOptions");
-            foreach (Row Row in GridOptions) {
+            // GridView table
+            Table GridView = this.Database.Select("select * from GridView");
+            foreach (Row Row in GridView) {
 
                 Row NewRow = new Row() {
-                    {"id", Row["GridOptionsId"]},
+                    {"id", Row["GridViewId"]},
                     {"name", Row["Name"]},
                     {"description", Row["Description"]},
                     {"sort_index", Row["SortOrderNo"]},

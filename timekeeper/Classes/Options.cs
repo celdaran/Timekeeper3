@@ -157,9 +157,9 @@ namespace Timekeeper.Classes
 
         public long State_LastProjectId { get; set; }
         public long State_LastActivityId { get; set; }
-        public long State_LastFindOptionsId { get; set; }
-        public long State_LastGridOptionsId { get; set; }
-        public long State_LastReportOptionsId { get; set; }
+        public long State_LastFindViewId { get; set; }
+        public long State_LastGridViewId { get; set; }
+        public long State_LastReportViewId { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -454,22 +454,22 @@ namespace Timekeeper.Classes
                     State_LastActivityId = Convert.ToInt64(Option["Value"]);
                 }
 
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastFindOptionsId");
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastFindViewId");
                 Option = this.Database.SelectRow(Query);
                 if (Option.Count > 0) {
-                    State_LastFindOptionsId = Convert.ToInt64(Option["Value"]);
+                    State_LastFindViewId = Convert.ToInt64(Option["Value"]);
                 }
 
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastGridOptionsId");
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastGridViewId");
                 Option = this.Database.SelectRow(Query);
                 if (Option.Count > 0) {
-                    State_LastGridOptionsId = Convert.ToInt64(Option["Value"]);
+                    State_LastGridViewId = Convert.ToInt64(Option["Value"]);
                 }
 
-                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastReportOptionsId");
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastReportViewId");
                 Option = this.Database.SelectRow(Query);
                 if (Option.Count > 0) {
-                    State_LastReportOptionsId = Convert.ToInt64(Option["Value"]);
+                    State_LastReportViewId = Convert.ToInt64(Option["Value"]);
                 }
 
                 Timekeeper.Debug("Options Loadedfrom Database");
@@ -672,9 +672,9 @@ namespace Timekeeper.Classes
                 Timekeeper.Debug("Saving Options to Database");
                 SaveRow("LastProjectId", State_LastProjectId.ToString());
                 SaveRow("LastActivityId", State_LastActivityId.ToString());
-                SaveRow("LastFindOptionsId", State_LastFindOptionsId.ToString());
-                SaveRow("LastGridOptionsId", State_LastGridOptionsId.ToString());
-                SaveRow("LastReportOptionsId", State_LastReportOptionsId.ToString());
+                SaveRow("LastFindViewId", State_LastFindViewId.ToString());
+                SaveRow("LastGridViewId", State_LastGridViewId.ToString());
+                SaveRow("LastReportViewId", State_LastReportViewId.ToString());
             }
         }
 

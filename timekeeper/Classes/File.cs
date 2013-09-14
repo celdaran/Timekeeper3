@@ -18,7 +18,25 @@ namespace Timekeeper
         public readonly string Name;
         public readonly string FullPath;
 
-        public const string SCHEMA_VERSION = "3.0.0.5";
+        //----------------------------------------------------------------------
+        // A note on SCHEMA_VERSION:
+        //
+        //   MAJOR: Matches the major version of TK which created this schema.
+        //   MINOR: Matches the minor version of TK which created this schema.
+        //   BUILD: Increments whenever the schema changes in a way that 
+        //          would case code incompatabilities. This would mean a new 
+        //          table, a new column, or an object rename.
+        //   REV'N: Increments whenever the schema changes in a way that
+        //          does NOT cause any code incompatabilities. This would be
+        //          things like new FK constraints, indeces, or (in some cases)
+        //          new default rows.
+        //
+        // If the schema version changes, then the SQL file resources must also
+        // be updated. Note that prior to 3.0, this convention was not followed 
+        // (nor were the DDL statements stored as resources or tracked in p4).
+        //----------------------------------------------------------------------
+        public const string SCHEMA_VERSION = "3.0.6.0";
+        //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
         public const int ERROR_NEWER_VERSION_DETECTED = -2;
@@ -189,9 +207,11 @@ namespace Timekeeper
                 // User Options
                 CreateTable("Options", version, populate);
                 CreateTable("FilterOptions", version, false);
-                CreateTable("FindOptions", version, false);
-                CreateTable("GridOptions", version, false);
-                CreateTable("ReportOptions", version, false);
+
+                // User Views
+                CreateTable("FindView", version, false);
+                CreateTable("GridView", version, false);
+                CreateTable("ReportView", version, false);
 
             }
             catch (Exception x) {

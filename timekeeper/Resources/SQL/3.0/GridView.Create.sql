@@ -1,15 +1,15 @@
 ------------------------------------------------------------------------
--- Table..: GridOptions
--- Purpose: This table stores user options for saving a particular view
---          of the Grid display.
+-- Table..: GridView
+-- Purpose: This table stores the settings and options for saving a 
+--          particular view of the Grid window.
 -- Added..: Timekeeper 2.1
 -- Updated: Timekeeper 3.0
 -- AKA....: This table was known as 'grid_views' prior to Timekeeper 3.0
 ------------------------------------------------------------------------
 
-CREATE TABLE GridOptions
+CREATE TABLE GridView
 (
-    GridOptionsId       INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    GridViewId          INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
@@ -30,6 +30,5 @@ CREATE TABLE GridOptions
     FOREIGN KEY(RefTimeDisplayId)   REFERENCES RefTimeDisplay(RefTimeDisplayId)
 );
 
-
-CREATE UNIQUE INDEX idx_GridOptions_GridOptionsId ON GridOptions(GridOptionsId);
-CREATE UNIQUE INDEX idx_GridOptions_Name ON GridOptions(Name);
+CREATE UNIQUE INDEX idx_GridView_GridViewId ON GridView(GridViewId);
+CREATE UNIQUE INDEX idx_GridView_Name ON GridView(Name);

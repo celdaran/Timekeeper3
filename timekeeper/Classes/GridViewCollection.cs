@@ -15,14 +15,14 @@ namespace Timekeeper.Classes
         // Private Properties
         //----------------------------------------------------------------------
 
-        private static string OptionsTableName = "GridOptions";
+        private static string ViewTableName = "GridView";
 
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
 
         public GridViewCollection()
-            : base(OptionsTableName)
+            : base(ViewTableName)
         {
         }
 

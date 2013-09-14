@@ -1,14 +1,14 @@
 ------------------------------------------------------------------------
--- Table..: ReportOptions
--- Purpose: This table stores user options for saving a particular view
---          of the Report window.
+-- Table..: ReportView
+-- Purpose: This table stores the settings and options for saving a 
+--          particular view of the Report window.
 -- Added..: Timekeeper 3.0
 -- Updated: Timekeeper 3.0
 ------------------------------------------------------------------------
 
-CREATE TABLE ReportOptions
+CREATE TABLE ReportView
 (
-    ReportOptionsId     INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    ReportViewId        INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
@@ -27,6 +27,5 @@ CREATE TABLE ReportOptions
     FOREIGN KEY(FilterOptionsId)    REFERENCES FilterOptions(FilterOptionsId)
 );
 
-
-CREATE UNIQUE INDEX idx_ReportOptions_ReportOptionsId ON ReportOptions(ReportOptionsId);
-CREATE UNIQUE INDEX idx_ReportOptions_Name ON ReportOptions(Name);
+CREATE UNIQUE INDEX idx_ReportView_ReportViewId ON ReportView(ReportViewId);
+CREATE UNIQUE INDEX idx_ReportView_Name ON ReportView(Name);

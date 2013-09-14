@@ -13,7 +13,7 @@ namespace Timekeeper.Classes
         // Private Properties
         //----------------------------------------------------------------------
 
-        private static string OptionsTableName = "GridOptions";
+        private static string ViewTableName = "GridView";
 
         //----------------------------------------------------------------------
         // Public Properties
@@ -29,34 +29,34 @@ namespace Timekeeper.Classes
         //---------------------------------------------------------------------
 
         public GridView()
-            : base(OptionsTableName)
+            : base(ViewTableName)
         {
         }
 
         //---------------------------------------------------------------------
 
-        public GridView(long gridOptionsId)
+        public GridView(long gridViewId)
             : this()
         {
-            this.Load(gridOptionsId);
+            this.Load(gridViewId);
         }
 
         //----------------------------------------------------------------------
         // Persistence
         //----------------------------------------------------------------------
 
-        public void Load(long gridOptionsId)
+        public void Load(long gridViewId)
         {
             try {
-                Row Options = base.LoadRow(gridOptionsId);
+                Row View = base.LoadRow(gridViewId);
 
-                if (Options["GridOptionsId"] != null) {
+                if (View["GridViewId"] != null) {
                     // FIXME: potential off-by-one issue with Ref Id vs SelectedIndex
                     // Another sign of "You're Doing it Wrong".
                     // Need to populate these comboboxes with appropriate objects
-                    RefItemTypeId = (long)Timekeeper.GetValue(Options["RefItemTypeId"], 1);         // default: Project
-                    RefGroupById = (long)Timekeeper.GetValue(Options["RefGroupById"], 1);           // default: By Day
-                    RefTimeDisplayId = (long)Timekeeper.GetValue(Options["RefTimeDisplayId"], 1);   // default: hh:mm:ss
+                    RefItemTypeId = (long)Timekeeper.GetValue(View["RefItemTypeId"], 1);         // default: Project
+                    RefGroupById = (long)Timekeeper.GetValue(View["RefGroupById"], 1);           // default: By Day
+                    RefTimeDisplayId = (long)Timekeeper.GetValue(View["RefTimeDisplayId"], 1);   // default: hh:mm:ss
                 }
             }
             catch (Exception x) {
@@ -74,13 +74,13 @@ namespace Timekeeper.Classes
                 Saved = base.SaveRow();
 
                 if (Saved) {
-                    Row Options = new Row();
+                    Row View = new Row();
 
-                    Options["RefItemTypeId"] = this.RefItemTypeId;
-                    Options["RefGroupById"] = this.RefGroupById;
-                    Options["RefTimeDisplayId"] = this.RefTimeDisplayId;
+                    View["RefItemTypeId"] = this.RefItemTypeId;
+                    View["RefGroupById"] = this.RefGroupById;
+                    View["RefTimeDisplayId"] = this.RefTimeDisplayId;
 
-                    if (this.Database.Update(OptionsTableName, Options, OptionsTableName + "Id", this.Id) == 1) {
+                    if (this.Database.Update(ViewTableName, View, ViewTableName + "Id", this.Id) == 1) {
                         Saved = true;
                     } else {
                         Saved = false;

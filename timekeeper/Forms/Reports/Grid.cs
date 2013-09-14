@@ -23,8 +23,8 @@ namespace Timekeeper.Forms.Reports
         private DBI Database;
         private Classes.Options Options;
 
-        private Classes.GridView GridOptions;
-        private Classes.GridView AutoSavedGridOptions;
+        private Classes.GridView GridView;
+        private Classes.GridView AutoSavedGridView;
 
         public delegate void BrowserCallback(long entryId);
 
@@ -72,7 +72,7 @@ namespace Timekeeper.Forms.Reports
             this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
 
-            this.GridOptions = new Classes.GridView();
+            this.GridView = new Classes.GridView();
 
             // Some interface defaults
             wGroupBy.SelectedItem = "Month";
@@ -131,7 +131,7 @@ namespace Timekeeper.Forms.Reports
             PopulateLoadMenu();
 
             // Then go!
-            ReallyRunGrid(Options.State_LastGridOptionsId);
+            ReallyRunGrid(Options.State_LastGridViewId);
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)
@@ -161,7 +161,7 @@ namespace Timekeeper.Forms.Reports
         private void RunGrid(bool autoSaveView)
         {
             string Message = String.Format("Refreshing Grid. ID = {0}, Name = {1}, AutoSave = {2}",
-                GridOptions.Id, GridOptions.Name, autoSaveView.ToString());
+                GridView.Id, GridView.Name, autoSaveView.ToString());
             Timekeeper.Debug(Message);
 
             try {
@@ -191,7 +191,7 @@ namespace Timekeeper.Forms.Reports
                 string tableName = wDataType.Text.Substring(0, 1) == "P" ? "Project" : "Activity";
 
                 // Get data
-                Table table = GridOptions.Results(sGroupBy, tableName);
+                Table table = GridView.Results(sGroupBy, tableName);
 
                 //-----------------------------------
                 // Build up grid in memory
@@ -352,7 +352,7 @@ namespace Timekeeper.Forms.Reports
 
         private void AutoSaveView()
         {
-            AutoSavedGridOptions = new Classes.GridView(1); // 1 == Last Grid View
+            AutoSavedGridView = new Classes.GridView(1); // 1 == Last Grid View
             // TODO: Consider a load by name option
 
             /*
@@ -364,28 +364,28 @@ namespace Timekeeper.Forms.Reports
             */
 
             // Overwrite FilterOptions with current FilterOptions
-            AutoSavedGridOptions.FilterOptions = GridOptions.FilterOptions;
+            AutoSavedGridView.FilterOptions = GridView.FilterOptions;
 
             // Overwrite Grid-specific settings with current UI values
-            AutoSavedGridOptions.RefGroupById = wGroupBy.SelectedIndex + 1;
-            AutoSavedGridOptions.RefItemTypeId = wDataType.SelectedIndex + 1;
-            AutoSavedGridOptions.RefTimeDisplayId = wTimeFormat.SelectedIndex + 1;
+            AutoSavedGridView.RefGroupById = wGroupBy.SelectedIndex + 1;
+            AutoSavedGridView.RefItemTypeId = wDataType.SelectedIndex + 1;
+            AutoSavedGridView.RefTimeDisplayId = wTimeFormat.SelectedIndex + 1;
 
             // Now attempt to save
-            if (AutoSavedGridOptions.Save()) {
+            if (AutoSavedGridView.Save()) {
                 // Make sure the Last Saved ID is the current value
-                Options.State_LastGridOptionsId = AutoSavedGridOptions.Id;
+                Options.State_LastGridViewId = AutoSavedGridView.Id;
 
                 // Tell me about it
-                Common.Info("Just saved GridOptionsId = " + AutoSavedGridOptions.Id.ToString());
+                Common.Info("Just saved GridViewId = " + AutoSavedGridView.Id.ToString());
 
                 // And copy it back into the current grid options
-                GridOptions = AutoSavedGridOptions;
+                GridView = AutoSavedGridView;
 
                 // Update title bar
                 // FIXME: you're doing this twice.
                 // TODO: I can't shake the feeling that this Grid stuff is still a royal mess
-                this.Text = String.Format("Timekeeper Grid ({0})", GridOptions.Name);
+                this.Text = String.Format("Timekeeper Grid ({0})", GridView.Name);
             } else {
                 Timekeeper.Debug("There was an error saving options");
             }
@@ -398,21 +398,21 @@ namespace Timekeeper.Forms.Reports
             // Reset UI
             LoadMenuButton.DropDownItems.Clear();
             LoadMenuButton.Enabled = false;
-            ManageOptionsButton.Enabled = false;
+            ManageViewsButton.Enabled = false;
 
             // Now grab new entries
-            List<Classes.BaseView> BaseOptionsCollection = new Classes.BaseViewCollection("GridOptions").FetchObjects();
-            foreach (Classes.BaseView BaseOptions in BaseOptionsCollection)
+            List<Classes.BaseView> BaseViews = new Classes.BaseViewCollection("GridView").Fetch();
+            foreach (Classes.BaseView BaseView in BaseViews)
             {
-                ToolStripItem Item = LoadMenuButton.DropDownItems.Add(BaseOptions.Name);
-                Item.Tag = BaseOptions;
+                ToolStripItem Item = LoadMenuButton.DropDownItems.Add(BaseView.Name);
+                Item.Tag = BaseView;
                 Item.Click += new System.EventHandler(this._load_view);
-                Item.ToolTipText = BaseOptions.Description;
+                Item.ToolTipText = BaseView.Description;
             }
 
-            if (BaseOptionsCollection.Count > 0) {
+            if (BaseViews.Count > 0) {
                 LoadMenuButton.Enabled = true;
-                ManageOptionsButton.Enabled = true;
+                ManageViewsButton.Enabled = true;
             }
         }
 
@@ -421,27 +421,27 @@ namespace Timekeeper.Forms.Reports
         private void _load_view(object sender, EventArgs e)
         {
             ToolStripItem Item = (ToolStripItem)sender;
-            Classes.GridView GridOptions = (Classes.GridView)Item.Tag;
+            Classes.GridView GridView = (Classes.GridView)Item.Tag;
 
-            ReallyRunGrid(GridOptions.Id);
+            ReallyRunGrid(GridView.Id);
         }
 
         //----------------------------------------------------------------------
 
-        private void ReallyRunGrid(long gridOptionsId)
+        private void ReallyRunGrid(long gridViewId)
         {
             // Load Last Saved Options
-            GridOptions.Load(gridOptionsId);
-            this.Text = String.Format("Timekeeper Grid ({0})", GridOptions.Name);
+            GridView.Load(gridViewId);
+            this.Text = String.Format("Timekeeper Grid ({0})", GridView.Name);
 
             // Set this as the last run ID
-            Options.State_LastGridOptionsId = gridOptionsId;
+            Options.State_LastGridViewId = gridViewId;
 
             // Restore UI based on Saved Options
             // FIXME: Stolen (more or less) from the Options button
-            wGroupBy.SelectedIndex = (int)GridOptions.RefGroupById - 1;
-            wDataType.SelectedIndex = (int)GridOptions.RefItemTypeId - 1; // dimension
-            wTimeFormat.SelectedIndex = (int)GridOptions.RefTimeDisplayId - 1;
+            wGroupBy.SelectedIndex = (int)GridView.RefGroupById - 1;
+            wDataType.SelectedIndex = (int)GridView.RefItemTypeId - 1; // dimension
+            wTimeFormat.SelectedIndex = (int)GridView.RefTimeDisplayId - 1;
 
             // Set the value, which also triggers RunGrid
             GroupBySelect(wGroupBy.SelectedIndex, false);
@@ -468,10 +468,10 @@ namespace Timekeeper.Forms.Reports
 
         private void FilterButton_Click(object sender, EventArgs e)
         {
-            Forms.Filtering FilterDialog = new Forms.Filtering(GridOptions.FilterOptions);
+            Forms.Filtering FilterDialog = new Forms.Filtering(GridView.FilterOptions);
 
             if (FilterDialog.ShowDialog(this) == DialogResult.OK) {
-                GridOptions.FilterOptions = FilterDialog.FilterOptions;
+                GridView.FilterOptions = FilterDialog.FilterOptions;
                 Timekeeper.Info("FIXME");
                 RunGrid();
             }
@@ -539,20 +539,20 @@ namespace Timekeeper.Forms.Reports
             }
         }
 
-        private void SaveOptionsButton_Click(object sender, EventArgs e)
+        private void SaveViewButton_Click(object sender, EventArgs e)
         {
             fGridSave DialogBox = new fGridSave();
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                GridOptions.Name = DialogBox.wName.Text;
-                GridOptions.Description = DialogBox.wDescription.Text;
-                GridOptions.Save();
+                GridView.Name = DialogBox.wName.Text;
+                GridView.Description = DialogBox.wDescription.Text;
+                GridView.Save();
                 //Common.Info("Hey ho, I'm saving your thing. Yay me.");
             }
         }
 
-        private void ManageOptionsButton_Click(object sender, EventArgs e)
+        private void ManageViewsButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.ManageViews DialogBox = new Forms.Shared.ManageViews("GridOptions");
+            Forms.Shared.ManageViews DialogBox = new Forms.Shared.ManageViews("GridView");
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
                 // Brute force: just in case anything changed.
                 PopulateLoadMenu();

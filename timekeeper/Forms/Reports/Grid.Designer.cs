@@ -36,19 +36,19 @@ namespace Timekeeper.Forms.Reports
             this.task = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.FilterButton = new System.Windows.Forms.ToolStripButton();
+            this.OptionsButton = new System.Windows.Forms.ToolStripButton();
             this.GroupByMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.GroupByDayButton = new System.Windows.Forms.ToolStripMenuItem();
             this.GroupByWeekButton = new System.Windows.Forms.ToolStripMenuItem();
             this.GroupByMonthButton = new System.Windows.Forms.ToolStripMenuItem();
             this.GroupByYearButton = new System.Windows.Forms.ToolStripMenuItem();
             this.GroupByNoneButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.OptionsButton = new System.Windows.Forms.ToolStripButton();
             this.RefreshButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.LoadMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.lastRunReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveOptionsButton = new System.Windows.Forms.ToolStripButton();
-            this.ManageOptionsButton = new System.Windows.Forms.ToolStripButton();
+            this.SaveViewButton = new System.Windows.Forms.ToolStripButton();
+            this.ManageViewsButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PrintMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.PrintReportButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,8 +124,8 @@ namespace Timekeeper.Forms.Reports
             this.RefreshButton,
             this.toolStripSeparator3,
             this.LoadMenuButton,
-            this.SaveOptionsButton,
-            this.ManageOptionsButton,
+            this.SaveViewButton,
+            this.ManageViewsButton,
             this.toolStripSeparator4,
             this.PrintMenuButton,
             this.wGroupBy,
@@ -146,6 +146,16 @@ namespace Timekeeper.Forms.Reports
             this.FilterButton.Text = "Filtering...";
             this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);
             // 
+            // OptionsButton
+            // 
+            this.OptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.OptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("OptionsButton.Image")));
+            this.OptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.OptionsButton.Name = "OptionsButton";
+            this.OptionsButton.Size = new System.Drawing.Size(60, 22);
+            this.OptionsButton.Text = "Options...";
+            this.OptionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
+            // 
             // GroupByMenuButton
             // 
             this.GroupByMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -164,28 +174,28 @@ namespace Timekeeper.Forms.Reports
             // GroupByDayButton
             // 
             this.GroupByDayButton.Name = "GroupByDayButton";
-            this.GroupByDayButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByDayButton.Size = new System.Drawing.Size(133, 22);
             this.GroupByDayButton.Text = "Day";
             this.GroupByDayButton.Click += new System.EventHandler(this.GroupByDayButton_Click);
             // 
             // GroupByWeekButton
             // 
             this.GroupByWeekButton.Name = "GroupByWeekButton";
-            this.GroupByWeekButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByWeekButton.Size = new System.Drawing.Size(133, 22);
             this.GroupByWeekButton.Text = "Week";
             this.GroupByWeekButton.Click += new System.EventHandler(this.GroupByWeekButton_Click);
             // 
             // GroupByMonthButton
             // 
             this.GroupByMonthButton.Name = "GroupByMonthButton";
-            this.GroupByMonthButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByMonthButton.Size = new System.Drawing.Size(133, 22);
             this.GroupByMonthButton.Text = "Month";
             this.GroupByMonthButton.Click += new System.EventHandler(this.GroupByMonthButton_Click);
             // 
             // GroupByYearButton
             // 
             this.GroupByYearButton.Name = "GroupByYearButton";
-            this.GroupByYearButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByYearButton.Size = new System.Drawing.Size(133, 22);
             this.GroupByYearButton.Text = "Year";
             this.GroupByYearButton.Click += new System.EventHandler(this.GroupByYearButton_Click);
             // 
@@ -194,19 +204,9 @@ namespace Timekeeper.Forms.Reports
             this.GroupByNoneButton.Checked = true;
             this.GroupByNoneButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.GroupByNoneButton.Name = "GroupByNoneButton";
-            this.GroupByNoneButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByNoneButton.Size = new System.Drawing.Size(133, 22);
             this.GroupByNoneButton.Text = "No Grouping";
             this.GroupByNoneButton.Click += new System.EventHandler(this.GroupByNoneButton_Click);
-            // 
-            // OptionsButton
-            // 
-            this.OptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.OptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("OptionsButton.Image")));
-            this.OptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.OptionsButton.Name = "OptionsButton";
-            this.OptionsButton.Size = new System.Drawing.Size(60, 22);
-            this.OptionsButton.Text = "Options...";
-            this.OptionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
             // 
             // RefreshButton
             // 
@@ -241,25 +241,25 @@ namespace Timekeeper.Forms.Reports
             this.lastRunReportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.lastRunReportToolStripMenuItem.Text = "Last Run Report";
             // 
-            // SaveOptionsButton
+            // SaveViewButton
             // 
-            this.SaveOptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.SaveOptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveOptionsButton.Image")));
-            this.SaveOptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SaveOptionsButton.Name = "SaveOptionsButton";
-            this.SaveOptionsButton.Size = new System.Drawing.Size(47, 22);
-            this.SaveOptionsButton.Text = "Save...";
-            this.SaveOptionsButton.Click += new System.EventHandler(this.SaveOptionsButton_Click);
+            this.SaveViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SaveViewButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewButton.Image")));
+            this.SaveViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveViewButton.Name = "SaveViewButton";
+            this.SaveViewButton.Size = new System.Drawing.Size(47, 22);
+            this.SaveViewButton.Text = "Save...";
+            this.SaveViewButton.Click += new System.EventHandler(this.SaveViewButton_Click);
             // 
-            // ManageOptionsButton
+            // ManageViewsButton
             // 
-            this.ManageOptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ManageOptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("ManageOptionsButton.Image")));
-            this.ManageOptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ManageOptionsButton.Name = "ManageOptionsButton";
-            this.ManageOptionsButton.Size = new System.Drawing.Size(61, 22);
-            this.ManageOptionsButton.Text = "Manage...";
-            this.ManageOptionsButton.Click += new System.EventHandler(this.ManageOptionsButton_Click);
+            this.ManageViewsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ManageViewsButton.Image = ((System.Drawing.Image)(resources.GetObject("ManageViewsButton.Image")));
+            this.ManageViewsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ManageViewsButton.Name = "ManageViewsButton";
+            this.ManageViewsButton.Size = new System.Drawing.Size(61, 22);
+            this.ManageViewsButton.Text = "Manage...";
+            this.ManageViewsButton.Click += new System.EventHandler(this.ManageViewsButton_Click);
             // 
             // toolStripSeparator4
             // 
@@ -361,8 +361,8 @@ namespace Timekeeper.Forms.Reports
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripDropDownButton LoadMenuButton;
         private System.Windows.Forms.ToolStripMenuItem lastRunReportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripButton SaveOptionsButton;
-        private System.Windows.Forms.ToolStripButton ManageOptionsButton;
+        private System.Windows.Forms.ToolStripButton SaveViewButton;
+        private System.Windows.Forms.ToolStripButton ManageViewsButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripDropDownButton PrintMenuButton;
         private System.Windows.Forms.ToolStripMenuItem PrintReportButton;

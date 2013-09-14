@@ -56,9 +56,9 @@ namespace Timekeeper
                     CreateNewTable("Notebook", CurrentSchemaVersion, false);
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
                     CreateNewTable("FilterOptions", CurrentSchemaVersion, false);
-                    CreateNewTable("FindOptions", CurrentSchemaVersion, false);
-                    CreateNewTable("GridOptions", CurrentSchemaVersion, false);
-                    CreateNewTable("ReportOptions", CurrentSchemaVersion, false);
+                    CreateNewTable("FindView", CurrentSchemaVersion, false);
+                    CreateNewTable("GridView", CurrentSchemaVersion, false);
+                    CreateNewTable("ReportView", CurrentSchemaVersion, false);
 
                     return true;
                 }
@@ -76,13 +76,13 @@ namespace Timekeeper
                     UpgradeActivity(PriorVersion);
                     UpgradeProject(PriorVersion);
                     UpgradeNotebook();
-                    UpgradeGridOptions();
+                    UpgradeGridView();
                     UpgradeJournal();
 
                     // Create 3.0 tables
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
-                    CreateNewTable("ReportOptions", CurrentSchemaVersion, false);
+                    CreateNewTable("ReportView", CurrentSchemaVersion, false);
 
                     return true;
                 }
@@ -100,13 +100,13 @@ namespace Timekeeper
                     UpgradeActivity(PriorVersion);
                     UpgradeProject(PriorVersion);
                     UpgradeNotebook();
-                    UpgradeGridOptions();
+                    UpgradeGridView();
                     UpgradeJournal();
 
                     // Create 3.0 tables
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
-                    CreateNewTable("ReportOptions", CurrentSchemaVersion, false);
+                    CreateNewTable("ReportView", CurrentSchemaVersion, false);
 
                     return true;
                 }
@@ -675,23 +675,23 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        // Upgrade GridOptions Table
+        // Upgrade GridView Table
         //---------------------------------------------------------------------
 
-        private void UpgradeGridOptions()
+        private void UpgradeGridView()
         {
             // Notify user
             SetStep("Grid Options");
 
             // Save old table in memory
-            Table GridOptions = this.Database.Select("select * from grid_views order by id");
+            Table GridView = this.Database.Select("select * from grid_views order by id");
 
             // Create new tables
             this.CreateTable("FilterOptions", CurrentSchemaVersion, false);
-            this.CreateTable("GridOptions", CurrentSchemaVersion, false);
+            this.CreateTable("GridView", CurrentSchemaVersion, false);
 
             // Migrate rows
-            foreach (Row OldRow in GridOptions) {
+            foreach (Row OldRow in GridView) {
                 RowId = OldRow["id"];
 
                 // FIXME: we're still missing the "end date type' concept (previously known as grid_views.end_date_type)
@@ -714,7 +714,7 @@ namespace Timekeeper
                 if (InsertedRowId == 0) throw new Exception("Insert failed");
 
                 Row NewRow = new Row() {
-                    {"GridOptionsId", OldRow["id"]},
+                    {"GridViewId", OldRow["id"]},
                     {"CreateTime", ConvertTime(OldRow["timestamp_c"])},
                     {"ModifyTime", ConvertTime(OldRow["timestamp_m"])},
                     {"Name", OldRow["name"]},
@@ -725,7 +725,7 @@ namespace Timekeeper
                     {"RefGroupById", OldRow["group_by"]},
                     {"RefTimeDisplayId", null},
                 };
-                InsertedRowId = this.Database.Insert("GridOptions", NewRow);
+                InsertedRowId = this.Database.Insert("GridView", NewRow);
                 if (InsertedRowId == 0) throw new Exception("Insert failed");
                 this.Progress.Value++;
             }

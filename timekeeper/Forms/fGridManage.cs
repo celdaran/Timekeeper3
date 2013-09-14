@@ -62,11 +62,11 @@ namespace Timekeeper.Forms.Shared
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
                 int Index = SavedViewList.Items.IndexOf(CurrentItem);
                 IdObjectPair PreviousItem = (IdObjectPair)SavedViewList.Items[Index - 1];
-                Classes.BaseView CurrentBaseOptions = (Classes.BaseView)CurrentItem.Object;
-                Classes.BaseView PreviousBaseOptions = (Classes.BaseView)PreviousItem.Object;
+                Classes.BaseView CurrentView = (Classes.BaseView)CurrentItem.Object;
+                Classes.BaseView PreviousView = (Classes.BaseView)PreviousItem.Object;
 
                 // Swap them
-                SwapItems(CurrentBaseOptions, PreviousBaseOptions);
+                SwapItems(CurrentView, PreviousView);
 
                 // Repaint list
                 LoadList();
@@ -93,11 +93,11 @@ namespace Timekeeper.Forms.Shared
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
                 int Index = SavedViewList.Items.IndexOf(CurrentItem);
                 IdObjectPair NextItem = (IdObjectPair)SavedViewList.Items[Index + 1];
-                Classes.BaseView CurrentBaseOptions = (Classes.BaseView)CurrentItem.Object;
-                Classes.BaseView NextBaseOptions = (Classes.BaseView)NextItem.Object;
+                Classes.BaseView CurrentView = (Classes.BaseView)CurrentItem.Object;
+                Classes.BaseView NextView = (Classes.BaseView)NextItem.Object;
 
                 // Swap them
-                SwapItems(CurrentBaseOptions, NextBaseOptions);
+                SwapItems(CurrentView, NextView);
 
                 // Repaint list
                 LoadList();
@@ -127,8 +127,8 @@ namespace Timekeeper.Forms.Shared
                 // First delete from db
                 foreach (IdObjectPair Item in SavedViewList.SelectedItems) { //SavedViewList.CheckedItems) {
                     RemovedItems.Add(Item);
-                    Classes.BaseView BaseOptions = (Classes.BaseView)Item.Object;
-                    BaseOptions.Delete();
+                    Classes.BaseView View = (Classes.BaseView)Item.Object;
+                    View.Delete();
                     Count++;
                 }
 
@@ -155,15 +155,15 @@ namespace Timekeeper.Forms.Shared
 
             try {
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
-                Classes.BaseView BaseOptions = (Classes.BaseView)CurrentItem.Object;
+                Classes.BaseView View = (Classes.BaseView)CurrentItem.Object;
 
                 fGridManageRename DialogBox = new fGridManageRename();
 
-                string PreviousName = BaseOptions.Name;
-                string PreviousDescription = BaseOptions.Description;
+                string PreviousName = View.Name;
+                string PreviousDescription = View.Description;
 
-                DialogBox.wNewName.Text = BaseOptions.Name;
-                DialogBox.wNewDescription.Text = BaseOptions.Description;
+                DialogBox.wNewName.Text = View.Name;
+                DialogBox.wNewDescription.Text = View.Description;
 
                 if (DialogBox.ShowDialog() == DialogResult.OK) {
 
@@ -174,8 +174,8 @@ namespace Timekeeper.Forms.Shared
 
                     // Only the description changed
                     if ((PreviousName == DialogBox.wNewName.Text) && (PreviousDescription != DialogBox.wNewDescription.Text)) {
-                        BaseOptions.Description = DialogBox.wNewDescription.Text;
-                        BaseOptions.SaveRow();
+                        View.Description = DialogBox.wNewDescription.Text;
+                        View.SaveRow();
                         LoadList();
                         return;
                         // TODO or FIXME: Let's have a ubiquitous Id property synonymous with TableNameId
@@ -186,17 +186,17 @@ namespace Timekeeper.Forms.Shared
                     if (PreviousName != DialogBox.wNewName.Text) {
 
                         // Check for uniqueness
-                        Classes.BaseViewCollection BaseViewCollection = new Classes.BaseViewCollection(this.TableName);
+                        Classes.BaseViewCollection Views = new Classes.BaseViewCollection(this.TableName);
 
-                        if (BaseViewCollection.ViewExists(DialogBox.wNewName.Text)) {
+                        if (Views.ViewExists(DialogBox.wNewName.Text)) {
                             Common.Warn("A view with that name already exists.");
                             return;
                         }
 
                         // Rename (and Redescribe)
-                        BaseOptions.Name = DialogBox.wNewName.Text;
-                        BaseOptions.Description = DialogBox.wNewDescription.Text;
-                        BaseOptions.SaveRow();
+                        View.Name = DialogBox.wNewName.Text;
+                        View.Description = DialogBox.wNewDescription.Text;
+                        View.SaveRow();
 
                         // Repaint List
                         LoadList();
@@ -224,27 +224,27 @@ namespace Timekeeper.Forms.Shared
         {
             SavedViewList.Items.Clear();
 
-            List<Classes.BaseView> BaseOptionsCollection = new Classes.BaseViewCollection(this.TableName).FetchObjects();
+            List<Classes.BaseView> Views = new Classes.BaseViewCollection(this.TableName).Fetch();
 
-            foreach (Classes.BaseView Item in BaseOptionsCollection)
+            foreach (Classes.BaseView View in Views)
             {
-                IdObjectPair Pair = new IdObjectPair((int)Item.Id, Item);
+                IdObjectPair Pair = new IdObjectPair((int)View.Id, View);
                 SavedViewList.Items.Add(Pair);
             }
         }
 
         //----------------------------------------------------------------------
 
-        private void SwapItems(Classes.BaseView firstItem, Classes.BaseView secondItem)
+        private void SwapItems(Classes.BaseView firstView, Classes.BaseView secondView)
         {
             try {
-                int SavedFirstSortOrderNo = firstItem.SortOrderNo;
+                int SavedFirstSortOrderNo = firstView.SortOrderNo;
 
-                firstItem.SortOrderNo = secondItem.SortOrderNo;
-                firstItem.SaveRow();
+                firstView.SortOrderNo = secondView.SortOrderNo;
+                firstView.SaveRow();
 
-                secondItem.SortOrderNo = SavedFirstSortOrderNo;
-                secondItem.SaveRow();
+                secondView.SortOrderNo = SavedFirstSortOrderNo;
+                secondView.SaveRow();
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

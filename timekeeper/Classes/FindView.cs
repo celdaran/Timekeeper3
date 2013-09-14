@@ -77,7 +77,7 @@ namespace Timekeeper.Classes
 
                 Options["Name"] = Name;
                 Options["Description"] = Description;
-                Options["SortOrderNo"] = Timekeeper.GetNextSortOrderNo("GridOptions");
+                Options["SortOrderNo"] = Timekeeper.GetNextSortOrderNo("GridView");
 
                 // TODO: TBX/DBI needs a RowExists and/or Upsert statement
                 // TODO ALSO: Your entire ORM is way too much copy/paste.

@@ -58,7 +58,7 @@ namespace Timekeeper.Forms
             FindResultsGrid.Columns["JournalId"].Width = Options.Find_Grid_JournalIdWidth;
 
             // Load Last Saved Options
-            FindOptions.Load(Options.State_LastFindOptionsId);
+            FindOptions.Load(Options.State_LastFindViewId);
             RunFind();
 
             //////////////////////////////////////
@@ -358,7 +358,7 @@ namespace Timekeeper.Forms
         {
             long FindOptionsId = (long)((ToolStripItem)sender).Tag;
             FindOptions.Load(FindOptionsId);
-            Options.State_LastFindOptionsId = FindOptionsId;
+            Options.State_LastFindViewId = FindOptionsId;
             RunFind();
         }
 

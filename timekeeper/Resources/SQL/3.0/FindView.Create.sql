@@ -1,14 +1,14 @@
 ------------------------------------------------------------------------
--- Table..: FindOptions
--- Purpose: This table stores user options for saving a particular view
---          of the Find dialog box results.
+-- Table..: FindView
+-- Purpose: This table stores the settings and options for saving a 
+--          particular view of the Find window.
 -- Added..: Timekeeper 3.0
 -- Updated: Timekeeper 3.0
 ------------------------------------------------------------------------
 
-CREATE TABLE FindOptions
+CREATE TABLE FindView
 (
-    FindOptionsId       INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    FindViewId          INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
@@ -22,5 +22,5 @@ CREATE TABLE FindOptions
     FOREIGN KEY(FilterOptionsId)    REFERENCES FilterOptions(FilterOptionsId)
 );
 
-CREATE UNIQUE INDEX idx_FindOptions_FindOptionsId ON FindOptions(FindOptionsId);
-CREATE UNIQUE INDEX idx_FindOptions_Name ON FindOptions(Name);
+CREATE UNIQUE INDEX idx_FindView_FindViewId ON FindView(FindViewId);
+CREATE UNIQUE INDEX idx_FindView_Name ON FindView(Name);
