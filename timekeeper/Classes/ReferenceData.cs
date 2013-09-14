@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,9 +42,9 @@ namespace Timekeeper.Classes
         // Item Types
         //---------------------------------------------------------------------
 
-        public List<IdValuePair> ItemType()
+        public List<IdValuePair> Dimension()
         {
-            return Lookup("RefItemType");
+            return Lookup("RefDimension");
         }
 
         //---------------------------------------------------------------------

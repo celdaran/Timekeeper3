@@ -1,13 +1,14 @@
 ------------------------------------------------------------------------
--- Table..: RefItemType
--- Purpose: Assigns identifiers to "Activity" and "Project".
+-- Table..: RefDimension
+-- Purpose: Assigns identifiers to the four time-tracking dimensions:
+--          Projects, Activities, Locations, and Categories.
 -- Added..: Timekeeper 3.0
 -- Updated: Timekeeper 3.0
 ------------------------------------------------------------------------
 
-CREATE TABLE RefItemType
+CREATE TABLE RefDimension
 (
-    RefItemTypeId       INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    RefDimensionId      INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
     Name                TEXT        NOT NULL,

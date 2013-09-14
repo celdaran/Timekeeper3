@@ -20,12 +20,12 @@ CREATE TABLE GridView
 
     FilterOptionsId     INTEGER     NOT NULL,
 
-    RefItemTypeId       INTEGER         NULL,
+    RefDimensionId       INTEGER         NULL,
     RefGroupById        INTEGER         NULL,
     RefTimeDisplayId    INTEGER         NULL,
 
     FOREIGN KEY(FilterOptionsId)    REFERENCES FilterOptions(FilterOptionsId)
-    FOREIGN KEY(RefItemTypeId)      REFERENCES RefItemType(RefItemTypeId)
+    FOREIGN KEY(RefDimensionId)     REFERENCES RefDimension(RefDimensionId)
     FOREIGN KEY(RefGroupById)       REFERENCES RefGroupBy(RefGroupById)
     FOREIGN KEY(RefTimeDisplayId)   REFERENCES RefTimeDisplay(RefTimeDisplayId)
 );

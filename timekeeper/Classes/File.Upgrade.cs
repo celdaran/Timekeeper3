@@ -127,7 +127,7 @@ namespace Timekeeper
         private void CreateRefTables(Version version)
         {
             // Create prerequisite 3.0 tables
-            CreateNewTable("RefItemType", version, true);
+            CreateNewTable("RefDimension", version, true);
             CreateNewTable("RefDatePreset", version, true);
             CreateNewTable("RefGroupBy", version, true);
             CreateNewTable("RefTimeDisplay", version, true);
@@ -721,7 +721,7 @@ namespace Timekeeper
                     {"Description", OldRow["description"]},
                     {"SortOrderNo", OldRow["sort_index"]},
                     {"FilterOptionsId", InsertedRowId},
-                    {"RefItemTypeId", OldRow["data_from"]},
+                    {"RefDimensionId", OldRow["data_from"]},
                     {"RefGroupById", OldRow["group_by"]},
                     {"RefTimeDisplayId", null},
                 };

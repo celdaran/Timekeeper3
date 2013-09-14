@@ -368,7 +368,7 @@ namespace Timekeeper.Forms.Reports
 
             // Overwrite Grid-specific settings with current UI values
             AutoSavedGridView.RefGroupById = wGroupBy.SelectedIndex + 1;
-            AutoSavedGridView.RefItemTypeId = wDataType.SelectedIndex + 1;
+            AutoSavedGridView.RefDimensionId = wDataType.SelectedIndex + 1;
             AutoSavedGridView.RefTimeDisplayId = wTimeFormat.SelectedIndex + 1;
 
             // Now attempt to save
@@ -440,7 +440,7 @@ namespace Timekeeper.Forms.Reports
             // Restore UI based on Saved Options
             // FIXME: Stolen (more or less) from the Options button
             wGroupBy.SelectedIndex = (int)GridView.RefGroupById - 1;
-            wDataType.SelectedIndex = (int)GridView.RefItemTypeId - 1; // dimension
+            wDataType.SelectedIndex = (int)GridView.RefDimensionId - 1; // dimension
             wTimeFormat.SelectedIndex = (int)GridView.RefTimeDisplayId - 1;
 
             // Set the value, which also triggers RunGrid

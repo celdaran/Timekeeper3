@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------
 -- Table..: Category
--- Purpose: Create two sample Categories.
+-- Purpose: Create the default Category.
 ------------------------------------------------------------------------
 
 INSERT INTO Category
@@ -24,41 +24,8 @@ INSERT INTO Category
     '{0}',
     '{1}',
 
-    'Follow Up',
-    'Follow Up on this Journal Entry',
-    
-    0,
-    
-    0,
-    0,
-    
-    null,
-    null
-);
-
-INSERT INTO Category
-(
-    CreateTime,
-    ModifyTime,
-    CategoryGuid,
-
-    Name,
-    Description,
-
-    SortOrderNo,
-
-    IsHidden,
-    IsDeleted,
-    HiddenTime,
-    DeletedTime
-
-) VALUES (
-    '{0}',
-    '{0}',
-    '{2}',
-
-    'Incomplete',
-    'This Journal Entry is Incomplete',
+    'Default Category',
+    'This is the default category. Rename this or create your own.',
     
     0,
     

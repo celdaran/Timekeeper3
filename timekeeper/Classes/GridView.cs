@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,8 +19,7 @@ namespace Timekeeper.Classes
         // Public Properties
         //----------------------------------------------------------------------
 
-        // FIXME: RefDimension? RefPrimaryDimension?
-        public long RefItemTypeId { get; set; }
+        public long RefDimensionId { get; set; }
         public long RefGroupById { get; set; }
         public long RefTimeDisplayId { get; set; }
 
@@ -54,7 +53,7 @@ namespace Timekeeper.Classes
                     // FIXME: potential off-by-one issue with Ref Id vs SelectedIndex
                     // Another sign of "You're Doing it Wrong".
                     // Need to populate these comboboxes with appropriate objects
-                    RefItemTypeId = (long)Timekeeper.GetValue(View["RefItemTypeId"], 1);         // default: Project
+                    RefDimensionId = (long)Timekeeper.GetValue(View["RefDimensionId"], 1);       // default: Project
                     RefGroupById = (long)Timekeeper.GetValue(View["RefGroupById"], 1);           // default: By Day
                     RefTimeDisplayId = (long)Timekeeper.GetValue(View["RefTimeDisplayId"], 1);   // default: hh:mm:ss
                 }
@@ -76,7 +75,7 @@ namespace Timekeeper.Classes
                 if (Saved) {
                     Row View = new Row();
 
-                    View["RefItemTypeId"] = this.RefItemTypeId;
+                    View["RefDimensionId"] = this.RefDimensionId;
                     View["RefGroupById"] = this.RefGroupById;
                     View["RefTimeDisplayId"] = this.RefTimeDisplayId;
 

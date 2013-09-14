@@ -279,13 +279,13 @@ namespace Timekeeper
 
         public static long GetNextSortOrderNo(string tableName, long parentId)
         {
-            string WhereClause = parentId > -1 ? "ParentId = " + parentId : "";
+            string WhereClause = parentId > -1 ? "WHERE ParentId = " + parentId : "";
 
             string Query = String.Format(@"
-                select max(SortOrderNo) as HighestSortOrderNo
-                from {0}
+                SELECT max(SortOrderNo) as HighestSortOrderNo
+                FROM {0}
                 {1}
-                order by SortOrderNo",
+                ORDER BY SortOrderNo",
                 tableName, WhereClause);
             Row Row = Database.SelectRow(Query);
 

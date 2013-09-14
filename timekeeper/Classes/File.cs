@@ -182,7 +182,7 @@ namespace Timekeeper
 
                 // System Reference tables
                 // FIXME: not FALSE for populate. wtf?
-                CreateTable("RefItemType", version, populate);
+                CreateTable("RefDimension", version, populate);
                 CreateTable("RefDatePreset", version, populate);
                 CreateTable("RefGroupBy", version, populate);
                 CreateTable("RefTimeDisplay", version, populate);
