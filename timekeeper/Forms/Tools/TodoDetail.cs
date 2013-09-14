@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper.Forms
+namespace Timekeeper.Forms.Tools
 {
     public partial class TodoDetail : Form
     {

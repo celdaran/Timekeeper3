@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using Technitivity.Toolbox;
 
-namespace Timekeeper.Forms
+namespace Timekeeper.Forms.Tools
 {
     public partial class Todo : Form
     {
@@ -183,7 +183,7 @@ namespace Timekeeper.Forms
 
         private void MenuTodoAdd_Click(object sender, EventArgs e)
         {
-            Forms.TodoDetail DialogBox = new Forms.TodoDetail();
+            Forms.Tools.TodoDetail DialogBox = new Forms.Tools.TodoDetail();
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
                 Classes.TodoItem TodoItem = DialogBox.TodoItem;
                 TodoItem.Create();
@@ -353,7 +353,7 @@ namespace Timekeeper.Forms
 
             ListViewItem SelectedItem = TodoList.SelectedItems[0];
 
-            Forms.TodoDetail DialogBox = new Forms.TodoDetail(TodoId);
+            Forms.Tools.TodoDetail DialogBox = new Forms.Tools.TodoDetail(TodoId);
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
                 Classes.TodoItem TodoItem = DialogBox.TodoItem;
                 TodoItem.Save();

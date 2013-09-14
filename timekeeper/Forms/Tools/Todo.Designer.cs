@@ -1,4 +1,4 @@
-﻿namespace Timekeeper.Forms
+﻿namespace Timekeeper.Forms.Tools
 {
     partial class Todo
     {

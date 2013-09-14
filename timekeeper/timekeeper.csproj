@@ -218,16 +218,16 @@
     <Compile Include="Forms\Reports\JournalEntry.Designer.cs">
       <DependentUpon>JournalEntry.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Todo.cs">
+    <Compile Include="Forms\Tools\Todo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Todo.Designer.cs">
+    <Compile Include="Forms\Tools\Todo.Designer.cs">
       <DependentUpon>Todo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\TodoDetail.cs">
+    <Compile Include="Forms\Tools\TodoDetail.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\TodoDetail.Designer.cs">
+    <Compile Include="Forms\Tools\TodoDetail.Designer.cs">
       <DependentUpon>TodoDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Wizards\UpgradeDatabase.cs">
@@ -271,11 +271,11 @@
     <Compile Include="Forms\Shared\SaveView.Designer.cs">
       <DependentUpon>SaveView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Form1.cs">
+    <Compile Include="Forms\HtmlEditorTest.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\HtmlEditorTest.Designer.cs">
+      <DependentUpon>HtmlEditorTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Shared\Prompt.cs">
       <SubType>Form</SubType>
@@ -399,8 +399,8 @@
     <EmbeddedResource Include="Forms\Find.resx">
       <DependentUpon>Find.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\HtmlEditorTest.resx">
+      <DependentUpon>HtmlEditorTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Shared\Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
@@ -474,10 +474,10 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Todo.resx">
+    <EmbeddedResource Include="Forms\Tools\Todo.resx">
       <DependentUpon>Todo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\TodoDetail.resx">
+    <EmbeddedResource Include="Forms\Tools\TodoDetail.resx">
       <DependentUpon>TodoDetail.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
