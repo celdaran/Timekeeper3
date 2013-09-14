@@ -9,6 +9,11 @@ namespace Timekeeper.Classes
 {
     public partial class Options
     {
+        // TODO (possibly). I hate to say it, but it feels like this thing
+        // should be named Settings, so as there's no confusion with other
+        // options. The class structure is confusing, especially now that
+        // I have BaseOptions which has nothing to do with Options.
+
         //----------------------------------------------------------------------
         // Private Properties
         //----------------------------------------------------------------------

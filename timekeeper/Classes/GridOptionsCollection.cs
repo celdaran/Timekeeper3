@@ -5,48 +5,25 @@ using System.Text;
 
 using Technitivity.Toolbox;
 
+// FIXME: is this even being used anymore?
+
 namespace Timekeeper.Classes
 {
-    class GridOptionsCollection
+    class GridOptionsCollection : BaseOptionsCollection
     {
         //----------------------------------------------------------------------
         // Private Properties
         //----------------------------------------------------------------------
 
-        private DBI Database;
-        private Classes.Options Options;
+        private static string OptionsTableName = "GridOptions";
 
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
 
         public GridOptionsCollection()
+            : base(OptionsTableName)
         {
-            this.Database = Timekeeper.Database;
-            this.Options = Timekeeper.Options;
-        }
-
-        //----------------------------------------------------------------------
-
-        public Table Fetch()
-        {
-            string Query = String.Format(@"SELECT * FROM GridOptions ORDER BY SortOrderNo, Name");
-            return this.Database.Select(Query);
-        }
-
-        //----------------------------------------------------------------------
-
-        public List<Classes.GridOptions> FetchObjects()
-        {
-            List<Classes.GridOptions> ReturnValue = new List<Classes.GridOptions>();
-
-            Table Options = this.Fetch();
-            foreach (Row OptionRow in Options) {
-                Classes.GridOptions GridOptions = new Classes.GridOptions(OptionRow["GridOptionsId"]);
-                ReturnValue.Add(GridOptions);
-            }
-
-            return ReturnValue;
         }
 
         //----------------------------------------------------------------------

@@ -1,3 +1,36 @@
+//------------------------------------------------------------------------------
+// Timekeeper.Classes.FilterOptions
+// Persistence Class for Generalized Timekeeper Filtering
+// Copyright © 1999-2014 by Charlie Hills
+// Published by Technitivity, a division of Lockshire Media, LLC.
+//------------------------------------------------------------------------------
+// DESCRIPTION
+//
+// This class provides a common accessor and persistence interface for Filter
+// Options within Timekeeper. It is not meant to be instantiated directly within 
+// the project except by other Options classes (specifically BaseOptions).
+//
+//------------------------------------------------------------------------------
+// LICENCE
+//
+// This file is part of Timekeeper, hereafter known as "the Software."
+// The software is maintained by Charlie Hills and Lockshire Media, LLC, 
+// hereafter known as "the Licensor."
+//
+// Timekeeper is freeware (but not free software, though, on a case by case
+// basis, the sources may be shared upon request). The Software is provided free
+// of charge and you may freely distribute the software. You may not sell the
+// Software or directly profit from it in any way.
+//
+// The Software is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. In no event will the Licensor be liable for any 
+// damages, claims or costs whatsoever or any consequential, indirect, 
+// incidental damages, or any lost profits or lost savings, even if the Licensor
+// has been advised of the possibility of such loss, damages, claims or costs or
+// for any claim by any third party.
+//------------------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

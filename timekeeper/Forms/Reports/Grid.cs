@@ -161,7 +161,7 @@ namespace Timekeeper.Forms.Reports
         private void RunGrid(bool autoSaveView)
         {
             string Message = String.Format("Refreshing Grid. ID = {0}, Name = {1}, AutoSave = {2}",
-                GridOptions.GridOptionsId, GridOptions.Name, autoSaveView.ToString());
+                GridOptions.Id, GridOptions.Name, autoSaveView.ToString());
             Timekeeper.Debug(Message);
 
             try {
@@ -374,10 +374,10 @@ namespace Timekeeper.Forms.Reports
             // Now attempt to save
             if (AutoSavedGridOptions.Save()) {
                 // Make sure the Last Saved ID is the current value
-                Options.State_LastGridOptionsId = AutoSavedGridOptions.GridOptionsId;
+                Options.State_LastGridOptionsId = AutoSavedGridOptions.Id;
 
                 // Tell me about it
-                Common.Info("Just saved GridOptionsId = " + AutoSavedGridOptions.GridOptionsId.ToString());
+                Common.Info("Just saved GridOptionsId = " + AutoSavedGridOptions.Id.ToString());
 
                 // And copy it back into the current grid options
                 GridOptions = AutoSavedGridOptions;
@@ -401,16 +401,16 @@ namespace Timekeeper.Forms.Reports
             ManageOptionsButton.Enabled = false;
 
             // Now grab new entries
-            List<Classes.GridOptions> GridOptionsCollection = new Classes.GridOptionsCollection().FetchObjects();
-            foreach (Classes.GridOptions GridOptions in GridOptionsCollection)
+            List<Classes.BaseOptions> BaseOptionsCollection = new Classes.BaseOptionsCollection("GridOptions").FetchObjects();
+            foreach (Classes.BaseOptions BaseOptions in BaseOptionsCollection)
             {
-                ToolStripItem Item = LoadMenuButton.DropDownItems.Add(GridOptions.Name);
-                Item.Tag = GridOptions;
+                ToolStripItem Item = LoadMenuButton.DropDownItems.Add(BaseOptions.Name);
+                Item.Tag = BaseOptions;
                 Item.Click += new System.EventHandler(this._load_view);
-                Item.ToolTipText = GridOptions.Description;
+                Item.ToolTipText = BaseOptions.Description;
             }
 
-            if (GridOptionsCollection.Count > 0) {
+            if (BaseOptionsCollection.Count > 0) {
                 LoadMenuButton.Enabled = true;
                 ManageOptionsButton.Enabled = true;
             }
@@ -418,11 +418,12 @@ namespace Timekeeper.Forms.Reports
 
         //----------------------------------------------------------------------
 
-        private void _load_view(object sender, EventArgs e)        {
+        private void _load_view(object sender, EventArgs e)
+        {
             ToolStripItem Item = (ToolStripItem)sender;
             Classes.GridOptions GridOptions = (Classes.GridOptions)Item.Tag;
 
-            ReallyRunGrid(GridOptions.GridOptionsId);
+            ReallyRunGrid(GridOptions.Id);
         }
 
         //----------------------------------------------------------------------
@@ -551,7 +552,7 @@ namespace Timekeeper.Forms.Reports
 
         private void ManageOptionsButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.ManageViews DialogBox = new Forms.Shared.ManageViews();
+            Forms.Shared.ManageViews DialogBox = new Forms.Shared.ManageViews("GridOptions");
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
                 // Brute force: just in case anything changed.
                 PopulateLoadMenu();

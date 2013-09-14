@@ -16,16 +16,25 @@ namespace Timekeeper.Forms.Shared
         // Properties
         //----------------------------------------------------------------------
 
-        private DBI Database;
+        // FIXME: red flag! Any class under Timekeeper.Forms that has a DBI
+        // connection is wrong. Everything here should be using the application
+        // object layer, not talking to the database directly.
+
+        // NOTE: Already fixed here, but leaving this as a reminder to make a
+        // pass through all other forms / dialog boxes.
+
+        //private DBI Database;
+
+        private string TableName;
 
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
 
-        public ManageViews()
+        public ManageViews(string tableName)
         {
             InitializeComponent();
-            this.Database = Timekeeper.Database;
+            this.TableName = tableName;
             LoadList();
         }
 
@@ -53,16 +62,16 @@ namespace Timekeeper.Forms.Shared
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
                 int Index = SavedViewList.Items.IndexOf(CurrentItem);
                 IdObjectPair PreviousItem = (IdObjectPair)SavedViewList.Items[Index - 1];
-                Classes.GridOptions CurrentGridOptions = (Classes.GridOptions)CurrentItem.Object;
-                Classes.GridOptions PreviousGridOptions = (Classes.GridOptions)PreviousItem.Object;
+                Classes.BaseOptions CurrentBaseOptions = (Classes.BaseOptions)CurrentItem.Object;
+                Classes.BaseOptions PreviousBaseOptions = (Classes.BaseOptions)PreviousItem.Object;
 
                 // Swap them
-                SwapItems(CurrentGridOptions, PreviousGridOptions);
+                SwapItems(CurrentBaseOptions, PreviousBaseOptions);
 
                 // Repaint list
                 LoadList();
 
-                // And reselect item
+                // Reselect previously selected item
                 SavedViewList.SelectedIndex = Index - 1;
             }
             catch (Exception x)
@@ -84,16 +93,16 @@ namespace Timekeeper.Forms.Shared
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
                 int Index = SavedViewList.Items.IndexOf(CurrentItem);
                 IdObjectPair NextItem = (IdObjectPair)SavedViewList.Items[Index + 1];
-                Classes.GridOptions CurrentGridOptions = (Classes.GridOptions)CurrentItem.Object;
-                Classes.GridOptions NextGridOptions = (Classes.GridOptions)NextItem.Object;
+                Classes.BaseOptions CurrentBaseOptions = (Classes.BaseOptions)CurrentItem.Object;
+                Classes.BaseOptions NextBaseOptions = (Classes.BaseOptions)NextItem.Object;
 
                 // Swap them
-                SwapItems(NextGridOptions, CurrentGridOptions);
+                SwapItems(CurrentBaseOptions, NextBaseOptions);
 
                 // Repaint list
                 LoadList();
 
-                // And reselect item
+                // Reselect previously selected item
                 SavedViewList.SelectedIndex = Index + 1;
             }
             catch (Exception x) {
@@ -115,13 +124,11 @@ namespace Timekeeper.Forms.Shared
             try {
                 List<IdObjectPair> RemovedItems = new List<IdObjectPair>();
 
-                // Begin unit of work
-                Database.Begin();
-
                 // First delete from db
                 foreach (IdObjectPair Item in SavedViewList.SelectedItems) { //SavedViewList.CheckedItems) {
                     RemovedItems.Add(Item);
-                    Database.Delete("GridOptions", "GridOptionsId", Item.Id);
+                    Classes.BaseOptions BaseOptions = (Classes.BaseOptions)Item.Object;
+                    BaseOptions.Delete();
                     Count++;
                 }
 
@@ -129,13 +136,9 @@ namespace Timekeeper.Forms.Shared
                 foreach (IdObjectPair Item in RemovedItems) {
                     SavedViewList.Items.Remove(Item);
                 }
-
-                // Complete unit of work
-                Database.Commit();
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
-                Database.Rollback();
             }
 
             // User feedback
@@ -152,15 +155,15 @@ namespace Timekeeper.Forms.Shared
 
             try {
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
-                Classes.GridOptions GridOptions = (Classes.GridOptions)CurrentItem.Object;
+                Classes.BaseOptions BaseOptions = (Classes.BaseOptions)CurrentItem.Object;
 
                 fGridManageRename DialogBox = new fGridManageRename();
 
-                string PreviousName = GridOptions.Name;
-                string PreviousDescription = GridOptions.Description;
+                string PreviousName = BaseOptions.Name;
+                string PreviousDescription = BaseOptions.Description;
 
-                DialogBox.wNewName.Text = GridOptions.Name;
-                DialogBox.wNewDescription.Text = GridOptions.Description;
+                DialogBox.wNewName.Text = BaseOptions.Name;
+                DialogBox.wNewDescription.Text = BaseOptions.Description;
 
                 if (DialogBox.ShowDialog() == DialogResult.OK) {
 
@@ -171,56 +174,46 @@ namespace Timekeeper.Forms.Shared
 
                     // Only the description changed
                     if ((PreviousName == DialogBox.wNewName.Text) && (PreviousDescription != DialogBox.wNewDescription.Text)) {
-                        Row Row = new Row();
-                        Row["Description"] = DialogBox.wNewDescription.Text;
-                        Database.Update("GridOptions", Row, "GridOptionsId", GridOptions.GridOptionsId);
+                        BaseOptions.Description = DialogBox.wNewDescription.Text;
+                        BaseOptions.SaveRow();
                         LoadList();
                         return;
                         // TODO or FIXME: Let's have a ubiquitous Id property synonymous with TableNameId
-                        // for each object. I'd like to just say GridOptions.Id
+                        // for each object. I'd like to just say GridOptions.GridOptionsId
                     }
 
                     // From here on out, the name changed but we'll handle name and description together
                     if (PreviousName != DialogBox.wNewName.Text) {
-                        // Begin unit of work
-                        Database.Begin();
-
-                        // FIXME: crap, crap, crap. I just remembered (2013-09-08 09:45 CDT) that this
-                        // module has to work for ALL options (Grid, Report, Find, etc.) and not just
-                        // grid, although I've done a nice job here tying it to GridOptions. This has
-                        // implications I'm not ready to deal with right now, but I'll just finish
-                        // what I started first, then get back to genericizing it.
 
                         // Check for uniqueness
-                        String QuotedName = DialogBox.wNewName.Text.Replace("'", "''");
-                        Row Row = Database.SelectRow(String.Format(@"select count(*) as Count from GridOptions where Name = '{0}'", QuotedName));
-                        if (Row["Count"] == 1) {
-                            Database.Rollback();
+                        Classes.BaseOptionsCollection BaseViewCollection = new Classes.BaseOptionsCollection(this.TableName);
+
+                        if (BaseViewCollection.ViewExists(DialogBox.wNewName.Text)) {
                             Common.Warn("A view with that name already exists.");
                             return;
                         }
 
-                        // now rename
-                        Row = new Row();
-                        Row["Name"] = DialogBox.wNewName.Text;
-                        Row["Description"] = DialogBox.wNewDescription.Text;
-                        Database.Update("GridOptions", Row, "GridOptionsId", GridOptions.GridOptionsId);
+                        // Rename (and Redescribe)
+                        BaseOptions.Name = DialogBox.wNewName.Text;
+                        BaseOptions.Description = DialogBox.wNewDescription.Text;
+                        BaseOptions.SaveRow();
 
-                        // Now just repaint whole form
+                        // Repaint List
                         LoadList();
-
-                        // Complete unit of work
-                        Database.Commit();
                     }
 
                 }
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
-                Database.Rollback(); // sloppy
             }
+        }
 
+        //----------------------------------------------------------------------
 
+        private void CloseDialogButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
         }
 
         //----------------------------------------------------------------------
@@ -231,43 +224,30 @@ namespace Timekeeper.Forms.Shared
         {
             SavedViewList.Items.Clear();
 
-            List<Classes.GridOptions> GridOptionsCollection = new Classes.GridOptionsCollection().FetchObjects();
+            List<Classes.BaseOptions> BaseOptionsCollection = new Classes.BaseOptionsCollection(this.TableName).FetchObjects();
 
-            foreach (Classes.GridOptions Item in GridOptionsCollection)
+            foreach (Classes.BaseOptions Item in BaseOptionsCollection)
             {
-                IdObjectPair Pair = new IdObjectPair((int)Item.GridOptionsId, Item);
+                IdObjectPair Pair = new IdObjectPair((int)Item.Id, Item);
                 SavedViewList.Items.Add(Pair);
             }
         }
 
         //----------------------------------------------------------------------
 
-        private void SwapItems(Classes.GridOptions firstItem, Classes.GridOptions secondItem)
+        private void SwapItems(Classes.BaseOptions firstItem, Classes.BaseOptions secondItem)
         {
             try {
-                // Begin unit of work
-                Database.Begin();
+                int SavedFirstSortOrderNo = firstItem.SortOrderNo;
 
-                // Update first row with second row's SortOrderNo
-                Row row = new Row();
-                row["SortOrderNo"] = (long)firstItem.SortOrderNo;
-                Database.Update("GridOptions", row, "GridOptionsId", secondItem.GridOptionsId);
+                firstItem.SortOrderNo = secondItem.SortOrderNo;
+                firstItem.SaveRow();
 
-                //Timekeeper.Info("Assigned " + firstItem.SortOrderNo.ToString() + " to " + secondItem.GridOptionsId.ToString());
-
-                // Update second row with first row's SortOrderNo
-                row = new Row();
-                row["SortOrderNo"] = (long)secondItem.SortOrderNo;
-                Database.Update("GridOptions", row, "GridOptionsId", firstItem.GridOptionsId);
-
-                //Timekeeper.Info("Assigned " + secondItem.SortOrderNo.ToString() + " to " + firstItem.GridOptionsId.ToString());
-
-                // Complete unit of work
-                Database.Commit();
+                secondItem.SortOrderNo = SavedFirstSortOrderNo;
+                secondItem.SaveRow();
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
-                Database.Rollback();
             }
         }
 
@@ -280,11 +260,6 @@ namespace Timekeeper.Forms.Shared
             Control c = (Control)sender;
             string topic = String.Format("html\\context\\fGridManage\\{0}.html", c.Name);
             Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
-        }
-
-        private void CloseDialogButton_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.OK;
         }
 
         //---------------------------------------------------------------------
