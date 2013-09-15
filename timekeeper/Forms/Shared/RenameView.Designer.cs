@@ -60,7 +60,7 @@
             this.AcceptDialogButton.TabIndex = 3;
             this.AcceptDialogButton.Text = "&OK";
             this.AcceptDialogButton.UseVisualStyleBackColor = true;
-            this.AcceptDialogButton.Click += new System.EventHandler(this.btnOK_Click);
+            this.AcceptDialogButton.Click += new System.EventHandler(this.AcceptDialogButton_Click);
             // 
             // CancelDialogButton
             // 
@@ -71,6 +71,7 @@
             this.CancelDialogButton.TabIndex = 4;
             this.CancelDialogButton.Text = "Cancel";
             this.CancelDialogButton.UseVisualStyleBackColor = true;
+            this.CancelDialogButton.Click += new System.EventHandler(this.CancelDialogButton_Click);
             // 
             // wNewDescription
             // 
@@ -89,9 +90,8 @@
             this.DescriptionLabel.TabIndex = 5;
             this.DescriptionLabel.Text = "Description:";
             // 
-            // fGridManageRename
+            // RenameView
             // 
-            this.AcceptButton = this.AcceptDialogButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelDialogButton;
@@ -105,11 +105,13 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "fGridManageRename";
+            this.Name = "RenameView";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Rename View";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RenameView_FormClosing);
+            this.Load += new System.EventHandler(this.RenameView_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

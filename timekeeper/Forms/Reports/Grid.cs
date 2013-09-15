@@ -21,6 +21,7 @@ namespace Timekeeper.Forms.Reports
         //----------------------------------------------------------------------
 
         private Classes.Options Options;
+        private Classes.Widgets Widgets;
 
         private Classes.GridView GridView;
         private Classes.GridView AutoSavedGridView;
@@ -50,6 +51,7 @@ namespace Timekeeper.Forms.Reports
             this.Options = Timekeeper.Options;
             this.GridView = new Classes.GridView();
             this.AutoSavedGridView = new Classes.GridView();
+            this.Widgets = new Classes.Widgets();
         }
 
         //----------------------------------------------------------------------
@@ -117,6 +119,7 @@ namespace Timekeeper.Forms.Reports
 
             if (FilterDialog.ShowDialog(this) == DialogResult.OK) {
                 GridView.FilterOptions = FilterDialog.FilterOptions;
+                // FIXME: with double visibility
                 Timekeeper.Info("FIXME");
                 RunGrid();
             }
@@ -181,17 +184,13 @@ namespace Timekeeper.Forms.Reports
         private void RefreshButton_Click(object sender, EventArgs e)
         {
             Timekeeper.Debug("This may need work. I'm thinking about handling date presets...");
-            RunGrid();
+            RunGrid(false);
         }
 
         //----------------------------------------------------------------------
 
         private void LoadViewButton_Click(object sender, EventArgs e)
         {
-            // NOTE: This isn't actually attached to a Toolbar button at
-            // design-time. It's assigned at run-time to the dynamic list
-            // of saved views when the form populates.
-
             ToolStripItem Item = (ToolStripItem)sender;
             Classes.BaseView View = (Classes.BaseView)Item.Tag;
             LoadAndRunGrid(View.Id);
@@ -201,13 +200,13 @@ namespace Timekeeper.Forms.Reports
 
         private void SaveViewButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView();
+            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView("GridView");
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                GridView.Name = DialogBox.wName.Text;
-                GridView.Description = DialogBox.wDescription.Text;
+                GridView.Name = DialogBox.ViewName.Text;
+                GridView.Description = DialogBox.ViewDescription.Text;
                 GridView.Save();
                 PopulateLoadMenu();
-                SetTitleBar();
+                this.Widgets.SetViewTitleBar(this, "Grid", GridView.Name);
             }
         }
 
@@ -217,7 +216,6 @@ namespace Timekeeper.Forms.Reports
         {
             Forms.Shared.ManageViews DialogBox = new Forms.Shared.ManageViews("GridView");
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                // Brute force: just in case anything changed.
                 PopulateLoadMenu();
             }
         }
@@ -277,7 +275,7 @@ namespace Timekeeper.Forms.Reports
                 GridView = AutoSavedGridView;
 
                 // Update title bar
-                SetTitleBar();
+                this.Widgets.SetViewTitleBar(this, "Grid", GridView.Name);
             } else {
                 Timekeeper.Debug("Options not saved in AutoSaveView()");
             }
@@ -299,7 +297,7 @@ namespace Timekeeper.Forms.Reports
             OptionsButton.Enabled = HasEntries;
             GroupByMenuButton.Enabled = HasEntries;
             RefreshButton.Enabled = HasEntries;
-            LoadMenuButton.Enabled = HasEntries;
+            LoadViewMenuButton.Enabled = HasEntries;
             SaveViewButton.Enabled = HasEntries;
             ManageViewsButton.Enabled = HasEntries;
             PrintMenuButton.Enabled = HasEntries;
@@ -333,32 +331,13 @@ namespace Timekeeper.Forms.Reports
 
         private void PopulateLoadMenu()
         {
-            // Reset UI
-            LoadMenuButton.DropDownItems.Clear();
-            LoadMenuButton.Enabled = false;
-            ManageViewsButton.Enabled = false;
+            // Common functions
+            this.Widgets.PopulateLoadMenu(ToolStrip);
 
-            // Now grab new entries
-            List<Classes.BaseView> BaseViews = new Classes.BaseViewCollection("GridView").Fetch();
-            foreach (Classes.BaseView BaseView in BaseViews) {
-                ToolStripItem Item = LoadMenuButton.DropDownItems.Add(BaseView.Name);
-                Item.Tag = BaseView;
+            // Grid-specific function
+            foreach (ToolStripItem Item in LoadViewMenuButton.DropDownItems) {
                 Item.Click += new System.EventHandler(this.LoadViewButton_Click);
-                Item.ToolTipText = BaseView.Description;
             }
-
-            // Update UI
-            if (BaseViews.Count > 0) {
-                LoadMenuButton.Enabled = true;
-                ManageViewsButton.Enabled = true;
-            }
-        }
-
-        //----------------------------------------------------------------------
-
-        private void SetTitleBar()
-        {
-            this.Text = String.Format("Timekeeper Grid ({0})", GridView.Name);
         }
 
         //----------------------------------------------------------------------
@@ -587,7 +566,7 @@ namespace Timekeeper.Forms.Reports
                 GridView.Load(gridViewId);
 
                 // Reflect loaded grid in Title Bar
-                SetTitleBar();
+                this.Widgets.SetViewTitleBar(this, "Grid", GridView.Name);
 
                 // Set this as the last run ID
                 Options.State_LastGridViewId = gridViewId;
@@ -606,12 +585,6 @@ namespace Timekeeper.Forms.Reports
 
                 // Default to "By Day" (and trigger RunGrid())
                 GroupBySelect(0, false);
-
-                // "Hide" our only column if there's no view to load
-                /*
-                GridControl.Columns[0].HeaderText = "No Data Found";
-                GridControl.Columns[0].Width = 200;
-                */
             }
         }
 

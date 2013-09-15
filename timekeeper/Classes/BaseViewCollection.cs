@@ -38,7 +38,7 @@ namespace Timekeeper.Classes
             string Query = String.Format(@"SELECT Count(*) AS Count FROM {0} WHERE Name = '{1}'", 
                 this.TableName, QuotedName);
             Row Results = this.Database.SelectRow(Query);
-            return (Results["Count"] == 0);
+            return (Results["Count"] > 0);
         }
 
         //----------------------------------------------------------------------

@@ -66,23 +66,23 @@ namespace Timekeeper.Forms
             //////////////////////////////////////
 
             // clear any previous entries
-            LoadOptionsButton.DropDownItems.Clear();
+            LoadViewMenuButton.DropDownItems.Clear();
 
             // now grab new entries
             Table SavedViews = FindOptions.Fetch();
 
             if (SavedViews.Count > 0) {
                 foreach (Row View in SavedViews) {
-                    ToolStripItem Item = LoadOptionsButton.DropDownItems.Add(View["Name"]);
+                    ToolStripItem Item = LoadViewMenuButton.DropDownItems.Add(View["Name"]);
                     Item.Click += new System.EventHandler(this._load_view);
                     Item.ToolTipText = View["Description"];
                     Item.Tag = View["FindOptionsId"];
                 }
-                LoadOptionsButton.Enabled = true;
-                ManageOptionsButton.Enabled = true;
+                LoadViewMenuButton.Enabled = true;
+                ManageViewsButton.Enabled = true;
             } else {
-                LoadOptionsButton.Enabled = false;
-                ManageOptionsButton.Enabled = false;
+                LoadViewMenuButton.Enabled = false;
+                ManageViewsButton.Enabled = false;
             }
         }
 
@@ -108,24 +108,9 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
-
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        //---------------------------------------------------------------------
-
-        private void TimerHack_Tick(object sender, EventArgs e)
-        {
-            Common.Warn("TimerHack still going off");
-        }
-
-        //---------------------------------------------------------------------
         // Main Find Results Generator
         //---------------------------------------------------------------------
 
-        // TODO: I need this.
         private void RunFind()
         {
             string Query = String.Format(@"
@@ -201,131 +186,6 @@ namespace Timekeeper.Forms
             // Common.Info("You ran a filter!");
         }
 
-        //---------------------------------------------------------------------
-        // Private Helpers --- FIXME: uh, why isn't this an attribute of Filtering?
-        //---------------------------------------------------------------------
-
-        private string GetWhereClause()
-        {
-            Timekeeper.Warn("YOU SHOULDN'T BE USING THIS VERSION OF GETWHERECLAUSE");
-
-            string WhereClause = "";
-
-            WhereClause += String.Format("log.StartTime >= '{0}'",
-                FindOptions.FilterOptions.FromDateToString()) + System.Environment.NewLine;
-
-            WhereClause += String.Format("and log.StopTime <= '{0}'",
-                FindOptions.FilterOptions.ToDateToString()) + System.Environment.NewLine;
-
-            if ((FindOptions.FilterOptions.ImpliedActivities != null) && (FindOptions.FilterOptions.ImpliedActivities.Count > 0)) {
-                WhereClause += String.Format("and log.ActivityId in ({0})",
-                    FindOptions.FilterOptions.List(FindOptions.FilterOptions.ImpliedActivities)) + System.Environment.NewLine;
-            }
-            if ((FindOptions.FilterOptions.ImpliedProjects != null) && (FindOptions.FilterOptions.ImpliedProjects.Count > 0)) {
-                WhereClause += String.Format("and log.ProjectId in ({0})",
-                    FindOptions.FilterOptions.List(FindOptions.FilterOptions.ImpliedProjects)) + System.Environment.NewLine;
-            }
-            if ((FindOptions.FilterOptions.MemoContains != null) && (FindOptions.FilterOptions.MemoContains != "")) {
-                WhereClause += String.Format("and log.MemoContains like '%{0}%'", FindOptions.FilterOptions.MemoContains) + System.Environment.NewLine;
-            }
-
-            if (FindOptions.FilterOptions.DurationOperator > 0) {
-                // Meaning, if anything but "Any" was selected
-
-                WhereClause += "and log.Seconds ";
-
-                switch (FindOptions.FilterOptions.DurationOperator) {
-                    case 1: WhereClause += " > "; break;
-                    case 2: WhereClause += " < "; break;
-                    case 3: WhereClause += " = "; break;
-                }
-
-                WhereClause += FindOptions.FilterOptions.Seconds().ToString() + System.Environment.NewLine;
-            }
-
-            if ((FindOptions.FilterOptions.Locations != null) && (FindOptions.FilterOptions.Locations.Count > 0)) {
-                WhereClause += String.Format("and log.LocationId in ({0})",
-                    FindOptions.FilterOptions.List(FindOptions.FilterOptions.Locations)) + System.Environment.NewLine;
-            }
-
-            if ((FindOptions.FilterOptions.Categories != null) && (FindOptions.FilterOptions.Categories.Count > 0)) {
-                WhereClause += String.Format("and log.CategoryId in ({0})",
-                    FindOptions.FilterOptions.List(FindOptions.FilterOptions.Categories)) + System.Environment.NewLine;
-            }
-
-            return WhereClause;
-        }
-
-        //---------------------------------------------------------------------
-
-        /*
-
-        private string GetOrderBy()
-        {
-            string OrderBy = GetOrderByInternal(FilterOptions.SortBy1);
-
-            if (FilterOptions.SortBy2 > -1)
-                OrderBy += ", " + GetOrderByInternal(FilterOptions.SortBy2);
-
-            if (FilterOptions.SortBy3 > -1)
-                OrderBy += ", " + GetOrderByInternal(FilterOptions.SortBy3);
-
-            return OrderBy;
-        }
-
-        //---------------------------------------------------------------------
-
-        private string GetOrderByInternal(int selection)
-        {
-            string OrderBy = "";
-
-            if (selection <= 1) {
-                // If option isn't checked, or it's (none) or it's Date/Time
-                // Yes, even "(none)" gets you a sort order . . .
-                OrderBy = "log.StartTime";
-            } else {
-                // Otherwise, set the value accordingly
-                switch (selection) {
-                    case 2: OrderBy = "a.Name"; break;
-                    case 3: OrderBy = "p.Name"; break;
-                    case 4: OrderBy = "log.Seconds"; break;
-                    case 5: OrderBy = "l.Name"; break;
-                    case 6: OrderBy = "t.Name"; break;
-                    case 7: OrderBy = "p.ExternalProjectNo"; break;
-                    case 8: OrderBy = "log.JournalId"; break;
-                }
-            }
-
-            return OrderBy;
-        }
-
-        */
-
-        private void FindResults_UserAddedRow(object sender, DataGridViewRowEventArgs e)
-        {
-            /* NOPE NOPE NOPE NOPE
-
-            Classes.JournalEntry Entry = new Classes.JournalEntry(Database);
-
-            DataGridViewRow Row = e.Row;
-
-            Entry.ProjectId = 1;
-            Entry.ActivityId = 1;
-            Entry.StartTime = Row.Cells["StartTime"].Value.ToString();
-            Entry.StopTime = StartTime;
-            Entry.Seconds = 0; // default to zero
-            Entry.Memo = wMemo.Text;
-            Entry.IsLocked = true;
-            Entry.LocationId = currentLocation == null ? 0 : currentLocation.Id; // FIXME: Location should be not null.
-            Entry.CategoryId = currentCategory == null ? 0 : currentCategory.Id;
-            if (!Entry.Create()) {
-                Common.Warn("There was an error starting the timer.");
-                return;
-            }
-
-             * */
-        }
-
         private void FindResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0) {
@@ -367,7 +227,7 @@ namespace Timekeeper.Forms
 
         }
 
-        private void SaveOptionsButton_Click(object sender, EventArgs e)
+        private void SaveViewButton_Click(object sender, EventArgs e)
         {
         }
 

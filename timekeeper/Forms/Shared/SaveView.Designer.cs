@@ -28,116 +28,94 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.wEndDateType = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.wName = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.wDescription = new System.Windows.Forms.RichTextBox();
+            this.ViewName = new System.Windows.Forms.TextBox();
+            this.DescriptionLabel = new System.Windows.Forms.Label();
+            this.NameLabel = new System.Windows.Forms.Label();
+            this.AcceptDialogButton = new System.Windows.Forms.Button();
+            this.CancelDialogButton = new System.Windows.Forms.Button();
+            this.ViewDescription = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
-            // wEndDateType
+            // ViewName
             // 
-            this.wEndDateType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.wEndDateType.Enabled = false;
-            this.wEndDateType.FormattingEnabled = true;
-            this.wEndDateType.Location = new System.Drawing.Point(118, 108);
-            this.wEndDateType.Name = "wEndDateType";
-            this.wEndDateType.Size = new System.Drawing.Size(156, 21);
-            this.wEndDateType.TabIndex = 3;
+            this.ViewName.Location = new System.Drawing.Point(118, 12);
+            this.ViewName.Name = "ViewName";
+            this.ViewName.Size = new System.Drawing.Size(156, 20);
+            this.ViewName.TabIndex = 1;
             // 
-            // label3
+            // DescriptionLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Enabled = false;
-            this.label3.Location = new System.Drawing.Point(12, 111);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(94, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Save end date as:";
+            this.DescriptionLabel.AutoSize = true;
+            this.DescriptionLabel.Location = new System.Drawing.Point(12, 41);
+            this.DescriptionLabel.Name = "DescriptionLabel";
+            this.DescriptionLabel.Size = new System.Drawing.Size(63, 13);
+            this.DescriptionLabel.TabIndex = 3;
+            this.DescriptionLabel.Text = "Description:";
             // 
-            // wName
+            // NameLabel
             // 
-            this.wName.Location = new System.Drawing.Point(118, 12);
-            this.wName.Name = "wName";
-            this.wName.Size = new System.Drawing.Size(156, 20);
-            this.wName.TabIndex = 1;
+            this.NameLabel.AutoSize = true;
+            this.NameLabel.Location = new System.Drawing.Point(12, 15);
+            this.NameLabel.Name = "NameLabel";
+            this.NameLabel.Size = new System.Drawing.Size(38, 13);
+            this.NameLabel.TabIndex = 1;
+            this.NameLabel.Text = "Name:";
             // 
-            // label2
+            // AcceptDialogButton
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 41);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Description:";
+            this.AcceptDialogButton.Location = new System.Drawing.Point(118, 118);
+            this.AcceptDialogButton.Name = "AcceptDialogButton";
+            this.AcceptDialogButton.Size = new System.Drawing.Size(75, 23);
+            this.AcceptDialogButton.TabIndex = 4;
+            this.AcceptDialogButton.Text = "&OK";
+            this.AcceptDialogButton.UseVisualStyleBackColor = true;
+            this.AcceptDialogButton.Click += new System.EventHandler(this.AcceptDialogButton_Click);
+            this.AcceptDialogButton.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
-            // label1
+            // CancelDialogButton
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Name:";
+            this.CancelDialogButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelDialogButton.Location = new System.Drawing.Point(199, 118);
+            this.CancelDialogButton.Name = "CancelDialogButton";
+            this.CancelDialogButton.Size = new System.Drawing.Size(75, 23);
+            this.CancelDialogButton.TabIndex = 5;
+            this.CancelDialogButton.Text = "Cancel";
+            this.CancelDialogButton.UseVisualStyleBackColor = true;
+            this.CancelDialogButton.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
-            // btnOK
+            // ViewDescription
             // 
-            this.btnOK.Location = new System.Drawing.Point(118, 147);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 4;
-            this.btnOK.Text = "&OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            this.btnOK.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            this.ViewDescription.AcceptsTab = true;
+            this.ViewDescription.Location = new System.Drawing.Point(118, 38);
+            this.ViewDescription.Name = "ViewDescription";
+            this.ViewDescription.Size = new System.Drawing.Size(156, 64);
+            this.ViewDescription.TabIndex = 2;
+            this.ViewDescription.Text = "";
             // 
-            // btnCancel
+            // SaveView
             // 
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(199, 147);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 5;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
-            // 
-            // wDescription
-            // 
-            this.wDescription.AcceptsTab = true;
-            this.wDescription.Location = new System.Drawing.Point(118, 38);
-            this.wDescription.Name = "wDescription";
-            this.wDescription.Size = new System.Drawing.Size(156, 64);
-            this.wDescription.TabIndex = 2;
-            this.wDescription.Text = "";
-            // 
-            // fGridSave
-            // 
-            this.AcceptButton = this.btnOK;
+            this.AcceptButton = this.AcceptDialogButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(288, 181);
-            this.Controls.Add(this.wDescription);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.wEndDateType);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.wName);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.CancelButton = this.CancelDialogButton;
+            this.ClientSize = new System.Drawing.Size(288, 151);
+            this.Controls.Add(this.ViewDescription);
+            this.Controls.Add(this.CancelDialogButton);
+            this.Controls.Add(this.AcceptDialogButton);
+            this.Controls.Add(this.ViewName);
+            this.Controls.Add(this.DescriptionLabel);
+            this.Controls.Add(this.NameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "fGridSave";
+            this.Name = "SaveView";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Save View";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SaveView_FormClosing);
+            this.Click += new System.EventHandler(this.CancelDialogButton_Click);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -145,13 +123,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.Button btnCancel;
-        internal System.Windows.Forms.TextBox wName;
-        private System.Windows.Forms.Label label3;
-        internal System.Windows.Forms.ComboBox wEndDateType;
-        internal System.Windows.Forms.RichTextBox wDescription;
+        private System.Windows.Forms.Label DescriptionLabel;
+        private System.Windows.Forms.Label NameLabel;
+        private System.Windows.Forms.Button AcceptDialogButton;
+        private System.Windows.Forms.Button CancelDialogButton;
+        internal System.Windows.Forms.TextBox ViewName;
+        internal System.Windows.Forms.RichTextBox ViewDescription;
     }
 }

@@ -157,7 +157,7 @@ namespace Timekeeper.Forms.Shared
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
                 Classes.BaseView View = (Classes.BaseView)CurrentItem.Object;
 
-                RenameView DialogBox = new RenameView();
+                RenameView DialogBox = new RenameView(this.TableName);
 
                 string PreviousName = View.Name;
                 string PreviousDescription = View.Description;
@@ -185,18 +185,10 @@ namespace Timekeeper.Forms.Shared
                     // From here on out, the name changed but we'll handle name and description together
                     if (PreviousName != DialogBox.wNewName.Text) {
 
-                        // Check for uniqueness
-                        Classes.BaseViewCollection Views = new Classes.BaseViewCollection(this.TableName);
-
-                        if (Views.ViewExists(DialogBox.wNewName.Text)) {
-                            Common.Warn("A view with that name already exists.");
-                            return;
-                        }
-
                         // Rename (and Redescribe)
                         View.Name = DialogBox.wNewName.Text;
                         View.Description = DialogBox.wNewDescription.Text;
-                        View.SaveRow();
+                        View.SaveRow();  // FIXME: crap! this is an upsert... I CAN'T rename
 
                         // Repaint List
                         LoadList();

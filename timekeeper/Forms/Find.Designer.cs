@@ -27,19 +27,18 @@ namespace Timekeeper.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Find));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.TimerHack = new System.Windows.Forms.Timer(this.components);
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.FilterButton = new System.Windows.Forms.ToolStripButton();
             this.SortButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.RefreshButton = new System.Windows.Forms.ToolStripButton();
             this.ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.LoadOptionsButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.SaveOptionsButton = new System.Windows.Forms.ToolStripButton();
-            this.ManageOptionsButton = new System.Windows.Forms.ToolStripButton();
+            this.LoadViewMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.SaveViewButton = new System.Windows.Forms.ToolStripButton();
+            this.ManageViewsButton = new System.Windows.Forms.ToolStripButton();
             this.FindResultsGrid = new System.Windows.Forms.DataGridView();
             this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.JournalIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,17 +55,12 @@ namespace Timekeeper.Forms
             this.CategoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CategoryName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IsLocked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.ResultCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FindResultsGrid)).BeginInit();
-            this.statusStrip1.SuspendLayout();
+            this.StatusBar.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // TimerHack
-            // 
-            this.TimerHack.Interval = 500;
-            this.TimerHack.Tick += new System.EventHandler(this.TimerHack_Tick);
             // 
             // ToolStrip
             // 
@@ -74,11 +68,12 @@ namespace Timekeeper.Forms
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FilterButton,
             this.SortButton,
+            this.toolStripSeparator2,
             this.RefreshButton,
             this.ToolStripSeparator1,
-            this.LoadOptionsButton,
-            this.SaveOptionsButton,
-            this.ManageOptionsButton});
+            this.LoadViewMenuButton,
+            this.SaveViewButton,
+            this.ManageViewsButton});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
             this.ToolStrip.Size = new System.Drawing.Size(522, 25);
@@ -102,6 +97,12 @@ namespace Timekeeper.Forms
             this.SortButton.Name = "SortButton";
             this.SortButton.Size = new System.Drawing.Size(57, 22);
             this.SortButton.Text = "Sorting...";
+            this.SortButton.Visible = false;
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // RefreshButton
             // 
@@ -119,33 +120,36 @@ namespace Timekeeper.Forms
             this.ToolStripSeparator1.Name = "ToolStripSeparator1";
             this.ToolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // LoadOptionsButton
+            // LoadViewMenuButton
             // 
-            this.LoadOptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.LoadOptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadOptionsButton.Image")));
-            this.LoadOptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LoadOptionsButton.Name = "LoadOptionsButton";
-            this.LoadOptionsButton.Size = new System.Drawing.Size(43, 22);
-            this.LoadOptionsButton.Text = "Load";
+            this.LoadViewMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.LoadViewMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadViewMenuButton.Image")));
+            this.LoadViewMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LoadViewMenuButton.Name = "LoadViewMenuButton";
+            this.LoadViewMenuButton.Size = new System.Drawing.Size(43, 22);
+            this.LoadViewMenuButton.Text = "Load";
+            this.LoadViewMenuButton.ToolTipText = "Load a saved View";
             // 
-            // SaveOptionsButton
+            // SaveViewButton
             // 
-            this.SaveOptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.SaveOptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveOptionsButton.Image")));
-            this.SaveOptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SaveOptionsButton.Name = "SaveOptionsButton";
-            this.SaveOptionsButton.Size = new System.Drawing.Size(47, 22);
-            this.SaveOptionsButton.Text = "Save...";
-            this.SaveOptionsButton.Click += new System.EventHandler(this.SaveOptionsButton_Click);
+            this.SaveViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SaveViewButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewButton.Image")));
+            this.SaveViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveViewButton.Name = "SaveViewButton";
+            this.SaveViewButton.Size = new System.Drawing.Size(47, 22);
+            this.SaveViewButton.Text = "Save...";
+            this.SaveViewButton.ToolTipText = "Save current view for future use";
+            this.SaveViewButton.Click += new System.EventHandler(this.SaveViewButton_Click);
             // 
-            // ManageOptionsButton
+            // ManageViewsButton
             // 
-            this.ManageOptionsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ManageOptionsButton.Image = ((System.Drawing.Image)(resources.GetObject("ManageOptionsButton.Image")));
-            this.ManageOptionsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ManageOptionsButton.Name = "ManageOptionsButton";
-            this.ManageOptionsButton.Size = new System.Drawing.Size(61, 22);
-            this.ManageOptionsButton.Text = "Manage...";
+            this.ManageViewsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ManageViewsButton.Image = ((System.Drawing.Image)(resources.GetObject("ManageViewsButton.Image")));
+            this.ManageViewsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ManageViewsButton.Name = "ManageViewsButton";
+            this.ManageViewsButton.Size = new System.Drawing.Size(61, 22);
+            this.ManageViewsButton.Text = "Manage...";
+            this.ManageViewsButton.ToolTipText = "Manage your saved Views";
             // 
             // FindResultsGrid
             // 
@@ -179,12 +183,11 @@ namespace Timekeeper.Forms
             this.FindResultsGrid.Size = new System.Drawing.Size(522, 246);
             this.FindResultsGrid.TabIndex = 1;
             this.FindResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FindResults_CellDoubleClick);
-            this.FindResultsGrid.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.FindResults_UserAddedRow);
             // 
             // JournalId
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.JournalId.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.JournalId.DefaultCellStyle = dataGridViewCellStyle3;
             this.JournalId.HeaderText = "ID";
             this.JournalId.MinimumWidth = 8;
             this.JournalId.Name = "JournalId";
@@ -245,8 +248,8 @@ namespace Timekeeper.Forms
             // 
             // Seconds
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Seconds.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Seconds.DefaultCellStyle = dataGridViewCellStyle4;
             this.Seconds.HeaderText = "Duration";
             this.Seconds.Name = "Seconds";
             this.Seconds.ReadOnly = true;
@@ -296,15 +299,15 @@ namespace Timekeeper.Forms
             this.IsLocked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.IsLocked.Width = 40;
             // 
-            // statusStrip1
+            // StatusBar
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ResultCount});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 271);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(522, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
+            this.StatusBar.Location = new System.Drawing.Point(0, 271);
+            this.StatusBar.Name = "StatusBar";
+            this.StatusBar.Size = new System.Drawing.Size(522, 22);
+            this.StatusBar.TabIndex = 2;
+            this.StatusBar.Text = "statusStrip1";
             // 
             // ResultCount
             // 
@@ -317,7 +320,7 @@ namespace Timekeeper.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(522, 293);
             this.Controls.Add(this.FindResultsGrid);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.ToolStrip);
             this.HelpButton = true;
             this.Name = "Find";
@@ -330,8 +333,8 @@ namespace Timekeeper.Forms
             this.ToolStrip.ResumeLayout(false);
             this.ToolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FindResultsGrid)).EndInit();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.StatusBar.ResumeLayout(false);
+            this.StatusBar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -339,17 +342,16 @@ namespace Timekeeper.Forms
 
         #endregion
 
-        private System.Windows.Forms.Timer TimerHack;
         private System.Windows.Forms.ToolStrip ToolStrip;
         private System.Windows.Forms.ToolStripButton FilterButton;
         private System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
-        private System.Windows.Forms.ToolStripDropDownButton LoadOptionsButton;
-        private System.Windows.Forms.ToolStripButton SaveOptionsButton;
-        private System.Windows.Forms.ToolStripButton ManageOptionsButton;
+        private System.Windows.Forms.ToolStripDropDownButton LoadViewMenuButton;
+        private System.Windows.Forms.ToolStripButton SaveViewButton;
+        private System.Windows.Forms.ToolStripButton ManageViewsButton;
         private System.Windows.Forms.ToolStripButton RefreshButton;
         private System.Windows.Forms.ToolStripButton SortButton;
         private System.Windows.Forms.DataGridView FindResultsGrid;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip StatusBar;
         private System.Windows.Forms.ToolStripStatusLabel ResultCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn JournalId;
         private System.Windows.Forms.DataGridViewTextBoxColumn JournalIndex;
@@ -366,5 +368,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.DataGridViewTextBoxColumn CategoryId;
         private System.Windows.Forms.DataGridViewTextBoxColumn CategoryName;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsLocked;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

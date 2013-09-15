@@ -158,6 +158,8 @@
     <Compile Include="Classes\TodoItem.cs" />
     <Compile Include="Classes\TodoItemCollection.cs" />
     <Compile Include="Classes\Widgets.cs" />
+    <Compile Include="Classes\Widgets.Trees.cs" />
+    <Compile Include="Classes\Widgets.Views.cs" />
     <Compile Include="Forms\CategoryManager.cs">
       <SubType>Form</SubType>
     </Compile>

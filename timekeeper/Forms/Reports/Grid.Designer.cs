@@ -44,7 +44,7 @@ namespace Timekeeper.Forms.Reports
             this.GroupByNoneButton = new System.Windows.Forms.ToolStripMenuItem();
             this.RefreshButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.LoadMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.LoadViewMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.SaveViewButton = new System.Windows.Forms.ToolStripButton();
             this.ManageViewsButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -112,7 +112,7 @@ namespace Timekeeper.Forms.Reports
             this.toolStripSeparator1,
             this.RefreshButton,
             this.toolStripSeparator3,
-            this.LoadMenuButton,
+            this.LoadViewMenuButton,
             this.SaveViewButton,
             this.ManageViewsButton,
             this.toolStripSeparator4,
@@ -216,15 +216,15 @@ namespace Timekeeper.Forms.Reports
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
-            // LoadMenuButton
+            // LoadViewMenuButton
             // 
-            this.LoadMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.LoadMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadMenuButton.Image")));
-            this.LoadMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LoadMenuButton.Name = "LoadMenuButton";
-            this.LoadMenuButton.Size = new System.Drawing.Size(43, 22);
-            this.LoadMenuButton.Text = "Load";
-            this.LoadMenuButton.ToolTipText = "Load a saved View";
+            this.LoadViewMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.LoadViewMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadViewMenuButton.Image")));
+            this.LoadViewMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LoadViewMenuButton.Name = "LoadViewMenuButton";
+            this.LoadViewMenuButton.Size = new System.Drawing.Size(43, 22);
+            this.LoadViewMenuButton.Text = "Load";
+            this.LoadViewMenuButton.ToolTipText = "Load a saved View";
             // 
             // SaveViewButton
             // 
@@ -366,7 +366,7 @@ namespace Timekeeper.Forms.Reports
         private System.Windows.Forms.ToolStripButton OptionsButton;
         private System.Windows.Forms.ToolStripButton RefreshButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripDropDownButton LoadMenuButton;
+        private System.Windows.Forms.ToolStripDropDownButton LoadViewMenuButton;
         private System.Windows.Forms.ToolStripButton SaveViewButton;
         private System.Windows.Forms.ToolStripButton ManageViewsButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
