@@ -14,15 +14,15 @@ namespace Timekeeper.Classes
         // Properties
         //---------------------------------------------------------------------
 
-        protected DBI Data;
+        protected DBI Database;
 
         //---------------------------------------------------------------------
         // Constructor
         //---------------------------------------------------------------------
 
-        public JournalEntryCollection(DBI data)
+        public JournalEntryCollection()
         {
-            this.Data = data;
+            this.Database = Timekeeper.Database;
         }
 
         //---------------------------------------------------------------------
@@ -31,8 +31,8 @@ namespace Timekeeper.Classes
 
         public int Count()
         {
-            string Query = "select count(*) as Count from Journal";
-            Row Row = Data.SelectRow(Query);
+            string Query = "SELECT count(*) AS Count FROM Journal WHERE IsLocked = 0";
+            Row Row = Database.SelectRow(Query);
             return (int)Row["Count"];
         }
 
@@ -65,7 +65,7 @@ namespace Timekeeper.Classes
                 from Journal
                 where StartTime > '{0} {1}'",
                 Today, Midnight);
-            Row Row = this.Data.SelectRow(query);
+            Row Row = this.Database.SelectRow(query);
             return Row["TodaySeconds"] == null ? 0 : Row["TodaySeconds"];
         }
 
@@ -74,7 +74,7 @@ namespace Timekeeper.Classes
         public int TotalSeconds()
         {
             string Query = "select sum(Seconds) as TotalSeconds from Journal";
-            Row Row = Data.SelectRow(Query);
+            Row Row = Database.SelectRow(Query);
             return Row["TotalSeconds"] == null ? 0 : (int)Row["TotalSeconds"];
         }
 
@@ -99,7 +99,7 @@ namespace Timekeeper.Classes
             string Query = String.Format(
                 "select JournalId, JournalIndex from Journal where datetime(StartTime) >= datetime('{0}') order by StartTime",
                 since.ToString(Common.DATETIME_FORMAT));
-            Table Table = Data.Select(Query);
+            Table Table = Database.Select(Query);
             Bench(t, "[Reindex] Rows fetched");
 
             // Then get our starting index
@@ -107,12 +107,12 @@ namespace Timekeeper.Classes
             Query = String.Format(
                 "select JournalIndex from Journal where datetime(StartTime) < datetime('{0}') order by StartTime desc limit 1",
                 since.ToString(Common.DATETIME_FORMAT));
-            Row LastGoodRow = Data.SelectRow(Query);
+            Row LastGoodRow = Database.SelectRow(Query);
             Bench(t, "[Reindex] Starting Index fetched");
 
             // Drop the current database index
             Bench(t);
-            Data.Exec("DROP INDEX idx_Journal_JournalIndex");
+            Database.Exec("DROP INDEX idx_Journal_JournalIndex");
             Bench(t, "[Reindex] Dropped database index");
 
             // Rebuild JournalIndex
@@ -121,14 +121,14 @@ namespace Timekeeper.Classes
             foreach (Row Row in Table) {
                 Row UpdatedRow = new Row();
                 UpdatedRow["JournalIndex"] = Index;
-                Data.Update("Journal", UpdatedRow, "JournalId", Row["JournalId"]);
+                Database.Update("Journal", UpdatedRow, "JournalId", Row["JournalId"]);
                 Index++;
             }
             Bench(t, "[Reindex] Updated JournalIndex values");
 
             // Recreate database index
             Bench(t);
-            Data.Exec("CREATE UNIQUE INDEX idx_Journal_JournalIndex ON Journal(JournalIndex);");
+            Database.Exec("CREATE UNIQUE INDEX idx_Journal_JournalIndex ON Journal(JournalIndex);");
             Bench(t, "[Reindex] Re-created database index");
         }
 

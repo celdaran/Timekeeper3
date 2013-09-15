@@ -107,7 +107,7 @@ namespace Timekeeper.Classes
             Clear();
             this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
-            this.JournalEntries = new Classes.JournalEntryCollection(this.Database);
+            this.JournalEntries = new Classes.JournalEntryCollection();
         }
 
         //---------------------------------------------------------------------
@@ -309,10 +309,10 @@ namespace Timekeeper.Classes
         {
             string WhereClause = "";
 
-            WhereClause += String.Format("datetime(j.StartTime) >= datetime('{0}')",
+            WhereClause += String.Format("datetime(j.StartTime, 'localtime') >= datetime('{0}')",
                 this.FromDateToString()) + System.Environment.NewLine;
 
-            WhereClause += String.Format("and datetime(j.StopTime) <= datetime('{0}')",
+            WhereClause += String.Format("and datetime(j.StopTime, 'localtime') <= datetime('{0}')",
                 this.ToDateToString()) + System.Environment.NewLine;
 
             if ((this.ImpliedActivities != null) && (this.ImpliedActivities.Count > 0)) {
@@ -373,7 +373,7 @@ namespace Timekeeper.Classes
                     break;
 
                 case DATE_PRESET_PREVIOUS_DAY:
-                    Entries = new Classes.JournalEntryCollection(Timekeeper.Database);
+                    Entries = new Classes.JournalEntryCollection();
                     this.FromDate = Entries.PreviousDay();
                     this.ToDate = this.FromDate;
                     break;
@@ -415,7 +415,7 @@ namespace Timekeeper.Classes
                     break;
 
                 case DATE_PRESET_ALL:
-                    Entries = new Classes.JournalEntryCollection(Timekeeper.Database);
+                    Entries = new Classes.JournalEntryCollection();
                     this.FromDate = Entries.FirstDay();
                     this.ToDate = Entries.LastDay();
                     break;

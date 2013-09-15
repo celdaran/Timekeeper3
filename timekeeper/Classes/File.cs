@@ -475,7 +475,7 @@ namespace Timekeeper
                 Classes.ProjectCollection Projects = new Classes.ProjectCollection(Database);
                 Classes.ActivityCollection Activities = new Classes.ActivityCollection(Database);
                 Classes.Notebook Notebook = new Classes.Notebook();
-                Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection(Database);
+                Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
 
                 // convert meta rows to rows (note order by above)
                 Classes.Meta Meta = new Classes.Meta();

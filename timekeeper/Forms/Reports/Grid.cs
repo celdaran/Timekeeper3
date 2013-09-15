@@ -16,11 +16,10 @@ namespace Timekeeper.Forms.Reports
 {
     public partial class Grid : Form
     {
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // Properties
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        private DBI Database;
         private Classes.Options Options;
 
         private Classes.GridView GridView;
@@ -28,83 +27,49 @@ namespace Timekeeper.Forms.Reports
 
         public delegate void BrowserCallback(long entryId);
 
-        //private BrowserCallback Browser_GotoEntry;
-
         private List<ToolStripMenuItem> GroupByButtons;
-
-        //---------------------------------------------------------------------
-
-        /*
-        private string task_list;
-        private string project_list;
-        private string sLoadedViewName;
-        private string sLoadedViewDescription;
-
-        private string sBeforeDate;
-        private int loopCount;
-
-        private fGridFilter dlgGridFilter;
-        */
 
         public long lastGridViewId;
 
-
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // Constructor
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        public Grid() //Classes.GridOptions gridOptions)
+        public Grid()
         {
             InitializeComponent();
 
-            // TODO: is this too much stuff in the Constructor?
-
-            // TODO #2: Actually, I'd like some sort of basic framework for
+            // TODO: I'd like some sort of basic framework for
             // loading up and closing a form: where things like Database
             // and Options are auto-set, form metrics are loaded and saved,
             // and so on. Feels like a lot of the same things are needed
             // (and repeated) across multiple forms.
-
             // e.g., what if Width, Height, Left, Top are a single Rect 
             // struct (Point, Size) that gets assigned . . .
 
-            // Globals
-            this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
-
             this.GridView = new Classes.GridView();
-
-            // Some interface defaults
-            wGroupBy.SelectedItem = "Month";
-            wDataType.SelectedIndex = 0;
-            wTimeFormat.SelectedIndex = 0;
-
-            // Begin unit of work
-            //this.Database.Begin();
-
-            // Populate the LoadView menu
-            //_populate_loadview();
-
-            // Instantiate the filter here (FIXME: this is a bit ugly)
-            /*
-            dlgGridFilter = new fGridFilter(this.Database);
-            dlgGridFilter._load("tasks", dlgGridFilter.wTaskList);
-            dlgGridFilter._load("projects", dlgGridFilter.wProjectList);
-            */
-
-            // Complete unit of work
-            //this.Database.Commit();
-
-            // Set focus to first control
-            //ActiveControl = wDatePreset;
+            this.AutoSavedGridView = new Classes.GridView();
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // Form Events
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private void Grid_Load(object sender, EventArgs e)
         {
+            // Some interface defaults
+
+            /*
+            WAIT: SHOULD THESE BE HANDLED ELSEWHERE???
+            */
+            GroupByComboBox.SelectedItem = "Month";
+            DimensionComboBox.SelectedIndex = 0;
+            TimeDisplayComboBox.SelectedIndex = 0;
+
+            // ABOVE CAME FROM Constructor
+
+            // Create array of GroupBy buttons
             GroupByButtons = new List<ToolStripMenuItem>();
             GroupByButtons.Add(GroupByDayButton);
             GroupByButtons.Add(GroupByWeekButton);
@@ -118,45 +83,294 @@ namespace Timekeeper.Forms.Reports
             Top = Options.Grid_Top;
             Left = Options.Grid_Left;
 
-            //_set_start_date();
-            //_load_view_by_name(this.lastGridViewId);
-            //_load_grid(sender, e);
-
-            //RunGrid();
-
-            // Why?
-            // _saveLastView(true);
-
             // Populate the list of Saved Views
             PopulateLoadMenu();
 
             // Then go!
-            ReallyRunGrid(Options.State_LastGridViewId);
+            LoadAndRunGrid(Options.State_LastGridViewId);
         }
+
+        //----------------------------------------------------------------------
+
+        private void Grid_Activated(object sender, EventArgs e)
+        {
+            EnableToolbar();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Grid_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Options.Grid_Height = Height;
+            Options.Grid_Width = Width;
+            Options.Grid_Top = Top;
+            Options.Grid_Left = Left;
+        }
+
+        //----------------------------------------------------------------------
+        // Toolbar Commands
+        //----------------------------------------------------------------------
+
+        private void FilterButton_Click(object sender, EventArgs e)
+        {
+            Forms.Shared.Filtering FilterDialog = new Forms.Shared.Filtering(GridView.FilterOptions);
+
+            if (FilterDialog.ShowDialog(this) == DialogResult.OK) {
+                GridView.FilterOptions = FilterDialog.FilterOptions;
+                Timekeeper.Info("FIXME");
+                RunGrid();
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void OptionsButton_Click(object sender, EventArgs e)
+        {
+            Forms.Reports.GridOptions DialogBox = new GridOptions();
+
+            // FIXME: You're cheating now . . .
+            DialogBox.GroupDataBy.SelectedIndex = GroupByComboBox.SelectedIndex;
+            DialogBox.Dimension.SelectedIndex = DimensionComboBox.SelectedIndex;
+            DialogBox.TimeDisplay.SelectedIndex = TimeDisplayComboBox.SelectedIndex;
+
+            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
+                GroupByComboBox.SelectedIndex = DialogBox.GroupDataBy.SelectedIndex;
+                DimensionComboBox.SelectedIndex = DialogBox.Dimension.SelectedIndex;
+                TimeDisplayComboBox.SelectedIndex = DialogBox.TimeDisplay.SelectedIndex;
+                GroupBySelect(GroupByComboBox.SelectedIndex);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void GroupByDayButton_Click(object sender, EventArgs e)
+        {
+            GroupBySelect(0);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void GroupByWeekButton_Click(object sender, EventArgs e)
+        {
+            GroupBySelect(1);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void GroupByMonthButton_Click(object sender, EventArgs e)
+        {
+            GroupBySelect(2);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void GroupByYearButton_Click(object sender, EventArgs e)
+        {
+            GroupBySelect(3);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void GroupByNoneButton_Click(object sender, EventArgs e)
+        {
+            GroupBySelect(4);
+        }
+
+        //----------------------------------------------------------------------
 
         private void RefreshButton_Click(object sender, EventArgs e)
         {
-            // Automatically save the last view with every refresh
-            //_saveLastView(false);
-
-            // Populate the dropdown
-            //_populate_loadview();
-
-            // Then load it
-            //_load_grid(sender, e);
-
             Timekeeper.Debug("This may need work. I'm thinking about handling date presets...");
             RunGrid();
         }
 
-        //-------------------------------
-        // Internal helpers
-        //-------------------------------
+        //----------------------------------------------------------------------
+
+        private void LoadViewButton_Click(object sender, EventArgs e)
+        {
+            // NOTE: This isn't actually attached to a Toolbar button at
+            // design-time. It's assigned at run-time to the dynamic list
+            // of saved views when the form populates.
+
+            ToolStripItem Item = (ToolStripItem)sender;
+            Classes.BaseView View = (Classes.BaseView)Item.Tag;
+            LoadAndRunGrid(View.Id);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SaveViewButton_Click(object sender, EventArgs e)
+        {
+            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView();
+            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
+                GridView.Name = DialogBox.wName.Text;
+                GridView.Description = DialogBox.wDescription.Text;
+                GridView.Save();
+                PopulateLoadMenu();
+                SetTitleBar();
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void ManageViewsButton_Click(object sender, EventArgs e)
+        {
+            Forms.Shared.ManageViews DialogBox = new Forms.Shared.ManageViews("GridView");
+            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
+                // Brute force: just in case anything changed.
+                PopulateLoadMenu();
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void PrintButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        //----------------------------------------------------------------------
+
+        private void PrintSetupButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        //----------------------------------------------------------------------
+
+        private void PrintPreviewButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        //----------------------------------------------------------------------
+        // Internal Helpers
+        //----------------------------------------------------------------------
+
+        private void AutoSaveView()
+        {
+            AutoSavedGridView = new Classes.GridView("Last View");
+
+            bool NewView = false;
+
+            if (AutoSavedGridView.Id == 0) {
+                // This is the first time; so seed the new view
+                AutoSavedGridView.Name = "Last View";
+                AutoSavedGridView.Description = "Automatically saved view";
+                NewView = true;
+            }
+
+            // Overwrite FilterOptions with current FilterOptions
+            AutoSavedGridView.FilterOptions = GridView.FilterOptions;
+
+            // Overwrite Grid-specific settings with current UI values
+            AutoSavedGridView.RefGroupById = GroupByComboBox.SelectedIndex + 1;
+            AutoSavedGridView.RefDimensionId = DimensionComboBox.SelectedIndex + 1;
+            AutoSavedGridView.RefTimeDisplayId = TimeDisplayComboBox.SelectedIndex + 1;
+
+            // Now attempt to save (this is an upsert)
+            if (AutoSavedGridView.Save()) {
+                // Make sure the Last Saved ID is the current value
+                Options.State_LastGridViewId = AutoSavedGridView.Id;
+
+                // Tell me about it
+                Timekeeper.Debug("Just saved GridViewId = " + AutoSavedGridView.Id.ToString());
+
+                // And copy it back into the current grid options
+                GridView = AutoSavedGridView;
+
+                // Update title bar
+                SetTitleBar();
+            } else {
+                Timekeeper.Debug("Options not saved in AutoSaveView()");
+            }
+
+            if (NewView) {
+                PopulateLoadMenu();
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void EnableToolbar()
+        {
+            Classes.JournalEntryCollection JournalEntries = new Classes.JournalEntryCollection();
+
+            bool HasEntries = (JournalEntries.Count() > 0);
+
+            FilterButton.Enabled = HasEntries;
+            OptionsButton.Enabled = HasEntries;
+            GroupByMenuButton.Enabled = HasEntries;
+            RefreshButton.Enabled = HasEntries;
+            LoadMenuButton.Enabled = HasEntries;
+            SaveViewButton.Enabled = HasEntries;
+            ManageViewsButton.Enabled = HasEntries;
+            PrintMenuButton.Enabled = HasEntries;
+        }
+
+        //----------------------------------------------------------------------
+
+        private void GroupBySelect(int buttonIndex)
+        {
+            GroupBySelect(buttonIndex, true);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void GroupBySelect(int buttonIndex, bool autoSaveView)
+        {
+            int Index = 0;
+            foreach (ToolStripMenuItem Item in GroupByButtons) {
+                if (Index == buttonIndex) {
+                    Item.Checked = true;
+                } else {
+                    Item.Checked = false;
+                }
+                Index++;
+            }
+            GroupByComboBox.SelectedIndex = buttonIndex;
+            RunGrid(autoSaveView);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void PopulateLoadMenu()
+        {
+            // Reset UI
+            LoadMenuButton.DropDownItems.Clear();
+            LoadMenuButton.Enabled = false;
+            ManageViewsButton.Enabled = false;
+
+            // Now grab new entries
+            List<Classes.BaseView> BaseViews = new Classes.BaseViewCollection("GridView").Fetch();
+            foreach (Classes.BaseView BaseView in BaseViews) {
+                ToolStripItem Item = LoadMenuButton.DropDownItems.Add(BaseView.Name);
+                Item.Tag = BaseView;
+                Item.Click += new System.EventHandler(this.LoadViewButton_Click);
+                Item.ToolTipText = BaseView.Description;
+            }
+
+            // Update UI
+            if (BaseViews.Count > 0) {
+                LoadMenuButton.Enabled = true;
+                ManageViewsButton.Enabled = true;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SetTitleBar()
+        {
+            this.Text = String.Format("Timekeeper Grid ({0})", GridView.Name);
+        }
+
+        //----------------------------------------------------------------------
+        // Core Grid-generation methods
+        //----------------------------------------------------------------------
 
         private void RunGrid()
         {
             RunGrid(true);
         }
+
+        //----------------------------------------------------------------------
 
         private void RunGrid(bool autoSaveView)
         {
@@ -170,28 +384,38 @@ namespace Timekeeper.Forms.Reports
                 //-----------------------------------
 
                 // Start with a blank grid
-                wGrid.Columns.Clear();
+                GridControl.Columns.Clear();
+                //GridControl.Columns[0].HeaderText = "Wait, whut?";
 
                 //-----------------------------------
                 // Query setup
                 //-----------------------------------
 
                 // Handle grouping
-                string sGroupBy = "";
-                switch (wGroupBy.Text) {
-                    case "Day": sGroupBy = "%Y/%m/%d"; break;
-                    case "Week": sGroupBy = "%Y, %W"; break;
-                    case "Month": sGroupBy = "%Y/%m"; break;
-                    case "Year": sGroupBy = "%Y"; break;
+                string GroupBy = "";
+                switch (GroupByComboBox.Text) {
+                    case "Day": GroupBy = "%Y/%m/%d"; break;
+                    case "Week": GroupBy = "%Y, %W"; break;
+                    case "Month": GroupBy = "%Y/%m"; break;
+                    case "Year": GroupBy = "%Y"; break;
                 }
 
-                // Get table name from Data Type dropdown
-                // FIXME: REALLY?
-                //string tableName = "Project"; //wDataType.Text.Substring(0, wDataType.Text.Length - 1);
-                string tableName = wDataType.Text.Substring(0, 1) == "P" ? "Project" : "Activity";
+                // Get table name
+                string TableName;
+                switch (DimensionComboBox.SelectedIndex) {
+                    case 0 :
+                        TableName = "Project";
+                        break;
+                    case 1 :
+                        TableName = "Activity";
+                        break;
+                    default :
+                        TableName = "Project";
+                        break;
+                }
 
                 // Get data
-                Table table = GridView.Results(sGroupBy, tableName);
+                Table table = GridView.Results(GroupBy, TableName);
 
                 //-----------------------------------
                 // Build up grid in memory
@@ -230,34 +454,36 @@ namespace Timekeeper.Forms.Reports
                 //-----------------------------------
 
                 // Add one column for the item
-                _create_new_column("item",
-                    wDataType.Text.Substring(0, wDataType.Text.Length - 1),
+                CreateNewColumn("item",
+                    DimensionComboBox.Text.Substring(0, DimensionComboBox.Text.Length - 1),
                     DataGridViewContentAlignment.MiddleLeft,
                     true);
 
-                // Add one column for each bucket
                 var bucketList = buckets.Keys.ToList();
-                bucketList.Sort();
-                foreach (string key in bucketList) {
-                    int id = wGrid.Columns.Add(key, key);
-                    wGrid.Columns[id].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    wGrid.Columns[id].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
-                    wGrid.Columns[id].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                if (GroupBy != "") {
+                    // Add one column for each bucket
+                    bucketList.Sort();
+                    foreach (string key in bucketList) {
+                        int id = GridControl.Columns.Add(key, key);
+                        GridControl.Columns[id].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                        GridControl.Columns[id].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
+                        GridControl.Columns[id].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                    }
                 }
 
                 // Add one column for the row totals
-                _create_new_column("total", "Total", DataGridViewContentAlignment.MiddleRight, false);
+                CreateNewColumn("total", "Total", DataGridViewContentAlignment.MiddleRight, false);
 
                 // Add one row for each item
                 var itemList = items.Keys.ToList();
                 itemList.Sort();
                 foreach (string key in itemList) {
-                    wGrid.Rows.Add(key);
+                    GridControl.Rows.Add(key);
                 }
 
                 // Add one row for column totals
-                int totalRow = wGrid.Rows.Add("Total");
-                wGrid.Rows[totalRow].DefaultCellStyle.BackColor = Color.AliceBlue;
+                int totalRow = GridControl.Rows.Add("Total");
+                GridControl.Rows[totalRow].DefaultCellStyle.BackColor = Color.AliceBlue;
 
                 // Now fill in the middle
                 //loopCount = 0;
@@ -270,15 +496,16 @@ namespace Timekeeper.Forms.Reports
                     foreach (string bucket in bucketList) {
                         if (grid[item].ContainsKey(bucket)) {
                             seconds = grid[item][bucket];
-                            string c = _format_cell2(wTimeFormat.SelectedIndex, seconds);
-                            wGrid.Rows[y].Cells[x + 1].Value = c;
-                            wGrid.Rows[y].Cells[x + 1].Tag = seconds;
+                            string c = FormatCell(TimeDisplayComboBox.SelectedIndex, seconds);
+                            GridControl.Rows[y].Cells[x + 1].Value = c;
+                            GridControl.Rows[y].Cells[x + 1].Tag = seconds;
                             rowTotal += seconds;
                         }
                         x++;
                     }
-                    wGrid.Rows[y].Cells[x + 1].Value = _format_cell2(wTimeFormat.SelectedIndex, rowTotal);
-                    wGrid.Rows[y].Cells[x + 1].Tag = rowTotal;
+                    int offset = GroupBy == "" ? 0 : 1;
+                    GridControl.Rows[y].Cells[x + offset].Value = FormatCell(TimeDisplayComboBox.SelectedIndex, rowTotal);
+                    GridControl.Rows[y].Cells[x + offset].Tag = rowTotal;
                     y++;
                 }
 
@@ -288,15 +515,14 @@ namespace Timekeeper.Forms.Reports
 
                 long colTotal = 0;
                 int colNo = 0;
-                foreach (DataGridViewColumn col in wGrid.Columns) {
+                foreach (DataGridViewColumn col in GridControl.Columns) {
                     if (colNo > 0) {
                         colTotal = 0;
-                        foreach (DataGridViewRow row in wGrid.Rows) {
+                        foreach (DataGridViewRow row in GridControl.Rows) {
                             if (row.Cells[col.Name].Tag != null)
                                 colTotal += (long)row.Cells[col.Name].Tag;
                         }
-                        wGrid.Rows[wGrid.Rows.Count - 1].Cells[colNo].Value = _format_cell2(wTimeFormat.SelectedIndex, colTotal);
-                        //wGrid.Rows[wGrid.Rows.Count - 1].Cells[colNo].
+                        GridControl.Rows[GridControl.Rows.Count - 1].Cells[colNo].Value = FormatCell(TimeDisplayComboBox.SelectedIndex, colTotal);
                     }
                     colNo++;
                 }
@@ -314,18 +540,22 @@ namespace Timekeeper.Forms.Reports
             }
         }
 
-        private void _create_new_column(string colName, string colHeading, DataGridViewContentAlignment align, bool frozen)
+        //----------------------------------------------------------------------
+
+        private void CreateNewColumn(string colName, string colHeading, DataGridViewContentAlignment align, bool frozen)
         {
-            int col = wGrid.Columns.Add(colName, colHeading);
-            wGrid.Columns[col].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            wGrid.Columns[col].HeaderCell.Style.Alignment = align;
-            wGrid.Columns[col].DefaultCellStyle.Alignment = align;
-            wGrid.Columns[col].DefaultCellStyle.BackColor = Color.AliceBlue;
-            wGrid.Columns[col].Frozen = frozen;
-            wGrid.Columns[col].ReadOnly = true;
+            int col = GridControl.Columns.Add(colName, colHeading);
+            GridControl.Columns[col].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            GridControl.Columns[col].HeaderCell.Style.Alignment = align;
+            GridControl.Columns[col].DefaultCellStyle.Alignment = align;
+            GridControl.Columns[col].DefaultCellStyle.BackColor = Color.AliceBlue;
+            GridControl.Columns[col].Frozen = frozen;
+            GridControl.Columns[col].ReadOnly = true;
         }
 
-        private string _format_cell2(int format, long seconds)
+        //----------------------------------------------------------------------
+
+        private string FormatCell(int format, long seconds)
         {
             string value;
             switch (format) {
@@ -350,101 +580,39 @@ namespace Timekeeper.Forms.Reports
 
         //----------------------------------------------------------------------
 
-        private void AutoSaveView()
+        private void LoadAndRunGrid(long gridViewId)
         {
-            AutoSavedGridView = new Classes.GridView(1); // 1 == Last Grid View
-            // TODO: Consider a load by name option
+            if (gridViewId > 0) {
+                // Load Last Saved Options
+                GridView.Load(gridViewId);
 
-            /*
-            THESE SHOULD ALREADY BE SET
+                // Reflect loaded grid in Title Bar
+                SetTitleBar();
 
-            AutoSavedGridOptions.Name = "Last Grid View";
-            AutoSavedGridOptions.Description = "Automatically-saved settings from last grid display"; // TODO: improve this wording.
-            AutoSavedGridOptions.SortOrderNo = 0;
-            */
+                // Set this as the last run ID
+                Options.State_LastGridViewId = gridViewId;
 
-            // Overwrite FilterOptions with current FilterOptions
-            AutoSavedGridView.FilterOptions = GridView.FilterOptions;
+                // Restore UI based on Saved Options
+                // FIXME: Stolen (more or less) from the Options button
+                GroupByComboBox.SelectedIndex = (int)GridView.RefGroupById - 1;
+                DimensionComboBox.SelectedIndex = (int)GridView.RefDimensionId - 1; // dimension
+                TimeDisplayComboBox.SelectedIndex = (int)GridView.RefTimeDisplayId - 1;
 
-            // Overwrite Grid-specific settings with current UI values
-            AutoSavedGridView.RefGroupById = wGroupBy.SelectedIndex + 1;
-            AutoSavedGridView.RefDimensionId = wDataType.SelectedIndex + 1;
-            AutoSavedGridView.RefTimeDisplayId = wTimeFormat.SelectedIndex + 1;
-
-            // Now attempt to save
-            if (AutoSavedGridView.Save()) {
-                // Make sure the Last Saved ID is the current value
-                Options.State_LastGridViewId = AutoSavedGridView.Id;
-
-                // Tell me about it
-                Common.Info("Just saved GridViewId = " + AutoSavedGridView.Id.ToString());
-
-                // And copy it back into the current grid options
-                GridView = AutoSavedGridView;
-
-                // Update title bar
-                // FIXME: you're doing this twice.
-                // TODO: I can't shake the feeling that this Grid stuff is still a royal mess
-                this.Text = String.Format("Timekeeper Grid ({0})", GridView.Name);
+                // Set the value (which triggers RunGrid() itself)
+                GroupBySelect(GroupByComboBox.SelectedIndex, false);
             } else {
-                Timekeeper.Debug("There was an error saving options");
+                // Enable/disable toolbar
+                EnableToolbar();
+
+                // Default to "By Day" (and trigger RunGrid())
+                GroupBySelect(0, false);
+
+                // "Hide" our only column if there's no view to load
+                /*
+                GridControl.Columns[0].HeaderText = "No Data Found";
+                GridControl.Columns[0].Width = 200;
+                */
             }
-        }
-
-        //----------------------------------------------------------------------
-
-        private void PopulateLoadMenu()
-        {
-            // Reset UI
-            LoadMenuButton.DropDownItems.Clear();
-            LoadMenuButton.Enabled = false;
-            ManageViewsButton.Enabled = false;
-
-            // Now grab new entries
-            List<Classes.BaseView> BaseViews = new Classes.BaseViewCollection("GridView").Fetch();
-            foreach (Classes.BaseView BaseView in BaseViews)
-            {
-                ToolStripItem Item = LoadMenuButton.DropDownItems.Add(BaseView.Name);
-                Item.Tag = BaseView;
-                Item.Click += new System.EventHandler(this._load_view);
-                Item.ToolTipText = BaseView.Description;
-            }
-
-            if (BaseViews.Count > 0) {
-                LoadMenuButton.Enabled = true;
-                ManageViewsButton.Enabled = true;
-            }
-        }
-
-        //----------------------------------------------------------------------
-
-        private void _load_view(object sender, EventArgs e)
-        {
-            ToolStripItem Item = (ToolStripItem)sender;
-            Classes.GridView GridView = (Classes.GridView)Item.Tag;
-
-            ReallyRunGrid(GridView.Id);
-        }
-
-        //----------------------------------------------------------------------
-
-        private void ReallyRunGrid(long gridViewId)
-        {
-            // Load Last Saved Options
-            GridView.Load(gridViewId);
-            this.Text = String.Format("Timekeeper Grid ({0})", GridView.Name);
-
-            // Set this as the last run ID
-            Options.State_LastGridViewId = gridViewId;
-
-            // Restore UI based on Saved Options
-            // FIXME: Stolen (more or less) from the Options button
-            wGroupBy.SelectedIndex = (int)GridView.RefGroupById - 1;
-            wDataType.SelectedIndex = (int)GridView.RefDimensionId - 1; // dimension
-            wTimeFormat.SelectedIndex = (int)GridView.RefTimeDisplayId - 1;
-
-            // Set the value, which also triggers RunGrid
-            GroupBySelect(wGroupBy.SelectedIndex, false);
         }
 
         //----------------------------------------------------------------------
@@ -458,106 +626,7 @@ namespace Timekeeper.Forms.Reports
             Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
         }
 
-        private void Grid_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Options.Grid_Height = Height;
-            Options.Grid_Width = Width;
-            Options.Grid_Top = Top;
-            Options.Grid_Left = Left;
-        }
-
-        private void FilterButton_Click(object sender, EventArgs e)
-        {
-            Forms.Shared.Filtering FilterDialog = new Forms.Shared.Filtering(GridView.FilterOptions);
-
-            if (FilterDialog.ShowDialog(this) == DialogResult.OK) {
-                GridView.FilterOptions = FilterDialog.FilterOptions;
-                Timekeeper.Info("FIXME");
-                RunGrid();
-            }
-        }
-
-        private void GroupBySelect(int buttonIndex)
-        {
-            GroupBySelect(buttonIndex, true);
-        }
-
-        private void GroupBySelect(int buttonIndex, bool autoSaveView)
-        {
-            int Index = 0;
-            foreach (ToolStripMenuItem Item in GroupByButtons) {
-                if (Index == buttonIndex) {
-                    Item.Checked = true;
-                } else {
-                    Item.Checked = false;
-                }
-                Index++;
-            }
-            wGroupBy.SelectedIndex = buttonIndex;
-            RunGrid(autoSaveView);
-        }
-
-        private void GroupByDayButton_Click(object sender, EventArgs e)
-        {
-            GroupBySelect(0);
-        }
-
-        private void GroupByWeekButton_Click(object sender, EventArgs e)
-        {
-            GroupBySelect(1);
-        }
-
-        private void GroupByMonthButton_Click(object sender, EventArgs e)
-        {
-            GroupBySelect(2);
-        }
-
-        private void GroupByYearButton_Click(object sender, EventArgs e)
-        {
-            GroupBySelect(3);
-        }
-
-        private void GroupByNoneButton_Click(object sender, EventArgs e)
-        {
-            GroupBySelect(4);
-        }
-
-        private void OptionsButton_Click(object sender, EventArgs e)
-        {
-            Forms.Reports.GridOptions DialogBox = new GridOptions();
-
-            // FIXME: You're cheating now . . .
-            DialogBox.GroupDataBy.SelectedIndex = wGroupBy.SelectedIndex;
-            DialogBox.Dimension.SelectedIndex = wDataType.SelectedIndex;
-            DialogBox.TimeDisplay.SelectedIndex = wTimeFormat.SelectedIndex;
-
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                wGroupBy.SelectedIndex = DialogBox.GroupDataBy.SelectedIndex;
-                wDataType.SelectedIndex = DialogBox.Dimension.SelectedIndex;
-                wTimeFormat.SelectedIndex = DialogBox.TimeDisplay.SelectedIndex;
-                GroupBySelect(wGroupBy.SelectedIndex);
-            }
-        }
-
-        private void SaveViewButton_Click(object sender, EventArgs e)
-        {
-            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView();
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                GridView.Name = DialogBox.wName.Text;
-                GridView.Description = DialogBox.wDescription.Text;
-                GridView.Save();
-                //Common.Info("Hey ho, I'm saving your thing. Yay me.");
-            }
-        }
-
-        private void ManageViewsButton_Click(object sender, EventArgs e)
-        {
-            Forms.Shared.ManageViews DialogBox = new Forms.Shared.ManageViews("GridView");
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                // Brute force: just in case anything changed.
-                PopulateLoadMenu();
-            }
-        }
+        //----------------------------------------------------------------------
 
     }
 }

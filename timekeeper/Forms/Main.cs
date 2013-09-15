@@ -1133,14 +1133,14 @@ namespace Timekeeper.Forms
             }
 
             // If we've made it this far, instantiate a new one.
-            Forms.Todo DialogBox = new Forms.Todo();
+            Forms.Tools.Todo DialogBox = new Forms.Tools.Todo();
             DialogBox.Show();
             OpenForms.Add(DialogBox);
         }
 
         private void PopupMenuProjectAddtoTodoList_Click(object sender, EventArgs e)
         {
-            Forms.TodoDetail DialogBox = new Forms.TodoDetail();
+            Forms.Tools.TodoDetail DialogBox = new Forms.Tools.TodoDetail();
 
             Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
             DialogBox.ProjectId = Project.ItemId;
@@ -1152,7 +1152,7 @@ namespace Timekeeper.Forms
                 // If a Todo form is open, add it to its list
                 foreach (Form Form in OpenForms) {
                     if (Form.Name == "Todo") {
-                        Forms.Todo Todo = (Forms.Todo)Form;
+                        Forms.Tools.Todo Todo = (Forms.Tools.Todo)Form;
                         Todo.AddItem(Project.DisplayName(), TodoItem, Todo.TodoList.Groups[TodoItem.StatusName]);
                     }
                 }

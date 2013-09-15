@@ -472,7 +472,7 @@ namespace Timekeeper.Classes
                     State_LastReportViewId = Convert.ToInt64(Option["Value"]);
                 }
 
-                Timekeeper.Debug("Options Loadedfrom Database");
+                Timekeeper.Debug("Options Loaded from Database");
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

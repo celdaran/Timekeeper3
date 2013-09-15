@@ -144,19 +144,20 @@ namespace Timekeeper.Forms.Shared
         private void PopulateStuff()
         {
             ProjectTree.Nodes.Clear();
-            Widgets.BuildProjectTree(ProjectTree.Nodes);
-
             ActivityTree.Nodes.Clear();
+            LocationFilter.Items.Clear();
+            CategoryFilter.Items.Clear();
+
+            Widgets.BuildProjectTree(ProjectTree.Nodes);
             Widgets.BuildActivityTree(ActivityTree.Nodes);
 
             Classes.LocationCollection Locations = new Classes.LocationCollection();
-            Classes.CategoryCollection Categories = new Classes.CategoryCollection();
-
             List<IdObjectPair> FetchedLocations = Locations.Fetch();
             foreach (IdObjectPair Location in FetchedLocations) {
                 LocationFilter.Items.Add(Location);
             }
 
+            Classes.CategoryCollection Categories = new Classes.CategoryCollection();
             List<IdObjectPair> FetchedCategories = Categories.Fetch();
             foreach (IdObjectPair Category in FetchedCategories) {
                 CategoryFilter.Items.Add(Category);
@@ -300,6 +301,13 @@ namespace Timekeeper.Forms.Shared
             MemoFilter.Text = "";
 
             PopulateStuff();
+
+            DurationOperator.SelectedIndex = 0;
+            DurationAmount.Value = 0;
+            DurationUnit.SelectedIndex = -1;
+
+            CreateTimePresets.SelectedIndex = -1;
+            ModifyTimePresets.SelectedIndex = -1;
         }
 
         //---------------------------------------------------------------------

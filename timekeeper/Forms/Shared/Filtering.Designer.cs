@@ -77,8 +77,8 @@ namespace Timekeeper.Forms.Shared
             this.label1 = new System.Windows.Forms.Label();
             this.CreateTimePresets = new System.Windows.Forms.ComboBox();
             this.BottomPanel = new System.Windows.Forms.Panel();
-            this.ButtonPanel = new System.Windows.Forms.Panel();
             this.ClearButton = new System.Windows.Forms.Button();
+            this.ButtonPanel = new System.Windows.Forms.Panel();
             this.CheckedListBoxMenu.SuspendLayout();
             this.TreeViewMenu.SuspendLayout();
             this.FilterOptionsTabControl.SuspendLayout();
@@ -234,7 +234,6 @@ namespace Timekeeper.Forms.Shared
             this.ActivityTree.Location = new System.Drawing.Point(3, 3);
             this.ActivityTree.Name = "ActivityTree";
             this.ActivityTree.SelectedImageIndex = 0;
-            this.ActivityTree.ShowLines = false;
             this.ActivityTree.Size = new System.Drawing.Size(387, 246);
             this.ActivityTree.TabIndex = 0;
             // 
@@ -592,16 +591,6 @@ namespace Timekeeper.Forms.Shared
             this.BottomPanel.Size = new System.Drawing.Size(401, 34);
             this.BottomPanel.TabIndex = 17;
             // 
-            // ButtonPanel
-            // 
-            this.ButtonPanel.Controls.Add(this.OkayButton);
-            this.ButtonPanel.Controls.Add(this.CloseButton);
-            this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ButtonPanel.Location = new System.Drawing.Point(237, 0);
-            this.ButtonPanel.Name = "ButtonPanel";
-            this.ButtonPanel.Size = new System.Drawing.Size(164, 34);
-            this.ButtonPanel.TabIndex = 0;
-            // 
             // ClearButton
             // 
             this.ClearButton.Location = new System.Drawing.Point(12, 6);
@@ -611,6 +600,16 @@ namespace Timekeeper.Forms.Shared
             this.ClearButton.Text = "Clear";
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
+            // 
+            // ButtonPanel
+            // 
+            this.ButtonPanel.Controls.Add(this.OkayButton);
+            this.ButtonPanel.Controls.Add(this.CloseButton);
+            this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ButtonPanel.Location = new System.Drawing.Point(237, 0);
+            this.ButtonPanel.Name = "ButtonPanel";
+            this.ButtonPanel.Size = new System.Drawing.Size(164, 34);
+            this.ButtonPanel.TabIndex = 0;
             // 
             // Filtering
             // 

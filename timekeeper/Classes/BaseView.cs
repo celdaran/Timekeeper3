@@ -42,12 +42,21 @@ namespace Timekeeper.Classes
             this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
             this.TableName = tableName;
+            this.FilterOptions = new Classes.FilterOptions();
         }
 
         //----------------------------------------------------------------------
 
         public BaseView(string tableName, long id) : this(tableName)
         {
+            this.LoadRow(id);
+        }
+
+        //----------------------------------------------------------------------
+
+        public BaseView(string tableName, string viewName) : this(tableName)
+        {
+            long id = this.GetId(viewName);
             this.LoadRow(id);
         }
 
@@ -73,8 +82,6 @@ namespace Timekeeper.Classes
                     this.SortOrderNo = (int)Timekeeper.GetValue(View["SortOrderNo"], 0);
                     this.FilterOptionsId = View["FilterOptionsId"];
                     FilterOptions = new Classes.FilterOptions(FilterOptionsId);
-                } else {
-                    FilterOptions = new Classes.FilterOptions();
                 }
             }
             catch (Exception x) {
@@ -153,7 +160,16 @@ namespace Timekeeper.Classes
 
         public void Delete()
         {
+            Database.Delete("FilterOptions", "FilterOptionsId", this.FilterOptionsId);
             Database.Delete(this.TableName, this.TableName + "Id", this.Id);
+
+            this.Id = 0;
+            this.CreateTime = DateTime.MinValue;
+            this.ModifyTime = DateTime.MinValue;
+            this.Name = null;
+            this.Description = null;
+            this.SortOrderNo = 0;
+            this.FilterOptionsId = 0;
         }
 
         //----------------------------------------------------------------------
@@ -182,6 +198,23 @@ namespace Timekeeper.Classes
         public override string ToString()
         {
             return this.Name;
+        }
+
+        //----------------------------------------------------------------------
+        // Helpers
+        //----------------------------------------------------------------------
+
+        private long GetId(string viewName)
+        {
+            string QuotedName = viewName.Replace("'", "''");
+            string Query = String.Format(@"SELECT {0}Id AS Id FROM {0} WHERE Name = '{1}'",
+                this.TableName, QuotedName);
+            Row Row = Database.SelectRow(Query);
+            if (Row["Id"] != null) {
+                return Row["Id"];
+            } else {
+                return 0;
+            }
         }
 
         //----------------------------------------------------------------------

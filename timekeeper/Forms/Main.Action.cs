@@ -583,7 +583,7 @@ namespace Timekeeper.Forms
                 // Instatiate Classes
                 //------------------------------------------
 
-                Entries = new Classes.JournalEntryCollection(Database);
+                Entries = new Classes.JournalEntryCollection();
                 Meta = new Classes.Meta();
                 Entry = new Classes.JournalEntry(Database);
 

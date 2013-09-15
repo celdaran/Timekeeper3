@@ -27,17 +27,20 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public GridView()
-            : base(ViewTableName)
+        public GridView() : base(ViewTableName)
         {
         }
 
         //---------------------------------------------------------------------
 
-        public GridView(long gridViewId)
-            : this()
+        public GridView(long gridViewId) : base(ViewTableName, gridViewId)
         {
-            this.Load(gridViewId);
+        }
+
+        //---------------------------------------------------------------------
+
+        public GridView(string gridViewName) : base(ViewTableName, gridViewName)
+        {
         }
 
         //----------------------------------------------------------------------
