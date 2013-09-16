@@ -332,7 +332,7 @@ namespace Timekeeper.Forms.Reports
         private void PopulateLoadMenu()
         {
             // Common functions
-            this.Widgets.PopulateLoadMenu(ToolStrip);
+            this.Widgets.PopulateLoadMenu("GridView", ToolStrip);
 
             // Grid-specific function
             foreach (ToolStripItem Item in LoadViewMenuButton.DropDownItems) {

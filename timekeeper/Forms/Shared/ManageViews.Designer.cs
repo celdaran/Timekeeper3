@@ -132,6 +132,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Manage Views";
+            this.Load += new System.EventHandler(this.ManageViews_Load);
             this.ResumeLayout(false);
 
         }

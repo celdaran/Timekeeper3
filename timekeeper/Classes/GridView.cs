@@ -98,5 +98,26 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
+        public Table Results(string sGroupBy, string tableName)
+        {
+            string Query = String.Format(@"
+                select
+                    i.Name as Name, 
+                    strftime('{0}', j.StartTime) as Grouping, 
+                    sum(j.Seconds) as Seconds
+                from Journal j
+                join {1} i on i.{1}Id = j.{1}Id
+                where {2}
+                group by i.Name, Grouping
+                order by i.Name, Grouping",
+                sGroupBy, tableName, this.FilterOptions.WhereClause);
+
+            Table FindResults = Database.Select(Query);
+
+            return FindResults;
+        }
+
+        //----------------------------------------------------------------------
+
     }
 }

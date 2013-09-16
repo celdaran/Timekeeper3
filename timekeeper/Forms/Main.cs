@@ -269,25 +269,9 @@ namespace Timekeeper.Forms
         // Report | Grid
         private void menuReportsGrid_Click(object sender, EventArgs e)
         {
-            // FIXME: should this logic be in Main.Dialog.cs?
-
-            /*
-            Classes.GridOptions GridOptions = new Classes.GridOptions();
-            Forms.Reports.Grid GridDialog = new Forms.Reports.Grid(GridOptions);
-            GridDialog.Show(this);
-            */
             Forms.Reports.Grid GridDialog = new Forms.Reports.Grid();
             GridDialog.Show();
-
-            /*
-            Forms.Reports.Grid grid = new Forms.Reports.Grid(Database);
-            grid.lastGridViewId = Options.State_LastGridOptionsId;
-            grid.Show(this);
-            */
             OpenForms.Add(GridDialog);
-
-            // FIXME: needed?
-            //Options.State_LastGridOptionsId = GridDialog.lastGridViewId;
         }
 
         // Report | Quick List
@@ -321,9 +305,9 @@ namespace Timekeeper.Forms
         // Tools | Find
         private void MenuToolFind_Click(object sender, EventArgs e)
         {
-            Classes.FindView FindOptions = new Classes.FindView();
-            Forms.Find FindDialog = new Forms.Find(FindOptions, Browser_GotoEntry);
+            Forms.Find FindDialog = new Forms.Find(Browser_GotoEntry);
             FindDialog.Show(this); // FIXME: why does this get flaky when "this" isn't specified?
+            OpenForms.Add(FindDialog);
         }
 
         // Tools | Notebook

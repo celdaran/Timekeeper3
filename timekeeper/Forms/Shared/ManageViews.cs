@@ -42,6 +42,13 @@ namespace Timekeeper.Forms.Shared
         // Form Events
         //----------------------------------------------------------------------
 
+        private void ManageViews_Load(object sender, EventArgs e)
+        {
+            SavedViewList.SelectedIndex = 0;
+        }
+
+        //----------------------------------------------------------------------
+
         private void SavedViewList_SelectedIndexChanged(object sender, EventArgs e)
         {
             int Index = SavedViewList.SelectedIndex;

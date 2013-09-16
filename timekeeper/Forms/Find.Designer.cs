@@ -28,8 +28,8 @@ namespace Timekeeper.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Find));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.FilterButton = new System.Windows.Forms.ToolStripButton();
             this.SortButton = new System.Windows.Forms.ToolStripButton();
@@ -150,6 +150,7 @@ namespace Timekeeper.Forms
             this.ManageViewsButton.Size = new System.Drawing.Size(61, 22);
             this.ManageViewsButton.Text = "Manage...";
             this.ManageViewsButton.ToolTipText = "Manage your saved Views";
+            this.ManageViewsButton.Click += new System.EventHandler(this.ManageViewsButton_Click);
             // 
             // FindResultsGrid
             // 
@@ -186,8 +187,8 @@ namespace Timekeeper.Forms
             // 
             // JournalId
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.JournalId.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.JournalId.DefaultCellStyle = dataGridViewCellStyle5;
             this.JournalId.HeaderText = "ID";
             this.JournalId.MinimumWidth = 8;
             this.JournalId.Name = "JournalId";
@@ -248,8 +249,8 @@ namespace Timekeeper.Forms
             // 
             // Seconds
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Seconds.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Seconds.DefaultCellStyle = dataGridViewCellStyle6;
             this.Seconds.HeaderText = "Duration";
             this.Seconds.Name = "Seconds";
             this.Seconds.ReadOnly = true;
@@ -322,12 +323,11 @@ namespace Timekeeper.Forms
             this.Controls.Add(this.FindResultsGrid);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.ToolStrip);
-            this.HelpButton = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Find";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Find";
+            this.Activated += new System.EventHandler(this.Find_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Find_FormClosing);
             this.Load += new System.EventHandler(this.Find_Load);
             this.ToolStrip.ResumeLayout(false);

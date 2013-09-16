@@ -9,33 +9,10 @@ namespace Timekeeper.Classes
     partial class Widgets
     {
         //----------------------------------------------------------------------
-        // Consider making this a partial class and breaking it up by area. For
-        // example TreeView functions in one file, what I'm about to do next in
-        // another file and so on.
-        //
-        // . . . done!
+        // Notes
         //----------------------------------------------------------------------
 
-        /* 
-
-        I don't think this one is worth the trouble
-
-        public bool SaveView(System.Windows.Forms.Form parent, ToolStrip toolbar)
-        {
-            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView();
-            if (DialogBox.ShowDialog(parent) == DialogResult.OK) {
-                GridView.Name = DialogBox.wName.Text;
-                GridView.Description = DialogBox.wDescription.Text;
-                GridView.Save();
-                PopulateLoadMenu(toolbar);
-                SetViewTitleBar(parent, "Grid", GridView.Name);
-            }
-        }
-        */
-
-        //----------------------------------------------------------------------
-
-        public void PopulateLoadMenu(ToolStrip toolbar)
+        public void PopulateLoadMenu(string tableName, ToolStrip toolbar)
         {
             // Get our buttons
             ToolStripDropDownButton LoadViewMenuButton = (ToolStripDropDownButton)toolbar.Items["LoadViewMenuButton"];
@@ -47,7 +24,7 @@ namespace Timekeeper.Classes
             ManageViewsButton.Enabled = false;
 
             // Now grab new entries
-            List<Classes.BaseView> BaseViews = new Classes.BaseViewCollection("GridView").Fetch();
+            List<Classes.BaseView> BaseViews = new Classes.BaseViewCollection(tableName).Fetch();
             foreach (Classes.BaseView BaseView in BaseViews) {
                 ToolStripItem Item = LoadViewMenuButton.DropDownItems.Add(BaseView.Name);
                 Item.Tag = BaseView;

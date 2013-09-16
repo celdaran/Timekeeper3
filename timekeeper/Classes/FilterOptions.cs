@@ -315,14 +315,21 @@ namespace Timekeeper.Classes
             WhereClause += String.Format("and datetime(j.StopTime, 'localtime') <= datetime('{0}')",
                 this.ToDateToString()) + System.Environment.NewLine;
 
+            if ((this.ImpliedProjects != null) && (this.ImpliedProjects.Count > 0)) {
+                WhereClause += String.Format("and j.ProjectId in ({0})",
+                    this.List(this.ImpliedProjects)) + System.Environment.NewLine;
+            } else {
+                if ((this.Projects != null) && (this.Projects.Count > 0)) {
+                    WhereClause += String.Format("and j.ProjectId in ({0})",
+                        this.List(this.Projects)) + System.Environment.NewLine;
+                }
+            }
+
             if ((this.ImpliedActivities != null) && (this.ImpliedActivities.Count > 0)) {
                 WhereClause += String.Format("and j.ActivityId in ({0})",
                     this.List(this.ImpliedActivities)) + System.Environment.NewLine;
             }
-            if ((this.ImpliedProjects != null) && (this.ImpliedProjects.Count > 0)) {
-                WhereClause += String.Format("and j.ProjectId in ({0})",
-                    this.List(this.ImpliedProjects)) + System.Environment.NewLine;
-            }
+
             if ((this.MemoContains != null) && (this.MemoContains != "")) {
                 WhereClause += String.Format("and j.Memo like '%{0}%'", this.MemoContains) + System.Environment.NewLine;
             }
