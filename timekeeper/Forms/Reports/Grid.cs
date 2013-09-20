@@ -32,6 +32,12 @@ namespace Timekeeper.Forms.Reports
 
         public long lastGridViewId;
 
+        // Um, hack?
+
+        private Classes.FilterOptions BeforeFilterOptions;
+        private Forms.Shared.Filtering FilterDialog;
+        private bool FilterOptionsChanged;
+
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
@@ -88,7 +94,7 @@ namespace Timekeeper.Forms.Reports
             // Populate the list of Saved Views
             PopulateLoadMenu();
 
-            // Then go!
+            // Load up saved grid and paint
             LoadAndRunGrid(Options.State_LastGridViewId);
         }
 
@@ -115,13 +121,21 @@ namespace Timekeeper.Forms.Reports
 
         private void FilterButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.Filtering FilterDialog = new Forms.Shared.Filtering(GridView.FilterOptions);
+            this.BeforeFilterOptions = new Classes.FilterOptions(GridView.FilterOptionsId);
 
             if (FilterDialog.ShowDialog(this) == DialogResult.OK) {
-                GridView.FilterOptions = FilterDialog.FilterOptions;
-                // FIXME: with double visibility
-                Timekeeper.Info("FIXME");
-                RunGrid();
+                if (BeforeFilterOptions.Equals(FilterDialog.FilterOptions)) {
+                    Common.Info("You didn't make no changes!");
+                    this.FilterOptionsChanged = false;
+                    // FIXME: handle this more better
+                    GridView.FilterOptions = BeforeFilterOptions;
+                } else {
+                    Common.Info("You made some changes!");
+                    this.FilterOptionsChanged = true;
+                    // FIXME: handle this more better
+                    GridView.FilterOptions = FilterDialog.FilterOptions;
+                    RunGrid();
+                }
             }
         }
 
@@ -200,13 +214,11 @@ namespace Timekeeper.Forms.Reports
 
         private void SaveViewButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView("GridView");
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                GridView.Name = DialogBox.ViewName.Text;
-                GridView.Description = DialogBox.ViewDescription.Text;
-                GridView.Save();
+            GridView = (Classes.GridView)this.Widgets.SaveView(this, "Grid", GridView);
+            if (GridView.Changed) {
+                GridView.Save(this.FilterOptionsChanged);
                 PopulateLoadMenu();
-                this.Widgets.SetViewTitleBar(this, "Grid", GridView.Name);
+                Options.State_LastGridViewId = GridView.Id;
             }
         }
 
@@ -257,6 +269,7 @@ namespace Timekeeper.Forms.Reports
 
             // Overwrite FilterOptions with current FilterOptions
             AutoSavedGridView.FilterOptions = GridView.FilterOptions;
+            AutoSavedGridView.FilterOptionsId = GridView.FilterOptionsId;
 
             // Overwrite Grid-specific settings with current UI values
             AutoSavedGridView.RefGroupById = GroupByComboBox.SelectedIndex + 1;
@@ -264,7 +277,7 @@ namespace Timekeeper.Forms.Reports
             AutoSavedGridView.RefTimeDisplayId = TimeDisplayComboBox.SelectedIndex + 1;
 
             // Now attempt to save (this is an upsert)
-            if (AutoSavedGridView.Save()) {
+            if (AutoSavedGridView.Save(FilterOptionsChanged, AutoSavedGridView.FilterOptionsId)) {
                 // Make sure the Last Saved ID is the current value
                 Options.State_LastGridViewId = AutoSavedGridView.Id;
 
@@ -337,6 +350,53 @@ namespace Timekeeper.Forms.Reports
             // Grid-specific function
             foreach (ToolStripItem Item in LoadViewMenuButton.DropDownItems) {
                 Item.Click += new System.EventHandler(this.LoadViewButton_Click);
+            }
+        }
+
+        //----------------------------------------------------------------------
+        // Wrapper for the grid-loading logic, followed by the actual running
+        // of the grid (triggered within GroupBySelect).
+        //----------------------------------------------------------------------
+
+        private void LoadAndRunGrid(long gridViewId)
+        {
+            if (gridViewId > 0) {
+                // Load Last Saved Options
+                GridView.Load(gridViewId);
+
+                // This requires some explanation. It's definitely a hack but something
+                // for which I don't currently have the time or energy to handle otherwise.
+                // In short, the tree handling logic lies within the Filtering dialog box,
+                // including the ImpliedProjects and ImpliedActivities. These structures
+                // are the result of looking at the actually-checked values in the treeview
+                // controls and returning the  list of ProjectId and ActivityId values that
+                // are implied by the checkboxes. This information is required to properly
+                // paint a just-loaded grid and it only lives in Forms.Shared.Filtering.
+                // If we instantiate this form here, right after loading up a saved grid
+                // view, then everything Just Works.
+
+                this.FilterDialog = new Forms.Shared.Filtering(GridView.FilterOptions);
+
+                // Reflect loaded grid in Title Bar
+                this.Widgets.SetViewTitleBar(this, "Grid", GridView.Name);
+
+                // Set this as the last run ID
+                Options.State_LastGridViewId = gridViewId;
+
+                // Restore UI based on Saved Options
+                // FIXME: Stolen (more or less) from the Options button
+                GroupByComboBox.SelectedIndex = (int)GridView.RefGroupById - 1;
+                DimensionComboBox.SelectedIndex = (int)GridView.RefDimensionId - 1; // dimension
+                TimeDisplayComboBox.SelectedIndex = (int)GridView.RefTimeDisplayId - 1;
+
+                // Set the value (which triggers RunGrid() itself)
+                GroupBySelect(GroupByComboBox.SelectedIndex, false);
+            } else {
+                // Enable/disable toolbar
+                EnableToolbar();
+
+                // Default to "By Day" (and trigger RunGrid())
+                GroupBySelect(0, false);
             }
         }
 
@@ -555,37 +615,6 @@ namespace Timekeeper.Forms.Reports
                     break;
             }
             return value;
-        }
-
-        //----------------------------------------------------------------------
-
-        private void LoadAndRunGrid(long gridViewId)
-        {
-            if (gridViewId > 0) {
-                // Load Last Saved Options
-                GridView.Load(gridViewId);
-
-                // Reflect loaded grid in Title Bar
-                this.Widgets.SetViewTitleBar(this, "Grid", GridView.Name);
-
-                // Set this as the last run ID
-                Options.State_LastGridViewId = gridViewId;
-
-                // Restore UI based on Saved Options
-                // FIXME: Stolen (more or less) from the Options button
-                GroupByComboBox.SelectedIndex = (int)GridView.RefGroupById - 1;
-                DimensionComboBox.SelectedIndex = (int)GridView.RefDimensionId - 1; // dimension
-                TimeDisplayComboBox.SelectedIndex = (int)GridView.RefTimeDisplayId - 1;
-
-                // Set the value (which triggers RunGrid() itself)
-                GroupBySelect(GroupByComboBox.SelectedIndex, false);
-            } else {
-                // Enable/disable toolbar
-                EnableToolbar();
-
-                // Default to "By Day" (and trigger RunGrid())
-                GroupBySelect(0, false);
-            }
         }
 
         //----------------------------------------------------------------------

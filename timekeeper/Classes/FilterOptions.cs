@@ -156,8 +156,49 @@ namespace Timekeeper.Classes
 
         public void Create()
         {
+            Common.Info("Creating a new FilterOptions row");
             this.FilterOptionsId = -1;
             this.Upsert();
+        }
+
+        //---------------------------------------------------------------------
+
+        public void Copy(Classes.FilterOptions that)
+        {
+            this.DateRangePreset = that.DateRangePreset;
+            this.FromDate = that.FromDate;
+            this.ToDate = that.ToDate;
+            this.MemoContains = that.MemoContains;
+            this.Projects = that.Projects;
+            this.Activities = that.Activities;
+            this.Locations = that.Locations;
+            this.Categories = that.Categories;
+            this.DurationOperator = that.DurationOperator;
+            this.DurationAmount = that.DurationAmount;
+            this.DurationUnit = that.DurationUnit;
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool Equals(Classes.FilterOptions that)
+        {
+            if (
+                (this.DateRangePreset == that.DateRangePreset) &&
+                (this.FromDate == that.FromDate) &&
+                (this.ToDate == that.ToDate) &&
+                (this.MemoContains == that.MemoContains) &&
+                (this.Projects == that.Projects) &&
+                (this.Activities == that.Activities) &&
+                (this.Locations == that.Locations) &&
+                (this.Categories == that.Categories) &&
+                (this.DurationOperator == that.DurationOperator) &&
+                (this.DurationAmount == that.DurationAmount) &&
+                (this.DurationUnit == that.DurationUnit))
+            {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -318,11 +359,6 @@ namespace Timekeeper.Classes
             if ((this.ImpliedProjects != null) && (this.ImpliedProjects.Count > 0)) {
                 WhereClause += String.Format("and j.ProjectId in ({0})",
                     this.List(this.ImpliedProjects)) + System.Environment.NewLine;
-            } else {
-                if ((this.Projects != null) && (this.Projects.Count > 0)) {
-                    WhereClause += String.Format("and j.ProjectId in ({0})",
-                        this.List(this.Projects)) + System.Environment.NewLine;
-                }
             }
 
             if ((this.ImpliedActivities != null) && (this.ImpliedActivities.Count > 0)) {

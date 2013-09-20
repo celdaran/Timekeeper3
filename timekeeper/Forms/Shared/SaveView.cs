@@ -36,8 +36,10 @@ namespace Timekeeper.Forms.Shared
 
         private void SaveView_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (this.Widgets.ViewExists(this.TableName, this.ViewName.Text)) {
-                e.Cancel = true;
+            if (DialogResult == DialogResult.OK) {
+                if (this.Widgets.ViewExists(this.TableName, this.ViewName.Text)) {
+                    e.Cancel = true;
+                }
             }
         }
 

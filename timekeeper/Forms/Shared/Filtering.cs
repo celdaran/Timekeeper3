@@ -12,6 +12,8 @@ using Technitivity.Toolbox;
 namespace Timekeeper.Forms.Shared
 {
 
+    // TODO: This (class/file) is still a bit of a mess. Please come back and clean up.
+
     public partial class Filtering : Form
     {
         //---------------------------------------------------------------------
@@ -55,6 +57,9 @@ namespace Timekeeper.Forms.Shared
                     ModifyTimePresets.Items.Add(Preset);
                 }
             }
+
+            // Hack?
+            LoadForm();
         }
 
         //---------------------------------------------------------------------
@@ -63,8 +68,14 @@ namespace Timekeeper.Forms.Shared
 
         private void Filtering_Load(object sender, EventArgs e)
         {
-            Timekeeper.Info("Filtering_Load called");
+            ProjectTree.ExpandAll();
+            ActivityTree.ExpandAll();
+        }
 
+        //----------------------------------------------------------------------
+
+        private void LoadForm()
+        {
             this.Widgets = new Classes.Widgets();
 
             //----------------------------------------
@@ -125,9 +136,18 @@ namespace Timekeeper.Forms.Shared
                 SetSelectedValues(CategoryFilter, FilterOptions.Categories);
             }
 
+            // With the above four set, populate self with selections
+            FilterOptions.Activities = GetActuallySelectedValues(ActivityTree.Nodes);
+            FilterOptions.Projects = GetActuallySelectedValues(ProjectTree.Nodes);
+            FilterOptions.Locations = GetActuallySelectedValues(LocationFilter);
+            FilterOptions.Categories = GetActuallySelectedValues(CategoryFilter);
+            FilterOptions.ImpliedActivities = GetImpliedSelectedValues(ActivityTree.Nodes, false);
+            FilterOptions.ImpliedProjects = GetImpliedSelectedValues(ProjectTree.Nodes, false);
+            // End populate self
+
             if (FilterOptions.DurationOperator != -1) {
                 DurationOperator.SelectedIndex = FilterOptions.DurationOperator;
-                DurationOperator_SelectedIndexChanged(sender, e);
+                ChangeDuration();
             }
 
             if (FilterOptions.DurationAmount != 0) {
@@ -227,6 +247,13 @@ namespace Timekeeper.Forms.Shared
 
         private void DurationOperator_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ChangeDuration();
+        }
+
+        //---------------------------------------------------------------------
+
+        private void ChangeDuration()
+        {
             if (DurationOperator.SelectedIndex == 0) {
                 DurationAmount.Enabled = false;
                 DurationUnit.Enabled = false;
@@ -267,14 +294,6 @@ namespace Timekeeper.Forms.Shared
 
         //---------------------------------------------------------------------
 
-        private void Splitter_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            // FIXME: move this to fMain too. I like it.
-            //Splitter.SplitterDistance = Splitter.Width / 2;
-        }
-
-        //---------------------------------------------------------------------
-
         private void OkayButton_Click(object sender, EventArgs e)
         {
             FilterOptions.DateRangePreset = Presets.SelectedIndex + 1;
@@ -312,9 +331,9 @@ namespace Timekeeper.Forms.Shared
 
         //---------------------------------------------------------------------
         // Private Helpers
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        private List<long> GetImpliedSelectedValues(TreeNodeCollection nodes, bool ancestorChecked)
+        public List<long> GetImpliedSelectedValues(TreeNodeCollection nodes, bool ancestorChecked)
         {
             List<long> CheckedNodes = new List<long>();
 

@@ -29,9 +29,12 @@ namespace Timekeeper.Classes
         public string Name { get; set; }
         public string Description { get; set; }
         public int SortOrderNo { get; set; }
-        public long FilterOptionsId { get; protected set; }
+        public long FilterOptionsId { get; set; }
 
         public Classes.FilterOptions FilterOptions { get; set; }
+
+        public bool Saved { get; set; }
+        public bool Changed { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -93,7 +96,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public bool SaveRow()
+        public bool SaveRow(bool filterOptionsChanged, long filterOptionsId)
         {
             try {
                 Row View = new Row();
@@ -101,6 +104,9 @@ namespace Timekeeper.Classes
                 View["Name"] = Name;
                 View["Description"] = Description;
                 View["SortOrderNo"] = SortOrderNo;
+
+                // Default value: may get overridden
+                View["FilterOptionsId"] = this.FilterOptions.FilterOptionsId;
 
                 // TODO: TBX/DBI needs a RowExists and/or Upsert statement
 
@@ -111,6 +117,33 @@ namespace Timekeeper.Classes
                 // TODO AGAIN: I've said it before and I'll say it again: this
                 // Replace() method call is a sign that You're Doing it Wrong.
 
+
+                // FilterOptions are not saved/created with the view itself.
+                // e.g., the "Last Saved" view may be updated with a brand-new
+                // set of FilterOptions. The management thereof now becomes
+                // tricky, because the code below doesn't work the way I'd hoped.
+                if (filterOptionsChanged) {
+                    if (filterOptionsId > 0) {
+                        // If we passed in an id, update the existing id.
+                        // This should only be used for AutoSaved values
+                        // to prevent hundreds of rows from being created
+                        // while simply hitting "OK" on the Filtering dialog
+                        // box (before explicitly saving the view).
+                        this.FilterOptions.Save();
+                        Common.Info("Just updated FilterOptionsId: " + filterOptionsId.ToString());
+                    } else {
+                        // Otherwise, create a new row
+                        this.FilterOptions.Create();
+                        Common.Info("Just created FilterOptionsId: " + this.FilterOptions.FilterOptionsId.ToString());
+                    }
+
+                    if (this.FilterOptions.FilterOptionsId < 1) {
+                        throw new Exception("Error upserting FilterOptions row");
+                    } else {
+                        View["FilterOptionsId"] = this.FilterOptions.FilterOptionsId;
+                    }
+                }
+
                 string QuotedName = Name.Replace("'", "''");
                 string Query = String.Format(@"
                     SELECT count(*) as Count 
@@ -120,40 +153,46 @@ namespace Timekeeper.Classes
                 Row Count = this.Database.SelectRow(Query);
 
                 if (Count["Count"] == 0) {
-                    this.FilterOptions.Create();
+                    //this.FilterOptions.Create();
+
+                    View["CreateTime"] = Common.Now();
+                    View["ModifyTime"] = Common.Now();
 
                     // On insert, override any previously set SortOrderNo
                     View["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName);
 
-                    View["CreateTime"] = Common.Now();
-                    View["ModifyTime"] = Common.Now();
-                    View["FilterOptionsId"] = this.FilterOptions.FilterOptionsId;
-
                     this.Id = this.Database.Insert(this.TableName, View);
+                    Common.Info("Just inserted " + this.TableName + "Id: " + this.Id.ToString());
                     if (this.Id > 0) {
                         CreateTime = Convert.ToDateTime(View["CreateTime"]);
                         ModifyTime = Convert.ToDateTime(View["ModifyTime"]);
                         FilterOptionsId = View["FilterOptionsId"];
+                        SortOrderNo = (int)View["SortOrderNo"];
                     } else {
                         throw new Exception("Error inserting into " + this.TableName);
                     }
                 } else {
-                    this.FilterOptions.Save();
+                    //this.FilterOptions.Save();
 
                     View["ModifyTime"] = Common.Now();
+                    Common.Info("About to update " + this.TableName + "Id: " + this.Id.ToString());
                     if (this.Database.Update(this.TableName, View, this.TableName + "Id", this.Id) == 1) {
                         ModifyTime = Convert.ToDateTime(View["ModifyTime"]);
+                        FilterOptionsId = View["FilterOptionsId"];
                     } else {
                         throw new Exception("Error updating " + this.TableName);
                     }
                 }
+
+                this.Saved = true;
+                this.Changed = false;
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
-                return false;
+                this.Saved = false;
             }
 
-            return true;
+            return this.Saved;
         }
 
         //----------------------------------------------------------------------

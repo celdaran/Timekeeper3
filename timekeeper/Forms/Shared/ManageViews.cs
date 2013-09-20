@@ -182,7 +182,7 @@ namespace Timekeeper.Forms.Shared
                     // Only the description changed
                     if ((PreviousName == DialogBox.wNewName.Text) && (PreviousDescription != DialogBox.wNewDescription.Text)) {
                         View.Description = DialogBox.wNewDescription.Text;
-                        View.SaveRow();
+                        View.SaveRow(false, 0);
                         LoadList();
                         return;
                         // TODO or FIXME: Let's have a ubiquitous Id property synonymous with TableNameId
@@ -195,7 +195,7 @@ namespace Timekeeper.Forms.Shared
                         // Rename (and Redescribe)
                         View.Name = DialogBox.wNewName.Text;
                         View.Description = DialogBox.wNewDescription.Text;
-                        View.SaveRow();  // FIXME: crap! this is an upsert... I CAN'T rename
+                        View.SaveRow(false, 0);  // FIXME: crap! this is an upsert... I CAN'T rename
 
                         // Repaint List
                         LoadList();
@@ -240,10 +240,11 @@ namespace Timekeeper.Forms.Shared
                 int SavedFirstSortOrderNo = firstView.SortOrderNo;
 
                 firstView.SortOrderNo = secondView.SortOrderNo;
-                firstView.SaveRow();
+                // FIXME: Consider SaveRow() without args calls SaveRow(false, 0)
+                firstView.SaveRow(false, 0);
 
                 secondView.SortOrderNo = SavedFirstSortOrderNo;
-                secondView.SaveRow();
+                secondView.SaveRow(false, 0);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

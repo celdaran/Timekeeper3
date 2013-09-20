@@ -40,6 +40,27 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
+        public Classes.BaseView SaveView(System.Windows.Forms.Form window, string viewType, Classes.BaseView view)
+        {
+            Classes.BaseView View = view;
+
+            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView(viewType + "View");
+            DialogBox.ViewName.Text = View.Name;
+            DialogBox.ViewDescription.Text = View.Description;
+
+            if (DialogBox.ShowDialog(window) == DialogResult.OK) {
+                View.Name = DialogBox.ViewName.Text;
+                View.Description = DialogBox.ViewDescription.Text;
+                SetViewTitleBar(window, viewType, View.Name);
+                View.Changed = true;
+            } else {
+                View.Changed = false;
+            }
+            return View;
+        }
+
+        //----------------------------------------------------------------------
+
         public void SetViewTitleBar(System.Windows.Forms.Form window, string windowTitle, string viewName)
         {
             window.Text = String.Format("Timekeeper {0} ({1})", windowTitle, viewName);

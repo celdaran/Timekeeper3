@@ -31,6 +31,10 @@ namespace Timekeeper.Forms
 
         public long lastFindViewId;
 
+        // Um, hack?
+
+        Forms.Shared.Filtering FilterDialog;
+
         //---------------------------------------------------------------------
         // Constructor
         //---------------------------------------------------------------------
@@ -76,8 +80,7 @@ namespace Timekeeper.Forms
                 PopulateLoadMenu();
 
                 // Then go!
-                FindView.Load(Options.State_LastFindViewId);
-                RunFind(false);
+                LoadAndRunFind(Options.State_LastFindViewId);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -141,8 +144,7 @@ namespace Timekeeper.Forms
         {
             ToolStripItem Item = (ToolStripItem)sender;
             Classes.BaseView View = (Classes.BaseView)Item.Tag;
-            FindView.Load(View.Id);
-            RunFind(false);
+            LoadAndRunFind(View.Id);
         }
 
         //----------------------------------------------------------------------
@@ -151,9 +153,10 @@ namespace Timekeeper.Forms
         {
             Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView("FindView");
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
+                Common.Info("Don't forget to copy the new logic from Grid here");
                 FindView.Name = DialogBox.ViewName.Text;
                 FindView.Description = DialogBox.ViewDescription.Text;
-                FindView.Save();
+                FindView.Save(false, 0);
                 PopulateLoadMenu();
                 this.Widgets.SetViewTitleBar(this, "Find", FindView.Name);
             }
@@ -188,6 +191,7 @@ namespace Timekeeper.Forms
 
             // Overwrite FilterOptions with current FilterOptions
             AutoSavedFindView.FilterOptions = FindView.FilterOptions;
+            AutoSavedFindView.FilterOptionsId = FindView.FilterOptionsId;
 
             // Overwrite Find-specific settings with current UI values
             // NONE YET: Below is from Grid.cs for reference
@@ -198,7 +202,7 @@ namespace Timekeeper.Forms
             */
 
             // Now attempt to save (this is an upsert)
-            if (AutoSavedFindView.Save()) {
+            if (AutoSavedFindView.Save(false, 0)) { // FIXME: NEEDS TO BE this.FilterOptionsChanged (I think)
                 // Make sure the Last Saved ID is the current value
                 Options.State_LastFindViewId = AutoSavedFindView.Id;
 
@@ -268,6 +272,43 @@ namespace Timekeeper.Forms
             }
         }
 
+        //----------------------------------------------------------------------
+        // Wrapper for the gridfind loading logic, followed by the actual 
+        // running of the Find code.
+        //----------------------------------------------------------------------
+
+        private void LoadAndRunFind(long findViewId)
+        {
+            if (findViewId > 0) {
+                // Load Last Saved Options
+                FindView.Load(findViewId);
+
+                // This requires some explanation. It's definitely a hack but something
+                // for which I don't currently have the time or energy to handle otherwise.
+                // In short, the tree handling logic lies within the Filtering dialog box,
+                // including the ImpliedProjects and ImpliedActivities. These structures
+                // are the result of looking at the actually-checked values in the treeview
+                // controls and returning the  list of ProjectId and ActivityId values that
+                // are implied by the checkboxes. This information is required to properly
+                // paint a just-loaded grid and it only lives in Forms.Shared.Filtering.
+                // If we instantiate this form here, right after loading up a saved grid
+                // view, then everything Just Works.
+
+                this.FilterDialog = new Forms.Shared.Filtering(FindView.FilterOptions);
+
+                // Reflect loaded view in Title Bar
+                this.Widgets.SetViewTitleBar(this, "Find", FindView.Name);
+
+                // Set this as the last run ID
+                Options.State_LastFindViewId = findViewId;
+
+                RunFind(false);
+            } else {
+                EnableToolbar();
+                RunFind(false);
+            }
+        }
+
         //---------------------------------------------------------------------
         // Main Find Results Generator
         //---------------------------------------------------------------------
@@ -281,15 +322,6 @@ namespace Timekeeper.Forms
 
         private void RunFind(bool autoSaveView)
         {
-            //----------------------------------------------
-            // Setup
-            //----------------------------------------------
-
-            // Reflect loaded grid in Title Bar
-            this.Widgets.SetViewTitleBar(this, "Find", FindView.Name);
-
-            Options.State_LastFindViewId = FindView.Id;
-
             //----------------------------------------------
             // Run
             //----------------------------------------------

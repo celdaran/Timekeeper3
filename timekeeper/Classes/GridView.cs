@@ -68,12 +68,19 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public bool Save()
+        public bool Save(bool filterOptionsChanged)
+        {
+            return Save(filterOptionsChanged, 0);
+        }
+
+        //----------------------------------------------------------------------
+
+        public bool Save(bool filterOptionsChanged, long filterOptionsId)
         {
             bool Saved = false;
 
             try {
-                Saved = base.SaveRow();
+                Saved = base.SaveRow(filterOptionsChanged, filterOptionsId);
 
                 if (Saved) {
                     Row View = new Row();
