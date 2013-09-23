@@ -18,15 +18,17 @@ namespace Timekeeper.Forms.Shared
 
         private string TableName;
         private Classes.Widgets Widgets;
+        private bool IsDirty;
 
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
 
-        public SaveView(string tableName)
+        public SaveView(string tableName, bool isDirty)
         {
             InitializeComponent();
             this.TableName = tableName;
+            this.IsDirty = isDirty;
             this.Widgets = new Classes.Widgets();
         }
 
@@ -37,7 +39,7 @@ namespace Timekeeper.Forms.Shared
         private void SaveView_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (DialogResult == DialogResult.OK) {
-                if (this.Widgets.ViewExists(this.TableName, this.ViewName.Text)) {
+                if (this.Widgets.ViewExists(this.TableName, this.ViewName.Text, this.IsDirty)) {
                     e.Cancel = true;
                 }
             }

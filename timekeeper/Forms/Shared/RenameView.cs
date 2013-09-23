@@ -58,7 +58,7 @@ namespace Timekeeper.Forms.Shared
         {
             if (DialogResult == DialogResult.OK) {
                 if (PreviousName != this.wNewName.Text) {
-                    if (this.Widgets.ViewExists(this.TableName, this.wNewName.Text)) {
+                    if (this.Widgets.ViewExists(this.TableName, this.wNewName.Text, false)) {
                         e.Cancel = true;
                     }
                 }

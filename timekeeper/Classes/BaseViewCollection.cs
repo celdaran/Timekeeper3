@@ -67,7 +67,7 @@ namespace Timekeeper.Classes
 
         private Table FetchRows()
         {
-            string Query = String.Format(@"SELECT * FROM {0} ORDER BY SortOrderNo, Name", this.TableName);
+            string Query = String.Format(@"SELECT * FROM {0} WHERE Name <> 'Unsaved View' ORDER BY SortOrderNo, Name", this.TableName);
             return this.Database.Select(Query);
         }
 

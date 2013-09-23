@@ -30,9 +30,10 @@ namespace Timekeeper.Forms.Reports
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Grid));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Grid));
             this.GridControl = new System.Windows.Forms.DataGridView();
+            this.Dimension = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.FilterButton = new System.Windows.Forms.ToolStripButton();
             this.OptionsButton = new System.Windows.Forms.ToolStripButton();
@@ -42,10 +43,13 @@ namespace Timekeeper.Forms.Reports
             this.GroupByMonthButton = new System.Windows.Forms.ToolStripMenuItem();
             this.GroupByYearButton = new System.Windows.Forms.ToolStripMenuItem();
             this.GroupByNoneButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.RefreshButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.ClearViewButton = new System.Windows.Forms.ToolStripButton();
             this.LoadViewMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.SaveViewButton = new System.Windows.Forms.ToolStripButton();
+            this.SaveViewAsButton = new System.Windows.Forms.ToolStripButton();
             this.ManageViewsButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.PrintMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
@@ -55,8 +59,6 @@ namespace Timekeeper.Forms.Reports
             this.GroupByComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.DimensionComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.TimeDisplayComboBox = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.Dimension = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.GridControl)).BeginInit();
             this.ToolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -102,6 +104,17 @@ namespace Timekeeper.Forms.Reports
             this.GridControl.TabIndex = 14;
             this.GridControl.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
+            // Dimension
+            // 
+            this.Dimension.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.Dimension.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Dimension.Frozen = true;
+            this.Dimension.HeaderText = "No Data";
+            this.Dimension.Name = "Dimension";
+            this.Dimension.ReadOnly = true;
+            this.Dimension.Width = 72;
+            // 
             // ToolStrip
             // 
             this.ToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -112,8 +125,10 @@ namespace Timekeeper.Forms.Reports
             this.toolStripSeparator1,
             this.RefreshButton,
             this.toolStripSeparator3,
+            this.ClearViewButton,
             this.LoadViewMenuButton,
             this.SaveViewButton,
+            this.SaveViewAsButton,
             this.ManageViewsButton,
             this.toolStripSeparator4,
             this.PrintMenuButton,
@@ -166,28 +181,28 @@ namespace Timekeeper.Forms.Reports
             // GroupByDayButton
             // 
             this.GroupByDayButton.Name = "GroupByDayButton";
-            this.GroupByDayButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByDayButton.Size = new System.Drawing.Size(133, 22);
             this.GroupByDayButton.Text = "Day";
             this.GroupByDayButton.Click += new System.EventHandler(this.GroupByDayButton_Click);
             // 
             // GroupByWeekButton
             // 
             this.GroupByWeekButton.Name = "GroupByWeekButton";
-            this.GroupByWeekButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByWeekButton.Size = new System.Drawing.Size(133, 22);
             this.GroupByWeekButton.Text = "Week";
             this.GroupByWeekButton.Click += new System.EventHandler(this.GroupByWeekButton_Click);
             // 
             // GroupByMonthButton
             // 
             this.GroupByMonthButton.Name = "GroupByMonthButton";
-            this.GroupByMonthButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByMonthButton.Size = new System.Drawing.Size(133, 22);
             this.GroupByMonthButton.Text = "Month";
             this.GroupByMonthButton.Click += new System.EventHandler(this.GroupByMonthButton_Click);
             // 
             // GroupByYearButton
             // 
             this.GroupByYearButton.Name = "GroupByYearButton";
-            this.GroupByYearButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByYearButton.Size = new System.Drawing.Size(133, 22);
             this.GroupByYearButton.Text = "Year";
             this.GroupByYearButton.Click += new System.EventHandler(this.GroupByYearButton_Click);
             // 
@@ -196,9 +211,14 @@ namespace Timekeeper.Forms.Reports
             this.GroupByNoneButton.Checked = true;
             this.GroupByNoneButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.GroupByNoneButton.Name = "GroupByNoneButton";
-            this.GroupByNoneButton.Size = new System.Drawing.Size(152, 22);
+            this.GroupByNoneButton.Size = new System.Drawing.Size(133, 22);
             this.GroupByNoneButton.Text = "No Grouping";
             this.GroupByNoneButton.Click += new System.EventHandler(this.GroupByNoneButton_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // RefreshButton
             // 
@@ -216,6 +236,17 @@ namespace Timekeeper.Forms.Reports
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
+            // ClearViewButton
+            // 
+            this.ClearViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ClearViewButton.Image = ((System.Drawing.Image)(resources.GetObject("ClearViewButton.Image")));
+            this.ClearViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ClearViewButton.Name = "ClearViewButton";
+            this.ClearViewButton.Size = new System.Drawing.Size(36, 22);
+            this.ClearViewButton.Text = "Clear";
+            this.ClearViewButton.ToolTipText = "Clear the current view";
+            this.ClearViewButton.Click += new System.EventHandler(this.ClearViewButton_Click);
+            // 
             // LoadViewMenuButton
             // 
             this.LoadViewMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -232,10 +263,21 @@ namespace Timekeeper.Forms.Reports
             this.SaveViewButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewButton.Image")));
             this.SaveViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveViewButton.Name = "SaveViewButton";
-            this.SaveViewButton.Size = new System.Drawing.Size(47, 22);
-            this.SaveViewButton.Text = "Save...";
-            this.SaveViewButton.ToolTipText = "Save current view for future use";
+            this.SaveViewButton.Size = new System.Drawing.Size(35, 22);
+            this.SaveViewButton.Text = "Save";
+            this.SaveViewButton.ToolTipText = "Save Current View";
             this.SaveViewButton.Click += new System.EventHandler(this.SaveViewButton_Click);
+            // 
+            // SaveViewAsButton
+            // 
+            this.SaveViewAsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SaveViewAsButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewAsButton.Image")));
+            this.SaveViewAsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveViewAsButton.Name = "SaveViewAsButton";
+            this.SaveViewAsButton.Size = new System.Drawing.Size(62, 22);
+            this.SaveViewAsButton.Text = "Save As...";
+            this.SaveViewAsButton.ToolTipText = "Save current view for future use";
+            this.SaveViewAsButton.Click += new System.EventHandler(this.SaveViewAsButton_Click);
             // 
             // ManageViewsButton
             // 
@@ -319,22 +361,6 @@ namespace Timekeeper.Forms.Reports
             this.TimeDisplayComboBox.Size = new System.Drawing.Size(75, 25);
             this.TimeDisplayComboBox.Visible = false;
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // Dimension
-            // 
-            this.Dimension.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.Dimension.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Dimension.Frozen = true;
-            this.Dimension.HeaderText = "No Data";
-            this.Dimension.Name = "Dimension";
-            this.Dimension.ReadOnly = true;
-            this.Dimension.Width = 72;
-            // 
             // Grid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -367,7 +393,7 @@ namespace Timekeeper.Forms.Reports
         private System.Windows.Forms.ToolStripButton RefreshButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripDropDownButton LoadViewMenuButton;
-        private System.Windows.Forms.ToolStripButton SaveViewButton;
+        private System.Windows.Forms.ToolStripButton SaveViewAsButton;
         private System.Windows.Forms.ToolStripButton ManageViewsButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripDropDownButton PrintMenuButton;
@@ -385,5 +411,7 @@ namespace Timekeeper.Forms.Reports
         private System.Windows.Forms.ToolStripMenuItem GroupByNoneButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Dimension;
+        private System.Windows.Forms.ToolStripButton ClearViewButton;
+        private System.Windows.Forms.ToolStripButton SaveViewButton;
     }
 }

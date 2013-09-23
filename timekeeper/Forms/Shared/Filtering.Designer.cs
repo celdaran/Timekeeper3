@@ -314,7 +314,7 @@ namespace Timekeeper.Forms.Shared
             this.FilterOptionsTabControl.Margin = new System.Windows.Forms.Padding(13);
             this.FilterOptionsTabControl.Name = "FilterOptionsTabControl";
             this.FilterOptionsTabControl.SelectedIndex = 0;
-            this.FilterOptionsTabControl.Size = new System.Drawing.Size(404, 278);
+            this.FilterOptionsTabControl.Size = new System.Drawing.Size(401, 278);
             this.FilterOptionsTabControl.TabIndex = 0;
             this.FilterOptionsTabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.FilterOptionsTabControl_Selected);
             // 
@@ -325,7 +325,7 @@ namespace Timekeeper.Forms.Shared
             this.CommonTab.Location = new System.Drawing.Point(4, 22);
             this.CommonTab.Name = "CommonTab";
             this.CommonTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CommonTab.Size = new System.Drawing.Size(396, 252);
+            this.CommonTab.Size = new System.Drawing.Size(393, 252);
             this.CommonTab.TabIndex = 0;
             this.CommonTab.Text = "Common";
             this.CommonTab.UseVisualStyleBackColor = true;
@@ -589,7 +589,7 @@ namespace Timekeeper.Forms.Shared
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.BottomPanel.Location = new System.Drawing.Point(0, 278);
             this.BottomPanel.Name = "BottomPanel";
-            this.BottomPanel.Size = new System.Drawing.Size(404, 34);
+            this.BottomPanel.Size = new System.Drawing.Size(401, 34);
             this.BottomPanel.TabIndex = 17;
             // 
             // ClearButton
@@ -607,7 +607,7 @@ namespace Timekeeper.Forms.Shared
             this.ButtonPanel.Controls.Add(this.OkayButton);
             this.ButtonPanel.Controls.Add(this.CloseButton);
             this.ButtonPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ButtonPanel.Location = new System.Drawing.Point(240, 0);
+            this.ButtonPanel.Location = new System.Drawing.Point(237, 0);
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(164, 34);
             this.ButtonPanel.TabIndex = 0;

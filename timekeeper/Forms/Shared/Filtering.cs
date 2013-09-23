@@ -33,6 +33,10 @@ namespace Timekeeper.Forms.Shared
         // Constructor
         //---------------------------------------------------------------------
 
+        public Filtering() : this(null) {}
+
+        //---------------------------------------------------------------------
+
         public Filtering(Classes.FilterOptions filterOptions)
         {
             InitializeComponent();
@@ -189,7 +193,7 @@ namespace Timekeeper.Forms.Shared
         private void Filtering_FormClosing(object sender, FormClosingEventArgs e)
         {
             // FIXME
-            if (ToDate.Value < FromDate.Value) {
+            if (ToDate.Value.Date < FromDate.Value.Date) {
                 //Common.Warn("Invalid date selection");
                 //e.Cancel = true;
             }
@@ -297,8 +301,8 @@ namespace Timekeeper.Forms.Shared
         private void OkayButton_Click(object sender, EventArgs e)
         {
             FilterOptions.DateRangePreset = Presets.SelectedIndex + 1;
-            FilterOptions.FromDate = FromDate.Value;
-            FilterOptions.ToDate = ToDate.Value;
+            FilterOptions.FromDate = FromDate.Value.Date;
+            FilterOptions.ToDate = ToDate.Value.Date;
             FilterOptions.MemoContains = MemoFilter.Text;
             FilterOptions.Activities = GetActuallySelectedValues(ActivityTree.Nodes);
             FilterOptions.Projects = GetActuallySelectedValues(ProjectTree.Nodes);
@@ -321,9 +325,9 @@ namespace Timekeeper.Forms.Shared
 
             PopulateStuff();
 
-            DurationOperator.SelectedIndex = 0;
+            DurationOperator.SelectedIndex = -1;
             DurationAmount.Value = 0;
-            DurationUnit.SelectedIndex = -1;
+            DurationUnit.SelectedIndex = 0;
 
             CreateTimePresets.SelectedIndex = -1;
             ModifyTimePresets.SelectedIndex = -1;
@@ -515,8 +519,8 @@ namespace Timekeeper.Forms.Shared
                 FilterOptions.SetDateRange();
             }
             if (ChangeDateRange) {
-                FromDate.Value = FilterOptions.FromDate;
-                ToDate.Value = FilterOptions.ToDate;
+                FromDate.Value = FilterOptions.FromDate.Date;
+                ToDate.Value = FilterOptions.ToDate.Date;
             }
         }
 
@@ -547,12 +551,12 @@ namespace Timekeeper.Forms.Shared
 
         private void FromDate_Enter(object sender, EventArgs e)
         {
-            PreviousFromDate = FromDate.Value;
+            PreviousFromDate = FromDate.Value.Date;
         }
 
         private void FromDate_Leave(object sender, EventArgs e)
         {
-            if (PreviousFromDate != FromDate.Value) {
+            if (PreviousFromDate != FromDate.Value.Date) {
                 ChangeDateRange = false;
                 Presets.SelectedIndex = Classes.FilterOptions.DATE_PRESET_CUSTOM - 1;
                 ChangeDateRange = true;

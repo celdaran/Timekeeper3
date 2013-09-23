@@ -151,7 +151,7 @@ namespace Timekeeper.Forms
 
         private void SaveViewButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView("FindView");
+            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView("FindView", false); // FIXME: 'false' should not be hardcoded
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
                 Common.Info("Don't forget to copy the new logic from Grid here");
                 FindView.Name = DialogBox.ViewName.Text;
@@ -191,7 +191,7 @@ namespace Timekeeper.Forms
 
             // Overwrite FilterOptions with current FilterOptions
             AutoSavedFindView.FilterOptions = FindView.FilterOptions;
-            AutoSavedFindView.FilterOptionsId = FindView.FilterOptionsId;
+            //AutoSavedFindView.FilterOptionsId = FindView.FilterOptionsId;
 
             // Overwrite Find-specific settings with current UI values
             // NONE YET: Below is from Grid.cs for reference

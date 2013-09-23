@@ -21,20 +21,21 @@ namespace Timekeeper.Classes
         // Public Properties
         //----------------------------------------------------------------------
 
-        public long Id { get; protected set; }
+        public long Id { get; private set; }
 
-        public DateTime CreateTime { get; protected set; }
-        public DateTime ModifyTime { get; protected set; }
+        public DateTime CreateTime { get; private set; }
+        public DateTime ModifyTime { get; private set; }
 
         public string Name { get; set; }
         public string Description { get; set; }
         public int SortOrderNo { get; set; }
-        public long FilterOptionsId { get; set; }
+        public long FilterOptionsId { get; private set; }
 
         public Classes.FilterOptions FilterOptions { get; set; }
 
         public bool Saved { get; set; }
         public bool Changed { get; set; }
+        public bool IsAutoSaved { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -42,10 +43,16 @@ namespace Timekeeper.Classes
 
         public BaseView(string tableName)
         {
+            this.Id = 0;
+
             this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
             this.TableName = tableName;
             this.FilterOptions = new Classes.FilterOptions();
+
+            this.Saved = false;
+            this.Changed = true;
+            this.IsAutoSaved = false;
         }
 
         //----------------------------------------------------------------------
@@ -59,7 +66,7 @@ namespace Timekeeper.Classes
 
         public BaseView(string tableName, string viewName) : this(tableName)
         {
-            long id = this.GetId(viewName);
+            long id = this.NameToId(viewName);
             this.LoadRow(id);
         }
 
@@ -84,7 +91,9 @@ namespace Timekeeper.Classes
                     this.Description = (string)Timekeeper.GetValue(View["Description"], "");
                     this.SortOrderNo = (int)Timekeeper.GetValue(View["SortOrderNo"], 0);
                     this.FilterOptionsId = View["FilterOptionsId"];
-                    FilterOptions = new Classes.FilterOptions(FilterOptionsId);
+                    this.FilterOptions = new Classes.FilterOptions(FilterOptionsId);
+                    this.Changed = false;
+                    this.IsAutoSaved = (this.Name == "Unsaved View");
                 }
             }
             catch (Exception x) {
@@ -186,6 +195,7 @@ namespace Timekeeper.Classes
 
                 this.Saved = true;
                 this.Changed = false;
+                this.IsAutoSaved = (this.Name == "Unsaved View");
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -209,6 +219,10 @@ namespace Timekeeper.Classes
             this.Description = null;
             this.SortOrderNo = 0;
             this.FilterOptionsId = 0;
+
+            this.Saved = false;
+            this.Changed = true;
+            this.IsAutoSaved = false;
         }
 
         //----------------------------------------------------------------------
@@ -222,7 +236,7 @@ namespace Timekeeper.Classes
         // Helpers
         //----------------------------------------------------------------------
 
-        private long GetId(string viewName)
+        private long NameToId(string viewName)
         {
             string QuotedName = viewName.Replace("'", "''");
             string Query = String.Format(@"SELECT {0}Id AS Id FROM {0} WHERE Name = '{1}'",

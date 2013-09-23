@@ -26,17 +26,17 @@ namespace Timekeeper.Forms.Reports
         private Classes.GridView GridView;
         private Classes.GridView AutoSavedGridView;
 
+        private Forms.Shared.Filtering FilterDialog;
+        private List<ToolStripMenuItem> GroupByButtons;
+        private int ViewCount;
+
+        private bool LoadingExistingGrid;
+
+        //----------------------------------------------------------------------
+
         public delegate void BrowserCallback(long entryId);
 
-        private List<ToolStripMenuItem> GroupByButtons;
-
-        public long lastGridViewId;
-
-        // Um, hack?
-
-        private Classes.FilterOptions BeforeFilterOptions;
-        private Forms.Shared.Filtering FilterDialog;
-        private bool FilterOptionsChanged;
+        //public long lastGridViewId;
 
         //----------------------------------------------------------------------
         // Constructor
@@ -91,18 +91,23 @@ namespace Timekeeper.Forms.Reports
             Top = Options.Grid_Top;
             Left = Options.Grid_Left;
 
+            // Load up saved grid and paint
+            LoadAndRunGrid(Options.State_LastGridViewId);
+
+            if (GridView.IsAutoSaved) {
+                GridView.Changed = true;
+            }
+
             // Populate the list of Saved Views
             PopulateLoadMenu();
 
-            // Load up saved grid and paint
-            LoadAndRunGrid(Options.State_LastGridViewId);
         }
 
         //----------------------------------------------------------------------
 
         private void Grid_Activated(object sender, EventArgs e)
         {
-            EnableToolbar();
+            UpdateToolbar();
         }
 
         //----------------------------------------------------------------------
@@ -121,21 +126,12 @@ namespace Timekeeper.Forms.Reports
 
         private void FilterButton_Click(object sender, EventArgs e)
         {
-            this.BeforeFilterOptions = new Classes.FilterOptions(GridView.FilterOptionsId);
+            GridView.FilterOptions = this.Widgets.FilteringDialog(this, 
+                FilterDialog, GridView.FilterOptions.FilterOptionsId);
 
-            if (FilterDialog.ShowDialog(this) == DialogResult.OK) {
-                if (BeforeFilterOptions.Equals(FilterDialog.FilterOptions)) {
-                    Common.Info("You didn't make no changes!");
-                    this.FilterOptionsChanged = false;
-                    // FIXME: handle this more better
-                    GridView.FilterOptions = BeforeFilterOptions;
-                } else {
-                    Common.Info("You made some changes!");
-                    this.FilterOptionsChanged = true;
-                    // FIXME: handle this more better
-                    GridView.FilterOptions = FilterDialog.FilterOptions;
-                    RunGrid();
-                }
+            if (GridView.FilterOptions.Changed) {
+                GridView.Changed = true;
+                RunGrid();
             }
         }
 
@@ -203,6 +199,28 @@ namespace Timekeeper.Forms.Reports
 
         //----------------------------------------------------------------------
 
+        private void ClearViewButton_Click(object sender, EventArgs e)
+        {
+            if (GridView.Changed) {
+                if (Common.WarnPrompt("Current view has not been saved. Continue clearing?") == DialogResult.No) {
+                    return;
+                }
+            }
+
+            GridView = new Classes.GridView();
+
+            GroupByComboBox.SelectedItem = "Month";
+            DimensionComboBox.SelectedIndex = 0;
+            TimeDisplayComboBox.SelectedIndex = 0;
+
+            this.Widgets.SetViewTitleBar(this, "Grid");
+            ClearViewButton.Enabled = false;
+
+            LoadAndRunGrid(0);
+        }
+
+        //----------------------------------------------------------------------
+
         private void LoadViewButton_Click(object sender, EventArgs e)
         {
             ToolStripItem Item = (ToolStripItem)sender;
@@ -214,10 +232,29 @@ namespace Timekeeper.Forms.Reports
 
         private void SaveViewButton_Click(object sender, EventArgs e)
         {
-            GridView = (Classes.GridView)this.Widgets.SaveView(this, "Grid", GridView);
+            // Set Grid-specific view options
+            GridView.RefGroupById = GroupByComboBox.SelectedIndex + 1;
+            GridView.RefDimensionId = DimensionComboBox.SelectedIndex + 1;
+            GridView.RefTimeDisplayId = TimeDisplayComboBox.SelectedIndex + 1;
+
+            // Save view
+            GridView.Save(GridView.FilterOptions.Changed, GridView.FilterOptions.FilterOptionsId);
+
+            // Post-save steps
+            GridView.Changed = false;
+            this.Widgets.SetViewTitleBar(this, "Grid", GridView.Name);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SaveViewAsButton_Click(object sender, EventArgs e)
+        {
+            GridView = (Classes.GridView)this.Widgets.SaveViewDialog(this, "Grid", GridView);
             if (GridView.Changed) {
-                GridView.Save(this.FilterOptionsChanged);
+                GridView.Save(GridView.FilterOptions.Changed);
+                GridView.Changed = false;
                 PopulateLoadMenu();
+                UpdateToolbar();
                 Options.State_LastGridViewId = GridView.Id;
             }
         }
@@ -254,22 +291,43 @@ namespace Timekeeper.Forms.Reports
         // Internal Helpers
         //----------------------------------------------------------------------
 
+        private void UpdateViewState(bool autoSaveView)
+        {
+            if ((GridView.Id == 0) || GridView.IsAutoSaved) {
+                if (autoSaveView) {
+                    AutoSaveView();
+                }
+            } else {
+                if (GridView.Changed) {
+                    this.Widgets.SetViewTitleBar(this, "Grid", GridView.Name + "*");
+                }
+            }
+            UpdateToolbar();
+        }
+
+        //----------------------------------------------------------------------
+
         private void AutoSaveView()
         {
-            AutoSavedGridView = new Classes.GridView("Last View");
+            AutoSavedGridView = new Classes.GridView("Unsaved View");
 
             bool NewView = false;
 
             if (AutoSavedGridView.Id == 0) {
                 // This is the first time; so seed the new view
-                AutoSavedGridView.Name = "Last View";
-                AutoSavedGridView.Description = "Automatically saved view";
+                AutoSavedGridView.Name = "Unsaved View";
+                AutoSavedGridView.Description = "Unnamed, last-applied view";
                 NewView = true;
             }
 
             // Overwrite FilterOptions with current FilterOptions
+            long SavedFilterOptionsId = AutoSavedGridView.FilterOptions.FilterOptionsId;
             AutoSavedGridView.FilterOptions = GridView.FilterOptions;
-            AutoSavedGridView.FilterOptionsId = GridView.FilterOptionsId;
+            if (GridView.FilterOptions.FilterOptionsId > 0) {
+                AutoSavedGridView.FilterOptions.FilterOptionsId = GridView.FilterOptions.FilterOptionsId;
+            } else {
+                AutoSavedGridView.FilterOptions.FilterOptionsId = SavedFilterOptionsId;
+            }
 
             // Overwrite Grid-specific settings with current UI values
             AutoSavedGridView.RefGroupById = GroupByComboBox.SelectedIndex + 1;
@@ -277,15 +335,19 @@ namespace Timekeeper.Forms.Reports
             AutoSavedGridView.RefTimeDisplayId = TimeDisplayComboBox.SelectedIndex + 1;
 
             // Now attempt to save (this is an upsert)
-            if (AutoSavedGridView.Save(FilterOptionsChanged, AutoSavedGridView.FilterOptionsId)) {
+            if (AutoSavedGridView.Save(GridView.FilterOptions.Changed, AutoSavedGridView.FilterOptions.FilterOptionsId)) {
                 // Make sure the Last Saved ID is the current value
                 Options.State_LastGridViewId = AutoSavedGridView.Id;
 
                 // Tell me about it
                 Timekeeper.Debug("Just saved GridViewId = " + AutoSavedGridView.Id.ToString());
 
+                // 
                 // And copy it back into the current grid options
                 GridView = AutoSavedGridView;
+
+                // Although this has technically been saved to the DB, treat it as though it hasn't
+                GridView.Changed = true;
 
                 // Update title bar
                 this.Widgets.SetViewTitleBar(this, "Grid", GridView.Name);
@@ -300,7 +362,7 @@ namespace Timekeeper.Forms.Reports
 
         //----------------------------------------------------------------------
 
-        private void EnableToolbar()
+        private void UpdateToolbar()
         {
             Classes.JournalEntryCollection JournalEntries = new Classes.JournalEntryCollection();
 
@@ -309,11 +371,22 @@ namespace Timekeeper.Forms.Reports
             FilterButton.Enabled = HasEntries;
             OptionsButton.Enabled = HasEntries;
             GroupByMenuButton.Enabled = HasEntries;
+
             RefreshButton.Enabled = HasEntries;
-            LoadViewMenuButton.Enabled = HasEntries;
-            SaveViewButton.Enabled = HasEntries;
-            ManageViewsButton.Enabled = HasEntries;
+
+            ClearViewButton.Enabled = (GridView.Id > 0);
+            LoadViewMenuButton.Enabled = (this.ViewCount > 0);
+            SaveViewButton.Enabled = (GridView.Changed && !GridView.IsAutoSaved);
+            SaveViewAsButton.Enabled = HasEntries;
+            ManageViewsButton.Enabled = (this.ViewCount > 0);
+
             PrintMenuButton.Enabled = HasEntries;
+
+            // Special handling
+            if (GridView.Id == 0) {
+                SaveViewButton.Enabled = false;
+                SaveViewAsButton.Enabled = false;
+            }
         }
 
         //----------------------------------------------------------------------
@@ -337,6 +410,9 @@ namespace Timekeeper.Forms.Reports
                 Index++;
             }
             GroupByComboBox.SelectedIndex = buttonIndex;
+            if (!LoadingExistingGrid) {
+                GridView.Changed = true;
+            }
             RunGrid(autoSaveView);
         }
 
@@ -345,7 +421,7 @@ namespace Timekeeper.Forms.Reports
         private void PopulateLoadMenu()
         {
             // Common functions
-            this.Widgets.PopulateLoadMenu("GridView", ToolStrip);
+            this.ViewCount = this.Widgets.PopulateLoadMenu("GridView", ToolStrip);
 
             // Grid-specific function
             foreach (ToolStripItem Item in LoadViewMenuButton.DropDownItems) {
@@ -362,6 +438,8 @@ namespace Timekeeper.Forms.Reports
         {
             if (gridViewId > 0) {
                 // Load Last Saved Options
+                LoadingExistingGrid = true;
+
                 GridView.Load(gridViewId);
 
                 // This requires some explanation. It's definitely a hack but something
@@ -374,7 +452,6 @@ namespace Timekeeper.Forms.Reports
                 // paint a just-loaded grid and it only lives in Forms.Shared.Filtering.
                 // If we instantiate this form here, right after loading up a saved grid
                 // view, then everything Just Works.
-
                 this.FilterDialog = new Forms.Shared.Filtering(GridView.FilterOptions);
 
                 // Reflect loaded grid in Title Bar
@@ -389,11 +466,19 @@ namespace Timekeeper.Forms.Reports
                 DimensionComboBox.SelectedIndex = (int)GridView.RefDimensionId - 1; // dimension
                 TimeDisplayComboBox.SelectedIndex = (int)GridView.RefTimeDisplayId - 1;
 
+                // Update Toolbar
+                UpdateToolbar();
+
                 // Set the value (which triggers RunGrid() itself)
                 GroupBySelect(GroupByComboBox.SelectedIndex, false);
+
+                LoadingExistingGrid = false;
             } else {
+                // We still need one
+                this.FilterDialog = new Forms.Shared.Filtering();
+
                 // Enable/disable toolbar
-                EnableToolbar();
+                UpdateToolbar();
 
                 // Default to "By Day" (and trigger RunGrid())
                 GroupBySelect(0, false);
@@ -567,12 +652,10 @@ namespace Timekeeper.Forms.Reports
                 }
 
                 //-----------------------------------
-                // Save This
+                // Update the view state
                 //-----------------------------------
 
-                if (autoSaveView) {
-                    AutoSaveView();
-                }
+                UpdateViewState(autoSaveView);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

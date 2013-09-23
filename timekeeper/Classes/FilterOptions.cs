@@ -56,7 +56,7 @@ namespace Timekeeper.Classes
         // Public Properties
         //----------------------------------------------------------------------
 
-        public long FilterOptionsId { get; private set; }
+        public long FilterOptionsId { get; set; } // FIXME: set should be private, but I'm experimenting
 
         public DateTime CreateTime { get; private set; }
         public DateTime ModifyTime { get; private set; }
@@ -73,8 +73,10 @@ namespace Timekeeper.Classes
         public int DurationAmount { get; set; }
         public int DurationUnit { get; set; }
 
-        public List<long> ImpliedActivities { get; set; }
         public List<long> ImpliedProjects { get; set; }
+        public List<long> ImpliedActivities { get; set; }
+
+        public bool Changed { get; set; }
 
         //----------------------------------------------------------------------
 
@@ -165,6 +167,10 @@ namespace Timekeeper.Classes
 
         public void Copy(Classes.FilterOptions that)
         {
+            this.FilterOptionsId = that.FilterOptionsId;
+            this.CreateTime = that.CreateTime;
+            this.ModifyTime = that.ModifyTime;
+
             this.DateRangePreset = that.DateRangePreset;
             this.FromDate = that.FromDate;
             this.ToDate = that.ToDate;
@@ -176,21 +182,39 @@ namespace Timekeeper.Classes
             this.DurationOperator = that.DurationOperator;
             this.DurationAmount = that.DurationAmount;
             this.DurationUnit = that.DurationUnit;
+            this.ImpliedProjects = that.ImpliedProjects;
+            this.ImpliedActivities = that.ImpliedActivities;
+
+            this.Changed = false;
         }
 
         //---------------------------------------------------------------------
 
         public bool Equals(Classes.FilterOptions that)
         {
+            /*
+            Timekeeper.Debug(String.Format("this.DateRangePreset={0}, that.DateRangePreset={1}", this.DateRangePreset, that.DateRangePreset));
+            Timekeeper.Debug(String.Format("this.FromDate={0}, that.FromDate={1}", this.FromDate, that.FromDate));
+            Timekeeper.Debug(String.Format("this.ToDate={0}, that.ToDate={1}", this.ToDate, that.ToDate));
+            Timekeeper.Debug(String.Format("this.MemoContains={0}, that.MemoContains={1}", this.MemoContains, that.MemoContains));
+            Timekeeper.Debug(String.Format("this.Projects={0}, that.Projects={1}", String.Join(",", this.Projects), String.Join(",", that.Projects)));
+            Timekeeper.Debug(String.Format("this.Activities={0}, that.Activities={1}", String.Join(",", this.Activities), String.Join(",", that.Activities)));
+            Timekeeper.Debug(String.Format("this.Locations={0}, that.Locations={1}", String.Join(",", this.Locations), String.Join(",", that.Locations)));
+            Timekeeper.Debug(String.Format("this.Categories={0}, that.Categories={1}", String.Join(",", this.Categories), String.Join(",", that.Categories)));
+            Timekeeper.Debug(String.Format("this.DurationOperator={0}, that.DurationOperator={1}", this.DurationOperator, that.DurationOperator));
+            Timekeeper.Debug(String.Format("this.DurationAmount={0}, that.DurationAmount={1}", this.DurationAmount, that.DurationAmount));
+            Timekeeper.Debug(String.Format("this.DurationUnit={0}, that.DurationUnit={1}", this.DurationUnit, that.DurationUnit));
+            */
+
             if (
                 (this.DateRangePreset == that.DateRangePreset) &&
                 (this.FromDate == that.FromDate) &&
                 (this.ToDate == that.ToDate) &&
                 (this.MemoContains == that.MemoContains) &&
-                (this.Projects == that.Projects) &&
-                (this.Activities == that.Activities) &&
-                (this.Locations == that.Locations) &&
-                (this.Categories == that.Categories) &&
+                (this.SetsEqual(this.Projects, that.Projects)) &&
+                (this.SetsEqual(this.Activities, that.Activities)) &&
+                (this.SetsEqual(this.Locations, that.Locations)) &&
+                (this.SetsEqual(this.Categories, that.Categories)) &&
                 (this.DurationOperator == that.DurationOperator) &&
                 (this.DurationAmount == that.DurationAmount) &&
                 (this.DurationUnit == that.DurationUnit))
@@ -199,6 +223,39 @@ namespace Timekeeper.Classes
             } else {
                 return false;
             }
+        }
+
+        //---------------------------------------------------------------------
+        // Find a home for this. Just testing for now.
+        //---------------------------------------------------------------------
+
+        private bool SetsEqual(List<long> left, List<long> right)
+        {
+            if (left.Count != right.Count)
+                return false;
+
+            Dictionary<long, long> Dictionary = new Dictionary<long, long>();
+
+            foreach (long Member in left) {
+                if (Dictionary.ContainsKey(Member) == false)
+                    Dictionary[Member] = 1;
+                else
+                    Dictionary[Member]++;
+            }
+
+            foreach (long Member in right) {
+                if (Dictionary.ContainsKey(Member) == false)
+                    return false;
+                else
+                    Dictionary[Member]--;
+            }
+
+            foreach (KeyValuePair<long, long> Pair in Dictionary) {
+                if (Pair.Value != 0)
+                    return false;
+            }
+
+            return true;
         }
 
         //---------------------------------------------------------------------
@@ -264,8 +321,8 @@ namespace Timekeeper.Classes
         {
             FilterOptionsId = -1;
             DateRangePreset = DATE_PRESET_ALL;
-            FromDate = DateTime.Now;
-            ToDate = DateTime.Now;
+            FromDate = DateTime.UtcNow.Date;
+            ToDate = DateTime.UtcNow.Date;
             MemoContains = null;
             Projects = null;
             Activities = null;
@@ -273,9 +330,9 @@ namespace Timekeeper.Classes
             Categories = null;
             DurationOperator = -1;
             DurationAmount = 0;
-            DurationUnit = -1;
-            ImpliedActivities = null;
+            DurationUnit = 0;
             ImpliedProjects = null;
+            ImpliedActivities = null;
         }
 
         //---------------------------------------------------------------------
@@ -401,18 +458,18 @@ namespace Timekeeper.Classes
 
         public void SetDateRange()
         {
-            DateTime Now = DateTime.Now;
+            DateTime Today = DateTime.UtcNow.Date;
             Classes.JournalEntryCollection Entries;
 
             switch (this.DateRangePreset) {
                 case DATE_PRESET_TODAY:
-                    this.FromDate = Now;
-                    this.ToDate = Now;
+                    this.FromDate = Today;
+                    this.ToDate = Today;
                     break;
 
                 case DATE_PRESET_YESTERDAY:
-                    this.FromDate = Now.Subtract(new TimeSpan(24, 0, 0));
-                    this.ToDate = FromDate;
+                    this.FromDate = Today.Subtract(new TimeSpan(24, 0, 0));
+                    this.ToDate = this.FromDate;
                     break;
 
                 case DATE_PRESET_PREVIOUS_DAY:
@@ -422,20 +479,23 @@ namespace Timekeeper.Classes
                     break;
 
                 case DATE_PRESET_THIS_WEEK:
-                    int diff = Now.DayOfWeek - DayOfWeek.Monday;
-                    this.FromDate = Now.Subtract(new TimeSpan(diff * 24, 0, 0));
-                    this.ToDate = Now;
+                    // TODO: Make the week start day user-definable (e.g., Monday vs. Sunday)
+                    // FIXME: You've defined "THIS WEEK" as "THIS WORK WEEK"
+                    int MondayDelta = Today.DayOfWeek - DayOfWeek.Monday;
+                    this.FromDate = Today.Subtract(new TimeSpan(MondayDelta * 24, 0, 0));
+                    int FridayDelta = DayOfWeek.Friday - Today.DayOfWeek;
+                    this.ToDate = Today.Add(new TimeSpan(FridayDelta * 24, 0, 0));
                     break;
 
                 case DATE_PRESET_THIS_MONTH:
-                    this.FromDate = DateTime.Parse(Now.Year.ToString() + "/" + Now.Month.ToString() + "/1");
-                    this.ToDate = Now;
+                    this.FromDate = DateTime.Parse(Today.Year.ToString() + "/" + Today.Month.ToString() + "/1");
+                    this.ToDate = DateTime.Parse(Today.Year.ToString() + "/" + Today.Month.ToString() + "/" + DateTime.DaysInMonth(Today.Year, Today.Month).ToString());
                     break;
 
                 case DATE_PRESET_LAST_MONTH:
-                    int year = Now.Year;
-                    int month = Now.Month;
-                    if (Now.Month == 1) {
+                    int year = Today.Year;
+                    int month = Today.Month;
+                    if (Today.Month == 1) {
                         year--;
                         month = 12;
                     } else {
@@ -446,12 +506,12 @@ namespace Timekeeper.Classes
                     break;
 
                 case DATE_PRESET_THIS_YEAR:
-                    this.FromDate = DateTime.Parse(Now.Year.ToString() + "/01/01");
-                    this.ToDate = Now;
+                    this.FromDate = DateTime.Parse(Today.Year.ToString() + "/01/01");
+                    this.ToDate = DateTime.Parse(Today.Year.ToString() + "/12/31");
                     break;
 
                 case DATE_PRESET_LAST_YEAR:
-                    year = Now.Year;
+                    year = Today.Year;
                     year--;
                     this.FromDate = DateTime.Parse(year.ToString() + "/01/01");
                     this.ToDate = DateTime.Parse(year.ToString() + "/12/31");
@@ -459,8 +519,8 @@ namespace Timekeeper.Classes
 
                 case DATE_PRESET_ALL:
                     Entries = new Classes.JournalEntryCollection();
-                    this.FromDate = Entries.FirstDay();
-                    this.ToDate = Entries.LastDay();
+                    this.FromDate = Entries.FirstDay().Date;
+                    this.ToDate = Entries.LastDay().Date;
                     break;
 
                 default: 
