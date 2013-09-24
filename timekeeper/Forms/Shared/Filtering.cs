@@ -317,6 +317,15 @@ namespace Timekeeper.Forms.Shared
             DialogResult = DialogResult.OK;
         }
 
+        //---------------------------------------------------------------------
+
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+        }
+
+        //---------------------------------------------------------------------
+
         private void ClearButton_Click(object sender, EventArgs e)
         {
             // TODO: need a better way to convert constants to combobox values

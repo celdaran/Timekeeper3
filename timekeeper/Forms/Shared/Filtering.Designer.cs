@@ -164,7 +164,7 @@ namespace Timekeeper.Forms.Shared
             this.LocationFilter.FormattingEnabled = true;
             this.LocationFilter.Location = new System.Drawing.Point(3, 3);
             this.LocationFilter.Name = "LocationFilter";
-            this.LocationFilter.Size = new System.Drawing.Size(390, 246);
+            this.LocationFilter.Size = new System.Drawing.Size(387, 246);
             this.LocationFilter.TabIndex = 5;
             // 
             // CheckedListBoxMenu
@@ -213,6 +213,7 @@ namespace Timekeeper.Forms.Shared
             this.CloseButton.TabIndex = 99;
             this.CloseButton.Text = "Cancel";
             this.CloseButton.UseVisualStyleBackColor = true;
+            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // OkayButton
             // 
@@ -234,7 +235,7 @@ namespace Timekeeper.Forms.Shared
             this.ActivityTree.Location = new System.Drawing.Point(3, 3);
             this.ActivityTree.Name = "ActivityTree";
             this.ActivityTree.SelectedImageIndex = 0;
-            this.ActivityTree.Size = new System.Drawing.Size(390, 246);
+            this.ActivityTree.Size = new System.Drawing.Size(387, 246);
             this.ActivityTree.TabIndex = 0;
             // 
             // TreeViewMenu
@@ -298,7 +299,7 @@ namespace Timekeeper.Forms.Shared
             this.ProjectTree.Location = new System.Drawing.Point(3, 3);
             this.ProjectTree.Name = "ProjectTree";
             this.ProjectTree.SelectedImageIndex = 0;
-            this.ProjectTree.Size = new System.Drawing.Size(390, 246);
+            this.ProjectTree.Size = new System.Drawing.Size(387, 246);
             this.ProjectTree.TabIndex = 0;
             // 
             // FilterOptionsTabControl
@@ -378,7 +379,7 @@ namespace Timekeeper.Forms.Shared
             this.ProjectTab.Location = new System.Drawing.Point(4, 22);
             this.ProjectTab.Name = "ProjectTab";
             this.ProjectTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ProjectTab.Size = new System.Drawing.Size(396, 252);
+            this.ProjectTab.Size = new System.Drawing.Size(393, 252);
             this.ProjectTab.TabIndex = 3;
             this.ProjectTab.Text = "Projects";
             this.ProjectTab.UseVisualStyleBackColor = true;
@@ -389,7 +390,7 @@ namespace Timekeeper.Forms.Shared
             this.ActivityTab.Location = new System.Drawing.Point(4, 22);
             this.ActivityTab.Name = "ActivityTab";
             this.ActivityTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ActivityTab.Size = new System.Drawing.Size(396, 252);
+            this.ActivityTab.Size = new System.Drawing.Size(393, 252);
             this.ActivityTab.TabIndex = 4;
             this.ActivityTab.Text = "Activities";
             this.ActivityTab.UseVisualStyleBackColor = true;
@@ -400,7 +401,7 @@ namespace Timekeeper.Forms.Shared
             this.LocationTab.Location = new System.Drawing.Point(4, 22);
             this.LocationTab.Name = "LocationTab";
             this.LocationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.LocationTab.Size = new System.Drawing.Size(396, 252);
+            this.LocationTab.Size = new System.Drawing.Size(393, 252);
             this.LocationTab.TabIndex = 1;
             this.LocationTab.Text = "Locations";
             this.LocationTab.UseVisualStyleBackColor = true;
@@ -411,7 +412,7 @@ namespace Timekeeper.Forms.Shared
             this.CategoryTab.Location = new System.Drawing.Point(4, 22);
             this.CategoryTab.Name = "CategoryTab";
             this.CategoryTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CategoryTab.Size = new System.Drawing.Size(396, 252);
+            this.CategoryTab.Size = new System.Drawing.Size(393, 252);
             this.CategoryTab.TabIndex = 5;
             this.CategoryTab.Text = "Categories";
             this.CategoryTab.UseVisualStyleBackColor = true;
@@ -423,7 +424,7 @@ namespace Timekeeper.Forms.Shared
             this.CategoryFilter.FormattingEnabled = true;
             this.CategoryFilter.Location = new System.Drawing.Point(3, 3);
             this.CategoryFilter.Name = "CategoryFilter";
-            this.CategoryFilter.Size = new System.Drawing.Size(390, 246);
+            this.CategoryFilter.Size = new System.Drawing.Size(387, 246);
             this.CategoryFilter.TabIndex = 7;
             // 
             // AdvancedTab
@@ -434,7 +435,7 @@ namespace Timekeeper.Forms.Shared
             this.AdvancedTab.Location = new System.Drawing.Point(4, 22);
             this.AdvancedTab.Name = "AdvancedTab";
             this.AdvancedTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AdvancedTab.Size = new System.Drawing.Size(396, 252);
+            this.AdvancedTab.Size = new System.Drawing.Size(393, 252);
             this.AdvancedTab.TabIndex = 2;
             this.AdvancedTab.Text = "Advanced";
             this.AdvancedTab.UseVisualStyleBackColor = true;

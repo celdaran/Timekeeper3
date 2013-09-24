@@ -28,7 +28,6 @@ namespace Timekeeper.Forms.Reports
 
         private Forms.Shared.Filtering FilterDialog;
         private List<ToolStripMenuItem> GroupByButtons;
-        private int ViewCount;
 
         private bool LoadingExistingGrid;
 
@@ -201,10 +200,8 @@ namespace Timekeeper.Forms.Reports
 
         private void ClearViewButton_Click(object sender, EventArgs e)
         {
-            if (GridView.Changed) {
-                if (Common.WarnPrompt("Current view has not been saved. Continue clearing?") == DialogResult.No) {
-                    return;
-                }
+            if (this.Widgets.ClearViewCancelled(GridView.Changed)) {
+                return;
             }
 
             GridView = new Classes.GridView();
@@ -251,7 +248,7 @@ namespace Timekeeper.Forms.Reports
         {
             GridView = (Classes.GridView)this.Widgets.SaveViewDialog(this, "Grid", GridView);
             if (GridView.Changed) {
-                GridView.Save(GridView.FilterOptions.Changed);
+                GridView.Save(true); // When Saving As, always create a new FilterRow
                 GridView.Changed = false;
                 PopulateLoadMenu();
                 UpdateToolbar();
@@ -364,29 +361,10 @@ namespace Timekeeper.Forms.Reports
 
         private void UpdateToolbar()
         {
-            Classes.JournalEntryCollection JournalEntries = new Classes.JournalEntryCollection();
+            bool HasEntries = this.Widgets.UpdateToolbar(ToolStrip, (Classes.BaseView)GridView);
 
-            bool HasEntries = (JournalEntries.Count() > 0);
-
-            FilterButton.Enabled = HasEntries;
             OptionsButton.Enabled = HasEntries;
             GroupByMenuButton.Enabled = HasEntries;
-
-            RefreshButton.Enabled = HasEntries;
-
-            ClearViewButton.Enabled = (GridView.Id > 0);
-            LoadViewMenuButton.Enabled = (this.ViewCount > 0);
-            SaveViewButton.Enabled = (GridView.Changed && !GridView.IsAutoSaved);
-            SaveViewAsButton.Enabled = HasEntries;
-            ManageViewsButton.Enabled = (this.ViewCount > 0);
-
-            PrintMenuButton.Enabled = HasEntries;
-
-            // Special handling
-            if (GridView.Id == 0) {
-                SaveViewButton.Enabled = false;
-                SaveViewAsButton.Enabled = false;
-            }
         }
 
         //----------------------------------------------------------------------
@@ -421,7 +399,7 @@ namespace Timekeeper.Forms.Reports
         private void PopulateLoadMenu()
         {
             // Common functions
-            this.ViewCount = this.Widgets.PopulateLoadMenu("GridView", ToolStrip);
+            this.Widgets.PopulateLoadMenu("GridView", ToolStrip);
 
             // Grid-specific function
             foreach (ToolStripItem Item in LoadViewMenuButton.DropDownItems) {

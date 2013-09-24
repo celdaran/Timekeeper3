@@ -8,8 +8,23 @@ namespace Timekeeper.Classes
 {
     partial class Widgets
     {
+
+        private long ViewCount;
+
         //----------------------------------------------------------------------
         // Notes
+        //----------------------------------------------------------------------
+
+        public bool ClearViewCancelled(bool changed)
+        {
+            if (changed) {
+                if (Common.WarnPrompt("Current view has not been saved. Continue clearing?") == DialogResult.No) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         //----------------------------------------------------------------------
 
         public Classes.FilterOptions FilteringDialog(Form window, Forms.Shared.Filtering filterDialog, long filterOptionsId)
@@ -27,6 +42,9 @@ namespace Timekeeper.Classes
                     ReturnFilterOptions.Copy(filterDialog.FilterOptions);
                     ReturnFilterOptions.Changed = true;
                 }
+            } else {
+                ReturnFilterOptions.Copy(BeforeFilterOptions);
+                ReturnFilterOptions.Changed = false;
             }
 
             return ReturnFilterOptions;
@@ -34,7 +52,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public int PopulateLoadMenu(string tableName, ToolStrip toolbar)
+        public long PopulateLoadMenu(string tableName, ToolStrip toolbar)
         {
             // Get our buttons
             ToolStripDropDownButton LoadViewMenuButton = (ToolStripDropDownButton)toolbar.Items["LoadViewMenuButton"];
@@ -59,7 +77,9 @@ namespace Timekeeper.Classes
                 ManageViewsButton.Enabled = true;
             }
 
-            return BaseViews.Count;
+            this.ViewCount = BaseViews.Count;
+
+            return this.ViewCount;
         }
 
         //----------------------------------------------------------------------
@@ -69,8 +89,13 @@ namespace Timekeeper.Classes
             Classes.BaseView View = view;
 
             Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView(viewType + "View", view.Changed);
-            DialogBox.ViewName.Text = View.Name;
-            DialogBox.ViewDescription.Text = View.Description;
+
+            if (!view.IsAutoSaved) {
+                // Prepopulate the box with the current name and description
+                // as long as it isn't an AutoSaved view
+                DialogBox.ViewName.Text = View.Name;
+                DialogBox.ViewDescription.Text = View.Description;
+            }
 
             if (DialogBox.ShowDialog(window) == DialogResult.OK) {
                 View.Name = DialogBox.ViewName.Text;
@@ -100,6 +125,48 @@ namespace Timekeeper.Classes
             } else {
                 window.Text = String.Format("{0} {1} - {2}", Timekeeper.TITLE, windowTitle, viewName);
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        public bool UpdateToolbar(ToolStrip toolbar, Classes.BaseView view)
+        {
+            Classes.JournalEntryCollection JournalEntries = new Classes.JournalEntryCollection();
+
+            bool HasEntries = (JournalEntries.Count() > 0);
+
+            // Get our buttons
+            ToolStripButton FilterButton = (ToolStripButton)toolbar.Items["FilterButton"];
+            ToolStripButton RefreshButton = (ToolStripButton)toolbar.Items["RefreshButton"];
+
+            ToolStripButton ClearViewButton = (ToolStripButton)toolbar.Items["ClearViewButton"];
+            ToolStripDropDownButton LoadViewMenuButton = (ToolStripDropDownButton)toolbar.Items["LoadViewMenuButton"];
+            ToolStripButton SaveViewButton = (ToolStripButton)toolbar.Items["SaveViewButton"];
+            ToolStripButton SaveViewAsButton = (ToolStripButton)toolbar.Items["SaveViewAsButton"];
+            ToolStripButton ManageViewsButton = (ToolStripButton)toolbar.Items["ManageViewsButton"];
+
+            // FIXME: handle conditionally present buttons
+            //ToolStripButton PrintMenuButton = (ToolStripButton)toolbar.Items["PrintMenuButton"];
+
+            FilterButton.Enabled = HasEntries;
+            RefreshButton.Enabled = HasEntries;
+
+            ClearViewButton.Enabled = (view.Id > 0);
+            LoadViewMenuButton.Enabled = (this.ViewCount > 0);
+            SaveViewButton.Enabled = (view.Changed && !view.IsAutoSaved);
+            SaveViewAsButton.Enabled = HasEntries;
+            ManageViewsButton.Enabled = (this.ViewCount > 0);
+
+            //PrintMenuButton.Enabled = HasEntries;
+
+            // Special handling
+            if (view.Id == 0) {
+                SaveViewButton.Enabled = false;
+                SaveViewAsButton.Enabled = false;
+            }
+
+            // In case the caller needs this info
+            return HasEntries;
         }
 
         //----------------------------------------------------------------------

@@ -59,6 +59,13 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
+        public bool Save(bool filterOptionsChanged)
+        {
+            return Save(filterOptionsChanged, 0);
+        }
+
+        //----------------------------------------------------------------------
+
         public bool Save(bool filterOptionsChanged, long filterOptionsId)
         {
             bool Saved = false;

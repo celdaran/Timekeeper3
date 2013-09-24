@@ -76,20 +76,26 @@ namespace Timekeeper.Forms
                 FindResultsGrid.Columns["CategoryName"].Width = Options.Find_Grid_CategoryNameWidth;
                 FindResultsGrid.Columns["IsLocked"].Width = Options.Find_Grid_IsLockedWidth;
 
+                // Load up saved Find and paint
+                LoadAndRunFind(Options.State_LastFindViewId);
+
+                if (FindView.IsAutoSaved) {
+                    FindView.Changed = true;
+                }
+
                 // Populate the list of Saved Views
                 PopulateLoadMenu();
-
-                // Then go!
-                LoadAndRunFind(Options.State_LastFindViewId);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
         }
 
+        //----------------------------------------------------------------------
+
         private void Find_Activated(object sender, EventArgs e)
         {
-            EnableToolbar();
+            UpdateToolbar();
         }
 
         //----------------------------------------------------------------------
@@ -121,12 +127,15 @@ namespace Timekeeper.Forms
 
         private void FilterButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.Filtering FilterDialog = new Forms.Shared.Filtering(FindView.FilterOptions);
+            // Re-instantiate just before opening. See comment surrounding the
+            // only other instantiation of this object
+            this.FilterDialog = new Forms.Shared.Filtering(FindView.FilterOptions);
 
-            if (FilterDialog.ShowDialog(this) == DialogResult.OK) {
-                FindView.FilterOptions = FilterDialog.FilterOptions;
-                // FIXME: with double visibility
-                Timekeeper.Info("FIXME");
+            FindView.FilterOptions = this.Widgets.FilteringDialog(this,
+                FilterDialog, FindView.FilterOptions.FilterOptionsId);
+
+            if (FindView.FilterOptions.Changed) {
+                FindView.Changed = true;
                 RunFind();
             }
         }
@@ -136,6 +145,22 @@ namespace Timekeeper.Forms
         private void RefreshButton_Click(object sender, EventArgs e)
         {
             RunFind(false);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void ClearViewButton_Click(object sender, EventArgs e)
+        {
+            if (this.Widgets.ClearViewCancelled(FindView.Changed)) {
+                return;
+            }
+
+            FindView = new Classes.FindView();
+
+            this.Widgets.SetViewTitleBar(this, "Find");
+            ClearViewButton.Enabled = false;
+
+            LoadAndRunFind(0);
         }
 
         //---------------------------------------------------------------------
@@ -151,14 +176,28 @@ namespace Timekeeper.Forms
 
         private void SaveViewButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.SaveView DialogBox = new Forms.Shared.SaveView("FindView", false); // FIXME: 'false' should not be hardcoded
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                Common.Info("Don't forget to copy the new logic from Grid here");
-                FindView.Name = DialogBox.ViewName.Text;
-                FindView.Description = DialogBox.ViewDescription.Text;
-                FindView.Save(false, 0);
+            // Set Find-specific view options
+            // (none)
+
+            // Save view
+            FindView.Save(FindView.FilterOptions.Changed, FindView.FilterOptions.FilterOptionsId);
+
+            // Post-save steps
+            FindView.Changed = false;
+            this.Widgets.SetViewTitleBar(this, "Find", FindView.Name);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SaveViewAsButton_Click(object sender, EventArgs e)
+        {
+            FindView = (Classes.FindView)this.Widgets.SaveViewDialog(this, "Find", FindView);
+            if (FindView.Changed) {
+                FindView.Save(true); // When Saving As, always create a new FilterRow
+                FindView.Changed = false;
                 PopulateLoadMenu();
-                this.Widgets.SetViewTitleBar(this, "Find", FindView.Name);
+                UpdateToolbar();
+                Options.State_LastFindViewId = FindView.Id;
             }
         }
 
@@ -173,44 +212,77 @@ namespace Timekeeper.Forms
         }
 
         //----------------------------------------------------------------------
+        // Other events
+        //----------------------------------------------------------------------
+
+        private void FindResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) {
+                DataGridViewRow Row = FindResultsGrid.Rows[e.RowIndex];
+                long JournalIndex = Convert.ToInt64(Row.Cells["JournalIndex"].Value);
+                this.Browser_GotoEntry(JournalIndex);
+            }
+        }
+
+        //----------------------------------------------------------------------
         // Internal Helpers
+        //----------------------------------------------------------------------
+
+        private void UpdateViewState(bool autoSaveView)
+        {
+            if ((FindView.Id == 0) || FindView.IsAutoSaved) {
+                if (autoSaveView) {
+                    AutoSaveView();
+                }
+            } else {
+                if (FindView.Changed) {
+                    this.Widgets.SetViewTitleBar(this, "Find", FindView.Name + "*");
+                }
+            }
+            UpdateToolbar();
+        }
+
         //----------------------------------------------------------------------
 
         private void AutoSaveView()
         {
-            AutoSavedFindView = new Classes.FindView("Last View");
+            /*
+                Yes, there's a high degree of copy/paste between Grid's AutoSaveView and
+                here. I'm leaving that for a rainy day project. [CH, 2013-09-24]
+            */
+            AutoSavedFindView = new Classes.FindView("Unsaved View");
 
             bool NewView = false;
 
             if (AutoSavedFindView.Id == 0) {
                 // This is the first time; so seed the new view
-                AutoSavedFindView.Name = "Last View";
-                AutoSavedFindView.Description = "Automatically saved view";
+                AutoSavedFindView.Name = "Unsaved View";
+                AutoSavedFindView.Description = "Unnamed, last-applied view";
                 NewView = true;
             }
 
             // Overwrite FilterOptions with current FilterOptions
+            long SavedFilterOptionsId = AutoSavedFindView.FilterOptions.FilterOptionsId;
             AutoSavedFindView.FilterOptions = FindView.FilterOptions;
-            //AutoSavedFindView.FilterOptionsId = FindView.FilterOptionsId;
+            if (FindView.FilterOptions.FilterOptionsId > 0) {
+                AutoSavedFindView.FilterOptions.FilterOptionsId = FindView.FilterOptions.FilterOptionsId;
+            } else {
+                AutoSavedFindView.FilterOptions.FilterOptionsId = SavedFilterOptionsId;
+            }
 
             // Overwrite Find-specific settings with current UI values
-            // NONE YET: Below is from Grid.cs for reference
-            /*
-            AutoSavedFindView.RefGroupById = GroupByComboBox.SelectedIndex + 1;
-            AutoSavedFindView.RefDimensionId = DimensionComboBox.SelectedIndex + 1;
-            AutoSavedFindView.RefTimeDisplayId = TimeDisplayComboBox.SelectedIndex + 1;
-            */
+            // (none (yet))
 
             // Now attempt to save (this is an upsert)
-            if (AutoSavedFindView.Save(false, 0)) { // FIXME: NEEDS TO BE this.FilterOptionsChanged (I think)
+            if (AutoSavedFindView.Save(FindView.FilterOptions.Changed, AutoSavedFindView.FilterOptions.FilterOptionsId)) {
                 // Make sure the Last Saved ID is the current value
                 Options.State_LastFindViewId = AutoSavedFindView.Id;
 
-                // Tell me about it
-                Timekeeper.Debug("Just saved FindViewId = " + AutoSavedFindView.Id.ToString());
-
-                // And copy it back into the current find options
+                // And copy it back into the current grid options
                 FindView = AutoSavedFindView;
+
+                // Although this has technically been saved to the DB, treat it as though it hasn't
+                FindView.Changed = true;
 
                 // Update title bar
                 this.Widgets.SetViewTitleBar(this, "Find", FindView.Name);
@@ -225,29 +297,12 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
-        private void EnableToolbar()
+        private void UpdateToolbar()
         {
-            Classes.JournalEntryCollection JournalEntries = new Classes.JournalEntryCollection();
-
-            bool HasEntries = (JournalEntries.Count() > 0);
-
-            FilterButton.Enabled = HasEntries;
-            /*
-            OptionsButton.Enabled = HasEntries;
-            GroupByMenuButton.Enabled = HasEntries;
-            */
-            RefreshButton.Enabled = HasEntries;
-            LoadViewMenuButton.Enabled = HasEntries;
-            SaveViewButton.Enabled = HasEntries;
-            ManageViewsButton.Enabled = HasEntries;
-
-            /*
-            PrintMenuButton.Enabled = HasEntries;
-            */
-
-            // FIXME: wrong spot for this
+            bool HasEntries = this.Widgets.UpdateToolbar(ToolStrip, (Classes.BaseView)FindView);
 
             // Hide Columns based on Options
+            // FIXME: Wrong spot for this
             try {
                 FindResultsGrid.Columns["ProjectName"].Visible = Options.Layout_UseProjects;
                 FindResultsGrid.Columns["ActivityName"].Visible = Options.Layout_UseActivities;
@@ -304,7 +359,7 @@ namespace Timekeeper.Forms
 
                 RunFind(false);
             } else {
-                EnableToolbar();
+                UpdateToolbar();
                 RunFind(false);
             }
         }
@@ -323,7 +378,7 @@ namespace Timekeeper.Forms
         private void RunFind(bool autoSaveView)
         {
             //----------------------------------------------
-            // Run
+            // Populate Table
             //----------------------------------------------
 
             Table FindResults = FindView.Results();
@@ -351,27 +406,30 @@ namespace Timekeeper.Forms
                     );
             }
 
+            //----------------------------------------------
+            // Sort (or re-sort) the table
+            //----------------------------------------------
+
+            DataGridViewColumn CurrentlySortedColumn = FindResultsGrid.SortedColumn;
+
+            if (CurrentlySortedColumn == null) {
+                DataGridViewColumn DefaultSortColumn = FindResultsGrid.Columns["StartTime"];
+                FindResultsGrid.Sort(DefaultSortColumn, ListSortDirection.Ascending);
+            } else {
+                ListSortDirection CurrentDirection = ListSortDirection.Ascending;
+                if (FindResultsGrid.SortOrder == SortOrder.Descending) {
+                    CurrentDirection = ListSortDirection.Descending;
+                }
+                FindResultsGrid.Sort(CurrentlySortedColumn, CurrentDirection);
+            }
+
+            //----------------------------------------------
+            // UI Updates
+            //----------------------------------------------
+
             ResultCount.Text = FindResultsGrid.Rows.Count.ToString() + " entries found.";
+            UpdateViewState(autoSaveView);
 
-            //----------------------------------------------
-            // Save
-            //----------------------------------------------
-
-            if (autoSaveView) {
-                AutoSaveView();
-            }
-
-        }
-
-        //---------------------------------------------------------------------
-
-        private void FindResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0) {
-                DataGridViewRow Row = FindResultsGrid.Rows[e.RowIndex];
-                long JournalIndex = Convert.ToInt64(Row.Cells["JournalIndex"].Value);
-                this.Browser_GotoEntry(JournalIndex);
-            }
         }
 
         //---------------------------------------------------------------------
