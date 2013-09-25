@@ -19,9 +19,13 @@ namespace Timekeeper.Forms.Reports
         // Properties
         //---------------------------------------------------------------------
 
-        private DBI Database;
+        private Classes.Options Options;
+        private Classes.Widgets Widgets;
 
-        private Classes.FilterOptions FilterOptions = new Classes.FilterOptions();
+        private Classes.JournalEntryView ReportView;
+        private Classes.JournalEntryView AutoSavedReportView;
+
+        private Forms.Shared.Filtering FilterDialog;
 
         //---------------------------------------------------------------------
         // Constructor
@@ -30,6 +34,11 @@ namespace Timekeeper.Forms.Reports
         public JournalEntry()
         {
             InitializeComponent();
+
+            this.Options = Timekeeper.Options;
+            this.ReportView = new Classes.JournalEntryView();
+            this.AutoSavedReportView = new Classes.JournalEntryView();
+            this.Widgets = new Classes.Widgets();
         }
 
         //---------------------------------------------------------------------
@@ -38,38 +47,129 @@ namespace Timekeeper.Forms.Reports
 
         private void Report_Load(object sender, EventArgs e)
         {
-            this.Database = Timekeeper.Database;
+            // Restore window metrics
+            Height = Options.Report_Height;
+            Width = Options.Report_Width;
+            Top = Options.Report_Top;
+            Left = Options.Report_Left;
 
-            // I'm having trouble getting the default report to paint, this
-            // hack fixes that by sending the paint work to a different code path.
-            //TimerHack.Start();
+            // Load up saved Find and paint
+            LoadAndRunReport(Options.State_LastReportViewId);
 
-            RunReport();
+            if (ReportView.IsAutoSaved) {
+                ReportView.Changed = true;
+            }
 
-            // TODO: set window metrics
+            // Populate the list of Saved Views
+            PopulateLoadMenu();
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
+
+        private void Report_Activated(object sender, EventArgs e)
+        {
+            UpdateToolbar();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Report_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Save window metrics
+            Options.Report_Height = Height;
+            Options.Report_Width = Width;
+            Options.Report_Top = Top;
+            Options.Report_Left = Left;
+        }
+
+        //----------------------------------------------------------------------
+        // Toolbar Commands
+        //----------------------------------------------------------------------
 
         private void FilterButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.Filtering Dialog = new Forms.Shared.Filtering(FilterOptions);
+            // Re-instantiate just before opening. See comment surrounding the
+            // only other instantiation of this object
+            this.FilterDialog = new Forms.Shared.Filtering(ReportView.FilterOptions);
 
-            if (Dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
-                FilterOptions = Dialog.FilterOptions;
+            ReportView.FilterOptions = this.Widgets.FilteringDialog(this,
+                FilterDialog, ReportView.FilterOptions.FilterOptionsId);
+
+            if (ReportView.FilterOptions.Changed) {
+                ReportView.Changed = true;
                 RunReport();
-            } else {
-                // Uh, why?
-                //FilterOptions.Clear();
             }
-            Dialog.Dispose();
         }
 
         //---------------------------------------------------------------------
 
         private void RefreshButton_Click(object sender, EventArgs e)
         {
-            RunReport();
+            RunReport(false);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void ClearViewButton_Click(object sender, EventArgs e)
+        {
+            if (this.Widgets.ClearViewCancelled(ReportView.Changed)) {
+                return;
+            }
+
+            ReportView = new Classes.JournalEntryView();
+
+            this.Widgets.SetViewTitleBar(this, "Report");
+            ClearViewButton.Enabled = false;
+
+            LoadAndRunReport(0);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void LoadViewButton_Click(object sender, EventArgs e)
+        {
+            ToolStripItem Item = (ToolStripItem)sender;
+            Classes.BaseView View = (Classes.BaseView)Item.Tag;
+            LoadAndRunReport(View.Id);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SaveViewButton_Click(object sender, EventArgs e)
+        {
+            // Set Report-specific view options
+            // (none)
+
+            // Save view
+            ReportView.Save(ReportView.FilterOptions.Changed, ReportView.FilterOptions.FilterOptionsId);
+
+            // Post-save steps
+            ReportView.Changed = false;
+            this.Widgets.SetViewTitleBar(this, "Report", ReportView.Name);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SaveViewAsButton_Click(object sender, EventArgs e)
+        {
+            ReportView = (Classes.JournalEntryView)this.Widgets.SaveViewDialog(this, "Report", ReportView);
+            if (ReportView.Changed) {
+                ReportView.Save(true); // When Saving As, always create a new FilterRow
+                ReportView.Changed = false;
+                PopulateLoadMenu();
+                UpdateToolbar();
+                Options.State_LastReportViewId = ReportView.Id;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void ManageViewsButton_Click(object sender, EventArgs e)
+        {
+            Forms.Shared.ManageViews DialogBox = new Forms.Shared.ManageViews("ReportView");
+            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
+                PopulateLoadMenu();
+            }
         }
 
         //---------------------------------------------------------------------
@@ -93,20 +193,129 @@ namespace Timekeeper.Forms.Reports
             ReportWindow.ShowPrintPreviewDialog();
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        // Internal Helpers
+        //----------------------------------------------------------------------
 
-        private void CloseButton_Click(object sender, EventArgs e)
+        private void UpdateViewState(bool autoSaveView)
         {
-            Close();
+            if ((ReportView.Id == 0) || ReportView.IsAutoSaved) {
+                if (autoSaveView) {
+                    AutoSaveView();
+                }
+            } else {
+                if (ReportView.Changed) {
+                    this.Widgets.SetViewTitleBar(this, "Report", ReportView.Name + "*");
+                }
+            }
+            UpdateToolbar();
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        private void TimerHack_Tick(object sender, EventArgs e)
+        private void AutoSaveView()
         {
-            //TimerHack.Stop();
-            Common.Warn("TimerHack still going off");
-            RunReport();
+            /*
+                Yes, there's a high degree of copy/paste between Grid's AutoSaveView and
+                here. I'm leaving that for a rainy day project. [CH, 2013-09-24]
+            */
+            AutoSavedReportView = new Classes.JournalEntryView("Unsaved View");
+
+            bool NewView = false;
+
+            if (AutoSavedReportView.Id == 0) {
+                // This is the first time; so seed the new view
+                AutoSavedReportView.Name = "Unsaved View";
+                AutoSavedReportView.Description = "Unnamed, last-applied view";
+                NewView = true;
+            }
+
+            // Overwrite FilterOptions with current FilterOptions
+            long SavedFilterOptionsId = AutoSavedReportView.FilterOptions.FilterOptionsId;
+            AutoSavedReportView.FilterOptions = ReportView.FilterOptions;
+            if (ReportView.FilterOptions.FilterOptionsId > 0) {
+                AutoSavedReportView.FilterOptions.FilterOptionsId = ReportView.FilterOptions.FilterOptionsId;
+            } else {
+                AutoSavedReportView.FilterOptions.FilterOptionsId = SavedFilterOptionsId;
+            }
+
+            // Now attempt to save (this is an upsert)
+            if (AutoSavedReportView.Save(ReportView.FilterOptions.Changed, AutoSavedReportView.FilterOptions.FilterOptionsId)) {
+                // Make sure the Last Saved ID is the current value
+                Options.State_LastReportViewId = AutoSavedReportView.Id;
+
+                // And copy it back into the current grid options
+                ReportView = AutoSavedReportView;
+
+                // Although this has technically been saved to the DB, treat it as though it hasn't
+                ReportView.Changed = true;
+
+                // Update title bar
+                this.Widgets.SetViewTitleBar(this, "Report", ReportView.Name);
+            } else {
+                Timekeeper.Debug("Options not saved in AutoSaveView()");
+            }
+
+            if (NewView) {
+                PopulateLoadMenu();
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void UpdateToolbar()
+        {
+            bool HasEntries = this.Widgets.UpdateToolbar(ToolStrip, (Classes.BaseView)ReportView);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void PopulateLoadMenu()
+        {
+            // Common functions
+            this.Widgets.PopulateLoadMenu("ReportView", ToolStrip);
+
+            // Report-specific function
+            foreach (ToolStripItem Item in LoadViewMenuButton.DropDownItems) {
+                Item.Click += new System.EventHandler(this.LoadViewButton_Click);
+            }
+        }
+
+        //----------------------------------------------------------------------
+        // Wrapper for the gridfind loading logic, followed by the actual 
+        // running of the Report code.
+        //----------------------------------------------------------------------
+
+        private void LoadAndRunReport(long findViewId)
+        {
+            if (findViewId > 0) {
+                // Load Last Saved Options
+                ReportView.Load(findViewId);
+
+                // This requires some explanation. It's definitely a hack but something
+                // for which I don't currently have the time or energy to handle otherwise.
+                // In short, the tree handling logic lies within the Filtering dialog box,
+                // including the ImpliedProjects and ImpliedActivities. These structures
+                // are the result of looking at the actually-checked values in the treeview
+                // controls and returning the  list of ProjectId and ActivityId values that
+                // are implied by the checkboxes. This information is required to properly
+                // paint a just-loaded grid and it only lives in Forms.Shared.Filtering.
+                // If we instantiate this form here, right after loading up a saved grid
+                // view, then everything Just Works.
+
+                this.FilterDialog = new Forms.Shared.Filtering(ReportView.FilterOptions);
+
+                // Reflect loaded view in Title Bar
+                this.Widgets.SetViewTitleBar(this, "Report", ReportView.Name);
+
+                // Set this as the last run ID
+                Options.State_LastReportViewId = findViewId;
+
+                RunReport(false);
+            } else {
+                UpdateToolbar();
+                RunReport(false);
+            }
         }
 
         //---------------------------------------------------------------------
@@ -115,26 +324,17 @@ namespace Timekeeper.Forms.Reports
 
         private void RunReport()
         {
-            string WhereClause = GetWhereClause();
-            string OrderBy = "log.StartTime"; // TODO: reimplement this: GetOrderBy();
+            RunReport(true);
+        }
 
-            string Query = String.Format(@"
-                select
-                    log.StartTime, log.StopTime, log.Seconds, 
-                    p.Name as ProjectName, a.Name as ActivityName,
-                    log.Memo
-                from Journal log
-                join Activity a on a.ActivityId = log.ActivityId
-                join Project p on p.ProjectId = log.ProjectId
-                left join Location l on l.LocationId = log.LocationId
-                left join Category t on t.CategoryId = log.CategoryId
-                where {0}
-                order by {1}",
-                WhereClause, OrderBy);
+        //---------------------------------------------------------------------
 
-            //Common.Info(Query);
+        private void RunReport(bool autoSaveView)
+        {
+            // TODO: reimplement this: GetOrderBy();
+            string OrderBy = "j.StartTime"; 
 
-            Table Rows = Database.Select(Query);
+            Table FindResults = ReportView.Results(OrderBy);
 
             int nPrevDay = 0;
             long nTotalSeconds = 0;
@@ -142,7 +342,7 @@ namespace Timekeeper.Forms.Reports
 
             String Body = "";
 
-            foreach (Row row in Rows) {
+            foreach (Row row in FindResults) {
                 long seconds = row["Seconds"];
                 DateTime start = row["StartTime"];
                 DateTime end = row["StopTime"];
@@ -198,7 +398,7 @@ namespace Timekeeper.Forms.Reports
                 nDailySeconds += seconds;
             }
 
-            if (Rows.Count > 0) {
+            if (FindResults.Count > 0) {
                 Body += "<hr/><b>Total Time</b>: " + Timekeeper.FormatSeconds(nTotalSeconds);
             } else {
                 Body += "<p>No data matches reporting criteria.</p>";
@@ -258,64 +458,19 @@ namespace Timekeeper.Forms.Reports
                 Timekeeper.Exception(x);
             }
 
+            //----------------------------------------------
+            // UI Updates
+            //----------------------------------------------
+
+            //ResultCount.Text = FindResultsGrid.Rows.Count.ToString() + " entries found.";
+            UpdateViewState(autoSaveView);
+
         }
 
         //---------------------------------------------------------------------
         // Private Helpers
         //---------------------------------------------------------------------
 
-        private string GetWhereClause()
-        {
-            Common.Warn("You're still using the wrong GetWhereClause");
-
-            string WhereClause = "";
-
-            WhereClause += String.Format("log.StartTime >= '{0}'",
-                FilterOptions.FromDateToString()) + System.Environment.NewLine;
-
-            WhereClause += String.Format("and log.StopTime <= '{0}'",
-                FilterOptions.ToDateToString()) + System.Environment.NewLine;
-
-            if ((FilterOptions.ImpliedActivities != null) && (FilterOptions.ImpliedActivities.Count > 0)) {
-                WhereClause += String.Format("and log.ActivityId in ({0})",
-                    FilterOptions.List(FilterOptions.ImpliedActivities)) + System.Environment.NewLine;
-            }
-            if ((FilterOptions.ImpliedProjects != null) && (FilterOptions.ImpliedProjects.Count > 0)) {
-                WhereClause += String.Format("and log.ProjectId in ({0})",
-                    FilterOptions.List(FilterOptions.ImpliedProjects)) + System.Environment.NewLine;
-            }
-            if ((FilterOptions.MemoContains != null) && (FilterOptions.MemoContains != "")) {
-                WhereClause += String.Format("and log.MemoContains like '%{0}%'", FilterOptions.MemoContains) + System.Environment.NewLine;
-            }
-
-            if (FilterOptions.DurationOperator > 0) {
-                // Meaning, if anything but "Any" was selected
-
-                WhereClause += "and log.Seconds ";
-
-                switch (FilterOptions.DurationOperator) {
-                    case 1: WhereClause += " > "; break;
-                    case 2: WhereClause += " < "; break;
-                    case 3: WhereClause += " = "; break;
-                }
-
-                WhereClause += FilterOptions.Seconds().ToString() + System.Environment.NewLine;
-            }
-
-            if ((FilterOptions.Locations != null) && (FilterOptions.Locations.Count > 0)) {
-                WhereClause += String.Format("and log.LocationId in ({0})",
-                    FilterOptions.List(FilterOptions.Locations)) + System.Environment.NewLine;
-            }
-
-            if ((FilterOptions.Categories != null) && (FilterOptions.Categories.Count > 0)) {
-                WhereClause += String.Format("and log.CategoryId in ({0})",
-                    FilterOptions.List(FilterOptions.Categories)) + System.Environment.NewLine;
-            }
-
-            return WhereClause;
-        }
-
-        //---------------------------------------------------------------------
         /*
         private string GetOrderBy()
         {
@@ -340,7 +495,7 @@ namespace Timekeeper.Forms.Reports
             if (selection <= 1) {
                 // If option isn't checked, or it's (none) or it's Date/Time
                 // Yes, even "(none)" gets you a sort order . . .
-                OrderBy = "log.StartTime";
+                OrderBy = "j.StartTime";
             } else {
                 // Otherwise, set the value accordingly
                 switch (selection) {

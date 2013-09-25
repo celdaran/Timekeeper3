@@ -29,11 +29,9 @@ namespace Timekeeper.Forms
 
         private BrowserCallback Browser_GotoEntry;
 
-        public long lastFindViewId;
-
         // Um, hack?
 
-        Forms.Shared.Filtering FilterDialog;
+        private Forms.Shared.Filtering FilterDialog;
 
         //---------------------------------------------------------------------
         // Constructor

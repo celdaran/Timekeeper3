@@ -147,6 +147,7 @@
     <Compile Include="Classes\GridView.cs" />
     <Compile Include="Classes\GridViewCollection.cs" />
     <Compile Include="Classes\Import.cs" />
+    <Compile Include="Classes\JournalEntryView.cs" />
     <Compile Include="Classes\ListAttribute.cs" />
     <Compile Include="Classes\ListAttributeCollection.cs" />
     <Compile Include="Classes\ListViewColumnSorter.cs" />
