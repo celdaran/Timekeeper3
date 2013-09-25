@@ -12,7 +12,7 @@ namespace Timekeeper.Classes
         // Properties
         //---------------------------------------------------------------------
 
-        protected DBI Data;
+        protected DBI Database;
         protected string TableName;
         protected string OrderByClause;
 
@@ -20,9 +20,9 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public TreeAttributeCollection(DBI data, string tableName, string orderByClause)
+        public TreeAttributeCollection(string tableName, string orderByClause)
         {
-            this.Data = data;
+            this.Database = Timekeeper.Database;
             this.TableName = tableName;
             this.OrderByClause = orderByClause;
         }
@@ -34,8 +34,19 @@ namespace Timekeeper.Classes
         public int Count()
         {
             string query = String.Format(@"select count(*) as Count from {0}", this.TableName);
-            Row Row = Data.SelectRow(query);
+            Row Row = Database.SelectRow(query);
             return (int)Row["Count"];
+        }
+
+        //---------------------------------------------------------------------
+
+        public Table GetFolders()
+        {
+            // FIXME: This Order By clause should honor the Timekeeper.Options global "order" setting
+            string Query = String.Format(
+                @"select {0} as Id, Name from {1} where IsDeleted = 0 and IsHidden = 0 and IsFolder = 1 order by CreateTime",
+                this.TableName + "Id", this.TableName);
+            return Database.Select(Query);
         }
 
         //---------------------------------------------------------------------
@@ -49,7 +60,7 @@ namespace Timekeeper.Classes
                   and IsHidden = 0 
                   and ParentId > 0",
                 this.TableName);
-            Row Row = Data.SelectRow(Query);
+            Row Row = Database.SelectRow(Query);
             long count = Row["Count"];
 
             if (count > 0) {
@@ -85,7 +96,7 @@ namespace Timekeeper.Classes
                 order by {3}",
                 this.TableName, HiddenQualifier, parentId, OrderByClause);
 
-            Table Rows = Data.Select(Query);
+            Table Rows = Database.Select(Query);
 
             return Rows;
         }

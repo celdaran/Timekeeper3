@@ -16,9 +16,7 @@ namespace Timekeeper
         // Properties
         //----------------------------------------------------------------------
 
-        private DBI Database;
         private string TableName;
-        private string IdColumnName;
 
         private bool ClickedCancel = false;
         private string PreviousItemName = "";
@@ -28,13 +26,11 @@ namespace Timekeeper
         // Constructor
         //----------------------------------------------------------------------
 
-        public ItemEditor(DBI database, string tableName)
+        public ItemEditor(string tableName)
         {
             InitializeComponent();
 
-            this.Database = database;
             this.TableName = tableName;
-            this.IdColumnName = tableName + "Id";
             this.PopulateParents();
 
             if (tableName == "Project") {
@@ -75,14 +71,14 @@ namespace Timekeeper
 
             if (this.TableName == "Project") {
                 if (PreviousItemName != ItemName.Text) {
-                    Classes.Project Project = new Classes.Project(this.Database, ItemName.Text);
+                    Classes.Project Project = new Classes.Project(ItemName.Text);
                     if (ItemName.Text == Project.Name) {
                         Messages += this.TableName + " '" + ItemName.Text + "' already exists." + Environment.NewLine;
                     }
                 }
 
                 if (PreviousExternalProjectNo != ItemExternalProjectNo.Text) {
-                    Classes.ProjectCollection Projects = new Classes.ProjectCollection(this.Database);
+                    Classes.ProjectCollection Projects = new Classes.ProjectCollection();
                     if (Projects.ExternalProjectNoExists(ItemExternalProjectNo.Text)) {
                         Messages += "External ID '" + ItemExternalProjectNo.Text + "' already exists." + Environment.NewLine;
                     }
@@ -95,7 +91,7 @@ namespace Timekeeper
 
             if (this.TableName == "Activity") {
                 if (PreviousItemName != ItemName.Text) {
-                    Classes.Activity Activity = new Classes.Activity(this.Database, ItemName.Text);
+                    Classes.Activity Activity = new Classes.Activity(ItemName.Text);
                     if (ItemName.Text == Activity.Name) {
                         Messages += this.TableName + " already exists." + Environment.NewLine;
                     }
@@ -129,16 +125,11 @@ namespace Timekeeper
 
         private void PopulateParents()
         {
-            // FIXME: This Order By clause should honor the Timekeeper.Options global "order" setting
-            string Query = String.Format(
-                @"select {0} as Id, Name from {1} where IsDeleted = 0 and IsHidden = 0 and IsFolder = 1 order by CreateTime",
-                this.IdColumnName, this.TableName);
-            Table Table = Database.Select(Query);
-
+            Table ParentList = new Classes.TreeAttributeCollection(this.TableName, "CreateTime").GetFolders();
             IdValuePair Pair = new IdValuePair(-1, "(Top Level)");
 
             ItemParent.Items.Add(Pair);
-            foreach (Row Row in Table) {
+            foreach (Row Row in ParentList) {
                 Pair = new IdValuePair((int)Row["Id"], Row["Name"]);
                 ItemParent.Items.Add(Pair);
             }

@@ -16,15 +16,6 @@ namespace Timekeeper.Forms.Shared
         // Properties
         //----------------------------------------------------------------------
 
-        // FIXME: red flag! Any class under Timekeeper.Forms that has a DBI
-        // connection is wrong. Everything here should be using the application
-        // object layer, not talking to the database directly.
-
-        // NOTE: Already fixed here, but leaving this as a reminder to make a
-        // pass through all other forms / dialog boxes.
-
-        //private DBI Database;
-
         private string TableName;
 
         //----------------------------------------------------------------------

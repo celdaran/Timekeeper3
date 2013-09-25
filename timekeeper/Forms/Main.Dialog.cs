@@ -18,7 +18,7 @@ namespace Timekeeper.Forms
         private void Dialog_EditItem(TreeView tree, string title, Classes.TreeAttribute item)
         {
             string TableName = (string)tree.Tag;
-            ItemEditor Dialog = new ItemEditor(Database, TableName);
+            ItemEditor Dialog = new ItemEditor(TableName);
 
             // Store the object in the dialog's tag
             Dialog.Tag = item;
@@ -29,7 +29,7 @@ namespace Timekeeper.Forms
             // Create a Project object (needed for External)
             Classes.Project Project = null;
             if (TableName == "Project") {
-                Project = new Classes.Project(Database, item.Name);
+                Project = new Classes.Project(item.Name);
             }
 
             // Previous values
@@ -194,7 +194,7 @@ namespace Timekeeper.Forms
         private void Dialog_NewItem(TreeView tree, string title, bool isFolder, Classes.TreeAttribute item, int imageIndex)
         {
             string TableName = (string)tree.Tag;
-            ItemEditor Dialog = new ItemEditor(Database, TableName);
+            ItemEditor Dialog = new ItemEditor(TableName);
 
             // Set the title
             Dialog.Text = title;
@@ -448,7 +448,7 @@ namespace Timekeeper.Forms
             if (item.Type == Classes.TreeAttribute.ItemType.Project) {
                 long LastActivityId = item.FollowedItemId;
                 if (LastActivityId > 0) {
-                    Classes.Activity Activity = new Classes.Activity(Database, LastActivityId);
+                    Classes.Activity Activity = new Classes.Activity(LastActivityId);
                     properties.wLastItemName.Enabled = true;
                     properties.wLastItemName.Text = Activity.Name;
                     properties.wLastItemLabel.Text = "Last Activity:";
@@ -462,7 +462,7 @@ namespace Timekeeper.Forms
             } else {
                 long LastProjectId = item.FollowedItemId;
                 if (LastProjectId > 0) {
-                    Classes.Project Project = new Classes.Project(Database, LastProjectId);
+                    Classes.Project Project = new Classes.Project(LastProjectId);
                     properties.wLastItemLabel.Text = "Last Project:";
                     properties.wLastItemName.Enabled = true;
                     properties.wLastItemName.Text = Project.Name;

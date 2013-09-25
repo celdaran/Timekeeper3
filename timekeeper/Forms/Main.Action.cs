@@ -38,7 +38,7 @@ namespace Timekeeper.Forms
                 if (ActivityTree.SelectedNode != null) {
                     Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
                 } else {
-                    Activity = new Classes.Activity(this.Database);
+                    Activity = new Classes.Activity();
                 }
                 StatusBar_Update(Project, Activity);
             }
@@ -84,7 +84,7 @@ namespace Timekeeper.Forms
                 if (ProjectTree.SelectedNode != null) {
                     Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
                 } else {
-                    Project = new Classes.Project(this.Database);
+                    Project = new Classes.Project();
                 }
                 StatusBar_Update(Project, Activity);
             }
@@ -220,9 +220,9 @@ namespace Timekeeper.Forms
                 int LogLevel = Timekeeper.GetLogLevel(Options.Advanced_Logging_Database);
 
                 Timekeeper.Info("Opening Database: " + DatabaseFileName);
-                Database = Timekeeper.OpenDatabase(DatabaseFileName, LogLevel);
+                Timekeeper.OpenDatabase(DatabaseFileName, LogLevel);
 
-                if (!Database.FileExists) {
+                if (!Timekeeper.Database.FileExists) {
                     Timekeeper.DoubleWarn("File " + DatabaseFileName + " not found");
                     return false;
                 }
@@ -271,7 +271,7 @@ namespace Timekeeper.Forms
             bool FileCreated = false;
 
             int LogLevel = Timekeeper.GetLogLevel(Options.Advanced_Logging_Database);
-            Database = Timekeeper.OpenDatabase(fileName, LogLevel);
+            Timekeeper.OpenDatabase(fileName, LogLevel);
 
             File File = new File();
             Version Version = new Version(File.SCHEMA_VERSION);
@@ -279,7 +279,7 @@ namespace Timekeeper.Forms
             File.CreateOptions = createOptions;
             FileCreated = File.Create(Version);
 
-            Database = Timekeeper.CloseDatabase();
+            Timekeeper.CloseDatabase();
 
             return FileCreated;
         }
@@ -288,7 +288,7 @@ namespace Timekeeper.Forms
 
         private void Action_CloseFile()
         {
-            if (Database != null) {
+            if (Timekeeper.Database != null) {
 
                 ProjectTree.Nodes.Clear();
                 ActivityTree.Nodes.Clear();
@@ -300,7 +300,7 @@ namespace Timekeeper.Forms
                 Options.SaveLocal();
 
                 Timekeeper.Info("Closing Database: " + DatabaseFileName);
-                Database = Timekeeper.CloseDatabase();
+                Timekeeper.CloseDatabase();
 
                 foreach (Form Form in OpenForms) {
                     Form.Close();
@@ -585,7 +585,7 @@ namespace Timekeeper.Forms
 
                 Entries = new Classes.JournalEntryCollection();
                 Meta = new Classes.Meta();
-                Entry = new Classes.JournalEntry(Database);
+                Entry = new Classes.JournalEntry();
 
                 //------------------------------------------
                 // Prepare UI elements
@@ -875,7 +875,7 @@ namespace Timekeeper.Forms
         private void Action_SaveAs(int fileType)
         {
             DBI NewDatabase = new DBI(SaveAsDialog.FileName);
-            File CurrentFile = new File(Database);
+            File CurrentFile = new File();
             File NewFile = new File(NewDatabase);
 
             CurrentFile.SaveAs22(NewFile);
@@ -1287,7 +1287,7 @@ namespace Timekeeper.Forms
                 DateTime LastChunkTime = browserEntry.StopTime;
 
                 // Clone the current entry
-                Classes.JournalEntry SplitEntry = new Classes.JournalEntry(Database);
+                Classes.JournalEntry SplitEntry = new Classes.JournalEntry();
                 SplitEntry = browserEntry.Copy();
                 SplitEntry.Seconds = ChunkSizeInSeconds;
                 SplitEntry.Memo = "Entry automatically split from Journal Entry Id: " + browserEntry.JournalId.ToString();
@@ -1441,7 +1441,7 @@ namespace Timekeeper.Forms
                 if (draggedItem.GetType() == typeof(Classes.Project)) {
 
                     // Create an Activity in the database
-                    Classes.Activity Activity = new Classes.Activity(Database);
+                    Classes.Activity Activity = new Classes.Activity();
                     Activity.Copy(draggedItem);
                     Activity.Create();
 
@@ -1457,7 +1457,7 @@ namespace Timekeeper.Forms
                     }
                 } else {
                     // Create a Project in the database
-                    Classes.Project Project = new Classes.Project(Database);
+                    Classes.Project Project = new Classes.Project();
                     Project.Copy(draggedItem);
                     Project.Create();
 
@@ -1521,10 +1521,10 @@ namespace Timekeeper.Forms
 
         private void Action_TreeView_ShowRootLines()
         {
-            Classes.ProjectCollection Projects = new Classes.ProjectCollection(Database);
+            Classes.ProjectCollection Projects = new Classes.ProjectCollection();
             ProjectTree.ShowRootLines = Projects.HasParents();
 
-            Classes.ActivityCollection Activities = new Classes.ActivityCollection(Database);
+            Classes.ActivityCollection Activities = new Classes.ActivityCollection();
             ActivityTree.ShowRootLines = Activities.HasParents();
         }
 

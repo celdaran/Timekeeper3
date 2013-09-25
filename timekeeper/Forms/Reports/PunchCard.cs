@@ -12,12 +12,9 @@ namespace Timekeeper.Forms.Reports
 {
     public partial class PunchCard : Form
     {
-        DBI data;
-
-        public PunchCard(DBI data)
+        public PunchCard()
         {
             InitializeComponent();
-            this.data = data;
             wDatePreset.SelectedIndex = 2;
         }
 
@@ -51,6 +48,9 @@ namespace Timekeeper.Forms.Reports
             // Clear rows
             wGrid.Rows.Clear();
 
+            Common.Info("You haven't finished refactoring this");
+
+            /*
             // Handle date ranges
             string sStartDate = wStartDate.Text + " 00:00:00";
             string sEndDate = wEndDate.Text + " 29:59:59";
@@ -74,6 +74,7 @@ namespace Timekeeper.Forms.Reports
                 string[] result = { row["day"].ToString(), punch_in.ToString("HH:mm:ss"), punch_out.ToString("HH:mm:ss"), Timekeeper.FormatTimeSpan(ts) };
                 wGrid.Rows.Add(result);
             }
+            */
         }
 
 
@@ -81,6 +82,7 @@ namespace Timekeeper.Forms.Reports
         // FIXME: copy/pasted from fGrid.cs -- ugh
         private void _set_start_date()
         {
+            /*
             DateTime now = DateTime.Now;
             switch (wDatePreset.Text)
             {
@@ -94,6 +96,7 @@ namespace Timekeeper.Forms.Reports
                     Row row = data.SelectRow(query);
                     wStartDate.Value = DateTime.Parse(row["min"]); break;
             }
+            */
         }
 
         //---------------------------------------------------------------------

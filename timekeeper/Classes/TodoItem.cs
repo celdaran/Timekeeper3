@@ -129,7 +129,7 @@ namespace Timekeeper.Classes
                 this.ModifyTime = Convert.ToDateTime(TodoItem["ModifyTime"]);
 
                 // And with foreign table information
-                this.ProjectName = (new Classes.Project(Database, this.ProjectId)).DisplayName();
+                this.ProjectName = (new Classes.Project(this.ProjectId)).DisplayName();
                 string Query = @"SELECT Name, Description FROM RefTodoStatus WHERE RefTodoStatusId = " + this.RefTodoStatusId;
                 Row RefTodoStatus = Database.SelectRow(Query);
                 this.StatusName = RefTodoStatus["Name"];
@@ -167,7 +167,7 @@ namespace Timekeeper.Classes
                 this.ModifyTime = Convert.ToDateTime(TodoItem["ModifyTime"]);
 
                 // And with foreign table information
-                this.ProjectName = (new Classes.Project(Database, this.ProjectId)).DisplayName();
+                this.ProjectName = (new Classes.Project(this.ProjectId)).DisplayName();
                 string Query = @"SELECT Name, Description FROM RefTodoStatus WHERE RefTodoStatusId = " + this.RefTodoStatusId;
                 Row RefTodoStatus = Database.SelectRow(Query);
                 this.StatusName = RefTodoStatus["Name"];

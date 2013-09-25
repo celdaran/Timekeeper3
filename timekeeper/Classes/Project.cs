@@ -12,18 +12,18 @@ namespace Timekeeper.Classes
         private static string ProjectIdColumnName = "ProjectId";
 
         // constructor, no lookup
-        public Project(DBI data)
-            : base(data, ProjectTableName, ProjectIdColumnName)
+        public Project()
+            : base(ProjectTableName, ProjectIdColumnName)
         {}
 
         // constructor, by id
-        public Project(DBI data, long projectId)
-            : base(data, projectId, ProjectTableName, ProjectIdColumnName)
+        public Project(long projectId)
+            : base(projectId, ProjectTableName, ProjectIdColumnName)
         {}
 
         // constructor, by name
-        public Project(DBI data, string projectName)
-            : base(data, projectName, ProjectTableName, ProjectIdColumnName)
+        public Project(string projectName)
+            : base(projectName, ProjectTableName, ProjectIdColumnName)
         {}
 
         //---------------------------------------------------------------------
@@ -31,7 +31,7 @@ namespace Timekeeper.Classes
         public int Repoint(string externalProjectNo)
             // TODO: Revisit this method, especially this odd return value approach
         {
-            ProjectCollection Projects = new ProjectCollection(Data);
+            ProjectCollection Projects = new ProjectCollection();
 
             if (Projects.ExternalProjectNoExists(externalProjectNo)) {
                 return 0;
@@ -39,7 +39,7 @@ namespace Timekeeper.Classes
                 Row Project = new Row();
                 Project["ExternalProjectNo"] = externalProjectNo;
                 Project["ModifyTime"] = Common.Now();
-                long Count = Data.Update(this.TableName, Project, this.IdColumnName, this.ItemId);
+                long Count = Database.Update(this.TableName, Project, this.IdColumnName, this.ItemId);
 
                 if (Count == 1) {
                     this.ExternalProjectNo = externalProjectNo;

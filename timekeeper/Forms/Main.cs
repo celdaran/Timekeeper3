@@ -21,7 +21,6 @@ namespace Timekeeper.Forms
         //---------------------------------------------------------------------
 
         // Database
-        private DBI Database;
         private string DatabaseFileName;
 
         // Options
@@ -67,7 +66,7 @@ namespace Timekeeper.Forms
         // Constants
         //---------------------------------------------------------------------
 
-        const string REGKEY = "Software\\Technitivity\\Timekeeper\\3.0\\";
+        //const string REGKEY = "Software\\Technitivity\\Timekeeper\\3.0\\";
 
         //---------------------------------------------------------------------
         // Constructor
@@ -155,14 +154,14 @@ namespace Timekeeper.Forms
         // Action | New Project
         private void MenuActionNewProject_Click(object sender, EventArgs e)
         {
-            Classes.Project project = new Classes.Project(Database);
+            Classes.Project project = new Classes.Project();
             Dialog_NewItem(ProjectTree, "New Project", false, (Classes.TreeAttribute)project, Timekeeper.IMG_PROJECT);
         }
 
         // Action | New Project Folder
         private void MenuActionNewProjectFolder_Click(object sender, EventArgs e)
         {
-            Classes.Project project = new Classes.Project(Database);
+            Classes.Project project = new Classes.Project();
             Dialog_NewItem(ProjectTree, "New Project Folder", true, (Classes.TreeAttribute)project, Timekeeper.IMG_PROJECT);
         }
 
@@ -211,14 +210,14 @@ namespace Timekeeper.Forms
         // Action | New Activity
         private void MenuActionNewActivity_Click(object sender, EventArgs e)
         {
-            Classes.Activity Activity = new Classes.Activity(Database);
+            Classes.Activity Activity = new Classes.Activity();
             Dialog_NewItem(ActivityTree, "New Activity", false, (Classes.TreeAttribute)Activity, Timekeeper.IMG_ACTIVITY);
         }
 
         // Action | New Activity Folder
         private void MenuActionNewActivityFolder_Click(object sender, EventArgs e)
         {
-            Classes.Activity Activity = new Classes.Activity(Database);
+            Classes.Activity Activity = new Classes.Activity();
             Dialog_NewItem(ActivityTree, "New Activity Folder", true, (Classes.TreeAttribute)Activity, Timekeeper.IMG_ACTIVITY);
         }
 
@@ -295,7 +294,7 @@ namespace Timekeeper.Forms
         // Report | Punch Card
         private void menuReportsPunch_Click(object sender, EventArgs e)
         {
-            Forms.Reports.PunchCard punch = new Forms.Reports.PunchCard(Database);
+            Forms.Reports.PunchCard punch = new Forms.Reports.PunchCard();
             punch.Show(this);
             OpenForms.Add(punch);
         }
@@ -313,7 +312,7 @@ namespace Timekeeper.Forms
         // Tools | Notebook
         private void MenuToolNotebook_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Notebook dlg = new Forms.Tools.Notebook(Database);
+            Forms.Tools.Notebook dlg = new Forms.Tools.Notebook();
             dlg.ActiveControl = dlg.wEntry;
             if (dlg.ShowDialog(this) == DialogResult.OK && dlg.is_dirty) {
                 Action_UpdateNotebook(dlg.wEntry.Text, dlg.wEntryDate.Value, dlg.wJumpBox.SelectedIndex == -1);
@@ -392,7 +391,7 @@ namespace Timekeeper.Forms
         // Help | About
         private void menuHelpAbout_Click(object sender, EventArgs e)
         {
-            File db = new File(Database);
+            File db = new File();
             Row dbinfo = db.Info();
             About dlg = new About(dbinfo);
             dlg.ShowDialog(this);

@@ -19,7 +19,6 @@ namespace Timekeeper.Forms.Wizards
         // Properties
         //----------------------------------------------------------------------
 
-        private DBI Database;
         private List<Panel> WizardPanels = new List<Panel>();
         private int CurrentTab;
 
@@ -30,7 +29,6 @@ namespace Timekeeper.Forms.Wizards
         public Import()
         {
             InitializeComponent();
-            this.Database = Timekeeper.Database;
         }
 
         //----------------------------------------------------------------------

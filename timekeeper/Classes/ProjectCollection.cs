@@ -12,12 +12,12 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public ProjectCollection(DBI data, string orderByClause)
-            : base(data, "Project", orderByClause)
+        public ProjectCollection(string orderByClause)
+            : base("Project", orderByClause)
         {}
 
-        public ProjectCollection(DBI data) 
-            : this (data, "CreateTime")
+        public ProjectCollection() 
+            : this ("CreateTime")
         {}
 
         //---------------------------------------------------------------------
@@ -31,7 +31,7 @@ namespace Timekeeper.Classes
             List<Classes.Project> Projects = new List<Classes.Project>();
 
             foreach (Row Row in Table) {
-                var Project = new Classes.Project(Data, Row["ProjectId"]);
+                var Project = new Classes.Project(Row["ProjectId"]);
                 Projects.Add(Project);
             }
 
@@ -50,7 +50,7 @@ namespace Timekeeper.Classes
 
             string Query = String.Format("select count(*) as Count from Project where ExternalProjectNo = '{0}'",
                 externalProjectNo);
-            Row Project = Data.SelectRow(Query);
+            Row Project = Database.SelectRow(Query);
 
             if (Project["Count"] > 0) {
                 return true;

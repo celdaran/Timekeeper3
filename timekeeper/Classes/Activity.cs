@@ -12,18 +12,18 @@ namespace Timekeeper.Classes
         private static string ActivityIdColumnName = "ActivityId";
 
         // constructor, no lookup
-        public Activity(DBI data)
-            : base(data, ActivityTableName, ActivityIdColumnName)
+        public Activity()
+            : base(ActivityTableName, ActivityIdColumnName)
         {}
 
         // constructor, by id
-        public Activity(DBI data, long activityId)
-            : base(data, activityId, ActivityTableName, ActivityIdColumnName)
+        public Activity(long activityId)
+            : base(activityId, ActivityTableName, ActivityIdColumnName)
         {}
 
         // constructor, by name
-        public Activity(DBI data, string activityName)
-            : base(data, activityName, ActivityTableName, ActivityIdColumnName)
+        public Activity(string activityName)
+            : base(activityName, ActivityTableName, ActivityIdColumnName)
         {}
 
     }

@@ -13,13 +13,11 @@ namespace Timekeeper.Forms.Tools
     public partial class Notebook : Form
     {
         public bool is_dirty = false;
-        private DBI data;
         private Classes.Notebook NotebookRenameMe;
 
-        public Notebook(DBI data)
+        public Notebook()
         {
             InitializeComponent();
-            this.data = data;
         }
 
         private void fToolJournal_Load(object sender, EventArgs e)
@@ -67,6 +65,9 @@ namespace Timekeeper.Forms.Tools
 
         private void wJumpBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Common.Info("You haven't finished refactoring this");
+
+            /*
             string CreateTime = wJumpBox.Items[wJumpBox.SelectedIndex].ToString();
 
             DateTime dt;
@@ -77,6 +78,7 @@ namespace Timekeeper.Forms.Tools
             wEntry.Text = row["Memo"];
 
             wEntryDate.Value = dt;
+            */
         }
 
         private void wEntry_KeyPress(object sender, KeyPressEventArgs e)

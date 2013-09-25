@@ -44,7 +44,7 @@ namespace Timekeeper.Classes
                         //Common.Info(Message);
                         Console.AppendText(Message);
 
-                        Classes.Project Project = new Classes.Project(Database);
+                        Classes.Project Project = new Classes.Project();
 
                         Project.Name = Task.TaskName;
                         Project.Description = "Project Imported from a Timekeeper 1.x file";
@@ -91,10 +91,10 @@ namespace Timekeeper.Classes
 
                             // A couple data conversions
                             TimeSpan ts = Entry.EndTime.Subtract(Entry.StartTime);
-                            Classes.Project Project = new Classes.Project(Database, Entry.TaskName);
+                            Classes.Project Project = new Classes.Project(Entry.TaskName);
 
                             // Now create the Journal Entry
-                            Classes.JournalEntry JournalEntry = new Classes.JournalEntry(Database);
+                            Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
                             JournalEntry.StartTime = Entry.StartTime;
                             JournalEntry.StopTime = Entry.EndTime;
                             JournalEntry.Seconds = (long)ts.TotalSeconds;

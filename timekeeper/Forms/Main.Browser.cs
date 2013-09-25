@@ -378,7 +378,7 @@ namespace Timekeeper.Forms
             }
             if ((ProjectNode == null) && (entry.JournalId != 0)) {
 
-                Classes.Project HiddenProject = new Classes.Project(Database, entry.ProjectName);
+                Classes.Project HiddenProject = new Classes.Project(entry.ProjectName);
                 TreeNode HiddenNode = Widgets.AddHiddenProjectToTree(ProjectTree.Nodes, HiddenProject);
 
                 ProjectTree.SelectedNode = HiddenNode;
@@ -395,7 +395,7 @@ namespace Timekeeper.Forms
                 // If we didn't find the node, it's been hidden. So
                 // load it from the database and display it as hidden.
 
-                Classes.Activity HiddenActivity = new Classes.Activity(Database, entry.ActivityName);
+                Classes.Activity HiddenActivity = new Classes.Activity(entry.ActivityName);
                 TreeNode HiddenNode = Widgets.AddHiddenActivityToTree(ActivityTree.Nodes, HiddenActivity);
 
                 ActivityTree.SelectedNode = HiddenNode;
@@ -815,9 +815,9 @@ namespace Timekeeper.Forms
                 //browserEntry = new Classes.Journal(Database);
                 browserEntry = Entry;
 
-                priorLoadedBrowserEntry = new Classes.JournalEntry(Database);
+                priorLoadedBrowserEntry = new Classes.JournalEntry();
                 if (newBrowserEntry == null) {
-                    newBrowserEntry = new Classes.JournalEntry(Database);
+                    newBrowserEntry = new Classes.JournalEntry();
                 }
                 isBrowsing = false;
                 StartTimeManuallySet = false;

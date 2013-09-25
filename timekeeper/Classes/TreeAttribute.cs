@@ -40,7 +40,7 @@ namespace Timekeeper.Classes
         // Protected Properties
         //---------------------------------------------------------------------
 
-        protected DBI Data;
+        protected DBI Database;
         protected string TableName;
         protected string IdColumnName;
 
@@ -57,9 +57,9 @@ namespace Timekeeper.Classes
         // Constructors
         //---------------------------------------------------------------------
 
-        public TreeAttribute(DBI data, string tableName, string idColumnName)
+        public TreeAttribute(string tableName, string idColumnName)
         {
-            this.Data = data;
+            this.Database = Timekeeper.Database;
             this.TableName = tableName;
             this.IdColumnName = idColumnName;
             this.OtherTableName = this.TableName == "Project" ? "Activity" : "Project";
@@ -73,16 +73,16 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public TreeAttribute(DBI data, long itemId, string tableName, string idColumnName)
-            : this(data, tableName, idColumnName)
+        public TreeAttribute(long itemId, string tableName, string idColumnName)
+            : this(tableName, idColumnName)
         {
             Load(itemId);
         }
 
         //---------------------------------------------------------------------
 
-        public TreeAttribute(DBI data, string itemName, string tableName, string idColumnName)
-            : this(data, tableName, idColumnName)
+        public TreeAttribute(string itemName, string tableName, string idColumnName)
+            : this(tableName, idColumnName)
         {
             // fetch row from db
             itemName = itemName.Replace("'", "''");
@@ -95,7 +95,7 @@ namespace Timekeeper.Classes
                 this.TableName,
                 itemName);
 
-            Row row = data.SelectRow(query);
+            Row row = this.Database.SelectRow(query);
             long itemId = row[this.IdColumnName] == null ? 0 : row[this.IdColumnName];
 
             /*
@@ -154,7 +154,7 @@ namespace Timekeeper.Classes
                 from Journal
                 where {0} = {1}",
                 this.IdColumnName, this.ItemId);
-            Row Row = Data.SelectRow(Query);
+            Row Row = Database.SelectRow(Query);
             if (Row["DateLastUsed"] != null) {
                 return DateTime.Parse(Row["DateLastUsed"]);
             } else {
@@ -213,7 +213,7 @@ namespace Timekeeper.Classes
             string Query = String.Format(@"
                 select ParentId from {0} where {1} = '{2}'",
                 this.TableName, this.IdColumnName, itemId);
-            Row row = Data.SelectRow(Query);
+            Row row = Database.SelectRow(Query);
 
             if (row["ParentId"] == 0) {
                 return false;
@@ -239,7 +239,7 @@ namespace Timekeeper.Classes
                   and StopTime < '{1}'
                   and {2} = {3}",
                 fromDate, toDate, this.IdColumnName, itemId);
-            Row Row = this.Data.SelectRow(Query);
+            Row Row = this.Database.SelectRow(Query);
 
             long Seconds = Row["Seconds"] == null ? 0 : Row["Seconds"];
 
@@ -249,7 +249,7 @@ namespace Timekeeper.Classes
                 from {1}
                 where ParentId = {2}",
                 this.IdColumnName, this.TableName, itemId);
-            Table Rows = this.Data.Select(Query);
+            Table Rows = this.Database.Select(Query);
 
             foreach (Row Child in Rows) {
                 Seconds += RecursiveSecondsElapsed(Child[this.IdColumnName], fromDate, toDate);
@@ -262,7 +262,7 @@ namespace Timekeeper.Classes
 
         public Classes.TreeAttribute Parent()
         {
-            return new Classes.TreeAttribute(this.Data, this.ParentId, this.TableName, this.IdColumnName);
+            return new Classes.TreeAttribute(this.ParentId, this.TableName, this.IdColumnName);
         }
 
         //---------------------------------------------------------------------
@@ -323,7 +323,7 @@ namespace Timekeeper.Classes
                 Row["ExternalProjectNo"] = this.ExternalProjectNo;
             }
 
-            this.ItemId = this.Data.Insert(this.TableName, Row);
+            this.ItemId = this.Database.Insert(this.TableName, Row);
 
             if (this.ItemId > 0) {
                 // Load the newly-created row
@@ -389,7 +389,7 @@ namespace Timekeeper.Classes
                 from {0}
                 where name = '{1}'", this.TableName, name);
 
-            Row Row = this.Data.SelectRow(Query);
+            Row Row = this.Database.SelectRow(Query);
             long Count = Row["Count"];
 
             if (Count > 0) {
@@ -421,7 +421,7 @@ namespace Timekeeper.Classes
                 select * from {0}
                 where {1} = {2}", this.TableName, this.IdColumnName, itemId);
 
-            Row row = Data.SelectRow(Query);
+            Row row = Database.SelectRow(Query);
 
             this.ItemId = itemId;
             this.CreateTime = row["CreateTime"];
@@ -465,7 +465,7 @@ namespace Timekeeper.Classes
             Row Row = new Row();
             Row["Description"] = newDescription;
             Row["ModifyTime"] = Common.Now();
-            long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+            long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 this.Description = newDescription;
@@ -509,7 +509,7 @@ namespace Timekeeper.Classes
             Row Row = new Row();
             Row["Name"] = newName;
             Row["ModifyTime"] = Common.Now();
-            long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+            long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 this.Name = newName;
@@ -528,7 +528,7 @@ namespace Timekeeper.Classes
             Row Row = new Row();
             Row["SortOrderNo"] = sortOrderNo;
             Row["ModifyTime"] = Common.Now();
-            long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+            long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 // Update instance
@@ -550,7 +550,7 @@ namespace Timekeeper.Classes
             Row["ParentId"] = itemId;
             Row["ModifyTime"] = Common.Now();
             Row["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName, itemId);
-            long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+            long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 // Update instance
@@ -626,7 +626,7 @@ namespace Timekeeper.Classes
         protected void SetSecondsElapsedToday(long offset)
         {
             try {
-                if (!this.Data.TableExists("Journal")) {
+                if (!this.Database.TableExists("Journal")) {
                     // If no Journal table exists, don't bother to
                     // fetch any time data. Note: the only place
                     // where this is an issue is during database
@@ -646,7 +646,7 @@ namespace Timekeeper.Classes
                     where StartTime > '{0} {1}'
                       and {2} = {3}",
                     today, midnight, this.IdColumnName, this.ItemId);
-                Row row = this.Data.SelectRow(query);
+                Row row = this.Database.SelectRow(query);
 
                 if (row["Seconds"] > 0) {
                     this.SecondsElapsedToday = row["Seconds"] + offset;
@@ -673,7 +673,7 @@ namespace Timekeeper.Classes
                 Row Row = new Row();
                 Row["IsFolderOpened"] = opened ? 1 : 0;
                 Row["ModifyTime"] = Common.Now();
-                long Count = Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+                long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
                 if (Count == 1) {
                     this.IsFolderOpened = opened;
@@ -713,7 +713,7 @@ namespace Timekeeper.Classes
                 where {0} = {1}
                 group by StartDate",
                 this.IdColumnName, this.ItemId);
-            return Data.Select(Query);
+            return Database.Select(Query);
         }
 
         //---------------------------------------------------------------------
@@ -736,7 +736,7 @@ namespace Timekeeper.Classes
                 Row["Name"] = this.Name + "\t" + UUID.Get();
             }
 
-            return Data.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+            return Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
         }
 
         //---------------------------------------------------------------------

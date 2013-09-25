@@ -12,12 +12,12 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public ActivityCollection(DBI data, string orderByClause)
-            : base(data, "Activity", orderByClause)
+        public ActivityCollection(string orderByClause)
+            : base("Activity", orderByClause)
         {}
 
-        public ActivityCollection(DBI data)
-            : this (data, "CreateTime")
+        public ActivityCollection()
+            : this ("CreateTime")
         {}
 
         //---------------------------------------------------------------------
@@ -31,7 +31,7 @@ namespace Timekeeper.Classes
             List<Classes.Activity> Activities = new List<Classes.Activity>();
 
             foreach (Row Row in Table) {
-                var Activity = new Classes.Activity(Data, Row["ActivityId"]);
+                var Activity = new Classes.Activity(Row["ActivityId"]);
                 Activities.Add(Activity);
             }
 

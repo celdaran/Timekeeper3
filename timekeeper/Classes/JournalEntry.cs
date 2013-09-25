@@ -12,7 +12,7 @@ namespace Timekeeper.Classes
         // Properties
         //---------------------------------------------------------------------
 
-        private DBI Data;
+        private DBI Database;
 
         private long NextJournalIndex;
 
@@ -49,15 +49,15 @@ namespace Timekeeper.Classes
         // Constructors
         //---------------------------------------------------------------------
 
-        public JournalEntry(DBI data)
+        public JournalEntry()
         {
-            this.Data = data;
+            this.Database = Timekeeper.Database;
             this.SetAttributes();
         }
 
         //---------------------------------------------------------------------
 
-        public JournalEntry(DBI data, long journalId) : this(data)
+        public JournalEntry(long journalId) : this()
         {
             this.Load(journalId);
         }
@@ -77,7 +77,7 @@ namespace Timekeeper.Classes
         {
             try {
                 // Create the Row based on current object attributes
-                JournalId = Data.Insert("Journal", GetAttributes(Mode.Insert));
+                JournalId = Database.Insert("Journal", GetAttributes(Mode.Insert));
 
                 if (JournalId == 0) {
                     throw new Exception("Could not create journal entry.");
@@ -86,11 +86,11 @@ namespace Timekeeper.Classes
                 // Update bidirectional tracking
                 Row row = new Row();
                 row["LastProjectId"] = this.ProjectId;
-                Data.Update("Activity", row, "ActivityId", this.ActivityId);
+                Database.Update("Activity", row, "ActivityId", this.ActivityId);
 
                 row = new Row();
                 row["LastActivityId"] = this.ActivityId;
-                Data.Update("Project", row, "ProjectId", this.ProjectId);
+                Database.Update("Project", row, "ProjectId", this.ProjectId);
 
                 // Update JournalIndex and NextJournalIndex
                 this.JournalIndex = this.NextJournalIndex;
@@ -108,7 +108,7 @@ namespace Timekeeper.Classes
 
         public JournalEntry Copy()
         {
-            JournalEntry copy = new JournalEntry(this.Data);
+            JournalEntry copy = new JournalEntry();
 
             // copy properties
             copy.NextJournalIndex = this.NextJournalIndex;
@@ -194,7 +194,7 @@ namespace Timekeeper.Classes
                         left outer join Location l on l.LocationId  = j.LocationId
                         left outer join Category c on c.CategoryId = j.CategoryId
                         where j.JournalIndex = " + journalIndex;
-                    SetAttributes(Data.SelectRow(Query));
+                    SetAttributes(Database.SelectRow(Query));
                 }
             }
             catch (Exception x) {
@@ -214,7 +214,7 @@ namespace Timekeeper.Classes
         public void Save()
         {
             try {
-                Data.Update("Journal", GetAttributes(Mode.Update), "JournalId", JournalId);
+                Database.Update("Journal", GetAttributes(Mode.Update), "JournalId", JournalId);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -228,7 +228,7 @@ namespace Timekeeper.Classes
             try {
                 Row row = new Row();
                 row["IsLocked"] = 0;
-                Data.Update("Journal", row, "JournalId", JournalId);
+                Database.Update("Journal", row, "JournalId", JournalId);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -348,7 +348,7 @@ namespace Timekeeper.Classes
         private void SetAttributes()
         {
             // Get Next JournalIndex value
-            Row Journal = Data.SelectRow("select max(JournalIndex) as HighestJournalIndex from Journal");
+            Row Journal = Database.SelectRow("select max(JournalIndex) as HighestJournalIndex from Journal");
             if (Journal["HighestJournalIndex"] != null) {
                 NextJournalIndex = Journal["HighestJournalIndex"] + 1;
             } else {

@@ -96,7 +96,7 @@ namespace Timekeeper.Classes
             string orderByClause = GetOrderBy(Options.Behavior_SortProjectsBy, Options.Behavior_SortProjectsByDirection);
 
             // Instantiate Activities object
-            ProjectCollection Projects = new ProjectCollection(Database, orderByClause);
+            ProjectCollection Projects = new ProjectCollection(orderByClause);
 
             // Iterate over Activities
             foreach (Project Project in Projects.Fetch(parentId, showHidden, showHiddenSince)) {
@@ -127,7 +127,7 @@ namespace Timekeeper.Classes
             string orderByClause = GetOrderBy(Options.Behavior_SortItemsBy, Options.Behavior_SortItemsByDirection);
 
             // Instantiate Activities object
-            ActivityCollection Activities = new ActivityCollection(Database, orderByClause);
+            ActivityCollection Activities = new ActivityCollection(orderByClause);
 
             // Iterate over Activities
             foreach (Activity Activity in Activities.Fetch(parentId, showHidden, showHiddenSince)) {
@@ -204,7 +204,7 @@ namespace Timekeeper.Classes
 
         public TreeNode AddHiddenProjectToTree(TreeNodeCollection tree, Project project) //, Project parentProject)
         {
-            Project parentProject = new Project(Database, project.ParentId);
+            Project parentProject = new Project(project.ParentId);
 
             if (parentProject.ItemId == 0) {
                 // If we've gone all the way up, add the item itself as a root
@@ -236,7 +236,7 @@ namespace Timekeeper.Classes
             // Yes, I ran into problems.
             // Brute forcing it now, just to get on with life.
 
-            Activity parentActivity = new Activity(Database, activity.ParentId);
+            Activity parentActivity = new Activity(activity.ParentId);
 
             if (parentActivity.ItemId == 0) {
                 // If we've gone all the way up, add the item itself as a root
@@ -318,10 +318,10 @@ namespace Timekeeper.Classes
 
         private void ShowRootLines(TreeView tree)
         {
-            ActivityCollection Activities = new ActivityCollection(Database);
+            ActivityCollection Activities = new ActivityCollection();
             tree.ShowRootLines = Activities.HasParents();
 
-            ProjectCollection Projects = new ProjectCollection(Database);
+            ProjectCollection Projects = new ProjectCollection();
             tree.ShowRootLines = Projects.HasParents();
 
             // FIXME: this is very unfinished

@@ -53,10 +53,15 @@ namespace Timekeeper
         // Constructor
         //---------------------------------------------------------------------
 
-        // Deprecated constructor
-        public File(DBI data)
+        public File() : this(Timekeeper.Database)
         {
-            this.Database = data;
+        }
+
+        //---------------------------------------------------------------------
+
+        public File(DBI database)
+        {
+            this.Database = database;
             if ((Database != null) && (Database.FileName != null)) {
                 FileInfo = new FileInfo(this.Database.FileName);
                 this.Name = FileInfo.Name;
@@ -64,12 +69,6 @@ namespace Timekeeper
                 this.Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(File).Assembly);
                 this.CreateOptions = new FileCreateOptions();
             }
-        }
-
-        // New/future constructor
-        // Calling the old for compatability purposes
-        public File() : this(Timekeeper.Database)
-        {
         }
 
         //---------------------------------------------------------------------
@@ -340,8 +339,8 @@ namespace Timekeeper
 
         private void PopulateDefaultItems()
         {
-            CreateItem("Default Project", new Classes.Project(Database));
-            CreateItem("Default Activity", new Classes.Activity(Database));
+            CreateItem("Default Project", new Classes.Project());
+            CreateItem("Default Activity", new Classes.Activity());
         }
 
         //----------------------------------------------------------------------
@@ -362,8 +361,8 @@ namespace Timekeeper
                 // Create Projects (new method)
                 foreach (XmlNode ProjectNode in Projects.ChildNodes) {
 
-                    Classes.Project Project = new Classes.Project(Database);
-                    Classes.Project ParentProject = new Classes.Project(Database, ProjectNode["parent"].InnerText);
+                    Classes.Project Project = new Classes.Project();
+                    Classes.Project ParentProject = new Classes.Project(ProjectNode["parent"].InnerText);
 
                     CreateItem(ProjectNode, (Classes.TreeAttribute)Project, (Classes.TreeAttribute)ParentProject);
                 }
@@ -371,8 +370,8 @@ namespace Timekeeper
                 // Create Activities (new method)
                 foreach (XmlNode ActivityNode in Activities.ChildNodes) {
 
-                    Classes.Activity Activity = new Classes.Activity(Database);
-                    Classes.Activity ParentActivity = new Classes.Activity(Database, ActivityNode["parent"].InnerText);
+                    Classes.Activity Activity = new Classes.Activity();
+                    Classes.Activity ParentActivity = new Classes.Activity(ActivityNode["parent"].InnerText);
 
                     CreateItem(ActivityNode, (Classes.TreeAttribute)Activity, (Classes.TreeAttribute)ParentActivity);
                 }
@@ -472,8 +471,8 @@ namespace Timekeeper
 
             try {
                 // Grab a few handy objects
-                Classes.ProjectCollection Projects = new Classes.ProjectCollection(Database);
-                Classes.ActivityCollection Activities = new Classes.ActivityCollection(Database);
+                Classes.ProjectCollection Projects = new Classes.ProjectCollection();
+                Classes.ActivityCollection Activities = new Classes.ActivityCollection();
                 Classes.Notebook Notebook = new Classes.Notebook();
                 Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
 

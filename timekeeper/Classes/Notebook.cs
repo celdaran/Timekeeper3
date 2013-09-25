@@ -12,7 +12,7 @@ namespace Timekeeper.Classes
         // Properties
         //---------------------------------------------------------------------
 
-        private DBI Data;
+        private DBI Database;
 
         //---------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ namespace Timekeeper.Classes
 
         public Notebook()
         {
-            this.Data = Timekeeper.Database;
+            this.Database = Timekeeper.Database;
         }
 
         //---------------------------------------------------------------------
@@ -42,7 +42,7 @@ namespace Timekeeper.Classes
         public int Count()
         {
             string Query = "select count(*) as Count from Notebook";
-            Row Row = Data.SelectRow(Query);
+            Row Row = Database.SelectRow(Query);
             return (int)Row["Count"];
         }
 
@@ -54,7 +54,7 @@ namespace Timekeeper.Classes
 
             try {
                 Row Row = new Row();
-                Row = this.Data.SelectRow("select * from Notebook where NotebookId = " + notebookId);
+                Row = this.Database.SelectRow("select * from Notebook where NotebookId = " + notebookId);
 
                 this.CreateTime = Row["CreateTime"];
                 this.ModifyTime = Row["ModifyTime"];
@@ -75,7 +75,7 @@ namespace Timekeeper.Classes
         public Table Entries()
         {
             string Query = "select NotebookId, EntryTime from Notebook order by EntryTime";
-            return Data.Select(Query);
+            return Database.Select(Query);
         }
 
         //---------------------------------------------------------------------
@@ -132,7 +132,7 @@ namespace Timekeeper.Classes
             Row["LocationId"] = this.LocationId;
             Row["CategoryId"] = this.CategoryId;
 
-            Data.Insert("Notebook", Row);
+            Database.Insert("Notebook", Row);
         }
 
         //---------------------------------------------------------------------
@@ -148,7 +148,7 @@ namespace Timekeeper.Classes
             Row["LocationId"] = this.LocationId;
             Row["CategoryId"] = this.CategoryId;
 
-            Data.Update("Notebook", Row, "NotebookId", this.NotebookId);
+            Database.Update("Notebook", Row, "NotebookId", this.NotebookId);
         }
 
         //---------------------------------------------------------------------

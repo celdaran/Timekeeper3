@@ -17,7 +17,6 @@ namespace Timekeeper.Forms.Tools
         // Properties
         //----------------------------------------------------------------------
 
-        private DBI Database;
         private Classes.Options Options;
         private ListViewColumnSorter ColumnSorter;
 
@@ -29,7 +28,6 @@ namespace Timekeeper.Forms.Tools
         {
             InitializeComponent();
 
-            this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
 
             ColumnSorter = new ListViewColumnSorter();
@@ -71,7 +69,7 @@ namespace Timekeeper.Forms.Tools
             List<Classes.TodoItem> Items = Collection.Fetch(!MenuTodoShowCompletedItems.Checked);
 
             foreach (Classes.TodoItem TodoItem in Items) {
-                Classes.Project Project = new Classes.Project(Database, TodoItem.ProjectId);
+                Classes.Project Project = new Classes.Project(TodoItem.ProjectId);
                 this.AddItem(Project.DisplayName(), TodoItem, TodoList.Groups[TodoItem.StatusName]);
             }
 
