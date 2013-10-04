@@ -1140,6 +1140,29 @@ namespace Timekeeper.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: Event
+        ///-- Purpose: This table stores countdown events.
+        ///-- Added..: Timekeeper 3.0
+        ///-- Updated: Timekeeper 3.0
+        ///------------------------------------------------------------------------
+        ///
+        ///CREATE TABLE Event
+        ///(
+        ///    EventId             INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+        ///
+        ///    CreateTime          DATETIME    NOT NULL,
+        ///    ModifyTime          DATETIME    NOT NULL,
+        ///
+        ///    Name                TEXT        NOT NULL [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SQL_3060_Event_Create {
+            get {
+                return ResourceManager.GetString("SQL_3060_Event_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
         ///-- Table..: FilterOptions
         ///-- Purpose: This table stores standard filtering options for various
         ///--          user reporting and querying tasks. If a particular form or
@@ -1424,18 +1447,17 @@ namespace Timekeeper.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to ------------------------------------------------------------------------
-        ///-- Table..: RefItemType
-        ///-- Purpose: Assigns identifiers to &quot;Activity&quot; and &quot;Project&quot;.
+        ///-- Table..: RefDimension
+        ///-- Purpose: Assigns identifiers to the four time-tracking dimensions:
+        ///--          Projects, Activities, Locations, and Categories.
         ///-- Added..: Timekeeper 3.0
         ///-- Updated: Timekeeper 3.0
         ///------------------------------------------------------------------------
         ///
-        ///CREATE TABLE RefItemType
+        ///CREATE TABLE RefDimension
         ///(
-        ///    RefItemTypeId       INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
-        ///    CreateTime          DATETIME    NOT NULL,
-        ///    ModifyTime          DATETIME    NOT NULL,
-        ///    Name                [rest of string was truncated]&quot;;.
+        ///    RefDimensionId      INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+        ///    CreateTime          DATETIME    NOT NULL [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3060_RefDimension_Create {
             get {
@@ -1445,11 +1467,11 @@ namespace Timekeeper.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to ------------------------------------------------------------------------
-        ///-- Table..: RefItemType
+        ///-- Table..: RefDimension
         ///-- Purpose: Populate a reference table to define Timekeeper item types.
         ///------------------------------------------------------------------------
         ///
-        ///INSERT INTO RefItemType
+        ///INSERT INTO RefDimension
         ///(
         ///    CreateTime,
         ///    ModifyTime,
@@ -1459,14 +1481,14 @@ namespace Timekeeper.Properties {
         ///) VALUES (
         ///    &apos;{0}&apos;,
         ///    &apos;{0}&apos;,
-        ///    &apos;Activity&apos;,
-        ///    &apos;An Activity is a verb or action being timed.&apos;
+        ///    &apos;Project&apos;,
+        ///    &apos;A Project is a noun or deliverable being timed.&apos;
         ///);
         ///
-        ///INSERT INTO RefItemType
+        ///INSERT INTO RefDimension
         ///(
         ///    CreateTime,
-        ///    ModifyTime,        /// [rest of string was truncated]&quot;;.
+        ///    ModifyT [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3060_RefDimension_Insert {
             get {

@@ -43,45 +43,9 @@ namespace Timekeeper.Classes
         // Persistence
         //----------------------------------------------------------------------
 
-        public void Load(long findViewId)
-        {
-            try {
-                Row View = base.LoadRow(findViewId);
-
-                if (View["FindViewId"] != null) {
-                    // Extra handling
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
-        }
-
-        //----------------------------------------------------------------------
-
         public bool Save(bool filterOptionsChanged)
         {
             return Save(filterOptionsChanged, 0);
-        }
-
-        //----------------------------------------------------------------------
-
-        public bool Save(bool filterOptionsChanged, long filterOptionsId)
-        {
-            bool Saved = false;
-
-            try {
-                Saved = base.SaveRow(filterOptionsChanged, filterOptionsId);
-
-                if (Saved) {
-                    // Extra handling
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
-
-            return Saved;
         }
 
         //---------------------------------------------------------------------

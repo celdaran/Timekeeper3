@@ -202,6 +202,7 @@ namespace Timekeeper
                 CreateTable("Journal", version, false);
                 CreateTable("Notebook", version, false);
                 CreateTable("Todo", version, false);
+                CreateTable("Event", version, false);
 
                 // User Options
                 CreateTable("Options", version, populate);

@@ -135,6 +135,8 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectHide = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectUnhide = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuProjectSep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.PopupMenuProjectAddtoTodoList = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuProjectUseProjects = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectUseActivities = new System.Windows.Forms.ToolStripMenuItem();
@@ -223,8 +225,6 @@ namespace Timekeeper.Forms
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
-            this.PopupMenuProjectSep3 = new System.Windows.Forms.ToolStripSeparator();
-            this.PopupMenuProjectAddtoTodoList = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
@@ -695,11 +695,9 @@ namespace Timekeeper.Forms
             // 
             // MenuToolCountdown
             // 
-            this.MenuToolCountdown.Enabled = false;
             this.MenuToolCountdown.Name = "MenuToolCountdown";
             this.MenuToolCountdown.Size = new System.Drawing.Size(160, 22);
             this.MenuToolCountdown.Text = "C&ountdown...";
-            this.MenuToolCountdown.Visible = false;
             this.MenuToolCountdown.Click += new System.EventHandler(this.MenuToolCountdown_Click);
             // 
             // MenuToolDatecalc
@@ -1126,7 +1124,7 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectSep2,
             this.PopupMenuProjectProperties});
             this.PopupMenuProject.Name = "menuProject";
-            this.PopupMenuProject.Size = new System.Drawing.Size(165, 352);
+            this.PopupMenuProject.Size = new System.Drawing.Size(165, 330);
             this.PopupMenuProject.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenuProject_Opening);
             // 
             // PopupMenuProjectNewProject
@@ -1193,6 +1191,18 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectDelete.Size = new System.Drawing.Size(164, 22);
             this.PopupMenuProjectDelete.Text = "&Delete...";
             this.PopupMenuProjectDelete.Click += new System.EventHandler(this.MenuActionDeleteProject_Click);
+            // 
+            // PopupMenuProjectSep3
+            // 
+            this.PopupMenuProjectSep3.Name = "PopupMenuProjectSep3";
+            this.PopupMenuProjectSep3.Size = new System.Drawing.Size(161, 6);
+            // 
+            // PopupMenuProjectAddtoTodoList
+            // 
+            this.PopupMenuProjectAddtoTodoList.Name = "PopupMenuProjectAddtoTodoList";
+            this.PopupMenuProjectAddtoTodoList.Size = new System.Drawing.Size(164, 22);
+            this.PopupMenuProjectAddtoTodoList.Text = "Add to Todo List...";
+            this.PopupMenuProjectAddtoTodoList.Click += new System.EventHandler(this.PopupMenuProjectAddtoTodoList_Click);
             // 
             // PopupMenuProjectSep1
             // 
@@ -2035,18 +2045,6 @@ namespace Timekeeper.Forms
             this.SaveAsDialog.Filter = "Timekeeper 3.0 Database|*.tkdb|Timekeeper 2.3 Database|*.tkdb|Timekeeper 2.2 Data" +
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
             this.SaveAsDialog.Title = "Save As";
-            // 
-            // PopupMenuProjectSep3
-            // 
-            this.PopupMenuProjectSep3.Name = "PopupMenuProjectSep3";
-            this.PopupMenuProjectSep3.Size = new System.Drawing.Size(161, 6);
-            // 
-            // PopupMenuProjectAddtoTodoList
-            // 
-            this.PopupMenuProjectAddtoTodoList.Name = "PopupMenuProjectAddtoTodoList";
-            this.PopupMenuProjectAddtoTodoList.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectAddtoTodoList.Text = "Add to Todo List...";
-            this.PopupMenuProjectAddtoTodoList.Click += new System.EventHandler(this.PopupMenuProjectAddtoTodoList_Click);
             // 
             // Main
             // 

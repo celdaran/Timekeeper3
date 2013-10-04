@@ -47,10 +47,10 @@ namespace Timekeeper.Classes
         // Persistence
         //----------------------------------------------------------------------
 
-        public void Load(long gridViewId)
+        new public void Load(long gridViewId)
         {
             try {
-                Row View = base.LoadRow(gridViewId);
+                Row View = base.Load(gridViewId);
 
                 if (View["GridViewId"] != null) {
                     // FIXME: potential off-by-one issue with Ref Id vs SelectedIndex
@@ -75,12 +75,12 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public bool Save(bool filterOptionsChanged, long filterOptionsId)
+        new public bool Save(bool filterOptionsChanged, long filterOptionsId)
         {
             bool Saved = false;
 
             try {
-                Saved = base.SaveRow(filterOptionsChanged, filterOptionsId);
+                Saved = base.Save(filterOptionsChanged, filterOptionsId);
 
                 if (Saved) {
                     Row View = new Row();

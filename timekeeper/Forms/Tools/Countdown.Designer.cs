@@ -28,225 +28,176 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.wGroupTimer = new System.Windows.Forms.GroupBox();
-            this.wGroupEvent = new System.Windows.Forms.GroupBox();
-            this.wHours = new System.Windows.Forms.NumericUpDown();
-            this.wMinutes = new System.Windows.Forms.NumericUpDown();
-            this.wSeconds = new System.Windows.Forms.NumericUpDown();
-            this.btnGo = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.eventName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eventDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eventCountdown = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.wGroupTimer.SuspendLayout();
-            this.wGroupEvent.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.wHours)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wMinutes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wSeconds)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Countdown));
+            this.Display = new System.Windows.Forms.TextBox();
+            this.ToolStrip = new System.Windows.Forms.ToolStrip();
+            this.DisplayMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.SmallSizeButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.MediumSizeButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.LargeSizeButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.DynamicSizeButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.AlwaysOnTopButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.CreateEventButton = new System.Windows.Forms.ToolStripButton();
+            this.LoadEventMenu = new System.Windows.Forms.ToolStripDropDownButton();
+            this.ManageCountdowns = new System.Windows.Forms.ToolStripButton();
+            this.SecondTimer = new System.Windows.Forms.Timer(this.components);
+            this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.ToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // wGroupTimer
+            // Display
             // 
-            this.wGroupTimer.Controls.Add(this.textBox1);
-            this.wGroupTimer.Controls.Add(this.btnGo);
-            this.wGroupTimer.Controls.Add(this.wSeconds);
-            this.wGroupTimer.Controls.Add(this.wMinutes);
-            this.wGroupTimer.Controls.Add(this.wHours);
-            this.wGroupTimer.Location = new System.Drawing.Point(12, 12);
-            this.wGroupTimer.Name = "wGroupTimer";
-            this.wGroupTimer.Size = new System.Drawing.Size(239, 165);
-            this.wGroupTimer.TabIndex = 0;
-            this.wGroupTimer.TabStop = false;
-            this.wGroupTimer.Text = "Timer";
+            this.Display.BackColor = System.Drawing.SystemColors.Control;
+            this.Display.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Display.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Display.Font = new System.Drawing.Font("Courier New", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Display.Location = new System.Drawing.Point(0, 25);
+            this.Display.Name = "Display";
+            this.Display.Size = new System.Drawing.Size(407, 31);
+            this.Display.TabIndex = 0;
+            this.Display.TabStop = false;
+            this.Display.Text = "00:00:00";
+            this.Display.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Display.Enter += new System.EventHandler(this.Display_Enter);
+            this.Display.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Display_KeyDown);
             // 
-            // wGroupEvent
+            // ToolStrip
             // 
-            this.wGroupEvent.Controls.Add(this.dataGridView1);
-            this.wGroupEvent.Location = new System.Drawing.Point(257, 12);
-            this.wGroupEvent.Name = "wGroupEvent";
-            this.wGroupEvent.Size = new System.Drawing.Size(454, 165);
-            this.wGroupEvent.TabIndex = 1;
-            this.wGroupEvent.TabStop = false;
-            this.wGroupEvent.Text = "Event";
+            this.ToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DisplayMenuButton,
+            this.toolStripSeparator2,
+            this.CreateEventButton,
+            this.LoadEventMenu,
+            this.ManageCountdowns});
+            this.ToolStrip.Location = new System.Drawing.Point(0, 0);
+            this.ToolStrip.Name = "ToolStrip";
+            this.ToolStrip.Size = new System.Drawing.Size(407, 25);
+            this.ToolStrip.TabIndex = 7;
+            this.ToolStrip.Text = "toolStrip1";
             // 
-            // wHours
+            // DisplayMenuButton
             // 
-            this.wHours.Location = new System.Drawing.Point(16, 23);
-            this.wHours.Maximum = new decimal(new int[] {
-            168,
-            0,
-            0,
-            0});
-            this.wHours.Name = "wHours";
-            this.wHours.Size = new System.Drawing.Size(40, 20);
-            this.wHours.TabIndex = 1;
+            this.DisplayMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.DisplayMenuButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SmallSizeButton,
+            this.MediumSizeButton,
+            this.LargeSizeButton,
+            this.DynamicSizeButton,
+            this.toolStripMenuItem1,
+            this.AlwaysOnTopButton});
+            this.DisplayMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("DisplayMenuButton.Image")));
+            this.DisplayMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.DisplayMenuButton.Name = "DisplayMenuButton";
+            this.DisplayMenuButton.Size = new System.Drawing.Size(54, 22);
+            this.DisplayMenuButton.Text = "Display";
+            this.DisplayMenuButton.ToolTipText = "Change various display settings";
             // 
-            // wMinutes
+            // SmallSizeButton
             // 
-            this.wMinutes.Location = new System.Drawing.Point(62, 23);
-            this.wMinutes.Maximum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.wMinutes.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.wMinutes.Name = "wMinutes";
-            this.wMinutes.Size = new System.Drawing.Size(41, 20);
-            this.wMinutes.TabIndex = 2;
-            this.wMinutes.ValueChanged += new System.EventHandler(this.wMinutes_ValueChanged);
+            this.SmallSizeButton.Checked = true;
+            this.SmallSizeButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.SmallSizeButton.Name = "SmallSizeButton";
+            this.SmallSizeButton.Size = new System.Drawing.Size(144, 22);
+            this.SmallSizeButton.Text = "Small";
+            this.SmallSizeButton.Click += new System.EventHandler(this.SmallSizeButton_Click);
             // 
-            // wSeconds
+            // MediumSizeButton
             // 
-            this.wSeconds.Location = new System.Drawing.Point(109, 23);
-            this.wSeconds.Maximum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.wSeconds.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.wSeconds.Name = "wSeconds";
-            this.wSeconds.Size = new System.Drawing.Size(41, 20);
-            this.wSeconds.TabIndex = 3;
-            this.wSeconds.ValueChanged += new System.EventHandler(this.wSeconds_ValueChanged);
+            this.MediumSizeButton.Name = "MediumSizeButton";
+            this.MediumSizeButton.Size = new System.Drawing.Size(144, 22);
+            this.MediumSizeButton.Text = "Medium";
+            this.MediumSizeButton.Click += new System.EventHandler(this.MediumSizeButton_Click);
             // 
-            // btnGo
+            // LargeSizeButton
             // 
-            this.btnGo.Location = new System.Drawing.Point(156, 23);
-            this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(66, 23);
-            this.btnGo.TabIndex = 4;
-            this.btnGo.Text = "&Go";
-            this.btnGo.UseVisualStyleBackColor = true;
+            this.LargeSizeButton.Name = "LargeSizeButton";
+            this.LargeSizeButton.Size = new System.Drawing.Size(144, 22);
+            this.LargeSizeButton.Text = "Large";
+            this.LargeSizeButton.Click += new System.EventHandler(this.LargeSizeButton_Click);
             // 
-            // textBox1
+            // DynamicSizeButton
             // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Font = new System.Drawing.Font("Courier New", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(16, 52);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(206, 62);
-            this.textBox1.TabIndex = 5;
+            this.DynamicSizeButton.Name = "DynamicSizeButton";
+            this.DynamicSizeButton.Size = new System.Drawing.Size(144, 22);
+            this.DynamicSizeButton.Text = "Dynamic";
+            this.DynamicSizeButton.Click += new System.EventHandler(this.DynamicSizeButton_Click);
             // 
-            // btnClose
+            // toolStripMenuItem1
             // 
-            this.btnClose.Location = new System.Drawing.Point(618, 182);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 6;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(141, 6);
             // 
-            // comboBox1
+            // AlwaysOnTopButton
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Summer Vacation 2010",
-            "Harry Potter and the Deathly Hallows",
-            "Christmas in Kilarny"});
-            this.comboBox1.Location = new System.Drawing.Point(240, 185);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(207, 21);
-            this.comboBox1.TabIndex = 0;
+            this.AlwaysOnTopButton.Name = "AlwaysOnTopButton";
+            this.AlwaysOnTopButton.Size = new System.Drawing.Size(144, 22);
+            this.AlwaysOnTopButton.Text = "Always on Top";
+            this.AlwaysOnTopButton.Click += new System.EventHandler(this.AlwaysOnTopButton_Click);
             // 
-            // label2
+            // toolStripSeparator2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(37, 192);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(197, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "3 days 2 hours 5 minutes and 8 seconds";
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // dataGridView1
+            // CreateEventButton
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.eventName,
-            this.eventDateTime,
-            this.eventCountdown});
-            this.dataGridView1.Location = new System.Drawing.Point(19, 19);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView1.RowHeadersWidth = 20;
-            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dataGridView1.Size = new System.Drawing.Size(417, 134);
-            this.dataGridView1.TabIndex = 2;
+            this.CreateEventButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.CreateEventButton.Image = ((System.Drawing.Image)(resources.GetObject("CreateEventButton.Image")));
+            this.CreateEventButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.CreateEventButton.Name = "CreateEventButton";
+            this.CreateEventButton.Size = new System.Drawing.Size(87, 22);
+            this.CreateEventButton.Text = "Create Event...";
+            this.CreateEventButton.Click += new System.EventHandler(this.CreateEventButton_Click);
             // 
-            // eventName
+            // LoadEventMenu
             // 
-            this.eventName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.eventName.HeaderText = "Event";
-            this.eventName.Name = "eventName";
-            this.eventName.Width = 60;
+            this.LoadEventMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.LoadEventMenu.Image = ((System.Drawing.Image)(resources.GetObject("LoadEventMenu.Image")));
+            this.LoadEventMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LoadEventMenu.Name = "LoadEventMenu";
+            this.LoadEventMenu.Size = new System.Drawing.Size(43, 22);
+            this.LoadEventMenu.Text = "Load";
             // 
-            // eventDateTime
+            // ManageCountdowns
             // 
-            this.eventDateTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.eventDateTime.HeaderText = "Date/Time";
-            this.eventDateTime.Name = "eventDateTime";
-            this.eventDateTime.Width = 83;
+            this.ManageCountdowns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ManageCountdowns.Image = ((System.Drawing.Image)(resources.GetObject("ManageCountdowns.Image")));
+            this.ManageCountdowns.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ManageCountdowns.Name = "ManageCountdowns";
+            this.ManageCountdowns.Size = new System.Drawing.Size(61, 22);
+            this.ManageCountdowns.Text = "Manage...";
+            this.ManageCountdowns.Click += new System.EventHandler(this.ManageCountdowns_Click);
             // 
-            // eventCountdown
+            // SecondTimer
             // 
-            this.eventCountdown.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.AliceBlue;
-            this.eventCountdown.DefaultCellStyle = dataGridViewCellStyle1;
-            this.eventCountdown.HeaderText = "Remaining";
-            this.eventCountdown.Name = "eventCountdown";
-            this.eventCountdown.ReadOnly = true;
-            this.eventCountdown.Width = 82;
+            this.SecondTimer.Interval = 1000;
+            this.SecondTimer.Tick += new System.EventHandler(this.SecondTimer_Tick);
             // 
-            // fToolCountdown
+            // TrayIcon
+            // 
+            this.TrayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.TrayIcon.BalloonTipTitle = "Timekeeper";
+            this.TrayIcon.Text = "notifyIcon1";
+            this.TrayIcon.Visible = true;
+            // 
+            // Countdown
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(723, 214);
-            this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.wGroupEvent);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.wGroupTimer);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "fToolCountdown";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
+            this.ClientSize = new System.Drawing.Size(407, 64);
+            this.Controls.Add(this.Display);
+            this.Controls.Add(this.ToolStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Countdown";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Countdown";
-            this.wGroupTimer.ResumeLayout(false);
-            this.wGroupTimer.PerformLayout();
-            this.wGroupEvent.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.wHours)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wMinutes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.wSeconds)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.ResizeEnd += new System.EventHandler(this.Countdown_ResizeEnd);
+            this.ToolStrip.ResumeLayout(false);
+            this.ToolStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -254,19 +205,20 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox wGroupTimer;
-        private System.Windows.Forms.GroupBox wGroupEvent;
-        private System.Windows.Forms.NumericUpDown wSeconds;
-        private System.Windows.Forms.NumericUpDown wMinutes;
-        private System.Windows.Forms.NumericUpDown wHours;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button btnGo;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eventName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eventDateTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eventCountdown;
+        private System.Windows.Forms.TextBox Display;
+        private System.Windows.Forms.ToolStrip ToolStrip;
+        private System.Windows.Forms.ToolStripButton ManageCountdowns;
+        private System.Windows.Forms.ToolStripButton CreateEventButton;
+        private System.Windows.Forms.ToolStripDropDownButton LoadEventMenu;
+        private System.Windows.Forms.Timer SecondTimer;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripDropDownButton DisplayMenuButton;
+        private System.Windows.Forms.ToolStripMenuItem SmallSizeButton;
+        private System.Windows.Forms.ToolStripMenuItem MediumSizeButton;
+        private System.Windows.Forms.ToolStripMenuItem LargeSizeButton;
+        private System.Windows.Forms.ToolStripMenuItem DynamicSizeButton;
+        private System.Windows.Forms.NotifyIcon TrayIcon;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem AlwaysOnTopButton;
     }
 }

@@ -60,8 +60,8 @@ namespace Timekeeper.Forms.Shared
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
                 int Index = SavedViewList.Items.IndexOf(CurrentItem);
                 IdObjectPair PreviousItem = (IdObjectPair)SavedViewList.Items[Index - 1];
-                Classes.BaseView CurrentView = (Classes.BaseView)CurrentItem.Object;
-                Classes.BaseView PreviousView = (Classes.BaseView)PreviousItem.Object;
+                Classes.SortableItem CurrentView = (Classes.SortableItem)CurrentItem.Object;
+                Classes.SortableItem PreviousView = (Classes.SortableItem)PreviousItem.Object;
 
                 // Swap them
                 SwapItems(CurrentView, PreviousView);
@@ -91,8 +91,8 @@ namespace Timekeeper.Forms.Shared
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
                 int Index = SavedViewList.Items.IndexOf(CurrentItem);
                 IdObjectPair NextItem = (IdObjectPair)SavedViewList.Items[Index + 1];
-                Classes.BaseView CurrentView = (Classes.BaseView)CurrentItem.Object;
-                Classes.BaseView NextView = (Classes.BaseView)NextItem.Object;
+                Classes.SortableItem CurrentView = (Classes.SortableItem)CurrentItem.Object;
+                Classes.SortableItem NextView = (Classes.SortableItem)NextItem.Object;
 
                 // Swap them
                 SwapItems(CurrentView, NextView);
@@ -125,7 +125,7 @@ namespace Timekeeper.Forms.Shared
                 // First delete from db
                 foreach (IdObjectPair Item in SavedViewList.SelectedItems) { //SavedViewList.CheckedItems) {
                     RemovedItems.Add(Item);
-                    Classes.BaseView View = (Classes.BaseView)Item.Object;
+                    Classes.SortableItem View = (Classes.SortableItem)Item.Object;
                     View.Delete();
                     Count++;
                 }
@@ -153,7 +153,7 @@ namespace Timekeeper.Forms.Shared
 
             try {
                 IdObjectPair CurrentItem = (IdObjectPair)SavedViewList.SelectedItem;
-                Classes.BaseView View = (Classes.BaseView)CurrentItem.Object;
+                Classes.SortableItem View = (Classes.SortableItem)CurrentItem.Object;
 
                 RenameView DialogBox = new RenameView(this.TableName);
 
@@ -173,7 +173,7 @@ namespace Timekeeper.Forms.Shared
                     // Only the description changed
                     if ((PreviousName == DialogBox.wNewName.Text) && (PreviousDescription != DialogBox.wNewDescription.Text)) {
                         View.Description = DialogBox.wNewDescription.Text;
-                        View.SaveRow(false, 0);
+                        View.Save();
                         LoadList();
                         return;
                         // TODO or FIXME: Let's have a ubiquitous Id property synonymous with TableNameId
@@ -186,7 +186,7 @@ namespace Timekeeper.Forms.Shared
                         // Rename (and Redescribe)
                         View.Name = DialogBox.wNewName.Text;
                         View.Description = DialogBox.wNewDescription.Text;
-                        View.SaveRow(false, 0);  // FIXME: crap! this is an upsert... I CAN'T rename
+                        View.Save();  // FIXME: crap! this is an upsert... I CAN'T rename
 
                         // Repaint List
                         LoadList();
@@ -214,9 +214,9 @@ namespace Timekeeper.Forms.Shared
         {
             SavedViewList.Items.Clear();
 
-            List<Classes.BaseView> Views = new Classes.BaseViewCollection(this.TableName).Fetch();
+            List<Classes.SortableItem> Views = new Classes.SortableItemCollection(this.TableName).Fetch();
 
-            foreach (Classes.BaseView View in Views)
+            foreach (Classes.SortableItem View in Views)
             {
                 IdObjectPair Pair = new IdObjectPair((int)View.Id, View);
                 SavedViewList.Items.Add(Pair);
@@ -225,17 +225,17 @@ namespace Timekeeper.Forms.Shared
 
         //----------------------------------------------------------------------
 
-        private void SwapItems(Classes.BaseView firstView, Classes.BaseView secondView)
+        private void SwapItems(Classes.SortableItem firstView, Classes.SortableItem secondView)
         {
             try {
                 int SavedFirstSortOrderNo = firstView.SortOrderNo;
 
                 firstView.SortOrderNo = secondView.SortOrderNo;
                 // FIXME: Consider SaveRow() without args calls SaveRow(false, 0)
-                firstView.SaveRow(false, 0);
+                firstView.Save();
 
                 secondView.SortOrderNo = SavedFirstSortOrderNo;
-                secondView.SaveRow(false, 0);
+                secondView.Save();
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

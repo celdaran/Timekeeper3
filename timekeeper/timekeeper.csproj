@@ -145,7 +145,6 @@
     <Compile Include="Classes\FilterOptions.cs" />
     <Compile Include="Classes\FindView.cs" />
     <Compile Include="Classes\GridView.cs" />
-    <Compile Include="Classes\GridViewCollection.cs" />
     <Compile Include="Classes\Import.cs" />
     <Compile Include="Classes\JournalEntryView.cs" />
     <Compile Include="Classes\ListAttribute.cs" />
@@ -156,6 +155,8 @@
     <Compile Include="Classes\Meta.cs" />
     <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\ReferenceData.cs" />
+    <Compile Include="Classes\SortableItem.cs" />
+    <Compile Include="Classes\SortableItemCollection.cs" />
     <Compile Include="Classes\TodoItem.cs" />
     <Compile Include="Classes\TodoItemCollection.cs" />
     <Compile Include="Classes\Widgets.cs" />
@@ -178,6 +179,12 @@
     </Compile>
     <Compile Include="Forms\Find.Designer.cs">
       <DependentUpon>Find.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\CountdownEvent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\CountdownEvent.Designer.cs">
+      <DependentUpon>CountdownEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Wizards\Import.cs">
       <SubType>Form</SubType>
@@ -426,6 +433,9 @@
     <EmbeddedResource Include="Forms\Tools\Countdown.resx">
       <DependentUpon>Countdown.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\CountdownEvent.resx">
+      <DependentUpon>CountdownEvent.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tools\DateCalculator.resx">
       <DependentUpon>DateCalculator.cs</DependentUpon>
     </EmbeddedResource>
@@ -520,6 +530,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SQL\3.0\Event.Create.sql" />
     <None Include="Resources\SQL\3.0\ReportView.Create.sql" />
     <None Include="Resources\SQL\3.0\FindView.Create.sql" />
     <None Include="Resources\SQL\3.0\GridView.Create.sql" />

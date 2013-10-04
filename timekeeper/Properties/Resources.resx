@@ -423,4 +423,7 @@
   <data name="SQL_3060_RefDimension_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\sql\3.0\RefDimension.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="SQL_3060_Event_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\3.0\Event.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>

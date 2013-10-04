@@ -344,8 +344,9 @@ namespace Timekeeper.Forms
         // Tools | Countdown
         private void MenuToolCountdown_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Countdown dlg = new Forms.Tools.Countdown();
-            dlg.ShowDialog(this);
+            Forms.Tools.Countdown DialogBox = new Forms.Tools.Countdown();
+            DialogBox.Show();
+            OpenForms.Add(DialogBox);
         }
 
         // Tools | Date Calculator
