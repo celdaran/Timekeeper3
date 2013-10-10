@@ -37,7 +37,7 @@ namespace Timekeeper.Forms.Tools
 
         private void CountdownEvent_Load(object sender, EventArgs e)
         {
-            EventDateTime.CustomFormat = this.Options.Advanced_DateTimeFormat;
+            //EventDateTime.CustomFormat = this.Options.Advanced_DateTimeFormat;
         }
 
         //----------------------------------------------------------------------
@@ -45,7 +45,7 @@ namespace Timekeeper.Forms.Tools
         private void CountdownEvent_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (DialogResult == DialogResult.OK) {
-                if (this.Widgets.ViewExists("Event", this.EventName.Text, this.IsDirty)) {
+                if (this.Widgets.ViewExists("Event", "FIXME" /*this.EventName.Text*/, this.IsDirty)) {
                     e.Cancel = true;
                 }
             }

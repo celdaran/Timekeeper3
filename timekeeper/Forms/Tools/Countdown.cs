@@ -40,7 +40,7 @@ namespace Timekeeper.Forms.Tools
         {
             Forms.Tools.CountdownEvent DialogBox = new Forms.Tools.CountdownEvent(true);
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                TargetTime = DialogBox.EventDateTime.Value;
+                TargetTime = DateTime.Now; // DialogBox.EventDateTime.Value;
                 SecondTimer.Enabled = true;
             }
         }

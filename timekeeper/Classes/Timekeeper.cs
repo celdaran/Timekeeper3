@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Collections.ObjectModel;
 
 using Technitivity.Toolbox;
+using Quartz;
+using Quartz.Impl;
 
 namespace Timekeeper
 {
@@ -38,6 +40,7 @@ namespace Timekeeper
 
         public static DBI Database;
         public static Classes.Options Options;
+        public static IScheduler Scheduler;
         private static Log Log;
 
         //---------------------------------------------------------------------
@@ -78,6 +81,24 @@ namespace Timekeeper
                 Options = new Classes.Options();
             }
             return Options;
+        }
+
+        //---------------------------------------------------------------------
+        // Scheduler
+        //---------------------------------------------------------------------
+
+        public static void CloseScheduler()
+        {
+            Scheduler.Shutdown();
+        }
+
+        //---------------------------------------------------------------------
+
+        public static void OpenScheduler()
+        {
+            ISchedulerFactory ScheduleFactory = new StdSchedulerFactory();
+            Scheduler = ScheduleFactory.GetScheduler();
+            Scheduler.Start();
         }
 
         //---------------------------------------------------------------------

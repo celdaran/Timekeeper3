@@ -84,8 +84,8 @@ namespace Timekeeper.Forms
             this.MenuToolCalendar = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolStopwatch = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolCountdown = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuToolDatecalc = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolReminders = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolDatecalc = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuToolOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelp = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,6 +168,16 @@ namespace Timekeeper.Forms
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.PopupMenuTrayIcon = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.helloToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toDoListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notebookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.calendarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopwatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.countdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.remindersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.aboutTimekeeperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitMain = new System.Windows.Forms.SplitContainer();
             this.panelMemo = new System.Windows.Forms.Panel();
             this.wMemo = new System.Windows.Forms.RichTextBox();
@@ -641,9 +651,9 @@ namespace Timekeeper.Forms
             this.MenuToolNotebook,
             this.MenuToolCalendar,
             this.MenuToolStopwatch,
+            this.MenuToolReminders,
             this.MenuToolCountdown,
             this.MenuToolDatecalc,
-            this.MenuToolReminders,
             this.MenuToolSep2,
             this.MenuToolOptions});
             this.MenuTool.Enabled = false;
@@ -700,6 +710,13 @@ namespace Timekeeper.Forms
             this.MenuToolCountdown.Text = "C&ountdown...";
             this.MenuToolCountdown.Click += new System.EventHandler(this.MenuToolCountdown_Click);
             // 
+            // MenuToolReminders
+            // 
+            this.MenuToolReminders.Name = "MenuToolReminders";
+            this.MenuToolReminders.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolReminders.Text = "&Reminders...";
+            this.MenuToolReminders.Click += new System.EventHandler(this.MenuToolReminders_Click);
+            // 
             // MenuToolDatecalc
             // 
             this.MenuToolDatecalc.Enabled = false;
@@ -708,15 +725,6 @@ namespace Timekeeper.Forms
             this.MenuToolDatecalc.Text = "&Date Calculator...";
             this.MenuToolDatecalc.Visible = false;
             this.MenuToolDatecalc.Click += new System.EventHandler(this.menuToolsDatecalc_Click);
-            // 
-            // MenuToolReminders
-            // 
-            this.MenuToolReminders.Enabled = false;
-            this.MenuToolReminders.Name = "MenuToolReminders";
-            this.MenuToolReminders.Size = new System.Drawing.Size(160, 22);
-            this.MenuToolReminders.Text = "&Reminders...";
-            this.MenuToolReminders.Visible = false;
-            this.MenuToolReminders.Click += new System.EventHandler(this.MenuToolReminders_Click);
             // 
             // MenuToolSep2
             // 
@@ -1458,15 +1466,92 @@ namespace Timekeeper.Forms
             // PopupMenuTrayIcon
             // 
             this.PopupMenuTrayIcon.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.helloToolStripMenuItem});
+            this.helloToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.toDoListToolStripMenuItem,
+            this.notebookToolStripMenuItem,
+            this.calendarToolStripMenuItem,
+            this.stopwatchToolStripMenuItem,
+            this.remindersToolStripMenuItem,
+            this.countdownToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.aboutTimekeeperToolStripMenuItem,
+            this.exitToolStripMenuItem});
             this.PopupMenuTrayIcon.Name = "PopupMenuTrayIcon";
-            this.PopupMenuTrayIcon.Size = new System.Drawing.Size(102, 26);
+            this.PopupMenuTrayIcon.Size = new System.Drawing.Size(174, 214);
             // 
             // helloToolStripMenuItem
             // 
             this.helloToolStripMenuItem.Name = "helloToolStripMenuItem";
-            this.helloToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
-            this.helloToolStripMenuItem.Text = "Hello!";
+            this.helloToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.helloToolStripMenuItem.Text = "Show";
+            this.helloToolStripMenuItem.Click += new System.EventHandler(this.TrayIcon_DoubleClick);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(170, 6);
+            // 
+            // toDoListToolStripMenuItem
+            // 
+            this.toDoListToolStripMenuItem.Name = "toDoListToolStripMenuItem";
+            this.toDoListToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.toDoListToolStripMenuItem.Text = "To Do List...";
+            this.toDoListToolStripMenuItem.Click += new System.EventHandler(this.MenuToolTodo_Click);
+            // 
+            // notebookToolStripMenuItem
+            // 
+            this.notebookToolStripMenuItem.Name = "notebookToolStripMenuItem";
+            this.notebookToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.notebookToolStripMenuItem.Text = "Notebook...";
+            this.notebookToolStripMenuItem.Click += new System.EventHandler(this.MenuToolNotebook_Click);
+            // 
+            // calendarToolStripMenuItem
+            // 
+            this.calendarToolStripMenuItem.Name = "calendarToolStripMenuItem";
+            this.calendarToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.calendarToolStripMenuItem.Text = "Calendar...";
+            this.calendarToolStripMenuItem.Click += new System.EventHandler(this.MenuToolCalendar_Click);
+            // 
+            // stopwatchToolStripMenuItem
+            // 
+            this.stopwatchToolStripMenuItem.Name = "stopwatchToolStripMenuItem";
+            this.stopwatchToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.stopwatchToolStripMenuItem.Text = "Stopwatch...";
+            this.stopwatchToolStripMenuItem.Click += new System.EventHandler(this.MenuToolStopwatch_Click);
+            // 
+            // countdownToolStripMenuItem
+            // 
+            this.countdownToolStripMenuItem.Name = "countdownToolStripMenuItem";
+            this.countdownToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.countdownToolStripMenuItem.Text = "Countdown...";
+            this.countdownToolStripMenuItem.Click += new System.EventHandler(this.MenuToolCountdown_Click);
+            // 
+            // remindersToolStripMenuItem
+            // 
+            this.remindersToolStripMenuItem.Name = "remindersToolStripMenuItem";
+            this.remindersToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.remindersToolStripMenuItem.Text = "Reminders...";
+            this.remindersToolStripMenuItem.Click += new System.EventHandler(this.MenuToolReminders_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(170, 6);
+            // 
+            // aboutTimekeeperToolStripMenuItem
+            // 
+            this.aboutTimekeeperToolStripMenuItem.Name = "aboutTimekeeperToolStripMenuItem";
+            this.aboutTimekeeperToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.aboutTimekeeperToolStripMenuItem.Text = "About Timekeeper...";
+            this.aboutTimekeeperToolStripMenuItem.Click += new System.EventHandler(this.menuHelpAbout_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.MenuFileExit_Click);
             // 
             // splitMain
             // 
@@ -2292,5 +2377,15 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolTodo;
         private System.Windows.Forms.ToolStripSeparator PopupMenuProjectSep3;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectAddtoTodoList;
+        private System.Windows.Forms.ToolStripMenuItem remindersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem aboutTimekeeperToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem toDoListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem notebookToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem calendarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem countdownToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stopwatchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }

@@ -125,6 +125,9 @@
   </Choose>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Quartz">
+      <HintPath>References\x86\Quartz.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -185,6 +188,12 @@
     </Compile>
     <Compile Include="Forms\Tools\CountdownEvent.Designer.cs">
       <DependentUpon>CountdownEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\Event.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\Event.Designer.cs">
+      <DependentUpon>Event.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Wizards\Import.cs">
       <SubType>Form</SubType>
@@ -442,6 +451,9 @@
     <EmbeddedResource Include="Forms\Tools\Notebook.resx">
       <DependentUpon>Notebook.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\Event.resx">
+      <DependentUpon>Event.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Wizards\Import.resx">
       <DependentUpon>Import.cs</DependentUpon>

@@ -93,10 +93,26 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        private void PopulateGenericComboBox(ComboBox box, List<IdObjectPair> items)
+        public void PopulateGenericComboBox(ComboBox box, List<IdObjectPair> items)
         {
             foreach (IdObjectPair Pair in items) {
                 box.Items.Add(Pair);
+            }
+        }
+
+        //----------------------------------------------------------------------
+        // Experimental
+
+        public void PopulateGenericComboBox(ComboBox box, Table table)
+        {
+            try {
+                foreach (Row Row in table) {
+                    IdObjectPair Pair = new IdObjectPair((int)Row["Id"], Row["Name"]);
+                    box.Items.Add(Pair);
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
             }
         }
 

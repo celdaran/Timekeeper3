@@ -363,11 +363,14 @@ namespace Timekeeper.Forms
 
         private void Action_FormClose()
         {
+            Browser_SaveRow(false);
+
             Action_GetMetrics();
             Action_SaveOptions();
             Action_CloseFile();
 
             Options = Timekeeper.CloseOptions();
+            Timekeeper.CloseScheduler();
 
             // Logging (TODO: should this be an option?)
             Timekeeper.Info("Timekeeper Closed");
@@ -405,6 +408,9 @@ namespace Timekeeper.Forms
                 // Initialize drag drop operations
                 this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
                 this.ActivityTree.ItemDrag += new ItemDragEventHandler(ActivityTree_ItemDrag);
+
+                // Open a scheduler (used by Reminders)
+                Timekeeper.OpenScheduler();
             }
             catch (Exception x) {
                 Common.Warn("There was an error loading the application. Depending on the error, additional information may exist in the application's log file.");
@@ -973,7 +979,7 @@ namespace Timekeeper.Forms
             }
 
             if (timerRunning == false) {
-                if (!isBrowsing) {
+                if (!isBrowsing && (browserEntry != null)) {
                     if (!StartTimeManuallySet) {
                         wStartTime.Value = DateTime.Now;
                         wStopTime.Value = DateTime.Now;

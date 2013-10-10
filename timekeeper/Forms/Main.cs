@@ -341,10 +341,10 @@ namespace Timekeeper.Forms
             OpenForms.Add(dlg);
         }
 
-        // Tools | Countdown
-        private void MenuToolCountdown_Click(object sender, EventArgs e)
+        // Tools | Reminders
+        private void MenuToolReminders_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Countdown DialogBox = new Forms.Tools.Countdown();
+            Forms.Tools.Reminder DialogBox = new Forms.Tools.Reminder();
             DialogBox.Show();
             OpenForms.Add(DialogBox);
         }
@@ -357,11 +357,12 @@ namespace Timekeeper.Forms
             OpenForms.Add(dlg);
         }
 
-        // Tools | Reminders
-        private void MenuToolReminders_Click(object sender, EventArgs e)
+        // Tools | Countdown
+        private void MenuToolCountdown_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Reminder dlg = new Forms.Tools.Reminder();
-            dlg.ShowDialog(this);
+            Forms.Tools.Countdown DialogBox = new Forms.Tools.Countdown();
+            DialogBox.Show();
+            OpenForms.Add(DialogBox);
         }
 
         // Tools | Options
@@ -849,12 +850,6 @@ namespace Timekeeper.Forms
                 Common.Warn("You must stop the timer before exiting.");
                 e.Cancel = true;
             } else {
-                // override settings in persistent dialogs
-                // TODO: no more "persistent dialog boxes" -- that should have been a red flag.
-
-                // Save row, just in case
-                Browser_SaveRow(false);
-
                 e.Cancel = false;
             }
         }

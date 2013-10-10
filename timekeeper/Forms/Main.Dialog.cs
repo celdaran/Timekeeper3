@@ -271,7 +271,7 @@ namespace Timekeeper.Forms
             }
             else {
                 // JUST FOR NOW
-                Application.Exit();
+                //Application.Exit();
             }
         }
 

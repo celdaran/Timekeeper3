@@ -89,5 +89,27 @@ namespace Timekeeper.Classes
             return Pairs;
         }
 
+        //---------------------------------------------------------------------
+        // semi-experimental
+
+        public Table Table(string tableName)
+        {
+            Table ReturnValue = null;
+            tableName = "Ref" + tableName;
+
+            try {
+                string Query = String.Format(@"select {1} as Id, * from {0} order by {1}",
+                    tableName, tableName + "Id");
+                ReturnValue = Database.Select(Query);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+
+            return ReturnValue;
+        }
+
+        //---------------------------------------------------------------------
+
     }
 }

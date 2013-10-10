@@ -14,7 +14,19 @@ CREATE TABLE Event
 
     Name                TEXT        NOT NULL,
     Description         TEXT            NULL,
-    SortOrderNo         INTEGER     NOT NULL
+    SortOrderNo         INTEGER     NOT NULL,
+    
+    /*
+    Type? Like, one-time, or recurring
+    Can this table be used for both the Countdown & Reminders tool?
+    Wait, where's the target time?
+   
+    
+    IsHidden                BOOLEAN     NOT NULL,
+    IsDeleted               BOOLEAN     NOT NULL,
+    HiddenTime              DATETIME        NULL,
+    DeletedTime             DATETIME        NULL,
+    */
 );
 
 CREATE UNIQUE INDEX idx_Event_EventId ON Event(EventId);
