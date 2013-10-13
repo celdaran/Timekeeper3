@@ -35,7 +35,7 @@ namespace Timekeeper
         // be updated. Note that prior to 3.0, this convention was not followed 
         // (nor were the DDL statements stored as resources or tracked in p4).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.6.0";
+        public const string SCHEMA_VERSION = "3.0.6.1";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
@@ -184,6 +184,7 @@ namespace Timekeeper
                 CreateTable("RefDimension", version, populate);
                 CreateTable("RefDatePreset", version, populate);
                 CreateTable("RefGroupBy", version, populate);
+                CreateTable("RefScheduleType", version, populate);
                 CreateTable("RefTimeDisplay", version, populate);
                 CreateTable("RefTimeZone", version, false);
                 CreateTable("RefTodoStatus", version, populate);
@@ -202,6 +203,7 @@ namespace Timekeeper
                 CreateTable("Journal", version, false);
                 CreateTable("Notebook", version, false);
                 CreateTable("Todo", version, false);
+                CreateTable("EventGroup", version, true);
                 CreateTable("Event", version, false);
 
                 // User Options
@@ -250,6 +252,7 @@ namespace Timekeeper
                 // Actually, this isn't necessarily bad: this will get
                 // tripped up when I try to create tables in older 
                 // versions that don't exist in the current version.
+                // TODO
                 Timekeeper.Warn("Could not find resource: " + ResourceName);
                 return;
             }

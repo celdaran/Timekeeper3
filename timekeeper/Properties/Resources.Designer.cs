@@ -1076,9 +1076,9 @@ namespace Timekeeper.Properties {
         ///-- AKA....: This table was known as &apos;tasks&apos; prior to Timekeeper 3.0
         ///---------------------------------------- [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Activity_Create {
+        internal static string SQL_3061_Activity_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_Activity_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Activity_Create", resourceCulture);
             }
         }
         
@@ -1096,9 +1096,9 @@ namespace Timekeeper.Properties {
         ///(
         ///    CategoryId          INTEGER     NOT NULL PRIM [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Category_Create {
+        internal static string SQL_3061_Category_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_Category_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Category_Create", resourceCulture);
             }
         }
         
@@ -1132,32 +1132,55 @@ namespace Timekeeper.Properties {
         ///    &apos;Default Category&apos;,
         ///    &apos;This is the default  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Category_Insert {
+        internal static string SQL_3061_Category_Insert {
             get {
-                return ResourceManager.GetString("SQL_3060_Category_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Category_Insert", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ------------------------------------------------------------------------
         ///-- Table..: Event
-        ///-- Purpose: This table stores countdown events.
+        ///-- Purpose: This table stores events for Reminders and Countdowns.
         ///-- Added..: Timekeeper 3.0
         ///-- Updated: Timekeeper 3.0
         ///------------------------------------------------------------------------
         ///
         ///CREATE TABLE Event
         ///(
-        ///    EventId             INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+        ///    EventId                     INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+        ///
+        ///    CreateTime                  DATETIME    NOT NULL,
+        ///    ModifyTime                  DATETIME    NOT NULL,
+        ///
+        ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SQL_3061_Event_Create {
+            get {
+                return ResourceManager.GetString("SQL_3061_Event_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: EventGroup
+        ///-- Purpose: This table stores user-defined groups for events.
+        ///-- Added..: Timekeeper 3.0
+        ///-- Updated: Timekeeper 3.0
+        ///------------------------------------------------------------------------
+        ///
+        ///CREATE TABLE EventGroup
+        ///(
+        ///    EventGroupId        INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
         ///
         ///    CreateTime          DATETIME    NOT NULL,
         ///    ModifyTime          DATETIME    NOT NULL,
         ///
-        ///    Name                TEXT        NOT NULL [rest of string was truncated]&quot;;.
+        ///    Name             [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Event_Create {
+        internal static string SQL_3061_EventGroup_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_Event_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_EventGroup_Create", resourceCulture);
             }
         }
         
@@ -1171,9 +1194,9 @@ namespace Timekeeper.Properties {
         ///--          filtering. For example, both the Report and Grid forms
         ///--          support filtering, but each of these also has [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_FilterOptions_Create {
+        internal static string SQL_3061_FilterOptions_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_FilterOptions_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_FilterOptions_Create", resourceCulture);
             }
         }
         
@@ -1193,9 +1216,9 @@ namespace Timekeeper.Properties {
         ///    CreateTime          DATETIME    NOT NULL,
         ///    ModifyTime    [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_FindView_Create {
+        internal static string SQL_3061_FindView_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_FindView_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_FindView_Create", resourceCulture);
             }
         }
         
@@ -1213,9 +1236,9 @@ namespace Timekeeper.Properties {
         ///(
         ///    GridViewId          INTEGER     NOT NULL PRIMARY KEY AUTOINCR [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_GridView_Create {
+        internal static string SQL_3061_GridView_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_GridView_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_GridView_Create", resourceCulture);
             }
         }
         
@@ -1230,9 +1253,9 @@ namespace Timekeeper.Properties {
         ///-- AKA....: This table was known as &apos;timekeeper&apos; prior to Timekeeper 3.0
         ///------------------------------------------------------------------------        /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Journal_Create {
+        internal static string SQL_3061_Journal_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_Journal_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Journal_Create", resourceCulture);
             }
         }
         
@@ -1247,9 +1270,9 @@ namespace Timekeeper.Properties {
         ///-- Updated: Timekeeper 3.0
         ///------------------------------------------------------------------------ [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Location_Create {
+        internal static string SQL_3061_Location_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_Location_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Location_Create", resourceCulture);
             }
         }
         
@@ -1264,9 +1287,9 @@ namespace Timekeeper.Properties {
         ///-- Added..: Timekeeper 2.0
         ///-- Updated: Timekeeper 3 [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Meta_Create {
+        internal static string SQL_3061_Meta_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_Meta_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Meta_Create", resourceCulture);
             }
         }
         
@@ -1290,9 +1313,9 @@ namespace Timekeeper.Properties {
         ///
         ///INSERT INT [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Meta_Insert {
+        internal static string SQL_3061_Meta_Insert {
             get {
-                return ResourceManager.GetString("SQL_3060_Meta_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Meta_Insert", resourceCulture);
             }
         }
         
@@ -1308,9 +1331,9 @@ namespace Timekeeper.Properties {
         ///-- AKA....: This table was known as &apos;journal&apos; prior to Timekeeper 3.0
         ///------------------------------------------ [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Notebook_Create {
+        internal static string SQL_3061_Notebook_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_Notebook_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Notebook_Create", resourceCulture);
             }
         }
         
@@ -1326,9 +1349,9 @@ namespace Timekeeper.Properties {
         ///-- Updated: Timekeeper 3.0
         ///--------------------------------------------------------- [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Options_Create {
+        internal static string SQL_3061_Options_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_Options_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Options_Create", resourceCulture);
             }
         }
         
@@ -1365,9 +1388,9 @@ namespace Timekeeper.Properties {
         ///    &apos;LastProjectId&apos;,
         ///  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Options_Insert {
+        internal static string SQL_3061_Options_Insert {
             get {
-                return ResourceManager.GetString("SQL_3060_Options_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Options_Insert", resourceCulture);
             }
         }
         
@@ -1383,9 +1406,9 @@ namespace Timekeeper.Properties {
         ///-- AKA....: This table was known as &apos;projects&apos; prior to Timekeeper 3.0
         ///---------------------------------------- [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Project_Create {
+        internal static string SQL_3061_Project_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_Project_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Project_Create", resourceCulture);
             }
         }
         
@@ -1403,9 +1426,9 @@ namespace Timekeeper.Properties {
         ///CREATE TABLE RefDatePreset
         /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefDatePreset_Create {
+        internal static string SQL_3061_RefDatePreset_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_RefDatePreset_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefDatePreset_Create", resourceCulture);
             }
         }
         
@@ -1439,9 +1462,9 @@ namespace Timekeeper.Properties {
         ///) VALUES (
         ///    [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefDatePreset_Insert {
+        internal static string SQL_3061_RefDatePreset_Insert {
             get {
-                return ResourceManager.GetString("SQL_3060_RefDatePreset_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefDatePreset_Insert", resourceCulture);
             }
         }
         
@@ -1459,9 +1482,9 @@ namespace Timekeeper.Properties {
         ///    RefDimensionId      INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
         ///    CreateTime          DATETIME    NOT NULL [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefDimension_Create {
+        internal static string SQL_3061_RefDimension_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_RefDimension_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefDimension_Create", resourceCulture);
             }
         }
         
@@ -1490,9 +1513,9 @@ namespace Timekeeper.Properties {
         ///    CreateTime,
         ///    ModifyT [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefDimension_Insert {
+        internal static string SQL_3061_RefDimension_Insert {
             get {
-                return ResourceManager.GetString("SQL_3060_RefDimension_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefDimension_Insert", resourceCulture);
             }
         }
         
@@ -1510,9 +1533,9 @@ namespace Timekeeper.Properties {
         ///    RefGroupById        INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
         ///    CreateTime          DATETIME    NOT  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefGroupBy_Create {
+        internal static string SQL_3061_RefGroupBy_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_RefGroupBy_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefGroupBy_Create", resourceCulture);
             }
         }
         
@@ -1547,9 +1570,63 @@ namespace Timekeeper.Properties {
         ///    &apos;{0}&apos;,
         /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefGroupBy_Insert {
+        internal static string SQL_3061_RefGroupBy_Insert {
             get {
-                return ResourceManager.GetString("SQL_3060_RefGroupBy_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefGroupBy_Insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: RefScheduleType
+        ///-- Purpose: Type of recurring schedule
+        ///-- Added..: Timekeeper 3.0
+        ///-- Updated: Timekeeper 3.0
+        ///------------------------------------------------------------------------
+        ///
+        ///CREATE TABLE RefScheduleType
+        ///(
+        ///    RefScheduleTypeId   INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+        ///    CreateTime          DATETIME    NOT NULL,
+        ///    ModifyTime          DATETIME    NOT NULL,
+        ///    Name                TEXT        N [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SQL_3061_RefScheduleType_Create {
+            get {
+                return ResourceManager.GetString("SQL_3061_RefScheduleType_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: RefScheduleType
+        ///-- Purpose: Populate a reference table to define schedule type values.
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO RefScheduleType
+        ///(
+        ///    CreateTime,
+        ///    ModifyTime,
+        ///    Name,
+        ///    Description
+        ///
+        ///) VALUES (
+        ///    &apos;{0}&apos;,
+        ///    &apos;{0}&apos;,
+        ///    &apos;One Time&apos;,
+        ///    &apos;Event does not recur&apos;
+        ///);
+        ///
+        ///INSERT INTO RefScheduleType
+        ///(
+        ///    CreateTime,
+        ///    ModifyTime,
+        ///    Name,
+        ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string SQL_3061_RefScheduleType_Insert {
+            get {
+                return ResourceManager.GetString("SQL_3061_RefScheduleType_Insert", resourceCulture);
             }
         }
         
@@ -1567,9 +1644,9 @@ namespace Timekeeper.Properties {
         ///(
         ///    RefTimeDisplayId    INTEGER     NOT NULL [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefTimeDisplay_Create {
+        internal static string SQL_3061_RefTimeDisplay_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_RefTimeDisplay_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefTimeDisplay_Create", resourceCulture);
             }
         }
         
@@ -1598,9 +1675,9 @@ namespace Timekeeper.Properties {
         ///    CreateTime,
         ///    ModifyTime [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefTimeDisplay_Insert {
+        internal static string SQL_3061_RefTimeDisplay_Insert {
             get {
-                return ResourceManager.GetString("SQL_3060_RefTimeDisplay_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefTimeDisplay_Insert", resourceCulture);
             }
         }
         
@@ -1621,9 +1698,9 @@ namespace Timekeeper.Properties {
         ///
         ///CREATE  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefTimeZone_Create {
+        internal static string SQL_3061_RefTimeZone_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_RefTimeZone_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefTimeZone_Create", resourceCulture);
             }
         }
         
@@ -1643,9 +1720,9 @@ namespace Timekeeper.Properties {
         ///    Name                TEXT        NOT NULL,
         ///    Description      [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefTodoStatus_Create {
+        internal static string SQL_3061_RefTodoStatus_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_RefTodoStatus_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefTodoStatus_Create", resourceCulture);
             }
         }
         
@@ -1675,9 +1752,9 @@ namespace Timekeeper.Properties {
         ///    &apos;The project has not been started.&apos;
         ///);        /// [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_RefTodoStatus_Insert {
+        internal static string SQL_3061_RefTodoStatus_Insert {
             get {
-                return ResourceManager.GetString("SQL_3060_RefTodoStatus_Insert", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_RefTodoStatus_Insert", resourceCulture);
             }
         }
         
@@ -1697,9 +1774,9 @@ namespace Timekeeper.Properties {
         ///    CreateTime          DATETIME    NOT NULL,
         ///    ModifyT [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_ReportView_Create {
+        internal static string SQL_3061_ReportView_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_ReportView_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_ReportView_Create", resourceCulture);
             }
         }
         
@@ -1717,9 +1794,9 @@ namespace Timekeeper.Properties {
         ///(
         ///    TodoId                  INTEGER     NOT NULL PRIMARY KEY AU [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string SQL_3060_Todo_Create {
+        internal static string SQL_3061_Todo_Create {
             get {
-                return ResourceManager.GetString("SQL_3060_Todo_Create", resourceCulture);
+                return ResourceManager.GetString("SQL_3061_Todo_Create", resourceCulture);
             }
         }
     }

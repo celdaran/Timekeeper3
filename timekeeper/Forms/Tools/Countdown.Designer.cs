@@ -101,40 +101,40 @@
             this.SmallSizeButton.Checked = true;
             this.SmallSizeButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.SmallSizeButton.Name = "SmallSizeButton";
-            this.SmallSizeButton.Size = new System.Drawing.Size(144, 22);
+            this.SmallSizeButton.Size = new System.Drawing.Size(152, 22);
             this.SmallSizeButton.Text = "Small";
             this.SmallSizeButton.Click += new System.EventHandler(this.SmallSizeButton_Click);
             // 
             // MediumSizeButton
             // 
             this.MediumSizeButton.Name = "MediumSizeButton";
-            this.MediumSizeButton.Size = new System.Drawing.Size(144, 22);
+            this.MediumSizeButton.Size = new System.Drawing.Size(152, 22);
             this.MediumSizeButton.Text = "Medium";
             this.MediumSizeButton.Click += new System.EventHandler(this.MediumSizeButton_Click);
             // 
             // LargeSizeButton
             // 
             this.LargeSizeButton.Name = "LargeSizeButton";
-            this.LargeSizeButton.Size = new System.Drawing.Size(144, 22);
+            this.LargeSizeButton.Size = new System.Drawing.Size(152, 22);
             this.LargeSizeButton.Text = "Large";
             this.LargeSizeButton.Click += new System.EventHandler(this.LargeSizeButton_Click);
             // 
             // DynamicSizeButton
             // 
             this.DynamicSizeButton.Name = "DynamicSizeButton";
-            this.DynamicSizeButton.Size = new System.Drawing.Size(144, 22);
+            this.DynamicSizeButton.Size = new System.Drawing.Size(152, 22);
             this.DynamicSizeButton.Text = "Dynamic";
             this.DynamicSizeButton.Click += new System.EventHandler(this.DynamicSizeButton_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(141, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
             // 
             // AlwaysOnTopButton
             // 
             this.AlwaysOnTopButton.Name = "AlwaysOnTopButton";
-            this.AlwaysOnTopButton.Size = new System.Drawing.Size(144, 22);
+            this.AlwaysOnTopButton.Size = new System.Drawing.Size(152, 22);
             this.AlwaysOnTopButton.Text = "Always on Top";
             this.AlwaysOnTopButton.Click += new System.EventHandler(this.AlwaysOnTopButton_Click);
             // 

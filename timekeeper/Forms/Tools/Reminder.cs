@@ -183,7 +183,7 @@ namespace Timekeeper.Forms.Tools
 
             ITrigger Trigger1 = TriggerBuilder.Create()
                 .WithIdentity("Trigger One")
-                .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever())
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(60).RepeatForever())
                 .StartAt(DateBuilder.FutureDate(0, IntervalUnit.Second))
                 .Build();
 
@@ -194,16 +194,43 @@ namespace Timekeeper.Forms.Tools
             //------------------------------------
 
             IJobDetail Job2 = JobBuilder.Create<HelloJob>()
-                .WithIdentity("Job Two", "My Group")
+                .WithIdentity("Job Two: With Time Interval", "My Group")
                 .Build();
 
             ITrigger Trigger2 = TriggerBuilder.Create()
                 .WithIdentity("Trigger Two")
-                .WithDailyTimeIntervalSchedule(x => x.WithIntervalInHours(24).OnEveryDay().StartingDailyAt(new TimeOfDay(7,53)))
+                .WithDailyTimeIntervalSchedule(x => x.WithIntervalInHours(24).OnEveryDay().StartingDailyAt(new TimeOfDay(6,40)))
                 .StartAt(DateBuilder.FutureDate(0, IntervalUnit.Second))
                 .Build();
 
             Timekeeper.Scheduler.ScheduleJob(Job2, Trigger2);
+
+            //------------------------------------
+            // Schedule Job Three
+            //------------------------------------
+
+            /*
+                1. Seconds
+                2. Minutes
+                3. Hours
+                4. Day-of-Month
+                5. Month
+                6. Day-of-Week
+                7. Year (optional field)
+            */
+
+            IJobDetail Job3 = JobBuilder.Create<HelloJob>()
+                .WithIdentity("Job Three: Cron Job", "My Group")
+                .Build();
+                
+            ITrigger Trigger3 = TriggerBuilder.Create()
+                .WithIdentity("Trigger Three")
+                .WithCronSchedule("0 * * * * ?")
+                .StartAt(DateBuilder.FutureDate(0, IntervalUnit.Second))
+                .EndAt(DateBuilder.FutureDate(5, IntervalUnit.Minute))
+                .Build();
+
+            Timekeeper.Scheduler.ScheduleJob(Job3, Trigger3);
         }
 
         //----------------------------------------------------------------------

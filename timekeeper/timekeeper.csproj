@@ -142,6 +142,8 @@
     <Compile Include="Classes\CategoryCollection.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Datatypes.cs" />
+    <Compile Include="Classes\Event.cs" />
+    <Compile Include="Classes\EventGroup.cs" />
     <Compile Include="Classes\File.cs" />
     <Compile Include="Classes\File.Downgrade.cs" />
     <Compile Include="Classes\File.Upgrade.cs" />
@@ -542,6 +544,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SQL\3.0\RefScheduleType.Insert.sql" />
+    <None Include="Resources\SQL\3.0\RefScheduleType.Create.sql" />
+    <None Include="Resources\SQL\3.0\EventGroup.Create.sql" />
     <None Include="Resources\SQL\3.0\Event.Create.sql" />
     <None Include="Resources\SQL\3.0\ReportView.Create.sql" />
     <None Include="Resources\SQL\3.0\FindView.Create.sql" />

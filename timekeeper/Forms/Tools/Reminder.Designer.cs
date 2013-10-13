@@ -29,27 +29,27 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("One Time", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Recurring", System.Windows.Forms.HorizontalAlignment.Left);
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("One Time", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Recurring", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "Christmas",
             "Don\'t forget to start your shopping on Black Friday!",
             "2013-12-25",
             "One Time",
             "via Email"}, 0);
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "Exercise",
             "Get off your butt now and then",
             "2013-10-04 08:30",
             "Hourly",
             "System Tray"}, 1);
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
             "Halloween",
             "It\'s going to be scary this year!",
             "2013-10-31",
             "One Time",
             "via Email"}, 0);
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
             "Trip to Denton",
             "See Sawah!",
             "2013-10-18",
@@ -63,30 +63,6 @@
             this.EventPeriod = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.RemindSomething = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.StatusBar = new System.Windows.Forms.StatusStrip();
-            this.StatusBarItemCount = new System.Windows.Forms.ToolStripStatusLabel();
-            this.TodoToolbar = new System.Windows.Forms.ToolStrip();
-            this.MenuTodoAction = new System.Windows.Forms.ToolStripDropDownButton();
-            this.MenuTodoActionAdd = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoActionEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoActionHide = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoActionUnhide = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoActionDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoMarkAs = new System.Windows.Forms.ToolStripDropDownButton();
-            this.MenuTodoMarkAsNotStarted = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoMarkAsInProgress = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoMarkAsOnHold = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoMarkAsBlocked = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoMarkAsComplete = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoShow = new System.Windows.Forms.ToolStripDropDownButton();
-            this.MenuTodoShowGroups = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoShowCompletedItems = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.MenuTodoViewLargeIcons = new System.Windows.Forms.ToolStripButton();
-            this.MenuTodoViewSmallIcons = new System.Windows.Forms.ToolStripButton();
-            this.MenuTodoViewTiles = new System.Windows.Forms.ToolStripButton();
-            this.MenuTodoViewList = new System.Windows.Forms.ToolStripButton();
-            this.MenuTodoViewDetails = new System.Windows.Forms.ToolStripButton();
             this.PopupMenuReminder = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuTodoAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,14 +82,32 @@
             this.PopupMenuTodoGroupByStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoGroupByStartDate = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoGroupByDueDate = new System.Windows.Forms.ToolStripMenuItem();
+            this.LargeImages = new System.Windows.Forms.ImageList(this.components);
+            this.SmallImages = new System.Windows.Forms.ImageList(this.components);
+            this.StatusBar = new System.Windows.Forms.StatusStrip();
+            this.StatusBarItemCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.TodoToolbar = new System.Windows.Forms.ToolStrip();
+            this.MenuTodoAction = new System.Windows.Forms.ToolStripDropDownButton();
+            this.MenuTodoActionAdd = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuTodoActionEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuTodoActionHide = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuTodoActionUnhide = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuTodoActionDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuTodoShow = new System.Windows.Forms.ToolStripDropDownButton();
+            this.MenuTodoShowGroups = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuTodoShowCompletedItems = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuTodoViewLargeIcons = new System.Windows.Forms.ToolStripButton();
+            this.MenuTodoViewSmallIcons = new System.Windows.Forms.ToolStripButton();
+            this.MenuTodoViewTiles = new System.Windows.Forms.ToolStripButton();
+            this.MenuTodoViewList = new System.Windows.Forms.ToolStripButton();
+            this.MenuTodoViewDetails = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.SendEmailButton = new System.Windows.Forms.ToolStripButton();
-            this.SmallImages = new System.Windows.Forms.ImageList(this.components);
-            this.LargeImages = new System.Windows.Forms.ImageList(this.components);
             this.QuartzTestButton = new System.Windows.Forms.ToolStripButton();
+            this.PopupMenuReminder.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.TodoToolbar.SuspendLayout();
-            this.PopupMenuReminder.SuspendLayout();
             this.SuspendLayout();
             // 
             // TodoList
@@ -129,23 +123,23 @@
             this.columnHeader1});
             this.TodoList.ContextMenuStrip = this.PopupMenuReminder;
             this.TodoList.Dock = System.Windows.Forms.DockStyle.Fill;
-            listViewGroup3.Header = "One Time";
-            listViewGroup3.Name = "OneTime";
-            listViewGroup4.Header = "Recurring";
-            listViewGroup4.Name = "Recurring";
+            listViewGroup1.Header = "One Time";
+            listViewGroup1.Name = "OneTime";
+            listViewGroup2.Header = "Recurring";
+            listViewGroup2.Name = "Recurring";
             this.TodoList.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
-            listViewGroup3,
-            listViewGroup4});
+            listViewGroup1,
+            listViewGroup2});
             this.TodoList.HideSelection = false;
-            listViewItem5.Group = listViewGroup3;
-            listViewItem6.Group = listViewGroup4;
-            listViewItem7.Group = listViewGroup3;
-            listViewItem8.Group = listViewGroup3;
+            listViewItem1.Group = listViewGroup1;
+            listViewItem2.Group = listViewGroup2;
+            listViewItem3.Group = listViewGroup1;
+            listViewItem4.Group = listViewGroup1;
             this.TodoList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem5,
-            listViewItem6,
-            listViewItem7,
-            listViewItem8});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4});
             this.TodoList.LargeImageList = this.LargeImages;
             this.TodoList.Location = new System.Drawing.Point(0, 25);
             this.TodoList.Name = "TodoList";
@@ -181,6 +175,160 @@
             this.RemindSomething.Text = "Remind Via";
             this.RemindSomething.Width = 80;
             // 
+            // PopupMenuReminder
+            // 
+            this.PopupMenuReminder.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PopupMenuTodoAdd,
+            this.PopupMenuTodoEdit,
+            this.PopupMenuTodoHide,
+            this.PopupMenuTodoUnhide,
+            this.PopupMenuTodoDelete,
+            this.PopupMenuTodoSep1,
+            this.PopupMenuTodoView,
+            this.PopupMenuTodoGroupBy});
+            this.PopupMenuReminder.Name = "contextMenuStrip1";
+            this.PopupMenuReminder.Size = new System.Drawing.Size(119, 164);
+            // 
+            // PopupMenuTodoAdd
+            // 
+            this.PopupMenuTodoAdd.Name = "PopupMenuTodoAdd";
+            this.PopupMenuTodoAdd.Size = new System.Drawing.Size(118, 22);
+            this.PopupMenuTodoAdd.Text = "Add...";
+            // 
+            // PopupMenuTodoEdit
+            // 
+            this.PopupMenuTodoEdit.Name = "PopupMenuTodoEdit";
+            this.PopupMenuTodoEdit.Size = new System.Drawing.Size(118, 22);
+            this.PopupMenuTodoEdit.Text = "Edit...";
+            // 
+            // PopupMenuTodoHide
+            // 
+            this.PopupMenuTodoHide.Name = "PopupMenuTodoHide";
+            this.PopupMenuTodoHide.Size = new System.Drawing.Size(118, 22);
+            this.PopupMenuTodoHide.Text = "Hide";
+            // 
+            // PopupMenuTodoUnhide
+            // 
+            this.PopupMenuTodoUnhide.Name = "PopupMenuTodoUnhide";
+            this.PopupMenuTodoUnhide.Size = new System.Drawing.Size(118, 22);
+            this.PopupMenuTodoUnhide.Text = "Unhide";
+            this.PopupMenuTodoUnhide.Visible = false;
+            // 
+            // PopupMenuTodoDelete
+            // 
+            this.PopupMenuTodoDelete.Name = "PopupMenuTodoDelete";
+            this.PopupMenuTodoDelete.Size = new System.Drawing.Size(118, 22);
+            this.PopupMenuTodoDelete.Text = "Delete";
+            // 
+            // PopupMenuTodoSep1
+            // 
+            this.PopupMenuTodoSep1.Name = "PopupMenuTodoSep1";
+            this.PopupMenuTodoSep1.Size = new System.Drawing.Size(115, 6);
+            // 
+            // PopupMenuTodoView
+            // 
+            this.PopupMenuTodoView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PopupMenuTodoViewLargeIcons,
+            this.PopupMenuTodoViewSmallIcons,
+            this.PopupMenuTodoViewTiles,
+            this.PopupMenuTodoViewList,
+            this.PopupMenuTodoViewDetails,
+            this.PopupMenuTodoViewSep1,
+            this.PopupMenuTodoViewShowGroups});
+            this.PopupMenuTodoView.Name = "PopupMenuTodoView";
+            this.PopupMenuTodoView.Size = new System.Drawing.Size(118, 22);
+            this.PopupMenuTodoView.Text = "View";
+            // 
+            // PopupMenuTodoViewLargeIcons
+            // 
+            this.PopupMenuTodoViewLargeIcons.Name = "PopupMenuTodoViewLargeIcons";
+            this.PopupMenuTodoViewLargeIcons.Size = new System.Drawing.Size(137, 22);
+            this.PopupMenuTodoViewLargeIcons.Text = "Large Icons";
+            // 
+            // PopupMenuTodoViewSmallIcons
+            // 
+            this.PopupMenuTodoViewSmallIcons.Name = "PopupMenuTodoViewSmallIcons";
+            this.PopupMenuTodoViewSmallIcons.Size = new System.Drawing.Size(137, 22);
+            this.PopupMenuTodoViewSmallIcons.Text = "Small Icons";
+            // 
+            // PopupMenuTodoViewTiles
+            // 
+            this.PopupMenuTodoViewTiles.Name = "PopupMenuTodoViewTiles";
+            this.PopupMenuTodoViewTiles.Size = new System.Drawing.Size(137, 22);
+            this.PopupMenuTodoViewTiles.Text = "Tiles";
+            // 
+            // PopupMenuTodoViewList
+            // 
+            this.PopupMenuTodoViewList.Name = "PopupMenuTodoViewList";
+            this.PopupMenuTodoViewList.Size = new System.Drawing.Size(137, 22);
+            this.PopupMenuTodoViewList.Text = "List";
+            // 
+            // PopupMenuTodoViewDetails
+            // 
+            this.PopupMenuTodoViewDetails.Checked = true;
+            this.PopupMenuTodoViewDetails.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PopupMenuTodoViewDetails.Name = "PopupMenuTodoViewDetails";
+            this.PopupMenuTodoViewDetails.Size = new System.Drawing.Size(137, 22);
+            this.PopupMenuTodoViewDetails.Text = "Details";
+            // 
+            // PopupMenuTodoViewSep1
+            // 
+            this.PopupMenuTodoViewSep1.Name = "PopupMenuTodoViewSep1";
+            this.PopupMenuTodoViewSep1.Size = new System.Drawing.Size(134, 6);
+            // 
+            // PopupMenuTodoViewShowGroups
+            // 
+            this.PopupMenuTodoViewShowGroups.Checked = true;
+            this.PopupMenuTodoViewShowGroups.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PopupMenuTodoViewShowGroups.Name = "PopupMenuTodoViewShowGroups";
+            this.PopupMenuTodoViewShowGroups.Size = new System.Drawing.Size(137, 22);
+            this.PopupMenuTodoViewShowGroups.Text = "Show Groups";
+            // 
+            // PopupMenuTodoGroupBy
+            // 
+            this.PopupMenuTodoGroupBy.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PopupMenuTodoGroupByStatus,
+            this.PopupMenuTodoGroupByStartDate,
+            this.PopupMenuTodoGroupByDueDate});
+            this.PopupMenuTodoGroupBy.Name = "PopupMenuTodoGroupBy";
+            this.PopupMenuTodoGroupBy.Size = new System.Drawing.Size(118, 22);
+            this.PopupMenuTodoGroupBy.Text = "Group By";
+            // 
+            // PopupMenuTodoGroupByStatus
+            // 
+            this.PopupMenuTodoGroupByStatus.Checked = true;
+            this.PopupMenuTodoGroupByStatus.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PopupMenuTodoGroupByStatus.Name = "PopupMenuTodoGroupByStatus";
+            this.PopupMenuTodoGroupByStatus.Size = new System.Drawing.Size(124, 22);
+            this.PopupMenuTodoGroupByStatus.Text = "Status";
+            // 
+            // PopupMenuTodoGroupByStartDate
+            // 
+            this.PopupMenuTodoGroupByStartDate.Enabled = false;
+            this.PopupMenuTodoGroupByStartDate.Name = "PopupMenuTodoGroupByStartDate";
+            this.PopupMenuTodoGroupByStartDate.Size = new System.Drawing.Size(124, 22);
+            this.PopupMenuTodoGroupByStartDate.Text = "Start Date";
+            // 
+            // PopupMenuTodoGroupByDueDate
+            // 
+            this.PopupMenuTodoGroupByDueDate.Enabled = false;
+            this.PopupMenuTodoGroupByDueDate.Name = "PopupMenuTodoGroupByDueDate";
+            this.PopupMenuTodoGroupByDueDate.Size = new System.Drawing.Size(124, 22);
+            this.PopupMenuTodoGroupByDueDate.Text = "Due Date";
+            // 
+            // LargeImages
+            // 
+            this.LargeImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("LargeImages.ImageStream")));
+            this.LargeImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.LargeImages.Images.SetKeyName(0, "LargeProject.png");
+            // 
+            // SmallImages
+            // 
+            this.SmallImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SmallImages.ImageStream")));
+            this.SmallImages.TransparentColor = System.Drawing.Color.Transparent;
+            this.SmallImages.Images.SetKeyName(0, "SmallProject.png");
+            this.SmallImages.Images.SetKeyName(1, "menu-item-hidden.bmp");
+            // 
             // StatusBar
             // 
             this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -202,7 +350,6 @@
             this.TodoToolbar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.TodoToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuTodoAction,
-            this.MenuTodoMarkAs,
             this.MenuTodoShow,
             this.toolStripSeparator1,
             this.MenuTodoViewLargeIcons,
@@ -268,51 +415,6 @@
             this.MenuTodoActionDelete.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete)));
             this.MenuTodoActionDelete.Size = new System.Drawing.Size(164, 22);
             this.MenuTodoActionDelete.Text = "Delete...";
-            // 
-            // MenuTodoMarkAs
-            // 
-            this.MenuTodoMarkAs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.MenuTodoMarkAs.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuTodoMarkAsNotStarted,
-            this.MenuTodoMarkAsInProgress,
-            this.MenuTodoMarkAsOnHold,
-            this.MenuTodoMarkAsBlocked,
-            this.MenuTodoMarkAsComplete});
-            this.MenuTodoMarkAs.Image = ((System.Drawing.Image)(resources.GetObject("MenuTodoMarkAs.Image")));
-            this.MenuTodoMarkAs.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.MenuTodoMarkAs.Name = "MenuTodoMarkAs";
-            this.MenuTodoMarkAs.Size = new System.Drawing.Size(58, 22);
-            this.MenuTodoMarkAs.Text = "Mark As";
-            // 
-            // MenuTodoMarkAsNotStarted
-            // 
-            this.MenuTodoMarkAsNotStarted.Name = "MenuTodoMarkAsNotStarted";
-            this.MenuTodoMarkAsNotStarted.Size = new System.Drawing.Size(152, 22);
-            this.MenuTodoMarkAsNotStarted.Text = "Not Started";
-            // 
-            // MenuTodoMarkAsInProgress
-            // 
-            this.MenuTodoMarkAsInProgress.Name = "MenuTodoMarkAsInProgress";
-            this.MenuTodoMarkAsInProgress.Size = new System.Drawing.Size(152, 22);
-            this.MenuTodoMarkAsInProgress.Text = "In Progress";
-            // 
-            // MenuTodoMarkAsOnHold
-            // 
-            this.MenuTodoMarkAsOnHold.Name = "MenuTodoMarkAsOnHold";
-            this.MenuTodoMarkAsOnHold.Size = new System.Drawing.Size(152, 22);
-            this.MenuTodoMarkAsOnHold.Text = "On Hold";
-            // 
-            // MenuTodoMarkAsBlocked
-            // 
-            this.MenuTodoMarkAsBlocked.Name = "MenuTodoMarkAsBlocked";
-            this.MenuTodoMarkAsBlocked.Size = new System.Drawing.Size(152, 22);
-            this.MenuTodoMarkAsBlocked.Text = "Blocked";
-            // 
-            // MenuTodoMarkAsComplete
-            // 
-            this.MenuTodoMarkAsComplete.Name = "MenuTodoMarkAsComplete";
-            this.MenuTodoMarkAsComplete.Size = new System.Drawing.Size(152, 22);
-            this.MenuTodoMarkAsComplete.Text = "Complete";
             // 
             // MenuTodoShow
             // 
@@ -397,147 +499,6 @@
             this.MenuTodoViewDetails.Text = "View Details";
             this.MenuTodoViewDetails.Click += new System.EventHandler(this.MenuTodoViewDetails_Click);
             // 
-            // PopupMenuReminder
-            // 
-            this.PopupMenuReminder.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.PopupMenuTodoAdd,
-            this.PopupMenuTodoEdit,
-            this.PopupMenuTodoHide,
-            this.PopupMenuTodoUnhide,
-            this.PopupMenuTodoDelete,
-            this.PopupMenuTodoSep1,
-            this.PopupMenuTodoView,
-            this.PopupMenuTodoGroupBy});
-            this.PopupMenuReminder.Name = "contextMenuStrip1";
-            this.PopupMenuReminder.Size = new System.Drawing.Size(119, 164);
-            // 
-            // PopupMenuTodoAdd
-            // 
-            this.PopupMenuTodoAdd.Name = "PopupMenuTodoAdd";
-            this.PopupMenuTodoAdd.Size = new System.Drawing.Size(118, 22);
-            this.PopupMenuTodoAdd.Text = "Add...";
-            // 
-            // PopupMenuTodoEdit
-            // 
-            this.PopupMenuTodoEdit.Name = "PopupMenuTodoEdit";
-            this.PopupMenuTodoEdit.Size = new System.Drawing.Size(118, 22);
-            this.PopupMenuTodoEdit.Text = "Edit...";
-            // 
-            // PopupMenuTodoHide
-            // 
-            this.PopupMenuTodoHide.Name = "PopupMenuTodoHide";
-            this.PopupMenuTodoHide.Size = new System.Drawing.Size(118, 22);
-            this.PopupMenuTodoHide.Text = "Hide";
-            // 
-            // PopupMenuTodoUnhide
-            // 
-            this.PopupMenuTodoUnhide.Name = "PopupMenuTodoUnhide";
-            this.PopupMenuTodoUnhide.Size = new System.Drawing.Size(118, 22);
-            this.PopupMenuTodoUnhide.Text = "Unhide";
-            this.PopupMenuTodoUnhide.Visible = false;
-            // 
-            // PopupMenuTodoDelete
-            // 
-            this.PopupMenuTodoDelete.Name = "PopupMenuTodoDelete";
-            this.PopupMenuTodoDelete.Size = new System.Drawing.Size(118, 22);
-            this.PopupMenuTodoDelete.Text = "Delete";
-            // 
-            // PopupMenuTodoSep1
-            // 
-            this.PopupMenuTodoSep1.Name = "PopupMenuTodoSep1";
-            this.PopupMenuTodoSep1.Size = new System.Drawing.Size(115, 6);
-            // 
-            // PopupMenuTodoView
-            // 
-            this.PopupMenuTodoView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.PopupMenuTodoViewLargeIcons,
-            this.PopupMenuTodoViewSmallIcons,
-            this.PopupMenuTodoViewTiles,
-            this.PopupMenuTodoViewList,
-            this.PopupMenuTodoViewDetails,
-            this.PopupMenuTodoViewSep1,
-            this.PopupMenuTodoViewShowGroups});
-            this.PopupMenuTodoView.Name = "PopupMenuTodoView";
-            this.PopupMenuTodoView.Size = new System.Drawing.Size(118, 22);
-            this.PopupMenuTodoView.Text = "View";
-            // 
-            // PopupMenuTodoViewLargeIcons
-            // 
-            this.PopupMenuTodoViewLargeIcons.Name = "PopupMenuTodoViewLargeIcons";
-            this.PopupMenuTodoViewLargeIcons.Size = new System.Drawing.Size(152, 22);
-            this.PopupMenuTodoViewLargeIcons.Text = "Large Icons";
-            // 
-            // PopupMenuTodoViewSmallIcons
-            // 
-            this.PopupMenuTodoViewSmallIcons.Name = "PopupMenuTodoViewSmallIcons";
-            this.PopupMenuTodoViewSmallIcons.Size = new System.Drawing.Size(152, 22);
-            this.PopupMenuTodoViewSmallIcons.Text = "Small Icons";
-            // 
-            // PopupMenuTodoViewTiles
-            // 
-            this.PopupMenuTodoViewTiles.Name = "PopupMenuTodoViewTiles";
-            this.PopupMenuTodoViewTiles.Size = new System.Drawing.Size(152, 22);
-            this.PopupMenuTodoViewTiles.Text = "Tiles";
-            // 
-            // PopupMenuTodoViewList
-            // 
-            this.PopupMenuTodoViewList.Name = "PopupMenuTodoViewList";
-            this.PopupMenuTodoViewList.Size = new System.Drawing.Size(152, 22);
-            this.PopupMenuTodoViewList.Text = "List";
-            // 
-            // PopupMenuTodoViewDetails
-            // 
-            this.PopupMenuTodoViewDetails.Checked = true;
-            this.PopupMenuTodoViewDetails.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.PopupMenuTodoViewDetails.Name = "PopupMenuTodoViewDetails";
-            this.PopupMenuTodoViewDetails.Size = new System.Drawing.Size(152, 22);
-            this.PopupMenuTodoViewDetails.Text = "Details";
-            // 
-            // PopupMenuTodoViewSep1
-            // 
-            this.PopupMenuTodoViewSep1.Name = "PopupMenuTodoViewSep1";
-            this.PopupMenuTodoViewSep1.Size = new System.Drawing.Size(149, 6);
-            // 
-            // PopupMenuTodoViewShowGroups
-            // 
-            this.PopupMenuTodoViewShowGroups.Checked = true;
-            this.PopupMenuTodoViewShowGroups.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.PopupMenuTodoViewShowGroups.Name = "PopupMenuTodoViewShowGroups";
-            this.PopupMenuTodoViewShowGroups.Size = new System.Drawing.Size(152, 22);
-            this.PopupMenuTodoViewShowGroups.Text = "Show Groups";
-            // 
-            // PopupMenuTodoGroupBy
-            // 
-            this.PopupMenuTodoGroupBy.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.PopupMenuTodoGroupByStatus,
-            this.PopupMenuTodoGroupByStartDate,
-            this.PopupMenuTodoGroupByDueDate});
-            this.PopupMenuTodoGroupBy.Name = "PopupMenuTodoGroupBy";
-            this.PopupMenuTodoGroupBy.Size = new System.Drawing.Size(118, 22);
-            this.PopupMenuTodoGroupBy.Text = "Group By";
-            // 
-            // PopupMenuTodoGroupByStatus
-            // 
-            this.PopupMenuTodoGroupByStatus.Checked = true;
-            this.PopupMenuTodoGroupByStatus.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.PopupMenuTodoGroupByStatus.Name = "PopupMenuTodoGroupByStatus";
-            this.PopupMenuTodoGroupByStatus.Size = new System.Drawing.Size(152, 22);
-            this.PopupMenuTodoGroupByStatus.Text = "Status";
-            // 
-            // PopupMenuTodoGroupByStartDate
-            // 
-            this.PopupMenuTodoGroupByStartDate.Enabled = false;
-            this.PopupMenuTodoGroupByStartDate.Name = "PopupMenuTodoGroupByStartDate";
-            this.PopupMenuTodoGroupByStartDate.Size = new System.Drawing.Size(152, 22);
-            this.PopupMenuTodoGroupByStartDate.Text = "Start Date";
-            // 
-            // PopupMenuTodoGroupByDueDate
-            // 
-            this.PopupMenuTodoGroupByDueDate.Enabled = false;
-            this.PopupMenuTodoGroupByDueDate.Name = "PopupMenuTodoGroupByDueDate";
-            this.PopupMenuTodoGroupByDueDate.Size = new System.Drawing.Size(152, 22);
-            this.PopupMenuTodoGroupByDueDate.Text = "Due Date";
-            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -552,19 +513,6 @@
             this.SendEmailButton.Size = new System.Drawing.Size(59, 22);
             this.SendEmailButton.Text = "Email Test";
             this.SendEmailButton.Click += new System.EventHandler(this.SendEmailButton_Click);
-            // 
-            // SmallImages
-            // 
-            this.SmallImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("SmallImages.ImageStream")));
-            this.SmallImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.SmallImages.Images.SetKeyName(0, "SmallProject.png");
-            this.SmallImages.Images.SetKeyName(1, "menu-item-hidden.bmp");
-            // 
-            // LargeImages
-            // 
-            this.LargeImages.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("LargeImages.ImageStream")));
-            this.LargeImages.TransparentColor = System.Drawing.Color.Transparent;
-            this.LargeImages.Images.SetKeyName(0, "LargeProject.png");
             // 
             // QuartzTestButton
             // 
@@ -589,11 +537,11 @@
             this.Name = "Reminder";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Reminders";
+            this.PopupMenuReminder.ResumeLayout(false);
             this.StatusBar.ResumeLayout(false);
             this.StatusBar.PerformLayout();
             this.TodoToolbar.ResumeLayout(false);
             this.TodoToolbar.PerformLayout();
-            this.PopupMenuReminder.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -616,12 +564,6 @@
         private System.Windows.Forms.ToolStripMenuItem MenuTodoActionHide;
         private System.Windows.Forms.ToolStripMenuItem MenuTodoActionUnhide;
         private System.Windows.Forms.ToolStripMenuItem MenuTodoActionDelete;
-        private System.Windows.Forms.ToolStripDropDownButton MenuTodoMarkAs;
-        private System.Windows.Forms.ToolStripMenuItem MenuTodoMarkAsNotStarted;
-        private System.Windows.Forms.ToolStripMenuItem MenuTodoMarkAsInProgress;
-        private System.Windows.Forms.ToolStripMenuItem MenuTodoMarkAsOnHold;
-        private System.Windows.Forms.ToolStripMenuItem MenuTodoMarkAsBlocked;
-        private System.Windows.Forms.ToolStripMenuItem MenuTodoMarkAsComplete;
         private System.Windows.Forms.ToolStripDropDownButton MenuTodoShow;
         private System.Windows.Forms.ToolStripMenuItem MenuTodoShowGroups;
         private System.Windows.Forms.ToolStripMenuItem MenuTodoShowCompletedItems;
