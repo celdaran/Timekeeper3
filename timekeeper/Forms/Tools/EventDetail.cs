@@ -14,7 +14,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Forms.Tools
 {
-    public partial class Event : Form
+    public partial class EventDetail : Form
     {
         //----------------------------------------------------------------------
         // Properties
@@ -28,7 +28,7 @@ namespace Timekeeper.Forms.Tools
         // Constructor
         //----------------------------------------------------------------------
 
-        public Event()
+        public EventDetail()
         {
             InitializeComponent();
         }

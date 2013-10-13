@@ -1,6 +1,6 @@
 ﻿namespace Timekeeper.Forms.Tools
 {
-    partial class Event
+    partial class EventDetail
     {
         /// <summary>
         /// Required designer variable.

@@ -167,7 +167,7 @@ namespace Timekeeper.Forms.Tools
 
         private void MenuTodoActionAdd_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Event DialogBox = new Forms.Tools.Event();
+            Forms.Tools.EventDetail DialogBox = new Forms.Tools.EventDetail();
             DialogBox.ShowDialog(this);
         }
 

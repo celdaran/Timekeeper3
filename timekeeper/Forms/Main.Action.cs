@@ -413,7 +413,7 @@ namespace Timekeeper.Forms
                 Timekeeper.OpenScheduler();
 
                 // SHORTCUTS
-                Forms.Tools.Event DialogBox = new Forms.Tools.Event();
+                Forms.Tools.EventDetail DialogBox = new Forms.Tools.EventDetail();
                 DialogBox.ShowDialog(this);
                 Application.Exit();
             }
