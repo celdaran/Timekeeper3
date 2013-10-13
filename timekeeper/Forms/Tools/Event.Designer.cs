@@ -1,6 +1,6 @@
 ﻿namespace Timekeeper.Forms.Tools
 {
-    partial class Reminder
+    partial class Event
     {
         /// <summary>
         /// Required designer variable.
@@ -55,7 +55,7 @@
             "2013-10-18",
             "One Time",
             "None"}, 0);
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Reminder));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Event));
             this.TodoList = new System.Windows.Forms.ListView();
             this.NewEventName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.EventDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));

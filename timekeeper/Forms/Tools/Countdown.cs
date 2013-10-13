@@ -38,11 +38,13 @@ namespace Timekeeper.Forms.Tools
 
         private void CreateEventButton_Click(object sender, EventArgs e)
         {
+            /*
             Forms.Tools.CountdownEvent DialogBox = new Forms.Tools.CountdownEvent(true);
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
                 TargetTime = DateTime.Now; // DialogBox.EventDateTime.Value;
                 SecondTimer.Enabled = true;
             }
+            */
         }
 
         //----------------------------------------------------------------------

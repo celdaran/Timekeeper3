@@ -344,7 +344,7 @@ namespace Timekeeper.Forms
         // Tools | Reminders
         private void MenuToolReminders_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Reminder DialogBox = new Forms.Tools.Reminder();
+            Forms.Tools.Event DialogBox = new Forms.Tools.Event();
             DialogBox.Show();
             OpenForms.Add(DialogBox);
         }

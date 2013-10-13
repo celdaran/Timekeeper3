@@ -185,17 +185,11 @@
     <Compile Include="Forms\Find.Designer.cs">
       <DependentUpon>Find.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Tools\CountdownEvent.cs">
+    <Compile Include="Forms\Tools\EventDetail.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Tools\CountdownEvent.Designer.cs">
-      <DependentUpon>CountdownEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Tools\Event.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Tools\Event.Designer.cs">
-      <DependentUpon>Event.cs</DependentUpon>
+    <Compile Include="Forms\Tools\EventDetail.Designer.cs">
+      <DependentUpon>EventDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Wizards\Import.cs">
       <SubType>Form</SubType>
@@ -382,11 +376,11 @@
     <Compile Include="Forms\Properties.Designer.cs">
       <DependentUpon>Properties.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Tools\Reminder.cs">
+    <Compile Include="Forms\Tools\Event.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Tools\Reminder.Designer.cs">
-      <DependentUpon>Reminder.cs</DependentUpon>
+    <Compile Include="Forms\Tools\Event.Designer.cs">
+      <DependentUpon>Event.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Tools\Stopwatch.cs">
       <SubType>Form</SubType>
@@ -444,9 +438,6 @@
     <EmbeddedResource Include="Forms\Tools\Countdown.resx">
       <DependentUpon>Countdown.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Tools\CountdownEvent.resx">
-      <DependentUpon>CountdownEvent.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tools\DateCalculator.resx">
       <DependentUpon>DateCalculator.cs</DependentUpon>
     </EmbeddedResource>
@@ -454,8 +445,8 @@
       <DependentUpon>Notebook.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Tools\Event.resx">
-      <DependentUpon>Event.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Tools\EventDetail.resx">
+      <DependentUpon>EventDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Wizards\Import.resx">
       <DependentUpon>Import.cs</DependentUpon>
@@ -484,8 +475,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>Properties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Tools\Reminder.resx">
-      <DependentUpon>Reminder.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Tools\Event.resx">
+      <DependentUpon>Event.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tools\Stopwatch.resx">
       <DependentUpon>Stopwatch.cs</DependentUpon>

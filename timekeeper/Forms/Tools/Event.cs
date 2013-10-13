@@ -13,9 +13,9 @@ using Quartz.Impl;
 
 namespace Timekeeper.Forms.Tools
 {
-    public partial class Reminder : Form
+    public partial class Event : Form
     {
-        public Reminder()
+        public Event()
         {
             InitializeComponent();
         }
