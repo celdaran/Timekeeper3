@@ -160,6 +160,8 @@
     <Compile Include="Classes\Meta.cs" />
     <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\ReferenceData.cs" />
+    <Compile Include="Classes\Reminder.cs" />
+    <Compile Include="Classes\Schedule.cs" />
     <Compile Include="Classes\SortableItem.cs" />
     <Compile Include="Classes\SortableItemCollection.cs" />
     <Compile Include="Classes\TodoItem.cs" />
@@ -172,6 +174,18 @@
     </Compile>
     <Compile Include="Forms\CategoryManager.Designer.cs">
       <DependentUpon>CategoryManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Shared\Schedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Shared\Schedule.Designer.cs">
+      <DependentUpon>Schedule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Shared\Reminder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Shared\Reminder.Designer.cs">
+      <DependentUpon>Reminder.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Shared\Filtering.cs">
       <SubType>Form</SubType>
@@ -395,6 +409,12 @@
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Shared\Schedule.resx">
+      <DependentUpon>Schedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Shared\Reminder.resx">
+      <DependentUpon>Reminder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Shared\ManageViews.resx">
       <DependentUpon>ManageViews.cs</DependentUpon>

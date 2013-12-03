@@ -83,8 +83,8 @@ namespace Timekeeper.Forms
             this.MenuToolNotebook = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolCalendar = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolStopwatch = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuToolCountdown = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolReminders = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolCountdown = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolDatecalc = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuToolOptions = new System.Windows.Forms.ToolStripMenuItem();
@@ -173,8 +173,8 @@ namespace Timekeeper.Forms
             this.notebookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calendarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopwatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.countdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remindersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.countdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutTimekeeperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -235,6 +235,7 @@ namespace Timekeeper.Forms
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
+            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
@@ -703,19 +704,19 @@ namespace Timekeeper.Forms
             this.MenuToolStopwatch.Text = "Stopwatch...";
             this.MenuToolStopwatch.Click += new System.EventHandler(this.MenuToolStopwatch_Click);
             // 
-            // MenuToolCountdown
-            // 
-            this.MenuToolCountdown.Name = "MenuToolCountdown";
-            this.MenuToolCountdown.Size = new System.Drawing.Size(160, 22);
-            this.MenuToolCountdown.Text = "C&ountdown...";
-            this.MenuToolCountdown.Click += new System.EventHandler(this.MenuToolCountdown_Click);
-            // 
             // MenuToolReminders
             // 
             this.MenuToolReminders.Name = "MenuToolReminders";
             this.MenuToolReminders.Size = new System.Drawing.Size(160, 22);
             this.MenuToolReminders.Text = "&Reminders...";
             this.MenuToolReminders.Click += new System.EventHandler(this.MenuToolReminders_Click);
+            // 
+            // MenuToolCountdown
+            // 
+            this.MenuToolCountdown.Name = "MenuToolCountdown";
+            this.MenuToolCountdown.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolCountdown.Text = "C&ountdown...";
+            this.MenuToolCountdown.Click += new System.EventHandler(this.MenuToolCountdown_Click);
             // 
             // MenuToolDatecalc
             // 
@@ -744,6 +745,7 @@ namespace Timekeeper.Forms
             this.MenuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuHelpContents,
             this.MenuHelpWeb,
+            this.checkForUpdatesToolStripMenuItem,
             this.MenuHelpSep1,
             this.MenuHelpAbout});
             this.MenuHelp.Name = "MenuHelp";
@@ -754,26 +756,26 @@ namespace Timekeeper.Forms
             // 
             this.MenuHelpContents.Name = "MenuHelpContents";
             this.MenuHelpContents.ShortcutKeyDisplayString = "F1";
-            this.MenuHelpContents.Size = new System.Drawing.Size(137, 22);
+            this.MenuHelpContents.Size = new System.Drawing.Size(175, 22);
             this.MenuHelpContents.Text = "&Contents";
             this.MenuHelpContents.Click += new System.EventHandler(this.menuHelpContents_Click);
             // 
             // MenuHelpWeb
             // 
             this.MenuHelpWeb.Name = "MenuHelpWeb";
-            this.MenuHelpWeb.Size = new System.Drawing.Size(137, 22);
+            this.MenuHelpWeb.Size = new System.Drawing.Size(175, 22);
             this.MenuHelpWeb.Text = "&Web Support";
             this.MenuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
             // 
             // MenuHelpSep1
             // 
             this.MenuHelpSep1.Name = "MenuHelpSep1";
-            this.MenuHelpSep1.Size = new System.Drawing.Size(134, 6);
+            this.MenuHelpSep1.Size = new System.Drawing.Size(172, 6);
             // 
             // MenuHelpAbout
             // 
             this.MenuHelpAbout.Name = "MenuHelpAbout";
-            this.MenuHelpAbout.Size = new System.Drawing.Size(137, 22);
+            this.MenuHelpAbout.Size = new System.Drawing.Size(175, 22);
             this.MenuHelpAbout.Text = "&About...";
             this.MenuHelpAbout.Click += new System.EventHandler(this.menuHelpAbout_Click);
             // 
@@ -1520,19 +1522,19 @@ namespace Timekeeper.Forms
             this.stopwatchToolStripMenuItem.Text = "Stopwatch...";
             this.stopwatchToolStripMenuItem.Click += new System.EventHandler(this.MenuToolStopwatch_Click);
             // 
-            // countdownToolStripMenuItem
-            // 
-            this.countdownToolStripMenuItem.Name = "countdownToolStripMenuItem";
-            this.countdownToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.countdownToolStripMenuItem.Text = "Countdown...";
-            this.countdownToolStripMenuItem.Click += new System.EventHandler(this.MenuToolCountdown_Click);
-            // 
             // remindersToolStripMenuItem
             // 
             this.remindersToolStripMenuItem.Name = "remindersToolStripMenuItem";
             this.remindersToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.remindersToolStripMenuItem.Text = "Reminders...";
             this.remindersToolStripMenuItem.Click += new System.EventHandler(this.MenuToolReminders_Click);
+            // 
+            // countdownToolStripMenuItem
+            // 
+            this.countdownToolStripMenuItem.Name = "countdownToolStripMenuItem";
+            this.countdownToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.countdownToolStripMenuItem.Text = "Countdown...";
+            this.countdownToolStripMenuItem.Click += new System.EventHandler(this.MenuToolCountdown_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -2131,6 +2133,12 @@ namespace Timekeeper.Forms
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
             this.SaveAsDialog.Title = "Save As";
             // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates...";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2387,5 +2395,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem countdownToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopwatchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
     }
 }

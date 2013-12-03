@@ -35,7 +35,7 @@ namespace Timekeeper
         // be updated. Note that prior to 3.0, this convention was not followed 
         // (nor were the DDL statements stored as resources or tracked in p4).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.6.1";
+        public const string SCHEMA_VERSION = "3.0.6.2";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
@@ -203,6 +203,8 @@ namespace Timekeeper
                 CreateTable("Journal", version, false);
                 CreateTable("Notebook", version, false);
                 CreateTable("Todo", version, false);
+                CreateTable("Reminder", version, false);
+                CreateTable("Schedule", version, false);
                 CreateTable("EventGroup", version, true);
                 CreateTable("Event", version, false);
 

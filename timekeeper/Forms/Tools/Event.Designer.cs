@@ -524,7 +524,7 @@
             this.QuartzTestButton.Text = "Quartz Test";
             this.QuartzTestButton.Click += new System.EventHandler(this.QuartzTestButton_Click);
             // 
-            // Reminder
+            // Event
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -534,9 +534,9 @@
             this.Controls.Add(this.StatusBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Reminder";
+            this.Name = "Event";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Reminders";
+            this.Text = "Events";
             this.PopupMenuReminder.ResumeLayout(false);
             this.StatusBar.ResumeLayout(false);
             this.StatusBar.PerformLayout();

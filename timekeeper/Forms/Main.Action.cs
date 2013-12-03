@@ -413,9 +413,11 @@ namespace Timekeeper.Forms
                 Timekeeper.OpenScheduler();
 
                 // SHORTCUTS
-                Forms.Tools.EventDetail DialogBox = new Forms.Tools.EventDetail();
+                /*
+                Forms.Shared.Schedule DialogBox = new Forms.Shared.Schedule();
                 DialogBox.ShowDialog(this);
                 Application.Exit();
+                */
             }
             catch (Exception x) {
                 Common.Warn("There was an error loading the application. Depending on the error, additional information may exist in the application's log file.");
