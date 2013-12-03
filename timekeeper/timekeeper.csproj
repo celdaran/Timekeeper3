@@ -555,6 +555,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SQL\3.0\EventGroup.Insert.sql" />
+    <None Include="Resources\SQL\3.0\Reminder.Create.sql" />
+    <None Include="Resources\SQL\3.0\Schedule.Create.sql" />
     <None Include="Resources\SQL\3.0\RefScheduleType.Insert.sql" />
     <None Include="Resources\SQL\3.0\RefScheduleType.Create.sql" />
     <None Include="Resources\SQL\3.0\EventGroup.Create.sql" />
