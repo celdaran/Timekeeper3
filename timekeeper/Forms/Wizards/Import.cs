@@ -19,8 +19,7 @@ namespace Timekeeper.Forms.Wizards
         // Properties
         //----------------------------------------------------------------------
 
-        private List<Panel> WizardPanels = new List<Panel>();
-        private int CurrentTab;
+        private Classes.Widgets Widgets;
 
         //----------------------------------------------------------------------
         // Constructor
@@ -37,23 +36,28 @@ namespace Timekeeper.Forms.Wizards
 
         private void ImportWizard_Load(object sender, EventArgs e)
         {
+            Widgets = new Classes.Widgets();
+
             Width = 525;
+            Widgets.WizardWidth = Width;
+            Widgets.BackButton = BackButton;
+            Widgets.NextButton = NextButton;
 
-            WizardPanels.Add(Tab1);
-            WizardPanels.Add(Tab2);
-            WizardPanels.Add(Tab3);
-            WizardPanels.Add(Tab4);
-            WizardPanels.Add(Tab5);
+            Widgets.AddTab(Tab1);
+            Widgets.AddTab(Tab2);
+            Widgets.AddTab(Tab3);
+            Widgets.AddTab(Tab4);
+            Widgets.AddTab(Tab5);
 
-            GoToTab(1);
+            Widgets.GoToFirstTab();
         }
 
         //----------------------------------------------------------------------
 
         private void NextButton_Click(object sender, EventArgs e)
         {
-            GoToTab(CurrentTab + 1);
-            if (CurrentTab == 4) {
+            Widgets.GoForward();
+            if (Widgets.AtEnd()) {
                 ImportButton.Left = NextButton.Left;
                 NextButton.Visible = false;
                 ImportButton.Visible = true;
@@ -64,14 +68,14 @@ namespace Timekeeper.Forms.Wizards
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            GoToTab(CurrentTab - 1);
+            Widgets.GoBack();
         }
 
         //----------------------------------------------------------------------
 
         private void ImportButton_Click(object sender, EventArgs e)
         {
-            GoToTab(5);
+            Widgets.GoToLastTab();
             ImportButton.Enabled = false;
             BackButton.Enabled = false;
 
@@ -93,30 +97,6 @@ namespace Timekeeper.Forms.Wizards
         private void CloseButton_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-        }
-
-        //----------------------------------------------------------------------
-        // Wizard Navigation
-        //----------------------------------------------------------------------
-
-        private void GoToTab(int tabNo)
-        {
-            if ((tabNo > 0) && (tabNo <= WizardPanels.Count)) {
-                CurrentTab = tabNo;
-
-                Panel Tab = WizardPanels[tabNo - 1];
-                Tab.Visible = true;
-                Tab.Left = 164;
-
-                int Index = 0;
-                foreach (Panel OtherTab in WizardPanels) {
-                    if (Index != (tabNo - 1)) {
-                        OtherTab.Visible = false;
-                        OtherTab.Left = 524;
-                    }
-                    Index++;
-                }
-            }
         }
 
         //----------------------------------------------------------------------

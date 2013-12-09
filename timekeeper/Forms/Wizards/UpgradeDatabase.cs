@@ -17,13 +17,23 @@ namespace Timekeeper.Forms.Wizards
 {
     public partial class UpgradeDatabase : Form
     {
+        //-----------------------------------------------------------------------
+        // Properties
+        //-----------------------------------------------------------------------
+
+        private Classes.Widgets Widgets;
         private File File;
         private bool UpgradeSucceeded;
         private int MemoMergeOptionsId;
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
+
+        // FIXME: This belongs in the wizard code
+        private bool IsDirty = false;
+
+        //----------------------------------------------------------------------
         // Constructor
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public UpgradeDatabase()
         {
@@ -33,7 +43,106 @@ namespace Timekeeper.Forms.Wizards
             this.UpgradeSucceeded = false;
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
+
+        private void Upgrade_Load(object sender, EventArgs e)
+        {
+            this.Widgets = new Classes.Widgets();
+
+            Widgets.PopulateTimeZoneComboBox(LocationTimeZone);
+
+            Width = 525;
+            Widgets.WizardWidth = Width;
+            Widgets.BackButton = BackButton;
+            Widgets.NextButton = NextButton;
+
+            Widgets.AddTab(Tab1);
+            Widgets.AddTab(Tab2);
+            Widgets.AddTab(Tab3);
+            Widgets.AddTab(Tab4);
+            Widgets.AddTab(Tab5);
+
+            Widgets.GoToFirstTab();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void NextButton_Click(object sender, EventArgs e)
+        {
+            // FIXME: is this first test needed? And, if so, shouldn't it be part of the 
+            // widget object? I'm trying to ponder what this might actually mean...
+            // FIXME: Not sure if I mentioned this or not, but this Widget Wizard thing 
+            // really should be its own class and not wrapped up in the Widget class.
+
+            if (this.Widgets.CurrentTab() < this.Widgets.TabCount()) {
+            //if (tablessControl1.SelectedIndex < tablessControl1.TabCount) {
+
+                if (this.Widgets.CurrentTab() == 1) {
+                    // If they've clicked past the first tab, we're dirty
+                    IsDirty = true;
+                }
+
+                // Move to next tab
+                this.Widgets.GoForward();
+
+                // Advance buttons
+                if (this.Widgets.AtEnd()) {
+                //if (tablessControl1.SelectedIndex == tablessControl1.TabCount - 1) {
+                    StartButton.Visible = true;
+                    StartButton.Location = NextButton.Location;
+                    StartButton.Size = NextButton.Size;
+                    StartButton.Focus();
+                }
+
+                // Update Review text
+                string BackupDir = Path.GetDirectoryName(BackUpFileLabel.Text);
+                string BackupFile = Path.GetFileName(BackUpFileLabel.Text);
+                UpgradeReview.Text  = "Backup File: " + Environment.NewLine + "  " + BackupFile + Environment.NewLine + Environment.NewLine;
+                UpgradeReview.Text += "Backup File Location: " + Environment.NewLine + "  " + BackupDir + Environment.NewLine + Environment.NewLine;
+                UpgradeReview.Text += "Location: " + Environment.NewLine + "  " + LocationName.Text + ", " + LocationTimeZone.SelectedItem + Environment.NewLine + Environment.NewLine;
+                UpgradeReview.Text += "Memo Handling: " + Environment.NewLine + "  ";
+
+                if (MergeMemoStandard.Checked) {
+                    UpgradeReview.Text += MergeMemoStandard.Text;
+                    MemoMergeOptionsId = 1;
+                } else if (MergeMemoNoSep.Checked) {
+                    UpgradeReview.Text += MergeMemoNoSep.Text;
+                    MemoMergeOptionsId = 2;
+                } else if (MergeMemoNoPre.Checked) {
+                    UpgradeReview.Text += MergeMemoNoPre.Text;
+                    MemoMergeOptionsId = 3;
+                } else if (MergeMemoNoPost.Checked) {
+                    UpgradeReview.Text += MergeMemoNoPost.Text;
+                    MemoMergeOptionsId = 4;
+                } else {
+                    UpgradeReview.Text += "No option selected";
+                    MemoMergeOptionsId = -1;
+                }
+
+                UpgradeReview.Text += Environment.NewLine;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void ButtonBack_Click(object sender, EventArgs e)
+        {
+            this.Widgets.GoBack();
+            StartButton.Visible = false;
+
+            /*
+            if (tablessControl1.SelectedIndex > 0) {
+                tablessControl1.SelectedIndex--;
+                NextButton.Visible = true;
+                StartButton.Visible = false;
+                if (tablessControl1.SelectedIndex == 0) {
+                    BackButton.Enabled = false;
+                }
+            }
+            */
+        }
+
+        //----------------------------------------------------------------------
 
         private void StartButton_Click(object sender, EventArgs e)
         {
@@ -83,7 +192,7 @@ namespace Timekeeper.Forms.Wizards
             OkayButton.Size = StartButton.Size;
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private void OkayButton_Click(object sender, EventArgs e)
         {
@@ -94,61 +203,6 @@ namespace Timekeeper.Forms.Wizards
             }
         }
 
-        private void NextButton_Click(object sender, EventArgs e)
-        {
-            if (tablessControl1.SelectedIndex < tablessControl1.TabCount) {
-
-                // Advance buttons
-                tablessControl1.SelectedIndex++;
-                BackButton.Enabled = true;
-                if (tablessControl1.SelectedIndex == tablessControl1.TabCount - 1) {
-                    NextButton.Visible = false;
-                    StartButton.Visible = true;
-                    StartButton.Location = NextButton.Location;
-                    StartButton.Size = NextButton.Size;
-                    StartButton.Focus();
-                }
-
-                // Update Review text
-                string BackupDir = Path.GetDirectoryName(BackUpFileLabel.Text);
-                string BackupFile = Path.GetFileName(BackUpFileLabel.Text);
-                UpgradeReview.Text  = "Backup File: " + Environment.NewLine + "  " + BackupFile + Environment.NewLine + Environment.NewLine;
-                UpgradeReview.Text += "Backup File Location: " + Environment.NewLine + "  " + BackupDir + Environment.NewLine + Environment.NewLine;
-                UpgradeReview.Text += "Location: " + Environment.NewLine + "  " + LocationName.Text + ", " + LocationTimeZone.SelectedItem + Environment.NewLine + Environment.NewLine;
-                UpgradeReview.Text += "Memo Handling: " + Environment.NewLine + "  ";
-
-                if (MergeMemoStandard.Checked) {
-                    UpgradeReview.Text += MergeMemoStandard.Text;
-                    MemoMergeOptionsId = 1;
-                } else if (MergeMemoNoSep.Checked) {
-                    UpgradeReview.Text += MergeMemoNoSep.Text;
-                    MemoMergeOptionsId = 2;
-                } else if (MergeMemoNoPre.Checked) {
-                    UpgradeReview.Text += MergeMemoNoPre.Text;
-                    MemoMergeOptionsId = 3;
-                } else if (MergeMemoNoPost.Checked) {
-                    UpgradeReview.Text += MergeMemoNoPost.Text;
-                    MemoMergeOptionsId = 4;
-                } else {
-                    UpgradeReview.Text += "No option selected";
-                    MemoMergeOptionsId = -1;
-                }
-
-                UpgradeReview.Text += Environment.NewLine;
-            }
-        }
-
-        private void ButtonBack_Click(object sender, EventArgs e)
-        {
-            if (tablessControl1.SelectedIndex > 0) {
-                tablessControl1.SelectedIndex--;
-                NextButton.Visible = true;
-                StartButton.Visible = false;
-                if (tablessControl1.SelectedIndex == 0) {
-                    BackButton.Enabled = false;
-                }
-            }
-        }
 
         private void SelectFileButton_Click(object sender, EventArgs e)
         {
@@ -158,13 +212,23 @@ namespace Timekeeper.Forms.Wizards
             }
         }
 
-        private void Upgrade_Load(object sender, EventArgs e)
+        private void LaterButton_Click(object sender, EventArgs e)
         {
-            Classes.Widgets Widgets = new Classes.Widgets();
-            Widgets.PopulateTimeZoneComboBox(LocationTimeZone);
+            DialogResult = DialogResult.Cancel;
         }
 
-        //---------------------------------------------------------------------
+        private void UpgradeDatabase_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (IsDirty && (DialogResult == DialogResult.Cancel)) {
+                // Meaning: if there have been changes, and we're not at the end of the process,
+                // ask the user if they want to cancel
+                if (Common.Prompt("Are you sure you want to exit the Upgrade Database wizard?") == DialogResult.No) {
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        //----------------------------------------------------------------------
 
     }
 }

@@ -18,7 +18,7 @@ namespace Timekeeper.Forms.Wizards
         // Properties
         //----------------------------------------------------------------------
 
-//        private string _FileName;
+        private Classes.Widgets Widgets;
         private FileCreateOptions _CreateOptions;
 
         //----------------------------------------------------------------------
@@ -38,9 +38,24 @@ namespace Timekeeper.Forms.Wizards
 
         private void NewWizard_Load(object sender, EventArgs e)
         {
-            Classes.Widgets Widgets = new Classes.Widgets();
+            this.Widgets = new Classes.Widgets();
+
             Widgets.PopulateTimeZoneComboBox(LocationTimeZone);
             ItemPreset.SelectedIndex = 0;
+
+            Width = 525;
+            Widgets.WizardWidth = Width;
+            Widgets.BackButton = BackButton;
+            Widgets.NextButton = NextButton;
+
+            Widgets.AddTab(Tab1);
+            Widgets.AddTab(Tab2);
+            Widgets.AddTab(Tab3);
+            Widgets.AddTab(Tab4);
+            Widgets.AddTab(Tab5);
+            Widgets.AddTab(Tab6);
+
+            Widgets.GoToFirstTab();
         }
 
         //----------------------------------------------------------------------
@@ -84,10 +99,12 @@ namespace Timekeeper.Forms.Wizards
         {
             // TODO: Break this up into smaller pieces
 
-            if (tablessControl1.SelectedIndex < tablessControl1.TabCount) {
+            if (this.Widgets.CurrentTab() < this.Widgets.TabCount()) {
+            //if (tablessControl1.SelectedIndex < tablessControl1.TabCount) {
 
                 // Tab Validation
-                if (tablessControl1.SelectedIndex == 1) {
+                if (this.Widgets.CurrentTab() == 2) {
+                //if (tablessControl1.SelectedIndex == 1) {
                     /*
                      * At this point we have one of three situations:
                      * 
@@ -136,7 +153,8 @@ namespace Timekeeper.Forms.Wizards
                 }
 
                 // Item Type validation
-                if (tablessControl1.SelectedIndex == 2) {
+                if (this.Widgets.CurrentTab() == 3) {
+                //if (tablessControl1.SelectedIndex == 2) {
                     if (UseProjects.Checked == false && UseActivities.Checked == false) {
                         Common.Warn("You must track at least one dimension: Projects or Activities");
                         return;
@@ -144,7 +162,8 @@ namespace Timekeeper.Forms.Wizards
                 }
 
                 // Location validation
-                if (tablessControl1.SelectedIndex == 4) {
+                if (this.Widgets.CurrentTab() == 5) {
+                //if (tablessControl1.SelectedIndex == 4) {
                     if (LocationName.Text == "") {
                         Common.Warn("You must specify a Location Name");
                         return;
@@ -152,11 +171,13 @@ namespace Timekeeper.Forms.Wizards
                 }
 
                 // Move to next tab
-                tablessControl1.SelectedIndex++;
-                BackButton.Enabled = true;
+                this.Widgets.GoForward();
+                //tablessControl1.SelectedIndex++;
+                //BackButton.Enabled = true;
 
                 // End of Wizard state change
-                if (tablessControl1.SelectedIndex == tablessControl1.TabCount - 1) {
+                if (this.Widgets.AtEnd()) {
+                //if (tablessControl1.SelectedIndex == tablessControl1.TabCount - 1) {
                     UpdateReviewText();
                     NextButton.Visible = false;
                     FinishButton.Visible = true;
@@ -214,6 +235,12 @@ namespace Timekeeper.Forms.Wizards
 
         private void BackButton_Click(object sender, EventArgs e)
         {
+            this.Widgets.GoBack();
+
+            //NextButton.Visible = true;
+            FinishButton.Visible = false;
+
+            /*
             if (tablessControl1.SelectedIndex > 0) {
                 tablessControl1.SelectedIndex--;
                 NextButton.Visible = true;
@@ -222,6 +249,7 @@ namespace Timekeeper.Forms.Wizards
                     BackButton.Enabled = false;
                 }
             }
+            */
         }
 
         //----------------------------------------------------------------------
