@@ -20,6 +20,8 @@ namespace Timekeeper.Forms.Shared
         // Properties
         //----------------------------------------------------------------------
 
+        private long ReminderId;
+
         private Classes.Options Options;
         private Classes.Widgets Widgets;
         private Classes.Reminder CurrentReminder;
@@ -41,7 +43,7 @@ namespace Timekeeper.Forms.Shared
         {
             this.Widgets = new Classes.Widgets();
             this.Options = Timekeeper.Options;
-            this.CurrentReminder = new Classes.Reminder(2);
+            this.CurrentReminder = new Classes.Reminder(1);
 
             PopulateForm(sender, e);
         }

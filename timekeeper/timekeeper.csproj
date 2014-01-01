@@ -143,6 +143,7 @@
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Datatypes.cs" />
     <Compile Include="Classes\Event.cs" />
+    <Compile Include="Classes\EventCollection.cs" />
     <Compile Include="Classes\EventGroup.cs" />
     <Compile Include="Classes\File.cs" />
     <Compile Include="Classes\File.Downgrade.cs" />

@@ -830,9 +830,6 @@ namespace Timekeeper.Forms
             if(!Action_FormLoad()) {
                 Environment.Exit(1);
             }
-
-            // Jump right to the new thing.
-            //MenuFileUtilitiesImport_Click(sender, e);
         }
 
         //---------------------------------------------------------------------

@@ -15,117 +15,311 @@ namespace Timekeeper.Forms.Tools
 {
     public partial class Event : Form
     {
+        //----------------------------------------------------------------------
+        // Properties
+        //----------------------------------------------------------------------
+
+        /*
+        private Classes.Options Options;
+        private ListViewColumnSorter ColumnSorter;
+        */
+
+        //----------------------------------------------------------------------
+        // Constructor
+        //----------------------------------------------------------------------
+        
         public Event()
         {
             InitializeComponent();
         }
 
         //----------------------------------------------------------------------
+        // Form Events
+        //----------------------------------------------------------------------
+
+        private void Event_Load(object sender, EventArgs e)
+        {
+            try {
+                PopulateEventList();
+                //RestoreWindowMetrics();
+                //ShowGroups(Options.Todo_ShowGroups);
+                //ShowCompletedItems(Options.Todo_ShowCompletedItems);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void PopulateEventList()
+        {
+            // Populate Groups
+            CreateGroups();
+
+            // Populate items
+            EventList.Items.Clear();
+            Classes.EventCollection Collection = new Classes.EventCollection();
+            List<Classes.Event> Items = Collection.Fetch();
+
+            foreach (Classes.Event Event in Items) {
+                this.AddItem(Event.Name, Event, EventList.Groups[Event.Group.Name]);
+            }
+
+            StatusBarItemCount.Text = EventList.Items.Count + " item(s)";
+        }
+
+        //----------------------------------------------------------------------
+
+        private void CreateGroups()
+        {
+            ListViewGroup Group;
+            EventList.Groups.Clear();
+
+            // Get status values
+
+            Classes.EventGroup EventGroup = new Classes.EventGroup();
+
+            // Now create a group for each one
+            foreach (Row EventGroupRow in EventGroup.Table()) {
+                Group = new ListViewGroup(EventGroupRow["Name"], EventGroupRow["Name"]);
+                EventList.Groups.Add(Group);
+            }
+
+        }
+
+        //----------------------------------------------------------------------
+
+        private void EventList_DoubleClick(object sender, EventArgs e)
+        {
+            EditItem();
+        }
+
+        //----------------------------------------------------------------------
+
+        public void AddItem(string displayName, Classes.Event currentEvent, ListViewGroup group)
+        {
+            try {
+                if (currentEvent.IsHidden) { // FIXME: && !Options.View_HiddenProjects) {
+                    // Don't add hidden items if we're hiding hidden items
+                    return;
+                }
+
+                ListViewItem NewItem = new ListViewItem(displayName, group);
+                EventList.Items.Add(NewItem);
+
+                NewItem.Tag = currentEvent;
+                NewItem.ImageIndex = 0;
+                NewItem.ToolTipText = currentEvent.Description;
+
+                if (currentEvent.IsHidden) {
+                    NewItem.ForeColor = Color.Gray;
+                    NewItem.ImageIndex = 1;
+                }
+
+                // columns: Event, Description, Next Occurence, Period, Remind Via
+
+                NewItem.SubItems.Add(currentEvent.Description);
+                NewItem.SubItems.Add(currentEvent.NextOccurrenceTime.ToString(Common.LOCAL_DATETIME_FORMAT));
+
+                string ScheduleText = currentEvent.Schedule == null ? "None" : currentEvent.Schedule.ToString();
+                string ReminderText = currentEvent.Reminder == null ? "None" : currentEvent.Reminder.ToString();
+
+                NewItem.SubItems.Add(ScheduleText);
+                NewItem.SubItems.Add(ReminderText);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //----------------------------------------------------------------------
         // Menu and Toolbar Events
         //----------------------------------------------------------------------
 
-        private void MenuTodoViewLargeIcons_Click(object sender, EventArgs e)
+        private void MenuEventsActionAdd_Click(object sender, EventArgs e)
+        {
+            Forms.Tools.EventDetail DialogBox = new Forms.Tools.EventDetail();
+            DialogBox.ShowDialog(this);
+            if (DialogBox.DialogResult == DialogResult.OK) {
+                Classes.Event Event = DialogBox.CurrentEvent;
+                if (Event.Save()) { // Save is an upsert function
+                    this.AddItem(Event.Name, Event, EventList.Groups[Event.Group.Name]);
+                } else {
+                    Common.Warn("There was an error creating the event");
+                }
+            }
+        }
+
+        private void MenuEventsActionEdit_Click(object sender, EventArgs e)
+        {
+            if (EventList.SelectedItems.Count > 1) {
+                Common.Warn("Cannot edit multiple items");
+            } else {
+                EditItem();
+            }
+        }
+
+        private void MenuEventViewLargeIcons_Click(object sender, EventArgs e)
         {
             ViewLargeIcons();
         }
 
-        private void MenuTodoViewSmallIcons_Click(object sender, EventArgs e)
+        private void MenuEventViewSmallIcons_Click(object sender, EventArgs e)
         {
             ViewSmallIcons();
         }
 
-        private void MenuTodoViewTiles_Click(object sender, EventArgs e)
+        private void MenuEventViewTiles_Click(object sender, EventArgs e)
         {
             ViewTiles();
         }
 
-        private void MenuTodoViewList_Click(object sender, EventArgs e)
+        private void MenuEventViewList_Click(object sender, EventArgs e)
         {
             ViewList();
         }
 
-        private void MenuTodoViewDetails_Click(object sender, EventArgs e)
+        private void MenuEventViewDetails_Click(object sender, EventArgs e)
         {
             ViewDetails();
         }
 
+        private void MenuEventViewShowGroups_Click(object sender, EventArgs e)
+        {
+            ToggleGroups();
+        }
+
+        private void ToggleGroups()
+        {
+            ShowGroups(!EventList.ShowGroups);
+            //Options.Todo_ShowGroups = EventList.ShowGroups;
+        }
+
+        private void ShowGroups(bool showGroups)
+        {
+            EventList.ShowGroups = showGroups;
+            MenuEventsShowGroups.Checked = EventList.ShowGroups;
+            PopupMenuEventViewShowGroups.Checked = EventList.ShowGroups;
+        }
+
         //----------------------------------------------------------------------
-        // Horrible Amounts of Copy/Paste From Todo
+        // FIXME: Horrible Amounts of Copy/Paste From Todo
         //----------------------------------------------------------------------
 
         private void ViewLargeIcons()
         {
-            TodoList.View = View.LargeIcon;
+            EventList.View = View.LargeIcon;
 
-            PopupMenuTodoViewLargeIcons.Checked = true;
-            PopupMenuTodoViewSmallIcons.Checked = false;
-            PopupMenuTodoViewTiles.Checked = false;
-            PopupMenuTodoViewList.Checked = false;
-            PopupMenuTodoViewDetails.Checked = false;
+            PopupMenuEventViewLargeIcons.Checked = true;
+            PopupMenuEventViewSmallIcons.Checked = false;
+            PopupMenuEventViewTiles.Checked = false;
+            PopupMenuEventViewList.Checked = false;
+            PopupMenuEventViewDetails.Checked = false;
 
             MirrorViewChecks();
         }
 
         private void ViewSmallIcons()
         {
-            TodoList.View = View.SmallIcon;
+            EventList.View = View.SmallIcon;
 
-            PopupMenuTodoViewLargeIcons.Checked = false;
-            PopupMenuTodoViewSmallIcons.Checked = true;
-            PopupMenuTodoViewTiles.Checked = false;
-            PopupMenuTodoViewList.Checked = false;
-            PopupMenuTodoViewDetails.Checked = false;
+            PopupMenuEventViewLargeIcons.Checked = false;
+            PopupMenuEventViewSmallIcons.Checked = true;
+            PopupMenuEventViewTiles.Checked = false;
+            PopupMenuEventViewList.Checked = false;
+            PopupMenuEventViewDetails.Checked = false;
 
             MirrorViewChecks();
         }
 
         private void ViewTiles()
         {
-            TodoList.View = View.Tile;
+            EventList.View = View.Tile;
 
-            PopupMenuTodoViewLargeIcons.Checked = false;
-            PopupMenuTodoViewSmallIcons.Checked = false;
-            PopupMenuTodoViewTiles.Checked = true;
-            PopupMenuTodoViewList.Checked = false;
-            PopupMenuTodoViewDetails.Checked = false;
+            PopupMenuEventViewLargeIcons.Checked = false;
+            PopupMenuEventViewSmallIcons.Checked = false;
+            PopupMenuEventViewTiles.Checked = true;
+            PopupMenuEventViewList.Checked = false;
+            PopupMenuEventViewDetails.Checked = false;
 
             MirrorViewChecks();
         }
 
         private void ViewList()
         {
-            TodoList.View = View.List;
+            EventList.View = View.List;
 
-            PopupMenuTodoViewLargeIcons.Checked = false;
-            PopupMenuTodoViewSmallIcons.Checked = false;
-            PopupMenuTodoViewTiles.Checked = false;
-            PopupMenuTodoViewList.Checked = true;
-            PopupMenuTodoViewDetails.Checked = false;
+            PopupMenuEventViewLargeIcons.Checked = false;
+            PopupMenuEventViewSmallIcons.Checked = false;
+            PopupMenuEventViewTiles.Checked = false;
+            PopupMenuEventViewList.Checked = true;
+            PopupMenuEventViewDetails.Checked = false;
 
             MirrorViewChecks();
         }
 
         private void ViewDetails()
         {
-            TodoList.View = View.Details;
+            EventList.View = View.Details;
 
-            PopupMenuTodoViewLargeIcons.Checked = false;
-            PopupMenuTodoViewSmallIcons.Checked = false;
-            PopupMenuTodoViewTiles.Checked = false;
-            PopupMenuTodoViewList.Checked = false;
-            PopupMenuTodoViewDetails.Checked = true;
+            PopupMenuEventViewLargeIcons.Checked = false;
+            PopupMenuEventViewSmallIcons.Checked = false;
+            PopupMenuEventViewTiles.Checked = false;
+            PopupMenuEventViewList.Checked = false;
+            PopupMenuEventViewDetails.Checked = true;
 
             MirrorViewChecks();
         }
 
         private void MirrorViewChecks()
         {
-            MenuTodoViewLargeIcons.Checked = PopupMenuTodoViewLargeIcons.Checked;
-            MenuTodoViewSmallIcons.Checked = PopupMenuTodoViewSmallIcons.Checked;
-            MenuTodoViewTiles.Checked = PopupMenuTodoViewTiles.Checked;
-            MenuTodoViewList.Checked = PopupMenuTodoViewList.Checked;
-            MenuTodoViewDetails.Checked = PopupMenuTodoViewDetails.Checked;
+            MenuEventsViewLargeIcons.Checked = PopupMenuEventViewLargeIcons.Checked;
+            MenuEventsViewSmallIcons.Checked = PopupMenuEventViewSmallIcons.Checked;
+            MenuEventsViewTiles.Checked = PopupMenuEventViewTiles.Checked;
+            MenuEventsViewList.Checked = PopupMenuEventViewList.Checked;
+            MenuEventsViewDetails.Checked = PopupMenuEventViewDetails.Checked;
         }
+
+        //----------------------------------------------------------------------
+        // Helpers
+        //----------------------------------------------------------------------
+
+        private void EditItem()
+        {
+            long EventId = GetSelectedId();
+
+            if (EventId == 0) {
+                return;
+            }
+
+            ListViewItem SelectedItem = EventList.SelectedItems[0];
+
+            Forms.Tools.EventDetail DialogBox = new Forms.Tools.EventDetail(EventId);
+            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
+                Classes.Event Event = DialogBox.CurrentEvent;
+                Event.Save();
+                // Brute-force remove/re-add
+                EventList.Items.Remove(SelectedItem);
+                this.AddItem(Event.Name, Event, EventList.Groups[Event.Group.Name]);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private long GetSelectedId()
+        {
+            if (EventList.SelectedItems.Count > 0) {
+                Classes.Event Event = (Classes.Event)EventList.SelectedItems[0].Tag;
+                return Event.Id;
+            } else {
+                return 0;
+            }
+        }
+
+        //----------------------------------------------------------------------
+        // Experimental Area
+        //----------------------------------------------------------------------
 
         private void SendEmailButton_Click(object sender, EventArgs e)
         {
@@ -165,11 +359,7 @@ namespace Timekeeper.Forms.Tools
             }
         }
 
-        private void MenuTodoActionAdd_Click(object sender, EventArgs e)
-        {
-            Forms.Tools.Reminder DialogBox = new Forms.Tools.Reminder();
-            DialogBox.ShowDialog(this);
-        }
+        //----------------------------------------------------------------------
 
         private void QuartzTestButton_Click(object sender, EventArgs e)
         {

@@ -7,10 +7,23 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class EventGroup
+    public class EventGroup
     {
+        public string Name { get; set; }
+        public string Description { get; set; }
+
         public EventGroup()
         {
+        }
+
+        public EventGroup(long eventGroupId)
+        {
+            String Query = String.Format("SELECT * FROM EventGroup WHERE EventGroupId = {0}", eventGroupId);
+
+            Row EventGroup = Timekeeper.Database.SelectRow(Query);
+
+            this.Name = EventGroup["Name"];
+            this.Description = EventGroup["Description"];
         }
 
         public Table Table()

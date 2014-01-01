@@ -18,6 +18,7 @@ namespace Timekeeper.Classes
         public long ReminderId { get; set; }
         public long ScheduleId { get; set; }
 
+        public Classes.EventGroup Group { get; set; }
         public Classes.Reminder Reminder { get; set; }
         public Classes.Schedule Schedule { get; set; }
 
@@ -64,6 +65,7 @@ namespace Timekeeper.Classes
                     this.ReminderId = (long)Timekeeper.GetValue(Event["ReminderId"], 0);
                     this.ScheduleId = (long)Timekeeper.GetValue(Event["ReminderId"], 0);
 
+                    this.Group = this.EventGroupId > 0 ? new Classes.EventGroup(this.EventGroupId) : null;
                     this.Reminder = this.ReminderId > 0 ? new Classes.Reminder(this.ReminderId) : null;
                     this.Schedule = this.ScheduleId > 0 ? new Classes.Schedule(this.ScheduleId) : null;
 
@@ -79,6 +81,47 @@ namespace Timekeeper.Classes
 
             return Event;
         }
+
+        //----------------------------------------------------------------------
+
+        new public bool Save()
+        {
+            bool Saved = false;
+
+            try {
+                Saved = base.Save();
+
+                if (Saved) {
+                    Row Event = new Row();
+
+                    // Make sure everything's always localtime
+                    // TODO: Something's not quite right here, I need to figure
+                    // out where things are going wrong. This is nothing more
+                    // than a band-aid. (See Journal Entry class)
+                    this.NextOccurrenceTime = DateTime.SpecifyKind(this.NextOccurrenceTime, DateTimeKind.Local);
+
+                    Event["EventGroupId"] = this.EventGroupId;
+                    Event["NextOccurrenceTime"] = this.NextOccurrenceTime.ToString(Common.DATETIME_FORMAT);
+                    Event["ReminderId"] = this.ReminderId;
+                    Event["ScheduleId"] = this.ScheduleId;
+                    Event["IsHidden"] = 0;
+                    Event["IsDeleted"] = 0;
+
+                    if (this.Database.Update("Event", Event, "EventId", this.Id) == 1) {
+                        Saved = true;
+                    } else {
+                        Saved = false;
+                    }
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+
+            return Saved;
+        }
+
+        //----------------------------------------------------------------------
 
     }
 }

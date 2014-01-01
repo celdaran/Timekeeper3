@@ -111,12 +111,11 @@ namespace Timekeeper.Classes
                 View["Description"] = Description;
                 View["SortOrderNo"] = SortOrderNo;
 
-                string QuotedName = Name.Replace("'", "''");
                 string Query = String.Format(@"
                     SELECT count(*) as Count 
                     FROM {0}
-                    WHERE Name = '{1}'",
-                    this.TableName, QuotedName);
+                    WHERE {0}Id = '{1}'",
+                    this.TableName, this.Id);
                 Row Count = this.Database.SelectRow(Query);
 
                 if (Count["Count"] == 0) {

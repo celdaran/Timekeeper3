@@ -91,6 +91,7 @@ namespace Timekeeper.Forms
             this.MenuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelpContents = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelpWeb = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelpSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolbar = new System.Windows.Forms.ToolStripMenuItem();
@@ -235,7 +236,6 @@ namespace Timekeeper.Forms
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
-            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
@@ -649,10 +649,10 @@ namespace Timekeeper.Forms
             this.MenuToolFind,
             this.MenuToolSep1,
             this.MenuToolTodo,
+            this.MenuToolReminders,
             this.MenuToolNotebook,
             this.MenuToolCalendar,
             this.MenuToolStopwatch,
-            this.MenuToolReminders,
             this.MenuToolCountdown,
             this.MenuToolDatecalc,
             this.MenuToolSep2,
@@ -708,7 +708,7 @@ namespace Timekeeper.Forms
             // 
             this.MenuToolReminders.Name = "MenuToolReminders";
             this.MenuToolReminders.Size = new System.Drawing.Size(160, 22);
-            this.MenuToolReminders.Text = "&Reminders...";
+            this.MenuToolReminders.Text = "&Events...";
             this.MenuToolReminders.Click += new System.EventHandler(this.MenuToolReminders_Click);
             // 
             // MenuToolCountdown
@@ -766,6 +766,12 @@ namespace Timekeeper.Forms
             this.MenuHelpWeb.Size = new System.Drawing.Size(175, 22);
             this.MenuHelpWeb.Text = "&Web Support";
             this.MenuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
+            // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates...";
             // 
             // MenuHelpSep1
             // 
@@ -2132,12 +2138,6 @@ namespace Timekeeper.Forms
             this.SaveAsDialog.Filter = "Timekeeper 3.0 Database|*.tkdb|Timekeeper 2.3 Database|*.tkdb|Timekeeper 2.2 Data" +
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
             this.SaveAsDialog.Title = "Save As";
-            // 
-            // checkForUpdatesToolStripMenuItem
-            // 
-            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates...";
             // 
             // Main
             // 

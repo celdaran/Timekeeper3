@@ -418,6 +418,12 @@ namespace Timekeeper.Forms
                 DialogBox.ShowDialog(this);
                 Application.Exit();
                 */
+
+                // FIXME: SHORTCUT
+                Forms.Tools.Event DialogBox = new Forms.Tools.Event();
+                DialogBox.ShowDialog(this);
+                Application.Exit();
+
             }
             catch (Exception x) {
                 Common.Warn("There was an error loading the application. Depending on the error, additional information may exist in the application's log file.");
