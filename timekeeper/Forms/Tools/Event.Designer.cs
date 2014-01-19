@@ -61,9 +61,8 @@
             this.NewEventName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.EventDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TargetTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.EventPeriod = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.RemindSomething = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ReminderId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ScheduleId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PopupMenuEvents = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuEventsAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuEventEdit = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,6 +85,7 @@
             this.PopupMenuTodoGroupByEventGroup = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoGroupByEventDate = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoGroupByReminder = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuTodoGroupBySchedule = new System.Windows.Forms.ToolStripMenuItem();
             this.LargeImages = new System.Windows.Forms.ImageList(this.components);
             this.SmallImages = new System.Windows.Forms.ImageList(this.components);
             this.StatusBar = new System.Windows.Forms.StatusStrip();
@@ -111,7 +111,6 @@
             this.MenuEventsSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.SendEmailButton = new System.Windows.Forms.ToolStripButton();
             this.QuartzTestButton = new System.Windows.Forms.ToolStripButton();
-            this.PopupMenuTodoGroupBySchedule = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuEvents.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.TodoToolbar.SuspendLayout();
@@ -125,9 +124,8 @@
             this.NewEventName,
             this.EventDescription,
             this.TargetTime,
-            this.EventPeriod,
-            this.RemindSomething,
-            this.columnHeader1});
+            this.ReminderId,
+            this.ScheduleId});
             this.EventList.ContextMenuStrip = this.PopupMenuEvents;
             this.EventList.Dock = System.Windows.Forms.DockStyle.Fill;
             listViewGroup1.Header = "Default";
@@ -154,7 +152,7 @@
             this.EventList.Location = new System.Drawing.Point(0, 25);
             this.EventList.Name = "EventList";
             this.EventList.ShowItemToolTips = true;
-            this.EventList.Size = new System.Drawing.Size(680, 315);
+            this.EventList.Size = new System.Drawing.Size(802, 436);
             this.EventList.SmallImageList = this.SmallImages;
             this.EventList.TabIndex = 6;
             this.EventList.UseCompatibleStateImageBehavior = false;
@@ -164,7 +162,7 @@
             // NewEventName
             // 
             this.NewEventName.Text = "Event";
-            this.NewEventName.Width = 120;
+            this.NewEventName.Width = 177;
             // 
             // EventDescription
             // 
@@ -176,15 +174,15 @@
             this.TargetTime.Text = "Next Occurrence";
             this.TargetTime.Width = 120;
             // 
-            // EventPeriod
+            // ReminderId
             // 
-            this.EventPeriod.Text = "Period";
-            this.EventPeriod.Width = 80;
+            this.ReminderId.Text = "ReminderId";
+            this.ReminderId.Width = 80;
             // 
-            // RemindSomething
+            // ScheduleId
             // 
-            this.RemindSomething.Text = "Remind Via";
-            this.RemindSomething.Width = 80;
+            this.ScheduleId.Text = "ScheduleId";
+            this.ScheduleId.Width = 80;
             // 
             // PopupMenuEvents
             // 
@@ -340,22 +338,29 @@
             this.PopupMenuTodoGroupByEventGroup.Checked = true;
             this.PopupMenuTodoGroupByEventGroup.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuTodoGroupByEventGroup.Name = "PopupMenuTodoGroupByEventGroup";
-            this.PopupMenuTodoGroupByEventGroup.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoGroupByEventGroup.Size = new System.Drawing.Size(134, 22);
             this.PopupMenuTodoGroupByEventGroup.Text = "Event Group";
             // 
             // PopupMenuTodoGroupByEventDate
             // 
             this.PopupMenuTodoGroupByEventDate.Enabled = false;
             this.PopupMenuTodoGroupByEventDate.Name = "PopupMenuTodoGroupByEventDate";
-            this.PopupMenuTodoGroupByEventDate.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoGroupByEventDate.Size = new System.Drawing.Size(134, 22);
             this.PopupMenuTodoGroupByEventDate.Text = "Event Date";
             // 
             // PopupMenuTodoGroupByReminder
             // 
             this.PopupMenuTodoGroupByReminder.Enabled = false;
             this.PopupMenuTodoGroupByReminder.Name = "PopupMenuTodoGroupByReminder";
-            this.PopupMenuTodoGroupByReminder.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoGroupByReminder.Size = new System.Drawing.Size(134, 22);
             this.PopupMenuTodoGroupByReminder.Text = "Reminder";
+            // 
+            // PopupMenuTodoGroupBySchedule
+            // 
+            this.PopupMenuTodoGroupBySchedule.Enabled = false;
+            this.PopupMenuTodoGroupBySchedule.Name = "PopupMenuTodoGroupBySchedule";
+            this.PopupMenuTodoGroupBySchedule.Size = new System.Drawing.Size(134, 22);
+            this.PopupMenuTodoGroupBySchedule.Text = "Schedule";
             // 
             // LargeImages
             // 
@@ -374,9 +379,9 @@
             // 
             this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusBarItemCount});
-            this.StatusBar.Location = new System.Drawing.Point(0, 340);
+            this.StatusBar.Location = new System.Drawing.Point(0, 461);
             this.StatusBar.Name = "StatusBar";
-            this.StatusBar.Size = new System.Drawing.Size(680, 22);
+            this.StatusBar.Size = new System.Drawing.Size(802, 22);
             this.StatusBar.TabIndex = 8;
             this.StatusBar.Text = "statusStrip1";
             // 
@@ -403,7 +408,7 @@
             this.QuartzTestButton});
             this.TodoToolbar.Location = new System.Drawing.Point(0, 0);
             this.TodoToolbar.Name = "TodoToolbar";
-            this.TodoToolbar.Size = new System.Drawing.Size(680, 25);
+            this.TodoToolbar.Size = new System.Drawing.Size(802, 25);
             this.TodoToolbar.TabIndex = 9;
             this.TodoToolbar.Text = "toolStrip1";
             // 
@@ -581,18 +586,11 @@
             this.QuartzTestButton.Text = "Quartz Test";
             this.QuartzTestButton.Click += new System.EventHandler(this.QuartzTestButton_Click);
             // 
-            // PopupMenuTodoGroupBySchedule
-            // 
-            this.PopupMenuTodoGroupBySchedule.Enabled = false;
-            this.PopupMenuTodoGroupBySchedule.Name = "PopupMenuTodoGroupBySchedule";
-            this.PopupMenuTodoGroupBySchedule.Size = new System.Drawing.Size(152, 22);
-            this.PopupMenuTodoGroupBySchedule.Text = "Schedule";
-            // 
             // Event
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(680, 362);
+            this.ClientSize = new System.Drawing.Size(802, 483);
             this.Controls.Add(this.EventList);
             this.Controls.Add(this.TodoToolbar);
             this.Controls.Add(this.StatusBar);
@@ -617,9 +615,8 @@
         private System.Windows.Forms.ColumnHeader NewEventName;
         private System.Windows.Forms.ColumnHeader EventDescription;
         private System.Windows.Forms.ColumnHeader TargetTime;
-        private System.Windows.Forms.ColumnHeader EventPeriod;
-        private System.Windows.Forms.ColumnHeader RemindSomething;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader ReminderId;
+        private System.Windows.Forms.ColumnHeader ScheduleId;
         private System.Windows.Forms.StatusStrip StatusBar;
         private System.Windows.Forms.ToolStrip TodoToolbar;
         private System.Windows.Forms.ToolStripDropDownButton MenuEventsAction;

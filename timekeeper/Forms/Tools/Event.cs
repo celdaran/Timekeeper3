@@ -122,11 +122,11 @@ namespace Timekeeper.Forms.Tools
                 NewItem.SubItems.Add(currentEvent.Description);
                 NewItem.SubItems.Add(currentEvent.NextOccurrenceTime.ToString(Common.LOCAL_DATETIME_FORMAT));
 
-                string ScheduleText = currentEvent.Schedule == null ? "None" : currentEvent.Schedule.ToString();
-                string ReminderText = currentEvent.Reminder == null ? "None" : currentEvent.Reminder.ToString();
+                string ReminderText = currentEvent.Reminder == null ? "None" : currentEvent.Reminder.ReminderId.ToString();
+                string ScheduleText = currentEvent.Schedule == null ? "None" : currentEvent.Schedule.ScheduleId.ToString();
 
-                NewItem.SubItems.Add(ScheduleText);
                 NewItem.SubItems.Add(ReminderText);
+                NewItem.SubItems.Add(ScheduleText);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

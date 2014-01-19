@@ -24,7 +24,8 @@ namespace Timekeeper.Forms.Shared
 
         private Classes.Options Options;
         private Classes.Widgets Widgets;
-        private Classes.Reminder CurrentReminder;
+
+        public Classes.Reminder CurrentReminder { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -46,7 +47,7 @@ namespace Timekeeper.Forms.Shared
             this.Options = Timekeeper.Options;
             this.CurrentReminder = new Classes.Reminder(this.ReminderId);
 
-            //PopulateForm();
+            PopulateForm();
         }
 
         //----------------------------------------------------------------------
@@ -68,7 +69,45 @@ namespace Timekeeper.Forms.Shared
 
         private void AcceptDialogButton_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
+            if (DontRemindMeRadioButton.Checked) {
+                DialogResult = DialogResult.Ignore;
+            }
+
+            if (RemindMeRadioButton.Checked) {
+                CurrentReminder.TimeUnit = TimeUnitList.SelectedIndex + 1;
+                CurrentReminder.TimeAmount = (long)TimeAmountInput.Value;
+
+                if (NotifyViaTrayCheckbox.Checked) {
+                    CurrentReminder.NotifyViaTray = true;
+                    CurrentReminder.NotifyTrayMessage = NotifyTrayMessageInput.Text;
+                }
+
+                if (NotifyViaAudioCheckbox.Checked) {
+                    CurrentReminder.NotifyViaAudio = true;
+                    CurrentReminder.NotifyAudioFile = NotifyAudioFileList.Text;
+                }
+
+                if (NotifyViaEmailCheckbox.Checked) {
+                    CurrentReminder.NotifyViaEmail = true;
+                    CurrentReminder.NotifyEmailAddress = NotifyEmailAddressInput.Text;
+                }
+
+                if (NotifyViaTextCheckbox.Checked) {
+                    CurrentReminder.NotifyViaText = true;
+                    CurrentReminder.NotifyPhoneNumber = NotifyPhoneNumberInput.Text;
+                    CurrentReminder.NotifyCarrierListId = NotifyCarrierList.SelectedIndex + 1;
+                }
+
+                CurrentReminder.Save();
+
+                // Note, the database update has already happened at this point.
+                // There's nothing more to do. If the parent box is Cancelled, then
+                // these changes have already happened. Not sure how I want to deal
+                // with that in the long run. But for now, that's how it is.
+
+                DialogResult = DialogResult.OK;
+            }
+
         }
 
         //----------------------------------------------------------------------
@@ -87,6 +126,13 @@ namespace Timekeeper.Forms.Shared
             try {
                 // FIXME: move to widgets | experimental right now
 
+                if (this.ReminderId == 0) {
+                    DontRemindMeRadioButton.Checked = true;
+                    return;
+                } else {
+                    RemindMeRadioButton.Checked = true;
+                }
+
                 // Directory relative to exe
                 DirectoryInfo di = new DirectoryInfo("Sounds");
                 foreach (FileInfo f in di.GetFiles("*.wav")) {
@@ -94,7 +140,7 @@ namespace Timekeeper.Forms.Shared
                 }
 
                 // Now the normal population
-                TimeUnitList.SelectedIndex = (int)CurrentReminder.TimeUnit;
+                TimeUnitList.SelectedIndex = (int)CurrentReminder.TimeUnit - 1;
 
                 NotifyViaTrayCheckbox.Checked = CurrentReminder.NotifyViaTray;
                 NotifyViaAudioCheckbox.Checked = CurrentReminder.NotifyViaAudio;
@@ -169,6 +215,7 @@ namespace Timekeeper.Forms.Shared
 
             NotifyTrayMessageInput.Enabled = NotifyViaTrayCheckbox.Checked && NotifyViaTrayCheckbox.Enabled;
             NotifyAudioFileList.Enabled = NotifyViaAudioCheckbox.Checked && NotifyViaAudioCheckbox.Enabled;
+            PlayAudioFile.Enabled = NotifyViaAudioCheckbox.Checked && NotifyViaAudioCheckbox.Enabled;
             NotifyEmailAddressInput.Enabled = NotifyViaEmailCheckbox.Checked && NotifyViaEmailCheckbox.Enabled;
             NotifyPhoneNumberInput.Enabled = NotifyViaTextCheckbox.Checked && NotifyViaTextCheckbox.Enabled;
             NotifyCarrierList.Enabled = NotifyViaTextCheckbox.Checked && NotifyViaTextCheckbox.Enabled;
@@ -188,6 +235,7 @@ namespace Timekeeper.Forms.Shared
         private void NotifyViaAudioCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             NotifyAudioFileList.Enabled = NotifyViaAudioCheckbox.Checked;
+            PlayAudioFile.Enabled = NotifyViaAudioCheckbox.Checked;
         }
 
         //----------------------------------------------------------------------

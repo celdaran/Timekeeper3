@@ -425,15 +425,31 @@ namespace Timekeeper.Forms
                 Application.Exit();
                 */
 
-                // FIXME: SHORTCUT
                 /*
                 Forms.Tools.Event DialogBox = new Forms.Tools.Event();
                 DialogBox.Show(this);
-                */
                 //Application.Exit();
+                */
 
+                /*
                 Forms.Shared.Schedule ScheduleDialog = new Forms.Shared.Schedule(9, DateTime.Now);
                 ScheduleDialog.ShowDialog(this);
+                Application.Exit();
+                */
+
+                /*
+                Forms.Tools.EventDetail EventDetail = new Forms.Tools.EventDetail();
+                EventDetail.ShowDialog(this);
+                if (EventDetail.DialogResult == DialogResult.OK) {
+                    Common.Info("Creating a new event");
+                } else {
+                    Common.Info("Not OK");
+                }
+                Application.Exit();
+                */
+
+                Forms.Tools.Event EventWindow = new Forms.Tools.Event();
+                EventWindow.ShowDialog(this);
                 Application.Exit();
 
             }

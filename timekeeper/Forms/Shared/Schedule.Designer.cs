@@ -218,6 +218,7 @@ namespace Timekeeper.Forms.Shared
             this.EventNextOccurrence.Name = "EventNextOccurrence";
             this.EventNextOccurrence.Size = new System.Drawing.Size(145, 20);
             this.EventNextOccurrence.TabIndex = 39;
+            this.EventNextOccurrence.ValueChanged += new System.EventHandler(this.EventNextOccurrence_ValueChanged);
             // 
             // label2
             // 
@@ -1135,9 +1136,9 @@ namespace Timekeeper.Forms.Shared
             this.PreviewCountLabel.AutoSize = true;
             this.PreviewCountLabel.Location = new System.Drawing.Point(18, 18);
             this.PreviewCountLabel.Name = "PreviewCountLabel";
-            this.PreviewCountLabel.Size = new System.Drawing.Size(79, 13);
+            this.PreviewCountLabel.Size = new System.Drawing.Size(72, 13);
             this.PreviewCountLabel.TabIndex = 1;
-            this.PreviewCountLabel.Text = "Preview Count:";
+            this.PreviewCountLabel.Text = "Preview Limit:";
             // 
             // PreviewCount
             // 
@@ -1186,6 +1187,7 @@ namespace Timekeeper.Forms.Shared
             this.WarningLabel.Size = new System.Drawing.Size(231, 13);
             this.WarningLabel.TabIndex = 42;
             this.WarningLabel.Text = "Warning";
+            this.WarningLabel.Visible = false;
             // 
             // Schedule
             // 

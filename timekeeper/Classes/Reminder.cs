@@ -19,9 +19,9 @@ namespace Timekeeper.Classes
         // Public Properties
         //----------------------------------------------------------------------
 
-        public long ReminderId { get; set; }
-        public DateTime CreateTime { get; set; }
-        public DateTime ModifyTime { get; set; }
+        public long ReminderId { get; private set; }
+        public DateTime CreateTime { get; private set; }
+        public DateTime ModifyTime { get; private set; }
 
         public long TimeAmount { get; set; }
         public long TimeUnit { get; set; }
@@ -97,6 +97,58 @@ namespace Timekeeper.Classes
             this.NotifyEmailAddress = (string)Timekeeper.GetValue(row["NotifyEmailAddress"], "you@example.com");
             this.NotifyPhoneNumber = (string)Timekeeper.GetValue(row["NotifyPhoneNumber"], "9995551212");
             this.NotifyCarrierListId = (long)Timekeeper.GetValue(row["NotifyCarrierListId"], 3);
+        }
+
+        //----------------------------------------------------------------------
+
+        public bool Save()
+        {
+            bool Saved = false;
+            string DbTimeStamp = Common.Now();
+
+            try {
+                Row Reminder = new Row();
+
+                Reminder["ModifyTime"] = DbTimeStamp;
+
+                Reminder["TimeAmount"] = this.TimeAmount;
+                Reminder["TimeUnit"] = this.TimeUnit;
+
+                Reminder["NotifyViaTray"] = this.NotifyViaTray ? 1 : 0;
+                Reminder["NotifyViaAudio"] = this.NotifyViaAudio ? 1 : 0;
+                Reminder["NotifyViaEmail"] = this.NotifyViaEmail ? 1 : 0;
+                Reminder["NotifyViaText"] = this.NotifyViaText ? 1 : 0;
+
+                Reminder["NotifyTrayMessage"] = this.NotifyTrayMessage;
+                Reminder["NotifyAudioFile"] = this.NotifyAudioFile;
+                Reminder["NotifyEmailAddress"] = this.NotifyEmailAddress;
+                Reminder["NotifyPhoneNumber"] = this.NotifyPhoneNumber;
+                Reminder["NotifyCarrierListId"] = this.NotifyCarrierListId;
+
+                if (this.ReminderId == 0) {
+                    // new row
+                    Reminder["CreateTime"] = DbTimeStamp;
+
+                    this.ReminderId = this.Database.Insert("Reminder", Reminder);
+                    if (this.ReminderId > 0) {
+                        Saved = true;
+                        this.CreateTime = DateTime.Parse(DbTimeStamp);
+                        this.ModifyTime = this.CreateTime;
+                    }
+                } else {
+                    // existing row
+                    if (this.Database.Update("Reminder", Reminder, "ReminderId", this.ReminderId) == 1) {
+                        Saved = true;
+                        this.ModifyTime = DateTime.Parse(DbTimeStamp);
+                    }
+                }
+
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+
+            return Saved;
         }
 
         //----------------------------------------------------------------------

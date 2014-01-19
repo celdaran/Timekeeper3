@@ -36,9 +36,9 @@ namespace Timekeeper.Classes
         // Public Properties
         //----------------------------------------------------------------------
 
-        public long ScheduleId { get; set; }
-        public DateTime CreateTime { get; set; }
-        public DateTime ModifyTime { get; set; }
+        public long ScheduleId { get; private set; }
+        public DateTime CreateTime { get; private set; }
+        public DateTime ModifyTime { get; private set; }
 
         // Schedule
         public long RefScheduleTypeId { get; set; }
@@ -170,18 +170,75 @@ namespace Timekeeper.Classes
 
         public bool Save()
         {
+            bool Saved = false;
+            string DbTimeStamp = Common.Now();
+
             try
             {
                 Row Schedule = new Row();
+
+                Schedule["ModifyTime"] = DbTimeStamp;
+
+                Schedule["RefScheduleTypeId"] = this.RefScheduleTypeId;
+
+                Schedule["OnceAmount"] = this.OnceAmount;
+                Schedule["OnceUnit"] = this.OnceUnit;
+
+                Schedule["DailyTypeId"] = this.DailyTypeId;
+                Schedule["DailyIntervalCount"] = this.DailyIntervalCount;
+
+                Schedule["WeeklyIntervalCount"] = this.WeeklyIntervalCount;
+                Schedule["WeeklyMonday"] = this.WeeklyMonday ? 1 : 0;
+                Schedule["WeeklyTueday"] = this.WeeklyTuesday ? 1 : 0;
+                Schedule["WeeklyWednesday"] = this.WeeklyWednesday ? 1 : 0;
+                Schedule["WeeklyThursday"] = this.WeeklyThursday ? 1 : 0;
+                Schedule["WeeklyFriday"] = this.WeeklyFriday ? 1 : 0;
+                Schedule["WeeklySaturday"] = this.WeeklySaturday ? 1 : 0;
+                Schedule["WeeklySunday"] = this.WeeklySunday ? 1 : 0;
+
+                Schedule["MonthlyTypeId"] = this.MonthlyTypeId;
+                Schedule["MonthlyIntervalCount"] = this.MonthlyIntervalCount;
+                Schedule["MonthlyDate"] = this.MonthlyDate;
+                Schedule["MonthlyOrdinalDay"] = this.MonthlyOrdinalDay;
+                Schedule["MonthlyDayOfWeek"] = this.MonthlyDayOfWeek;
+
+                Schedule["YearlyTypeId"] = this.YearlyTypeId;
+                Schedule["YearlyEveryDate"] = this.YearlyEveryDate;
+                Schedule["YearlyOrdinalDay"] = this.YearlyOrdinalDay;
+                Schedule["YearlyDayOfWeek"] = this.YearlyDayOfWeek;
+                Schedule["YearlyMonth"] = this.YearlyMonth;
+
+                Schedule["CrontabExpression"] = this.CrontabExpression;
+
+                // Duration
+                Schedule["DurationTypeId"] = this.DurationTypeId;
+                Schedule["StopAfterCount"] = this.StopAfterCount;
+                Schedule["StopAfterTime"] = this.StopAfterTime.ToString(Common.DATETIME_FORMAT); // TODO: UTC-safe?
+
+                // Event Metadata
                 Schedule["TriggerCount"] = this.TriggerCount;
-                this.Database.Update("Schedule", Schedule, "ScheduleId", this.ScheduleId);
+
+                if (this.ScheduleId == 0) {
+                    Schedule["CreateTime"] = DbTimeStamp;
+
+                    this.ScheduleId = this.Database.Insert("Schedule", Schedule);
+                    if (this.ScheduleId > 0) {
+                        Saved = true;
+                        this.CreateTime = DateTime.Parse(DbTimeStamp);
+                        this.ModifyTime = this.CreateTime;
+                    }
+                } else {
+                    if (this.Database.Update("Schedule", Schedule, "ScheduleId", this.ScheduleId) == 1) {
+                        Saved = true;
+                        this.ModifyTime = DateTime.Parse(DbTimeStamp);
+                    }
+                }
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
 
-            // FIXME: needs to return true/false based on result
-            return true;
+            return Saved;
         }
 
         //----------------------------------------------------------------------

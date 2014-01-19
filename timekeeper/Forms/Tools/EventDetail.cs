@@ -24,7 +24,7 @@ namespace Timekeeper.Forms.Tools
         private Classes.Widgets Widgets;
         private long EventId;
 
-        private Forms.Shared.Reminder ReminderForm;
+        //private ReminderForm;
 
         public Classes.Event CurrentEvent { get; set; }
 
@@ -78,21 +78,8 @@ namespace Timekeeper.Forms.Tools
             CurrentEvent.Description = EventDescription.Text;
 
             CurrentEvent.EventGroupId = EventGroupList.SelectedIndex > -1 ? EventGroupList.SelectedIndex + 1 : 1;
-            CurrentEvent.NextOccurrenceTime = EventNextOccurrence.Value;
-
-            /*
-            FIXME: only set these if they weren't there before
-            CurrentEvent.ReminderId = 0;
-            CurrentEvent.ScheduleId = 0;
-            */
-
             CurrentEvent.Group = new Classes.EventGroup(CurrentEvent.EventGroupId);
-
-            /*
-            FIXME: ditto from above
-            CurrentEvent.Reminder = null; // FIXME
-            CurrentEvent.Schedule = null; // FIXME 2
-            */
+            CurrentEvent.NextOccurrenceTime = EventNextOccurrence.Value;
 
             DialogResult = DialogResult.OK;
         }
@@ -131,19 +118,59 @@ namespace Timekeeper.Forms.Tools
 
         private void ReminderButton_Click(object sender, EventArgs e)
         {
-            if (ReminderForm == null) {
-              ReminderForm = new Forms.Shared.Reminder(CurrentEvent.ReminderId);
-              ReminderForm.PopulateForm();
-            }
+            Forms.Shared.Reminder ReminderForm = new Forms.Shared.Reminder(CurrentEvent.ReminderId);
+
+            //ReminderForm.PopulateForm();
+
             ReminderForm.ShowDialog(this);
+            switch (ReminderForm.DialogResult) {
+                case DialogResult.Ignore:
+                    // This happens if OK was clicked, but "Don't Remind Me" was checked.
+                    // Set a flag here to remove the reminder from the event if *this*
+                    // dialog box is then accepted.
+
+                    // CAREFUL: This may whomp things in a way we do not want them whomped
+                    CurrentEvent.ReminderId = 0;
+                    CurrentEvent.Reminder = new Classes.Reminder(CurrentEvent.ReminderId);
+                    //Common.Info("User don't want no reminder"); 
+                    break;
+
+                case DialogResult.OK:
+                    // CAREFUL: This may whomp things in a way we do not want them whomped
+                    CurrentEvent.ReminderId = ReminderForm.CurrentReminder.ReminderId;
+                    CurrentEvent.Reminder = new Classes.Reminder(CurrentEvent.ReminderId);
+                    //Common.Info("User want reminder!"); 
+                    break;
+
+                case DialogResult.Cancel: 
+                    //Common.Info("User cancelled. Please to not make any changes."); 
+                    break;
+            }
         }
+
+        //----------------------------------------------------------------------
 
         private void SchedulerButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.Schedule DialogBox = new Forms.Shared.Schedule(
-                CurrentEvent.ScheduleId, CurrentEvent.NextOccurrenceTime);
-            DialogBox.ShowDialog(this);
+            Forms.Shared.Schedule ScheduleForm = new Forms.Shared.Schedule(
+                CurrentEvent.ScheduleId, EventNextOccurrence.Value);
+
+            ScheduleForm.ShowDialog(this);
+
+            switch (ScheduleForm.DialogResult) {
+                case DialogResult.OK:
+                    CurrentEvent.ScheduleId = ScheduleForm.CurrentSchedule.ScheduleId;
+                    CurrentEvent.Schedule = new Classes.Schedule(CurrentEvent.ScheduleId);
+                    CurrentEvent.NextOccurrenceTime = ScheduleForm.ExternalEventNextOccurrence;
+                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime;
+                    break;
+                case DialogResult.Cancel:
+                    // Ingore this
+                    break;
+            }
         }
+
+        //----------------------------------------------------------------------
 
     }
 }

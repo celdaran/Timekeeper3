@@ -21,15 +21,18 @@ CREATE TABLE Event
     -- FIXME: I don't think Events are SortableItems (still pondering)
     -- If they are, it means everything below is optional (nullable).
     -- Including IsHidden and IsDeleted, which should be not nullable.
+    -- UPDATE: Events are NOT SortableItems, which means I need to 
+    -- tackle that particular problem soon. In this case, I have made
+    -- the following updates
     SortOrderNo                     INTEGER     NOT NULL,
 
-    EventGroupId                    INTEGER         NULL,
-    NextOccurrenceTime              DATETIME        NULL,
-    ReminderId                      INTEGER         NULL,
-    ScheduleId                      INTEGER         NULL,
+    EventGroupId                    INTEGER     NOT NULL,
+    NextOccurrenceTime              DATETIME    NOT NULL,
+    ReminderId                      INTEGER     NOT NULL,
+    ScheduleId                      INTEGER     NOT NULL,
 
-    IsHidden                        BOOLEAN         NULL,
-    IsDeleted                       BOOLEAN         NULL,
+    IsHidden                        BOOLEAN     NOT NULL,
+    IsDeleted                       BOOLEAN     NOT NULL,
     HiddenTime                      DATETIME        NULL,
     DeletedTime                     DATETIME        NULL,
 

@@ -23,11 +23,12 @@ namespace Timekeeper.Forms.Shared
         //----------------------------------------------------------------------
 
         private long ScheduleId;
-        private DateTime ExternalEventNextOccurrence;
 
         private Classes.Options Options;
         private Classes.Widgets Widgets;
-        private Classes.Schedule CurrentSchedule;
+
+        public DateTime ExternalEventNextOccurrence { get; set; }
+        public Classes.Schedule CurrentSchedule { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -76,6 +77,89 @@ namespace Timekeeper.Forms.Shared
 
         private void AcceptDialogButton_Click(object sender, EventArgs e)
         {
+            // Set Schedule Type
+            if (RecurNoneRadioButton.Checked)
+                CurrentSchedule.RefScheduleTypeId = 1;
+            else if (RecurFixedRadioButton.Checked)
+                CurrentSchedule.RefScheduleTypeId = 2;
+            else if (RecurDailyRadioButton.Checked)
+                CurrentSchedule.RefScheduleTypeId = 3;
+            else if (RecurWeeklyRadioButton.Checked)
+                CurrentSchedule.RefScheduleTypeId = 4;
+            else if (RecurMonthlyRadioButton.Checked)
+                CurrentSchedule.RefScheduleTypeId = 5;
+            else if (RecurYearlyRadioButton.Checked)
+                CurrentSchedule.RefScheduleTypeId = 6;
+            else
+                CurrentSchedule.RefScheduleTypeId = 7;
+
+            // Type 1
+            //CurrentSchedule.  FIXME: need to link the start time back to the event
+
+            // Type 2: Fixed
+            CurrentSchedule.OnceAmount = (long)OnceAmountValue.Value;
+            CurrentSchedule.OnceUnit = OnceUnitList.SelectedIndex + 1;
+
+            // Type 3: Daily
+            if (DailyEveryDayRadioButton.Checked)
+                CurrentSchedule.DailyTypeId = 1;
+            else if (DailyEveryWeekdayRadioButton.Checked)
+                CurrentSchedule.DailyTypeId = 2;
+            else if (DailyIntervalRadioButton.Checked)
+                CurrentSchedule.DailyTypeId = 3;
+            CurrentSchedule.DailyIntervalCount = (long)DailyIntervalCountValue.Value;
+
+            // Type 4: Weekly
+            CurrentSchedule.WeeklyIntervalCount = (long)WeeklyIntervalCountValue.Value;
+            CurrentSchedule.WeeklyMonday = WeeklyMondayCheckbox.Checked;
+            CurrentSchedule.WeeklyTuesday = WeeklyTuesdayCheckbox.Checked;
+            CurrentSchedule.WeeklyWednesday = WeeklyWednesdayCheckbox.Checked;
+            CurrentSchedule.WeeklyThursday = WeeklyThursdayCheckbox.Checked;
+            CurrentSchedule.WeeklyFriday = WeeklyFridayCheckbox.Checked;
+            CurrentSchedule.WeeklySaturday = WeeklySaturdayCheckbox.Checked;
+            CurrentSchedule.WeeklySunday = WeeklySundayCheckbox.Checked;
+
+            // Type 5: Monthly
+            if (MonthlyDateRadioButton.Checked) 
+                CurrentSchedule.MonthlyTypeId = 1;
+            else if (MonthlyDayRadioButton.Checked)
+                CurrentSchedule.MonthlyTypeId = 2;
+
+            CurrentSchedule.MonthlyDate = (long)MonthlyDateValue.Value;
+            // FIXME: WTF's with these name mismatches? What's on the form should match what's in the database wherever possible
+            CurrentSchedule.MonthlyOrdinalDay = MonthlyOrdinalWeekList.SelectedIndex + 1;
+            CurrentSchedule.MonthlyDayOfWeek = MonthlyDayOfWeekList.SelectedIndex + 1;
+            CurrentSchedule.MonthlyIntervalCount = (long)MonthlyIntervalCountValue.Value;
+
+            // Type 6: Yearly
+            if (YearlyDateRadioButton.Checked)
+                CurrentSchedule.YearlyTypeId = 1;
+            else if (YearlyDayRadioButton.Checked)
+                CurrentSchedule.YearlyTypeId = 2;
+
+            CurrentSchedule.YearlyEveryDate = (long)YearlyDateValue.Value;
+            CurrentSchedule.YearlyOrdinalDay = YearlyOrdinalWeekList.SelectedIndex + 1;
+            CurrentSchedule.YearlyDayOfWeek = YearlyDayOfWeekList.SelectedIndex + 1;
+            CurrentSchedule.YearlyMonth = YearlyMonthList.SelectedIndex + 1;
+
+            // Type 7: Cronly
+            CurrentSchedule.CrontabExpression = CrontabExpressionValue.Text;
+
+            // Duration tab
+            if (RunIndefinitelyButton.Checked)
+                CurrentSchedule.DurationTypeId = 1;
+            else if (StopAfterCountRadioButton.Checked) {
+                CurrentSchedule.DurationTypeId = 2;
+                CurrentSchedule.StopAfterCount = (long)StopAfterCountValue.Value;
+            } else if (StopAfterTimeRadioButton.Checked) {
+                CurrentSchedule.DurationTypeId = 3;
+                CurrentSchedule.StopAfterTime = StopAfterTimeValue.Value;
+            }
+
+            // Now save
+            CurrentSchedule.Save();
+
+            // And get out of here
             DialogResult = DialogResult.OK;
         }
 
@@ -105,6 +189,23 @@ namespace Timekeeper.Forms.Shared
 
                 EventNextOccurrence.CustomFormat = Options.Advanced_DateTimeFormat;
                 EventNextOccurrence.Value = this.ExternalEventNextOccurrence;
+
+                //------------------------------------------
+                // Set defaults, if no schedule loaded
+                //------------------------------------------
+
+                if (this.ScheduleId == 0) {
+                    OnceUnitList.SelectedIndex = 2;
+                    DailyEveryDayRadioButton.Checked = true;
+                    MonthlyDateRadioButton.Checked = true;
+                    MonthlyOrdinalWeekList.SelectedIndex = 0;
+                    MonthlyDayOfWeekList.SelectedIndex = 0;
+                    YearlyDateRadioButton.Checked = true;
+                    YearlyOrdinalWeekList.SelectedIndex = 0;
+                    YearlyDayOfWeekList.SelectedIndex = 0;
+                    YearlyMonthList.SelectedIndex = 0;
+                    return;
+                }
 
                 //------------------------------------------
                 // Prepopulate all panels
@@ -182,9 +283,21 @@ namespace Timekeeper.Forms.Shared
                 //------------------------------------------
 
                 StopAfterTimeValue.CustomFormat = Options.Advanced_DateTimeFormat;
-                //EnableDurationTab(false);
-                RunIndefinitelyButton.Checked = true;
-                RunIndefinitelyButton_CheckedChanged(sender, e);
+
+                switch (CurrentSchedule.DurationTypeId) {
+                    case 1: 
+                        RunIndefinitelyButton.Checked = true;
+                        break;
+                    case 2:
+                        StopAfterCountRadioButton.Checked = true;
+                        StopAfterCountValue.Value = (int)CurrentSchedule.StopAfterCount;
+                        break;
+                    case 3:
+                        StopAfterTimeRadioButton.Checked = true;
+                        StopAfterTimeValue.Value = CurrentSchedule.StopAfterTime;
+                        break;
+                }
+
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -733,6 +846,12 @@ namespace Timekeeper.Forms.Shared
             catch (Exception x) {
                 Alert(x.Message);
             }
+        }
+
+        private void EventNextOccurrence_ValueChanged(object sender, EventArgs e)
+        {
+            // Keep these in sync
+            this.ExternalEventNextOccurrence = EventNextOccurrence.Value;
         }
 
         //----------------------------------------------------------------------

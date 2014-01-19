@@ -578,6 +578,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Images\Icons\Speaker.png" />
     <None Include="Resources\Images\Icons\Warning.png" />
     <None Include="Resources\SQL\3.0\EventGroup.Insert.sql" />
     <None Include="Resources\SQL\3.0\Reminder.Create.sql" />

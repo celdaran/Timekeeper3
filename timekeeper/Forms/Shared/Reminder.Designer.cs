@@ -30,6 +30,7 @@
             this.CancelDialogButton = new System.Windows.Forms.Button();
             this.AcceptDialogButton = new System.Windows.Forms.Button();
             this.NotificationGroupBox = new System.Windows.Forms.GroupBox();
+            this.PlayAudioFile = new System.Windows.Forms.Button();
             this.NotifyTrayMessageInput = new System.Windows.Forms.TextBox();
             this.NotifyViaTrayCheckbox = new System.Windows.Forms.CheckBox();
             this.NotifyViaAudioCheckbox = new System.Windows.Forms.CheckBox();
@@ -51,7 +52,7 @@
             // CancelDialogButton
             // 
             this.CancelDialogButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelDialogButton.Location = new System.Drawing.Point(308, 199);
+            this.CancelDialogButton.Location = new System.Drawing.Point(308, 201);
             this.CancelDialogButton.Name = "CancelDialogButton";
             this.CancelDialogButton.Size = new System.Drawing.Size(75, 23);
             this.CancelDialogButton.TabIndex = 9;
@@ -61,7 +62,7 @@
             // 
             // AcceptDialogButton
             // 
-            this.AcceptDialogButton.Location = new System.Drawing.Point(227, 199);
+            this.AcceptDialogButton.Location = new System.Drawing.Point(227, 201);
             this.AcceptDialogButton.Name = "AcceptDialogButton";
             this.AcceptDialogButton.Size = new System.Drawing.Size(75, 23);
             this.AcceptDialogButton.TabIndex = 8;
@@ -71,6 +72,7 @@
             // 
             // NotificationGroupBox
             // 
+            this.NotificationGroupBox.Controls.Add(this.PlayAudioFile);
             this.NotificationGroupBox.Controls.Add(this.NotifyTrayMessageInput);
             this.NotificationGroupBox.Controls.Add(this.NotifyViaTrayCheckbox);
             this.NotificationGroupBox.Controls.Add(this.NotifyViaAudioCheckbox);
@@ -85,7 +87,17 @@
             this.NotificationGroupBox.Size = new System.Drawing.Size(371, 122);
             this.NotificationGroupBox.TabIndex = 26;
             this.NotificationGroupBox.TabStop = false;
-            this.NotificationGroupBox.Text = "Notify Me Via";
+            this.NotificationGroupBox.Text = "Notify me via";
+            // 
+            // PlayAudioFile
+            // 
+            this.PlayAudioFile.Image = global::Timekeeper.Properties.Resources.ImageIconSpeaker;
+            this.PlayAudioFile.Location = new System.Drawing.Point(333, 42);
+            this.PlayAudioFile.Name = "PlayAudioFile";
+            this.PlayAudioFile.Size = new System.Drawing.Size(22, 22);
+            this.PlayAudioFile.TabIndex = 14;
+            this.PlayAudioFile.UseVisualStyleBackColor = true;
+            this.PlayAudioFile.Click += new System.EventHandler(this.Reminder_NotifyAudioFile_SelectedIndexChanged);
             // 
             // NotifyTrayMessageInput
             // 
@@ -135,9 +147,8 @@
             this.NotifyAudioFileList.FormattingEnabled = true;
             this.NotifyAudioFileList.Location = new System.Drawing.Point(115, 42);
             this.NotifyAudioFileList.Name = "NotifyAudioFileList";
-            this.NotifyAudioFileList.Size = new System.Drawing.Size(240, 21);
+            this.NotifyAudioFileList.Size = new System.Drawing.Size(214, 21);
             this.NotifyAudioFileList.TabIndex = 8;
-            this.NotifyAudioFileList.SelectedIndexChanged += new System.EventHandler(this.Reminder_NotifyAudioFile_SelectedIndexChanged);
             // 
             // NotifyEmailAddressInput
             // 
@@ -199,12 +210,10 @@
             // DontRemindMeRadioButton
             // 
             this.DontRemindMeRadioButton.AutoSize = true;
-            this.DontRemindMeRadioButton.Checked = true;
             this.DontRemindMeRadioButton.Location = new System.Drawing.Point(12, 12);
             this.DontRemindMeRadioButton.Name = "DontRemindMeRadioButton";
             this.DontRemindMeRadioButton.Size = new System.Drawing.Size(101, 17);
             this.DontRemindMeRadioButton.TabIndex = 1;
-            this.DontRemindMeRadioButton.TabStop = true;
             this.DontRemindMeRadioButton.Text = "Don\'t remind me";
             this.DontRemindMeRadioButton.UseVisualStyleBackColor = true;
             this.DontRemindMeRadioButton.CheckedChanged += new System.EventHandler(this.DontRemindMeButton_CheckedChanged);
@@ -220,6 +229,7 @@
             // 
             // TimeUnitList
             // 
+            this.TimeUnitList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TimeUnitList.FormattingEnabled = true;
             this.TimeUnitList.Items.AddRange(new object[] {
             "Minutes",
@@ -255,7 +265,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelDialogButton;
-            this.ClientSize = new System.Drawing.Size(397, 236);
+            this.ClientSize = new System.Drawing.Size(397, 233);
             this.Controls.Add(this.NotificationGroupBox);
             this.Controls.Add(this.RemindMeRadioButton);
             this.Controls.Add(this.CancelDialogButton);
@@ -302,5 +312,6 @@
         private System.Windows.Forms.RadioButton RemindMeRadioButton;
         private System.Windows.Forms.RadioButton DontRemindMeRadioButton;
         private System.Windows.Forms.TextBox NotifyTrayMessageInput;
+        private System.Windows.Forms.Button PlayAudioFile;
     }
 }
