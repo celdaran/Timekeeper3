@@ -7,43 +7,41 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    public class EventGroup
+    public class EventGroup : Classes.SortableItem
     {
+        //----------------------------------------------------------------------
+        // Properties
+        //----------------------------------------------------------------------
+
+        /*
         public string Name { get; set; }
         public string Description { get; set; }
+        */
+
+        //----------------------------------------------------------------------
+        // Constructors
+        //----------------------------------------------------------------------
 
         public EventGroup()
+            : base("EventGroup")
         {
         }
+
+        //----------------------------------------------------------------------
 
         public EventGroup(long eventGroupId)
+            : base("EventGroup", eventGroupId)
         {
-            String Query = String.Format("SELECT * FROM EventGroup WHERE EventGroupId = {0}", eventGroupId);
-
-            Row EventGroup = Timekeeper.Database.SelectRow(Query);
-
-            this.Name = EventGroup["Name"];
-            this.Description = EventGroup["Description"];
         }
+
+        //----------------------------------------------------------------------
 
         public Table Table()
         {
-            return Timekeeper.Database.Select("select EventGroupId as Id, * from EventGroup");
+            // FIXME: This should be in (the currently non-existent) EventGroupCollection class
+            return Timekeeper.Database.Select("SELECT EventGroupId AS Id, * FROM EventGroup ORDER BY SortOrderNo");
         }
 
-        /*
-        public List<IdObjectPair> Table()
-        {
-            List<IdObjectPair> ReturnValue = new List<IdObjectPair>();
-
-            Table Table = Timekeeper.Database.Select("select * from EventGroup");
-            foreach (Row EventGroup in Table) {
-                IdObjectPair Pair = new IdObjectPair(EventGroup["EventGroupId"], EventGroup);
-                ReturnValue.Add(Pair);
-            }
-
-            return ReturnValue;
-        }
-        */
+        //----------------------------------------------------------------------
     }
 }

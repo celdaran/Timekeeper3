@@ -66,23 +66,7 @@ namespace Timekeeper.Classes
                 Reminder = this.Database.SelectRow(Query);
 
                 if (Reminder["ReminderId"] != null) {
-                    this.ReminderId = Reminder["ReminderId"];
-                    this.CreateTime = Reminder["CreateTime"];
-                    this.ModifyTime = Reminder["ModifyTime"];
-
-                    this.TimeAmount = Reminder["TimeAmount"];
-                    this.TimeUnit = Reminder["TimeUnit"];
-
-                    this.NotifyViaTray = Reminder["NotifyViaTray"];
-                    this.NotifyViaAudio = Reminder["NotifyViaAudio"];
-                    this.NotifyViaEmail = Reminder["NotifyViaEmail"];
-                    this.NotifyViaText = Reminder["NotifyViaText"];
-
-                    this.NotifyTrayMessage = (string)Timekeeper.GetValue(Reminder["NotifyTrayMessage"], "Here is your reminder");
-                    this.NotifyAudioFile = (string)Timekeeper.GetValue(Reminder["NotifyAudioFile"], "");
-                    this.NotifyEmailAddress = (string)Timekeeper.GetValue(Reminder["NotifyEmailAddress"], "you@example.com");
-                    this.NotifyPhoneNumber = (string)Timekeeper.GetValue(Reminder["NotifyPhoneNumber"], "9995551212");
-                    this.NotifyCarrierListId = (long)Timekeeper.GetValue(Reminder["NotifyCarrierListId"], 3);
+                    this.SetAttributes(Reminder);
                 }
             }
             catch (Exception x) {
@@ -91,5 +75,31 @@ namespace Timekeeper.Classes
 
             return Reminder;
         }
+
+        //----------------------------------------------------------------------
+
+        public void SetAttributes(Row row)
+        {
+            this.ReminderId = row["ReminderId"];
+            this.CreateTime = row["CreateTime"];
+            this.ModifyTime = row["ModifyTime"];
+
+            this.TimeAmount = row["TimeAmount"];
+            this.TimeUnit = row["TimeUnit"];
+
+            this.NotifyViaTray = row["NotifyViaTray"];
+            this.NotifyViaAudio = row["NotifyViaAudio"];
+            this.NotifyViaEmail = row["NotifyViaEmail"];
+            this.NotifyViaText = row["NotifyViaText"];
+
+            this.NotifyTrayMessage = (string)Timekeeper.GetValue(row["NotifyTrayMessage"], "Here is your reminder");
+            this.NotifyAudioFile = (string)Timekeeper.GetValue(row["NotifyAudioFile"], "");
+            this.NotifyEmailAddress = (string)Timekeeper.GetValue(row["NotifyEmailAddress"], "you@example.com");
+            this.NotifyPhoneNumber = (string)Timekeeper.GetValue(row["NotifyPhoneNumber"], "9995551212");
+            this.NotifyCarrierListId = (long)Timekeeper.GetValue(row["NotifyCarrierListId"], 3);
+        }
+
+        //----------------------------------------------------------------------
+
     }
 }

@@ -24,6 +24,8 @@ namespace Timekeeper.Forms.Tools
         private Classes.Widgets Widgets;
         private long EventId;
 
+        private Forms.Shared.Reminder ReminderForm;
+
         public Classes.Event CurrentEvent { get; set; }
 
         //----------------------------------------------------------------------
@@ -78,12 +80,19 @@ namespace Timekeeper.Forms.Tools
             CurrentEvent.EventGroupId = EventGroupList.SelectedIndex > -1 ? EventGroupList.SelectedIndex + 1 : 1;
             CurrentEvent.NextOccurrenceTime = EventNextOccurrence.Value;
 
+            /*
+            FIXME: only set these if they weren't there before
             CurrentEvent.ReminderId = 0;
             CurrentEvent.ScheduleId = 0;
+            */
 
             CurrentEvent.Group = new Classes.EventGroup(CurrentEvent.EventGroupId);
+
+            /*
+            FIXME: ditto from above
             CurrentEvent.Reminder = null; // FIXME
             CurrentEvent.Schedule = null; // FIXME 2
+            */
 
             DialogResult = DialogResult.OK;
         }
@@ -111,7 +120,7 @@ namespace Timekeeper.Forms.Tools
                 } else {
                     EventName.Text = CurrentEvent.Name;
                     EventDescription.Text = CurrentEvent.Description;
-                    EventGroupList.SelectedIndex = (int)CurrentEvent.EventGroupId - 1;
+                    EventGroupList.SelectedIndex = EventGroupList.FindStringExact(CurrentEvent.Group.Name);
                     EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime;
                 }
             }
@@ -122,13 +131,17 @@ namespace Timekeeper.Forms.Tools
 
         private void ReminderButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.Reminder DialogBox = new Forms.Shared.Reminder();
-            DialogBox.ShowDialog(this);
+            if (ReminderForm == null) {
+              ReminderForm = new Forms.Shared.Reminder(CurrentEvent.ReminderId);
+              ReminderForm.PopulateForm();
+            }
+            ReminderForm.ShowDialog(this);
         }
 
         private void SchedulerButton_Click(object sender, EventArgs e)
         {
-            Forms.Shared.Schedule DialogBox = new Forms.Shared.Schedule();
+            Forms.Shared.Schedule DialogBox = new Forms.Shared.Schedule(
+                CurrentEvent.ScheduleId, CurrentEvent.NextOccurrenceTime);
             DialogBox.ShowDialog(this);
         }
 

@@ -11,6 +11,12 @@ using System.Globalization;
 
 using Technitivity.Toolbox;
 
+//FIXME: wrong place for this
+using Quartz;
+using Quartz.Impl;
+using Quartz.Simpl;
+//Move(d) to Classes.Schedule (?)
+
 namespace Timekeeper.Forms
 {
     partial class Main
@@ -409,8 +415,8 @@ namespace Timekeeper.Forms
                 this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
                 this.ActivityTree.ItemDrag += new ItemDragEventHandler(ActivityTree_ItemDrag);
 
-                // Open a scheduler (used by Reminders)
-                Timekeeper.OpenScheduler();
+                // Schedule events and reminders
+                Action_Schedule();
 
                 // SHORTCUTS
                 /*
@@ -420,8 +426,14 @@ namespace Timekeeper.Forms
                 */
 
                 // FIXME: SHORTCUT
+                /*
                 Forms.Tools.Event DialogBox = new Forms.Tools.Event();
-                DialogBox.ShowDialog(this);
+                DialogBox.Show(this);
+                */
+                //Application.Exit();
+
+                Forms.Shared.Schedule ScheduleDialog = new Forms.Shared.Schedule(9, DateTime.Now);
+                ScheduleDialog.ShowDialog(this);
                 Application.Exit();
 
             }
@@ -657,6 +669,120 @@ namespace Timekeeper.Forms
             catch (Exception x) {
                 Timekeeper.Exception(x);
                 return false;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Action_Schedule()
+        {
+            // FIXME: Not the right place for most of the meat of this . . .
+
+            // FIXME #2, 2014-01-06 08:15: Hey guess what I just found? I have
+            // a lot of what you see below already worked out on the Schedule
+            // dialog box, in the "Preview". That is, all the logic that takes
+            // the UI elements and turns them into a preview of trigger times,
+            // that's already done.
+            // Big TODO: Centralize that logic in Classes.Schedule (or similar)
+            // and then call it from both the Preview and the actual Scheduling
+            // here. Second Big TODO: Don't do any of this here. See the first
+            // FIXME above. For now, this is still all very rough, first pass,
+            // proof-of-concept type work.
+
+            // Sigh. This really could be its own standalone app. I really 
+            // did not grok how much I was biting off here when I started this
+            // whole Event/Reminder thing. No wonder it's taken me 15 years
+            // to get to this point. But I can't stop now. I'm too far into
+            // it. But I can't say I'm not worried about my January release
+            // date. So much for the 15th anniversary...
+
+            try
+            {
+                // Open a scheduler
+                Timekeeper.OpenScheduler();
+
+                // Instantiate a collection of Scheduled Events
+                Classes.ScheduledEventCollection ScheduledEvents = new Classes.ScheduledEventCollection();
+
+                // Then loop through them
+                foreach (Classes.ScheduledEvent ScheduledEvent in ScheduledEvents.Fetch()) {
+
+                    // Create job
+                    IJobDetail Job = JobBuilder.Create<Classes.ReminderJob>()
+                        .WithIdentity(ScheduledEvent.Event.Id.ToString(), "Timekeeper")
+                        .Build();
+
+                    // Determine reminder time
+                    DateTime ReminderTime = ScheduledEvent.Schedule.ReminderTime(
+                        ScheduledEvent.Event.NextOccurrenceTime,
+                        (int)ScheduledEvent.Reminder.TimeUnit,
+                        (int)ScheduledEvent.Reminder.TimeAmount);
+
+                    // Debug string
+                    //string Debug;
+
+                    // Create trigger
+                    switch (ScheduledEvent.Schedule.RefScheduleTypeId) {
+                        case 1: // one time
+                            ITrigger SimpleTrigger = ScheduledEvent.Schedule.OneTimeTrigger(
+                                ScheduledEvent.Event.Name, 
+                                ReminderTime);
+                            Timekeeper.Scheduler.ScheduleJob(Job, SimpleTrigger);
+                            break;
+
+                        case 2: // fixed period
+                            ITrigger FixedTrigger = ScheduledEvent.Schedule.FixedTrigger(
+                                ScheduledEvent.Event.Name, 
+                                ReminderTime,
+                                (int)ScheduledEvent.Schedule.OnceUnit,
+                                (int)ScheduledEvent.Schedule.OnceAmount);
+                            Timekeeper.Scheduler.ScheduleJob(Job, FixedTrigger);
+                            break;
+
+                        case 3: // daily
+                            ITrigger DailyTrigger = ScheduledEvent.Schedule.DailyTrigger(
+                                ScheduledEvent.Event.Name,
+                                ReminderTime,
+                                (int)ScheduledEvent.Schedule.DailyTypeId,
+                                (int)ScheduledEvent.Schedule.DailyIntervalCount);
+                            Timekeeper.Scheduler.ScheduleJob(Job, DailyTrigger);
+                            break;
+
+                        case 4: // weekly
+                            ITrigger WeeklyTrigger = ScheduledEvent.Schedule.WeeklyTrigger(
+                                ScheduledEvent.Event.Name,
+                                ReminderTime);
+                            Timekeeper.Scheduler.ScheduleJob(Job, WeeklyTrigger);
+                            break;
+
+                        case 5: // monthly
+                            ITrigger MonthlyTrigger = ScheduledEvent.Schedule.MonthlyTrigger(
+                                ScheduledEvent.Event.Name,
+                                ReminderTime);
+                            Timekeeper.Scheduler.ScheduleJob(Job, MonthlyTrigger);
+                            break;
+
+                        case 6: // yearly
+                            ITrigger YearlyTrigger = ScheduledEvent.Schedule.YearlyTrigger(
+                                ScheduledEvent.Event.Name,
+                                ReminderTime);
+                            Timekeeper.Scheduler.ScheduleJob(Job, YearlyTrigger);
+                            break;
+
+                        case 7: // cronly
+                            ITrigger CronTrigger = ScheduledEvent.Schedule.CronTrigger(
+                                ScheduledEvent.Event.Name,
+                                ReminderTime,
+                                ScheduledEvent.Schedule.CrontabExpression);
+                            Timekeeper.Scheduler.ScheduleJob(Job, CronTrigger);
+                            break;
+                    }
+                }
+                // end foreach
+
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
             }
         }
 

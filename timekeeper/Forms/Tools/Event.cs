@@ -63,7 +63,7 @@ namespace Timekeeper.Forms.Tools
             List<Classes.Event> Items = Collection.Fetch();
 
             foreach (Classes.Event Event in Items) {
-                this.AddItem(Event.Name, Event, EventList.Groups[Event.Group.Name]);
+                this.AddItem(Event, EventList.Groups[Event.Group.Name]);
             }
 
             StatusBarItemCount.Text = EventList.Items.Count + " item(s)";
@@ -97,7 +97,7 @@ namespace Timekeeper.Forms.Tools
 
         //----------------------------------------------------------------------
 
-        public void AddItem(string displayName, Classes.Event currentEvent, ListViewGroup group)
+        public void AddItem(Classes.Event currentEvent, ListViewGroup group)
         {
             try {
                 if (currentEvent.IsHidden) { // FIXME: && !Options.View_HiddenProjects) {
@@ -105,7 +105,7 @@ namespace Timekeeper.Forms.Tools
                     return;
                 }
 
-                ListViewItem NewItem = new ListViewItem(displayName, group);
+                ListViewItem NewItem = new ListViewItem(currentEvent.Name, group);
                 EventList.Items.Add(NewItem);
 
                 NewItem.Tag = currentEvent;
@@ -134,6 +134,29 @@ namespace Timekeeper.Forms.Tools
         }
 
         //----------------------------------------------------------------------
+
+        public void UpdateItem(ListViewItem item, Classes.Event currentEvent, ListViewGroup group)
+        {
+            try {
+                // Update stuff
+                item.Tag = currentEvent;
+                item.ImageIndex = 0;
+                item.ToolTipText = currentEvent.Description;
+                item.Group = group;
+
+                // Change column text
+                ListViewItem.ListViewSubItem i;
+                i = item.SubItems[0]; i.Text = currentEvent.Name;
+                i = item.SubItems[1]; i.Text = currentEvent.Description;
+                i = item.SubItems[2]; i.Text = currentEvent.NextOccurrenceTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //----------------------------------------------------------------------
         // Menu and Toolbar Events
         //----------------------------------------------------------------------
 
@@ -144,7 +167,7 @@ namespace Timekeeper.Forms.Tools
             if (DialogBox.DialogResult == DialogResult.OK) {
                 Classes.Event Event = DialogBox.CurrentEvent;
                 if (Event.Save()) { // Save is an upsert function
-                    this.AddItem(Event.Name, Event, EventList.Groups[Event.Group.Name]);
+                    this.AddItem(Event, EventList.Groups[Event.Group.Name]);
                 } else {
                     Common.Warn("There was an error creating the event");
                 }
@@ -158,6 +181,14 @@ namespace Timekeeper.Forms.Tools
             } else {
                 EditItem();
             }
+        }
+
+        private void MenuEventsActionManageGroups_Click(object sender, EventArgs e)
+        {
+            Forms.Tools.ManageEventGroups DialogBox = new Forms.Tools.ManageEventGroups();
+            DialogBox.ShowDialog(this);
+            // FIXME: need to do this conditionally
+            PopulateEventList();
         }
 
         private void MenuEventViewLargeIcons_Click(object sender, EventArgs e)
@@ -297,11 +328,12 @@ namespace Timekeeper.Forms.Tools
 
             Forms.Tools.EventDetail DialogBox = new Forms.Tools.EventDetail(EventId);
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
+                // Update DB
                 Classes.Event Event = DialogBox.CurrentEvent;
                 Event.Save();
-                // Brute-force remove/re-add
-                EventList.Items.Remove(SelectedItem);
-                this.AddItem(Event.Name, Event, EventList.Groups[Event.Group.Name]);
+                // Update UI
+                Common.Info(Event.Group.Name);
+                this.UpdateItem(SelectedItem, Event, EventList.Groups[Event.Group.Name]);
             }
         }
 
@@ -367,7 +399,7 @@ namespace Timekeeper.Forms.Tools
             // Schedule Job One
             //------------------------------------
 
-            IJobDetail Job1 = JobBuilder.Create<HelloJob>()
+            IJobDetail Job1 = JobBuilder.Create<Classes.ReminderJob>()
                 .WithIdentity("Job One: Simple Schedule", "My Group")
                 .Build();
 
@@ -383,7 +415,7 @@ namespace Timekeeper.Forms.Tools
             // Schedule Job Two
             //------------------------------------
 
-            IJobDetail Job2 = JobBuilder.Create<HelloJob>()
+            IJobDetail Job2 = JobBuilder.Create<Classes.ReminderJob>()
                 .WithIdentity("Job Two: With Time Interval", "My Group")
                 .Build();
 
@@ -409,7 +441,7 @@ namespace Timekeeper.Forms.Tools
                 7. Year (optional field)
             */
 
-            IJobDetail Job3 = JobBuilder.Create<HelloJob>()
+            IJobDetail Job3 = JobBuilder.Create<Classes.ReminderJob>()
                 .WithIdentity("Job Three: Cron Job", "My Group")
                 .Build();
                 
@@ -429,6 +461,7 @@ namespace Timekeeper.Forms.Tools
 
     }
 
+    /*
     class HelloJob : Quartz.IJob
     {
         public void Execute(IJobExecutionContext context)
@@ -437,4 +470,6 @@ namespace Timekeeper.Forms.Tools
             Common.Warn(context.JobDetail.Key.Name + " just fired");
         }
     }
+    */
+
 }

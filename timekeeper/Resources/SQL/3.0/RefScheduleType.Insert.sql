@@ -55,6 +55,20 @@ INSERT INTO RefScheduleType
 ) VALUES (
     '{0}',
     '{0}',
+    'Weekly',
+    'Weekly'
+);
+
+INSERT INTO RefScheduleType
+(
+    CreateTime,
+    ModifyTime,
+    Name,
+    Description
+
+) VALUES (
+    '{0}',
+    '{0}',
     'Monthly',
     'Monthly'
 );

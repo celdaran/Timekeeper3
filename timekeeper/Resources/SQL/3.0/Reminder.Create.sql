@@ -16,6 +16,8 @@ CREATE TABLE Reminder
     TimeAmount                      INTEGER     NOT NULL,
     TimeUnit                        INTEGER     NOT NULL,
 
+-- how about a NotifyViaDialogBox option? as a tray alternative?
+
     NotifyViaTray                   BOOLEAN     NOT NULL,
     NotifyViaAudio                  BOOLEAN     NOT NULL,
     NotifyViaEmail                  BOOLEAN     NOT NULL,

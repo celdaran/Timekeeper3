@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,6 +22,9 @@ namespace Timekeeper.Forms.Shared
         // Properties
         //----------------------------------------------------------------------
 
+        private long ScheduleId;
+        private DateTime ExternalEventNextOccurrence;
+
         private Classes.Options Options;
         private Classes.Widgets Widgets;
         private Classes.Schedule CurrentSchedule;
@@ -30,9 +33,11 @@ namespace Timekeeper.Forms.Shared
         // Constructor
         //----------------------------------------------------------------------
 
-        public Schedule()
+        public Schedule(long scheduleId, DateTime eventNextOccurrence)
         {
             InitializeComponent();
+            this.ScheduleId = scheduleId;
+            this.ExternalEventNextOccurrence = eventNextOccurrence;
         }
 
         //----------------------------------------------------------------------
@@ -43,16 +48,13 @@ namespace Timekeeper.Forms.Shared
         {
             this.Widgets = new Classes.Widgets();
             this.Options = Timekeeper.Options;
-            this.CurrentSchedule = new Classes.Schedule(1);
+            this.CurrentSchedule = new Classes.Schedule(this.ScheduleId);
 
             ScheduleTabControl.TabPages.RemoveByKey("HiddenTab");
             ThenLabel.Visible = false;
             TargetPanel.Visible = false;
 
             PopulateForm(sender, e);
-
-            // FIXME: FOR TESTING
-            RecurCronRadioButton.Checked = true;
         }
 
         //----------------------------------------------------------------------
@@ -88,40 +90,99 @@ namespace Timekeeper.Forms.Shared
         // Form Event Helpers
         //----------------------------------------------------------------------
 
+        private int GetValue(object value, object defaultValue)
+        {
+            // Very thin wrapper/helper
+            return Convert.ToInt32(Timekeeper.GetValue(value, defaultValue));
+        }
+
         private void PopulateForm(object sender, EventArgs e)
         {
             try {
-                // Schedule Tab
-                if (CurrentSchedule.RefScheduleTypeId == 1)
-                    RecurNoneRadioButton.Checked = true;
-                if (CurrentSchedule.RefScheduleTypeId == 2)
-                    RecurFixedRadioButton.Checked = true;
-                if (CurrentSchedule.RefScheduleTypeId == 3)
-                    RecurDailyRadioButton.Checked = true;
-                if (CurrentSchedule.RefScheduleTypeId == 4)
-                    RecurWeeklyRadioButton.Checked = true;
-                if (CurrentSchedule.RefScheduleTypeId == 5)
-                    RecurMonthlyRadioButton.Checked = true;
-                if (CurrentSchedule.RefScheduleTypeId == 6)
-                    RecurYearlyRadioButton.Checked = true;
-                if (CurrentSchedule.RefScheduleTypeId == 7)
-                    RecurCronRadioButton.Checked = true;
+                //------------------------------------------
+                // Set the current event time
+                //------------------------------------------
 
                 EventNextOccurrence.CustomFormat = Options.Advanced_DateTimeFormat;
-                OnceUnitList.SelectedIndex = 2;
-                DailyEveryDayRadioButton_CheckedChanged(sender, e);
-                MonthlyDateRadioButton_CheckedChanged(sender, e);
-                MonthlyOrdinalWeekList.SelectedIndex = 0;
-                MonthlyDayOfWeekList.SelectedIndex = 0;
-                YearlyOrdinalWeekList.SelectedIndex = 0;
-                YearlyDayOfWeekList.SelectedIndex = 0;
-                YearlyMonthList.SelectedIndex = 0;
-                MonthlyDateRadioButton_CheckedChanged(sender, e);
-                YearlyDateRadioButton_CheckedChanged(sender, e);
+                EventNextOccurrence.Value = this.ExternalEventNextOccurrence;
 
+                //------------------------------------------
+                // Prepopulate all panels
+                //------------------------------------------
+
+                // FIXME: I don't know why casting this as an (int) isn't working; it works everywhere else!
+                OnceUnitList.SelectedIndex = GetValue(CurrentSchedule.OnceUnit, 1) - 1;
+                OnceAmountValue.Value = GetValue(CurrentSchedule.OnceAmount, 1);
+
+                //------------------------------------------
+
+                switch (CurrentSchedule.DailyTypeId) {
+                    case 1: DailyEveryDayRadioButton.Checked = true; break;
+                    case 2: DailyEveryWeekdayRadioButton.Checked = true; break;
+                    case 3: DailyIntervalRadioButton.Checked = true; break;
+                }
+                DailyIntervalCountValue.Value = GetValue(CurrentSchedule.DailyIntervalCount, 1);
+
+                //------------------------------------------
+
+                WeeklyIntervalCountValue.Value = GetValue(CurrentSchedule.WeeklyIntervalCount, 1);
+                WeeklyMondayCheckbox.Checked = CurrentSchedule.WeeklyMonday;
+                WeeklyTuesdayCheckbox.Checked = CurrentSchedule.WeeklyTuesday;
+                WeeklyWednesdayCheckbox.Checked = CurrentSchedule.WeeklyWednesday;
+                WeeklyThursdayCheckbox.Checked = CurrentSchedule.WeeklyThursday;
+                WeeklyFridayCheckbox.Checked = CurrentSchedule.WeeklyFriday;
+                WeeklySaturdayCheckbox.Checked = CurrentSchedule.WeeklySaturday;
+                WeeklySundayCheckbox.Checked = CurrentSchedule.WeeklySunday;
+
+                //------------------------------------------
+
+                switch (CurrentSchedule.MonthlyTypeId) {
+                    case 1: MonthlyDateRadioButton.Checked = true; break;
+                    case 2: MonthlyDayRadioButton.Checked = true; break;
+                }
+
+                MonthlyDateValue.Value = GetValue(CurrentSchedule.MonthlyDate, 1);
+                // FIXME: WTF's with these name mismatches? What's on the form should match what's in the database wherever possible
+                MonthlyOrdinalWeekList.SelectedIndex = GetValue(CurrentSchedule.MonthlyOrdinalDay, 1) - 1; 
+                MonthlyDayOfWeekList.SelectedIndex = GetValue(CurrentSchedule.MonthlyDayOfWeek, 1) - 1;
+                MonthlyIntervalCountValue.Value = GetValue(CurrentSchedule.MonthlyIntervalCount, 1);
+
+                //------------------------------------------
+
+                switch (CurrentSchedule.YearlyTypeId) {
+                    case 1: YearlyDateRadioButton.Checked = true; break;
+                    case 2: YearlyDayRadioButton.Checked = true; break;
+                }
+
+                YearlyDateValue.Value = GetValue(CurrentSchedule.YearlyEveryDate, 1);
+                YearlyOrdinalWeekList.SelectedIndex = GetValue(CurrentSchedule.YearlyOrdinalDay, 1) - 1;
+                YearlyDayOfWeekList.SelectedIndex = GetValue(CurrentSchedule.YearlyDayOfWeek, 1) - 1;
+                YearlyMonthList.SelectedIndex = GetValue(CurrentSchedule.YearlyMonth, 1) - 1;
+
+                //------------------------------------------
+
+                CrontabExpressionValue.Text = CurrentSchedule.CrontabExpression;
+
+                //------------------------------------------
+                // Lastly, select the broad schedule type
+                //------------------------------------------
+
+                switch (CurrentSchedule.RefScheduleTypeId) {
+                    case 1: RecurNoneRadioButton.Checked = true; break;
+                    case 2: RecurFixedRadioButton.Checked = true; break;
+                    case 3: RecurDailyRadioButton.Checked = true; break;
+                    case 4: RecurWeeklyRadioButton.Checked = true; break;
+                    case 5: RecurMonthlyRadioButton.Checked = true; break;
+                    case 6: RecurYearlyRadioButton.Checked = true; break;
+                    case 7: RecurCronRadioButton.Checked = true; break;
+                }
+
+                //------------------------------------------
                 // Duration Tab
+                //------------------------------------------
+
                 StopAfterTimeValue.CustomFormat = Options.Advanced_DateTimeFormat;
-                EnableDurationTab(false);
+                //EnableDurationTab(false);
                 RunIndefinitelyButton.Checked = true;
                 RunIndefinitelyButton_CheckedChanged(sender, e);
             }
@@ -284,6 +345,7 @@ namespace Timekeeper.Forms.Shared
                 CrontabDayOfWeek.Text;
 
             // Special handling
+            /*
             if ((CrontabDayOfMonth.Text == "?") && (CrontabDayOfWeek.Text == "?")) {
                 Common.Warn("Day of Month and Day of Week cannot both be ?");
             }
@@ -291,6 +353,7 @@ namespace Timekeeper.Forms.Shared
             if ((CrontabDayOfMonth.Text == "*") && (CrontabDayOfWeek.Text == "*")) {
                 Common.Warn("Day of Month and Day of Week cannot both be *");
             }
+            */
 
             this.CrontabExpressionValue.TextChanged += new System.EventHandler(this.CrontabExpression_TextChanged);
         }
@@ -329,6 +392,8 @@ namespace Timekeeper.Forms.Shared
                 CrontabMonth.Text = Parts[4];
             if (Parts.Length > 5)
                 CrontabDayOfWeek.Text = Parts[5];
+            if (Parts.Length > 6)
+                Alert("Invalid expression");
 
             // And reenable when done
             this.CrontabSeconds.TextChanged += new System.EventHandler(this.CrontabElement_TextChanged);
@@ -419,7 +484,8 @@ namespace Timekeeper.Forms.Shared
                 UpdatePreview();
             }
             catch (Exception x) {
-                Common.Warn(x.ToString());
+                UpdatePreviewWindow(x.Message);
+                //Common.Warn(x.ToString());
                 Timekeeper.Exception(x);
             }
         }
@@ -428,58 +494,39 @@ namespace Timekeeper.Forms.Shared
 
         private void UpdatePreview()
         {
-            if (RecurNoneRadioButton.Checked)
-                Common.Info("No schedule needed");
+            if (RecurNoneRadioButton.Checked) {
+                UpdatePreviewWindow(EventNextOccurrence.Value);
+            }
 
             if (RecurFixedRadioButton.Checked) {
 
-                int Interval = (int)OnceAmountValue.Value;
+                ITrigger FixedTrigger = CurrentSchedule.FixedTrigger(
+                    "Preview Trigger",
+                    EventNextOccurrence.Value,
+                    OnceUnitList.SelectedIndex + 1,
+                    (int)OnceAmountValue.Value);
 
-                switch (OnceUnitList.SelectedIndex) {
-                    case 0: // Seconds
-                        UpdatePreviewFixed(Interval);
-                        break;
-                    case 1: // Minutes
-                        UpdatePreviewFixed(Interval * 60);
-                        break;
-                    case 2: // Hours
-                        UpdatePreviewFixed(Interval * 60 * 60);
-                        break;
-                    case 3: // Days
-                        UpdatePreviewFixed(Interval * 60 * 60 * 24);
-                        break;
-                    case 4: // Weeks
-                        UpdatePreviewFixed(Interval * 60 * 60 * 24 * 7);
-                        break;
-                    case 5: // Months
-                        UpdatePreviewFixedMonthly(Interval);
-                        break;
-                    case 6: // Quarters
-                        UpdatePreviewFixedMonthly(Interval * 3);
-                        break;
-                    case 7: // Years
-                        UpdatePreviewFixedMonthly(Interval * 12);
-                        break;
-                }
+                UpdatePreviewWindow(FixedTrigger);
             }
 
             if (RecurDailyRadioButton.Checked) {
 
-                if (DailyEveryDayRadioButton.Checked) {
-                    UpdatePreviewFixed(60 * 60 * 24);
-                }
+                int DailyTypeId = 0;
 
-                if (DailyEveryWeekdayRadioButton.Checked) {
-                    DateTime StartTime = EventNextOccurrence.Value;
-                    string CronExpressionString =
-                        String.Format("{0} {1} {2} ? * MON,TUE,WED,THU,FRI *", StartTime.Second, StartTime.Minute, StartTime.Hour);
-                    UpdatePreviewCron(CronExpressionString);
-                }
+                if (DailyEveryDayRadioButton.Checked)
+                    DailyTypeId = 1;
+                if (DailyEveryWeekdayRadioButton.Checked)
+                    DailyTypeId = 2;
+                if (DailyIntervalRadioButton.Checked)
+                    DailyTypeId = 3;
 
-                if (DailyIntervalRadioButton.Checked) {
-                    int Interval = (int)DailyIntervalCountValue.Value;
-                    UpdatePreviewFixed(Interval * 60 * 60 * 24);
-                }
+                ITrigger DailyTrigger = CurrentSchedule.DailyTrigger(
+                    "Preview Trigger",
+                    EventNextOccurrence.Value,
+                    DailyTypeId,
+                    (int)DailyIntervalCountValue.Value);
+
+                UpdatePreviewWindow(DailyTrigger);
             }
 
             if (RecurWeeklyRadioButton.Checked) {
@@ -501,159 +548,64 @@ namespace Timekeeper.Forms.Shared
                 if (WeeklySundayCheckbox.Checked)
                     Weekdays.Add("SUN");
 
-                DateTime StartTime = EventNextOccurrence.Value;
-                string CronExpressionString =
-                    String.Format("{0} {1} {2} ? * {3} *", 
-                        StartTime.Second, 
-                        StartTime.Minute, 
-                        StartTime.Hour, 
-                        string.Join(",", Weekdays.ToArray()));
-                UpdatePreviewCron(CronExpressionString);
-
-                // FIXME: Currently no support for WeeklyIntervalCountValue.
-                // I think we'll have to just let it fire once a week, but
-                // then silently drop triggers according to the interval
-                // schedule. That, or we drop support for it completely.
-
+                ITrigger WeeklyTrigger = CurrentSchedule.WeeklyTrigger(
+                    "Preview Trigger",
+                    EventNextOccurrence.Value,
+                    Weekdays);
+                UpdatePreviewWindow(WeeklyTrigger);
             }
 
             if (RecurMonthlyRadioButton.Checked) {
 
+                ITrigger MonthlyTrigger;
+
                 if (MonthlyDateRadioButton.Checked) {
-                    // 0 0 12 7 1/3 ? *
-                    DateTime StartTime = EventNextOccurrence.Value;
-                    string CronExpressionString =
-                        String.Format("{0} {1} {2} {3} 1/{4} ? *",
-                            StartTime.Second,
-                            StartTime.Minute,
-                            StartTime.Hour,
-                            MonthlyDateValue.Value,
-                            MonthlyIntervalCountValue.Value);
-                    UpdatePreviewCron(CronExpressionString);
+                    MonthlyTrigger = CurrentSchedule.MonthlyTrigger(
+                        "Preview Trigger",
+                        EventNextOccurrence.Value,
+                        (int)MonthlyDateValue.Value,
+                        (int)MonthlyIntervalCountValue.Value);
+                } else {
+                    MonthlyTrigger = CurrentSchedule.MonthlyTrigger(
+                        "Preview Trigger",
+                        EventNextOccurrence.Value,
+                        MonthlyDayOfWeekList.SelectedIndex + 1,
+                        MonthlyOrdinalWeekList.SelectedIndex + 1,
+                        (int)MonthlyIntervalCountValue.Value);
                 }
 
-                if (MonthlyDayRadioButton.Checked) {
-
-                    // Day of week
-                    string DayOfWeek = "";
-                    switch (MonthlyDayOfWeekList.SelectedIndex) {
-                        case 0: DayOfWeek = "MON"; break;
-                        case 1: DayOfWeek = "TUE"; break;
-                        case 2: DayOfWeek = "WED"; break;
-                        case 3: DayOfWeek = "THU"; break;
-                        case 4: DayOfWeek = "FRI"; break;
-                        case 5: DayOfWeek = "SAT"; break;
-                        case 6: DayOfWeek = "SUN"; break;
-                    }
-
-                    // Ordinal week
-                    string WeekOfMonth = "";
-                    switch (MonthlyOrdinalWeekList.SelectedIndex) {
-                        case 0: WeekOfMonth = "#1"; break;
-                        case 1: WeekOfMonth = "#2"; break;
-                        case 2: WeekOfMonth = "#3"; break;
-                        case 3: WeekOfMonth = "#4"; break;
-                        case 4: WeekOfMonth = "L"; break;
-                    }
-
-                    // 0 0 12 ? 1/1 TUE#2 *
-
-                    DateTime StartTime = EventNextOccurrence.Value;
-                    string CronExpressionString =
-                        String.Format("{0} {1} {2} ? 1/{3} {4}{5} *",
-                            StartTime.Second,
-                            StartTime.Minute,
-                            StartTime.Hour,
-                            MonthlyIntervalCountValue.Value,
-                            DayOfWeek,
-                            WeekOfMonth);
-                    UpdatePreviewCron(CronExpressionString);
-                }
+                UpdatePreviewWindow(MonthlyTrigger);
             }
 
             if (RecurYearlyRadioButton.Checked) {
 
-                // YearlyDateValue
+                ITrigger YearlyTrigger;
 
                 if (YearlyDateRadioButton.Checked) {
-                    // 0 0 12 14 3 ? *
-                    DateTime StartTime = EventNextOccurrence.Value;
-                    string CronExpressionString =
-                        String.Format("{0} {1} {2} {3} {4} ? *",
-                            StartTime.Second,
-                            StartTime.Minute,
-                            StartTime.Hour,
-                            YearlyDateValue.Value,
-                            YearlyMonthList.SelectedIndex + 1);
-                    UpdatePreviewCron(CronExpressionString);
+                    YearlyTrigger = CurrentSchedule.YearlyTrigger(
+                        "Preview Trigger",
+                        EventNextOccurrence.Value,
+                        (int)YearlyDateValue.Value,
+                        YearlyMonthList.SelectedIndex + 1);
+                } else {
+                    YearlyTrigger = CurrentSchedule.YearlyTrigger(
+                        "Preview Trigger",
+                        EventNextOccurrence.Value,
+                        YearlyDayOfWeekList.SelectedIndex + 1,
+                        YearlyOrdinalWeekList.SelectedIndex + 1,
+                        YearlyMonthList.SelectedIndex + 1);
                 }
 
-                if (YearlyDayRadioButton.Checked) {
-
-                    // Day of week
-                    string DayOfWeek = "";
-                    switch (YearlyDayOfWeekList.SelectedIndex) {
-                        case 0: DayOfWeek = "MON"; break;
-                        case 1: DayOfWeek = "TUE"; break;
-                        case 2: DayOfWeek = "WED"; break;
-                        case 3: DayOfWeek = "THU"; break;
-                        case 4: DayOfWeek = "FRI"; break;
-                        case 5: DayOfWeek = "SAT"; break;
-                        case 6: DayOfWeek = "SUN"; break;
-                    }
-
-                    // Ordinal week
-                    string WeekOfMonth = "";
-                    switch (YearlyOrdinalWeekList.SelectedIndex) {
-                        case 0: WeekOfMonth = "#1"; break;
-                        case 1: WeekOfMonth = "#2"; break;
-                        case 2: WeekOfMonth = "#3"; break;
-                        case 3: WeekOfMonth = "#4"; break;
-                        case 4: WeekOfMonth = "L"; break;
-                    }
-
-                    // 0 0 12 ? 5 WED#2 *
-
-                    DateTime StartTime = EventNextOccurrence.Value;
-                    string CronExpressionString =
-                        String.Format("{0} {1} {2} ? {3} {4}{5} *",
-                            StartTime.Second,
-                            StartTime.Minute,
-                            StartTime.Hour,
-                            YearlyMonthList.SelectedIndex + 1,
-                            DayOfWeek,
-                            WeekOfMonth);
-                    UpdatePreviewCron(CronExpressionString);
-                }
-
+                UpdatePreviewWindow(YearlyTrigger);
             }
 
-            if (RecurCronRadioButton.Checked)
-                ReallyUpdatePreview(CrontabExpressionValue.Text);
-        }
-
-        //----------------------------------------------------------------------
-
-        private void UpdatePreviewFixed(int count)
-        {
-            ITrigger PreviewTrigger = TriggerBuilder.Create()
-                .WithIdentity("Preview Trigger")
-                .WithSimpleSchedule(x => x.WithIntervalInSeconds(count).RepeatForever())
-                .StartAt(EventNextOccurrence.Value)
-                .Build();
-            UpdatePreviewWindow(PreviewTrigger);
-        }
-
-        //----------------------------------------------------------------------
-
-        private void UpdatePreviewFixedMonthly(int count)
-        {
-            ITrigger PreviewTrigger = TriggerBuilder.Create()
-                .WithIdentity("Preview Trigger")
-                .WithCalendarIntervalSchedule(x => x.WithIntervalInMonths(count))
-                .StartAt(EventNextOccurrence.Value)
-                .Build();
-            UpdatePreviewWindow(PreviewTrigger);
+            if (RecurCronRadioButton.Checked) {
+                ITrigger CronTrigger = CurrentSchedule.CronTrigger(
+                    "Preview Trigger",
+                    EventNextOccurrence.Value,
+                    CrontabExpressionValue.Text);
+                UpdatePreviewWindow(CronTrigger);
+            }
         }
 
         //----------------------------------------------------------------------
@@ -672,17 +624,53 @@ namespace Timekeeper.Forms.Shared
 
         private void UpdatePreviewWindow(ITrigger trigger)
         {
+            string DateTimeFormat = Options.Advanced_DateTimeFormat + " (ddd)";
+
             // Find first one
             DateTimeOffset? EventStartTime = trigger.StartTimeUtc;
-            SchedulePreview.Text = EventStartTime.Value.ToString(Common.LOCAL_DATETIME_FORMAT) + "\n";
+            SchedulePreview.Text = EventStartTime.Value.ToString(DateTimeFormat) + "\n";
+
+            // Determine loop count
+            int CountTo = StopAfterCountRadioButton.Checked ?
+                Convert.ToInt32(Math.Min(StopAfterCountValue.Value, PreviewCount.Value)) :
+                Convert.ToInt32(PreviewCount.Value);
 
             // Then loop through more (perhaps all) subsequently scheduled timers
             DateTimeOffset CurrentEvent = (DateTimeOffset)EventStartTime;
-            for (int i = 0; i < PreviewCount.Value; i++) {
+            for (int i = 0; i < CountTo - 1; i++) {
+
                 DateTimeOffset? NextEvent = trigger.GetFireTimeAfter(CurrentEvent);
-                SchedulePreview.Text += NextEvent.Value.LocalDateTime.ToString(Common.LOCAL_DATETIME_FORMAT) + "\n";
+
+                // Bail point?
+                if (StopAfterTimeRadioButton.Checked) {
+                    /*
+                    string Debug = String.Format(@"Event: {0}, Limit: {1}", NextEvent.Value.LocalDateTime, StopAfterTimeValue.Value);
+                    Common.Info(Debug);
+                    */
+                    if (NextEvent.Value.LocalDateTime > StopAfterTimeValue.Value) {
+                        break;
+                    }
+                }
+
+                SchedulePreview.Text += NextEvent.Value.LocalDateTime.ToString(DateTimeFormat) + "\n";
                 CurrentEvent = (DateTimeOffset)NextEvent;
+
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void UpdatePreviewWindow(DateTime dateTime)
+        {
+            string DateTimeFormat = Options.Advanced_DateTimeFormat + " (ddd)";
+            SchedulePreview.Text = dateTime.ToString(DateTimeFormat);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void UpdatePreviewWindow(string message)
+        {
+            SchedulePreview.Text += message + "\n";
         }
 
         //----------------------------------------------------------------------
@@ -708,6 +696,43 @@ namespace Timekeeper.Forms.Shared
             // will actually happen. Nothing in here reflects the reality of the schedule
             // once created and instantiated. (It should, of course, but it isn't guaranteed.
             // Other parts of the code are responsible for that.)
+        }
+
+        private void Alert(string message)
+        {
+            WarningIcon.Visible = true;
+            WarningLabel.Visible = true;
+            WarningLabel.Text = message;
+        }
+
+        private void Alert()
+        {
+            WarningIcon.Visible = false;
+            WarningLabel.Visible = false;
+            WarningLabel.Text = "";
+        }
+
+        private void ScheduleTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ScheduleTabControl.SelectedIndex == 2) {
+                // Automatically update schedule when PreviewTab gets focus
+                // FIXME: right event for this? Maybe zero in on the PreviewTab itself...?
+                CrontabTesterButton_Click(sender, e);
+            }
+        }
+
+        private void CrontabExpressionValue_Leave(object sender, EventArgs e)
+        {
+            try {
+                ITrigger CronTrigger = CurrentSchedule.CronTrigger(
+                    "Preview Trigger",
+                    EventNextOccurrence.Value,
+                    CrontabExpressionValue.Text);
+                Alert();
+            }
+            catch (Exception x) {
+                Alert(x.Message);
+            }
         }
 
         //----------------------------------------------------------------------

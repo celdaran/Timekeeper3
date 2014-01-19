@@ -63,7 +63,7 @@ namespace Timekeeper.Classes
                     this.EventGroupId = Event["EventGroupId"];
                     this.NextOccurrenceTime = Event["NextOccurrenceTime"];
                     this.ReminderId = (long)Timekeeper.GetValue(Event["ReminderId"], 0);
-                    this.ScheduleId = (long)Timekeeper.GetValue(Event["ReminderId"], 0);
+                    this.ScheduleId = (long)Timekeeper.GetValue(Event["ScheduleId"], 0);
 
                     this.Group = this.EventGroupId > 0 ? new Classes.EventGroup(this.EventGroupId) : null;
                     this.Reminder = this.ReminderId > 0 ? new Classes.Reminder(this.ReminderId) : null;

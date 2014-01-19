@@ -30,9 +30,10 @@ namespace Timekeeper.Forms.Shared
         // Constructor
         //----------------------------------------------------------------------
 
-        public Reminder()
+        public Reminder(long reminderId)
         {
             InitializeComponent();
+            this.ReminderId = reminderId;
         }
 
         //----------------------------------------------------------------------
@@ -43,9 +44,9 @@ namespace Timekeeper.Forms.Shared
         {
             this.Widgets = new Classes.Widgets();
             this.Options = Timekeeper.Options;
-            this.CurrentReminder = new Classes.Reminder(1);
+            this.CurrentReminder = new Classes.Reminder(this.ReminderId);
 
-            PopulateForm(sender, e);
+            //PopulateForm();
         }
 
         //----------------------------------------------------------------------
@@ -81,7 +82,7 @@ namespace Timekeeper.Forms.Shared
         // Form Event Helpers
         //----------------------------------------------------------------------
 
-        private void PopulateForm(object sender, EventArgs e)
+        public void PopulateForm()
         {
             try {
                 // FIXME: move to widgets | experimental right now
@@ -107,11 +108,11 @@ namespace Timekeeper.Forms.Shared
 
                 if (CurrentReminder.TimeAmount == 0) {
                     DontRemindMeRadioButton.Checked = true;
-                    DontRemindMeButton_CheckedChanged(sender, e);
+                    DontRemindMe();
                 } else {
                     RemindMeRadioButton.Checked = true;
                     TimeAmountInput.Value = CurrentReminder.TimeAmount;
-                    RemindMeButton_CheckedChanged(sender, e);
+                    RemindMe();
                 }
 
                 // Do this last unless you want it to play every time the dialog box opens
@@ -128,12 +129,25 @@ namespace Timekeeper.Forms.Shared
 
         private void DontRemindMeButton_CheckedChanged(object sender, EventArgs e)
         {
+            DontRemindMe();
+        }
+
+        private void RemindMeButton_CheckedChanged(object sender, EventArgs e)
+        {
+            RemindMe();
+        }
+
+        //----------------------------------------------------------------------
+        // TODO: um, not sure where these go atm. Come back to this...
+
+        private void DontRemindMe()
+        {
             if (DontRemindMeRadioButton.Checked) {
                 EnableReminderTab(false);
             }
         }
 
-        private void RemindMeButton_CheckedChanged(object sender, EventArgs e)
+        private void RemindMe()
         {
             if (RemindMeRadioButton.Checked) {
                 EnableReminderTab(true);

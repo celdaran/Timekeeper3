@@ -80,10 +80,10 @@ namespace Timekeeper.Forms
             this.MenuToolFind = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuToolTodo = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolReminders = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolNotebook = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolCalendar = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolStopwatch = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuToolReminders = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolCountdown = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolDatecalc = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolSep2 = new System.Windows.Forms.ToolStripSeparator();
@@ -91,7 +91,6 @@ namespace Timekeeper.Forms
             this.MenuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelpContents = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelpWeb = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelpSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolbar = new System.Windows.Forms.ToolStripMenuItem();
@@ -683,6 +682,13 @@ namespace Timekeeper.Forms
             this.MenuToolTodo.Text = "To Do List...";
             this.MenuToolTodo.Click += new System.EventHandler(this.MenuToolTodo_Click);
             // 
+            // MenuToolReminders
+            // 
+            this.MenuToolReminders.Name = "MenuToolReminders";
+            this.MenuToolReminders.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolReminders.Text = "&Events...";
+            this.MenuToolReminders.Click += new System.EventHandler(this.MenuToolReminders_Click);
+            // 
             // MenuToolNotebook
             // 
             this.MenuToolNotebook.Name = "MenuToolNotebook";
@@ -703,13 +709,6 @@ namespace Timekeeper.Forms
             this.MenuToolStopwatch.Size = new System.Drawing.Size(160, 22);
             this.MenuToolStopwatch.Text = "Stopwatch...";
             this.MenuToolStopwatch.Click += new System.EventHandler(this.MenuToolStopwatch_Click);
-            // 
-            // MenuToolReminders
-            // 
-            this.MenuToolReminders.Name = "MenuToolReminders";
-            this.MenuToolReminders.Size = new System.Drawing.Size(160, 22);
-            this.MenuToolReminders.Text = "&Events...";
-            this.MenuToolReminders.Click += new System.EventHandler(this.MenuToolReminders_Click);
             // 
             // MenuToolCountdown
             // 
@@ -745,7 +744,6 @@ namespace Timekeeper.Forms
             this.MenuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuHelpContents,
             this.MenuHelpWeb,
-            this.checkForUpdatesToolStripMenuItem,
             this.MenuHelpSep1,
             this.MenuHelpAbout});
             this.MenuHelp.Name = "MenuHelp";
@@ -766,12 +764,6 @@ namespace Timekeeper.Forms
             this.MenuHelpWeb.Size = new System.Drawing.Size(175, 22);
             this.MenuHelpWeb.Text = "&Web Support";
             this.MenuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
-            // 
-            // checkForUpdatesToolStripMenuItem
-            // 
-            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates...";
             // 
             // MenuHelpSep1
             // 
@@ -2395,6 +2387,5 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem countdownToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopwatchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
     }
 }

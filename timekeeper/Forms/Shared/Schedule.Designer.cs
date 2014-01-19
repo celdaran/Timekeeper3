@@ -110,7 +110,8 @@ namespace Timekeeper.Forms.Shared
             this.PreviewCountLabel = new System.Windows.Forms.Label();
             this.PreviewCount = new System.Windows.Forms.NumericUpDown();
             this.SchedulePreview = new System.Windows.Forms.RichTextBox();
-            this.CrontabTesterButton = new System.Windows.Forms.Button();
+            this.WarningIcon = new System.Windows.Forms.PictureBox();
+            this.WarningLabel = new System.Windows.Forms.TextBox();
             this.ScheduleTabControl.SuspendLayout();
             this.ScheduleTab.SuspendLayout();
             this.HiddenTab.SuspendLayout();
@@ -131,6 +132,7 @@ namespace Timekeeper.Forms.Shared
             ((System.ComponentModel.ISupportInitialize)(this.StopAfterCountValue)).BeginInit();
             this.PreviewTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PreviewCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.WarningIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -165,6 +167,7 @@ namespace Timekeeper.Forms.Shared
             this.ScheduleTabControl.SelectedIndex = 0;
             this.ScheduleTabControl.Size = new System.Drawing.Size(415, 244);
             this.ScheduleTabControl.TabIndex = 10;
+            this.ScheduleTabControl.SelectedIndexChanged += new System.EventHandler(this.ScheduleTabControl_SelectedIndexChanged);
             // 
             // ScheduleTab
             // 
@@ -355,8 +358,9 @@ namespace Timekeeper.Forms.Shared
             this.CrontabExpressionValue.Name = "CrontabExpressionValue";
             this.CrontabExpressionValue.Size = new System.Drawing.Size(190, 20);
             this.CrontabExpressionValue.TabIndex = 15;
-            this.CrontabExpressionValue.Text = "*";
+            this.CrontabExpressionValue.Text = "0 0 * * * ?";
             this.CrontabExpressionValue.TextChanged += new System.EventHandler(this.CrontabExpression_TextChanged);
+            this.CrontabExpressionValue.Leave += new System.EventHandler(this.CrontabExpressionValue_Leave);
             // 
             // CrontabExpressionLabel
             // 
@@ -420,6 +424,7 @@ namespace Timekeeper.Forms.Shared
             this.CrontabDayOfWeek.TabIndex = 8;
             this.CrontabDayOfWeek.Text = "?";
             this.CrontabDayOfWeek.TextChanged += new System.EventHandler(this.CrontabElement_TextChanged);
+            this.CrontabDayOfWeek.Leave += new System.EventHandler(this.CrontabExpressionValue_Leave);
             // 
             // CrontabMonth
             // 
@@ -429,6 +434,7 @@ namespace Timekeeper.Forms.Shared
             this.CrontabMonth.TabIndex = 7;
             this.CrontabMonth.Text = "*";
             this.CrontabMonth.TextChanged += new System.EventHandler(this.CrontabElement_TextChanged);
+            this.CrontabMonth.Leave += new System.EventHandler(this.CrontabExpressionValue_Leave);
             // 
             // CrontabDayOfMonth
             // 
@@ -438,6 +444,7 @@ namespace Timekeeper.Forms.Shared
             this.CrontabDayOfMonth.TabIndex = 6;
             this.CrontabDayOfMonth.Text = "*";
             this.CrontabDayOfMonth.TextChanged += new System.EventHandler(this.CrontabElement_TextChanged);
+            this.CrontabDayOfMonth.Leave += new System.EventHandler(this.CrontabExpressionValue_Leave);
             // 
             // CrontabHours
             // 
@@ -447,6 +454,7 @@ namespace Timekeeper.Forms.Shared
             this.CrontabHours.TabIndex = 5;
             this.CrontabHours.Text = "*";
             this.CrontabHours.TextChanged += new System.EventHandler(this.CrontabElement_TextChanged);
+            this.CrontabHours.Leave += new System.EventHandler(this.CrontabExpressionValue_Leave);
             // 
             // CrontabMinutes
             // 
@@ -454,8 +462,9 @@ namespace Timekeeper.Forms.Shared
             this.CrontabMinutes.Name = "CrontabMinutes";
             this.CrontabMinutes.Size = new System.Drawing.Size(49, 20);
             this.CrontabMinutes.TabIndex = 4;
-            this.CrontabMinutes.Text = "*";
+            this.CrontabMinutes.Text = "0";
             this.CrontabMinutes.TextChanged += new System.EventHandler(this.CrontabElement_TextChanged);
+            this.CrontabMinutes.Leave += new System.EventHandler(this.CrontabExpressionValue_Leave);
             // 
             // CrontabSecondsLabel
             // 
@@ -472,9 +481,10 @@ namespace Timekeeper.Forms.Shared
             this.CrontabSeconds.Name = "CrontabSeconds";
             this.CrontabSeconds.Size = new System.Drawing.Size(49, 20);
             this.CrontabSeconds.TabIndex = 1;
-            this.CrontabSeconds.Text = "*";
+            this.CrontabSeconds.Text = "0";
             this.CrontabSeconds.TextChanged += new System.EventHandler(this.CrontabElement_TextChanged);
             this.CrontabSeconds.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CrontabSeconds_KeyPress);
+            this.CrontabSeconds.Leave += new System.EventHandler(this.CrontabExpressionValue_Leave);
             // 
             // QuartzLabel
             // 
@@ -599,12 +609,10 @@ namespace Timekeeper.Forms.Shared
             // YearlyDateRadioButton
             // 
             this.YearlyDateRadioButton.AutoSize = true;
-            this.YearlyDateRadioButton.Checked = true;
             this.YearlyDateRadioButton.Location = new System.Drawing.Point(6, 3);
             this.YearlyDateRadioButton.Name = "YearlyDateRadioButton";
             this.YearlyDateRadioButton.Size = new System.Drawing.Size(52, 17);
             this.YearlyDateRadioButton.TabIndex = 1;
-            this.YearlyDateRadioButton.TabStop = true;
             this.YearlyDateRadioButton.Text = "Every";
             this.YearlyDateRadioButton.UseVisualStyleBackColor = true;
             this.YearlyDateRadioButton.CheckedChanged += new System.EventHandler(this.YearlyDateRadioButton_CheckedChanged);
@@ -628,7 +636,7 @@ namespace Timekeeper.Forms.Shared
             // MonthlyMonthsLabel
             // 
             this.MonthlyMonthsLabel.AutoSize = true;
-            this.MonthlyMonthsLabel.Location = new System.Drawing.Point(147, 68);
+            this.MonthlyMonthsLabel.Location = new System.Drawing.Point(150, 68);
             this.MonthlyMonthsLabel.Name = "MonthlyMonthsLabel";
             this.MonthlyMonthsLabel.Size = new System.Drawing.Size(41, 13);
             this.MonthlyMonthsLabel.TabIndex = 7;
@@ -648,7 +656,7 @@ namespace Timekeeper.Forms.Shared
             0,
             0});
             this.MonthlyIntervalCountValue.Name = "MonthlyIntervalCountValue";
-            this.MonthlyIntervalCountValue.Size = new System.Drawing.Size(73, 20);
+            this.MonthlyIntervalCountValue.Size = new System.Drawing.Size(80, 20);
             this.MonthlyIntervalCountValue.TabIndex = 4;
             this.MonthlyIntervalCountValue.Value = new decimal(new int[] {
             1,
@@ -677,7 +685,7 @@ namespace Timekeeper.Forms.Shared
             "Friday",
             "Saturday",
             "Sunday"});
-            this.MonthlyDayOfWeekList.Location = new System.Drawing.Point(143, 29);
+            this.MonthlyDayOfWeekList.Location = new System.Drawing.Point(150, 29);
             this.MonthlyDayOfWeekList.Name = "MonthlyDayOfWeekList";
             this.MonthlyDayOfWeekList.Size = new System.Drawing.Size(73, 21);
             this.MonthlyDayOfWeekList.TabIndex = 4;
@@ -694,7 +702,7 @@ namespace Timekeeper.Forms.Shared
             "Last"});
             this.MonthlyOrdinalWeekList.Location = new System.Drawing.Point(64, 29);
             this.MonthlyOrdinalWeekList.Name = "MonthlyOrdinalWeekList";
-            this.MonthlyOrdinalWeekList.Size = new System.Drawing.Size(73, 21);
+            this.MonthlyOrdinalWeekList.Size = new System.Drawing.Size(80, 21);
             this.MonthlyOrdinalWeekList.TabIndex = 3;
             // 
             // MonthlyDayRadioButton
@@ -704,7 +712,6 @@ namespace Timekeeper.Forms.Shared
             this.MonthlyDayRadioButton.Name = "MonthlyDayRadioButton";
             this.MonthlyDayRadioButton.Size = new System.Drawing.Size(44, 17);
             this.MonthlyDayRadioButton.TabIndex = 2;
-            this.MonthlyDayRadioButton.TabStop = true;
             this.MonthlyDayRadioButton.Text = "The";
             this.MonthlyDayRadioButton.UseVisualStyleBackColor = true;
             this.MonthlyDayRadioButton.CheckedChanged += new System.EventHandler(this.MonthlyDayRadioButton_CheckedChanged);
@@ -723,7 +730,7 @@ namespace Timekeeper.Forms.Shared
             0,
             0});
             this.MonthlyDateValue.Name = "MonthlyDateValue";
-            this.MonthlyDateValue.Size = new System.Drawing.Size(73, 20);
+            this.MonthlyDateValue.Size = new System.Drawing.Size(80, 20);
             this.MonthlyDateValue.TabIndex = 1;
             this.MonthlyDateValue.Value = new decimal(new int[] {
             1,
@@ -734,12 +741,10 @@ namespace Timekeeper.Forms.Shared
             // MonthlyDateRadioButton
             // 
             this.MonthlyDateRadioButton.AutoSize = true;
-            this.MonthlyDateRadioButton.Checked = true;
             this.MonthlyDateRadioButton.Location = new System.Drawing.Point(6, 3);
             this.MonthlyDateRadioButton.Name = "MonthlyDateRadioButton";
             this.MonthlyDateRadioButton.Size = new System.Drawing.Size(44, 17);
             this.MonthlyDateRadioButton.TabIndex = 1;
-            this.MonthlyDateRadioButton.TabStop = true;
             this.MonthlyDateRadioButton.Text = "Day";
             this.MonthlyDateRadioButton.UseVisualStyleBackColor = true;
             this.MonthlyDateRadioButton.CheckedChanged += new System.EventHandler(this.MonthlyDateRadioButton_CheckedChanged);
@@ -958,12 +963,10 @@ namespace Timekeeper.Forms.Shared
             // DailyEveryDayRadioButton
             // 
             this.DailyEveryDayRadioButton.AutoSize = true;
-            this.DailyEveryDayRadioButton.Checked = true;
             this.DailyEveryDayRadioButton.Location = new System.Drawing.Point(6, 3);
             this.DailyEveryDayRadioButton.Name = "DailyEveryDayRadioButton";
             this.DailyEveryDayRadioButton.Size = new System.Drawing.Size(72, 17);
             this.DailyEveryDayRadioButton.TabIndex = 1;
-            this.DailyEveryDayRadioButton.TabStop = true;
             this.DailyEveryDayRadioButton.Text = "Every day";
             this.DailyEveryDayRadioButton.UseVisualStyleBackColor = true;
             this.DailyEveryDayRadioButton.CheckedChanged += new System.EventHandler(this.DailyEveryDayRadioButton_CheckedChanged);
@@ -1049,6 +1052,11 @@ namespace Timekeeper.Forms.Shared
             // 
             this.StopAfterCountValue.Enabled = false;
             this.StopAfterCountValue.Location = new System.Drawing.Point(95, 38);
+            this.StopAfterCountValue.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
             this.StopAfterCountValue.Minimum = new decimal(new int[] {
             1,
             0,
@@ -1150,6 +1158,7 @@ namespace Timekeeper.Forms.Shared
             // 
             // SchedulePreview
             // 
+            this.SchedulePreview.BackColor = System.Drawing.SystemColors.Window;
             this.SchedulePreview.Location = new System.Drawing.Point(16, 42);
             this.SchedulePreview.Name = "SchedulePreview";
             this.SchedulePreview.ReadOnly = true;
@@ -1157,15 +1166,26 @@ namespace Timekeeper.Forms.Shared
             this.SchedulePreview.TabIndex = 4;
             this.SchedulePreview.Text = "";
             // 
-            // CrontabTesterButton
+            // WarningIcon
             // 
-            this.CrontabTesterButton.Location = new System.Drawing.Point(11, 262);
-            this.CrontabTesterButton.Name = "CrontabTesterButton";
-            this.CrontabTesterButton.Size = new System.Drawing.Size(75, 23);
-            this.CrontabTesterButton.TabIndex = 11;
-            this.CrontabTesterButton.Text = "Crontab...";
-            this.CrontabTesterButton.UseVisualStyleBackColor = true;
-            this.CrontabTesterButton.Click += new System.EventHandler(this.CrontabTesterButton_Click);
+            this.WarningIcon.Image = global::Timekeeper.Properties.Resources.ImageIconWarning;
+            this.WarningIcon.Location = new System.Drawing.Point(12, 265);
+            this.WarningIcon.Name = "WarningIcon";
+            this.WarningIcon.Size = new System.Drawing.Size(16, 16);
+            this.WarningIcon.TabIndex = 11;
+            this.WarningIcon.TabStop = false;
+            this.WarningIcon.Visible = false;
+            // 
+            // WarningLabel
+            // 
+            this.WarningLabel.BackColor = System.Drawing.SystemColors.Control;
+            this.WarningLabel.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.WarningLabel.Location = new System.Drawing.Point(34, 268);
+            this.WarningLabel.Name = "WarningLabel";
+            this.WarningLabel.ReadOnly = true;
+            this.WarningLabel.Size = new System.Drawing.Size(231, 13);
+            this.WarningLabel.TabIndex = 42;
+            this.WarningLabel.Text = "Warning";
             // 
             // Schedule
             // 
@@ -1174,7 +1194,8 @@ namespace Timekeeper.Forms.Shared
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelDialogButton;
             this.ClientSize = new System.Drawing.Size(440, 293);
-            this.Controls.Add(this.CrontabTesterButton);
+            this.Controls.Add(this.WarningLabel);
+            this.Controls.Add(this.WarningIcon);
             this.Controls.Add(this.ScheduleTabControl);
             this.Controls.Add(this.CancelDialogButton);
             this.Controls.Add(this.AcceptDialogButton);
@@ -1218,7 +1239,9 @@ namespace Timekeeper.Forms.Shared
             this.PreviewTab.ResumeLayout(false);
             this.PreviewTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PreviewCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.WarningIcon)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1304,9 +1327,10 @@ namespace Timekeeper.Forms.Shared
         private System.Windows.Forms.Label CrontabSecondsLabel;
         private System.Windows.Forms.TextBox CrontabExpressionValue;
         private System.Windows.Forms.Label CrontabExpressionLabel;
-        private System.Windows.Forms.Button CrontabTesterButton;
         private System.Windows.Forms.Button PreviewCountUpdateButton;
         private System.Windows.Forms.Label PreviewCountLabel;
         private System.Windows.Forms.NumericUpDown PreviewCount;
+        private System.Windows.Forms.PictureBox WarningIcon;
+        private System.Windows.Forms.TextBox WarningLabel;
     }
 }
