@@ -40,12 +40,13 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.AlwaysOnTopButton = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.CreateEventButton = new System.Windows.Forms.ToolStripButton();
+            this.EventsButton = new System.Windows.Forms.ToolStripButton();
             this.LoadEventMenu = new System.Windows.Forms.ToolStripDropDownButton();
-            this.ManageCountdowns = new System.Windows.Forms.ToolStripButton();
             this.SecondTimer = new System.Windows.Forms.Timer(this.components);
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
             this.ToolStrip.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Display
@@ -54,9 +55,9 @@
             this.Display.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Display.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Display.Font = new System.Drawing.Font("Courier New", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Display.Location = new System.Drawing.Point(0, 25);
+            this.Display.Location = new System.Drawing.Point(0, 0);
             this.Display.Name = "Display";
-            this.Display.Size = new System.Drawing.Size(407, 31);
+            this.Display.Size = new System.Drawing.Size(288, 31);
             this.Display.TabIndex = 0;
             this.Display.TabStop = false;
             this.Display.Text = "00:00:00";
@@ -70,12 +71,11 @@
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.DisplayMenuButton,
             this.toolStripSeparator2,
-            this.CreateEventButton,
             this.LoadEventMenu,
-            this.ManageCountdowns});
+            this.EventsButton});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
-            this.ToolStrip.Size = new System.Drawing.Size(407, 25);
+            this.ToolStrip.Size = new System.Drawing.Size(292, 25);
             this.ToolStrip.TabIndex = 7;
             this.ToolStrip.Text = "toolStrip1";
             // 
@@ -143,15 +143,15 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // CreateEventButton
+            // EventsButton
             // 
-            this.CreateEventButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.CreateEventButton.Image = ((System.Drawing.Image)(resources.GetObject("CreateEventButton.Image")));
-            this.CreateEventButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.CreateEventButton.Name = "CreateEventButton";
-            this.CreateEventButton.Size = new System.Drawing.Size(87, 22);
-            this.CreateEventButton.Text = "Create Event...";
-            this.CreateEventButton.Click += new System.EventHandler(this.CreateEventButton_Click);
+            this.EventsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.EventsButton.Image = ((System.Drawing.Image)(resources.GetObject("EventsButton.Image")));
+            this.EventsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.EventsButton.Name = "EventsButton";
+            this.EventsButton.Size = new System.Drawing.Size(56, 22);
+            this.EventsButton.Text = "Events...";
+            this.EventsButton.Click += new System.EventHandler(this.EventsButton_Click);
             // 
             // LoadEventMenu
             // 
@@ -161,16 +161,6 @@
             this.LoadEventMenu.Name = "LoadEventMenu";
             this.LoadEventMenu.Size = new System.Drawing.Size(43, 22);
             this.LoadEventMenu.Text = "Load";
-            // 
-            // ManageCountdowns
-            // 
-            this.ManageCountdowns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ManageCountdowns.Image = ((System.Drawing.Image)(resources.GetObject("ManageCountdowns.Image")));
-            this.ManageCountdowns.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ManageCountdowns.Name = "ManageCountdowns";
-            this.ManageCountdowns.Size = new System.Drawing.Size(61, 22);
-            this.ManageCountdowns.Text = "Manage...";
-            this.ManageCountdowns.Click += new System.EventHandler(this.ManageCountdowns_Click);
             // 
             // SecondTimer
             // 
@@ -184,20 +174,34 @@
             this.TrayIcon.Text = "notifyIcon1";
             this.TrayIcon.Visible = true;
             // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.Display);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 25);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(292, 33);
+            this.panel1.TabIndex = 8;
+            // 
             // Countdown
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(407, 64);
-            this.Controls.Add(this.Display);
+            this.ClientSize = new System.Drawing.Size(292, 58);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.ToolStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Countdown";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Countdown";
+            this.Activated += new System.EventHandler(this.Countdown_Activated);
+            this.Load += new System.EventHandler(this.Countdown_Load);
             this.ResizeEnd += new System.EventHandler(this.Countdown_ResizeEnd);
             this.ToolStrip.ResumeLayout(false);
             this.ToolStrip.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -207,8 +211,7 @@
 
         private System.Windows.Forms.TextBox Display;
         private System.Windows.Forms.ToolStrip ToolStrip;
-        private System.Windows.Forms.ToolStripButton ManageCountdowns;
-        private System.Windows.Forms.ToolStripButton CreateEventButton;
+        private System.Windows.Forms.ToolStripButton EventsButton;
         private System.Windows.Forms.ToolStripDropDownButton LoadEventMenu;
         private System.Windows.Forms.Timer SecondTimer;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -220,5 +223,6 @@
         private System.Windows.Forms.NotifyIcon TrayIcon;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem AlwaysOnTopButton;
+        private System.Windows.Forms.Panel panel1;
     }
 }

@@ -55,5 +55,23 @@ namespace Timekeeper.Classes
         }
 
         //----------------------------------------------------------------------
+
+        public List<Classes.Event> Fetch(long eventGroupId)
+        {
+            List<Classes.Event> ReturnList = new List<Classes.Event>();
+
+            string Query = String.Format(@"SELECT EventId FROM Event WHERE EventGroupId = {0} AND IsDeleted = 0 ORDER BY SortOrderNo, EventId",
+                eventGroupId);
+            Table EventRows = this.Database.Select(Query);
+
+            foreach (Row EventRow in EventRows) {
+                Classes.Event Event = new Classes.Event(EventRow["EventId"]);
+                ReturnList.Add(Event);
+            }
+
+            return ReturnList;
+        }
+
+        //----------------------------------------------------------------------
     }
 }

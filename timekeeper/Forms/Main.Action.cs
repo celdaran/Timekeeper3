@@ -448,9 +448,11 @@ namespace Timekeeper.Forms
                 Application.Exit();
                 */
 
+                /*
                 Forms.Tools.Event EventWindow = new Forms.Tools.Event();
                 EventWindow.ShowDialog(this);
                 Application.Exit();
+                */
 
             }
             catch (Exception x) {

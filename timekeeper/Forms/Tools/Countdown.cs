@@ -36,15 +36,11 @@ namespace Timekeeper.Forms.Tools
         // Toolbar Events
         //----------------------------------------------------------------------
 
-        private void CreateEventButton_Click(object sender, EventArgs e)
+        private void EventsButton_Click(object sender, EventArgs e)
         {
-            /*
-            Forms.Tools.CountdownEvent DialogBox = new Forms.Tools.CountdownEvent(true);
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                TargetTime = DateTime.Now; // DialogBox.EventDateTime.Value;
-                SecondTimer.Enabled = true;
-            }
-            */
+            Forms.Tools.Event EventDialog = new Forms.Tools.Event();
+            EventDialog.Show(this);
+            // If we modify events, we need to rebuild the menu list here
         }
 
         //----------------------------------------------------------------------
@@ -53,17 +49,6 @@ namespace Timekeeper.Forms.Tools
         {
             ToolStripItem Item = (ToolStripItem)sender;
             Classes.BaseView View = (Classes.BaseView)Item.Tag;
-            //LoadAndRunGrid(View.Id);
-        }
-
-        //----------------------------------------------------------------------
-
-        private void ManageCountdowns_Click(object sender, EventArgs e)
-        {
-            Forms.Shared.ManageViews DialogBox = new Forms.Shared.ManageViews("Event");
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                //PopulateLoadMenu();
-            }
         }
 
         //----------------------------------------------------------------------
@@ -94,7 +79,7 @@ namespace Timekeeper.Forms.Tools
             Display.Text += String.Format("{0:00}:{1:00}:{2:00}", Delta.Hours, Delta.Minutes, Delta.Seconds);
             this.Text = Display.Text + " - Countdown";
             if (this.EventName != "") {
-                this.Text += " (" + this.EventName + ")";
+                this.Text += " to " + this.EventName;
             }
         }
 
@@ -127,72 +112,64 @@ namespace Timekeeper.Forms.Tools
 
         private void Display_KeyDown(object sender, KeyEventArgs e)
         {
-            /*
-            if (
-                ((e.KeyCode >= Keys.D0) && (e.KeyCode <= Keys.D9)) || 
-                 (e.KeyCode == Keys.Space) ||
-                ((e.KeyCode == Keys.OemSemicolon) && (Control.ModifierKeys == Keys.Shift))
-               )
-            {
-                //Common.Info("Valid keystroke");
-            } else {
-                e.SuppressKeyPress = true;
-                return;
-            }
-            */
-
             if ((e.KeyCode >= Keys.A) && (e.KeyCode <= Keys.Z)) {
                 e.SuppressKeyPress = true;
             }
 
             if (e.KeyCode == Keys.Enter) {
                 try {
-                    // Compress multiple spaces down to single spaces
-                    RegexOptions options = RegexOptions.None;
-                    Regex regex = new Regex(@"[ ]{2,}", options);
-                    Display.Text = regex.Replace(Display.Text, @" ");
-
-                    // Split into day & time components
-                    string[] MainParts = Display.Text.Split(' ');
-
-                    TimeSpan Delta;
-
-                    // Set days (if any)
-                    if (MainParts.Length > 1) {
-                        // Set days
-                        int Days = Convert.ToInt32(MainParts[0]);
-
-                        // Set time
-                        string[] Parts = MainParts[1].Split(':');
-                        int Hours = Convert.ToInt32(Parts[0]);
-                        int Minutes = Convert.ToInt32(Parts[1]);
-                        int Seconds = Convert.ToInt32(Parts[2]);
-
-                        // Set span
-                        Seconds++;
-                        Delta = new TimeSpan(Days, Hours, Minutes, Seconds);
-                    } else {
-                        // Set time
-                        string[] Parts = MainParts[0].Split(':');
-                        int Hours = Convert.ToInt32(Parts[0]);
-                        int Minutes = Convert.ToInt32(Parts[1]);
-                        int Seconds = Convert.ToInt32(Parts[2]);
-
-                        // Set span
-                        Seconds++;
-                        Delta = new TimeSpan(Hours, Minutes, Seconds);
-                    }
-
-                    TargetTime = DateTime.Now.Add(Delta);
-
-                    Display.BackColor = SystemColors.Control;
-                    ToolStrip.Focus();
-                    SecondTimer.Enabled = true;
+                    this.EventName = "";
+                    BeginCountdown();
                 }
                 catch {
                     Common.Warn("Invalid input. Enter something better.");
                 }
             }
+        }
+
+        private void BeginCountdown()
+        {
+            // Compress multiple spaces down to single spaces
+            RegexOptions options = RegexOptions.None;
+            Regex regex = new Regex(@"[ ]{2,}", options);
+            Display.Text = regex.Replace(Display.Text, @" ");
+
+            // Split into day & time components
+            string[] MainParts = Display.Text.Split(' ');
+
+            TimeSpan Delta;
+
+            // Set days (if any)
+            if (MainParts.Length > 1) {
+                // Set days
+                int Days = Convert.ToInt32(MainParts[0]);
+
+                // Set time
+                string[] Parts = MainParts[1].Split(':');
+                int Hours = Convert.ToInt32(Parts[0]);
+                int Minutes = Convert.ToInt32(Parts[1]);
+                int Seconds = Convert.ToInt32(Parts[2]);
+
+                // Set span
+                Seconds++;
+                Delta = new TimeSpan(Days, Hours, Minutes, Seconds);
+            } else {
+                // Set time
+                string[] Parts = MainParts[0].Split(':');
+                int Hours = Convert.ToInt32(Parts[0]);
+                int Minutes = Convert.ToInt32(Parts[1]);
+                int Seconds = Convert.ToInt32(Parts[2]);
+
+                // Set span
+                Seconds++;
+                Delta = new TimeSpan(Hours, Minutes, Seconds);
+            }
+
+            TargetTime = DateTime.Now.Add(Delta);
+
+            Display.BackColor = SystemColors.Control;
+            ToolStrip.Focus();
+            SecondTimer.Enabled = true;
         }
 
         private void Display_Enter(object sender, EventArgs e)
@@ -206,8 +183,8 @@ namespace Timekeeper.Forms.Tools
         {
             Display.Font = new Font(Display.Font.FontFamily, 20.25f, Display.Font.Style);
 
-            this.Width = 415;
-            this.Height = 90;
+            this.Width = 300;
+            this.Height = 85;
 
             SmallSizeButton.Checked = true;
             MediumSizeButton.Checked = false;
@@ -220,7 +197,7 @@ namespace Timekeeper.Forms.Tools
             Display.Font = new Font(Display.Font.FontFamily, 40.0f, Display.Font.Style);
 
             this.Width = 415;
-            this.Height = 120;
+            this.Height = 110;
 
             SmallSizeButton.Checked = false;
             MediumSizeButton.Checked = true;
@@ -232,8 +209,8 @@ namespace Timekeeper.Forms.Tools
         {
             Display.Font = new Font(Display.Font.FontFamily, 72.0f, Display.Font.Style);
 
-            this.Width = 500;
-            this.Height = 300;
+            this.Width = 720;
+            this.Height = 160;
 
             SmallSizeButton.Checked = false;
             MediumSizeButton.Checked = false;
@@ -267,6 +244,63 @@ namespace Timekeeper.Forms.Tools
             // Grid-specific function
             foreach (ToolStripItem Item in LoadEventMenu.DropDownItems) {
                 Item.Click += new System.EventHandler(this.LoadEventButton_Click);
+            }
+        }
+
+        private void Countdown_Load(object sender, EventArgs e)
+        {
+        }
+
+        //----------------------------------------------------------------------
+
+        private void thing(object sender, EventArgs e)
+        {
+            ToolStripMenuItem MenuItem = (ToolStripMenuItem)sender;
+            Classes.Event Event = (Classes.Event)MenuItem.Tag;
+
+            //Common.Info("You clicked " + Event.Name);
+            this.EventName = Event.Name;
+
+            TimeSpan TimeSpan = Event.NextOccurrenceTime.Subtract(DateTime.Now);
+            Display.Text = String.Format("{0} {1:00}:{2:00}:{3:00}", 
+                TimeSpan.Days,
+                TimeSpan.Hours,
+                TimeSpan.Minutes,
+                TimeSpan.Seconds);
+
+            BeginCountdown();
+        }
+
+        //----------------------------------------------------------------------
+
+        //----------------------------------------------------------------------
+
+        private void Countdown_Activated(object sender, EventArgs e)
+        {
+            try {
+                // Start fresh
+                LoadEventMenu.DropDownItems.Clear();
+
+                Classes.EventGroup EventGroups = new Classes.EventGroup();
+                Classes.EventCollection EventCollection = new Classes.EventCollection();
+
+                Table EventGroupsTable = EventGroups.Table();
+                foreach (Row EventGroup in EventGroupsTable) {
+                    ToolStripMenuItem NewMenu = LoadEventMenu.DropDownItems.Add(EventGroup["Name"]);
+                    List<Classes.Event> Events = EventCollection.Fetch(EventGroup["EventGroupId"]);
+                    foreach (Classes.Event Event in Events) {
+                        ToolStripMenuItem NewSubItem = (ToolStripMenuItem)NewMenu.DropDownItems.Add(Event.Name);
+                        NewSubItem.Click += new System.EventHandler(this.thing);
+                        NewSubItem.Tag = Event;
+                        if (Event.NextOccurrenceTime < DateTime.Now) {
+                            // Disable if date has passed
+                            NewSubItem.Enabled = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
             }
         }
 
