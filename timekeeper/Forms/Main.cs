@@ -1093,6 +1093,11 @@ namespace Timekeeper.Forms
             }
         }
 
+        private void MenuFileUtilitiesReindex_Click(object sender, EventArgs e)
+        {
+            Action_Reindex();
+        }
+
         private void MenuToolTodo_Click(object sender, EventArgs e)
         {
             // Only allow one open Todo list at a time

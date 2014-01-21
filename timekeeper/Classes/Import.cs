@@ -5,6 +5,8 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
+using Microsoft.VisualBasic.FileIO;
+
 using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
@@ -107,7 +109,7 @@ namespace Timekeeper.Classes
                             JournalEntry.CategoryId = 1; // Default Category
                             JournalEntry.IsLocked = false;
                             if (!JournalEntry.Create()) {
-                                throw new Exception("There was an error starting the timer.");
+                                throw new Exception("There was an error creating the journal entry.");
                             }
                         } else {
                             Console.AppendText("Could not parse line " + LineNo.ToString() + "\n");
@@ -123,6 +125,107 @@ namespace Timekeeper.Classes
             }
 
             return true;
+        }
+
+        //----------------------------------------------------------------------
+
+        public bool CommaSeparatedValues()
+        {
+            bool Imported = false;
+            int RowNo = 0;
+
+            try {
+                // Default positions
+                int StartTimePos = 0;
+                int StopTimePos = 1;
+                int MemoPos = 2;
+                int ProjectPos = 3;
+                int ActivityPos = 4;
+                int LocationPos = 5;
+                int CategoryPos = 6;
+
+                // Set progress bar
+                var TotalLines = System.IO.File.ReadLines(this.ImportFileName).Count();
+                ImportProgress.Maximum = TotalLines;
+
+                using (TextFieldParser parser = new TextFieldParser(this.ImportFileName)) {
+                    parser.TextFieldType = FieldType.Delimited;
+                    parser.SetDelimiters(",");
+
+                    while (!parser.EndOfData) {
+                        string[] fields = parser.ReadFields();
+
+                        if (RowNo == 0) {
+                            // Read header
+                            int ColNo = 0;
+
+                            foreach (string field in fields) {
+                                if (field == "StartTime")
+                                    StartTimePos = ColNo;
+                                else if (field == "StopTime")
+                                    StopTimePos = ColNo;
+                                else if (field == "Memo")
+                                    MemoPos = ColNo;
+                                else if (field == "ProjectId")
+                                    ProjectPos = ColNo;
+                                else if (field == "ActivityId")
+                                    ActivityPos = ColNo;
+                                else if (field == "LocationId")
+                                    LocationPos = ColNo;
+                                else if (field == "CategoryId")
+                                    CategoryPos = ColNo;
+                                else
+                                    throw new Exception("Unknown column encountered: " + field);
+
+                                ColNo++;
+                            }
+                        }
+                        else {
+                            DateTime StartTime = DateTime.Parse(fields[StartTimePos]);
+                            DateTime StopTime = DateTime.Parse(fields[StopTimePos]);
+                            TimeSpan ts = StopTime.Subtract(StartTime);
+
+                            // Create the Journal Entry
+                            Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
+                            JournalEntry.StartTime = StartTime;
+                            JournalEntry.StopTime = StopTime;
+                            JournalEntry.Seconds = (long)ts.TotalSeconds;
+                            JournalEntry.Memo = fields[MemoPos];
+                            JournalEntry.ProjectId = Convert.ToInt32(fields[ProjectPos]);
+                            JournalEntry.ActivityId = Convert.ToInt32(fields[ActivityPos]);
+                            JournalEntry.LocationId = Convert.ToInt32(fields[LocationPos]);
+                            JournalEntry.CategoryId = Convert.ToInt32(fields[CategoryPos]);
+                            JournalEntry.IsLocked = false;
+                            if (JournalEntry.Create()) {
+                                Console.AppendText(
+                                    "Imported " + JournalEntry.JournalId.ToString() + 
+                                    " for CSV entry " + StartTime.ToString(Common.DATETIME_FORMAT) + 
+                                    "\t" + JournalEntry.Memo + "\n");
+                            } else {
+                                throw new Exception("There was an error creating the journal entry.");
+                            }
+                        }
+
+                        RowNo++;
+                        ImportProgress.Value = RowNo;
+                    }
+                }
+
+                // Now reindex the Journal table
+                Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
+                Entries.Reindex();
+
+                // If we made it this far, we're good.
+                Imported = true;
+            }
+            catch (Exception x) {
+                string Message = "Error on row " + RowNo.ToString() + ": " + x.Message;
+                Console.AppendText(Message + "\n");
+                Common.Warn(Message);
+                Timekeeper.Exception(x);
+            }
+
+            return Imported;
         }
 
         //----------------------------------------------------------------------

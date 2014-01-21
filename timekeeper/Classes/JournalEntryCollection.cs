@@ -82,7 +82,7 @@ namespace Timekeeper.Classes
 
         public void Reindex()
         {
-            Reindex(new DateTime(1, 0, 0));
+            Reindex(new DateTime(1, 1, 1));
         }
 
         //---------------------------------------------------------------------
@@ -117,7 +117,7 @@ namespace Timekeeper.Classes
 
             // Rebuild JournalIndex
             Bench(t);
-            long Index = LastGoodRow["JournalIndex"] + 1;
+            long Index = LastGoodRow["JournalIndex"] == null ? 1 : LastGoodRow["JournalIndex"] + 1;
             foreach (Row Row in Table) {
                 Row UpdatedRow = new Row();
                 UpdatedRow["JournalIndex"] = Index;

@@ -235,6 +235,7 @@ namespace Timekeeper.Forms
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
+            this.MenuFileUtilitiesReindex = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
@@ -337,6 +338,7 @@ namespace Timekeeper.Forms
             this.MenuFileUtilitiesImport,
             this.MenuFileUtilitiesExport,
             this.MenuFileUtilitiesBackup,
+            this.MenuFileUtilitiesReindex,
             this.MenuFileUtilitiesRepair});
             this.MenuFileUtilities.Name = "MenuFileUtilities";
             this.MenuFileUtilities.Size = new System.Drawing.Size(152, 22);
@@ -345,7 +347,7 @@ namespace Timekeeper.Forms
             // MenuFileUtilitiesImport
             // 
             this.MenuFileUtilitiesImport.Name = "MenuFileUtilitiesImport";
-            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(120, 22);
+            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(152, 22);
             this.MenuFileUtilitiesImport.Text = "Import...";
             this.MenuFileUtilitiesImport.Click += new System.EventHandler(this.MenuFileUtilitiesImport_Click);
             // 
@@ -353,21 +355,21 @@ namespace Timekeeper.Forms
             // 
             this.MenuFileUtilitiesExport.Enabled = false;
             this.MenuFileUtilitiesExport.Name = "MenuFileUtilitiesExport";
-            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(120, 22);
+            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(152, 22);
             this.MenuFileUtilitiesExport.Text = "Export...";
             // 
             // MenuFileUtilitiesBackup
             // 
             this.MenuFileUtilitiesBackup.Enabled = false;
             this.MenuFileUtilitiesBackup.Name = "MenuFileUtilitiesBackup";
-            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(120, 22);
+            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(152, 22);
             this.MenuFileUtilitiesBackup.Text = "Backup...";
             // 
             // MenuFileUtilitiesRepair
             // 
             this.MenuFileUtilitiesRepair.Enabled = false;
             this.MenuFileUtilitiesRepair.Name = "MenuFileUtilitiesRepair";
-            this.MenuFileUtilitiesRepair.Size = new System.Drawing.Size(120, 22);
+            this.MenuFileUtilitiesRepair.Size = new System.Drawing.Size(152, 22);
             this.MenuFileUtilitiesRepair.Text = "Repair...";
             // 
             // MenuFileSep2
@@ -754,26 +756,26 @@ namespace Timekeeper.Forms
             // 
             this.MenuHelpContents.Name = "MenuHelpContents";
             this.MenuHelpContents.ShortcutKeyDisplayString = "F1";
-            this.MenuHelpContents.Size = new System.Drawing.Size(175, 22);
+            this.MenuHelpContents.Size = new System.Drawing.Size(137, 22);
             this.MenuHelpContents.Text = "&Contents";
             this.MenuHelpContents.Click += new System.EventHandler(this.menuHelpContents_Click);
             // 
             // MenuHelpWeb
             // 
             this.MenuHelpWeb.Name = "MenuHelpWeb";
-            this.MenuHelpWeb.Size = new System.Drawing.Size(175, 22);
+            this.MenuHelpWeb.Size = new System.Drawing.Size(137, 22);
             this.MenuHelpWeb.Text = "&Web Support";
             this.MenuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
             // 
             // MenuHelpSep1
             // 
             this.MenuHelpSep1.Name = "MenuHelpSep1";
-            this.MenuHelpSep1.Size = new System.Drawing.Size(172, 6);
+            this.MenuHelpSep1.Size = new System.Drawing.Size(134, 6);
             // 
             // MenuHelpAbout
             // 
             this.MenuHelpAbout.Name = "MenuHelpAbout";
-            this.MenuHelpAbout.Size = new System.Drawing.Size(175, 22);
+            this.MenuHelpAbout.Size = new System.Drawing.Size(137, 22);
             this.MenuHelpAbout.Text = "&About...";
             this.MenuHelpAbout.Click += new System.EventHandler(this.menuHelpAbout_Click);
             // 
@@ -2131,6 +2133,13 @@ namespace Timekeeper.Forms
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
             this.SaveAsDialog.Title = "Save As";
             // 
+            // MenuFileUtilitiesReindex
+            // 
+            this.MenuFileUtilitiesReindex.Name = "MenuFileUtilitiesReindex";
+            this.MenuFileUtilitiesReindex.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesReindex.Text = "Reindex";
+            this.MenuFileUtilitiesReindex.Click += new System.EventHandler(this.MenuFileUtilitiesReindex_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2387,5 +2396,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem countdownToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem stopwatchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MenuFileUtilitiesReindex;
     }
 }

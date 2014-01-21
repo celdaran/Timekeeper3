@@ -692,6 +692,21 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
+        private void Action_Reindex()
+        {
+            try {
+                Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
+                Entries.Reindex();
+                Common.Info("Journal entries have been successfully reindexed.");
+            }
+            catch (Exception x) {
+                Common.Warn(x.Message);
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
         private void Action_Schedule()
         {
             // FIXME: Not the right place for most of the meat of this . . .

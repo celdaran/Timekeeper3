@@ -125,6 +125,7 @@
   </Choose>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Quartz">
       <HintPath>References\x86\Quartz.dll</HintPath>
     </Reference>

@@ -40,19 +40,19 @@
             this.BackButton = new System.Windows.Forms.Button();
             this.WizardPicture = new System.Windows.Forms.PictureBox();
             this.Tab1 = new System.Windows.Forms.Panel();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.ImportDataTypeList = new System.Windows.Forms.ComboBox();
             this.Introduction = new System.Windows.Forms.Label();
             this.Tab2 = new System.Windows.Forms.Panel();
-            this.OpenFileInstructions = new System.Windows.Forms.Label();
             this.OpenFileButton = new System.Windows.Forms.Button();
+            this.OpenFileInstructions = new System.Windows.Forms.Label();
             this.OpenFile = new System.Windows.Forms.OpenFileDialog();
             this.Tab3 = new System.Windows.Forms.Panel();
             this.ImportTK1Instructions = new System.Windows.Forms.Label();
             this.Tab5 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.Tab4 = new System.Windows.Forms.Panel();
-            this.WizardReview = new System.Windows.Forms.TextBox();
             this.WizardReviewInstructions = new System.Windows.Forms.Label();
+            this.WizardReview = new System.Windows.Forms.TextBox();
             this.ButtonPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WizardPicture)).BeginInit();
             this.Tab1.SuspendLayout();
@@ -68,7 +68,7 @@
             this.ImportFileName.Name = "ImportFileName";
             this.ImportFileName.Size = new System.Drawing.Size(282, 20);
             this.ImportFileName.TabIndex = 1;
-            this.ImportFileName.Text = "C:\\Users\\hillsc\\Projects\\timekeeper\\testing\\3.0\\timekeeper";
+            this.ImportFileName.Text = "C:\\Users\\hillsc\\Projects\\timekeeper\\testing\\3.0\\import-test-1.csv";
             // 
             // ImportButton
             // 
@@ -186,25 +186,24 @@
             // Tab1
             // 
             this.Tab1.BackColor = System.Drawing.SystemColors.Window;
-            this.Tab1.Controls.Add(this.comboBox1);
+            this.Tab1.Controls.Add(this.ImportDataTypeList);
             this.Tab1.Controls.Add(this.Introduction);
             this.Tab1.Location = new System.Drawing.Point(164, 0);
             this.Tab1.Name = "Tab1";
             this.Tab1.Size = new System.Drawing.Size(354, 283);
             this.Tab1.TabIndex = 16;
             // 
-            // comboBox1
+            // ImportDataTypeList
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Timekeeper 1.x / Watchman 0.x",
-            "Comma Separated Values",
-            "XML File"});
-            this.comboBox1.Location = new System.Drawing.Point(18, 85);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(321, 21);
-            this.comboBox1.TabIndex = 1;
+            this.ImportDataTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ImportDataTypeList.FormattingEnabled = true;
+            this.ImportDataTypeList.Items.AddRange(new object[] {
+            "Timekeeper 1.x",
+            "Comma Separated Values"});
+            this.ImportDataTypeList.Location = new System.Drawing.Point(18, 85);
+            this.ImportDataTypeList.Name = "ImportDataTypeList";
+            this.ImportDataTypeList.Size = new System.Drawing.Size(321, 21);
+            this.ImportDataTypeList.TabIndex = 1;
             // 
             // Introduction
             // 
@@ -228,15 +227,6 @@
             this.Tab2.Size = new System.Drawing.Size(354, 283);
             this.Tab2.TabIndex = 17;
             // 
-            // OpenFileInstructions
-            // 
-            this.OpenFileInstructions.AutoSize = true;
-            this.OpenFileInstructions.Location = new System.Drawing.Point(15, 13);
-            this.OpenFileInstructions.Name = "OpenFileInstructions";
-            this.OpenFileInstructions.Size = new System.Drawing.Size(260, 13);
-            this.OpenFileInstructions.TabIndex = 2;
-            this.OpenFileInstructions.Text = "Specify the file containing the data you wish to import.";
-            // 
             // OpenFileButton
             // 
             this.OpenFileButton.BackColor = System.Drawing.SystemColors.Control;
@@ -246,9 +236,20 @@
             this.OpenFileButton.TabIndex = 3;
             this.OpenFileButton.Text = "...";
             this.OpenFileButton.UseVisualStyleBackColor = false;
+            this.OpenFileButton.Click += new System.EventHandler(this.OpenFileButton_Click);
+            // 
+            // OpenFileInstructions
+            // 
+            this.OpenFileInstructions.AutoSize = true;
+            this.OpenFileInstructions.Location = new System.Drawing.Point(15, 13);
+            this.OpenFileInstructions.Name = "OpenFileInstructions";
+            this.OpenFileInstructions.Size = new System.Drawing.Size(260, 13);
+            this.OpenFileInstructions.TabIndex = 2;
+            this.OpenFileInstructions.Text = "Specify the file containing the data you wish to import.";
             // 
             // OpenFile
             // 
+            this.OpenFile.Filter = "CSV files|*.csv|All files|*.*";
             this.OpenFile.ShowHelp = true;
             this.OpenFile.SupportMultiDottedExtensions = true;
             // 
@@ -302,16 +303,6 @@
             this.Tab4.Size = new System.Drawing.Size(354, 283);
             this.Tab4.TabIndex = 20;
             // 
-            // WizardReview
-            // 
-            this.WizardReview.Location = new System.Drawing.Point(18, 64);
-            this.WizardReview.Multiline = true;
-            this.WizardReview.Name = "WizardReview";
-            this.WizardReview.ReadOnly = true;
-            this.WizardReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.WizardReview.Size = new System.Drawing.Size(319, 196);
-            this.WizardReview.TabIndex = 26;
-            // 
             // WizardReviewInstructions
             // 
             this.WizardReviewInstructions.AutoSize = true;
@@ -324,7 +315,17 @@
     ", depending on the size of your database, this operation could take several minu" +
     "tes.";
             // 
-            // ImportWizard
+            // WizardReview
+            // 
+            this.WizardReview.Location = new System.Drawing.Point(18, 64);
+            this.WizardReview.Multiline = true;
+            this.WizardReview.Name = "WizardReview";
+            this.WizardReview.ReadOnly = true;
+            this.WizardReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.WizardReview.Size = new System.Drawing.Size(319, 196);
+            this.WizardReview.TabIndex = 26;
+            // 
+            // Import
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -340,7 +341,7 @@
             this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ImportWizard";
+            this.Name = "Import";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Import Wizard";
@@ -376,7 +377,7 @@
         private System.Windows.Forms.PictureBox WizardPicture;
         private System.Windows.Forms.Panel Tab1;
         private System.Windows.Forms.Button CloseButton;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox ImportDataTypeList;
         private System.Windows.Forms.Label Introduction;
         private System.Windows.Forms.Panel Tab2;
         private System.Windows.Forms.Button OpenFileButton;
