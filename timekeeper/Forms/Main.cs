@@ -199,9 +199,11 @@ namespace Timekeeper.Forms
                 return;
             }
 
-            if (ProjectTree.SelectedNode.Text == currentProject.DisplayName()) {
-                Common.Warn("Cannot delete the item being timed.");
-                return;
+            if (currentProject != null) {
+                if (ProjectTree.SelectedNode.Text == currentProject.DisplayName()) {
+                    Common.Warn("Cannot delete the item being timed.");
+                    return;
+                }
             }
 
             Action_DeleteItem(ProjectTree);
@@ -255,9 +257,11 @@ namespace Timekeeper.Forms
                 return;
             }
 
-            if (ActivityTree.SelectedNode.Text == currentActivity.DisplayName()) {
-                Common.Warn("Cannot delete the item being timed.");
-                return;
+            if (currentActivity != null) {
+                if (ActivityTree.SelectedNode.Text == currentActivity.DisplayName()) {
+                    Common.Warn("Cannot delete the item being timed.");
+                    return;
+                }
             }
 
             Action_DeleteItem(ActivityTree);
@@ -1144,12 +1148,16 @@ namespace Timekeeper.Forms
         {
             // Enable/disable todo list
             Classes.TodoItemCollection TodoItems = new Classes.TodoItemCollection();
-            Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+            if (ProjectTree.SelectedNode != null) {
+                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
 
-            if (Project.IsFolder) {
-                PopupMenuProjectAddtoTodoList.Enabled = false;
+                if (Project.IsFolder) {
+                    PopupMenuProjectAddtoTodoList.Enabled = false;
+                } else {
+                    PopupMenuProjectAddtoTodoList.Enabled = !TodoItems.Exists(Project.ItemId);
+                }
             } else {
-                PopupMenuProjectAddtoTodoList.Enabled = !TodoItems.Exists(Project.ItemId);
+                PopupMenuProjectAddtoTodoList.Enabled = false;
             }
         }
 

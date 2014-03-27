@@ -318,12 +318,6 @@
     <Compile Include="Forms\Shared\SaveView.Designer.cs">
       <DependentUpon>SaveView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\HtmlEditorTest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\HtmlEditorTest.Designer.cs">
-      <DependentUpon>HtmlEditorTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Shared\Prompt.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -451,9 +445,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Find.resx">
       <DependentUpon>Find.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\HtmlEditorTest.resx">
-      <DependentUpon>HtmlEditorTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Shared\Prompt.resx">
       <DependentUpon>Prompt.cs</DependentUpon>
