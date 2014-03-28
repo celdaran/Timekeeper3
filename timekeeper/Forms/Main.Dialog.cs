@@ -182,6 +182,14 @@ namespace Timekeeper.Forms
             Action_CloseFile();
             if (Action_CreateFile(FileName, CreateOptions)) {
                 Action_OpenFile(FileName);
+
+                // Override any earlier registry-based options
+                // Fixes Ticket #1291 but see also Ticket #1301
+                Options.Layout_UseProjects = CreateOptions.UseProjects;
+                Options.Layout_UseActivities = CreateOptions.UseActivities;
+
+                Action_UseProjects(Options.Layout_UseProjects);
+                Action_UseActivities(Options.Layout_UseActivities);
             } else {
                 Common.Warn("An error occurred creating the database");
             }
