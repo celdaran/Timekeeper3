@@ -42,6 +42,9 @@ namespace Timekeeper
                     Version PriorVersion = new System.Version(2, 0);
                     Progress.Maximum = Count20();
 
+                    // Begin a unit of work (this is NOT a transaction)
+                    this.Database.BeginWork();
+
                     // Create 3.0 reference tables
                     CreateRefTables(CurrentSchemaVersion);
 
@@ -60,6 +63,9 @@ namespace Timekeeper
                     CreateNewTable("GridView", CurrentSchemaVersion, false);
                     CreateNewTable("ReportView", CurrentSchemaVersion, false);
 
+                    // End a unit of work (this is NOT a transaction)
+                    this.Database.EndWork();
+
                     return true;
                 }
 
@@ -67,6 +73,9 @@ namespace Timekeeper
                 {
                     Version PriorVersion = new System.Version(2, 1);
                     Progress.Maximum = Count21();
+
+                    // Begin a unit of work (this is NOT a transaction)
+                    this.Database.BeginWork();
 
                     // Create 3.0 reference tables
                     CreateRefTables(CurrentSchemaVersion);
@@ -84,6 +93,9 @@ namespace Timekeeper
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
                     CreateNewTable("ReportView", CurrentSchemaVersion, false);
 
+                    // End a unit of work (this is NOT a transaction)
+                    this.Database.EndWork();
+
                     return true;
                 }
 
@@ -91,6 +103,9 @@ namespace Timekeeper
                 {
                     Version PriorVersion = new System.Version(2, 2);
                     Progress.Maximum = Count22();
+
+                    // Begin a unit of work (this is NOT a transaction)
+                    this.Database.BeginWork();
 
                     // Create 3.0 reference tables
                     CreateRefTables(CurrentSchemaVersion);
@@ -108,6 +123,9 @@ namespace Timekeeper
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
                     CreateNewTable("ReportView", CurrentSchemaVersion, false);
 
+                    // End a unit of work (this is NOT a transaction)
+                    this.Database.EndWork();
+
                     return true;
                 }
 
@@ -116,6 +134,9 @@ namespace Timekeeper
                 Timekeeper.Warn("Database upgrade failed on Step '" + this.Step.Text + "' on Row Id " + RowId.ToString());
                 Timekeeper.Exception(x);
             }
+
+            // Just in case...
+            this.Database.EndWork();
 
             return false;
         }

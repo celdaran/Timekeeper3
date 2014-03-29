@@ -187,9 +187,11 @@ namespace Timekeeper.Forms.Wizards
 
             // All done
             StartButton.Visible = false;
+            NextButton.Visible = false;
             OkayButton.Visible = true;
-            OkayButton.Location = StartButton.Location;
-            OkayButton.Size = StartButton.Size;
+            OkayButton.Location = NextButton.Location;
+            OkayButton.Size = NextButton.Size;
+            OkayButton.Focus();
         }
 
         //----------------------------------------------------------------------
@@ -202,7 +204,6 @@ namespace Timekeeper.Forms.Wizards
                 DialogResult = DialogResult.Abort;
             }
         }
-
 
         private void SelectFileButton_Click(object sender, EventArgs e)
         {
@@ -221,9 +222,14 @@ namespace Timekeeper.Forms.Wizards
         {
             if (IsDirty && (DialogResult == DialogResult.Cancel)) {
                 // Meaning: if there have been changes, and we're not at the end of the process,
-                // ask the user if they want to cancel
-                if (Common.Prompt("Are you sure you want to exit the Upgrade Database wizard?") == DialogResult.No) {
-                    e.Cancel = true;
+                // ask the user if they want to cancel...
+                if (UpgradeSucceeded) {
+                    // ...UNLESS WE'VE SUCCESSFULLY UPGRADED
+                    DialogResult = DialogResult.OK;
+                } else {
+                    if (Common.Prompt("Are you sure you want to exit the Upgrade Database wizard?") == DialogResult.No) {
+                        e.Cancel = true;
+                    }
                 }
             }
         }
