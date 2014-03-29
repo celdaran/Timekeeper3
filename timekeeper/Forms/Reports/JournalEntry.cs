@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Resources;
 
+using MarkdownSharp;
 using Technitivity.Toolbox;
 
 namespace Timekeeper.Forms.Reports
@@ -346,9 +347,15 @@ namespace Timekeeper.Forms.Reports
                 long seconds = row["Seconds"];
                 DateTime start = row["StartTime"];
                 DateTime end = row["StopTime"];
+
+                // Markup support
+                /*
                 string post = row["Memo"].Replace("\n", "<br/>");
                 post = post.Replace("<br/>*", "<br/><li>");
-                string hr = "";
+                */
+
+                Markdown MarkdownEngine = new Markdown();
+                string post = MarkdownEngine.Transform(row["Memo"]);
 
                 string[] MemoParts = post.Split(new string[] { "<br/><br/><!--SEPARATOR--><br/><br/>" }, StringSplitOptions.RemoveEmptyEntries);
                 string MemoArea = "";
@@ -371,6 +378,8 @@ namespace Timekeeper.Forms.Reports
                     Common.Info(MemoParts[1]);
                 }
                 */
+
+                string hr = "";
 
                 if (nPrevDay == start.DayOfYear) {
                     // no header if this entry is the same day as the previous

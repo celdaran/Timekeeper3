@@ -89,7 +89,11 @@ namespace Timekeeper
 
         public static void CloseScheduler()
         {
-            Scheduler.Shutdown();
+            if (Scheduler == null) {
+                Timekeeper.Warn("Could not close a null Scheduler");
+            } else {
+                Scheduler.Shutdown();
+            }
         }
 
         //---------------------------------------------------------------------

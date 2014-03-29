@@ -387,6 +387,14 @@ namespace Timekeeper.Forms
         private bool Action_FormLoad()
         {
             try {
+                // First instantiate any run-time only controls
+                this.MemoEditor = new Forms.Shared.MemoEditor();
+                this.MemoEditor.Parent = splitMain.Panel2;
+                this.MemoEditor.BringToFront();
+                this.MemoEditor.Dock = DockStyle.Fill;
+                this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
+                this.MemoEditor.MemoEntry.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wMemo_KeyDown);
+
                 // Load options from the Registry & TKDB
                 Action_LoadOptions();
 
@@ -1274,7 +1282,8 @@ namespace Timekeeper.Forms
             Entry.StartTime = StartTime;
             Entry.StopTime = StartTime;
             Entry.Seconds = 0; // default to zero
-            Entry.Memo = wMemo.Text;
+            //Entry.Memo = wMemo.Text;
+            Entry.Memo = MemoEditor.Text;
             Entry.IsLocked = true;
             Entry.LocationId = currentLocation == null ? 0 : currentLocation.Id; // FIXME: Location should be not null.
             Entry.CategoryId = currentCategory == null ? 0 : currentCategory.Id;
@@ -1373,7 +1382,8 @@ namespace Timekeeper.Forms
             Entry.StartTime = wStartTime.Value;
             Entry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
             Entry.Seconds = Seconds;
-            Entry.Memo = wMemo.Text;
+            //Entry.Memo = wMemo.Text;
+            Entry.Memo = MemoEditor.Text;
             Entry.IsLocked = false;
 //            Entry.LocationId = currentLocation.Id;
 //            Entry.CategoryId = currentCategory.Id;

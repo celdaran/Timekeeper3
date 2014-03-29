@@ -142,7 +142,7 @@ namespace Timekeeper.Classes
         private void Bench(Stopwatch t, string message)
         {
             t.Stop();
-            Timekeeper.Info(message + ": " + t.ElapsedMilliseconds.ToString());
+            Timekeeper.Info(message + ": " + t.ElapsedMilliseconds.ToString() + "ms");
             t.Reset();
         }
 

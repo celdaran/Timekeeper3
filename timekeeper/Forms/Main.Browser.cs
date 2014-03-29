@@ -198,7 +198,7 @@ namespace Timekeeper.Forms
                 }
 
                 // Set focus
-                wMemo.Focus();
+                MemoEditor.MemoEntry.Focus();
             }
             catch (Exception x) {
                 //Common.Warn(x.ToString());
@@ -329,7 +329,10 @@ namespace Timekeeper.Forms
 
         private void Browser_EnableMemoEntry(bool enabled)
         {
-            wMemo.Enabled = enabled;
+            // FIXME: Make "MemoEntry" private again then add
+            // appropriate methods for all this direct access
+            // that we're doing.
+            MemoEditor.MemoEntry.Enabled = enabled;
         }
 
         //----------------------------------------------------------------------
@@ -353,7 +356,8 @@ namespace Timekeeper.Forms
             entry.StartTime = wStartTime.Value;
             entry.StopTime = wStopTime.Value;
             entry.Seconds = (long)Delta.TotalSeconds;
-            entry.Memo = wMemo.Text;
+            //entry.Memo = wMemo.Text;
+            entry.Memo = MemoEditor.Text;
             entry.ProjectName = Project.Name;
             entry.ActivityName = Activity.Name;
 
@@ -406,7 +410,8 @@ namespace Timekeeper.Forms
             wStartTime.Value = entry.StartTime;
             wStopTime.Value = entry.StopTime;
             wDuration.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
-            wMemo.Text = entry.Memo;
+            //wMemo.Text = entry.Memo;
+            MemoEditor.Text = entry.Memo;
 
             // Handle Location
             if (entry.LocationId > 0) {
@@ -825,7 +830,7 @@ namespace Timekeeper.Forms
                 // Load empty form
                 Browser_EntryToForm(newBrowserEntry);
 
-                wMemo.Focus();
+                MemoEditor.MemoEntry.Focus();
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -849,7 +854,7 @@ namespace Timekeeper.Forms
             isBrowsing = false;
 
             // Ensure proper display
-            wMemo.Focus();
+            MemoEditor.MemoEntry.Focus();
         }
 
         //----------------------------------------------------------------------

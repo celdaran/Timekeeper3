@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -124,6 +124,9 @@
     </When>
   </Choose>
   <ItemGroup>
+    <Reference Include="MarkdownSharp">
+      <HintPath>References\MarkdownSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Quartz">
@@ -180,6 +183,12 @@
     </Compile>
     <Compile Include="Forms\CategoryManager.Designer.cs">
       <DependentUpon>CategoryManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Shared\MemoEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Shared\MemoEditor.Designer.cs">
+      <DependentUpon>MemoEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Shared\Schedule.cs">
       <SubType>Form</SubType>
@@ -421,6 +430,9 @@
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Shared\MemoEditor.resx">
+      <DependentUpon>MemoEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Shared\Schedule.resx">
       <DependentUpon>Schedule.cs</DependentUpon>

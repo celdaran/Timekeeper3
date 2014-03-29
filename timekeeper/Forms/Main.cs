@@ -43,12 +43,15 @@ namespace Timekeeper.Forms
         private Classes.Meta Meta;
         private Classes.Widgets Widgets;
 
-        // current objects
+        // FIXME: current objects (bad names)
         private Classes.JournalEntry Entry;
         private Classes.Project currentProject;
         private Classes.Activity currentActivity;
         private Classes.Location currentLocation;
         private Classes.Category currentCategory;
+
+        // MemoEditor control
+        private Forms.Shared.MemoEditor MemoEditor;
 
         // FIXME: class-wide values?
         private TreeNode currentProjectNode;
@@ -729,7 +732,7 @@ namespace Timekeeper.Forms
 
         private void wMemo_TextChanged(object sender, EventArgs e)
         {
-            Action_EnableRevert(wMemo.Text, priorLoadedBrowserEntry.Memo);
+            Action_EnableRevert(MemoEditor.Text, priorLoadedBrowserEntry.Memo);
         }
 
         //---------------------------------------------------------------------
@@ -1159,6 +1162,30 @@ namespace Timekeeper.Forms
             } else {
                 PopupMenuProjectAddtoTodoList.Enabled = false;
             }
+        }
+
+        //---------------------------------------------------------------------
+        // FIXME - EXPERIMENTAL - NOT READY FOR PRIME TIME
+        //---------------------------------------------------------------------
+
+        private void MenuToolbarFormatBold_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatBoldButton_Click(sender, e);
+        }
+
+        private void MenuToolbarFormatItalic_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatItalicButton_Click(sender, e);
+        }
+
+        private void MenuToolbarFormatUnderline_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatUnderlineButton_Click(sender, e);
+        }
+
+        private void MenuToolbarFormatStrikethrough_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatStrikethroughButton_Click(sender, e);
         }
 
         //---------------------------------------------------------------------

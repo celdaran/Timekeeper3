@@ -42,6 +42,7 @@ namespace Timekeeper.Forms
             this.MenuFileUtilitiesImport = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFileUtilitiesExport = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFileUtilitiesBackup = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuFileUtilitiesReindex = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFileUtilitiesRepair = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFileSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuFileExit = new System.Windows.Forms.ToolStripMenuItem();
@@ -179,23 +180,13 @@ namespace Timekeeper.Forms
             this.aboutTimekeeperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitMain = new System.Windows.Forms.SplitContainer();
-            this.panelMemo = new System.Windows.Forms.Panel();
-            this.wMemo = new System.Windows.Forms.RichTextBox();
+            this.panelControls = new System.Windows.Forms.Panel();
             this.PopupMenuMemo = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MemoToolbar = new System.Windows.Forms.ToolStrip();
-            this.toolFormatBold = new System.Windows.Forms.ToolStripButton();
-            this.toolFormatItalic = new System.Windows.Forms.ToolStripButton();
-            this.toolFormatUnderline = new System.Windows.Forms.ToolStripButton();
-            this.toolFormatStrikethrough = new System.Windows.Forms.ToolStripButton();
-            this.toolFormatSep1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolFormatBulletedList = new System.Windows.Forms.ToolStripButton();
-            this.toolFormatNumberedList = new System.Windows.Forms.ToolStripButton();
-            this.panelControls = new System.Windows.Forms.Panel();
             this.LocationAndCategoryPanel = new System.Windows.Forms.Panel();
             this.CategoryPanel = new System.Windows.Forms.Panel();
             this.labelCategory = new System.Windows.Forms.Label();
@@ -235,7 +226,6 @@ namespace Timekeeper.Forms
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
-            this.MenuFileUtilitiesReindex = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
@@ -249,10 +239,8 @@ namespace Timekeeper.Forms
             this.splitMain.Panel1.SuspendLayout();
             this.splitMain.Panel2.SuspendLayout();
             this.splitMain.SuspendLayout();
-            this.panelMemo.SuspendLayout();
-            this.PopupMenuMemo.SuspendLayout();
-            this.MemoToolbar.SuspendLayout();
             this.panelControls.SuspendLayout();
+            this.PopupMenuMemo.SuspendLayout();
             this.LocationAndCategoryPanel.SuspendLayout();
             this.CategoryPanel.SuspendLayout();
             this.LocationPanel.SuspendLayout();
@@ -347,7 +335,7 @@ namespace Timekeeper.Forms
             // MenuFileUtilitiesImport
             // 
             this.MenuFileUtilitiesImport.Name = "MenuFileUtilitiesImport";
-            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesImport.Text = "Import...";
             this.MenuFileUtilitiesImport.Click += new System.EventHandler(this.MenuFileUtilitiesImport_Click);
             // 
@@ -355,21 +343,28 @@ namespace Timekeeper.Forms
             // 
             this.MenuFileUtilitiesExport.Enabled = false;
             this.MenuFileUtilitiesExport.Name = "MenuFileUtilitiesExport";
-            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesExport.Text = "Export...";
             // 
             // MenuFileUtilitiesBackup
             // 
             this.MenuFileUtilitiesBackup.Enabled = false;
             this.MenuFileUtilitiesBackup.Name = "MenuFileUtilitiesBackup";
-            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesBackup.Text = "Backup...";
+            // 
+            // MenuFileUtilitiesReindex
+            // 
+            this.MenuFileUtilitiesReindex.Name = "MenuFileUtilitiesReindex";
+            this.MenuFileUtilitiesReindex.Size = new System.Drawing.Size(120, 22);
+            this.MenuFileUtilitiesReindex.Text = "Reindex";
+            this.MenuFileUtilitiesReindex.Click += new System.EventHandler(this.MenuFileUtilitiesReindex_Click);
             // 
             // MenuFileUtilitiesRepair
             // 
             this.MenuFileUtilitiesRepair.Enabled = false;
             this.MenuFileUtilitiesRepair.Name = "MenuFileUtilitiesRepair";
-            this.MenuFileUtilitiesRepair.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesRepair.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesRepair.Text = "Repair...";
             // 
             // MenuFileSep2
@@ -935,6 +930,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarFormatBold.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
             this.MenuToolbarFormatBold.Size = new System.Drawing.Size(177, 22);
             this.MenuToolbarFormatBold.Text = "&Bold";
+            this.MenuToolbarFormatBold.Click += new System.EventHandler(this.MenuToolbarFormatBold_Click);
             // 
             // MenuToolbarFormatItalic
             // 
@@ -942,6 +938,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarFormatItalic.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
             this.MenuToolbarFormatItalic.Size = new System.Drawing.Size(177, 22);
             this.MenuToolbarFormatItalic.Text = "&Italic";
+            this.MenuToolbarFormatItalic.Click += new System.EventHandler(this.MenuToolbarFormatItalic_Click);
             // 
             // MenuToolbarFormatUnderline
             // 
@@ -949,6 +946,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarFormatUnderline.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
             this.MenuToolbarFormatUnderline.Size = new System.Drawing.Size(177, 22);
             this.MenuToolbarFormatUnderline.Text = "&Underline";
+            this.MenuToolbarFormatUnderline.Click += new System.EventHandler(this.MenuToolbarFormatUnderline_Click);
             // 
             // MenuToolbarFormatStrikethrough
             // 
@@ -956,6 +954,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarFormatStrikethrough.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
             this.MenuToolbarFormatStrikethrough.Size = new System.Drawing.Size(177, 22);
             this.MenuToolbarFormatStrikethrough.Text = "&Strikethrough";
+            this.MenuToolbarFormatStrikethrough.Click += new System.EventHandler(this.MenuToolbarFormatStrikethrough_Click);
             // 
             // StatusBar
             // 
@@ -1569,7 +1568,6 @@ namespace Timekeeper.Forms
             // 
             // splitMain.Panel2
             // 
-            this.splitMain.Panel2.Controls.Add(this.panelMemo);
             this.splitMain.Panel2.Controls.Add(this.panelControls);
             this.splitMain.Size = new System.Drawing.Size(650, 362);
             this.splitMain.SplitterDistance = 115;
@@ -1577,30 +1575,24 @@ namespace Timekeeper.Forms
             this.splitMain.TabStop = false;
             this.splitMain.DoubleClick += new System.EventHandler(this.splitMain_DoubleClick);
             // 
-            // panelMemo
+            // panelControls
             // 
-            this.panelMemo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panelMemo.Controls.Add(this.wMemo);
-            this.panelMemo.Controls.Add(this.MemoToolbar);
-            this.panelMemo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMemo.Location = new System.Drawing.Point(0, 112);
-            this.panelMemo.Name = "panelMemo";
-            this.panelMemo.Size = new System.Drawing.Size(650, 131);
-            this.panelMemo.TabIndex = 0;
-            // 
-            // wMemo
-            // 
-            this.wMemo.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wMemo.ContextMenuStrip = this.PopupMenuMemo;
-            this.wMemo.DetectUrls = false;
-            this.wMemo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.wMemo.Location = new System.Drawing.Point(0, 25);
-            this.wMemo.Name = "wMemo";
-            this.wMemo.Size = new System.Drawing.Size(646, 102);
-            this.wMemo.TabIndex = 6;
-            this.wMemo.Text = "";
-            this.wMemo.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
-            this.wMemo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wMemo_KeyDown);
+            this.panelControls.BackColor = System.Drawing.SystemColors.Control;
+            this.panelControls.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelControls.Controls.Add(this.LocationAndCategoryPanel);
+            this.panelControls.Controls.Add(this.wStopTime);
+            this.panelControls.Controls.Add(this.wStartTime);
+            this.panelControls.Controls.Add(this.labelStartTime);
+            this.panelControls.Controls.Add(this.labelEndTime);
+            this.panelControls.Controls.Add(this.wDuration);
+            this.panelControls.Controls.Add(this.labelDuration);
+            this.panelControls.Controls.Add(this.BrowserToolbar);
+            this.panelControls.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelControls.Location = new System.Drawing.Point(0, 0);
+            this.panelControls.Name = "panelControls";
+            this.panelControls.Size = new System.Drawing.Size(650, 112);
+            this.panelControls.TabIndex = 0;
+            this.panelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
             // PopupMenuMemo
             // 
@@ -1641,111 +1633,6 @@ namespace Timekeeper.Forms
             this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
             this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.selectAllToolStripMenuItem.Text = "&Select All";
-            // 
-            // MemoToolbar
-            // 
-            this.MemoToolbar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.MemoToolbar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.MemoToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolFormatBold,
-            this.toolFormatItalic,
-            this.toolFormatUnderline,
-            this.toolFormatStrikethrough,
-            this.toolFormatSep1,
-            this.toolFormatBulletedList,
-            this.toolFormatNumberedList});
-            this.MemoToolbar.Location = new System.Drawing.Point(0, 0);
-            this.MemoToolbar.Name = "MemoToolbar";
-            this.MemoToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.MemoToolbar.Size = new System.Drawing.Size(646, 25);
-            this.MemoToolbar.TabIndex = 0;
-            this.MemoToolbar.Text = "toolStrip1";
-            // 
-            // toolFormatBold
-            // 
-            this.toolFormatBold.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolFormatBold.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolFormatBold.Image = global::Timekeeper.Properties.Resources.ImageButtonBold;
-            this.toolFormatBold.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolFormatBold.Name = "toolFormatBold";
-            this.toolFormatBold.Size = new System.Drawing.Size(23, 22);
-            this.toolFormatBold.Text = "B";
-            this.toolFormatBold.ToolTipText = "Bold";
-            // 
-            // toolFormatItalic
-            // 
-            this.toolFormatItalic.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolFormatItalic.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolFormatItalic.Image = global::Timekeeper.Properties.Resources.ImageButtonItalics;
-            this.toolFormatItalic.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolFormatItalic.Name = "toolFormatItalic";
-            this.toolFormatItalic.Size = new System.Drawing.Size(23, 22);
-            this.toolFormatItalic.Text = "I";
-            this.toolFormatItalic.ToolTipText = "Italics";
-            // 
-            // toolFormatUnderline
-            // 
-            this.toolFormatUnderline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolFormatUnderline.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolFormatUnderline.Image = global::Timekeeper.Properties.Resources.ImageButtonUnderlined;
-            this.toolFormatUnderline.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolFormatUnderline.Name = "toolFormatUnderline";
-            this.toolFormatUnderline.Size = new System.Drawing.Size(23, 22);
-            this.toolFormatUnderline.Text = "U";
-            this.toolFormatUnderline.ToolTipText = "Underline";
-            // 
-            // toolFormatStrikethrough
-            // 
-            this.toolFormatStrikethrough.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolFormatStrikethrough.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolFormatStrikethrough.Image = global::Timekeeper.Properties.Resources.ImageButtonStrikethrough;
-            this.toolFormatStrikethrough.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolFormatStrikethrough.Name = "toolFormatStrikethrough";
-            this.toolFormatStrikethrough.Size = new System.Drawing.Size(23, 22);
-            this.toolFormatStrikethrough.Text = "S";
-            this.toolFormatStrikethrough.ToolTipText = "Strikethrough";
-            // 
-            // toolFormatSep1
-            // 
-            this.toolFormatSep1.Name = "toolFormatSep1";
-            this.toolFormatSep1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolFormatBulletedList
-            // 
-            this.toolFormatBulletedList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolFormatBulletedList.Image = global::Timekeeper.Properties.Resources.ImageButtonListBulleted;
-            this.toolFormatBulletedList.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolFormatBulletedList.Name = "toolFormatBulletedList";
-            this.toolFormatBulletedList.Size = new System.Drawing.Size(23, 22);
-            this.toolFormatBulletedList.Text = "toolStripButton5";
-            // 
-            // toolFormatNumberedList
-            // 
-            this.toolFormatNumberedList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolFormatNumberedList.Image = global::Timekeeper.Properties.Resources.ImageButtonListNumbered;
-            this.toolFormatNumberedList.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolFormatNumberedList.Name = "toolFormatNumberedList";
-            this.toolFormatNumberedList.Size = new System.Drawing.Size(23, 22);
-            this.toolFormatNumberedList.Text = "toolStripButton1";
-            // 
-            // panelControls
-            // 
-            this.panelControls.BackColor = System.Drawing.SystemColors.Control;
-            this.panelControls.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panelControls.Controls.Add(this.LocationAndCategoryPanel);
-            this.panelControls.Controls.Add(this.wStopTime);
-            this.panelControls.Controls.Add(this.wStartTime);
-            this.panelControls.Controls.Add(this.labelStartTime);
-            this.panelControls.Controls.Add(this.labelEndTime);
-            this.panelControls.Controls.Add(this.wDuration);
-            this.panelControls.Controls.Add(this.labelDuration);
-            this.panelControls.Controls.Add(this.BrowserToolbar);
-            this.panelControls.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelControls.Location = new System.Drawing.Point(0, 0);
-            this.panelControls.Name = "panelControls";
-            this.panelControls.Size = new System.Drawing.Size(650, 112);
-            this.panelControls.TabIndex = 0;
-            this.panelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
             // LocationAndCategoryPanel
             // 
@@ -2133,13 +2020,6 @@ namespace Timekeeper.Forms
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
             this.SaveAsDialog.Title = "Save As";
             // 
-            // MenuFileUtilitiesReindex
-            // 
-            this.MenuFileUtilitiesReindex.Name = "MenuFileUtilitiesReindex";
-            this.MenuFileUtilitiesReindex.Size = new System.Drawing.Size(152, 22);
-            this.MenuFileUtilitiesReindex.Text = "Reindex";
-            this.MenuFileUtilitiesReindex.Click += new System.EventHandler(this.MenuFileUtilitiesReindex_Click);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2171,13 +2051,9 @@ namespace Timekeeper.Forms
             this.splitMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitMain)).EndInit();
             this.splitMain.ResumeLayout(false);
-            this.panelMemo.ResumeLayout(false);
-            this.panelMemo.PerformLayout();
-            this.PopupMenuMemo.ResumeLayout(false);
-            this.MemoToolbar.ResumeLayout(false);
-            this.MemoToolbar.PerformLayout();
             this.panelControls.ResumeLayout(false);
             this.panelControls.PerformLayout();
+            this.PopupMenuMemo.ResumeLayout(false);
             this.LocationAndCategoryPanel.ResumeLayout(false);
             this.CategoryPanel.ResumeLayout(false);
             this.LocationPanel.ResumeLayout(false);
@@ -2274,14 +2150,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectUnhide;
         private System.Windows.Forms.ToolStripMenuItem MenuFileRecent;
         private System.Windows.Forms.SplitContainer splitMain;
-        private System.Windows.Forms.Panel panelMemo;
         private System.Windows.Forms.Panel panelControls;
-        private System.Windows.Forms.RichTextBox wMemo;
-        private System.Windows.Forms.ToolStrip MemoToolbar;
-        private System.Windows.Forms.ToolStripButton toolFormatBold;
-        private System.Windows.Forms.ToolStripButton toolFormatItalic;
-        private System.Windows.Forms.ToolStripButton toolFormatUnderline;
-        private System.Windows.Forms.ToolStripButton toolFormatStrikethrough;
         private System.Windows.Forms.ToolStrip BrowserToolbar;
         private System.Windows.Forms.ToolStripButton toolControlFirstEntry;
         private System.Windows.Forms.ToolStripButton toolControlPrevEntry;
@@ -2300,9 +2169,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripButton toolControlCloseStartGap;
         private System.Windows.Forms.ToolStripButton toolControlCloseEndGap;
         private System.Windows.Forms.ToolStripLabel toolControlEntryId;
-        private System.Windows.Forms.ToolStripButton toolFormatBulletedList;
-        private System.Windows.Forms.ToolStripSeparator toolFormatSep1;
-        private System.Windows.Forms.ToolStripButton toolFormatNumberedList;
         private System.Windows.Forms.ToolStripMenuItem MenuActionStartTimer;
         private System.Windows.Forms.ToolStripMenuItem MenuActionOpenBrowser;
         private System.Windows.Forms.ToolStripMenuItem MenuActionStopTimer;
