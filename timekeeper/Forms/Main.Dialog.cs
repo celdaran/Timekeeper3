@@ -235,7 +235,7 @@ namespace Timekeeper.Forms
                 int CreateResult = Widgets.CreateTreeItem(tree.Nodes, item, ParentItemId, imageIndex);
                 switch (CreateResult) {
                     case Classes.Widgets.TREES_ITEM_CREATED:
-                        //Common.Info("Item created");
+                        Action_TreeView_ShowRootLines();
                         break;
                     case Classes.Widgets.TREES_ERROR_CREATING_ITEM:
                         Common.Warn("There was an error creating the item.");
