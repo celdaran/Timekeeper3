@@ -30,7 +30,7 @@ namespace Timekeeper
 
             try {
                 CheckAssembly("Technitivity.Toolbox", new Version(3, 0, 7));
-                CheckAssembly("System.Data.SQLite", new Version(1, 0, 88));
+                CheckAssembly("System.Data.SQLite", new Version(1, 0, 92));
             }
             catch {
                 found = false;

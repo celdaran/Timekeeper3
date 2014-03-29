@@ -703,7 +703,7 @@ namespace Timekeeper
                     {"RefDatePresetId", OldRow["date_preset"]},
                     {"FromDate", OldRow["start_date"]},
                     {"ToDate", OldRow["end_date"]},
-                    {"Memo", null},
+                    {"MemoContains", null},
                     {"DurationOperator", null},
                     {"DurationAmount", null},
                     {"DurationUnit", null},

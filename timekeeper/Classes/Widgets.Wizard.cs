@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
+using Technitivity.Toolbox;
+
 namespace Timekeeper.Classes
 {
     partial class Widgets
@@ -31,7 +33,7 @@ namespace Timekeeper.Classes
 
         public bool AtEnd()
         {
-            return (WizardCurrentTab == WizardPanels.Count - 1);
+            return (WizardCurrentTab == WizardPanels.Count);
         }
 
         //----------------------------------------------------------------------
