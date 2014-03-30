@@ -181,12 +181,6 @@ namespace Timekeeper.Forms
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitMain = new System.Windows.Forms.SplitContainer();
             this.panelControls = new System.Windows.Forms.Panel();
-            this.PopupMenuMemo = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LocationAndCategoryPanel = new System.Windows.Forms.Panel();
             this.CategoryPanel = new System.Windows.Forms.Panel();
             this.labelCategory = new System.Windows.Forms.Label();
@@ -225,6 +219,12 @@ namespace Timekeeper.Forms
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolControlRevert = new System.Windows.Forms.ToolStripButton();
             this.toolControlUnlock = new System.Windows.Forms.ToolStripButton();
+            this.PopupMenuMemo = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
@@ -240,12 +240,12 @@ namespace Timekeeper.Forms
             this.splitMain.Panel2.SuspendLayout();
             this.splitMain.SuspendLayout();
             this.panelControls.SuspendLayout();
-            this.PopupMenuMemo.SuspendLayout();
             this.LocationAndCategoryPanel.SuspendLayout();
             this.CategoryPanel.SuspendLayout();
             this.LocationPanel.SuspendLayout();
             this.PopupMenuDates.SuspendLayout();
             this.BrowserToolbar.SuspendLayout();
+            this.PopupMenuMemo.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuMain
@@ -1318,13 +1318,13 @@ namespace Timekeeper.Forms
             this.PopupMenuActivitySep2,
             this.PopupMenuActivityProperties});
             this.PopupMenuActivity.Name = "menuTask";
-            this.PopupMenuActivity.Size = new System.Drawing.Size(147, 302);
+            this.PopupMenuActivity.Size = new System.Drawing.Size(153, 324);
             // 
             // PopupMenuActivityNewActivity
             // 
             this.PopupMenuActivityNewActivity.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.PopupMenuActivityNewActivity.Name = "PopupMenuActivityNewActivity";
-            this.PopupMenuActivityNewActivity.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityNewActivity.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityNewActivity.Text = "&New Activity...";
             this.PopupMenuActivityNewActivity.Click += new System.EventHandler(this.MenuActionNewActivity_Click);
             // 
@@ -1333,47 +1333,47 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityNewFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.PopupMenuActivityNewFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.PopupMenuActivityNewFolder.Name = "PopupMenuActivityNewFolder";
-            this.PopupMenuActivityNewFolder.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityNewFolder.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityNewFolder.Text = "New &Folder...";
             this.PopupMenuActivityNewFolder.Click += new System.EventHandler(this.MenuActionNewActivityFolder_Click);
             // 
             // PopupMenuActivityEdit
             // 
             this.PopupMenuActivityEdit.Name = "PopupMenuActivityEdit";
-            this.PopupMenuActivityEdit.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityEdit.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityEdit.Text = "&Edit...";
             this.PopupMenuActivityEdit.Click += new System.EventHandler(this.MenuActionEdit_Click);
             // 
             // PopupMenuActivityRename
             // 
             this.PopupMenuActivityRename.Name = "PopupMenuActivityRename";
-            this.PopupMenuActivityRename.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityRename.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityRename.Text = "&Rename";
             this.PopupMenuActivityRename.Click += new System.EventHandler(this.PopupMenuActivityRename_Click);
             // 
             // PopupMenuActivitySplit
             // 
             this.PopupMenuActivitySplit.Name = "PopupMenuActivitySplit";
-            this.PopupMenuActivitySplit.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivitySplit.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivitySplit.Text = "Split...";
             // 
             // PopupMenuActivityMerge
             // 
             this.PopupMenuActivityMerge.Name = "PopupMenuActivityMerge";
-            this.PopupMenuActivityMerge.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityMerge.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityMerge.Text = "Merge...";
             // 
             // PopupMenuActivityHide
             // 
             this.PopupMenuActivityHide.Name = "PopupMenuActivityHide";
-            this.PopupMenuActivityHide.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityHide.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityHide.Text = "&Hide";
             this.PopupMenuActivityHide.Click += new System.EventHandler(this.MenuActionHideActivity_Click);
             // 
             // PopupMenuActivityUnhide
             // 
             this.PopupMenuActivityUnhide.Name = "PopupMenuActivityUnhide";
-            this.PopupMenuActivityUnhide.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityUnhide.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityUnhide.Text = "Un&hide";
             this.PopupMenuActivityUnhide.Visible = false;
             this.PopupMenuActivityUnhide.Click += new System.EventHandler(this.MenuActionUnhideActivity_Click);
@@ -1381,21 +1381,21 @@ namespace Timekeeper.Forms
             // PopupMenuActivityDelete
             // 
             this.PopupMenuActivityDelete.Name = "PopupMenuActivityDelete";
-            this.PopupMenuActivityDelete.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityDelete.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityDelete.Text = "&Delete...";
             this.PopupMenuActivityDelete.Click += new System.EventHandler(this.MenuActionDeleteActivity_Click);
             // 
             // PopupMenuActivitySep1
             // 
             this.PopupMenuActivitySep1.Name = "PopupMenuActivitySep1";
-            this.PopupMenuActivitySep1.Size = new System.Drawing.Size(143, 6);
+            this.PopupMenuActivitySep1.Size = new System.Drawing.Size(149, 6);
             // 
             // PopupMenuActivityUseProjects
             // 
             this.PopupMenuActivityUseProjects.Checked = true;
             this.PopupMenuActivityUseProjects.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuActivityUseProjects.Name = "PopupMenuActivityUseProjects";
-            this.PopupMenuActivityUseProjects.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityUseProjects.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityUseProjects.Text = "Use Projects";
             this.PopupMenuActivityUseProjects.Click += new System.EventHandler(this.PopupMenuActivityUseProjects_Click);
             // 
@@ -1404,26 +1404,26 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityUseActivities.Checked = true;
             this.PopupMenuActivityUseActivities.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuActivityUseActivities.Name = "PopupMenuActivityUseActivities";
-            this.PopupMenuActivityUseActivities.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityUseActivities.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityUseActivities.Text = "Use Activities";
             this.PopupMenuActivityUseActivities.Click += new System.EventHandler(this.PopupMenuActivityUseActivities_Click);
             // 
             // PopupMenuActivitySwapPanes
             // 
             this.PopupMenuActivitySwapPanes.Name = "PopupMenuActivitySwapPanes";
-            this.PopupMenuActivitySwapPanes.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivitySwapPanes.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivitySwapPanes.Text = "Swap Panes";
             this.PopupMenuActivitySwapPanes.Click += new System.EventHandler(this.PopupMenuActivitySwapPanes_Click);
             // 
             // PopupMenuActivitySep2
             // 
             this.PopupMenuActivitySep2.Name = "PopupMenuActivitySep2";
-            this.PopupMenuActivitySep2.Size = new System.Drawing.Size(143, 6);
+            this.PopupMenuActivitySep2.Size = new System.Drawing.Size(149, 6);
             // 
             // PopupMenuActivityProperties
             // 
             this.PopupMenuActivityProperties.Name = "PopupMenuActivityProperties";
-            this.PopupMenuActivityProperties.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityProperties.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuActivityProperties.Text = "&Properties...";
             this.PopupMenuActivityProperties.Click += new System.EventHandler(this.PopupMenuActivityProperties_Click);
             // 
@@ -1593,46 +1593,6 @@ namespace Timekeeper.Forms
             this.panelControls.Size = new System.Drawing.Size(650, 112);
             this.panelControls.TabIndex = 0;
             this.panelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
-            // 
-            // PopupMenuMemo
-            // 
-            this.PopupMenuMemo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cutToolStripMenuItem,
-            this.copyToolStripMenuItem,
-            this.pasteToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.selectAllToolStripMenuItem});
-            this.PopupMenuMemo.Name = "menuMemo";
-            this.PopupMenuMemo.Size = new System.Drawing.Size(118, 98);
-            // 
-            // cutToolStripMenuItem
-            // 
-            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
-            this.cutToolStripMenuItem.Text = "&Cut";
-            // 
-            // copyToolStripMenuItem
-            // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
-            this.copyToolStripMenuItem.Text = "C&opy";
-            // 
-            // pasteToolStripMenuItem
-            // 
-            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
-            this.pasteToolStripMenuItem.Text = "&Paste";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(114, 6);
-            // 
-            // selectAllToolStripMenuItem
-            // 
-            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
-            this.selectAllToolStripMenuItem.Text = "&Select All";
             // 
             // LocationAndCategoryPanel
             // 
@@ -2013,6 +1973,46 @@ namespace Timekeeper.Forms
             this.toolControlUnlock.Visible = false;
             this.toolControlUnlock.Click += new System.EventHandler(this.MenuToolbarBrowserUnlock_Click);
             // 
+            // PopupMenuMemo
+            // 
+            this.PopupMenuMemo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cutToolStripMenuItem,
+            this.copyToolStripMenuItem,
+            this.pasteToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.selectAllToolStripMenuItem});
+            this.PopupMenuMemo.Name = "menuMemo";
+            this.PopupMenuMemo.Size = new System.Drawing.Size(118, 98);
+            // 
+            // cutToolStripMenuItem
+            // 
+            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.cutToolStripMenuItem.Text = "&Cut";
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.copyToolStripMenuItem.Text = "C&opy";
+            // 
+            // pasteToolStripMenuItem
+            // 
+            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.pasteToolStripMenuItem.Text = "&Paste";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(114, 6);
+            // 
+            // selectAllToolStripMenuItem
+            // 
+            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
+            this.selectAllToolStripMenuItem.Text = "&Select All";
+            // 
             // SaveAsDialog
             // 
             this.SaveAsDialog.DefaultExt = "tkdb";
@@ -2053,13 +2053,13 @@ namespace Timekeeper.Forms
             this.splitMain.ResumeLayout(false);
             this.panelControls.ResumeLayout(false);
             this.panelControls.PerformLayout();
-            this.PopupMenuMemo.ResumeLayout(false);
             this.LocationAndCategoryPanel.ResumeLayout(false);
             this.CategoryPanel.ResumeLayout(false);
             this.LocationPanel.ResumeLayout(false);
             this.PopupMenuDates.ResumeLayout(false);
             this.BrowserToolbar.ResumeLayout(false);
             this.BrowserToolbar.PerformLayout();
+            this.PopupMenuMemo.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

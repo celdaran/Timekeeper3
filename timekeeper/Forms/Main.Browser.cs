@@ -198,7 +198,7 @@ namespace Timekeeper.Forms
                 }
 
                 // Set focus
-                MemoEditor.MemoEntry.Focus();
+                MemoEditor.Focus();
             }
             catch (Exception x) {
                 //Common.Warn(x.ToString());
@@ -332,7 +332,11 @@ namespace Timekeeper.Forms
             // FIXME: Make "MemoEntry" private again then add
             // appropriate methods for all this direct access
             // that we're doing.
-            MemoEditor.MemoEntry.Enabled = enabled;
+            if (enabled) {
+            	MemoEditor.Enable();
+            } else {
+                MemoEditor.Disable();
+            }
         }
 
         //----------------------------------------------------------------------
@@ -830,7 +834,7 @@ namespace Timekeeper.Forms
                 // Load empty form
                 Browser_EntryToForm(newBrowserEntry);
 
-                MemoEditor.MemoEntry.Focus();
+                MemoEditor.Focus();
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -854,7 +858,7 @@ namespace Timekeeper.Forms
             isBrowsing = false;
 
             // Ensure proper display
-            MemoEditor.MemoEntry.Focus();
+            MemoEditor.Focus();
         }
 
         //----------------------------------------------------------------------

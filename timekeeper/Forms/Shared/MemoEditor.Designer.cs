@@ -47,22 +47,22 @@
             this.FormatBlockquoteButton = new System.Windows.Forms.ToolStripButton();
             this.FormatHorizontalRuleButton = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.MemoPopup = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.hideFormattingToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showFormattingToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.PopupMenuCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.PopupMenuHideToolbar = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuShowToolbar = new System.Windows.Forms.ToolStripMenuItem();
             this.MemoToolbar.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.MemoPopup.SuspendLayout();
+            this.PopupMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // MemoEntry
             // 
             this.MemoEntry.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.MemoEntry.ContextMenuStrip = this.MemoPopup;
+            this.MemoEntry.ContextMenuStrip = this.PopupMenu;
             this.MemoEntry.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MemoEntry.Location = new System.Drawing.Point(0, 25);
             this.MemoEntry.Name = "MemoEntry";
@@ -155,6 +155,7 @@
             this.FormatBulletedListButton.Name = "FormatBulletedListButton";
             this.FormatBulletedListButton.Size = new System.Drawing.Size(23, 22);
             this.FormatBulletedListButton.Text = "toolStripButton5";
+            this.FormatBulletedListButton.Click += new System.EventHandler(this.FormatBulletedListButton_Click);
             // 
             // FormatNumberedListButton
             // 
@@ -164,6 +165,7 @@
             this.FormatNumberedListButton.Name = "FormatNumberedListButton";
             this.FormatNumberedListButton.Size = new System.Drawing.Size(23, 22);
             this.FormatNumberedListButton.Text = "toolStripButton1";
+            this.FormatNumberedListButton.Click += new System.EventHandler(this.FormatNumberedListButton_Click);
             // 
             // FormatSeparator2
             // 
@@ -188,18 +190,21 @@
             this.FormatHeading1Button.Name = "FormatHeading1Button";
             this.FormatHeading1Button.Size = new System.Drawing.Size(152, 22);
             this.FormatHeading1Button.Text = "Heading 1";
+            this.FormatHeading1Button.Click += new System.EventHandler(this.FormatHeading1Button_Click);
             // 
             // FormatHeading2Button
             // 
             this.FormatHeading2Button.Name = "FormatHeading2Button";
             this.FormatHeading2Button.Size = new System.Drawing.Size(152, 22);
             this.FormatHeading2Button.Text = "Heading 2";
+            this.FormatHeading2Button.Click += new System.EventHandler(this.FormatHeading2Button_Click);
             // 
             // FormatHeading3Button
             // 
             this.FormatHeading3Button.Name = "FormatHeading3Button";
             this.FormatHeading3Button.Size = new System.Drawing.Size(152, 22);
             this.FormatHeading3Button.Text = "Heading 3";
+            this.FormatHeading3Button.Click += new System.EventHandler(this.FormatHeading3Button_Click);
             // 
             // FormatCodeButton
             // 
@@ -208,6 +213,7 @@
             this.FormatCodeButton.Name = "FormatCodeButton";
             this.FormatCodeButton.Size = new System.Drawing.Size(52, 22);
             this.FormatCodeButton.Text = "Code";
+            this.FormatCodeButton.Click += new System.EventHandler(this.FormatCodeButton_Click);
             // 
             // FormatBlockquoteButton
             // 
@@ -216,6 +222,7 @@
             this.FormatBlockquoteButton.Name = "FormatBlockquoteButton";
             this.FormatBlockquoteButton.Size = new System.Drawing.Size(79, 22);
             this.FormatBlockquoteButton.Text = "Blockquote";
+            this.FormatBlockquoteButton.Click += new System.EventHandler(this.FormatBlockquoteButton_Click);
             // 
             // FormatHorizontalRuleButton
             // 
@@ -224,6 +231,7 @@
             this.FormatHorizontalRuleButton.Name = "FormatHorizontalRuleButton";
             this.FormatHorizontalRuleButton.Size = new System.Drawing.Size(41, 22);
             this.FormatHorizontalRuleButton.Text = "HR";
+            this.FormatHorizontalRuleButton.Click += new System.EventHandler(this.FormatHorizontalRuleButton_Click);
             // 
             // panel1
             // 
@@ -236,52 +244,62 @@
             this.panel1.Size = new System.Drawing.Size(519, 232);
             this.panel1.TabIndex = 2;
             // 
-            // MemoPopup
+            // PopupMenu
             // 
-            this.MemoPopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cutToolStripMenuItem,
-            this.copyToolStripMenuItem,
-            this.pasteToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.hideFormattingToolbarToolStripMenuItem,
-            this.showFormattingToolbarToolStripMenuItem});
-            this.MemoPopup.Name = "MemoPopup";
-            this.MemoPopup.Size = new System.Drawing.Size(195, 120);
+            this.PopupMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PopupMenuCut,
+            this.PopupMenuCopy,
+            this.PopupMenuPaste,
+            this.PopupMenuSep1,
+            this.PopupMenuHideToolbar,
+            this.PopupMenuShowToolbar});
+            this.PopupMenu.Name = "PopupMenu";
+            this.PopupMenu.Size = new System.Drawing.Size(195, 142);
+            this.PopupMenu.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenu_Opening);
             // 
-            // cutToolStripMenuItem
+            // PopupMenuCut
             // 
-            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.cutToolStripMenuItem.Text = "Cut";
+            this.PopupMenuCut.Name = "PopupMenuCut";
+            this.PopupMenuCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.PopupMenuCut.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuCut.Text = "Cut";
+            this.PopupMenuCut.Click += new System.EventHandler(this.PopupMenuCut_Click);
             // 
-            // copyToolStripMenuItem
+            // PopupMenuCopy
             // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.copyToolStripMenuItem.Text = "Copy";
+            this.PopupMenuCopy.Name = "PopupMenuCopy";
+            this.PopupMenuCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.PopupMenuCopy.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuCopy.Text = "Copy";
+            this.PopupMenuCopy.Click += new System.EventHandler(this.PopupMenuCopy_Click);
             // 
-            // pasteToolStripMenuItem
+            // PopupMenuPaste
             // 
-            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.pasteToolStripMenuItem.Text = "Paste";
+            this.PopupMenuPaste.Name = "PopupMenuPaste";
+            this.PopupMenuPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.PopupMenuPaste.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuPaste.Text = "Paste";
+            this.PopupMenuPaste.Click += new System.EventHandler(this.PopupMenuPaste_Click);
             // 
-            // toolStripMenuItem1
+            // PopupMenuSep1
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 6);
+            this.PopupMenuSep1.Name = "PopupMenuSep1";
+            this.PopupMenuSep1.Size = new System.Drawing.Size(191, 6);
             // 
-            // hideFormattingToolbarToolStripMenuItem
+            // PopupMenuHideToolbar
             // 
-            this.hideFormattingToolbarToolStripMenuItem.Name = "hideFormattingToolbarToolStripMenuItem";
-            this.hideFormattingToolbarToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.hideFormattingToolbarToolStripMenuItem.Text = "Hide Formatting Toolbar";
+            this.PopupMenuHideToolbar.Name = "PopupMenuHideToolbar";
+            this.PopupMenuHideToolbar.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuHideToolbar.Text = "Hide Formatting Toolbar";
+            this.PopupMenuHideToolbar.Click += new System.EventHandler(this.PopupMenuHideToolbar_Click);
             // 
-            // showFormattingToolbarToolStripMenuItem
+            // PopupMenuShowToolbar
             // 
-            this.showFormattingToolbarToolStripMenuItem.Name = "showFormattingToolbarToolStripMenuItem";
-            this.showFormattingToolbarToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.showFormattingToolbarToolStripMenuItem.Text = "Show Formatting Toolbar";
+            this.PopupMenuShowToolbar.Name = "PopupMenuShowToolbar";
+            this.PopupMenuShowToolbar.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuShowToolbar.Text = "Show Formatting Toolbar";
+            this.PopupMenuShowToolbar.Visible = false;
+            this.PopupMenuShowToolbar.Click += new System.EventHandler(this.PopupMenuShowToolbar_Click);
             // 
             // MemoEditor
             // 
@@ -294,7 +312,7 @@
             this.MemoToolbar.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.MemoPopup.ResumeLayout(false);
+            this.PopupMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -318,13 +336,13 @@
         private System.Windows.Forms.ToolStripButton FormatBlockquoteButton;
         private System.Windows.Forms.ToolStripButton FormatHorizontalRuleButton;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ContextMenuStrip MemoPopup;
-        private System.Windows.Forms.ToolStripMenuItem cutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem hideFormattingToolbarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showFormattingToolbarToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip PopupMenu;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuCut;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuCopy;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuPaste;
+        private System.Windows.Forms.ToolStripSeparator PopupMenuSep1;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuHideToolbar;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuShowToolbar;
         internal System.Windows.Forms.RichTextBox MemoEntry;
     }
 }

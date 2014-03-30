@@ -100,7 +100,10 @@ namespace Timekeeper.Classes
                 "select JournalId, JournalIndex from Journal where datetime(StartTime) >= datetime('{0}') order by StartTime",
                 since.ToString(Common.DATETIME_FORMAT));
             Table Table = Database.Select(Query);
-            Bench(t, "[Reindex] Rows fetched");
+            Bench(t, "[Reindex] " + Table.Count.ToString() + " Rows fetched");
+
+            if (Table.Count <= 1)
+                return;
 
             // Then get our starting index
             Bench(t);
@@ -122,6 +125,7 @@ namespace Timekeeper.Classes
                 Row UpdatedRow = new Row();
                 UpdatedRow["JournalIndex"] = Index;
                 Database.Update("Journal", UpdatedRow, "JournalId", Row["JournalId"]);
+                Timekeeper.Info("UPDATE Journal SET JournalIndex " + Index.ToString() + " WHERE JournalId = " + Row["JournalId"]);
                 Index++;
             }
             Bench(t, "[Reindex] Updated JournalIndex values");

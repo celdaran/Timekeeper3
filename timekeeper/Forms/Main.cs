@@ -1015,6 +1015,8 @@ namespace Timekeeper.Forms
             // 3. This is trickier than it sounds.
             // Go!
 
+
+            /*
             if (wStopTime.Value < wStartTime.Value) {
                 Common.Warn("Stop time cannot be before Start time");
                 wStopTime.Value = priorLoadedBrowserEntry.StopTime;
@@ -1034,6 +1036,7 @@ namespace Timekeeper.Forms
                 wStartTime.Value = priorLoadedBrowserEntry.StartTime;
                 return;
             }
+            */
 
             // TODO: Lastly, move this logic to Main.Action.cs
         }
