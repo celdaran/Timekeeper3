@@ -1053,7 +1053,8 @@ namespace Timekeeper.Forms
 
         private void Action_CenterSplitter(SplitContainer split)
         {
-            split.SplitterDistance = split.Width / 2;
+            int FullSize = (split.Orientation == Orientation.Horizontal) ? split.Height : split.Width;
+            split.SplitterDistance = FullSize / 2;
         }
 
         //---------------------------------------------------------------------

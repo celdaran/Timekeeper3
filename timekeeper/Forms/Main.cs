@@ -144,14 +144,12 @@ namespace Timekeeper.Forms
         private void MenuActionOpenBrowser_Click(object sender, EventArgs e)
         {
             Browser_Open();
-            Browser_Size(true);
         }
 
         // Action | Close Browser
         private void MenuActionCloseBrowser_Click(object sender, EventArgs e)
         {
             Browser_Close();
-            Browser_Size(false);
         }
 
         // Action | New Project
@@ -822,6 +820,11 @@ namespace Timekeeper.Forms
             }
         }
 
+        private void Main_ResizeEnd(object sender, EventArgs e)
+        {
+            DebugWindowMetrics();
+        }
+
         private void TrayIcon_DoubleClick(object sender, EventArgs e)
         {
             Show();
@@ -1189,6 +1192,40 @@ namespace Timekeeper.Forms
         private void MenuToolbarFormatStrikethrough_Click(object sender, EventArgs e)
         {
             this.MemoEditor.FormatStrikethroughButton_Click(sender, e);
+        }
+
+        // Debugging
+
+        private void splitMain_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            DebugWindowMetrics();
+        }
+
+        private void DebugWindowMetrics()
+        {
+            string Display = "";
+
+            Display = String.Format(@"Panel 1: {0}x{1}, Panel 2: {2}x{3}",
+                splitMain.Panel1.Width,
+                splitMain.Panel1.Height,
+                splitMain.Panel2.Width,
+                splitMain.Panel2.Height);
+            /*
+            Display = String.Format(@"Panel 1: {0}x{1}, Panel 2: {2}x{3}",
+                splitTrees.Panel1.Width,
+                splitTrees.Panel1.Height,
+                splitTrees.Panel2.Width,
+                splitTrees.Panel2.Height);
+            Display = String.Format(@"Browser Height = {0}",
+                splitMain.SplitterDistance);
+            */
+
+            StatusBarDebug1.Text = Display;
+        }
+
+        private void splitMain_Resize(object sender, EventArgs e)
+        {
+            //Common.Info("You just resized splitMain");
         }
 
         //---------------------------------------------------------------------

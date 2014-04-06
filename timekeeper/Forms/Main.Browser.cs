@@ -604,7 +604,33 @@ namespace Timekeeper.Forms
 
         private void Browser_Open()
         {
+            // Set a fallback height, if we're manually opening the browser window
+            bool hack = false;
+            if (LastBrowserHeight == 0) {
+                // If browser hasn't been opened, set a default browser height.
+                // But this won't work because splitMain.Height is not my current height.
+                // I need to know what it was before... I should be saving this somewhere
+                // if I can't easily calculate it.
+                // Wait a sec. I figured this out in the car after struggling with this
+                // all morning: don't do anything except set a default. If the user closes
+                // the browser then closes the app with that state, they've effectively
+                // reset themselves to a state where it was never open. In short: just
+                // set a reasonable default here and be done with it.
+                //LastBrowserHeight = splitMain.Height - Options.Main_MainSplitterDistance;
+                LastBrowserHeight = 340; // nothing magic: just a reasonable, default browser height
+                hack = true;
+            }
+
             Browser_Show(true);
+
+            if (hack) {
+                // Next line needed only when the BrowserOpen saved state was 0
+                // and we then open up the browser for the first time *after*
+                // TK has been started and the file loaded. We're doing this
+                // now, rather than before, because the .NET code being called
+                // in Browser_Show will whomp this.
+                Action_CenterSplitter(splitMain);
+            }
 
             if (timerRunning && Entry.AtEnd()) {
                 Browser_SetupForStopping();
@@ -863,31 +889,24 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
+        private int LastBrowserHeight = 0;
+
+        //----------------------------------------------------------------------
+
         private void Browser_Show(bool show)
         {
             MenuActionOpenBrowser.Visible = !show;
             MenuActionCloseBrowser.Visible = show;
-            splitMain.Panel2Collapsed = !show;
             Options.Main_BrowserOpen = show;
-        }
 
-        //----------------------------------------------------------------------
-
-        private void Browser_Size(bool opening)
-        {
-            return;
-
-            // TODO: I'm going down an absolute rabbit hole here.
-            // First rule of holes: when you're in one, stop digging.
-
-            /*
-            if (opening) {
-                this.Height += Options.Main_BrowserHeight;
+            if (show) {
+                this.Height += LastBrowserHeight;
+                splitMain.Panel2Collapsed = false;
             } else {
-                Options.Main_BrowserHeight = splitMain.Height - splitMain.SplitterDistance;
-                this.Height -= Options.Main_BrowserHeight;
+                LastBrowserHeight = splitMain.Panel2.Height;
+                splitMain.Panel2Collapsed = true;
+                this.Height -= LastBrowserHeight;
             }
-            */
         }
 
         //---------------------------------------------------------------------

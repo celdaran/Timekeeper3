@@ -124,6 +124,7 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedActivityToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarElapsedAllToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarFileName = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBarDebug1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.splitTrees = new System.Windows.Forms.SplitContainer();
             this.ProjectTree = new System.Windows.Forms.TreeView();
             this.PopupMenuProject = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -800,7 +801,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowserRevert,
             this.MenuToolbarBrowserUnlock});
             this.MenuToolbarBrowser.Name = "MenuToolbarBrowser";
-            this.MenuToolbarBrowser.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowser.Size = new System.Drawing.Size(113, 22);
             this.MenuToolbarBrowser.Text = "&Browser";
             // 
             // MenuToolbarBrowserFirst
@@ -922,7 +923,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarFormatUnderline,
             this.MenuToolbarFormatStrikethrough});
             this.MenuToolbarFormat.Name = "MenuToolbarFormat";
-            this.MenuToolbarFormat.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarFormat.Size = new System.Drawing.Size(113, 22);
             this.MenuToolbarFormat.Text = "&Format";
             // 
             // MenuToolbarFormatBold
@@ -968,7 +969,8 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedProjectToday,
             this.StatusBarElapsedActivityToday,
             this.StatusBarElapsedAllToday,
-            this.StatusBarFileName});
+            this.StatusBarFileName,
+            this.StatusBarDebug1});
             this.StatusBar.Location = new System.Drawing.Point(0, 386);
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.ShowItemToolTips = true;
@@ -1064,6 +1066,12 @@ namespace Timekeeper.Forms
             this.StatusBarFileName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.StatusBarFileName.ToolTipText = "No Timekeeper file has been opened. Use File|New or File|Open to begin.";
             this.StatusBarFileName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.statusFile_MouseDown);
+            // 
+            // StatusBarDebug1
+            // 
+            this.StatusBarDebug1.Name = "StatusBarDebug1";
+            this.StatusBarDebug1.Size = new System.Drawing.Size(47, 17);
+            this.StatusBarDebug1.Text = "Debug 1";
             // 
             // splitTrees
             // 
@@ -1558,7 +1566,7 @@ namespace Timekeeper.Forms
             // splitMain
             // 
             this.splitMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitMain.Location = new System.Drawing.Point(0, 24);
             this.splitMain.Name = "splitMain";
             this.splitMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -1574,7 +1582,9 @@ namespace Timekeeper.Forms
             this.splitMain.SplitterDistance = 115;
             this.splitMain.TabIndex = 4;
             this.splitMain.TabStop = false;
+            this.splitMain.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitMain_SplitterMoved);
             this.splitMain.DoubleClick += new System.EventHandler(this.splitMain_DoubleClick);
+            this.splitMain.Resize += new System.EventHandler(this.splitMain_Resize);
             // 
             // panelControls
             // 
@@ -2036,6 +2046,7 @@ namespace Timekeeper.Forms
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
+            this.ResizeEnd += new System.EventHandler(this.Main_ResizeEnd);
             this.Resize += new System.EventHandler(this.Main_Resize);
             this.MenuMain.ResumeLayout(false);
             this.MenuMain.PerformLayout();
@@ -2264,5 +2275,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem stopwatchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MenuFileUtilitiesReindex;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarDebug1;
     }
 }
