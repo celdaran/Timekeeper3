@@ -48,6 +48,11 @@ namespace Timekeeper
                     // Create 3.0 reference tables
                     CreateRefTables(CurrentSchemaVersion);
 
+                    // Create new 3.0 dimensions
+                    CreateNewTable("Location", CurrentSchemaVersion, false);
+                    PopulateLocation((FileBaseOptions)this.UpgradeOptions);
+                    CreateNewTable("Category", CurrentSchemaVersion, Populate);
+
                     // Upgrade 2.0 tables
                     UpgradeMeta();
                     UpgradeActivity(PriorVersion);
@@ -55,10 +60,16 @@ namespace Timekeeper
                     UpgradeJournal();
 
                     // Create remaining 3.0 tables
-                    CreateNewTable("Category", CurrentSchemaVersion, Populate);
                     CreateNewTable("Notebook", CurrentSchemaVersion, false);
+                    CreateNewTable("Todo", CurrentSchemaVersion, false);
+                    CreateNewTable("Reminder", CurrentSchemaVersion, false);
+                    CreateNewTable("Schedule", CurrentSchemaVersion, false);
+                    CreateNewTable("EventGroup", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Event", CurrentSchemaVersion, false);
+
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
                     CreateNewTable("FilterOptions", CurrentSchemaVersion, false);
+
                     CreateNewTable("FindView", CurrentSchemaVersion, false);
                     CreateNewTable("GridView", CurrentSchemaVersion, false);
                     CreateNewTable("ReportView", CurrentSchemaVersion, false);
@@ -80,6 +91,11 @@ namespace Timekeeper
                     // Create 3.0 reference tables
                     CreateRefTables(CurrentSchemaVersion);
 
+                    // Create new 3.0 dimensions
+                    CreateNewTable("Location", CurrentSchemaVersion, false);
+                    PopulateLocation((FileBaseOptions)this.UpgradeOptions);
+                    CreateNewTable("Category", CurrentSchemaVersion, Populate);
+
                     // Upgrade 2.1 tables
                     UpgradeMeta();
                     UpgradeActivity(PriorVersion);
@@ -89,8 +105,15 @@ namespace Timekeeper
                     UpgradeJournal();
 
                     // Create 3.0 tables
-                    CreateNewTable("Category", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Todo", CurrentSchemaVersion, false);
+                    CreateNewTable("Reminder", CurrentSchemaVersion, false);
+                    CreateNewTable("Schedule", CurrentSchemaVersion, false);
+                    CreateNewTable("EventGroup", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Event", CurrentSchemaVersion, false);
+
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
+
+                    CreateNewTable("FindView", CurrentSchemaVersion, false);
                     CreateNewTable("ReportView", CurrentSchemaVersion, false);
 
                     // End a unit of work (this is NOT a transaction)
@@ -110,6 +133,11 @@ namespace Timekeeper
                     // Create 3.0 reference tables
                     CreateRefTables(CurrentSchemaVersion);
 
+                    // Create new 3.0 dimensions
+                    CreateNewTable("Location", CurrentSchemaVersion, false);
+                    PopulateLocation((FileBaseOptions)this.UpgradeOptions);
+                    CreateNewTable("Category", CurrentSchemaVersion, Populate);
+
                     // Upgrade 2.2 tables
                     UpgradeMeta();
                     UpgradeActivity(PriorVersion);
@@ -119,8 +147,15 @@ namespace Timekeeper
                     UpgradeJournal();
 
                     // Create 3.0 tables
-                    CreateNewTable("Category", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Todo", CurrentSchemaVersion, false);
+                    CreateNewTable("Reminder", CurrentSchemaVersion, false);
+                    CreateNewTable("Schedule", CurrentSchemaVersion, false);
+                    CreateNewTable("EventGroup", CurrentSchemaVersion, Populate);
+                    CreateNewTable("Event", CurrentSchemaVersion, false);
+
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
+
+                    CreateNewTable("FindView", CurrentSchemaVersion, false);
                     CreateNewTable("ReportView", CurrentSchemaVersion, false);
 
                     // End a unit of work (this is NOT a transaction)
@@ -147,17 +182,14 @@ namespace Timekeeper
 
         private void CreateRefTables(Version version)
         {
-            // Create prerequisite 3.0 tables
             CreateNewTable("RefDimension", version, true);
             CreateNewTable("RefDatePreset", version, true);
             CreateNewTable("RefGroupBy", version, true);
+            CreateNewTable("RefScheduleType", version, true);
             CreateNewTable("RefTimeDisplay", version, true);
-
             CreateNewTable("RefTimeZone", version, false);
+            CreateNewTable("RefTodoStatus", version, true);
             PopulateRefTimeZone();
-
-            CreateNewTable("Location", version, false);
-            PopulateLocation((FileBaseOptions)this.UpgradeOptions);
         }
 
         //---------------------------------------------------------------------

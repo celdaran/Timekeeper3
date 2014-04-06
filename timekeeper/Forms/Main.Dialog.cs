@@ -309,7 +309,6 @@ namespace Timekeeper.Forms
                         Height = 200;
                         Width = 364;
                         Browser_Close();
-                        Browser_Size(false);
                         break;
                     case 1:
                         Height = 460;
@@ -317,7 +316,6 @@ namespace Timekeeper.Forms
                         splitMain.SplitterDistance = 180;
                         splitTrees.SplitterDistance = Width / 2;
                         Browser_Open();
-                        Browser_Size(true);
                         break;
                     case 2:
                         Height = 460;
@@ -325,7 +323,6 @@ namespace Timekeeper.Forms
                         splitMain.SplitterDistance = 180;
                         splitTrees.SplitterDistance = Width / 2;
                         Browser_Open();
-                        Browser_Size(true);
                         break;
                 }
             }
