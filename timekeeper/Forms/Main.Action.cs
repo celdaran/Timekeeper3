@@ -544,7 +544,7 @@ namespace Timekeeper.Forms
             Options.LoadMRU();
 
             // TODO: should this itself be an option?
-            Timekeeper.Info("Timekeeper Started");
+            Timekeeper.Info("Timekeeper Version " + Timekeeper.VERSION + " Started");
         }
 
         //---------------------------------------------------------------------
