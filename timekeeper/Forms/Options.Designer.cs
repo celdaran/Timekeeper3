@@ -143,10 +143,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.AdvancedPage = new System.Windows.Forms.TabPage();
-            this.OtherGroup = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
+            this.OtherAdvancedGroup = new System.Windows.Forms.GroupBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -161,6 +158,13 @@
             this.LoggingDatabaseLabel = new System.Windows.Forms.Label();
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
+            this.OtherViewGroup = new System.Windows.Forms.GroupBox();
+            this.View_Other_MemoEditorToolbar = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.Advanced_Other_MarkupLanguage = new System.Windows.Forms.ComboBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -198,10 +202,11 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.AdvancedPage.SuspendLayout();
-            this.OtherGroup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            this.OtherAdvancedGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.LoggingGroup.SuspendLayout();
+            this.OtherViewGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -264,7 +269,7 @@
             this.PresetGroup.Controls.Add(this.Layout_Preset_Typical);
             this.PresetGroup.Location = new System.Drawing.Point(17, 16);
             this.PresetGroup.Name = "PresetGroup";
-            this.PresetGroup.Size = new System.Drawing.Size(363, 125);
+            this.PresetGroup.Size = new System.Drawing.Size(345, 125);
             this.PresetGroup.TabIndex = 3;
             this.PresetGroup.TabStop = false;
             this.PresetGroup.Text = "Interface Presets";
@@ -274,7 +279,7 @@
             this.PresetInstructionsLabel.AutoSize = true;
             this.PresetInstructionsLabel.Location = new System.Drawing.Point(127, 33);
             this.PresetInstructionsLabel.Name = "PresetInstructionsLabel";
-            this.PresetInstructionsLabel.Size = new System.Drawing.Size(230, 65);
+            this.PresetInstructionsLabel.Size = new System.Drawing.Size(215, 65);
             this.PresetInstructionsLabel.TabIndex = 3;
             this.PresetInstructionsLabel.Text = resources.GetString("PresetInstructionsLabel.Text");
             // 
@@ -323,7 +328,7 @@
             this.DimensionGroup.Controls.Add(this.Layout_UseProjects);
             this.DimensionGroup.Location = new System.Drawing.Point(17, 159);
             this.DimensionGroup.Name = "DimensionGroup";
-            this.DimensionGroup.Size = new System.Drawing.Size(363, 151);
+            this.DimensionGroup.Size = new System.Drawing.Size(345, 151);
             this.DimensionGroup.TabIndex = 0;
             this.DimensionGroup.TabStop = false;
             this.DimensionGroup.Text = "Timetracking Dimensions";
@@ -333,7 +338,7 @@
             this.DimensionsInstructionsLabel.AutoSize = true;
             this.DimensionsInstructionsLabel.Location = new System.Drawing.Point(127, 33);
             this.DimensionsInstructionsLabel.Name = "DimensionsInstructionsLabel";
-            this.DimensionsInstructionsLabel.Size = new System.Drawing.Size(230, 65);
+            this.DimensionsInstructionsLabel.Size = new System.Drawing.Size(203, 65);
             this.DimensionsInstructionsLabel.TabIndex = 4;
             this.DimensionsInstructionsLabel.Text = resources.GetString("DimensionsInstructionsLabel.Text");
             // 
@@ -391,6 +396,8 @@
             // 
             // ViewPage
             // 
+            this.ViewPage.AutoScroll = true;
+            this.ViewPage.Controls.Add(this.OtherViewGroup);
             this.ViewPage.Controls.Add(this.StatusBarGroup);
             this.ViewPage.Controls.Add(this.HiddenGroup);
             this.ViewPage.Location = new System.Drawing.Point(98, 4);
@@ -412,7 +419,7 @@
             this.StatusBarGroup.Controls.Add(this.StatusBarGroup_TopPanel);
             this.StatusBarGroup.Location = new System.Drawing.Point(17, 16);
             this.StatusBarGroup.Name = "StatusBarGroup";
-            this.StatusBarGroup.Size = new System.Drawing.Size(363, 208);
+            this.StatusBarGroup.Size = new System.Drawing.Size(345, 208);
             this.StatusBarGroup.TabIndex = 20;
             this.StatusBarGroup.TabStop = false;
             this.StatusBarGroup.Text = "Status Bar";
@@ -424,7 +431,7 @@
             this.StatusBarGroup_BottomPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.StatusBarGroup_BottomPanel.Location = new System.Drawing.Point(3, 154);
             this.StatusBarGroup_BottomPanel.Name = "StatusBarGroup_BottomPanel";
-            this.StatusBarGroup_BottomPanel.Size = new System.Drawing.Size(357, 46);
+            this.StatusBarGroup_BottomPanel.Size = new System.Drawing.Size(339, 46);
             this.StatusBarGroup_BottomPanel.TabIndex = 6;
             // 
             // View_StatusBar_ElapsedAllToday
@@ -455,7 +462,7 @@
             this.StatusBarGroup_ActivityElapsedPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.StatusBarGroup_ActivityElapsedPanel.Location = new System.Drawing.Point(3, 131);
             this.StatusBarGroup_ActivityElapsedPanel.Name = "StatusBarGroup_ActivityElapsedPanel";
-            this.StatusBarGroup_ActivityElapsedPanel.Size = new System.Drawing.Size(357, 23);
+            this.StatusBarGroup_ActivityElapsedPanel.Size = new System.Drawing.Size(339, 23);
             this.StatusBarGroup_ActivityElapsedPanel.TabIndex = 5;
             // 
             // View_StatusBar_ElapsedActivityToday
@@ -475,7 +482,7 @@
             this.StatusBarGroup_ProjectElapsedPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.StatusBarGroup_ProjectElapsedPanel.Location = new System.Drawing.Point(3, 108);
             this.StatusBarGroup_ProjectElapsedPanel.Name = "StatusBarGroup_ProjectElapsedPanel";
-            this.StatusBarGroup_ProjectElapsedPanel.Size = new System.Drawing.Size(357, 23);
+            this.StatusBarGroup_ProjectElapsedPanel.Size = new System.Drawing.Size(339, 23);
             this.StatusBarGroup_ProjectElapsedPanel.TabIndex = 4;
             // 
             // View_StatusBar_ElapsedProjectToday
@@ -495,7 +502,7 @@
             this.StatusBarGroup_ElapsedPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.StatusBarGroup_ElapsedPanel.Location = new System.Drawing.Point(3, 85);
             this.StatusBarGroup_ElapsedPanel.Name = "StatusBarGroup_ElapsedPanel";
-            this.StatusBarGroup_ElapsedPanel.Size = new System.Drawing.Size(357, 23);
+            this.StatusBarGroup_ElapsedPanel.Size = new System.Drawing.Size(339, 23);
             this.StatusBarGroup_ElapsedPanel.TabIndex = 3;
             // 
             // View_StatusBar_ElapsedSinceStart
@@ -515,7 +522,7 @@
             this.StatusBarGroup_ActivityNamePanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.StatusBarGroup_ActivityNamePanel.Location = new System.Drawing.Point(3, 62);
             this.StatusBarGroup_ActivityNamePanel.Name = "StatusBarGroup_ActivityNamePanel";
-            this.StatusBarGroup_ActivityNamePanel.Size = new System.Drawing.Size(357, 23);
+            this.StatusBarGroup_ActivityNamePanel.Size = new System.Drawing.Size(339, 23);
             this.StatusBarGroup_ActivityNamePanel.TabIndex = 2;
             // 
             // View_StatusBar_ActivityName
@@ -535,7 +542,7 @@
             this.StatusBarGroup_ProjectNamePanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.StatusBarGroup_ProjectNamePanel.Location = new System.Drawing.Point(3, 39);
             this.StatusBarGroup_ProjectNamePanel.Name = "StatusBarGroup_ProjectNamePanel";
-            this.StatusBarGroup_ProjectNamePanel.Size = new System.Drawing.Size(357, 23);
+            this.StatusBarGroup_ProjectNamePanel.Size = new System.Drawing.Size(339, 23);
             this.StatusBarGroup_ProjectNamePanel.TabIndex = 1;
             // 
             // View_StatusBar_ProjectName
@@ -556,7 +563,7 @@
             this.StatusBarGroup_TopPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.StatusBarGroup_TopPanel.Location = new System.Drawing.Point(3, 16);
             this.StatusBarGroup_TopPanel.Name = "StatusBarGroup_TopPanel";
-            this.StatusBarGroup_TopPanel.Size = new System.Drawing.Size(357, 23);
+            this.StatusBarGroup_TopPanel.Size = new System.Drawing.Size(339, 23);
             this.StatusBarGroup_TopPanel.TabIndex = 0;
             // 
             // View_StatusBar_AddLabels
@@ -569,6 +576,7 @@
             this.View_StatusBar_AddLabels.TabIndex = 11;
             this.View_StatusBar_AddLabels.Text = "Add Labels";
             this.View_StatusBar_AddLabels.UseVisualStyleBackColor = true;
+            this.View_StatusBar_AddLabels.Visible = false;
             // 
             // View_StatusBar
             // 
@@ -589,7 +597,7 @@
             this.HiddenGroup.Controls.Add(this.HiddenGroup_ProjectPanel);
             this.HiddenGroup.Location = new System.Drawing.Point(17, 230);
             this.HiddenGroup.Name = "HiddenGroup";
-            this.HiddenGroup.Size = new System.Drawing.Size(363, 131);
+            this.HiddenGroup.Size = new System.Drawing.Size(345, 131);
             this.HiddenGroup.TabIndex = 19;
             this.HiddenGroup.TabStop = false;
             this.HiddenGroup.Text = "Hidden Items";
@@ -601,7 +609,7 @@
             this.HiddenGroup_CategoryPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HiddenGroup_CategoryPanel.Location = new System.Drawing.Point(3, 97);
             this.HiddenGroup_CategoryPanel.Name = "HiddenGroup_CategoryPanel";
-            this.HiddenGroup_CategoryPanel.Size = new System.Drawing.Size(357, 27);
+            this.HiddenGroup_CategoryPanel.Size = new System.Drawing.Size(339, 27);
             this.HiddenGroup_CategoryPanel.TabIndex = 22;
             // 
             // View_HiddenCategories
@@ -622,7 +630,7 @@
             this.View_HiddenCategoriesSince.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.View_HiddenCategoriesSince.Enabled = false;
             this.View_HiddenCategoriesSince.FormattingEnabled = true;
-            this.View_HiddenCategoriesSince.Location = new System.Drawing.Point(221, 2);
+            this.View_HiddenCategoriesSince.Location = new System.Drawing.Point(205, 2);
             this.View_HiddenCategoriesSince.Name = "View_HiddenCategoriesSince";
             this.View_HiddenCategoriesSince.Size = new System.Drawing.Size(121, 21);
             this.View_HiddenCategoriesSince.TabIndex = 18;
@@ -634,7 +642,7 @@
             this.HiddenGroup_LocationPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HiddenGroup_LocationPanel.Location = new System.Drawing.Point(3, 70);
             this.HiddenGroup_LocationPanel.Name = "HiddenGroup_LocationPanel";
-            this.HiddenGroup_LocationPanel.Size = new System.Drawing.Size(357, 27);
+            this.HiddenGroup_LocationPanel.Size = new System.Drawing.Size(339, 27);
             this.HiddenGroup_LocationPanel.TabIndex = 21;
             // 
             // View_HiddenLocations
@@ -655,7 +663,7 @@
             this.View_HiddenLocationsSince.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.View_HiddenLocationsSince.Enabled = false;
             this.View_HiddenLocationsSince.FormattingEnabled = true;
-            this.View_HiddenLocationsSince.Location = new System.Drawing.Point(221, 2);
+            this.View_HiddenLocationsSince.Location = new System.Drawing.Point(205, 2);
             this.View_HiddenLocationsSince.Name = "View_HiddenLocationsSince";
             this.View_HiddenLocationsSince.Size = new System.Drawing.Size(121, 21);
             this.View_HiddenLocationsSince.TabIndex = 17;
@@ -667,7 +675,7 @@
             this.HiddenGroup_ActivityPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HiddenGroup_ActivityPanel.Location = new System.Drawing.Point(3, 43);
             this.HiddenGroup_ActivityPanel.Name = "HiddenGroup_ActivityPanel";
-            this.HiddenGroup_ActivityPanel.Size = new System.Drawing.Size(357, 27);
+            this.HiddenGroup_ActivityPanel.Size = new System.Drawing.Size(339, 27);
             this.HiddenGroup_ActivityPanel.TabIndex = 20;
             // 
             // View_HiddenActivities
@@ -688,7 +696,7 @@
             this.View_HiddenActivitiesSince.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.View_HiddenActivitiesSince.Enabled = false;
             this.View_HiddenActivitiesSince.FormattingEnabled = true;
-            this.View_HiddenActivitiesSince.Location = new System.Drawing.Point(221, 2);
+            this.View_HiddenActivitiesSince.Location = new System.Drawing.Point(205, 2);
             this.View_HiddenActivitiesSince.Name = "View_HiddenActivitiesSince";
             this.View_HiddenActivitiesSince.Size = new System.Drawing.Size(121, 21);
             this.View_HiddenActivitiesSince.TabIndex = 16;
@@ -700,7 +708,7 @@
             this.HiddenGroup_ProjectPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HiddenGroup_ProjectPanel.Location = new System.Drawing.Point(3, 16);
             this.HiddenGroup_ProjectPanel.Name = "HiddenGroup_ProjectPanel";
-            this.HiddenGroup_ProjectPanel.Size = new System.Drawing.Size(357, 27);
+            this.HiddenGroup_ProjectPanel.Size = new System.Drawing.Size(339, 27);
             this.HiddenGroup_ProjectPanel.TabIndex = 19;
             // 
             // View_HiddenProjects
@@ -721,7 +729,7 @@
             this.View_HiddenProjectsSince.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.View_HiddenProjectsSince.Enabled = false;
             this.View_HiddenProjectsSince.FormattingEnabled = true;
-            this.View_HiddenProjectsSince.Location = new System.Drawing.Point(221, 2);
+            this.View_HiddenProjectsSince.Location = new System.Drawing.Point(205, 2);
             this.View_HiddenProjectsSince.Name = "View_HiddenProjectsSince";
             this.View_HiddenProjectsSince.Size = new System.Drawing.Size(121, 21);
             this.View_HiddenProjectsSince.TabIndex = 15;
@@ -1407,8 +1415,11 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.numericUpDown2);
             this.groupBox1.Controls.Add(this.textBox4);
             this.groupBox1.Controls.Add(this.textBox3);
             this.groupBox1.Controls.Add(this.checkBox4);
@@ -1418,7 +1429,7 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Location = new System.Drawing.Point(17, 121);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(345, 162);
+            this.groupBox1.Size = new System.Drawing.Size(345, 179);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server Settings";
@@ -1426,7 +1437,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(14, 132);
+            this.label9.Location = new System.Drawing.Point(14, 146);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(56, 13);
             this.label9.TabIndex = 16;
@@ -1435,7 +1446,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(14, 106);
+            this.label8.Location = new System.Drawing.Point(14, 120);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(58, 13);
             this.label8.TabIndex = 15;
@@ -1443,7 +1454,7 @@
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(111, 129);
+            this.textBox4.Location = new System.Drawing.Point(111, 143);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(215, 20);
             this.textBox4.TabIndex = 14;
@@ -1452,7 +1463,7 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(111, 103);
+            this.textBox3.Location = new System.Drawing.Point(111, 117);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(215, 20);
             this.textBox3.TabIndex = 13;
@@ -1504,7 +1515,7 @@
             // 
             // AdvancedPage
             // 
-            this.AdvancedPage.Controls.Add(this.OtherGroup);
+            this.AdvancedPage.Controls.Add(this.OtherAdvancedGroup);
             this.AdvancedPage.Controls.Add(this.LoggingGroup);
             this.AdvancedPage.Location = new System.Drawing.Point(98, 4);
             this.AdvancedPage.Name = "AdvancedPage";
@@ -1514,55 +1525,24 @@
             this.AdvancedPage.Text = "Advanced";
             this.AdvancedPage.UseVisualStyleBackColor = true;
             // 
-            // OtherGroup
+            // OtherAdvancedGroup
             // 
-            this.OtherGroup.Controls.Add(this.label7);
-            this.OtherGroup.Controls.Add(this.numericUpDown2);
-            this.OtherGroup.Controls.Add(this.label6);
-            this.OtherGroup.Controls.Add(this.checkBox3);
-            this.OtherGroup.Controls.Add(this.checkBox2);
-            this.OtherGroup.Controls.Add(this.label3);
-            this.OtherGroup.Controls.Add(this.numericUpDown1);
-            this.OtherGroup.Controls.Add(this.label2);
-            this.OtherGroup.Controls.Add(this.checkBox1);
-            this.OtherGroup.Controls.Add(this.label1);
-            this.OtherGroup.Controls.Add(this.DateTimeFormatTemplate);
-            this.OtherGroup.Location = new System.Drawing.Point(17, 117);
-            this.OtherGroup.Name = "OtherGroup";
-            this.OtherGroup.Size = new System.Drawing.Size(363, 278);
-            this.OtherGroup.TabIndex = 3;
-            this.OtherGroup.TabStop = false;
-            this.OtherGroup.Text = "Other";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(175, 195);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(49, 13);
-            this.label7.TabIndex = 15;
-            this.label7.Text = "Seconds";
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(113, 193);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDown2.TabIndex = 14;
-            this.numericUpDown2.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 195);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(81, 13);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "SMTP Timeout:";
+            this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_MarkupLanguage);
+            this.OtherAdvancedGroup.Controls.Add(this.label12);
+            this.OtherAdvancedGroup.Controls.Add(this.checkBox3);
+            this.OtherAdvancedGroup.Controls.Add(this.checkBox2);
+            this.OtherAdvancedGroup.Controls.Add(this.label3);
+            this.OtherAdvancedGroup.Controls.Add(this.numericUpDown1);
+            this.OtherAdvancedGroup.Controls.Add(this.label2);
+            this.OtherAdvancedGroup.Controls.Add(this.checkBox1);
+            this.OtherAdvancedGroup.Controls.Add(this.label1);
+            this.OtherAdvancedGroup.Controls.Add(this.DateTimeFormatTemplate);
+            this.OtherAdvancedGroup.Location = new System.Drawing.Point(17, 117);
+            this.OtherAdvancedGroup.Name = "OtherAdvancedGroup";
+            this.OtherAdvancedGroup.Size = new System.Drawing.Size(345, 278);
+            this.OtherAdvancedGroup.TabIndex = 3;
+            this.OtherAdvancedGroup.TabStop = false;
+            this.OtherAdvancedGroup.Text = "Other";
             // 
             // checkBox3
             // 
@@ -1647,7 +1627,7 @@
             // 
             this.DateTimeFormatTemplate.Location = new System.Drawing.Point(125, 25);
             this.DateTimeFormatTemplate.Name = "DateTimeFormatTemplate";
-            this.DateTimeFormatTemplate.Size = new System.Drawing.Size(224, 20);
+            this.DateTimeFormatTemplate.Size = new System.Drawing.Size(202, 20);
             this.DateTimeFormatTemplate.TabIndex = 0;
             this.DateTimeFormatTemplate.Text = "yyyy-MM-dd HH:mm:ss";
             // 
@@ -1660,14 +1640,14 @@
             this.LoggingGroup.Controls.Add(this.LoggingApplicationLabel);
             this.LoggingGroup.Location = new System.Drawing.Point(17, 16);
             this.LoggingGroup.Name = "LoggingGroup";
-            this.LoggingGroup.Size = new System.Drawing.Size(363, 87);
+            this.LoggingGroup.Size = new System.Drawing.Size(345, 87);
             this.LoggingGroup.TabIndex = 2;
             this.LoggingGroup.TabStop = false;
             this.LoggingGroup.Text = "Logging";
             // 
             // ViewLog
             // 
-            this.ViewLog.Location = new System.Drawing.Point(260, 36);
+            this.ViewLog.Location = new System.Drawing.Point(252, 36);
             this.ViewLog.Name = "ViewLog";
             this.ViewLog.Size = new System.Drawing.Size(75, 23);
             this.ViewLog.TabIndex = 4;
@@ -1721,6 +1701,77 @@
             this.LoggingApplicationLabel.Size = new System.Drawing.Size(62, 13);
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
+            // 
+            // OtherViewGroup
+            // 
+            this.OtherViewGroup.Controls.Add(this.View_Other_MemoEditorToolbar);
+            this.OtherViewGroup.Location = new System.Drawing.Point(17, 367);
+            this.OtherViewGroup.Name = "OtherViewGroup";
+            this.OtherViewGroup.Size = new System.Drawing.Size(345, 48);
+            this.OtherViewGroup.TabIndex = 21;
+            this.OtherViewGroup.TabStop = false;
+            this.OtherViewGroup.Text = "Other";
+            // 
+            // View_Other_MemoEditorToolbar
+            // 
+            this.View_Other_MemoEditorToolbar.AutoSize = true;
+            this.View_Other_MemoEditorToolbar.Location = new System.Drawing.Point(17, 19);
+            this.View_Other_MemoEditorToolbar.Name = "View_Other_MemoEditorToolbar";
+            this.View_Other_MemoEditorToolbar.Size = new System.Drawing.Size(114, 17);
+            this.View_Other_MemoEditorToolbar.TabIndex = 0;
+            this.View_Other_MemoEditorToolbar.Text = "Formatting Toolbar";
+            this.View_Other_MemoEditorToolbar.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(161, 79);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(49, 13);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Seconds";
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(111, 77);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(47, 20);
+            this.numericUpDown2.TabIndex = 18;
+            this.numericUpDown2.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(14, 79);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(81, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "SMTP Timeout:";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(14, 179);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(153, 13);
+            this.label12.TabIndex = 8;
+            this.label12.Text = "Memo editor markup language:";
+            // 
+            // Advanced_Other_MarkupLanguage
+            // 
+            this.Advanced_Other_MarkupLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Advanced_Other_MarkupLanguage.FormattingEnabled = true;
+            this.Advanced_Other_MarkupLanguage.Items.AddRange(new object[] {
+            "HTML",
+            "Markdown"});
+            this.Advanced_Other_MarkupLanguage.Location = new System.Drawing.Point(179, 176);
+            this.Advanced_Other_MarkupLanguage.Name = "Advanced_Other_MarkupLanguage";
+            this.Advanced_Other_MarkupLanguage.Size = new System.Drawing.Size(121, 21);
+            this.Advanced_Other_MarkupLanguage.TabIndex = 9;
             // 
             // Options
             // 
@@ -1803,12 +1854,14 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.AdvancedPage.ResumeLayout(false);
-            this.OtherGroup.ResumeLayout(false);
-            this.OtherGroup.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            this.OtherAdvancedGroup.ResumeLayout(false);
+            this.OtherAdvancedGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
+            this.OtherViewGroup.ResumeLayout(false);
+            this.OtherViewGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1895,7 +1948,7 @@
         private System.Windows.Forms.ComboBox Advanced_Logging_Application;
         private System.Windows.Forms.Label LoggingApplicationLabel;
         private System.Windows.Forms.Label LoggingDatabaseLabel;
-        private System.Windows.Forms.GroupBox OtherGroup;
+        private System.Windows.Forms.GroupBox OtherAdvancedGroup;
         private System.Windows.Forms.TextBox DateTimeFormatTemplate;
         private System.Windows.Forms.GroupBox StatusBarGroup;
         private System.Windows.Forms.CheckBox View_StatusBar_AddLabels;
@@ -1945,9 +1998,13 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.GroupBox OtherViewGroup;
+        private System.Windows.Forms.CheckBox View_Other_MemoEditorToolbar;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.ComboBox Advanced_Other_MarkupLanguage;
+        private System.Windows.Forms.Label label12;
 
     }
 }

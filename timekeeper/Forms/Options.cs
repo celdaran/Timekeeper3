@@ -265,6 +265,8 @@ namespace Timekeeper.Forms
             View_HiddenActivitiesSince.SelectedIndex = Values.View_HiddenActivitiesSince;
             View_HiddenLocationsSince.SelectedIndex = Values.View_HiddenLocationsSince;
             View_HiddenCategoriesSince.SelectedIndex = Values.View_HiddenCategoriesSince;
+            
+            View_Other_MemoEditorToolbar.Checked = Values.View_Other_MemoEditorToolbar;
 
             //----------------------------------------------------------------------
 
@@ -297,6 +299,7 @@ namespace Timekeeper.Forms
 
             Advanced_Logging_Application.SelectedIndex = Values.Advanced_Logging_Application;
             Advanced_Logging_Database.SelectedIndex = Values.Advanced_Logging_Database;
+            Advanced_Other_MarkupLanguage.SelectedIndex = Values.Advanced_Other_MarkupLanguage;
         }
 
         //----------------------------------------------------------------------
@@ -333,6 +336,8 @@ namespace Timekeeper.Forms
             Values.View_HiddenLocationsSince = View_HiddenLocationsSince.SelectedIndex;
             Values.View_HiddenCategoriesSince = View_HiddenCategoriesSince.SelectedIndex;
 
+            Values.View_Other_MemoEditorToolbar = View_Other_MemoEditorToolbar.Checked;
+
             //----------------------------------------------------------------------
 
             Values.Behavior_TitleBar_Time = Behavior_TitleBar_Time.SelectedIndex;
@@ -362,6 +367,7 @@ namespace Timekeeper.Forms
 
             Values.Advanced_Logging_Application = Advanced_Logging_Application.SelectedIndex;
             Values.Advanced_Logging_Database = Advanced_Logging_Database.SelectedIndex;
+            Values.Advanced_Other_MarkupLanguage = Advanced_Other_MarkupLanguage.SelectedIndex;
         }
 
         //----------------------------------------------------------------------
@@ -626,6 +632,7 @@ namespace Timekeeper.Forms
 
             // One-off Adjustments
             HiddenGroup.Top = StatusBarGroup.Height + 23;
+            OtherViewGroup.Top = HiddenGroup.Bottom + 7;
             SortingGroup.Top = AnnoyGroup.Bottom + 7;
         }
 
@@ -702,6 +709,8 @@ namespace Timekeeper.Forms
             View_HiddenLocations.Checked = false;
             View_HiddenCategories.Checked = false;
 
+            View_Other_MemoEditorToolbar.Checked = false;
+
             Behavior_TitleBar_Template.Text = "%time - %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
@@ -730,6 +739,8 @@ namespace Timekeeper.Forms
             View_HiddenLocations.Checked = false;
             View_HiddenCategories.Checked = false;
 
+            View_Other_MemoEditorToolbar.Checked = false;
+
             Behavior_TitleBar_Template.Text = "%time - %activity for %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
@@ -757,6 +768,8 @@ namespace Timekeeper.Forms
             View_HiddenActivities.Checked = true;
             View_HiddenLocations.Checked = true;
             View_HiddenCategories.Checked = true;
+
+            View_Other_MemoEditorToolbar.Checked = true;
 
             Behavior_TitleBar_Template.Text = "%time - %activity for %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;

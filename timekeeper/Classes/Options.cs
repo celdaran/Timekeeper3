@@ -61,6 +61,7 @@ namespace Timekeeper.Classes
         public int View_HiddenActivitiesSince { get; set; }
         public int View_HiddenLocationsSince { get; set; }
         public int View_HiddenCategoriesSince { get; set; }
+        public bool View_Other_MemoEditorToolbar { get; set; }
 
         public string Behavior_TitleBar_Template { get; set; }
         public int Behavior_TitleBar_Time { get; set; }
@@ -90,6 +91,7 @@ namespace Timekeeper.Classes
         public int Advanced_Logging_Application { get; set; }
         public int Advanced_Logging_Database { get; set; }
         public string Advanced_DateTimeFormat { get; set; }
+        public int Advanced_Other_MarkupLanguage { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Metrics)
@@ -267,6 +269,8 @@ namespace Timekeeper.Classes
             View_HiddenLocationsSince = (int)Key.GetValue("HiddenLocationsSince", 4);
             View_HiddenCategoriesSince = (int)Key.GetValue("HiddenCategoriesSince", 4);
 
+            View_Other_MemoEditorToolbar = ((int)Key.GetValue("Other_MemoEditorToolbar", 0) == 1);
+
             //----------------------------------------------------------------------
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Behavior");
@@ -317,6 +321,7 @@ namespace Timekeeper.Classes
             Advanced_Logging_Application = (int)Key.GetValue("Logging_Application", 2);
             Advanced_Logging_Database = (int)Key.GetValue("Logging_Database", 2);
             Advanced_DateTimeFormat = (string)Key.GetValue("DateTimeFormat", "yyyy-MM-dd HH:mm:ss");
+            Advanced_Other_MarkupLanguage = (int)Key.GetValue("Other_MarkupLanguage", 1);
 
             //----------------------------------------------------------------------
 
@@ -519,6 +524,8 @@ namespace Timekeeper.Classes
             Key.SetValue("HiddenLocationsSince", View_HiddenLocationsSince, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("HiddenCategoriesSince", View_HiddenCategoriesSince, Microsoft.Win32.RegistryValueKind.DWord);
 
+            Key.SetValue("Other_MemoEditorToolbar", View_Other_MemoEditorToolbar, Microsoft.Win32.RegistryValueKind.DWord);
+
             //----------------------------------------------------------------------
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Behavior");
@@ -557,6 +564,7 @@ namespace Timekeeper.Classes
             Key.SetValue("Logging_Application", Advanced_Logging_Application, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Logging_Database", Advanced_Logging_Database, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("DateTimeFormat", Advanced_DateTimeFormat, Microsoft.Win32.RegistryValueKind.String);
+            Key.SetValue("Other_MarkupLanguage", Advanced_Other_MarkupLanguage, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 

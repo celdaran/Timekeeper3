@@ -300,6 +300,9 @@ namespace Timekeeper.Forms
 
             TrayIcon.Visible = Options.Behavior_Window_ShowInTray;
 
+            MemoEditor.ToolbarVisible(Options.View_Other_MemoEditorToolbar);
+            MemoEditor.SwitchMarkdown(Options.Advanced_Other_MarkupLanguage);
+
             if (interfaceChanged) {
                 switch (Options.InterfacePreset) {
                     case 0:

@@ -387,16 +387,16 @@ namespace Timekeeper.Forms
         private bool Action_FormLoad()
         {
             try {
-                // First instantiate any run-time only controls
+                // Load options from the Registry & TKDB
+                Action_LoadOptions();
+
+                // Next, instantiate any run-time only controls
                 this.MemoEditor = new Forms.Shared.MemoEditor();
                 this.MemoEditor.Parent = splitMain.Panel2;
                 this.MemoEditor.BringToFront();
                 this.MemoEditor.Dock = DockStyle.Fill;
                 this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
                 this.MemoEditor.MemoEntry.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wMemo_KeyDown);
-
-                // Load options from the Registry & TKDB
-                Action_LoadOptions();
 
                 // Instantiate persistent dialog boxes
                 properties = new Forms.Properties();
