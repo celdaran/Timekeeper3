@@ -370,7 +370,7 @@ namespace Timekeeper.Classes
                 case 2:
                     string CronExpressionString =
                         String.Format("{0} {1} {2} ? * MON,TUE,WED,THU,FRI *", startAt.Second, startAt.Minute, startAt.Hour);
-                    DailyTrigger = this.CronTrigger(triggerName, startAt, CronExpressionString);
+                    DailyTrigger = this.CronTrigger(triggerName, startAt, CronExpressionString, "Daily");
                     break;
 
                 case 3:
@@ -421,7 +421,7 @@ namespace Timekeeper.Classes
                     startAt.Minute,
                     startAt.Hour,
                     string.Join(",", weekdays.ToArray()));
-            WeeklyTrigger = this.CronTrigger(triggerName, startAt, CronExpressionString);
+            WeeklyTrigger = this.CronTrigger(triggerName, startAt, CronExpressionString, "Weekly");
 
             /*
 
@@ -476,7 +476,7 @@ namespace Timekeeper.Classes
                     dateValue,
                     interval);
 
-            return this.CronTrigger(triggerName, startAt, CronExpressionString);
+            return this.CronTrigger(triggerName, startAt, CronExpressionString, "Monthly");
         }
 
         //----------------------------------------------------------------------
@@ -516,7 +516,7 @@ namespace Timekeeper.Classes
                     DayOfWeek,
                     WeekOfMonth);
 
-            return this.CronTrigger(triggerName, startAt, CronExpressionString);
+            return this.CronTrigger(triggerName, startAt, CronExpressionString, "Monthly");
         }
 
         //----------------------------------------------------------------------
@@ -544,7 +544,7 @@ namespace Timekeeper.Classes
                     dateValue,
                     monthValue);
 
-            return this.CronTrigger(triggerName, startAt, CronExpressionString);
+            return this.CronTrigger(triggerName, startAt, CronExpressionString, "Yearly");
         }
 
         //----------------------------------------------------------------------
@@ -587,18 +587,18 @@ namespace Timekeeper.Classes
                     DayOfWeek,
                     WeekOfMonth);
 
-            return this.CronTrigger(triggerName, startAt, CronExpressionString);
+            return this.CronTrigger(triggerName, startAt, CronExpressionString, "Yearly");
         }
 
         //----------------------------------------------------------------------
 
-        public ITrigger CronTrigger(string triggerName, DateTime startAt, string cronTabExpression)
+        public ITrigger CronTrigger(string triggerName, DateTime startAt, string cronTabExpression, string debugTriggerType)
         {
             ITrigger CronTrigger;
             string Debug;
 
-            Debug = String.Format("Scheduled cron job for event {0}, starting at {1}",
-                this.ScheduleId, startAt.ToString(Common.DATETIME_FORMAT));
+            Debug = String.Format("Created cron trigger (Type: {3}) for schedule {0}, starting at {1}, expression \"{2}\"",
+                this.ScheduleId, startAt.ToString(Common.DATETIME_FORMAT), cronTabExpression, debugTriggerType);
             Timekeeper.Debug(Debug);
 
             // NOTE: It feels like a cron job should run independently of
@@ -614,6 +614,27 @@ namespace Timekeeper.Classes
                 .Build();
 
             return CronTrigger;
+        }
+
+        //----------------------------------------------------------------------
+        // Overrides
+        //----------------------------------------------------------------------
+
+        public override string ToString()
+        {
+            string ReturnValue = "";
+
+            switch (this.RefScheduleTypeId) {
+                case 1: ReturnValue += "One Time"; break;
+                case 2: ReturnValue += "Fixed Period"; break;
+                case 3: ReturnValue += "Daily"; break;
+                case 4: ReturnValue += "Weekly"; break;
+                case 5: ReturnValue += "Monthly"; break;
+                case 6: ReturnValue += "Yearly"; break;
+                case 7: ReturnValue += "Advanced"; break;
+            }
+
+            return ReturnValue;
         }
 
         //----------------------------------------------------------------------

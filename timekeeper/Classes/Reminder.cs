@@ -153,5 +153,58 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
+        public override string ToString()
+        {
+            string ReturnValue = "";
+
+            //------------------------------------
+            // Add reminder type
+            //------------------------------------
+
+            if (this.TimeAmount > 0) {
+                ReturnValue += this.TimeAmount.ToString();
+            }
+
+            switch (this.TimeUnit) {
+                case 1: ReturnValue += " Minute"; break;
+                case 2: ReturnValue += " Hour"; break;
+                case 3: ReturnValue += " Day"; break;
+                case 4: ReturnValue += " Week"; break;
+                case 5: ReturnValue += " Month"; break;
+            }
+
+            if (this.TimeAmount > 1) {
+                // Yes, this only works for English. I'll worry
+                // about this if I ever do a L10N pass...
+                ReturnValue += "s";
+            }
+
+            //------------------------------------
+            // Add remind via
+            //------------------------------------
+
+            List<string> Notifications = new List<string>();
+
+            if (this.NotifyViaTray)
+                Notifications.Add("Tray");
+            if (this.NotifyViaAudio)
+                Notifications.Add("Audio");
+            if (this.NotifyViaEmail)
+                Notifications.Add("Email");
+            if (this.NotifyViaText)
+                Notifications.Add("Text");
+
+            if (Notifications.Count > 0)
+                ReturnValue += " (via " + string.Join(", ", Notifications.ToArray()) + ")";
+
+            //------------------------------------
+            // And that's that
+            //------------------------------------
+
+            return ReturnValue;
+        }
+
+        //----------------------------------------------------------------------
+
     }
 }

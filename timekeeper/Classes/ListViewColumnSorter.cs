@@ -1,5 +1,6 @@
 ﻿//---------------------------------------------------//
 // Taken from http://support.microsoft.com/kb/319401 //
+// But modified to support numeric column sorting.   //
 //---------------------------------------------------//
 
 using System.Collections;
@@ -54,7 +55,18 @@ public class ListViewColumnSorter : IComparer
         listviewY = (ListViewItem)y;
 
         // Compare the two items
-        compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+        double doubleX;
+        double doubleY;
+        bool isNumX = double.TryParse(listviewX.SubItems[ColumnToSort].Text, out doubleX);
+        bool isNumY = double.TryParse(listviewY.SubItems[ColumnToSort].Text, out doubleY);
+
+        if (isNumX && isNumY) {
+            compareResult =
+                doubleX == doubleY ? 0 :
+                doubleX < doubleY ? 1 : -1;
+        } else {
+            compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+        }
 
         // Calculate correct return value based on object comparison
         if (OrderOfSort == SortOrder.Ascending) {

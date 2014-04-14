@@ -76,6 +76,9 @@ namespace Timekeeper.Forms
             this.MenuReport = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReportGrid = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReportJournal = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuReportTodo = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuReportEvents = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuReportNotebook = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReportPunch = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuTool = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolFind = new System.Windows.Forms.ToolStripMenuItem();
@@ -611,6 +614,9 @@ namespace Timekeeper.Forms
             this.MenuReport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuReportGrid,
             this.MenuReportJournal,
+            this.MenuReportTodo,
+            this.MenuReportEvents,
+            this.MenuReportNotebook,
             this.MenuReportPunch});
             this.MenuReport.Enabled = false;
             this.MenuReport.Name = "MenuReport";
@@ -621,22 +627,40 @@ namespace Timekeeper.Forms
             // 
             this.MenuReportGrid.Name = "MenuReportGrid";
             this.MenuReportGrid.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.MenuReportGrid.Size = new System.Drawing.Size(173, 22);
-            this.MenuReportGrid.Text = "Time G&rid...";
+            this.MenuReportGrid.Size = new System.Drawing.Size(158, 22);
+            this.MenuReportGrid.Text = "G&rid...";
             this.MenuReportGrid.Click += new System.EventHandler(this.menuReportsGrid_Click);
             // 
             // MenuReportJournal
             // 
             this.MenuReportJournal.Name = "MenuReportJournal";
             this.MenuReportJournal.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.MenuReportJournal.Size = new System.Drawing.Size(173, 22);
-            this.MenuReportJournal.Text = "&Log Listing...";
+            this.MenuReportJournal.Size = new System.Drawing.Size(158, 22);
+            this.MenuReportJournal.Text = "&Journal...";
             this.MenuReportJournal.Click += new System.EventHandler(this.menuReportsQuick_Click);
+            // 
+            // MenuReportTodo
+            // 
+            this.MenuReportTodo.Name = "MenuReportTodo";
+            this.MenuReportTodo.Size = new System.Drawing.Size(158, 22);
+            this.MenuReportTodo.Text = "To Do...";
+            // 
+            // MenuReportEvents
+            // 
+            this.MenuReportEvents.Name = "MenuReportEvents";
+            this.MenuReportEvents.Size = new System.Drawing.Size(158, 22);
+            this.MenuReportEvents.Text = "Events...";
+            // 
+            // MenuReportNotebook
+            // 
+            this.MenuReportNotebook.Name = "MenuReportNotebook";
+            this.MenuReportNotebook.Size = new System.Drawing.Size(158, 22);
+            this.MenuReportNotebook.Text = "Notebook...";
             // 
             // MenuReportPunch
             // 
             this.MenuReportPunch.Name = "MenuReportPunch";
-            this.MenuReportPunch.Size = new System.Drawing.Size(173, 22);
+            this.MenuReportPunch.Size = new System.Drawing.Size(158, 22);
             this.MenuReportPunch.Text = "&Punch Card...";
             this.MenuReportPunch.Click += new System.EventHandler(this.menuReportsPunch_Click);
             // 
@@ -677,7 +701,7 @@ namespace Timekeeper.Forms
             // 
             this.MenuToolTodo.Name = "MenuToolTodo";
             this.MenuToolTodo.Size = new System.Drawing.Size(160, 22);
-            this.MenuToolTodo.Text = "To Do List...";
+            this.MenuToolTodo.Text = "To Do...";
             this.MenuToolTodo.Click += new System.EventHandler(this.MenuToolTodo_Click);
             // 
             // MenuToolReminders
@@ -2151,7 +2175,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuReportPunch;
         private System.Windows.Forms.ToolStripMenuItem MenuFileUtilitiesRepair;
         private System.Windows.Forms.ToolStripMenuItem MenuHelpWeb;
-        private System.Windows.Forms.NotifyIcon TrayIcon;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityHide;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectHide;
         private System.Windows.Forms.ToolStripMenuItem MenuActionHideActivity;
@@ -2276,5 +2299,9 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MenuFileUtilitiesReindex;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarDebug1;
+        private System.Windows.Forms.ToolStripMenuItem MenuReportTodo;
+        private System.Windows.Forms.ToolStripMenuItem MenuReportEvents;
+        private System.Windows.Forms.ToolStripMenuItem MenuReportNotebook;
+        internal System.Windows.Forms.NotifyIcon TrayIcon;
     }
 }

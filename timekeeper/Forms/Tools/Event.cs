@@ -5,9 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Net.Mail;
 
 using Technitivity.Toolbox;
+// FIXME: I shouldn't need these here
 using Quartz;
 using Quartz.Impl;
 
@@ -19,18 +19,26 @@ namespace Timekeeper.Forms.Tools
         // Properties
         //----------------------------------------------------------------------
 
-        /*
         private Classes.Options Options;
         private ListViewColumnSorter ColumnSorter;
-        */
+
+        private DateTime LastAutoRefreshTime;
+
+        private Forms.Main MainForm;
 
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
-        
-        public Event()
+
+        public Event(Forms.Main mainForm)
         {
             InitializeComponent();
+
+            this.Options = Timekeeper.Options;
+            this.MainForm = mainForm;
+
+            ColumnSorter = new ListViewColumnSorter();
+            this.EventList.ListViewItemSorter = ColumnSorter;
         }
 
         //----------------------------------------------------------------------
@@ -40,14 +48,102 @@ namespace Timekeeper.Forms.Tools
         private void Event_Load(object sender, EventArgs e)
         {
             try {
+                RestoreWindowMetrics();
                 PopulateEventList();
-                //RestoreWindowMetrics();
-                //ShowGroups(Options.Todo_ShowGroups);
+                ShowGroups(Options.Event_ShowGroups);
                 //ShowCompletedItems(Options.Todo_ShowCompletedItems);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void EventList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (EventList.SelectedItems.Count > 0) {
+                ListViewItem SelectedItem = (ListViewItem)EventList.SelectedItems[0];
+                Classes.Event SelectedEvent = (Classes.Event)SelectedItem.Tag;
+
+                MenuEventsActionHide.Visible = !SelectedEvent.IsHidden;
+                MenuEventsActionUnhide.Visible = SelectedEvent.IsHidden;
+
+                PopupMenuEventHide.Visible = MenuEventsActionHide.Visible;
+                PopupMenuEventHide.Visible = MenuEventsActionUnhide.Visible;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void PopupMenuEvents_Opening(object sender, CancelEventArgs e)
+        {
+            if (EventList.SelectedItems.Count == 0) {
+                PopupMenuEventEdit.Visible = false;
+                PopupMenuEventDelete.Visible = false;
+                PopupMenuEventHide.Visible = false;
+                PopupMenuEventHide.Visible = false;
+                PopupMenuEventUnhide.Visible = false;
+                return;
+            } else {
+                PopupMenuEventEdit.Visible = true;
+                PopupMenuEventDelete.Visible = true;
+            }
+
+            ListViewItem SelectedItem = EventList.SelectedItems[0];
+            Classes.Event SelectedEvent = (Classes.Event)SelectedItem.Tag;
+
+            if (SelectedEvent.IsHidden) {
+                PopupMenuEventHide.Visible = false;
+                PopupMenuEventUnhide.Visible = true;
+            } else {
+                PopupMenuEventHide.Visible = true;
+                PopupMenuEventUnhide.Visible = false;
+            }
+
+        }
+
+        //----------------------------------------------------------------------
+        // Please To Organize These
+        //----------------------------------------------------------------------
+
+        private void RestoreWindowMetrics()
+        {
+            this.Height = Options.Event_Height;
+            this.Width = Options.Event_Width;
+            this.Left = Options.Event_Left;
+            this.Top = Options.Event_Top;
+
+            MenuEventsShowGroups.Checked = Options.Event_ShowGroups;
+            PopupMenuEventViewShowGroups.Checked = Options.Event_ShowGroups;
+
+            MenuEventsShowPastEvents.Checked = Options.Event_ShowPastEvents;
+            PopupMenuEventViewShowPastEvents.Checked = Options.Event_ShowPastEvents;
+
+            MenuEventsShowHiddenEvents.Checked = Options.Event_ShowHiddenEvents;
+            PopupMenuEventViewShowHiddenEvents.Checked = Options.Event_ShowHiddenEvents;
+
+            switch (Options.Event_IconView) {
+                case 1: ViewLargeIcons(); break;
+                case 2: ViewSmallIcons(); break;
+                case 3: ViewTiles(); break;
+                case 4: ViewList(); break;
+                default: ViewDetails(); break;
+            }
+
+            EventList.Columns[0].Width = Options.Event_NameWidth;
+            EventList.Columns[1].Width = Options.Event_DescriptionWidth;
+            EventList.Columns[2].Width = Options.Event_NextOccurrenceTimeWidth;
+            EventList.Columns[3].Width = Options.Event_TriggerCountWidth;
+            EventList.Columns[4].Width = Options.Event_ReminderWidth;
+            EventList.Columns[5].Width = Options.Event_ScheduleWidth;
+
+            EventList.Columns[0].DisplayIndex = Options.Event_NameDisplayIndex;
+            EventList.Columns[1].DisplayIndex = Options.Event_DescriptionDisplayIndex;
+            EventList.Columns[2].DisplayIndex = Options.Event_NextOccurrenceTimeDisplayIndex;
+            EventList.Columns[3].DisplayIndex = Options.Event_TriggerCountDisplayIndex;
+            EventList.Columns[4].DisplayIndex = Options.Event_ReminderDisplayIndex;
+            EventList.Columns[5].DisplayIndex = Options.Event_ScheduleDisplayIndex;
         }
 
         //----------------------------------------------------------------------
@@ -67,6 +163,27 @@ namespace Timekeeper.Forms.Tools
             }
 
             StatusBarItemCount.Text = EventList.Items.Count + " item(s)";
+        }
+
+        //----------------------------------------------------------------------
+
+        private void RefreshEventList()
+        {
+            foreach (ListViewItem Item in EventList.Items) {
+                RefreshEvent(Item, (Classes.Event)Item.Tag);
+            }
+
+            StatusBarItemCount.Text = EventList.Items.Count + " item(s)";
+        }
+
+        //----------------------------------------------------------------------
+
+        private void RefreshEvent(ListViewItem item, Classes.Event selectedEvent)
+        {
+            // Reinstantiate, to pick up any changes in the database
+            Classes.Event Event = new Classes.Event(selectedEvent.Id);
+            // Update UI with updated Event info
+            this.UpdateItem(item, Event, EventList.Groups[Event.Group.Name]);
         }
 
         //----------------------------------------------------------------------
@@ -100,33 +217,45 @@ namespace Timekeeper.Forms.Tools
         public void AddItem(Classes.Event currentEvent, ListViewGroup group)
         {
             try {
-                if (currentEvent.IsHidden) { // FIXME: && !Options.View_HiddenProjects) {
+                if ((currentEvent.NextOccurrenceTime.CompareTo(DateTime.Now) < 0) && !MenuEventsShowPastEvents.Checked) {
+                    // Don't add past items if we're hiding past items
+                    return;
+                }
+
+                if (currentEvent.IsHidden && !MenuEventsShowHiddenEvents.Checked) {
                     // Don't add hidden items if we're hiding hidden items
                     return;
                 }
 
                 ListViewItem NewItem = new ListViewItem(currentEvent.Name, group);
-                EventList.Items.Add(NewItem);
 
                 NewItem.Tag = currentEvent;
                 NewItem.ImageIndex = 0;
                 NewItem.ToolTipText = currentEvent.Description;
+
+                if (currentEvent.NextOccurrenceTime.CompareTo(DateTime.Now) < 0) {
+                    NewItem.ForeColor = Color.Red;
+                }
 
                 if (currentEvent.IsHidden) {
                     NewItem.ForeColor = Color.Gray;
                     NewItem.ImageIndex = 1;
                 }
 
-                // columns: Event, Description, Next Occurence, Period, Remind Via
+                // columns: Event, Description, Next Occurence, etc.
 
                 NewItem.SubItems.Add(currentEvent.Description);
                 NewItem.SubItems.Add(currentEvent.NextOccurrenceTime.ToString(Common.LOCAL_DATETIME_FORMAT));
 
-                string ReminderText = currentEvent.Reminder == null ? "None" : currentEvent.Reminder.ReminderId.ToString();
-                string ScheduleText = currentEvent.Schedule == null ? "None" : currentEvent.Schedule.ScheduleId.ToString();
+                string TriggerCountText = currentEvent.Schedule == null ? "" : currentEvent.Schedule.TriggerCount.ToString();
+                string ReminderText = currentEvent.Reminder == null ? "" : currentEvent.Reminder.ToString();
+                string ScheduleText = currentEvent.Schedule == null ? "" : currentEvent.Schedule.ToString();
 
+                NewItem.SubItems.Add(TriggerCountText);
                 NewItem.SubItems.Add(ReminderText);
                 NewItem.SubItems.Add(ScheduleText);
+
+                EventList.Items.Add(NewItem);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -138,17 +267,55 @@ namespace Timekeeper.Forms.Tools
         public void UpdateItem(ListViewItem item, Classes.Event currentEvent, ListViewGroup group)
         {
             try {
+                if ((currentEvent.NextOccurrenceTime.CompareTo(DateTime.Now) < 0) && !MenuEventsShowPastEvents.Checked) {
+                    // If we're updating an item, and it's since expired, remove it
+                    // as long as the user has also decided to hide past items.
+                    EventList.Items.Remove(item);
+                    return;
+                }
+
+                if (currentEvent.IsHidden && !MenuEventsShowHiddenEvents.Checked) {
+                    // If we're updating an item, and it's since become hidden, remove it
+                    // as long as the user has also decided to hide hidden items.
+                    EventList.Items.Remove(item);
+                    return;
+                }
+
+                if (currentEvent.IsDeleted) {
+                    // Never show deleted items. Remove from list if deleted after list populated
+                    EventList.Items.Remove(item);
+                    return;
+                }
+
                 // Update stuff
                 item.Tag = currentEvent;
                 item.ImageIndex = 0;
                 item.ToolTipText = currentEvent.Description;
                 item.Group = group;
 
+                if (currentEvent.NextOccurrenceTime.CompareTo(DateTime.Now) < 0) {
+                    item.ForeColor = Color.Red;
+                }
+
+                if (currentEvent.IsHidden) {
+                    item.ForeColor = Color.Gray;
+                    item.ImageIndex = 1;
+                }
+
                 // Change column text
                 ListViewItem.ListViewSubItem i;
                 i = item.SubItems[0]; i.Text = currentEvent.Name;
                 i = item.SubItems[1]; i.Text = currentEvent.Description;
                 i = item.SubItems[2]; i.Text = currentEvent.NextOccurrenceTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+
+                // yeah, copy/pasted from above
+                string TriggerCountText = currentEvent.Schedule == null ? "" : currentEvent.Schedule.TriggerCount.ToString();
+                string ReminderText = currentEvent.Reminder == null ? "" : currentEvent.Reminder.ToString();
+                string ScheduleText = currentEvent.Schedule == null ? "" : currentEvent.Schedule.ToString();
+
+                i = item.SubItems[3]; i.Text = TriggerCountText;
+                i = item.SubItems[4]; i.Text = ReminderText;
+                i = item.SubItems[5]; i.Text = ScheduleText;
 
             }
             catch (Exception x) {
@@ -162,16 +329,7 @@ namespace Timekeeper.Forms.Tools
 
         private void MenuEventsActionAdd_Click(object sender, EventArgs e)
         {
-            Forms.Tools.EventDetail DialogBox = new Forms.Tools.EventDetail();
-            DialogBox.ShowDialog(this);
-            if (DialogBox.DialogResult == DialogResult.OK) {
-                Classes.Event Event = DialogBox.CurrentEvent;
-                if (Event.Save()) { // Save is an upsert function
-                    this.AddItem(Event, EventList.Groups[Event.Group.Name]);
-                } else {
-                    Common.Warn("There was an error creating the event");
-                }
-            }
+            AddItem();
         }
 
         private void MenuEventsActionEdit_Click(object sender, EventArgs e)
@@ -181,6 +339,57 @@ namespace Timekeeper.Forms.Tools
             } else {
                 EditItem();
             }
+        }
+
+        private Classes.Event GetCurrentEvent()
+        {
+            if (EventList.SelectedItems.Count > 0) {
+                ListViewItem SelectedItem = (ListViewItem)EventList.SelectedItems[0];
+                Classes.Event SelectedEvent = (Classes.Event)SelectedItem.Tag;
+                return SelectedEvent;
+            } else {
+                return null;
+            }
+        }
+
+        private void MenuEventsActionHide_Click(object sender, EventArgs e)
+        {
+            Classes.Event SelectedEvent = GetCurrentEvent();
+            if (SelectedEvent != null) {
+                SelectedEvent.IsHidden = true;
+                // TODO: (NOTE TO SELF: Application always deals with Local Time; Database Layer takes care of Local Time -> UTC handling)
+                // Just marking that here since that's when it became apparent to me.
+                // Also, highly related, things like this should be SelectedEvent.Hide(), and not exposing these weaknesses to the app.
+                SelectedEvent.HiddenTime = DateTime.Now;
+                SelectedEvent.Save();
+                RefreshEvent((ListViewItem)EventList.SelectedItems[0], SelectedEvent);
+            }
+        }
+
+        private void MenuEventsActionUnhide_Click(object sender, EventArgs e)
+        {
+            Classes.Event SelectedEvent = GetCurrentEvent();
+            if (SelectedEvent != null) {
+                SelectedEvent.IsHidden = false;
+                SelectedEvent.Save();
+                RefreshEvent((ListViewItem)EventList.SelectedItems[0], SelectedEvent);
+            }
+        }
+
+        private void MenuEventsActionDelete_Click(object sender, EventArgs e)
+        {
+            Classes.Event SelectedEvent = GetCurrentEvent();
+            if (SelectedEvent != null) {
+                SelectedEvent.IsDeleted = true;
+                SelectedEvent.DeletedTime = DateTime.Now;
+                SelectedEvent.Save();
+                RefreshEvent((ListViewItem)EventList.SelectedItems[0], SelectedEvent);
+            }
+        }
+
+        private void MenuEventsActionRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshEventList();
         }
 
         private void MenuEventsActionManageGroups_Click(object sender, EventArgs e)
@@ -216,15 +425,29 @@ namespace Timekeeper.Forms.Tools
             ViewDetails();
         }
 
-        private void MenuEventViewShowGroups_Click(object sender, EventArgs e)
+        private void MenuEventsShowGroups_Click(object sender, EventArgs e)
         {
             ToggleGroups();
+        }
+
+        private void MenuEventsShowPastEvents_Click(object sender, EventArgs e)
+        {
+            MenuEventsShowPastEvents.Checked = !MenuEventsShowPastEvents.Checked;
+            PopupMenuEventViewShowPastEvents.Checked = !PopupMenuEventViewShowPastEvents.Checked;
+            PopulateEventList();
+        }
+
+        private void MenuEventsShowHiddenEvents_Click(object sender, EventArgs e)
+        {
+            MenuEventsShowHiddenEvents.Checked = !MenuEventsShowHiddenEvents.Checked;
+            PopupMenuEventViewShowHiddenEvents.Checked = !PopupMenuEventViewShowHiddenEvents.Checked;
+            PopulateEventList();
         }
 
         private void ToggleGroups()
         {
             ShowGroups(!EventList.ShowGroups);
-            //Options.Todo_ShowGroups = EventList.ShowGroups;
+            Options.Event_ShowGroups = EventList.ShowGroups;
         }
 
         private void ShowGroups(bool showGroups)
@@ -313,7 +536,64 @@ namespace Timekeeper.Forms.Tools
         }
 
         //----------------------------------------------------------------------
+        // Timer Event
+        //----------------------------------------------------------------------
+
+        private void RefreshTimer_Tick(object sender, EventArgs e)
+        {
+            /*
+            Common.Info("Here it comes");
+            NotifyIcon NotifyIcon = new NotifyIcon();
+            NotifyIcon.Visible = true;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            NotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("TrayIcon.Icon")));
+            NotifyIcon.ShowBalloonTip(30000,
+                Timekeeper.TITLE,
+                "Works with a form, don't it!",
+                ToolTipIcon.Info);
+            */
+
+            // First time through, just seed the value
+            if (LastAutoRefreshTime == DateTime.MinValue) {
+                LastAutoRefreshTime = DateTime.Now;
+                return;
+            }
+
+            Classes.ScheduledEventCollection AllEvents = new Classes.ScheduledEventCollection();
+            DateTime MostRecentModification = AllEvents.MostRecentModification();
+
+            if (MostRecentModification.CompareTo(LastAutoRefreshTime) > 0) {
+                PopulateEventList();
+                LastAutoRefreshTime = DateTime.Now;
+                StatusBarItemCount.Text = EventList.Items.Count + " item(s), refreshed at " + Common.Now();
+            }
+        }
+
+        //----------------------------------------------------------------------
         // Helpers
+        //----------------------------------------------------------------------
+
+        private void AddItem()
+        {
+            Forms.Tools.EventDetail DialogBox = new Forms.Tools.EventDetail();
+            if (DialogBox.ShowDialog(this) == DialogResult.OK)
+            {
+                Classes.Event Event = DialogBox.CurrentEvent;
+
+                // Save is an upsert function
+                if (Event.Save()) {
+                    // Add the item to the UI
+                    this.AddItem(Event, EventList.Groups[Event.Group.Name]);
+
+                    // Then actually do something about it
+                    Classes.ScheduledEvent ScheduledEvent = new Classes.ScheduledEvent(Event.Id);
+                    Timekeeper.Schedule(ScheduledEvent, this.MainForm);
+                } else {
+                    Common.Warn("There was an error creating the event");
+                }
+            }
+        }
+
         //----------------------------------------------------------------------
 
         private void EditItem()
@@ -327,13 +607,31 @@ namespace Timekeeper.Forms.Tools
             ListViewItem SelectedItem = EventList.SelectedItems[0];
 
             Forms.Tools.EventDetail DialogBox = new Forms.Tools.EventDetail(EventId);
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                // Update DB
+            if (DialogBox.ShowDialog(this) == DialogResult.OK)
+            {
                 Classes.Event Event = DialogBox.CurrentEvent;
-                Event.Save();
-                // Update UI
-                Common.Info(Event.Group.Name);
-                this.UpdateItem(SelectedItem, Event, EventList.Groups[Event.Group.Name]);
+
+                // Save is an upsert function
+                if (Event.Save()) {
+                    // Update UI
+                    this.UpdateItem(SelectedItem, Event, EventList.Groups[Event.Group.Name]);
+
+                    // Unschedule the old job
+                    JobKey Key = new JobKey(EventId.ToString(), "Timekeeper");
+                    Timekeeper.Scheduler.DeleteJob(Key);
+
+                    string Debug =
+                        "Deleted Job \"" + Key.ToString() + "\"";
+                    Timekeeper.Debug(Debug);
+
+                    // Reinstantiate a Scheduled Event
+                    Classes.ScheduledEvent ScheduledEvent = new Classes.ScheduledEvent(EventId);
+
+                    // Schedule a replacement
+                    Timekeeper.Schedule(ScheduledEvent, this.MainForm);
+                } else {
+                    Common.Warn("There was an error updating the event");
+                }
             }
         }
 
@@ -353,106 +651,61 @@ namespace Timekeeper.Forms.Tools
         // Experimental Area
         //----------------------------------------------------------------------
 
-        private void SendEmailButton_Click(object sender, EventArgs e)
+        private void Event_FormClosing(object sender, FormClosingEventArgs e)
         {
             try {
-                // TODO: Update Settings to use Options
-                // TODO: Update Options to handle mail settings
+                Options.Event_Height = Height;
+                Options.Event_Width = Width;
+                Options.Event_Top = Top;
+                Options.Event_Left = Left;
 
-                SmtpClient Client = new SmtpClient("mail.lockshire.net", 26);
-                //SmtpClient Client = new SmtpClient("smtp.gmail.com", 587);
-                //Client.EnableSsl = true;
-                Client.Timeout = 10000;
-                Client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                Client.UseDefaultCredentials = false;
-                //Client.Credentials = new System.Net.NetworkCredential("hillsc@phizzy.com", "e44@&7740E5@C52$");
-                Client.Credentials = new System.Net.NetworkCredential("celdaran", "mvdajtwkyqcvuqvi");
+                Options.Event_ShowGroups = EventList.ShowGroups;
+                Options.Event_ShowPastEvents = MenuEventsShowPastEvents.Checked;
+                Options.Event_ShowHiddenEvents = MenuEventsShowHiddenEvents.Checked;
 
-                MailAddress FromAddress = new MailAddress("public@lockshire.net", "Timekeeper Notification");
-                MailAddress ToAddress = new MailAddress("public@lockshire.net", "Charlie Hills"); // Configured on a per-event basis
-                MailMessage Message = new System.Net.Mail.MailMessage(FromAddress, ToAddress);
+                Options.Todo_IconView =
+                    PopupMenuEventViewLargeIcons.Checked ? 1 :
+                    PopupMenuEventViewSmallIcons.Checked ? 2 :
+                    PopupMenuEventViewTiles.Checked ? 3 :
+                    PopupMenuEventViewList.Checked ? 4 : 5;
 
-                Message.Subject = "Timekeeper Reminder";
-                Message.SubjectEncoding = System.Text.Encoding.UTF8;
+                Options.Event_NameWidth = EventList.Columns[0].Width;
+                Options.Event_DescriptionWidth = EventList.Columns[1].Width;
+                Options.Event_NextOccurrenceTimeWidth = EventList.Columns[2].Width;
+                Options.Event_TriggerCountWidth = EventList.Columns[3].Width;
+                Options.Event_ReminderWidth = EventList.Columns[4].Width;
+                Options.Event_ScheduleWidth = EventList.Columns[5].Width;
 
-                // set body-message and encoding
-                Message.Body = String.Format("This message connected to {0} and sent from {1} to {2}",
-                    Client.Host + ":" + Client.Port.ToString(),
-                    FromAddress.DisplayName + " <" + FromAddress.Address + ">",
-                    ToAddress.DisplayName + " <" + ToAddress.Address + ">");
-                Message.BodyEncoding = System.Text.Encoding.UTF8;
-                Message.IsBodyHtml = false;
-
-                Client.Send(Message);
+                Options.Event_NameDisplayIndex = EventList.Columns[0].DisplayIndex;
+                Options.Event_DescriptionDisplayIndex = EventList.Columns[1].DisplayIndex;
+                Options.Event_NextOccurrenceTimeDisplayIndex = EventList.Columns[2].DisplayIndex;
+                Options.Event_TriggerCountDisplayIndex = EventList.Columns[3].DisplayIndex;
+                Options.Event_ReminderDisplayIndex = EventList.Columns[4].DisplayIndex;
+                Options.Event_ScheduleDisplayIndex = EventList.Columns[5].DisplayIndex;
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
-                Technitivity.Toolbox.Common.Warn("Error sending email\n\n" + x.ToString());
             }
         }
 
-        //----------------------------------------------------------------------
-
-        private void QuartzTestButton_Click(object sender, EventArgs e)
+        private void EventList_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            //------------------------------------
-            // Schedule Job One
-            //------------------------------------
+            // Determine if clicked column is already the column that is being sorted.
+            if (e.Column == ColumnSorter.SortColumn) {
+                // Reverse the current sort direction for this column.
+                if (ColumnSorter.Order == SortOrder.Ascending) {
+                    ColumnSorter.Order = SortOrder.Descending;
+                } else {
+                    ColumnSorter.Order = SortOrder.Ascending;
+                }
+            } else {
+                // Set the column number that is to be sorted; default to ascending.
+                ColumnSorter.SortColumn = e.Column;
+                ColumnSorter.Order = SortOrder.Ascending;
+            }
 
-            IJobDetail Job1 = JobBuilder.Create<Classes.ReminderJob>()
-                .WithIdentity("Job One: Simple Schedule", "My Group")
-                .Build();
-
-            ITrigger Trigger1 = TriggerBuilder.Create()
-                .WithIdentity("Trigger One")
-                .WithSimpleSchedule(x => x.WithIntervalInSeconds(60).RepeatForever())
-                .StartAt(DateBuilder.FutureDate(0, IntervalUnit.Second))
-                .Build();
-
-            Timekeeper.Scheduler.ScheduleJob(Job1, Trigger1);
-
-            //------------------------------------
-            // Schedule Job Two
-            //------------------------------------
-
-            IJobDetail Job2 = JobBuilder.Create<Classes.ReminderJob>()
-                .WithIdentity("Job Two: With Time Interval", "My Group")
-                .Build();
-
-            ITrigger Trigger2 = TriggerBuilder.Create()
-                .WithIdentity("Trigger Two")
-                .WithDailyTimeIntervalSchedule(x => x.WithIntervalInHours(24).OnEveryDay().StartingDailyAt(new TimeOfDay(6,40)))
-                .StartAt(DateBuilder.FutureDate(0, IntervalUnit.Second))
-                .Build();
-
-            Timekeeper.Scheduler.ScheduleJob(Job2, Trigger2);
-
-            //------------------------------------
-            // Schedule Job Three
-            //------------------------------------
-
-            /*
-                1. Seconds
-                2. Minutes
-                3. Hours
-                4. Day-of-Month
-                5. Month
-                6. Day-of-Week
-                7. Year (optional field)
-            */
-
-            IJobDetail Job3 = JobBuilder.Create<Classes.ReminderJob>()
-                .WithIdentity("Job Three: Cron Job", "My Group")
-                .Build();
-                
-            ITrigger Trigger3 = TriggerBuilder.Create()
-                .WithIdentity("Trigger Three")
-                .WithCronSchedule("0 * * * * ?")
-                .StartAt(DateBuilder.FutureDate(0, IntervalUnit.Second))
-                .EndAt(DateBuilder.FutureDate(5, IntervalUnit.Minute))
-                .Build();
-
-            Timekeeper.Scheduler.ScheduleJob(Job3, Trigger3);
+            // Perform the sort with these new sort options.
+            this.EventList.Sort();
         }
 
         //----------------------------------------------------------------------
@@ -460,16 +713,4 @@ namespace Timekeeper.Forms.Tools
         //----------------------------------------------------------------------
 
     }
-
-    /*
-    class HelloJob : Quartz.IJob
-    {
-        public void Execute(IJobExecutionContext context)
-        {
-            //throw new NotImplementedException();
-            Common.Warn(context.JobDetail.Key.Name + " just fired");
-        }
-    }
-    */
-
 }

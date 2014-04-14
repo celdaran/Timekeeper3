@@ -20,16 +20,18 @@ namespace Timekeeper.Forms.Tools
         private string EventName;
         private DateTime TargetTime;
         private Classes.Widgets Widgets;
+        private Forms.Main MainForm;
 
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
 
-        public Countdown()
+        public Countdown(Forms.Main mainForm)
         {
             InitializeComponent();
             this.Widgets = new Classes.Widgets();
             this.EventName = "";
+            this.MainForm = mainForm;
         }
 
         //----------------------------------------------------------------------
@@ -38,7 +40,7 @@ namespace Timekeeper.Forms.Tools
 
         private void EventsButton_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Event EventDialog = new Forms.Tools.Event();
+            Forms.Tools.Event EventDialog = new Forms.Tools.Event(this.MainForm);
             EventDialog.Show(this);
             // If we modify events, we need to rebuild the menu list here
         }

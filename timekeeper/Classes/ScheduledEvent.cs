@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Windows.Forms;
+
 using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class ScheduledEvent
+    public class ScheduledEvent
     {
         //----------------------------------------------------------------------
         // The construct of a "Scheduled Event" is an amalgam of three
@@ -35,18 +37,17 @@ namespace Timekeeper.Classes
 
             string Query = String.Format(@"
                 SELECT 
-                    e.EventId, e.Name, e.Description, 
-                    e.NextOccurrenceTime, e.ReminderId, e.ScheduleId
+                    e.EventId, e.ReminderId, e.ScheduleId
                 FROM Event e
                 JOIN Reminder r on r.ReminderId = e.ReminderId
-                JOIN Schedule s on s.ScheduleId = e.ScheduleId
+                LEFT OUTER JOIN Schedule s on s.ScheduleId = e.ScheduleId
                 WHERE e.IsDeleted = 0
                   AND e.EventId = {0}", eventId);
 
             Row Row = this.Database.SelectRow(Query);
 
-            if (Row["EventId"] != null) {
-                // Create objects
+            if ((Row.Count > 0) && (Row["EventId"] != null))
+            {
                 this.Event = new Classes.Event(eventId);
 
                 if (Row["ReminderId"] != null) {
@@ -55,6 +56,8 @@ namespace Timekeeper.Classes
 
                 if (Row["ScheduleId"] != null) {
                     this.Schedule = new Classes.Schedule(Row["ScheduleId"]);
+                } else {
+                    this.Schedule = new Classes.Schedule(0);
                 }
             }
         }

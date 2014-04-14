@@ -43,7 +43,7 @@ namespace Timekeeper.Classes
         {
             List<Classes.Event> ReturnList = new List<Classes.Event>();
 
-            string Query = String.Format(@"SELECT EventId FROM Event WHERE IsDeleted = 0 ORDER BY SortOrderNo, EventId");
+            string Query = String.Format(@"SELECT EventId FROM Event WHERE IsDeleted = 0 ORDER BY EventId");
             Table EventRows = this.Database.Select(Query);
 
             foreach (Row EventRow in EventRows) {
@@ -60,7 +60,7 @@ namespace Timekeeper.Classes
         {
             List<Classes.Event> ReturnList = new List<Classes.Event>();
 
-            string Query = String.Format(@"SELECT EventId FROM Event WHERE EventGroupId = {0} AND IsDeleted = 0 ORDER BY SortOrderNo, EventId",
+            string Query = String.Format(@"SELECT EventId FROM Event WHERE EventGroupId = {0} AND IsDeleted = 0 ORDER BY EventId",
                 eventGroupId);
             Table EventRows = this.Database.Select(Query);
 

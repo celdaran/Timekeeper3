@@ -134,9 +134,13 @@ namespace Timekeeper.Forms.Shared
                 }
 
                 // Directory relative to exe
-                DirectoryInfo di = new DirectoryInfo("Sounds");
-                foreach (FileInfo f in di.GetFiles("*.wav")) {
-                    NotifyAudioFileList.Items.Add(f.Name);
+                DirectoryInfo SoundsDirectory = new DirectoryInfo("Sounds");
+                if (SoundsDirectory.Exists) {
+                    foreach (FileInfo SoundFile in SoundsDirectory.GetFiles("*.wav")) {
+                        NotifyAudioFileList.Items.Add(SoundFile.Name);
+                    }
+                } else {
+                    Timekeeper.Warn("Could not find Sounds Directory: " + SoundsDirectory.FullName);
                 }
 
                 // Now the normal population

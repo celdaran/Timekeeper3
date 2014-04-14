@@ -63,7 +63,7 @@ namespace Timekeeper
                     CreateNewTable("Notebook", CurrentSchemaVersion, false);
                     CreateNewTable("Todo", CurrentSchemaVersion, false);
                     CreateNewTable("Reminder", CurrentSchemaVersion, false);
-                    CreateNewTable("Schedule", CurrentSchemaVersion, false);
+                    CreateNewTable("Schedule", CurrentSchemaVersion, Populate);
                     CreateNewTable("EventGroup", CurrentSchemaVersion, Populate);
                     CreateNewTable("Event", CurrentSchemaVersion, false);
 
@@ -107,7 +107,7 @@ namespace Timekeeper
                     // Create 3.0 tables
                     CreateNewTable("Todo", CurrentSchemaVersion, false);
                     CreateNewTable("Reminder", CurrentSchemaVersion, false);
-                    CreateNewTable("Schedule", CurrentSchemaVersion, false);
+                    CreateNewTable("Schedule", CurrentSchemaVersion, Populate);
                     CreateNewTable("EventGroup", CurrentSchemaVersion, Populate);
                     CreateNewTable("Event", CurrentSchemaVersion, false);
 
@@ -149,7 +149,7 @@ namespace Timekeeper
                     // Create 3.0 tables
                     CreateNewTable("Todo", CurrentSchemaVersion, false);
                     CreateNewTable("Reminder", CurrentSchemaVersion, false);
-                    CreateNewTable("Schedule", CurrentSchemaVersion, false);
+                    CreateNewTable("Schedule", CurrentSchemaVersion, Populate);
                     CreateNewTable("EventGroup", CurrentSchemaVersion, Populate);
                     CreateNewTable("Event", CurrentSchemaVersion, false);
 

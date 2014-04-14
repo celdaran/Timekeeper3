@@ -901,7 +901,12 @@ namespace Timekeeper.Forms
 
             if (show) {
                 this.Height += LastBrowserHeight;
+                // For some reason, setting Panel2Collapsed = false is adding 22 pixels
+                // to the SplitterDistance. I haven't figured this out, so I'm just going
+                // to save the value, un-Collapse the panel, then set it back.
+                int Voodoo = splitMain.SplitterDistance;
                 splitMain.Panel2Collapsed = false;
+                splitMain.SplitterDistance = Voodoo;
             } else {
                 LastBrowserHeight = splitMain.Panel2.Height;
                 splitMain.Panel2Collapsed = true;

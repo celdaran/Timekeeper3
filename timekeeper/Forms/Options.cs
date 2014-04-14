@@ -297,6 +297,17 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
+            Mail_FromAddress.Text = Values.Mail_FromAddress;
+            Mail_FromDisplayAddress.Text = Values.Mail_FromDisplayAddress;
+            Mail_SmtpServer.Text = Values.Mail_SmtpServer;
+            Mail_SmtpPort.Text = Values.Mail_SmtpPort.ToString();
+            Mail_SmtpServerRequiresSSL.Checked = Values.Mail_SmtpServerRequiresSSL;
+            Mail_SmtpTimeout.Value = Values.Mail_SmtpTimeout;
+            Mail_SmtpServerUsername.Text = Values.Mail_SmtpServerUsername;
+            Mail_SmtpServerPassword.Text = Values.Mail_SmtpServerPassword;
+
+            //----------------------------------------------------------------------
+
             Advanced_Logging_Application.SelectedIndex = Values.Advanced_Logging_Application;
             Advanced_Logging_Database.SelectedIndex = Values.Advanced_Logging_Database;
             Advanced_Other_MarkupLanguage.SelectedIndex = Values.Advanced_Other_MarkupLanguage;
@@ -362,6 +373,17 @@ namespace Timekeeper.Forms
             //----------------------------------------------------------------------
 
             Values.Keyboard_FunctionList = GetKeyboardMappings();
+
+            //----------------------------------------------------------------------
+
+            Values.Mail_FromAddress = Mail_FromAddress.Text;
+            Values.Mail_FromDisplayAddress = Mail_FromDisplayAddress.Text;
+            Values.Mail_SmtpServer = Mail_SmtpServer.Text;
+            Values.Mail_SmtpPort = Convert.ToInt32(Mail_SmtpPort.Text);
+            Values.Mail_SmtpServerRequiresSSL = Mail_SmtpServerRequiresSSL.Checked;
+            Values.Mail_SmtpTimeout = Convert.ToInt32(Mail_SmtpTimeout.Value);
+            Values.Mail_SmtpServerUsername = Mail_SmtpServerUsername.Text;
+            Values.Mail_SmtpServerPassword = Mail_SmtpServerPassword.Text;
 
             //----------------------------------------------------------------------
 

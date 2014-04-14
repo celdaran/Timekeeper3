@@ -204,7 +204,7 @@ namespace Timekeeper
                 CreateTable("Notebook", version, false);
                 CreateTable("Todo", version, false);
                 CreateTable("Reminder", version, false);
-                CreateTable("Schedule", version, false);
+                CreateTable("Schedule", version, populate);
                 CreateTable("EventGroup", version, true);
                 CreateTable("Event", version, false);
 

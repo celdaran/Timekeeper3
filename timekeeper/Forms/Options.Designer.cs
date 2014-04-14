@@ -45,6 +45,8 @@
             this.Layout_UseActivities = new System.Windows.Forms.CheckBox();
             this.Layout_UseProjects = new System.Windows.Forms.CheckBox();
             this.ViewPage = new System.Windows.Forms.TabPage();
+            this.OtherViewGroup = new System.Windows.Forms.GroupBox();
+            this.View_Other_MemoEditorToolbar = new System.Windows.Forms.CheckBox();
             this.StatusBarGroup = new System.Windows.Forms.GroupBox();
             this.StatusBarGroup_BottomPanel = new System.Windows.Forms.Panel();
             this.View_StatusBar_ElapsedAllToday = new System.Windows.Forms.CheckBox();
@@ -129,21 +131,26 @@
             this.MailSettingsPage = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.Mail_FromAddress = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.Mail_FromDisplayAddress = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.Mail_SmtpTimeout = new System.Windows.Forms.NumericUpDown();
+            this.Mail_SmtpServerPassword = new System.Windows.Forms.TextBox();
+            this.Mail_SmtpServerUsername = new System.Windows.Forms.TextBox();
+            this.Mail_SmtpServerRequiresSSL = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.Mail_SmtpPort = new System.Windows.Forms.TextBox();
+            this.Mail_SmtpServer = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.AdvancedPage = new System.Windows.Forms.TabPage();
             this.OtherAdvancedGroup = new System.Windows.Forms.GroupBox();
+            this.Advanced_Other_MarkupLanguage = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -158,18 +165,12 @@
             this.LoggingDatabaseLabel = new System.Windows.Forms.Label();
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
-            this.OtherViewGroup = new System.Windows.Forms.GroupBox();
-            this.View_Other_MemoEditorToolbar = new System.Windows.Forms.CheckBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.Advanced_Other_MarkupLanguage = new System.Windows.Forms.ComboBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
             this.DimensionGroup.SuspendLayout();
             this.ViewPage.SuspendLayout();
+            this.OtherViewGroup.SuspendLayout();
             this.StatusBarGroup.SuspendLayout();
             this.StatusBarGroup_BottomPanel.SuspendLayout();
             this.StatusBarGroup_ActivityElapsedPanel.SuspendLayout();
@@ -201,12 +202,11 @@
             this.MailSettingsPage.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).BeginInit();
             this.AdvancedPage.SuspendLayout();
             this.OtherAdvancedGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.LoggingGroup.SuspendLayout();
-            this.OtherViewGroup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -407,6 +407,26 @@
             this.ViewPage.TabIndex = 0;
             this.ViewPage.Text = "View";
             this.ViewPage.UseVisualStyleBackColor = true;
+            // 
+            // OtherViewGroup
+            // 
+            this.OtherViewGroup.Controls.Add(this.View_Other_MemoEditorToolbar);
+            this.OtherViewGroup.Location = new System.Drawing.Point(17, 367);
+            this.OtherViewGroup.Name = "OtherViewGroup";
+            this.OtherViewGroup.Size = new System.Drawing.Size(345, 48);
+            this.OtherViewGroup.TabIndex = 21;
+            this.OtherViewGroup.TabStop = false;
+            this.OtherViewGroup.Text = "Other";
+            // 
+            // View_Other_MemoEditorToolbar
+            // 
+            this.View_Other_MemoEditorToolbar.AutoSize = true;
+            this.View_Other_MemoEditorToolbar.Location = new System.Drawing.Point(17, 19);
+            this.View_Other_MemoEditorToolbar.Name = "View_Other_MemoEditorToolbar";
+            this.View_Other_MemoEditorToolbar.Size = new System.Drawing.Size(114, 17);
+            this.View_Other_MemoEditorToolbar.TabIndex = 0;
+            this.View_Other_MemoEditorToolbar.Text = "Formatting Toolbar";
+            this.View_Other_MemoEditorToolbar.UseVisualStyleBackColor = true;
             // 
             // StatusBarGroup
             // 
@@ -1369,9 +1389,9 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.textBox6);
+            this.groupBox2.Controls.Add(this.Mail_FromAddress);
             this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Controls.Add(this.textBox5);
+            this.groupBox2.Controls.Add(this.Mail_FromDisplayAddress);
             this.groupBox2.Location = new System.Drawing.Point(17, 16);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(345, 89);
@@ -1388,13 +1408,13 @@
             this.label10.TabIndex = 20;
             this.label10.Text = "Display As:";
             // 
-            // textBox6
+            // Mail_FromAddress
             // 
-            this.textBox6.Location = new System.Drawing.Point(111, 25);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(215, 20);
-            this.textBox6.TabIndex = 17;
-            this.textBox6.Text = "from@example.com";
+            this.Mail_FromAddress.Location = new System.Drawing.Point(111, 25);
+            this.Mail_FromAddress.Name = "Mail_FromAddress";
+            this.Mail_FromAddress.Size = new System.Drawing.Size(215, 20);
+            this.Mail_FromAddress.TabIndex = 1;
+            this.Mail_FromAddress.Text = "from@example.com";
             // 
             // label11
             // 
@@ -1405,13 +1425,13 @@
             this.label11.TabIndex = 19;
             this.label11.Text = "Address:";
             // 
-            // textBox5
+            // Mail_FromDisplayAddress
             // 
-            this.textBox5.Location = new System.Drawing.Point(111, 51);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(215, 20);
-            this.textBox5.TabIndex = 18;
-            this.textBox5.Text = "Timekeeper Notification";
+            this.Mail_FromDisplayAddress.Location = new System.Drawing.Point(111, 51);
+            this.Mail_FromDisplayAddress.Name = "Mail_FromDisplayAddress";
+            this.Mail_FromDisplayAddress.Size = new System.Drawing.Size(215, 20);
+            this.Mail_FromDisplayAddress.TabIndex = 2;
+            this.Mail_FromDisplayAddress.Text = "Timekeeper Notification";
             // 
             // groupBox1
             // 
@@ -1419,13 +1439,13 @@
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.numericUpDown2);
-            this.groupBox1.Controls.Add(this.textBox4);
-            this.groupBox1.Controls.Add(this.textBox3);
-            this.groupBox1.Controls.Add(this.checkBox4);
+            this.groupBox1.Controls.Add(this.Mail_SmtpTimeout);
+            this.groupBox1.Controls.Add(this.Mail_SmtpServerPassword);
+            this.groupBox1.Controls.Add(this.Mail_SmtpServerUsername);
+            this.groupBox1.Controls.Add(this.Mail_SmtpServerRequiresSSL);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.textBox2);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.Mail_SmtpPort);
+            this.groupBox1.Controls.Add(this.Mail_SmtpServer);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Location = new System.Drawing.Point(17, 121);
             this.groupBox1.Name = "groupBox1";
@@ -1433,6 +1453,15 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server Settings";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(161, 79);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(49, 13);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Seconds";
             // 
             // label9
             // 
@@ -1443,6 +1472,15 @@
             this.label9.TabIndex = 16;
             this.label9.Text = "Password:";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(14, 79);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(81, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "SMTP Timeout:";
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -1452,57 +1490,69 @@
             this.label8.TabIndex = 15;
             this.label8.Text = "Username:";
             // 
-            // textBox4
+            // Mail_SmtpTimeout
             // 
-            this.textBox4.Location = new System.Drawing.Point(111, 143);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(215, 20);
-            this.textBox4.TabIndex = 14;
-            this.textBox4.Text = "password";
-            this.textBox4.UseSystemPasswordChar = true;
+            this.Mail_SmtpTimeout.Location = new System.Drawing.Point(111, 77);
+            this.Mail_SmtpTimeout.Name = "Mail_SmtpTimeout";
+            this.Mail_SmtpTimeout.Size = new System.Drawing.Size(47, 20);
+            this.Mail_SmtpTimeout.TabIndex = 6;
+            this.Mail_SmtpTimeout.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
-            // textBox3
+            // Mail_SmtpServerPassword
             // 
-            this.textBox3.Location = new System.Drawing.Point(111, 117);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(215, 20);
-            this.textBox3.TabIndex = 13;
-            this.textBox3.Text = "username";
+            this.Mail_SmtpServerPassword.Location = new System.Drawing.Point(111, 143);
+            this.Mail_SmtpServerPassword.Name = "Mail_SmtpServerPassword";
+            this.Mail_SmtpServerPassword.Size = new System.Drawing.Size(215, 20);
+            this.Mail_SmtpServerPassword.TabIndex = 8;
+            this.Mail_SmtpServerPassword.Text = "password";
+            this.Mail_SmtpServerPassword.UseSystemPasswordChar = true;
             // 
-            // checkBox4
+            // Mail_SmtpServerUsername
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(164, 54);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(91, 17);
-            this.checkBox4.TabIndex = 9;
-            this.checkBox4.Text = "Requires SSL";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.Mail_SmtpServerUsername.Location = new System.Drawing.Point(111, 117);
+            this.Mail_SmtpServerUsername.Name = "Mail_SmtpServerUsername";
+            this.Mail_SmtpServerUsername.Size = new System.Drawing.Size(215, 20);
+            this.Mail_SmtpServerUsername.TabIndex = 7;
+            this.Mail_SmtpServerUsername.Text = "username";
+            // 
+            // Mail_SmtpServerRequiresSSL
+            // 
+            this.Mail_SmtpServerRequiresSSL.AutoSize = true;
+            this.Mail_SmtpServerRequiresSSL.Location = new System.Drawing.Point(164, 54);
+            this.Mail_SmtpServerRequiresSSL.Name = "Mail_SmtpServerRequiresSSL";
+            this.Mail_SmtpServerRequiresSSL.Size = new System.Drawing.Size(91, 17);
+            this.Mail_SmtpServerRequiresSSL.TabIndex = 5;
+            this.Mail_SmtpServerRequiresSSL.Text = "Requires SSL";
+            this.Mail_SmtpServerRequiresSSL.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(14, 55);
+            this.label4.Location = new System.Drawing.Point(14, 54);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(62, 13);
             this.label4.TabIndex = 7;
             this.label4.Text = "SMTP Port:";
             // 
-            // textBox2
+            // Mail_SmtpPort
             // 
-            this.textBox2.Location = new System.Drawing.Point(111, 51);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(47, 20);
-            this.textBox2.TabIndex = 8;
-            this.textBox2.Text = "25";
+            this.Mail_SmtpPort.Location = new System.Drawing.Point(111, 51);
+            this.Mail_SmtpPort.Name = "Mail_SmtpPort";
+            this.Mail_SmtpPort.Size = new System.Drawing.Size(47, 20);
+            this.Mail_SmtpPort.TabIndex = 4;
+            this.Mail_SmtpPort.Text = "25";
             // 
-            // textBox1
+            // Mail_SmtpServer
             // 
-            this.textBox1.Location = new System.Drawing.Point(111, 25);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(215, 20);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "smtp.example.com";
+            this.Mail_SmtpServer.Location = new System.Drawing.Point(111, 25);
+            this.Mail_SmtpServer.Name = "Mail_SmtpServer";
+            this.Mail_SmtpServer.Size = new System.Drawing.Size(215, 20);
+            this.Mail_SmtpServer.TabIndex = 3;
+            this.Mail_SmtpServer.Text = "smtp.example.com";
             // 
             // label5
             // 
@@ -1543,6 +1593,27 @@
             this.OtherAdvancedGroup.TabIndex = 3;
             this.OtherAdvancedGroup.TabStop = false;
             this.OtherAdvancedGroup.Text = "Other";
+            // 
+            // Advanced_Other_MarkupLanguage
+            // 
+            this.Advanced_Other_MarkupLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Advanced_Other_MarkupLanguage.FormattingEnabled = true;
+            this.Advanced_Other_MarkupLanguage.Items.AddRange(new object[] {
+            "HTML",
+            "Markdown"});
+            this.Advanced_Other_MarkupLanguage.Location = new System.Drawing.Point(179, 176);
+            this.Advanced_Other_MarkupLanguage.Name = "Advanced_Other_MarkupLanguage";
+            this.Advanced_Other_MarkupLanguage.Size = new System.Drawing.Size(121, 21);
+            this.Advanced_Other_MarkupLanguage.TabIndex = 9;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(14, 179);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(153, 13);
+            this.label12.TabIndex = 8;
+            this.label12.Text = "Memo editor markup language:";
             // 
             // checkBox3
             // 
@@ -1702,77 +1773,6 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
-            // OtherViewGroup
-            // 
-            this.OtherViewGroup.Controls.Add(this.View_Other_MemoEditorToolbar);
-            this.OtherViewGroup.Location = new System.Drawing.Point(17, 367);
-            this.OtherViewGroup.Name = "OtherViewGroup";
-            this.OtherViewGroup.Size = new System.Drawing.Size(345, 48);
-            this.OtherViewGroup.TabIndex = 21;
-            this.OtherViewGroup.TabStop = false;
-            this.OtherViewGroup.Text = "Other";
-            // 
-            // View_Other_MemoEditorToolbar
-            // 
-            this.View_Other_MemoEditorToolbar.AutoSize = true;
-            this.View_Other_MemoEditorToolbar.Location = new System.Drawing.Point(17, 19);
-            this.View_Other_MemoEditorToolbar.Name = "View_Other_MemoEditorToolbar";
-            this.View_Other_MemoEditorToolbar.Size = new System.Drawing.Size(114, 17);
-            this.View_Other_MemoEditorToolbar.TabIndex = 0;
-            this.View_Other_MemoEditorToolbar.Text = "Formatting Toolbar";
-            this.View_Other_MemoEditorToolbar.UseVisualStyleBackColor = true;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(161, 79);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(49, 13);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "Seconds";
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(111, 77);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(47, 20);
-            this.numericUpDown2.TabIndex = 18;
-            this.numericUpDown2.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(14, 79);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(81, 13);
-            this.label6.TabIndex = 17;
-            this.label6.Text = "SMTP Timeout:";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(14, 179);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(153, 13);
-            this.label12.TabIndex = 8;
-            this.label12.Text = "Memo editor markup language:";
-            // 
-            // Advanced_Other_MarkupLanguage
-            // 
-            this.Advanced_Other_MarkupLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Advanced_Other_MarkupLanguage.FormattingEnabled = true;
-            this.Advanced_Other_MarkupLanguage.Items.AddRange(new object[] {
-            "HTML",
-            "Markdown"});
-            this.Advanced_Other_MarkupLanguage.Location = new System.Drawing.Point(179, 176);
-            this.Advanced_Other_MarkupLanguage.Name = "Advanced_Other_MarkupLanguage";
-            this.Advanced_Other_MarkupLanguage.Size = new System.Drawing.Size(121, 21);
-            this.Advanced_Other_MarkupLanguage.TabIndex = 9;
-            // 
             // Options
             // 
             this.AcceptButton = this.AcceptDialogButton;
@@ -1801,6 +1801,8 @@
             this.DimensionGroup.ResumeLayout(false);
             this.DimensionGroup.PerformLayout();
             this.ViewPage.ResumeLayout(false);
+            this.OtherViewGroup.ResumeLayout(false);
+            this.OtherViewGroup.PerformLayout();
             this.StatusBarGroup.ResumeLayout(false);
             this.StatusBarGroup_BottomPanel.ResumeLayout(false);
             this.StatusBarGroup_BottomPanel.PerformLayout();
@@ -1853,15 +1855,13 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).EndInit();
             this.AdvancedPage.ResumeLayout(false);
             this.OtherAdvancedGroup.ResumeLayout(false);
             this.OtherAdvancedGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
-            this.OtherViewGroup.ResumeLayout(false);
-            this.OtherViewGroup.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1984,25 +1984,25 @@
         private System.Windows.Forms.CheckBox Behavior_Annoy_UseNewDatabaseWizard;
         private System.Windows.Forms.TabPage MailSettingsPage;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox Mail_SmtpServerRequiresSSL;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox Mail_SmtpPort;
+        private System.Windows.Forms.TextBox Mail_SmtpServer;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox Mail_FromAddress;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox Mail_FromDisplayAddress;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox Mail_SmtpServerPassword;
+        private System.Windows.Forms.TextBox Mail_SmtpServerUsername;
         private System.Windows.Forms.GroupBox OtherViewGroup;
         private System.Windows.Forms.CheckBox View_Other_MemoEditorToolbar;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown Mail_SmtpTimeout;
         private System.Windows.Forms.ComboBox Advanced_Other_MarkupLanguage;
         private System.Windows.Forms.Label label12;
 

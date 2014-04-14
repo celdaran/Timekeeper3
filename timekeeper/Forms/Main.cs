@@ -35,9 +35,6 @@ namespace Timekeeper.Forms
         // Misc
         private bool StartTimeManuallySet = false;
 
-        // Open form tracking
-        private List<Form> OpenForms = new List<Form>();
-
         // Persistent objects
         private Classes.JournalEntryCollection Entries;
         private Classes.Meta Meta;
@@ -64,6 +61,9 @@ namespace Timekeeper.Forms
         private long ElapsedProjectToday;
         private long ElapsedActivityToday;
         private long ElapsedAllToday;
+
+        // Open form tracking
+        public List<Form> OpenForms = new List<Form>();
 
         //---------------------------------------------------------------------
         // Constants
@@ -346,10 +346,10 @@ namespace Timekeeper.Forms
             OpenForms.Add(dlg);
         }
 
-        // Tools | Reminders
+        // Tools | Reminders (EVENTS)
         private void MenuToolReminders_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Event DialogBox = new Forms.Tools.Event();
+            Forms.Tools.Event DialogBox = new Forms.Tools.Event(this);
             DialogBox.Show();
             OpenForms.Add(DialogBox);
         }
@@ -365,7 +365,7 @@ namespace Timekeeper.Forms
         // Tools | Countdown
         private void MenuToolCountdown_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Countdown DialogBox = new Forms.Tools.Countdown();
+            Forms.Tools.Countdown DialogBox = new Forms.Tools.Countdown(this);
             DialogBox.Show();
             OpenForms.Add(DialogBox);
         }

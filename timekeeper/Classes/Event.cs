@@ -7,11 +7,40 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    public class Event : Classes.SortableItem
+    public class Event
     {
+        //----------------------------------------------------------------------
+        // An Important Note
+        //----------------------------------------------------------------------
+        // This began as a subclass of SortableItem, except that Events are not
+        // "sortable items." This kicked off a great deal of soul-searching, as
+        // I tried to figure out what the best, generalized ORM solution would
+        // be for this project. However, we're now 470 hours into this TK3
+        // project, and I *really* just need this done, on multiple levels.
+        // Therefore, I'm going brute force this. You'll see a lot of ugly and
+        // unmaintainable copy and paste, but, as I said, I have to fast-track
+        // this to finish and create a better, more-generalized ORM solution
+        // for some future version of Timekeeper.
+        //----------------------------------------------------------------------
+
+        //----------------------------------------------------------------------
+        // Private Properties
+        //----------------------------------------------------------------------
+
+        protected DBI Database;
+        protected Classes.Options Options;
+
         //----------------------------------------------------------------------
         // Public Properties
         //----------------------------------------------------------------------
+
+        public long Id { get; protected set; }
+
+        public DateTime CreateTime { get; protected set; }
+        public DateTime ModifyTime { get; protected set; }
+
+        public string Name { get; set; }
+        public string Description { get; set; }
 
         public long EventGroupId { get; set; }
         public DateTime NextOccurrenceTime { get; set; }
@@ -31,8 +60,12 @@ namespace Timekeeper.Classes
         // Constructor
         //----------------------------------------------------------------------
 
-        public Event() : base("Event")
+        public Event()
         {
+            this.Id = 0;
+
+            this.Database = Timekeeper.Database;
+            this.Options = Timekeeper.Options;
         }
 
         //----------------------------------------------------------------------
@@ -54,12 +87,21 @@ namespace Timekeeper.Classes
         // Persistence
         //----------------------------------------------------------------------
 
-        new public Row Load(long id)
+        public Row Load(long id)
         {
-            Row Event = base.Load(id);
+            Row Event = new Row();
 
             try {
+                string Query = String.Format(@"select * from Event where EventId = {0}", id);
+                Event = this.Database.SelectRow(Query);
+
                 if (Event["EventId"] != null) {
+                    this.Id = id;
+                    this.CreateTime = Event["CreateTime"];
+                    this.ModifyTime = Event["ModifyTime"];
+                    this.Name = Event["Name"];
+                    this.Description = (string)Timekeeper.GetValue(Event["Description"], "");
+
                     this.EventGroupId = Event["EventGroupId"];
                     this.NextOccurrenceTime = Event["NextOccurrenceTime"];
                     this.ReminderId = (long)Timekeeper.GetValue(Event["ReminderId"], 0);
@@ -84,35 +126,70 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        new public bool Save()
+        public bool Save()
         {
             bool Saved = false;
 
             try {
-                Saved = base.Save();
+                Row Event = new Row();
 
-                if (Saved) {
-                    Row Event = new Row();
+                Event["Name"] = Name;
+                Event["Description"] = Description;
 
-                    // Make sure everything's always localtime
-                    // TODO: Something's not quite right here, I need to figure
-                    // out where things are going wrong. This is nothing more
-                    // than a band-aid. (See Journal Entry class)
-                    this.NextOccurrenceTime = DateTime.SpecifyKind(this.NextOccurrenceTime, DateTimeKind.Local);
+                // Make sure everything's always localtime
+                // TODO: Something's not quite right here, I need to figure
+                // out where things are going wrong. This is nothing more
+                // than a band-aid. (See Journal Entry class)
+                // FIXME (GENERAL FIXME): Sweep all date/time instances for UTC vs LocalTime issues  :^(
 
-                    Event["EventGroupId"] = this.EventGroupId;
-                    Event["NextOccurrenceTime"] = this.NextOccurrenceTime.ToString(Common.DATETIME_FORMAT);
-                    Event["ReminderId"] = this.ReminderId;
-                    Event["ScheduleId"] = this.ScheduleId;
-                    Event["IsHidden"] = 0;
-                    Event["IsDeleted"] = 0;
+                this.NextOccurrenceTime = DateTime.SpecifyKind(this.NextOccurrenceTime, DateTimeKind.Local);
+                this.HiddenTime = DateTime.SpecifyKind(this.HiddenTime, DateTimeKind.Local);
+                this.DeletedTime = DateTime.SpecifyKind(this.DeletedTime, DateTimeKind.Local);
 
-                    if (this.Database.Update("Event", Event, "EventId", this.Id) == 1) {
-                        Saved = true;
+                Event["EventGroupId"] = this.EventGroupId;
+                Event["NextOccurrenceTime"] = this.NextOccurrenceTime.ToString(Common.DATETIME_FORMAT);
+                Event["ReminderId"] = this.ReminderId;
+                Event["ScheduleId"] = this.ScheduleId;
+                Event["IsHidden"] = this.IsHidden ? 1 : 0;
+                Event["IsDeleted"] = this.IsDeleted ? 1 : 0;
+
+                if (this.IsHidden)
+                    Event["HiddenTime"] = this.HiddenTime.ToString(Common.DATETIME_FORMAT);
+                if (this.IsDeleted)
+                    Event["DeletedTime"] = this.DeletedTime.ToString(Common.DATETIME_FORMAT);
+
+                string Query = String.Format(@"
+                    SELECT count(*) as Count 
+                    FROM Event
+                    WHERE EventId = '{0}'", this.Id);
+                Row Count = this.Database.SelectRow(Query);
+
+                if (Count["Count"] == 0) {
+
+                    Event["CreateTime"] = Common.Now();
+                    Event["ModifyTime"] = Common.Now();
+
+                    this.Id = this.Database.Insert("Event", Event);
+                    if (this.Id > 0) {
+                        //Common.Info("Just inserted EventId: " + this.Id.ToString());
+                        CreateTime = Convert.ToDateTime(Event["CreateTime"]);
+                        ModifyTime = Convert.ToDateTime(Event["ModifyTime"]);
                     } else {
-                        Saved = false;
+                        throw new Exception("Error inserting into Event");
+                    }
+                } else {
+
+                    Event["ModifyTime"] = Common.Now();
+
+                    //Common.Info("About to update EventId: " + this.Id.ToString());
+                    if (this.Database.Update("Event", Event, "EventId", this.Id) == 1) {
+                        ModifyTime = Convert.ToDateTime(Event["ModifyTime"]);
+                    } else {
+                        throw new Exception("Error updating Event");
                     }
                 }
+
+                Saved = true;
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -122,6 +199,22 @@ namespace Timekeeper.Classes
         }
 
         //----------------------------------------------------------------------
+        // Helpers
+        //----------------------------------------------------------------------
 
+        protected long NameToId(string eventName)
+        {
+            string QuotedName = eventName.Replace("'", "''");
+            string Query = String.Format(@"SELECT EventId AS Id FROM Event WHERE Name = '{1}'",
+                QuotedName);
+            Row Row = Database.SelectRow(Query);
+            if (Row["Id"] != null) {
+                return Row["Id"];
+            } else {
+                return 0;
+            }
+        }
+
+        //----------------------------------------------------------------------
     }
 }

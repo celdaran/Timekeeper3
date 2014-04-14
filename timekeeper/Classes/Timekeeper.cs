@@ -106,6 +106,92 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
+
+        public static void Schedule(Classes.ScheduledEvent ScheduledEvent, Forms.Main mainForm)
+        {
+            if (ScheduledEvent.Schedule == null) {
+                Timekeeper.Debug("Attempting to schedule an undefined schedule");
+                return;
+            }
+
+            // Create job
+            IJobDetail Job = JobBuilder.Create<Classes.ReminderJob>()
+                .WithIdentity(ScheduledEvent.Event.Id.ToString(), "Timekeeper")
+                .Build();
+            Job.JobDataMap.Add("MainForm", mainForm);
+
+            string Debug =
+                "Created Job \"" + Job.Key.ToString() +
+                "\" for Event \"" + ScheduledEvent.Event.Name + "\"";
+            Timekeeper.Debug(Debug);
+
+            // Determine reminder time
+            DateTime ReminderTime = ScheduledEvent.Schedule.ReminderTime(
+                ScheduledEvent.Event.NextOccurrenceTime,
+                (int)ScheduledEvent.Reminder.TimeUnit,
+                (int)ScheduledEvent.Reminder.TimeAmount);
+
+            // Create trigger
+            switch (ScheduledEvent.Schedule.RefScheduleTypeId) {
+                case 1: // one time
+                    ITrigger SimpleTrigger = ScheduledEvent.Schedule.OneTimeTrigger(
+                        ScheduledEvent.Event.Name, 
+                        ReminderTime);
+                    Timekeeper.Scheduler.ScheduleJob(Job, SimpleTrigger);
+                    break;
+
+                case 2: // fixed period
+                    ITrigger FixedTrigger = ScheduledEvent.Schedule.FixedTrigger(
+                        ScheduledEvent.Event.Name, 
+                        ReminderTime,
+                        (int)ScheduledEvent.Schedule.OnceUnit,
+                        (int)ScheduledEvent.Schedule.OnceAmount);
+                    Timekeeper.Scheduler.ScheduleJob(Job, FixedTrigger);
+                    break;
+
+                case 3: // daily
+                    ITrigger DailyTrigger = ScheduledEvent.Schedule.DailyTrigger(
+                        ScheduledEvent.Event.Name,
+                        ReminderTime,
+                        (int)ScheduledEvent.Schedule.DailyTypeId,
+                        (int)ScheduledEvent.Schedule.DailyIntervalCount);
+                    Timekeeper.Scheduler.ScheduleJob(Job, DailyTrigger);
+                    break;
+
+                case 4: // weekly
+                    ITrigger WeeklyTrigger = ScheduledEvent.Schedule.WeeklyTrigger(
+                        ScheduledEvent.Event.Name,
+                        ReminderTime);
+                    Timekeeper.Scheduler.ScheduleJob(Job, WeeklyTrigger);
+                    Debug += WeeklyTrigger.Key.ToString();
+                    break;
+
+                case 5: // monthly
+                    ITrigger MonthlyTrigger = ScheduledEvent.Schedule.MonthlyTrigger(
+                        ScheduledEvent.Event.Name,
+                        ReminderTime);
+                    Timekeeper.Scheduler.ScheduleJob(Job, MonthlyTrigger);
+                    break;
+
+                case 6: // yearly
+                    ITrigger YearlyTrigger = ScheduledEvent.Schedule.YearlyTrigger(
+                        ScheduledEvent.Event.Name,
+                        ReminderTime);
+                    Timekeeper.Scheduler.ScheduleJob(Job, YearlyTrigger);
+                    break;
+
+                case 7: // cronly
+                    ITrigger CronTrigger = ScheduledEvent.Schedule.CronTrigger(
+                        ScheduledEvent.Event.Name,
+                        ReminderTime,
+                        ScheduledEvent.Schedule.CrontabExpression,
+                        "Cronly");
+                    Timekeeper.Scheduler.ScheduleJob(Job, CronTrigger);
+                    break;
+            }
+        }
+
+        //---------------------------------------------------------------------
         // Standard Exception Handling
         //---------------------------------------------------------------------
 

@@ -18,13 +18,6 @@ CREATE TABLE Event
 
     Name                            TEXT        NOT NULL,
     Description                     TEXT            NULL,
-    -- FIXME: I don't think Events are SortableItems (still pondering)
-    -- If they are, it means everything below is optional (nullable).
-    -- Including IsHidden and IsDeleted, which should be not nullable.
-    -- UPDATE: Events are NOT SortableItems, which means I need to 
-    -- tackle that particular problem soon. In this case, I have made
-    -- the following updates
-    SortOrderNo                     INTEGER     NOT NULL,
 
     EventGroupId                    INTEGER     NOT NULL,
     NextOccurrenceTime              DATETIME    NOT NULL,
@@ -39,7 +32,6 @@ CREATE TABLE Event
     FOREIGN KEY(EventGroupId)       REFERENCES EventGroup(EventGroupId)
     FOREIGN KEY(ReminderId)         REFERENCES Reminder(ReminderId)
     FOREIGN KEY(ScheduleId)         REFERENCES Schedule(ScheduleId)
-
 );
 
 CREATE UNIQUE INDEX idx_Event_EventId ON Event(EventId);

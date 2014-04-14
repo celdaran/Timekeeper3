@@ -88,6 +88,15 @@ namespace Timekeeper.Classes
 
         public List<NameObjectPair> Keyboard_FunctionList { get; set; }
 
+        public string Mail_FromAddress { get; set; }
+        public string Mail_FromDisplayAddress { get; set; }
+        public string Mail_SmtpServer { get; set; }
+        public int Mail_SmtpPort { get; set; }
+        public bool Mail_SmtpServerRequiresSSL { get; set; }
+        public int Mail_SmtpTimeout { get; set; }
+        public string Mail_SmtpServerUsername { get; set; }
+        public string Mail_SmtpServerPassword { get; set; }
+
         public int Advanced_Logging_Application { get; set; }
         public int Advanced_Logging_Database { get; set; }
         public string Advanced_DateTimeFormat { get; set; }
@@ -130,6 +139,27 @@ namespace Timekeeper.Classes
         public int Find_Grid_LocationNameWidth { get; set; }
         public int Find_Grid_CategoryNameWidth { get; set; }
         public int Find_Grid_IsLockedWidth { get; set; }
+
+        public int Event_Height { get; set; }
+        public int Event_Width { get; set; }
+        public int Event_Top { get; set; }
+        public int Event_Left { get; set; }
+        public bool Event_ShowGroups { get; set; }
+        public bool Event_ShowPastEvents { get; set; }
+        public bool Event_ShowHiddenEvents{ get; set; }
+        public int Event_IconView { get; set; }
+        public int Event_NameWidth { get; set; }
+        public int Event_DescriptionWidth { get; set; }
+        public int Event_NextOccurrenceTimeWidth { get; set; }
+        public int Event_TriggerCountWidth { get; set; }
+        public int Event_ReminderWidth { get; set; }
+        public int Event_ScheduleWidth { get; set; }
+        public int Event_NameDisplayIndex { get; set; }
+        public int Event_DescriptionDisplayIndex { get; set; }
+        public int Event_NextOccurrenceTimeDisplayIndex { get; set; }
+        public int Event_TriggerCountDisplayIndex { get; set; }
+        public int Event_ReminderDisplayIndex { get; set; }
+        public int Event_ScheduleDisplayIndex { get; set; }
 
         public int Todo_Height { get; set; }
         public int Todo_Width { get; set; }
@@ -316,6 +346,19 @@ namespace Timekeeper.Classes
 
             //----------------------------------------------------------------------
 
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Mail");
+
+            Mail_FromAddress = (string)Key.GetValue("FromAddress", "from@example.com");
+            Mail_FromDisplayAddress = (string)Key.GetValue("FromDisplayAddress", "Timekeeper Notification");
+            Mail_SmtpServer = (string)Key.GetValue("SmtpServer", "smtp.example.com");
+            Mail_SmtpPort = (int)Key.GetValue("SmtpPort", 25);
+            Mail_SmtpServerRequiresSSL = ((int)Key.GetValue("SmtpServerRequiresSSL", 0) == 1);
+            Mail_SmtpTimeout = (int)Key.GetValue("SmtpTimeout", 10);
+            Mail_SmtpServerUsername = (string)Key.GetValue("SmtpServerUsername", "username");
+            Mail_SmtpServerPassword = (string)Key.GetValue("SmtpServerPassword", "");
+
+            //----------------------------------------------------------------------
+
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Advanced");
 
             Advanced_Logging_Application = (int)Key.GetValue("Logging_Application", 2);
@@ -354,7 +397,6 @@ namespace Timekeeper.Classes
             Main_MainSplitterDistance = (int)Key.GetValue("MainSplitterDistance", 100);
             Main_TreeSplitterDistance = (int)Key.GetValue("TreeSplitterDistance", 218);
             Main_BrowserOpen = ((int)Key.GetValue("BrowserOpen", 0) == 1);
-            //Main_BrowserHeight = (int)Key.GetValue("BrowserHeight", 200);
             // TODO: add window state as an option (minimized, maximized, etc.)
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Report");
@@ -389,6 +431,29 @@ namespace Timekeeper.Classes
             Find_Grid_CategoryNameWidth = (int)Key.GetValue("Grid_CategoryNameWidth", 40);
             Find_Grid_IsLockedWidth = (int)Key.GetValue("Grid_IsLockedWidth", 40);
 
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Event");
+
+            Event_Height = (int)Key.GetValue("Height", 360);
+            Event_Width = (int)Key.GetValue("Width", 655);
+            Event_Top = (int)Key.GetValue("Top", 100);
+            Event_Left = (int)Key.GetValue("Left", 100);
+            Event_ShowGroups = ((int)Key.GetValue("ShowGroups", 1) == 1);
+            Event_ShowPastEvents = ((int)Key.GetValue("ShowPastEvents", 1) == 1);
+            Event_ShowHiddenEvents = ((int)Key.GetValue("ShowHiddenEvents", 1) == 1);
+            Event_IconView = (int)Key.GetValue("IconView", 5);
+            Event_NameWidth = (int)Key.GetValue("NameWidth", 200);
+            Event_DescriptionWidth = (int)Key.GetValue("DescriptionWidth", 200);
+            Event_NextOccurrenceTimeWidth = (int)Key.GetValue("NextOccurrenceTimeWidth", 100);
+            Event_TriggerCountWidth = (int)Key.GetValue("TriggerCountWidth", 60);
+            Event_ReminderWidth = (int)Key.GetValue("ReminderWidth", 100);
+            Event_ScheduleWidth = (int)Key.GetValue("ScheduleWidth", 100);
+            Event_NameDisplayIndex = (int)Key.GetValue("NameDisplayIndex", 0);
+            Event_DescriptionDisplayIndex = (int)Key.GetValue("DescriptionDisplayIndex", 1);
+            Event_NextOccurrenceTimeDisplayIndex = (int)Key.GetValue("NextOccurrenceTimeDisplayIndex", 2);
+            Event_TriggerCountDisplayIndex = (int)Key.GetValue("TriggerCountDisplayIndex", 3);
+            Event_ReminderDisplayIndex = (int)Key.GetValue("ReminderDisplayIndex", 4);
+            Event_ScheduleDisplayIndex = (int)Key.GetValue("ScheduleDisplayIndex", 5);
+
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Todo");
 
             Todo_Height = (int)Key.GetValue("Height", 360);
@@ -397,7 +462,6 @@ namespace Timekeeper.Classes
             Todo_Left = (int)Key.GetValue("Left", 100);
             Todo_ShowGroups = ((int)Key.GetValue("ShowGroups", 1) == 1);
             Todo_ShowCompletedItems = ((int)Key.GetValue("ShowCompletedItems", 0) == 1);
-            Todo_IconView = (int)Key.GetValue("IconView", 5);
             Todo_IconView = (int)Key.GetValue("IconView", 5);
             Todo_ProjectNameWidth = (int)Key.GetValue("ProjectNameWidth", 300);
             Todo_StartDateWidth = (int)Key.GetValue("StartDateWidth", 120);
@@ -559,6 +623,19 @@ namespace Timekeeper.Classes
 
             //----------------------------------------------------------------------
 
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Mail");
+
+            Key.SetValue("FromAddress", Mail_FromAddress, Microsoft.Win32.RegistryValueKind.String);
+            Key.SetValue("FromDisplayAddress", Mail_FromDisplayAddress, Microsoft.Win32.RegistryValueKind.String);
+            Key.SetValue("SmtpServer", Mail_SmtpServer, Microsoft.Win32.RegistryValueKind.String);
+            Key.SetValue("SmtpPort", Mail_SmtpPort, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("SmtpServerRequiresSSL", Mail_SmtpServerRequiresSSL, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("SmtpTimeout", Mail_SmtpTimeout, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("SmtpServerUsername", Mail_SmtpServerUsername, Microsoft.Win32.RegistryValueKind.String);
+            Key.SetValue("SmtpServerPassword", Mail_SmtpServerPassword, Microsoft.Win32.RegistryValueKind.String);
+
+            //----------------------------------------------------------------------
+
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Advanced");
 
             Key.SetValue("Logging_Application", Advanced_Logging_Application, Microsoft.Win32.RegistryValueKind.DWord);
@@ -627,6 +704,29 @@ namespace Timekeeper.Classes
             Key.SetValue("Grid_LocationNameWidth", Find_Grid_LocationNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Grid_CategoryNameWidth", Find_Grid_CategoryNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Grid_IsLockedWidth", Find_Grid_IsLockedWidth, Microsoft.Win32.RegistryValueKind.DWord);
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Event");
+
+            Key.SetValue("Height", Event_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", Event_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", Event_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", Event_Left, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ShowGroups", Event_ShowGroups, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ShowPastEvents", Event_ShowPastEvents, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ShowHiddenEvents", Event_ShowHiddenEvents, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("IconView", Event_IconView, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NameWidth", Event_NameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("DescriptionWidth", Event_DescriptionWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NextOccurrenceTimeWidth", Event_NextOccurrenceTimeWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("TriggerCountWidth", Event_TriggerCountWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ReminderWidth", Event_ReminderWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ScheduleWidth", Event_ScheduleWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NameDisplayIndex", Event_NameDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("DescriptionDisplayIndex", Event_DescriptionDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NextOccurrenceTimeDisplayIndex", Event_NextOccurrenceTimeDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("TriggerCountDisplayIndex", Event_TriggerCountDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ReminderDisplayIndex", Event_ReminderDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ScheduleDisplayIndex", Event_ScheduleDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Todo");
 

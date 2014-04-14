@@ -61,6 +61,7 @@
             this.NewEventName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.EventDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TargetTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.TriggerCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ReminderId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ScheduleId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PopupMenuEvents = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -80,6 +81,7 @@
             this.PopupMenuEventViewDetails = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuEventViewSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuEventViewShowGroups = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuEventViewShowPastEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuEventViewShowHiddenEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoGroupBy = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoGroupByEventGroup = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,20 +99,21 @@
             this.MenuEventsActionHide = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuEventsActionUnhide = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuEventsActionDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuEventsActionSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuEventsActionRefresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuEventsActionSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuEventsActionManageGroups = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuEventsShow = new System.Windows.Forms.ToolStripDropDownButton();
             this.MenuEventsShowGroups = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuEventsShowCompletedItems = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuEventsShowPastEvents = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuEventsShowHiddenEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuEventsSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuEventsViewLargeIcons = new System.Windows.Forms.ToolStripButton();
             this.MenuEventsViewSmallIcons = new System.Windows.Forms.ToolStripButton();
             this.MenuEventsViewTiles = new System.Windows.Forms.ToolStripButton();
             this.MenuEventsViewList = new System.Windows.Forms.ToolStripButton();
             this.MenuEventsViewDetails = new System.Windows.Forms.ToolStripButton();
-            this.MenuEventsSep2 = new System.Windows.Forms.ToolStripSeparator();
-            this.SendEmailButton = new System.Windows.Forms.ToolStripButton();
-            this.QuartzTestButton = new System.Windows.Forms.ToolStripButton();
+            this.RefreshTimer = new System.Windows.Forms.Timer(this.components);
             this.PopupMenuEvents.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.TodoToolbar.SuspendLayout();
@@ -124,6 +127,7 @@
             this.NewEventName,
             this.EventDescription,
             this.TargetTime,
+            this.TriggerCount,
             this.ReminderId,
             this.ScheduleId});
             this.EventList.ContextMenuStrip = this.PopupMenuEvents;
@@ -150,6 +154,7 @@
             listViewItem4});
             this.EventList.LargeImageList = this.LargeImages;
             this.EventList.Location = new System.Drawing.Point(0, 25);
+            this.EventList.MultiSelect = false;
             this.EventList.Name = "EventList";
             this.EventList.ShowItemToolTips = true;
             this.EventList.Size = new System.Drawing.Size(802, 436);
@@ -157,32 +162,39 @@
             this.EventList.TabIndex = 6;
             this.EventList.UseCompatibleStateImageBehavior = false;
             this.EventList.View = System.Windows.Forms.View.Details;
+            this.EventList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.EventList_ColumnClick);
+            this.EventList.SelectedIndexChanged += new System.EventHandler(this.EventList_SelectedIndexChanged);
             this.EventList.DoubleClick += new System.EventHandler(this.EventList_DoubleClick);
             // 
             // NewEventName
             // 
             this.NewEventName.Text = "Event";
-            this.NewEventName.Width = 177;
+            this.NewEventName.Width = 200;
             // 
             // EventDescription
             // 
             this.EventDescription.Text = "Description";
-            this.EventDescription.Width = 150;
+            this.EventDescription.Width = 200;
             // 
             // TargetTime
             // 
             this.TargetTime.Text = "Next Occurrence";
-            this.TargetTime.Width = 120;
+            this.TargetTime.Width = 100;
+            // 
+            // TriggerCount
+            // 
+            this.TriggerCount.Text = "Fire Count";
+            this.TriggerCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // ReminderId
             // 
-            this.ReminderId.Text = "ReminderId";
-            this.ReminderId.Width = 80;
+            this.ReminderId.Text = "Reminder";
+            this.ReminderId.Width = 100;
             // 
             // ScheduleId
             // 
-            this.ScheduleId.Text = "ScheduleId";
-            this.ScheduleId.Width = 80;
+            this.ScheduleId.Text = "Schedule";
+            this.ScheduleId.Width = 100;
             // 
             // PopupMenuEvents
             // 
@@ -199,6 +211,7 @@
             this.PopupMenuTodoGroupBy});
             this.PopupMenuEvents.Name = "contextMenuStrip1";
             this.PopupMenuEvents.Size = new System.Drawing.Size(162, 192);
+            this.PopupMenuEvents.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenuEvents_Opening);
             // 
             // PopupMenuEventsAdd
             // 
@@ -219,6 +232,7 @@
             this.PopupMenuEventHide.Name = "PopupMenuEventHide";
             this.PopupMenuEventHide.Size = new System.Drawing.Size(161, 22);
             this.PopupMenuEventHide.Text = "Hide";
+            this.PopupMenuEventHide.Click += new System.EventHandler(this.MenuEventsActionHide_Click);
             // 
             // PopupMenuEventUnhide
             // 
@@ -226,12 +240,14 @@
             this.PopupMenuEventUnhide.Size = new System.Drawing.Size(161, 22);
             this.PopupMenuEventUnhide.Text = "Unhide";
             this.PopupMenuEventUnhide.Visible = false;
+            this.PopupMenuEventUnhide.Click += new System.EventHandler(this.MenuEventsActionUnhide_Click);
             // 
             // PopupMenuEventDelete
             // 
             this.PopupMenuEventDelete.Name = "PopupMenuEventDelete";
             this.PopupMenuEventDelete.Size = new System.Drawing.Size(161, 22);
             this.PopupMenuEventDelete.Text = "Delete";
+            this.PopupMenuEventDelete.Click += new System.EventHandler(this.MenuEventsActionDelete_Click);
             // 
             // PopupMenuEventSep1
             // 
@@ -260,6 +276,7 @@
             this.PopupMenuEventViewDetails,
             this.PopupMenuEventViewSep1,
             this.PopupMenuEventViewShowGroups,
+            this.PopupMenuEventViewShowPastEvents,
             this.PopupMenuEventViewShowHiddenEvents});
             this.PopupMenuEventView.Name = "PopupMenuEventView";
             this.PopupMenuEventView.Size = new System.Drawing.Size(161, 22);
@@ -314,13 +331,23 @@
             this.PopupMenuEventViewShowGroups.Name = "PopupMenuEventViewShowGroups";
             this.PopupMenuEventViewShowGroups.Size = new System.Drawing.Size(172, 22);
             this.PopupMenuEventViewShowGroups.Text = "Show Groups";
-            this.PopupMenuEventViewShowGroups.Click += new System.EventHandler(this.MenuEventViewShowGroups_Click);
+            this.PopupMenuEventViewShowGroups.Click += new System.EventHandler(this.MenuEventsShowGroups_Click);
+            // 
+            // PopupMenuEventViewShowPastEvents
+            // 
+            this.PopupMenuEventViewShowPastEvents.Checked = true;
+            this.PopupMenuEventViewShowPastEvents.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PopupMenuEventViewShowPastEvents.Name = "PopupMenuEventViewShowPastEvents";
+            this.PopupMenuEventViewShowPastEvents.Size = new System.Drawing.Size(172, 22);
+            this.PopupMenuEventViewShowPastEvents.Text = "Show Past Events";
+            this.PopupMenuEventViewShowPastEvents.Click += new System.EventHandler(this.MenuEventsShowPastEvents_Click);
             // 
             // PopupMenuEventViewShowHiddenEvents
             // 
             this.PopupMenuEventViewShowHiddenEvents.Name = "PopupMenuEventViewShowHiddenEvents";
             this.PopupMenuEventViewShowHiddenEvents.Size = new System.Drawing.Size(172, 22);
             this.PopupMenuEventViewShowHiddenEvents.Text = "Show Hidden Events";
+            this.PopupMenuEventViewShowHiddenEvents.Click += new System.EventHandler(this.MenuEventsShowHiddenEvents_Click);
             // 
             // PopupMenuTodoGroupBy
             // 
@@ -402,10 +429,7 @@
             this.MenuEventsViewSmallIcons,
             this.MenuEventsViewTiles,
             this.MenuEventsViewList,
-            this.MenuEventsViewDetails,
-            this.MenuEventsSep2,
-            this.SendEmailButton,
-            this.QuartzTestButton});
+            this.MenuEventsViewDetails});
             this.TodoToolbar.Location = new System.Drawing.Point(0, 0);
             this.TodoToolbar.Name = "TodoToolbar";
             this.TodoToolbar.Size = new System.Drawing.Size(802, 25);
@@ -421,7 +445,9 @@
             this.MenuEventsActionHide,
             this.MenuEventsActionUnhide,
             this.MenuEventsActionDelete,
-            this.MenuEventsActionSep1,
+            this.toolStripMenuItem1,
+            this.MenuEventsActionRefresh,
+            this.MenuEventsActionSep2,
             this.MenuEventsActionManageGroups});
             this.MenuEventsAction.Image = ((System.Drawing.Image)(resources.GetObject("MenuEventsAction.Image")));
             this.MenuEventsAction.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -450,6 +476,7 @@
             this.MenuEventsActionHide.Name = "MenuEventsActionHide";
             this.MenuEventsActionHide.Size = new System.Drawing.Size(161, 22);
             this.MenuEventsActionHide.Text = "Hide...";
+            this.MenuEventsActionHide.Click += new System.EventHandler(this.MenuEventsActionHide_Click);
             // 
             // MenuEventsActionUnhide
             // 
@@ -457,6 +484,7 @@
             this.MenuEventsActionUnhide.Size = new System.Drawing.Size(161, 22);
             this.MenuEventsActionUnhide.Text = "Unhide...";
             this.MenuEventsActionUnhide.Visible = false;
+            this.MenuEventsActionUnhide.Click += new System.EventHandler(this.MenuEventsActionUnhide_Click);
             // 
             // MenuEventsActionDelete
             // 
@@ -464,11 +492,25 @@
             this.MenuEventsActionDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.MenuEventsActionDelete.Size = new System.Drawing.Size(161, 22);
             this.MenuEventsActionDelete.Text = "Delete...";
+            this.MenuEventsActionDelete.Click += new System.EventHandler(this.MenuEventsActionDelete_Click);
             // 
-            // MenuEventsActionSep1
+            // toolStripMenuItem1
             // 
-            this.MenuEventsActionSep1.Name = "MenuEventsActionSep1";
-            this.MenuEventsActionSep1.Size = new System.Drawing.Size(158, 6);
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(158, 6);
+            // 
+            // MenuEventsActionRefresh
+            // 
+            this.MenuEventsActionRefresh.Name = "MenuEventsActionRefresh";
+            this.MenuEventsActionRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.MenuEventsActionRefresh.Size = new System.Drawing.Size(161, 22);
+            this.MenuEventsActionRefresh.Text = "Refresh";
+            this.MenuEventsActionRefresh.Click += new System.EventHandler(this.MenuEventsActionRefresh_Click);
+            // 
+            // MenuEventsActionSep2
+            // 
+            this.MenuEventsActionSep2.Name = "MenuEventsActionSep2";
+            this.MenuEventsActionSep2.Size = new System.Drawing.Size(158, 6);
             // 
             // MenuEventsActionManageGroups
             // 
@@ -482,7 +524,8 @@
             this.MenuEventsShow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.MenuEventsShow.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuEventsShowGroups,
-            this.MenuEventsShowCompletedItems});
+            this.MenuEventsShowPastEvents,
+            this.MenuEventsShowHiddenEvents});
             this.MenuEventsShow.Image = ((System.Drawing.Image)(resources.GetObject("MenuEventsShow.Image")));
             this.MenuEventsShow.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.MenuEventsShow.Name = "MenuEventsShow";
@@ -496,13 +539,23 @@
             this.MenuEventsShowGroups.Name = "MenuEventsShowGroups";
             this.MenuEventsShowGroups.Size = new System.Drawing.Size(143, 22);
             this.MenuEventsShowGroups.Text = "Groups";
-            this.MenuEventsShowGroups.Click += new System.EventHandler(this.MenuEventViewShowGroups_Click);
+            this.MenuEventsShowGroups.Click += new System.EventHandler(this.MenuEventsShowGroups_Click);
             // 
-            // MenuEventsShowCompletedItems
+            // MenuEventsShowPastEvents
             // 
-            this.MenuEventsShowCompletedItems.Name = "MenuEventsShowCompletedItems";
-            this.MenuEventsShowCompletedItems.Size = new System.Drawing.Size(143, 22);
-            this.MenuEventsShowCompletedItems.Text = "Hidden Events";
+            this.MenuEventsShowPastEvents.Checked = true;
+            this.MenuEventsShowPastEvents.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.MenuEventsShowPastEvents.Name = "MenuEventsShowPastEvents";
+            this.MenuEventsShowPastEvents.Size = new System.Drawing.Size(143, 22);
+            this.MenuEventsShowPastEvents.Text = "Past Events";
+            this.MenuEventsShowPastEvents.Click += new System.EventHandler(this.MenuEventsShowPastEvents_Click);
+            // 
+            // MenuEventsShowHiddenEvents
+            // 
+            this.MenuEventsShowHiddenEvents.Name = "MenuEventsShowHiddenEvents";
+            this.MenuEventsShowHiddenEvents.Size = new System.Drawing.Size(143, 22);
+            this.MenuEventsShowHiddenEvents.Text = "Hidden Events";
+            this.MenuEventsShowHiddenEvents.Click += new System.EventHandler(this.MenuEventsShowHiddenEvents_Click);
             // 
             // MenuEventsSep1
             // 
@@ -561,30 +614,11 @@
             this.MenuEventsViewDetails.Text = "View Details";
             this.MenuEventsViewDetails.Click += new System.EventHandler(this.MenuEventViewDetails_Click);
             // 
-            // MenuEventsSep2
+            // RefreshTimer
             // 
-            this.MenuEventsSep2.Name = "MenuEventsSep2";
-            this.MenuEventsSep2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // SendEmailButton
-            // 
-            this.SendEmailButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.SendEmailButton.Image = ((System.Drawing.Image)(resources.GetObject("SendEmailButton.Image")));
-            this.SendEmailButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SendEmailButton.Name = "SendEmailButton";
-            this.SendEmailButton.Size = new System.Drawing.Size(59, 22);
-            this.SendEmailButton.Text = "Email Test";
-            this.SendEmailButton.Click += new System.EventHandler(this.SendEmailButton_Click);
-            // 
-            // QuartzTestButton
-            // 
-            this.QuartzTestButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.QuartzTestButton.Image = ((System.Drawing.Image)(resources.GetObject("QuartzTestButton.Image")));
-            this.QuartzTestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.QuartzTestButton.Name = "QuartzTestButton";
-            this.QuartzTestButton.Size = new System.Drawing.Size(68, 22);
-            this.QuartzTestButton.Text = "Quartz Test";
-            this.QuartzTestButton.Click += new System.EventHandler(this.QuartzTestButton_Click);
+            this.RefreshTimer.Enabled = true;
+            this.RefreshTimer.Interval = 5000;
+            this.RefreshTimer.Tick += new System.EventHandler(this.RefreshTimer_Tick);
             // 
             // Event
             // 
@@ -598,6 +632,7 @@
             this.Name = "Event";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Events";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Event_FormClosing);
             this.Load += new System.EventHandler(this.Event_Load);
             this.PopupMenuEvents.ResumeLayout(false);
             this.StatusBar.ResumeLayout(false);
@@ -627,7 +662,7 @@
         private System.Windows.Forms.ToolStripMenuItem MenuEventsActionDelete;
         private System.Windows.Forms.ToolStripDropDownButton MenuEventsShow;
         private System.Windows.Forms.ToolStripMenuItem MenuEventsShowGroups;
-        private System.Windows.Forms.ToolStripMenuItem MenuEventsShowCompletedItems;
+        private System.Windows.Forms.ToolStripMenuItem MenuEventsShowHiddenEvents;
         private System.Windows.Forms.ToolStripSeparator MenuEventsSep1;
         private System.Windows.Forms.ToolStripButton MenuEventsViewLargeIcons;
         private System.Windows.Forms.ToolStripButton MenuEventsViewSmallIcons;
@@ -654,17 +689,20 @@
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTodoGroupByEventGroup;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTodoGroupByEventDate;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTodoGroupByReminder;
-        private System.Windows.Forms.ToolStripSeparator MenuEventsSep2;
-        private System.Windows.Forms.ToolStripButton SendEmailButton;
         private System.Windows.Forms.ImageList SmallImages;
         private System.Windows.Forms.ImageList LargeImages;
-        private System.Windows.Forms.ToolStripButton QuartzTestButton;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuEventViewShowHiddenEvents;
         private System.Windows.Forms.ToolStripSeparator PopupMenuEventSep1;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuEventManageGroups;
-        private System.Windows.Forms.ToolStripSeparator MenuEventsActionSep1;
+        private System.Windows.Forms.ToolStripSeparator MenuEventsActionSep2;
         private System.Windows.Forms.ToolStripMenuItem MenuEventsActionManageGroups;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTodoGroupBySchedule;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem MenuEventsActionRefresh;
+        private System.Windows.Forms.Timer RefreshTimer;
+        private System.Windows.Forms.ColumnHeader TriggerCount;
+        private System.Windows.Forms.ToolStripMenuItem MenuEventsShowPastEvents;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuEventViewShowPastEvents;
 
 
     }

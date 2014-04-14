@@ -716,7 +716,8 @@ namespace Timekeeper.Forms.Shared
                 ITrigger CronTrigger = CurrentSchedule.CronTrigger(
                     "Preview Trigger",
                     EventNextOccurrence.Value,
-                    CrontabExpressionValue.Text);
+                    CrontabExpressionValue.Text,
+                    "Cronly");
                 UpdatePreviewWindow(CronTrigger);
             }
         }
@@ -840,7 +841,8 @@ namespace Timekeeper.Forms.Shared
                 ITrigger CronTrigger = CurrentSchedule.CronTrigger(
                     "Preview Trigger",
                     EventNextOccurrence.Value,
-                    CrontabExpressionValue.Text);
+                    CrontabExpressionValue.Text,
+                    "Cronly");
                 Alert();
             }
             catch (Exception x) {
