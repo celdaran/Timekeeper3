@@ -314,14 +314,30 @@ namespace Timekeeper.Forms
             OpenForms.Add(FindDialog);
         }
 
+        // Tools | Reminders (EVENTS)
+        private void MenuToolReminders_Click(object sender, EventArgs e)
+        {
+            Forms.Tools.Event DialogBox = new Forms.Tools.Event(this);
+            DialogBox.Show();
+            OpenForms.Add(DialogBox);
+        }
+
         // Tools | Notebook
         private void MenuToolNotebook_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Notebook dlg = new Forms.Tools.Notebook();
-            dlg.ActiveControl = dlg.wEntry;
-            if (dlg.ShowDialog(this) == DialogResult.OK && dlg.is_dirty) {
-                Action_UpdateNotebook(dlg.wEntry.Text, dlg.wEntryDate.Value, dlg.wJumpBox.SelectedIndex == -1);
+            // TODO: Don't call some of the new-style windows "Dialog" any more
+            // This is the first to just call them windows. (cf. FindDialog above)
+
+            Forms.Tools.Notebook NotebookWindow = new Forms.Tools.Notebook();
+            NotebookWindow.Show();
+            OpenForms.Add(NotebookWindow);
+
+            /* this stuff belongs in the window itself ... not here, not as an "Action_"
+            NotebookWindow.ActiveControl = NotebookWindow.wEntry;
+            if (NotebookWindow.ShowDialog(this) == DialogResult.OK && NotebookWindow.is_dirty) {
+                Action_UpdateNotebook(NotebookWindow.wEntry.Text, NotebookWindow.wEntryDate.Value, NotebookWindow.wJumpBox.SelectedIndex == -1);
             }
+            */
         }
 
         // Tools | Calendar
@@ -344,14 +360,6 @@ namespace Timekeeper.Forms
             Forms.Tools.Stopwatch dlg = new Forms.Tools.Stopwatch();
             dlg.Show(this);
             OpenForms.Add(dlg);
-        }
-
-        // Tools | Reminders (EVENTS)
-        private void MenuToolReminders_Click(object sender, EventArgs e)
-        {
-            Forms.Tools.Event DialogBox = new Forms.Tools.Event(this);
-            DialogBox.Show();
-            OpenForms.Add(DialogBox);
         }
 
         // Tools | Date Calculator

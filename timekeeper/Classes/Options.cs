@@ -140,6 +140,22 @@ namespace Timekeeper.Classes
         public int Find_Grid_CategoryNameWidth { get; set; }
         public int Find_Grid_IsLockedWidth { get; set; }
 
+        public int Todo_Height { get; set; }
+        public int Todo_Width { get; set; }
+        public int Todo_Top { get; set; }
+        public int Todo_Left { get; set; }
+        public bool Todo_ShowGroups { get; set; }
+        public bool Todo_ShowCompletedItems { get; set; }
+        public int Todo_IconView { get; set; }
+        public int Todo_ProjectNameWidth { get; set; }
+        public int Todo_StartDateWidth { get; set; }
+        public int Todo_DueDateWidth { get; set; }
+        public int Todo_StatusWidth { get; set; }
+        public int Todo_ProjectNameDisplayIndex { get; set; }
+        public int Todo_StartDateDisplayIndex { get; set; }
+        public int Todo_DueDateDisplayIndex { get; set; }
+        public int Todo_StatusDisplayIndex { get; set; }
+
         public int Event_Height { get; set; }
         public int Event_Width { get; set; }
         public int Event_Top { get; set; }
@@ -161,21 +177,10 @@ namespace Timekeeper.Classes
         public int Event_ReminderDisplayIndex { get; set; }
         public int Event_ScheduleDisplayIndex { get; set; }
 
-        public int Todo_Height { get; set; }
-        public int Todo_Width { get; set; }
-        public int Todo_Top { get; set; }
-        public int Todo_Left { get; set; }
-        public bool Todo_ShowGroups { get; set; }
-        public bool Todo_ShowCompletedItems { get; set; }
-        public int Todo_IconView { get; set; }
-        public int Todo_ProjectNameWidth { get; set; }
-        public int Todo_StartDateWidth { get; set; }
-        public int Todo_DueDateWidth { get; set; }
-        public int Todo_StatusWidth { get; set; }
-        public int Todo_ProjectNameDisplayIndex { get; set; }
-        public int Todo_StartDateDisplayIndex { get; set; }
-        public int Todo_DueDateDisplayIndex { get; set; }
-        public int Todo_StatusDisplayIndex { get; set; }
+        public int Notebook_Height { get; set; }
+        public int Notebook_Width { get; set; }
+        public int Notebook_Top { get; set; }
+        public int Notebook_Left { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/MRU)
@@ -431,6 +436,24 @@ namespace Timekeeper.Classes
             Find_Grid_CategoryNameWidth = (int)Key.GetValue("Grid_CategoryNameWidth", 40);
             Find_Grid_IsLockedWidth = (int)Key.GetValue("Grid_IsLockedWidth", 40);
 
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Todo");
+
+            Todo_Height = (int)Key.GetValue("Height", 360);
+            Todo_Width = (int)Key.GetValue("Width", 655);
+            Todo_Top = (int)Key.GetValue("Top", 100);
+            Todo_Left = (int)Key.GetValue("Left", 100);
+            Todo_ShowGroups = ((int)Key.GetValue("ShowGroups", 1) == 1);
+            Todo_ShowCompletedItems = ((int)Key.GetValue("ShowCompletedItems", 0) == 1);
+            Todo_IconView = (int)Key.GetValue("IconView", 5);
+            Todo_ProjectNameWidth = (int)Key.GetValue("ProjectNameWidth", 300);
+            Todo_StartDateWidth = (int)Key.GetValue("StartDateWidth", 120);
+            Todo_DueDateWidth = (int)Key.GetValue("DueDateWidth", 120);
+            Todo_StatusWidth = (int)Key.GetValue("StatusWidth", 80);
+            Todo_ProjectNameDisplayIndex = (int)Key.GetValue("ProjectNameDisplayIndex", 0);
+            Todo_StartDateDisplayIndex = (int)Key.GetValue("StartDateDisplayIndex", 1);
+            Todo_DueDateDisplayIndex = (int)Key.GetValue("DueDateDisplayIndex", 2);
+            Todo_StatusDisplayIndex = (int)Key.GetValue("StatusDisplayIndex", 3);
+
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Event");
 
             Event_Height = (int)Key.GetValue("Height", 360);
@@ -454,23 +477,12 @@ namespace Timekeeper.Classes
             Event_ReminderDisplayIndex = (int)Key.GetValue("ReminderDisplayIndex", 4);
             Event_ScheduleDisplayIndex = (int)Key.GetValue("ScheduleDisplayIndex", 5);
 
-            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Todo");
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Notebook");
 
-            Todo_Height = (int)Key.GetValue("Height", 360);
-            Todo_Width = (int)Key.GetValue("Width", 655);
-            Todo_Top = (int)Key.GetValue("Top", 100);
-            Todo_Left = (int)Key.GetValue("Left", 100);
-            Todo_ShowGroups = ((int)Key.GetValue("ShowGroups", 1) == 1);
-            Todo_ShowCompletedItems = ((int)Key.GetValue("ShowCompletedItems", 0) == 1);
-            Todo_IconView = (int)Key.GetValue("IconView", 5);
-            Todo_ProjectNameWidth = (int)Key.GetValue("ProjectNameWidth", 300);
-            Todo_StartDateWidth = (int)Key.GetValue("StartDateWidth", 120);
-            Todo_DueDateWidth = (int)Key.GetValue("DueDateWidth", 120);
-            Todo_StatusWidth = (int)Key.GetValue("StatusWidth", 80);
-            Todo_ProjectNameDisplayIndex = (int)Key.GetValue("ProjectNameDisplayIndex", 0);
-            Todo_StartDateDisplayIndex = (int)Key.GetValue("StartDateDisplayIndex", 1);
-            Todo_DueDateDisplayIndex = (int)Key.GetValue("DueDateDisplayIndex", 2);
-            Todo_StatusDisplayIndex = (int)Key.GetValue("StatusDisplayIndex", 3);
+            Notebook_Height = (int)Key.GetValue("Height", 275);
+            Notebook_Width = (int)Key.GetValue("Width", 420);
+            Notebook_Top = (int)Key.GetValue("Top", 100);
+            Notebook_Left = (int)Key.GetValue("Left", 100);
 
             Key.Close();
 
@@ -705,6 +717,24 @@ namespace Timekeeper.Classes
             Key.SetValue("Grid_CategoryNameWidth", Find_Grid_CategoryNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Grid_IsLockedWidth", Find_Grid_IsLockedWidth, Microsoft.Win32.RegistryValueKind.DWord);
 
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Todo");
+
+            Key.SetValue("Height", Todo_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", Todo_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", Todo_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", Todo_Left, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ShowGroups", Todo_ShowGroups, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ShowCompletedItems", Todo_ShowCompletedItems, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("IconView", Todo_IconView, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ProjectNameWidth", Todo_ProjectNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("StartDateWidth", Todo_StartDateWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("DueDateWidth", Todo_DueDateWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("StatusWidth", Todo_StatusWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ProjectNameDisplayIndex", Todo_ProjectNameDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("StartDateDisplayIndex", Todo_StartDateDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("DueDateDisplayIndex", Todo_DueDateDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("StatusDisplayIndex", Todo_StatusDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Event");
 
             Key.SetValue("Height", Event_Height, Microsoft.Win32.RegistryValueKind.DWord);
@@ -728,23 +758,12 @@ namespace Timekeeper.Classes
             Key.SetValue("ReminderDisplayIndex", Event_ReminderDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("ScheduleDisplayIndex", Event_ScheduleDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
 
-            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Todo");
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Notebook");
 
-            Key.SetValue("Height", Todo_Height, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Width", Todo_Width, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Top", Todo_Top, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Left", Todo_Left, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("ShowGroups", Todo_ShowGroups, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("ShowCompletedItems", Todo_ShowCompletedItems, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("IconView", Todo_IconView, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("ProjectNameWidth", Todo_ProjectNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("StartDateWidth", Todo_StartDateWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("DueDateWidth", Todo_DueDateWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("StatusWidth", Todo_StatusWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("ProjectNameDisplayIndex", Todo_ProjectNameDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("StartDateDisplayIndex", Todo_StartDateDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("DueDateDisplayIndex", Todo_DueDateDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("StatusDisplayIndex", Todo_StatusDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Height", Notebook_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", Notebook_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", Notebook_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", Notebook_Left, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.Close();
         }

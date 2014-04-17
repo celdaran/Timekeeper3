@@ -462,6 +462,11 @@ namespace Timekeeper.Forms
                 Application.Exit();
                 */
 
+                /*
+                Forms.Tools.Notebook NotebookWindow = new Forms.Tools.Notebook();
+                NotebookWindow.ShowDialog(this);
+                Application.Exit();
+                */
             }
             catch (Exception x) {
                 Common.Warn("There was an error loading the application. Depending on the error, additional information may exist in the application's log file.");
@@ -1653,7 +1658,7 @@ namespace Timekeeper.Forms
 
         private void Action_UpdateNotebook(string memo, DateTime entryTime, bool create)
         {
-            var Notebook = new Classes.Notebook();
+            var Notebook = new Classes.NotebookEntry();
 
             Notebook.Memo = memo;
             Notebook.EntryTime = entryTime;

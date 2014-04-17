@@ -6,7 +6,9 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class Notebook
+    // TODO: Rename file from Notebook.cs to NotebookEntry.cs
+
+    class NotebookEntry
     {
         //---------------------------------------------------------------------
         // Properties
@@ -16,21 +18,21 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public int NotebookId;
-        public DateTime CreateTime;
-        public DateTime ModifyTime;
-        public string NotebookGuid;
+        public long NotebookId = 0;
+        public DateTime CreateTime { get; set; }
+        public DateTime ModifyTime { get; set; }
+        public string NotebookGuid { get; set; }
 
-        private DateTime _EntryTime;
-        private string _Memo;
-        private int _LocationId;
-        private int _CategoryId;
+        public DateTime EntryTime { get; set; }
+        public string Memo { get; set; }
+        public int LocationId { get; set; }
+        public int CategoryId { get; set; }
 
         //---------------------------------------------------------------------
         // Constructor
         //---------------------------------------------------------------------
 
-        public Notebook()
+        public NotebookEntry()
         {
             this.Database = Timekeeper.Database;
         }
@@ -41,9 +43,26 @@ namespace Timekeeper.Classes
 
         public int Count()
         {
-            string Query = "select count(*) as Count from Notebook";
+            string Query = "SELECT COUNT(*) AS Count FROM Notebook";
             Row Row = Database.SelectRow(Query);
             return (int)Row["Count"];
+        }
+
+        //---------------------------------------------------------------------
+
+        public void Load()
+        {
+            try {
+                Row Row = new Row();
+                Row = this.Database.SelectRow("SELECT MAX(NotebookId) AS MaxNotebookId FROM Notebook");
+                if (Row["MaxNotebookId"] != null) {
+                    int MaxNotebookId = Convert.ToInt32(Row["MaxNotebookId"]);
+                    this.Load(MaxNotebookId);
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
         }
 
         //---------------------------------------------------------------------
@@ -60,10 +79,10 @@ namespace Timekeeper.Classes
                 this.ModifyTime = Row["ModifyTime"];
                 this.NotebookGuid = Row["NotebookGuid"];
 
-                this._EntryTime = Row["EntryTime"];
-                this._Memo = Row["Memo"];
-                this._LocationId = Row["LocationId"];
-                this._CategoryId = Row["CategoryId"];
+                this.EntryTime = Row["EntryTime"];
+                this.Memo = Row["Memo"];
+                this.LocationId = Row["LocationId"];
+                this.CategoryId = Row["CategoryId"];
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -71,84 +90,52 @@ namespace Timekeeper.Classes
         }
 
         //---------------------------------------------------------------------
-
-        public Table Entries()
-        {
-            string Query = "select NotebookId, EntryTime from Notebook order by EntryTime";
-            return Database.Select(Query);
-        }
-
-        //---------------------------------------------------------------------
-        // Setter/Getters
+        // Persistence
         //---------------------------------------------------------------------
 
-        public DateTime EntryTime
-        {
-            get { return _EntryTime; }
-            set { _EntryTime = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public string Memo
-        {
-            get { return _Memo; }
-            set { _Memo = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public int LocationId
-        {
-            get { return _LocationId; }
-            set { _LocationId = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public int CategoryId
-        {
-            get { return _CategoryId; }
-            set { _CategoryId = value; }
-        }
-
-        //---------------------------------------------------------------------
-        // These are still in an experimental stage. I'm toying with different
-        // ideas for less-generic database access. I'm not making any attempt
-        // to genericize this approach yet until I have a better idea of what
-        // I want to do with this long term.
-        //---------------------------------------------------------------------
-
-        public void Create()
+        public bool Save()
         {
             Row Row = new Row();
 
-            Row["CreateTime"] = Common.Now();
-            Row["ModifyTime"] = Common.Now();
-            Row["NotebookGuid"] = UUID.Get();
+            try {
+                if (this.NotebookId == 0) {
+                    // Create
+                    Row["CreateTime"] = Common.Now();
+                    Row["NotebookGuid"] = UUID.Get();
+                } else {
+                    // Update
+                }
+                Row["ModifyTime"] = Common.Now();
 
-            Row["EntryTime"] = this.EntryTime.ToString(Common.DATETIME_FORMAT);
-            Row["Memo"] = this.Memo;
-            Row["LocationId"] = this.LocationId;
-            Row["CategoryId"] = this.CategoryId;
+                Row["EntryTime"] = this.EntryTime.ToString(Common.DATETIME_FORMAT);
+                Row["Memo"] = this.Memo;
+                Row["LocationId"] = this.LocationId;
+                Row["CategoryId"] = this.CategoryId;
 
-            Database.Insert("Notebook", Row);
-        }
+                if (this.NotebookId == 0) {
+                    this.NotebookId = Database.Insert("Notebook", Row);
+                    if (this.NotebookId > 0) {
+                        this.CreateTime = DateTime.Parse(Row["CreateTime"]);
+                        this.ModifyTime = DateTime.Parse(Row["ModifyTime"]);
+                        this.NotebookGuid = Row["NotebookGuid"];
+                    } else {
+                        throw new Exception("Could not create Notebook entry");
+                    }
+                } else {
+                    if (Database.Update("Notebook", Row, "NotebookId", this.NotebookId) > 0) {
+                        this.ModifyTime = DateTime.Parse(Row["ModifyTime"]);
+                    } else {
+                        throw new Exception("Could not update Notebook entry: " + this.NotebookId.ToString());
+                    }
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                return false;
+            }
 
-        //---------------------------------------------------------------------
+            return true;
 
-        public void Update()
-        {
-            Row Row = new Row();
-
-            Row["ModifyTime"] = Common.Now();
-
-            Row["EntryTime"] = this.EntryTime;
-            Row["Memo"] = this.Memo;
-            Row["LocationId"] = this.LocationId;
-            Row["CategoryId"] = this.CategoryId;
-
-            Database.Update("Notebook", Row, "NotebookId", this.NotebookId);
         }
 
         //---------------------------------------------------------------------

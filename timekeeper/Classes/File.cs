@@ -479,7 +479,7 @@ namespace Timekeeper
                 // Grab a few handy objects
                 Classes.ProjectCollection Projects = new Classes.ProjectCollection();
                 Classes.ActivityCollection Activities = new Classes.ActivityCollection();
-                Classes.Notebook Notebook = new Classes.Notebook();
+                Classes.NotebookEntry Notebook = new Classes.NotebookEntry();
                 Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
 
                 // convert meta rows to rows (note order by above)
