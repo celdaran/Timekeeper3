@@ -245,7 +245,7 @@ namespace Timekeeper.Forms.Tools
                 // columns: Event, Description, Next Occurence, etc.
 
                 NewItem.SubItems.Add(currentEvent.Description);
-                NewItem.SubItems.Add(currentEvent.NextOccurrenceTime.ToString(Common.LOCAL_DATETIME_FORMAT));
+                NewItem.SubItems.Add(currentEvent.NextOccurrenceTime.ToString(Options.Advanced_DateTimeFormat));
 
                 string TriggerCountText = currentEvent.Schedule == null ? "" : currentEvent.Schedule.TriggerCount.ToString();
                 string ReminderText = currentEvent.Reminder == null ? "" : currentEvent.Reminder.ToString();

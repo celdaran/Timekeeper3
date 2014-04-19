@@ -23,8 +23,8 @@ namespace Timekeeper.Classes
 
         public long Id { get; protected set; }
 
-        public DateTime CreateTime { get; protected set; }
-        public DateTime ModifyTime { get; protected set; }
+        public DateTimeOffset CreateTime { get; protected set; }
+        public DateTimeOffset ModifyTime { get; protected set; }
 
         public string Name { get; set; }
         public string Description { get; set; }
@@ -129,8 +129,8 @@ namespace Timekeeper.Classes
                     this.Id = this.Database.Insert(this.TableName, View);
                     Common.Info("Just inserted " + this.TableName + "Id: " + this.Id.ToString());
                     if (this.Id > 0) {
-                        CreateTime = Convert.ToDateTime(View["CreateTime"]);
-                        ModifyTime = Convert.ToDateTime(View["ModifyTime"]);
+                        CreateTime = DateTimeOffset.Parse(View["CreateTime"]);
+                        ModifyTime = DateTimeOffset.Parse(View["ModifyTime"]);
                         SortOrderNo = (int)View["SortOrderNo"];
                     } else {
                         throw new Exception("Error inserting into " + this.TableName);
@@ -140,7 +140,7 @@ namespace Timekeeper.Classes
                     View["ModifyTime"] = Common.Now();
                     Common.Info("About to update " + this.TableName + "Id: " + this.Id.ToString());
                     if (this.Database.Update(this.TableName, View, this.TableName + "Id", this.Id) == 1) {
-                        ModifyTime = Convert.ToDateTime(View["ModifyTime"]);
+                        ModifyTime = DateTimeOffset.Parse(View["ModifyTime"]);
                     } else {
                         throw new Exception("Error updating " + this.TableName);
                     }
@@ -162,8 +162,8 @@ namespace Timekeeper.Classes
             Database.Delete(this.TableName, this.TableName + "Id", this.Id);
 
             this.Id = 0;
-            this.CreateTime = DateTime.MinValue;
-            this.ModifyTime = DateTime.MinValue;
+            this.CreateTime = DateTimeOffset.MinValue;
+            this.ModifyTime = DateTimeOffset.MinValue;
             this.Name = null;
             this.Description = null;
             this.SortOrderNo = 0;

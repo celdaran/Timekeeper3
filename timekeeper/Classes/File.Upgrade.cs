@@ -19,7 +19,7 @@ namespace Timekeeper
 
         private FileUpgradeOptions UpgradeOptions;
 
-        private DateTime FileCreateDate;
+        private DateTimeOffset FileCreateDate;
 
         //---------------------------------------------------------------------
         // Upgrading Functions
@@ -654,6 +654,7 @@ namespace Timekeeper
                     {"CategoryId", null},
                     {"IsLocked", OldRow["is_locked"] ? 1 : 0},
                     {"JournalIndex", JournalIndex},
+                    // FIXME: Don't forget to get rid of these
                     {"OriginalStartTime", OldRow["timestamp_s"].ToString(Common.LOCAL_DATETIME_FORMAT)},
                     {"OriginalStopTime", OldRow["timestamp_e"].ToString(Common.LOCAL_DATETIME_FORMAT)},
                 };
@@ -801,13 +802,14 @@ namespace Timekeeper
 
             Convert:  2013-07-01 20:00:00
             To.....:  2013-07-02 01:00:00-05:00
+
+            Keep in mind, this takes the user-specified time zone
+            into account, and not the time zone of the current
+            running process.
             */
 
             // Get time into standard string format
             string ConvertedTime = time.ToString(Common.LOCAL_DATETIME_FORMAT);
-
-            // Make sure we have the right date/time delimeter
-            ConvertedTime = ConvertedTime.Replace(' ', 'T');
 
             // Calculate the timezone & dst (if any) offset
             TimeSpan Offset = UpgradeOptions.LocationTimeZoneInfo.BaseUtcOffset;

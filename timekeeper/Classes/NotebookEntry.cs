@@ -121,7 +121,7 @@ namespace Timekeeper.Classes
                 // everything in UTC. Still experimenting, but it feels like this is
                 // the direction things are heading...
 
-                Row["EntryTime"] = this.EntryTime.ToString(Common.DATETIME_FORMAT);
+                Row["EntryTime"] = this.EntryTime.ToString(Common.UTC_DATETIME_FORMAT);
                 Row["Memo"] = this.Memo;
                 Row["LocationId"] = this.LocationId;
                 Row["CategoryId"] = this.CategoryId;
@@ -129,15 +129,15 @@ namespace Timekeeper.Classes
                 if (this.NotebookId == 0) {
                     this.NotebookId = Database.Insert("Notebook", Row);
                     if (this.NotebookId > 0) {
-                        this.CreateTime = DateTime.Parse(Row["CreateTime"]);
-                        this.ModifyTime = DateTime.Parse(Row["ModifyTime"]);
+                        this.CreateTime = DateTimeOffset.Parse(Row["CreateTime"]);
+                        this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
                         this.NotebookGuid = Row["NotebookGuid"];
                     } else {
                         throw new Exception("Could not create Notebook entry");
                     }
                 } else {
                     if (Database.Update("Notebook", Row, "NotebookId", this.NotebookId) > 0) {
-                        this.ModifyTime = DateTime.Parse(Row["ModifyTime"]);
+                        this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
                     } else {
                         throw new Exception("Could not update Notebook entry: " + this.NotebookId.ToString());
                     }
@@ -158,7 +158,7 @@ namespace Timekeeper.Classes
 
         public bool AtBeginning()
         {
-            DateTime FirstEntry = this.AllEntries.FirstEntry()["EntryTime"];
+            DateTimeOffset FirstEntry = this.AllEntries.FirstEntry()["EntryTime"];
             return this.EntryTime == FirstEntry;
         }
 
@@ -166,7 +166,7 @@ namespace Timekeeper.Classes
 
         public bool AtEnd()
         {
-            DateTime LastEntry = this.AllEntries.LastEntry()["EntryTime"];
+            DateTimeOffset LastEntry = this.AllEntries.LastEntry()["EntryTime"];
             return this.EntryTime == LastEntry;
         }
 

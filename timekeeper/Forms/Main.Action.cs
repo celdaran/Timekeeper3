@@ -1388,7 +1388,7 @@ namespace Timekeeper.Forms
                 browserEntry.StopTime = browserEntry.StartTime.AddTicks(ChunkSize);
                 browserEntry.Seconds = ChunkSizeInSeconds;
                 browserEntry.Save(); // FIXME: rethink a global "save" and support specific updates
-                DateTime LastChunkTime = browserEntry.StopTime;
+                DateTimeOffset LastChunkTime = browserEntry.StopTime;
 
                 // Clone the current entry
                 Classes.JournalEntry SplitEntry = new Classes.JournalEntry();
@@ -1656,7 +1656,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_UpdateDuration(DateTime currentTime, DateTime previousTime)
+        private void Action_UpdateDuration(DateTimeOffset currentTime, DateTimeOffset previousTime)
         {
             if (isBrowsing) {
                 if (currentTime != previousTime) {

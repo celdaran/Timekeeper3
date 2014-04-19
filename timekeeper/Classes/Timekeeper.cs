@@ -120,16 +120,17 @@ namespace Timekeeper
                 .Build();
             Job.JobDataMap.Add("MainForm", mainForm);
 
-            string Debug =
-                "Created Job \"" + Job.Key.ToString() +
-                "\" for Event \"" + ScheduledEvent.Event.Name + "\"";
-            Timekeeper.Debug(Debug);
-
             // Determine reminder time
             DateTime ReminderTime = ScheduledEvent.Schedule.ReminderTime(
-                ScheduledEvent.Event.NextOccurrenceTime,
+                ScheduledEvent.Event.NextOccurrenceTime.LocalDateTime,
                 (int)ScheduledEvent.Reminder.TimeUnit,
                 (int)ScheduledEvent.Reminder.TimeAmount);
+
+            string Debug =
+                "Created Job \"" + Job.Key.ToString() + "\"" +
+                " for Event \"" + ScheduledEvent.Event.Name + "\"" + 
+                " to be Reminded at \"" + ReminderTime.ToString(Common.LOCAL_DATETIME_FORMAT) + "\"";
+            Timekeeper.Debug(Debug);
 
             // Create trigger
             switch (ScheduledEvent.Schedule.RefScheduleTypeId) {

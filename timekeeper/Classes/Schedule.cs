@@ -37,8 +37,8 @@ namespace Timekeeper.Classes
         //----------------------------------------------------------------------
 
         public long ScheduleId { get; private set; }
-        public DateTime CreateTime { get; private set; }
-        public DateTime ModifyTime { get; private set; }
+        public DateTimeOffset CreateTime { get; private set; }
+        public DateTimeOffset ModifyTime { get; private set; }
 
         // Schedule
         public long RefScheduleTypeId { get; set; }
@@ -74,7 +74,7 @@ namespace Timekeeper.Classes
 
         public long DurationTypeId { get; set; }
         public long StopAfterCount { get; set; }
-        public DateTime StopAfterTime { get; set; }
+        public DateTimeOffset StopAfterTime { get; set; }
 
         // Event Metadata
         public long TriggerCount { get; set; }
@@ -160,7 +160,7 @@ namespace Timekeeper.Classes
             // Duration
             this.DurationTypeId = row["DurationTypeId"];
             this.StopAfterCount = (long)Timekeeper.GetValue(row["StopAfterCount"], 10);
-            this.StopAfterTime = (DateTime)Timekeeper.GetValue(row["StopAfterTime"], DateTime.MaxValue);
+            this.StopAfterTime = (DateTimeOffset)Timekeeper.GetValue(row["StopAfterTime"], DateTimeOffset.MaxValue);
 
             // Event Metadata
             this.TriggerCount = row["TriggerCount"];
@@ -213,7 +213,7 @@ namespace Timekeeper.Classes
                 // Duration
                 Schedule["DurationTypeId"] = this.DurationTypeId;
                 Schedule["StopAfterCount"] = this.StopAfterCount;
-                Schedule["StopAfterTime"] = this.StopAfterTime.ToString(Common.DATETIME_FORMAT); // TODO: UTC-safe?
+                Schedule["StopAfterTime"] = this.StopAfterTime.ToString(Common.UTC_DATETIME_FORMAT); // TODO: UTC-safe?
 
                 // Event Metadata
                 Schedule["TriggerCount"] = this.TriggerCount;
@@ -224,13 +224,13 @@ namespace Timekeeper.Classes
                     this.ScheduleId = this.Database.Insert("Schedule", Schedule);
                     if (this.ScheduleId > 0) {
                         Saved = true;
-                        this.CreateTime = DateTime.Parse(DbTimeStamp);
+                        this.CreateTime = DateTimeOffset.Parse(DbTimeStamp);
                         this.ModifyTime = this.CreateTime;
                     }
                 } else {
                     if (this.Database.Update("Schedule", Schedule, "ScheduleId", this.ScheduleId) == 1) {
                         Saved = true;
-                        this.ModifyTime = DateTime.Parse(DbTimeStamp);
+                        this.ModifyTime = DateTimeOffset.Parse(DbTimeStamp);
                     }
                 }
             }
@@ -275,7 +275,7 @@ namespace Timekeeper.Classes
         public ITrigger OneTimeTrigger(string triggerName, DateTime startAt)
         {
             string Debug = String.Format("Created one time trigger for schedule {0}, starting at {1}",
-                this.ScheduleId, startAt.ToString(Common.DATETIME_FORMAT));
+                this.ScheduleId, startAt.ToString(Common.UTC_DATETIME_FORMAT));
             Timekeeper.Debug(Debug);
 
             ITrigger SimpleTrigger = TriggerBuilder.Create()
@@ -316,7 +316,7 @@ namespace Timekeeper.Classes
                 }
 
                 Debug = String.Format("Created fixed trigger for schedule {0}, starting at {1}, interval {2} seconds",
-                    this.ScheduleId, startAt.ToString(Common.DATETIME_FORMAT), Seconds);
+                    this.ScheduleId, startAt.ToString(Common.UTC_DATETIME_FORMAT), Seconds);
                 Timekeeper.Debug(Debug);
 
                 FixedTrigger = TriggerBuilder.Create()
@@ -338,7 +338,7 @@ namespace Timekeeper.Classes
                 }
 
                 Debug = String.Format("Created fixed trigger for schedule {0}, starting at {1}, interval {2} months",
-                    this.ScheduleId, startAt.ToString(Common.DATETIME_FORMAT), Months);
+                    this.ScheduleId, startAt.ToString(Common.UTC_DATETIME_FORMAT), Months);
                 Timekeeper.Debug(Debug);
 
                 FixedTrigger = TriggerBuilder.Create()
@@ -598,7 +598,7 @@ namespace Timekeeper.Classes
             string Debug;
 
             Debug = String.Format("Created cron trigger (Type: {3}) for schedule {0}, starting at {1}, expression \"{2}\"",
-                this.ScheduleId, startAt.ToString(Common.DATETIME_FORMAT), cronTabExpression, debugTriggerType);
+                this.ScheduleId, startAt.ToString(Common.UTC_DATETIME_FORMAT), cronTabExpression, debugTriggerType);
             Timekeeper.Debug(Debug);
 
             // NOTE: It feels like a cron job should run independently of

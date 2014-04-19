@@ -411,8 +411,8 @@ namespace Timekeeper.Forms
             }
 
             // Display entry
-            wStartTime.Value = entry.StartTime;
-            wStopTime.Value = entry.StopTime;
+            wStartTime.Value = entry.StartTime.LocalDateTime;
+            wStopTime.Value = entry.StopTime.LocalDateTime;
             wDuration.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
             //wMemo.Text = entry.Memo;
             MemoEditor.Text = entry.Memo;
@@ -963,13 +963,13 @@ namespace Timekeeper.Forms
                         // either set the start time backwards
                         browserEntry.Seconds = -seconds;
                         browserEntry.StartTime = browserEntry.StopTime.AddSeconds(Convert.ToDouble(seconds));
-                        wStartTime.Value = browserEntry.StartTime;
+                        wStartTime.Value = browserEntry.StartTime.LocalDateTime;
                         Browser_EnableRevert(true);
                     } else if (seconds > 0) {
                         // or the end time forward
                         browserEntry.Seconds = seconds;
                         browserEntry.StopTime = browserEntry.StartTime.AddSeconds(Convert.ToDouble(seconds));
-                        wStopTime.Value = browserEntry.StopTime;
+                        wStopTime.Value = browserEntry.StopTime.LocalDateTime;
                         Browser_EnableRevert(true);
                     } else {
                         // duration is zero, do nothing
@@ -1074,7 +1074,7 @@ namespace Timekeeper.Forms
                 } else {
                     Classes.JournalEntry copy = browserEntry.Copy();
                     copy.LoadPrevious();
-                    return copy.StopTime;
+                    return copy.StopTime.LocalDateTime;
                 }
             }
             catch {
@@ -1092,7 +1092,7 @@ namespace Timekeeper.Forms
                 } else {
                     Classes.JournalEntry copy = browserEntry.Copy();
                     copy.LoadNext();
-                    return copy.StartTime;
+                    return copy.StartTime.LocalDateTime;
                 }
             }
             catch {

@@ -155,16 +155,16 @@ namespace Timekeeper.Forms.Tools
                     NewItem.ImageIndex = 1;
                 }
 
-                if (todoItem.DueDate.CompareTo(DateTime.UtcNow) < 0) {
+                if (todoItem.DueTime.CompareTo(DateTime.UtcNow) < 0) {
                     NewItem.ForeColor = Color.Red;
                 }
 
-                string StartDate = todoItem.StartDate == DateTime.MinValue
+                string StartDate = todoItem.StartTime == DateTime.MinValue
                     ? "None"
-                    : todoItem.StartDate.ToString(Options.Advanced_DateTimeFormat);
-                string DueDate = todoItem.DueDate == DateTime.MinValue
+                    : todoItem.StartTime.ToString(Options.Advanced_DateTimeFormat);
+                string DueDate = todoItem.DueTime == DateTime.MinValue
                     ? "None"
-                    : todoItem.DueDate.ToString(Options.Advanced_DateTimeFormat);
+                    : todoItem.DueTime.ToString(Options.Advanced_DateTimeFormat);
 
                 NewItem.SubItems.Add(StartDate);
                 NewItem.SubItems.Add(DueDate);

@@ -47,7 +47,7 @@ namespace Timekeeper.Classes
 
         public string ElapsedTodayFormatted()
         {
-            DateTime Midnight = DateTime.Parse("00:00:00");
+            DateTimeOffset Midnight = DateTimeOffset.Parse("00:00:00");
             Midnight = Midnight.AddSeconds(this.TodaySeconds());
             TimeSpan TimeSpan = new TimeSpan(Midnight.Ticks - 0);
             return Timekeeper.FormatTimeSpan(TimeSpan);
@@ -87,7 +87,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void Reindex(DateTime since)
+        public void Reindex(DateTimeOffset since)
         {
             var t = new Stopwatch();
 
@@ -98,7 +98,7 @@ namespace Timekeeper.Classes
             Bench(t);
             string Query = String.Format(
                 "select JournalId, JournalIndex from Journal where datetime(StartTime) >= datetime('{0}') order by StartTime",
-                since.ToString(Common.DATETIME_FORMAT));
+                since.ToString(Common.UTC_DATETIME_FORMAT));
             Table Table = Database.Select(Query);
             Bench(t, "[Reindex] " + Table.Count.ToString() + " Rows fetched");
 
@@ -109,7 +109,7 @@ namespace Timekeeper.Classes
             Bench(t);
             Query = String.Format(
                 "select JournalIndex from Journal where datetime(StartTime) < datetime('{0}') order by StartTime desc limit 1",
-                since.ToString(Common.DATETIME_FORMAT));
+                since.ToString(Common.UTC_DATETIME_FORMAT));
             Row LastGoodRow = Database.SelectRow(Query);
             Bench(t, "[Reindex] Starting Index fetched");
 

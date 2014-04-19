@@ -82,7 +82,7 @@ namespace Timekeeper.Classes
 
             string HiddenQualifier = "";
             if (showHidden) {
-                string HiddenSince = showHiddenSince.ToString(Common.DATETIME_FORMAT);
+                string HiddenSince = showHiddenSince.ToString(Common.UTC_DATETIME_FORMAT);
                 HiddenQualifier = "and ((IsHidden = 0) or (IsHidden = 1 and HiddenTime > datetime('" + HiddenSince + "')))";
             } else {
                 HiddenQualifier = "and IsHidden = 0";

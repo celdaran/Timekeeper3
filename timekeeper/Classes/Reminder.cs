@@ -20,8 +20,8 @@ namespace Timekeeper.Classes
         //----------------------------------------------------------------------
 
         public long ReminderId { get; private set; }
-        public DateTime CreateTime { get; private set; }
-        public DateTime ModifyTime { get; private set; }
+        public DateTimeOffset CreateTime { get; private set; }
+        public DateTimeOffset ModifyTime { get; private set; }
 
         public long TimeAmount { get; set; }
         public long TimeUnit { get; set; }
@@ -132,14 +132,14 @@ namespace Timekeeper.Classes
                     this.ReminderId = this.Database.Insert("Reminder", Reminder);
                     if (this.ReminderId > 0) {
                         Saved = true;
-                        this.CreateTime = DateTime.Parse(DbTimeStamp);
+                        this.CreateTime = DateTimeOffset.Parse(DbTimeStamp);
                         this.ModifyTime = this.CreateTime;
                     }
                 } else {
                     // existing row
                     if (this.Database.Update("Reminder", Reminder, "ReminderId", this.ReminderId) == 1) {
                         Saved = true;
-                        this.ModifyTime = DateTime.Parse(DbTimeStamp);
+                        this.ModifyTime = DateTimeOffset.Parse(DbTimeStamp);
                     }
                 }
 

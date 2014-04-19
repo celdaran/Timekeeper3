@@ -57,7 +57,7 @@ namespace Timekeeper.Classes
                         // date that reflects the time this project
                         // was actually created.
                         Row Row = new Row();
-                        Row["CreateTime"] = Task.CreateTime.ToString(Common.DATETIME_FORMAT);
+                        Row["CreateTime"] = Task.CreateTime.ToString(Common.UTC_DATETIME_FORMAT);
                         Database.Update("Project", Row, "ProjectId", ProjectId);
                     }
                 }
@@ -181,8 +181,8 @@ namespace Timekeeper.Classes
                             }
                         }
                         else {
-                            DateTime StartTime = DateTime.Parse(fields[StartTimePos]);
-                            DateTime StopTime = DateTime.Parse(fields[StopTimePos]);
+                            DateTimeOffset StartTime = DateTimeOffset.Parse(fields[StartTimePos]);
+                            DateTimeOffset StopTime = DateTimeOffset.Parse(fields[StopTimePos]);
                             TimeSpan ts = StopTime.Subtract(StartTime);
 
                             // Create the Journal Entry
@@ -199,7 +199,7 @@ namespace Timekeeper.Classes
                             if (JournalEntry.Create()) {
                                 Console.AppendText(
                                     "Imported " + JournalEntry.JournalId.ToString() + 
-                                    " for CSV entry " + StartTime.ToString(Common.DATETIME_FORMAT) + 
+                                    " for CSV entry " + StartTime.ToString(Common.UTC_DATETIME_FORMAT) + 
                                     "\t" + JournalEntry.Memo + "\n");
                             } else {
                                 throw new Exception("There was an error creating the journal entry.");

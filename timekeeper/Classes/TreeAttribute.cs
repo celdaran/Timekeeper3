@@ -12,29 +12,29 @@ namespace Timekeeper.Classes
         // Public Properties
         //---------------------------------------------------------------------
 
-        private long _ItemId;
-        private DateTime _CreateTime;
-        private DateTime _ModifyTime;
-        private string _ItemGuid;
+        public long ItemId { get; set; }
+        public DateTimeOffset CreateTime { get; set; }
+        public DateTimeOffset ModifyTime { get; set; }
+        public string ItemGuid { get; set; }
 
-        private string _Name;
-        private string _Description;
-        private long _ParentId;
-        private long _SortOrderNo;
-        private long _FollowedItemId;
-        private bool _IsFolder;
-        private bool _IsFolderOpened;
-        private bool _IsHidden;
-        private bool _IsDeleted;
-        private DateTime _HiddenTime;
-        private DateTime _DeletedTime;
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public long ParentId { get; set; }
+        public long SortOrderNo { get; set; }
+        public long FollowedItemId { get; set; }
+        public bool IsFolder { get; set; }
+        public bool IsFolderOpened { get; set; }
+        public bool IsHidden { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTimeOffset HiddenTime { get; set; }
+        public DateTimeOffset DeletedTime { get; set; }
 
-        private string _ExternalProjectNo;
+        public string ExternalProjectNo { get; set; }
 
-        private ItemType _Type;
+        public ItemType Type { get; set; }
 
         // In-memory only
-        public DateTime StartTime;
+        public DateTimeOffset StartTime;
 
         //---------------------------------------------------------------------
         // Protected Properties
@@ -117,31 +117,6 @@ namespace Timekeeper.Classes
 
             Load(itemId);
         }
-
-        //---------------------------------------------------------------------
-        // Accessors
-        //---------------------------------------------------------------------
-
-        public long     ItemId { get { return _ItemId; } private set { _ItemId = value; } }
-        public DateTime CreateTime { get { return _CreateTime; } private set { _CreateTime = value; } }
-        public DateTime ModifyTime { get { return _ModifyTime; } private set { _ModifyTime = value; } }
-        public string   ItemGuid { get { return _ItemGuid; } private set { _ItemGuid = value; } }
-
-        public string   Name { get { return _Name; } set { _Name = value; } }
-        public string   Description { get { return _Description; } set { _Description = value; } }
-        public long     ParentId { get { return _ParentId; } set { _ParentId = value; } }
-        public long     SortOrderNo { get { return _SortOrderNo; } set { _SortOrderNo = value; } }
-        public long     FollowedItemId { get { return _FollowedItemId; } set { _FollowedItemId = value; } }
-        public bool     IsFolder { get { return _IsFolder; } set { _IsFolder = value; } }
-        public bool     IsFolderOpened { get { return _IsFolderOpened; } set { _IsFolderOpened = value; } }
-        public bool     IsHidden { get { return _IsHidden; } set { _IsHidden = value; } }
-        public bool     IsDeleted { get { return _IsDeleted; } set { _IsDeleted = value; } }
-        public DateTime HiddenTime { get { return _HiddenTime; } set { _HiddenTime = value; } }
-        public DateTime DeletedTime { get { return _DeletedTime; } set { _DeletedTime = value; } }
-
-        public string   ExternalProjectNo { get { return _ExternalProjectNo; } set { _ExternalProjectNo = value; } }
-
-        public ItemType Type { get { return _Type; } set { _Type = value; } }
 
         //---------------------------------------------------------------------
         // Property-Like Methods
@@ -474,7 +449,7 @@ namespace Timekeeper.Classes
                 // more than bothering me. This is likely a Timekeeper 4.0
                 // type project, but I'd really like to figure out a better
                 // ORM for Timekeeper. This method is fraught with issues.
-                this.ModifyTime = Convert.ToDateTime(Row["ModifyTime"]);
+                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 return Timekeeper.FAILURE;
@@ -513,7 +488,7 @@ namespace Timekeeper.Classes
 
             if (Count == 1) {
                 this.Name = newName;
-                this.ModifyTime = Convert.ToDateTime(Row["ModifyTime"]);
+                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 return Timekeeper.FAILURE;
@@ -533,7 +508,7 @@ namespace Timekeeper.Classes
             if (Count == 1) {
                 // Update instance
                 this.SortOrderNo = sortOrderNo;
-                this.ModifyTime = Convert.ToDateTime(Row["ModifyTime"]);
+                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 // Otherwise, failure
@@ -555,7 +530,7 @@ namespace Timekeeper.Classes
             if (Count == 1) {
                 // Update instance
                 this.ParentId = itemId;
-                this.ModifyTime = Convert.ToDateTime(Row["ModifyTime"]);
+                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
                 this.SortOrderNo = Row["SortOrderNo"];
                 return Timekeeper.SUCCESS;
             } else {
@@ -573,7 +548,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void StartTiming(DateTime setStartTime)
+        public void StartTiming(DateTimeOffset setStartTime)
         {
             // Simply record the time we start
             this.StartTime = setStartTime;
@@ -584,7 +559,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public int StopTiming(DateTime setStopTime)
+        public int StopTiming(DateTimeOffset setStopTime)
         {
             /*
             DateTime StartTime = OldRow["timestamp_s"];

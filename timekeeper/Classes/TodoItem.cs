@@ -16,17 +16,17 @@ namespace Timekeeper.Classes
         private DBI Database;
 
         public long TodoId { get; private set; }
-        public DateTime CreateTime { get; private set; }
-        public DateTime ModifyTime { get; private set; }
+        public DateTimeOffset CreateTime { get; private set; }
+        public DateTimeOffset ModifyTime { get; private set; }
         public long ProjectId { get; set; }
         public long RefTodoStatusId { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateTimeOffset StartTime { get; set; }
+        public DateTimeOffset DueTime { get; set; }
         public string Memo { get; set; }
         public bool IsHidden { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTime HiddenTime { get; set; }
-        public DateTime DeletedTime { get; set; }
+        public DateTimeOffset HiddenTime { get; set; }
+        public DateTimeOffset DeletedTime { get; set; }
 
         public string ProjectName { get; private set; }
         public string StatusName { get; private set; }
@@ -81,9 +81,9 @@ namespace Timekeeper.Classes
                 this.StatusDescription = TodoItem["StatusDescription"];
 
                 if (TodoItem["StartDate"] != null)
-                    this.StartDate = TodoItem["StartDate"];
+                    this.StartTime = TodoItem["StartDate"];
                 if (TodoItem["DueDate"] != null)
-                    this.DueDate = TodoItem["DueDate"];
+                    this.DueTime = TodoItem["DueDate"];
                 if (TodoItem["Memo"] != null)
                     this.Memo = TodoItem["Memo"];
 
@@ -111,8 +111,8 @@ namespace Timekeeper.Classes
                 TodoItem["ProjectId"] = this.ProjectId;
                 TodoItem["RefTodoStatusId"] = this.RefTodoStatusId;
 
-                TodoItem["StartDate"] = this.StartDate.ToString(Common.DATETIME_FORMAT);
-                TodoItem["DueDate"] = this.DueDate.ToString(Common.DATETIME_FORMAT);
+                TodoItem["StartDate"] = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
+                TodoItem["DueDate"] = this.DueTime.ToString(Common.UTC_DATETIME_FORMAT);
                 TodoItem["Memo"] = this.Memo;
 
                 TodoItem["IsHidden"] = 0;
@@ -125,8 +125,8 @@ namespace Timekeeper.Classes
                 }
 
                 // Backfill instance with system-generated values
-                this.CreateTime = Convert.ToDateTime(TodoItem["CreateTime"]);
-                this.ModifyTime = Convert.ToDateTime(TodoItem["ModifyTime"]);
+                this.CreateTime = DateTimeOffset.Parse(TodoItem["CreateTime"]);
+                this.ModifyTime = DateTimeOffset.Parse(TodoItem["ModifyTime"]);
 
                 // And with foreign table information
                 this.ProjectName = (new Classes.Project(this.ProjectId)).DisplayName();
@@ -155,8 +155,8 @@ namespace Timekeeper.Classes
                 TodoItem["ProjectId"] = this.ProjectId;
                 TodoItem["RefTodoStatusId"] = this.RefTodoStatusId;
 
-                TodoItem["StartDate"] = this.StartDate.ToString(Common.DATETIME_FORMAT);
-                TodoItem["DueDate"] = this.DueDate.ToString(Common.DATETIME_FORMAT);
+                TodoItem["StartDate"] = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
+                TodoItem["DueDate"] = this.DueTime.ToString(Common.UTC_DATETIME_FORMAT);
                 TodoItem["Memo"] = this.Memo;
 
                 if (Database.Update("Todo", TodoItem, "TodoId", this.TodoId) != 1) {
@@ -164,7 +164,7 @@ namespace Timekeeper.Classes
                 }
 
                 // Backfill instance with system-generated values
-                this.ModifyTime = Convert.ToDateTime(TodoItem["ModifyTime"]);
+                this.ModifyTime = DateTimeOffset.Parse(TodoItem["ModifyTime"]);
 
                 // And with foreign table information
                 this.ProjectName = (new Classes.Project(this.ProjectId)).DisplayName();
@@ -251,7 +251,7 @@ namespace Timekeeper.Classes
                     throw new Exception("Could not update Todo column " + columnName);
                 }
 
-                this.ModifyTime = Convert.ToDateTime(TodoItem["ModifyTime"]);
+                this.ModifyTime = DateTimeOffset.Parse(TodoItem["ModifyTime"]);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

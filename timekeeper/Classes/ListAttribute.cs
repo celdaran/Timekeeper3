@@ -17,21 +17,21 @@ namespace Timekeeper.Classes
         private string TableName;
         private string IdColumnName;
 
-        private long _Id;
+        public long Id { get; set; }
 
-        private DateTime _CreateTime;
-        private DateTime _ModifyTime;
-        private string _Guid;
+        public DateTimeOffset CreateTime { get; set; }
+        public DateTimeOffset ModifyTime { get; set; }
+        public string Guid { get; set; }
 
-        private string _Name;
-        private string _Description;
+        public string Name { get; set; }
+        public string Description { get; set; }
 
-        private long _RefTimeZoneId;
-        private long _SortOrderNo;
-        private bool _IsHidden;
-        private bool _IsDeleted;
-        private DateTime _HiddenTime;
-        private DateTime _DeletedTime;
+        public long RefTimeZoneId { get; set; }
+        public long SortOrderNo { get; set; }
+        public bool IsHidden { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTimeOffset HiddenTime { get; set; }
+        public DateTimeOffset DeletedTime { get; set; }
 
         private enum Mode { Insert, Update };
 
@@ -54,26 +54,6 @@ namespace Timekeeper.Classes
         }
 
         //----------------------------------------------------------------------
-        // Accessors
-        //----------------------------------------------------------------------
-
-        public long Id { get { return _Id; } set { _Id = value; } }
-
-        public DateTime CreateTime { get { return _CreateTime;} set { _CreateTime = value;} }
-        public DateTime ModifyTime { get { return _ModifyTime;} set { _ModifyTime = value;} }
-        public string Guid { get { return _Guid;} set { _Guid = value;} }
-
-        public string Name { get { return _Name;} set { _Name = value;} }
-        public string Description { get { return _Description;} set { _Description = value;} }
-
-        public long RefTimeZoneId { get { return _RefTimeZoneId;} set { _RefTimeZoneId = value;} }
-        public long SortOrderNo { get { return _SortOrderNo;} set { _SortOrderNo = value;} }
-        public bool IsHidden { get { return _IsHidden;} set { _IsHidden = value;} }
-        public bool IsDeleted { get { return _IsDeleted;} private set { _IsDeleted = value;} }
-        public DateTime HiddenTime { get { return _HiddenTime;} private set { _HiddenTime = value;} }
-        public DateTime DeletedTime { get { return _DeletedTime;} private set { _DeletedTime = value;} }
-
-        //----------------------------------------------------------------------
 
         public bool Create()
         {
@@ -94,8 +74,8 @@ namespace Timekeeper.Classes
 
             if (Database.Update(this.TableName, ListAttribute, this.IdColumnName, this.Id) > 0) {
 
-                this.ModifyTime = Convert.ToDateTime(Now);
-                this.DeletedTime = Convert.ToDateTime(Now);
+                this.ModifyTime = DateTimeOffset.Parse(Now);
+                this.DeletedTime = DateTimeOffset.Parse(Now);
                 this.IsDeleted = true;
 
                 return true;
@@ -222,7 +202,7 @@ namespace Timekeeper.Classes
                     }
 
                     // Backfill instance with system-generated values
-                    this.CreateTime = Convert.ToDateTime(ListAttribute["CreateTime"]);
+                    this.CreateTime = DateTimeOffset.Parse(ListAttribute["CreateTime"]);
                     this.Guid = ListAttribute[this.TableName + "Guid"];
 
                 } else {
@@ -234,12 +214,12 @@ namespace Timekeeper.Classes
                 }
 
                 // More backfilling
-                this.ModifyTime = Convert.ToDateTime(ListAttribute["ModifyTime"]);
+                this.ModifyTime = DateTimeOffset.Parse(ListAttribute["ModifyTime"]);
 
                 if (ListAttribute["HiddenTime"] != null)
-                    this.HiddenTime = Convert.ToDateTime(ListAttribute["HiddenTime"]);
+                    this.HiddenTime = DateTimeOffset.Parse(ListAttribute["HiddenTime"]);
                 if (ListAttribute["DeletedTime"] != null)
-                    this.DeletedTime = Convert.ToDateTime(ListAttribute["DeletedTime"]);
+                    this.DeletedTime = DateTimeOffset.Parse(ListAttribute["DeletedTime"]);
 
                 return true;
             }

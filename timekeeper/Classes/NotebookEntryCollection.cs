@@ -59,12 +59,12 @@ namespace Timekeeper.Classes
                 Format1, Format2, Format3, Format4, entry.NotebookId);
             Common.Info(Debug);
             */
-            if (entry.EntryTime.DateTime == DateTime.MinValue) {
+            if (entry.EntryTime == DateTimeOffset.MinValue) {
                 return this.LastEntry();
             } else {
                 string SubQuery = String.Format(
                     "SELECT MAX(EntryTime) FROM Notebook WHERE datetime(EntryTime) < datetime('{0}')",
-                    entry.EntryTime.ToString(Common.DATETIME_FORMAT));
+                    entry.EntryTime.ToString(Common.UTC_DATETIME_FORMAT));
                 return FetchEntry(SubQuery);
             }
         }
@@ -75,7 +75,7 @@ namespace Timekeeper.Classes
         {
             string SubQuery = String.Format(
                 "SELECT MIN(EntryTime) FROM Notebook WHERE datetime(EntryTime) > datetime('{0}')",
-                entry.EntryTime.ToString(Common.DATETIME_FORMAT));
+                entry.EntryTime.ToString(Common.UTC_DATETIME_FORMAT));
             return FetchEntry(SubQuery);
         }
 

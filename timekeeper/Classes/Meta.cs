@@ -23,8 +23,8 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public DateTime Created;
-        public DateTime Upgraded;
+        public DateTimeOffset Created;
+        public DateTimeOffset Upgraded;
         public Version Version;
         public string Id;
 
@@ -41,8 +41,8 @@ namespace Timekeeper.Classes
                 string Query = String.Format(@"select * from {0} order by MetaId", Timekeeper.MetaTableName());
                 Rows = this.Database.Select(Query);
 
-                this.Created = Convert.ToDateTime(Rows[0]["Value"]);
-                this.Upgraded = Convert.ToDateTime(Rows[1]["Value"]);
+                this.Created = DateTimeOffset.Parse(Rows[0]["Value"]);
+                this.Upgraded = DateTimeOffset.Parse(Rows[1]["Value"]);
                 this.Version = new Version(Rows[2]["Value"]);
                 this.Id = Rows[3]["Value"];
             }

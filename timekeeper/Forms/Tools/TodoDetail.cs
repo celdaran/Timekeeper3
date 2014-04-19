@@ -64,10 +64,10 @@ namespace Timekeeper.Forms.Tools
                     this.RefTodoStatus.SelectedIndex = 0;
                     this.RefTodoStatus.SelectedIndex = (int)TodoItem.RefTodoStatusId - 1;
 
-                    if ((TodoItem.StartDate != null) && (TodoItem.StartDate != DateTime.MinValue))
-                        this.StartDate.Value = TodoItem.StartDate;
-                    if ((TodoItem.DueDate != null) && (TodoItem.DueDate != DateTime.MinValue))
-                        this.DueDate.Value = TodoItem.DueDate;
+                    if ((TodoItem.StartTime != null) && (TodoItem.StartTime != DateTime.MinValue))
+                        this.StartDate.Value = TodoItem.StartTime.LocalDateTime;
+                    if ((TodoItem.DueTime != null) && (TodoItem.DueTime != DateTime.MinValue))
+                        this.DueDate.Value = TodoItem.DueTime.LocalDateTime;
                     if (TodoItem.Memo != null)
                         this.Memo.Text = TodoItem.Memo;
                 } else {
@@ -113,8 +113,8 @@ namespace Timekeeper.Forms.Tools
 
             this.TodoItem.ProjectId = Project.ItemId;
             this.TodoItem.RefTodoStatusId = this.RefTodoStatus.SelectedIndex + 1;
-            this.TodoItem.StartDate = this.StartDate.Value;
-            this.TodoItem.DueDate = this.DueDate.Value;
+            this.TodoItem.StartTime = this.StartDate.Value;
+            this.TodoItem.DueTime = this.DueDate.Value;
             this.TodoItem.Memo = this.Memo.Text;
 
             DialogResult = DialogResult.OK;

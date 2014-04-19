@@ -36,14 +36,14 @@ namespace Timekeeper.Classes
 
         public long Id { get; protected set; }
 
-        public DateTime CreateTime { get; protected set; }
-        public DateTime ModifyTime { get; protected set; }
+        public DateTimeOffset CreateTime { get; protected set; }
+        public DateTimeOffset ModifyTime { get; protected set; }
 
         public string Name { get; set; }
         public string Description { get; set; }
 
         public long EventGroupId { get; set; }
-        public DateTime NextOccurrenceTime { get; set; }
+        public DateTimeOffset NextOccurrenceTime { get; set; }
         public long ReminderId { get; set; }
         public long ScheduleId { get; set; }
 
@@ -53,8 +53,8 @@ namespace Timekeeper.Classes
 
         public bool IsHidden { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTime HiddenTime { get; set; }
-        public DateTime DeletedTime { get; set; }
+        public DateTimeOffset HiddenTime { get; set; }
+        public DateTimeOffset DeletedTime { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -113,8 +113,8 @@ namespace Timekeeper.Classes
 
                     this.IsHidden = (bool)Timekeeper.GetValue(Event["IsHidden"], false);
                     this.IsDeleted = (bool)Timekeeper.GetValue(Event["IsDeleted"], false);
-                    this.HiddenTime = (DateTime)Timekeeper.GetValue(Event["HiddenTime"], DateTime.MaxValue);
-                    this.DeletedTime = (DateTime)Timekeeper.GetValue(Event["DeletedTime"], DateTime.MaxValue);
+                    this.HiddenTime = (DateTimeOffset)Timekeeper.GetValue(Event["HiddenTime"], DateTimeOffset.MaxValue);
+                    this.DeletedTime = (DateTimeOffset)Timekeeper.GetValue(Event["DeletedTime"], DateTimeOffset.MaxValue);
                 }
             }
             catch (Exception x) {
@@ -142,21 +142,24 @@ namespace Timekeeper.Classes
                 // than a band-aid. (See Journal Entry class)
                 // FIXME (GENERAL FIXME): Sweep all date/time instances for UTC vs LocalTime issues  :^(
 
+                /*
+                Commenting out during the Ticket #1310 / DateTimeOffset sweep
                 this.NextOccurrenceTime = DateTime.SpecifyKind(this.NextOccurrenceTime, DateTimeKind.Local);
                 this.HiddenTime = DateTime.SpecifyKind(this.HiddenTime, DateTimeKind.Local);
                 this.DeletedTime = DateTime.SpecifyKind(this.DeletedTime, DateTimeKind.Local);
+                */
 
                 Event["EventGroupId"] = this.EventGroupId;
-                Event["NextOccurrenceTime"] = this.NextOccurrenceTime.ToString(Common.DATETIME_FORMAT);
+                Event["NextOccurrenceTime"] = this.NextOccurrenceTime.ToString(Common.UTC_DATETIME_FORMAT);
                 Event["ReminderId"] = this.ReminderId;
                 Event["ScheduleId"] = this.ScheduleId;
                 Event["IsHidden"] = this.IsHidden ? 1 : 0;
                 Event["IsDeleted"] = this.IsDeleted ? 1 : 0;
 
                 if (this.IsHidden)
-                    Event["HiddenTime"] = this.HiddenTime.ToString(Common.DATETIME_FORMAT);
+                    Event["HiddenTime"] = this.HiddenTime.ToString(Common.UTC_DATETIME_FORMAT);
                 if (this.IsDeleted)
-                    Event["DeletedTime"] = this.DeletedTime.ToString(Common.DATETIME_FORMAT);
+                    Event["DeletedTime"] = this.DeletedTime.ToString(Common.UTC_DATETIME_FORMAT);
 
                 string Query = String.Format(@"
                     SELECT count(*) as Count 

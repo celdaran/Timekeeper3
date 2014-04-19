@@ -301,8 +301,8 @@ namespace Timekeeper.Forms.Shared
         private void OkayButton_Click(object sender, EventArgs e)
         {
             FilterOptions.DateRangePreset = Presets.SelectedIndex + 1;
-            FilterOptions.FromDate = FromDate.Value.Date;
-            FilterOptions.ToDate = ToDate.Value.Date;
+            FilterOptions.FromTime = FromDate.Value.Date;
+            FilterOptions.ToTime = ToDate.Value.Date;
             FilterOptions.MemoContains = MemoFilter.Text;
             FilterOptions.Activities = GetActuallySelectedValues(ActivityTree.Nodes);
             FilterOptions.Projects = GetActuallySelectedValues(ProjectTree.Nodes);
@@ -528,8 +528,8 @@ namespace Timekeeper.Forms.Shared
                 FilterOptions.SetDateRange();
             }
             if (ChangeDateRange) {
-                FromDate.Value = FilterOptions.FromDate.Date;
-                ToDate.Value = FilterOptions.ToDate.Date;
+                FromDate.Value = FilterOptions.FromTime.Date;
+                ToDate.Value = FilterOptions.ToTime.Date;
             }
         }
 

@@ -24,12 +24,12 @@ namespace Timekeeper.Classes
 
         public long JournalId { get; set; }
 
-        public DateTime CreateTime { get; private set; }
-        public DateTime ModifyTime { get; private set; }
+        public DateTimeOffset CreateTime { get; private set; }
+        public DateTimeOffset ModifyTime { get; private set; }
         public string JournalGuid { get; private set; }
 
-        public DateTime StartTime { get; set; }
-        public DateTime StopTime { get; set; }
+        public DateTimeOffset StartTime { get; set; }
+        public DateTimeOffset StopTime { get; set; }
         public long Seconds { get; set; }
         public string Memo { get; set; }
         public long ProjectId { get; set; }
@@ -315,8 +315,11 @@ namespace Timekeeper.Classes
             // TODO: Something's not quite right here, I need to figure
             // out where things are going wrong. This is nothing more
             // than a band-aid.
+            // Ticket #1310 -- Figured this out on 2014-04-19
+            /*
             StartTime = DateTime.SpecifyKind(StartTime, DateTimeKind.Local);
             StopTime = DateTime.SpecifyKind(StopTime, DateTimeKind.Local);
+            */
 
             Row Journal = new Row();
 
@@ -331,8 +334,8 @@ namespace Timekeeper.Classes
 
             Journal["ProjectId"] = ProjectId;
             Journal["ActivityId"] = ActivityId;
-            Journal["StartTime"] = StartTime.ToString(Common.DATETIME_FORMAT);
-            Journal["StopTime"] = StopTime.ToString(Common.DATETIME_FORMAT);
+            Journal["StartTime"] = StartTime.ToString(Common.UTC_DATETIME_FORMAT);
+            Journal["StopTime"] = StopTime.ToString(Common.UTC_DATETIME_FORMAT);
             Journal["Seconds"] = Seconds;
             Journal["Memo"] = Memo;
             Journal["LocationId"] = LocationId;
@@ -359,13 +362,13 @@ namespace Timekeeper.Classes
             // Now set default attributes
             Journal = new Row();
 
-            Journal["StartTime"] = DateTime.Now;
+            Journal["StartTime"] = DateTimeOffset.Now;
 
             Journal["JournalId"] = 0;
             Journal["ProjectId"] = 0;
             Journal["ActivityId"] = 0;
-            Journal["StartTime"] = DateTime.Now;
-            Journal["StopTime"] = DateTime.Now;
+            Journal["StartTime"] = DateTimeOffset.Now;
+            Journal["StopTime"] = DateTimeOffset.Now;
             Journal["Seconds"] = 0;
             Journal["Memo"] = "";
             Journal["LocationId"] = 0;
@@ -378,8 +381,8 @@ namespace Timekeeper.Classes
             Journal["LocationName"] = "";
             Journal["CategoryName"] = "";
 
-            Journal["CreateTime"] = DateTime.Now;
-            Journal["ModifyTime"] = DateTime.Now;
+            Journal["CreateTime"] = DateTimeOffset.Now;
+            Journal["ModifyTime"] = DateTimeOffset.Now;
             Journal["JournalGuid"] = UUID.Get();
 
             SetAttributes(Journal);
@@ -392,10 +395,12 @@ namespace Timekeeper.Classes
             Type t = Journal["StartTime"].GetType();
 
             if (t.FullName == "System.String") {
-                Journal["StartTime"] = DateTime.Parse(Journal["StartTime"]);
-                Journal["StopTime"] = DateTime.Parse(Journal["StopTime"]);
-                Journal["StartTime"] = DateTime.SpecifyKind(Journal["StartTime"], DateTimeKind.Local);
-                Journal["StopTime"] = DateTime.SpecifyKind(Journal["StopTime"], DateTimeKind.Local);
+                Journal["StartTime"] = DateTimeOffset.Parse(Journal["StartTime"]);
+                Journal["StopTime"] = DateTimeOffset.Parse(Journal["StopTime"]);
+                /*
+                Journal["StartTime"] = DateTimeOffset.SpecifyKind(Journal["StartTime"], DateTimeKind.Local);
+                Journal["StopTime"] = DateTimeOffset.SpecifyKind(Journal["StopTime"], DateTimeKind.Local);
+                */
             }
 
             JournalId = Journal["JournalId"];

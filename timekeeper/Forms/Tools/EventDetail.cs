@@ -108,7 +108,7 @@ namespace Timekeeper.Forms.Tools
                     EventName.Text = CurrentEvent.Name;
                     EventDescription.Text = CurrentEvent.Description;
                     EventGroupList.SelectedIndex = EventGroupList.FindStringExact(CurrentEvent.Group.Name);
-                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime;
+                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime.LocalDateTime;
                 }
             }
             catch (Exception x) {
@@ -162,7 +162,7 @@ namespace Timekeeper.Forms.Tools
                     CurrentEvent.ScheduleId = ScheduleForm.CurrentSchedule.ScheduleId;
                     CurrentEvent.Schedule = new Classes.Schedule(CurrentEvent.ScheduleId);
                     CurrentEvent.NextOccurrenceTime = ScheduleForm.ExternalEventNextOccurrence;
-                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime;
+                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime.LocalDateTime;
                     break;
                 case DialogResult.Cancel:
                     // Ingore this

@@ -58,12 +58,12 @@ namespace Timekeeper.Classes
 
         public long FilterOptionsId { get; set; } // FIXME: set should be private, but I'm experimenting
 
-        public DateTime CreateTime { get; private set; }
-        public DateTime ModifyTime { get; private set; }
+        public DateTimeOffset CreateTime { get; private set; }
+        public DateTimeOffset ModifyTime { get; private set; }
 
         public int DateRangePreset { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public DateTimeOffset FromTime { get; set; }
+        public DateTimeOffset ToTime { get; set; }
         public string MemoContains { get; set; }
         public List<long> Projects { get; set; }
         public List<long> Activities { get; set; }
@@ -131,8 +131,8 @@ namespace Timekeeper.Classes
                 Row Options = this.Database.SelectRow(Query);
 
                 DateRangePreset = (int)Timekeeper.GetValue(Options["RefDatePresetId"], DATE_PRESET_ALL);
-                FromDate = (DateTime)Timekeeper.GetValue(Options["FromDate"], DateTime.MinValue);
-                ToDate = (DateTime)Timekeeper.GetValue(Options["ToDate"], DateTime.MaxValue);
+                FromTime = (DateTimeOffset)Timekeeper.GetValue(Options["FromTime"], DateTimeOffset.MinValue);
+                ToTime = (DateTimeOffset)Timekeeper.GetValue(Options["ToTime"], DateTimeOffset.MaxValue);
                 MemoContains = (string)Timekeeper.GetValue(Options["MemoContains"], "");
                 Projects = List((string)Timekeeper.GetValue(Options["ProjectList"], ""));
                 Activities = List((string)Timekeeper.GetValue(Options["ActivityList"], ""));
@@ -172,8 +172,8 @@ namespace Timekeeper.Classes
             this.ModifyTime = that.ModifyTime;
 
             this.DateRangePreset = that.DateRangePreset;
-            this.FromDate = that.FromDate;
-            this.ToDate = that.ToDate;
+            this.FromTime = that.FromTime;
+            this.ToTime = that.ToTime;
             this.MemoContains = that.MemoContains;
             this.Projects = that.Projects;
             this.Activities = that.Activities;
@@ -208,8 +208,8 @@ namespace Timekeeper.Classes
 
             if (
                 (this.DateRangePreset == that.DateRangePreset) &&
-                (this.FromDate == that.FromDate) &&
-                (this.ToDate == that.ToDate) &&
+                (this.FromTime == that.FromTime) &&
+                (this.ToTime == that.ToTime) &&
                 (this.MemoContains == that.MemoContains) &&
                 (this.SetsEqual(this.Projects, that.Projects)) &&
                 (this.SetsEqual(this.Activities, that.Activities)) &&
@@ -273,8 +273,8 @@ namespace Timekeeper.Classes
                 Row Options = new Row();
 
                 Options["RefDatePresetId"] = DateRangePreset;
-                Options["FromDate"] = FromDate.ToString(Common.DATETIME_FORMAT);
-                Options["ToDate"] = ToDate.ToString(Common.DATETIME_FORMAT);
+                Options["FromTime"] = FromTime.ToString(Common.UTC_DATETIME_FORMAT);
+                Options["ToTime"] = ToTime.ToString(Common.UTC_DATETIME_FORMAT);
                 Options["MemoContains"] = MemoContains;
                 Options["ProjectList"] = List(Projects);
                 Options["ActivityList"] = List(Activities);
@@ -285,6 +285,7 @@ namespace Timekeeper.Classes
                 Options["DurationUnit"] = DurationUnit;
 
                 // TODO: TBX/DBI needs a RowExists and/or Upsert statement
+                // MAJOR TODO: I need a real ORM. I hate this stuff.
 
                 Row Count = this.Database.SelectRow(@"
                     select count(*) as Count 
@@ -297,15 +298,15 @@ namespace Timekeeper.Classes
 
                     FilterOptionsId = this.Database.Insert("FilterOptions", Options);
                     if (FilterOptionsId > 0) {
-                        CreateTime = Convert.ToDateTime(Options["CreateTime"]);
-                        ModifyTime = Convert.ToDateTime(Options["ModifyTime"]);
+                        CreateTime = DateTimeOffset.Parse(Options["CreateTime"]);
+                        ModifyTime = DateTimeOffset.Parse(Options["ModifyTime"]);
                     } else {
                         throw new Exception("Error inserting into FilterOptions");
                     }
                 } else {
                     Options["ModifyTime"] = Common.Now();
                     this.Database.Update("FilterOptions", Options, "FilterOptionsId", FilterOptionsId);
-                    ModifyTime = Convert.ToDateTime(Options["ModifyTime"]);
+                    ModifyTime = DateTimeOffset.Parse(Options["ModifyTime"]);
                 }
             }
             catch (Exception x) {
@@ -321,8 +322,8 @@ namespace Timekeeper.Classes
         {
             FilterOptionsId = -1;
             DateRangePreset = DATE_PRESET_ALL;
-            FromDate = DateTime.UtcNow.Date;
-            ToDate = DateTime.UtcNow.Date;
+            FromTime = DateTimeOffset.UtcNow;
+            ToTime = DateTimeOffset.UtcNow;
             MemoContains = null;
             Projects = null;
             Activities = null;
@@ -337,16 +338,18 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public string FromDateToString()
+        private string FromTimeToString()
         {
-            return FromDate.ToString(Common.DATE_FORMAT) + " 00:00:00";
+            // FIXME: does this handle UTC/localtime? does it support user-defined midnight values?
+            return FromTime.ToString(Common.DATE_FORMAT) + " 00:00:00";
         }
 
         //---------------------------------------------------------------------
 
-        public string ToDateToString()
+        private string ToTimeToString()
         {
-            return ToDate.ToString(Common.DATE_FORMAT) + " 23:59:59";
+            // FIXME: does this handle UTC/localtime? does it support user-defined midnight values?
+            return ToTime.ToString(Common.DATE_FORMAT) + " 23:59:59";
         }
 
         //---------------------------------------------------------------------
@@ -407,11 +410,13 @@ namespace Timekeeper.Classes
         {
             string WhereClause = "";
 
+            Timekeeper.Warn("Filtering still needs some date/time love...");
+
             WhereClause += String.Format("datetime(j.StartTime, 'localtime') >= datetime('{0}')",
-                this.FromDateToString()) + System.Environment.NewLine;
+                this.FromTimeToString()) + System.Environment.NewLine;
 
             WhereClause += String.Format("and datetime(j.StopTime, 'localtime') <= datetime('{0}')",
-                this.ToDateToString()) + System.Environment.NewLine;
+                this.ToTimeToString()) + System.Environment.NewLine;
 
             if ((this.ImpliedProjects != null) && (this.ImpliedProjects.Count > 0)) {
                 WhereClause += String.Format("and j.ProjectId in ({0})",
@@ -463,33 +468,33 @@ namespace Timekeeper.Classes
 
             switch (this.DateRangePreset) {
                 case DATE_PRESET_TODAY:
-                    this.FromDate = Today;
-                    this.ToDate = Today;
+                    this.FromTime = Today;
+                    this.ToTime = Today;
                     break;
 
                 case DATE_PRESET_YESTERDAY:
-                    this.FromDate = Today.Subtract(new TimeSpan(24, 0, 0));
-                    this.ToDate = this.FromDate;
+                    this.FromTime = Today.Subtract(new TimeSpan(24, 0, 0));
+                    this.ToTime = this.FromTime;
                     break;
 
                 case DATE_PRESET_PREVIOUS_DAY:
                     Entries = new Classes.JournalEntryCollection();
-                    this.FromDate = Entries.PreviousDay();
-                    this.ToDate = this.FromDate;
+                    this.FromTime = Entries.PreviousDay();
+                    this.ToTime = this.FromTime;
                     break;
 
                 case DATE_PRESET_THIS_WEEK:
                     // TODO: Make the week start day user-definable (e.g., Monday vs. Sunday)
                     // FIXME: You've defined "THIS WEEK" as "THIS WORK WEEK"
                     int MondayDelta = Today.DayOfWeek - DayOfWeek.Monday;
-                    this.FromDate = Today.Subtract(new TimeSpan(MondayDelta * 24, 0, 0));
+                    this.FromTime = Today.Subtract(new TimeSpan(MondayDelta * 24, 0, 0));
                     int FridayDelta = DayOfWeek.Friday - Today.DayOfWeek;
-                    this.ToDate = Today.Add(new TimeSpan(FridayDelta * 24, 0, 0));
+                    this.ToTime = Today.Add(new TimeSpan(FridayDelta * 24, 0, 0));
                     break;
 
                 case DATE_PRESET_THIS_MONTH:
-                    this.FromDate = DateTime.Parse(Today.Year.ToString() + "/" + Today.Month.ToString() + "/1");
-                    this.ToDate = DateTime.Parse(Today.Year.ToString() + "/" + Today.Month.ToString() + "/" + DateTime.DaysInMonth(Today.Year, Today.Month).ToString());
+                    this.FromTime = DateTime.Parse(Today.Year.ToString() + "/" + Today.Month.ToString() + "/1");
+                    this.ToTime = DateTime.Parse(Today.Year.ToString() + "/" + Today.Month.ToString() + "/" + DateTime.DaysInMonth(Today.Year, Today.Month).ToString());
                     break;
 
                 case DATE_PRESET_LAST_MONTH:
@@ -501,26 +506,26 @@ namespace Timekeeper.Classes
                     } else {
                         month--;
                     }
-                    this.FromDate = DateTime.Parse(year.ToString() + "/" + month.ToString() + "/1");
-                    this.ToDate = DateTime.Parse(year.ToString() + "/" + month.ToString() + "/" + DateTime.DaysInMonth(year, month).ToString());
+                    this.FromTime = DateTime.Parse(year.ToString() + "/" + month.ToString() + "/1");
+                    this.ToTime = DateTime.Parse(year.ToString() + "/" + month.ToString() + "/" + DateTime.DaysInMonth(year, month).ToString());
                     break;
 
                 case DATE_PRESET_THIS_YEAR:
-                    this.FromDate = DateTime.Parse(Today.Year.ToString() + "/01/01");
-                    this.ToDate = DateTime.Parse(Today.Year.ToString() + "/12/31");
+                    this.FromTime = DateTime.Parse(Today.Year.ToString() + "/01/01");
+                    this.ToTime = DateTime.Parse(Today.Year.ToString() + "/12/31");
                     break;
 
                 case DATE_PRESET_LAST_YEAR:
                     year = Today.Year;
                     year--;
-                    this.FromDate = DateTime.Parse(year.ToString() + "/01/01");
-                    this.ToDate = DateTime.Parse(year.ToString() + "/12/31");
+                    this.FromTime = DateTime.Parse(year.ToString() + "/01/01");
+                    this.ToTime = DateTime.Parse(year.ToString() + "/12/31");
                     break;
 
                 case DATE_PRESET_ALL:
                     Entries = new Classes.JournalEntryCollection();
-                    this.FromDate = Entries.FirstDay().Date;
-                    this.ToDate = Entries.LastDay().Date;
+                    this.FromTime = Entries.FirstDay().Date;
+                    this.ToTime = Entries.LastDay().Date;
                     break;
 
                 default: 
