@@ -164,6 +164,7 @@
     <Compile Include="Classes\LocationCollection.cs" />
     <Compile Include="Classes\Mail.cs" />
     <Compile Include="Classes\Meta.cs" />
+    <Compile Include="Classes\NotebookEntryCollection.cs" />
     <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\ReferenceData.cs" />
     <Compile Include="Classes\Reminder.cs" />

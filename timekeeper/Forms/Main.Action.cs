@@ -1656,26 +1656,6 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_UpdateNotebook(string memo, DateTime entryTime, bool create)
-        {
-            var Notebook = new Classes.NotebookEntry();
-
-            Notebook.Memo = memo;
-            Notebook.EntryTime = entryTime;
-
-            if (create) {
-                Notebook.Create();
-                Common.Info("Journal entry created.");
-            } else {
-                // FIXME: what was this? what that value?
-                // dlg.wJumpBox.Items[dlg.wJumpBox.SelectedIndex].ToString();
-                Notebook.Update();
-                Common.Info("Journal entry updated.");
-            }
-        }
-
-        //---------------------------------------------------------------------
-
         private void Action_UpdateDuration(DateTime currentTime, DateTime previousTime)
         {
             if (isBrowsing) {

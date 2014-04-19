@@ -16,17 +16,19 @@ namespace Timekeeper.Classes
 
         private DBI Database;
 
+        private NotebookEntryCollection AllEntries;
+
         //---------------------------------------------------------------------
 
         public long NotebookId = 0;
-        public DateTime CreateTime { get; set; }
-        public DateTime ModifyTime { get; set; }
+        public DateTimeOffset CreateTime { get; set; }
+        public DateTimeOffset ModifyTime { get; set; }
         public string NotebookGuid { get; set; }
 
-        public DateTime EntryTime { get; set; }
+        public DateTimeOffset EntryTime { get; set; }
         public string Memo { get; set; }
-        public int LocationId { get; set; }
-        public int CategoryId { get; set; }
+        public long LocationId { get; set; }
+        public long CategoryId { get; set; }
 
         //---------------------------------------------------------------------
         // Constructor
@@ -35,19 +37,18 @@ namespace Timekeeper.Classes
         public NotebookEntry()
         {
             this.Database = Timekeeper.Database;
+            this.AllEntries = new NotebookEntryCollection();
         }
 
         //---------------------------------------------------------------------
-        // Methods
-        //---------------------------------------------------------------------
 
-        public int Count()
+        public NotebookEntry(long notebookId) : this()
         {
-            string Query = "SELECT COUNT(*) AS Count FROM Notebook";
-            Row Row = Database.SelectRow(Query);
-            return (int)Row["Count"];
+            this.Load(notebookId);
         }
 
+        //---------------------------------------------------------------------
+        // Persistence
         //---------------------------------------------------------------------
 
         public void Load()
@@ -56,7 +57,7 @@ namespace Timekeeper.Classes
                 Row Row = new Row();
                 Row = this.Database.SelectRow("SELECT MAX(NotebookId) AS MaxNotebookId FROM Notebook");
                 if (Row["MaxNotebookId"] != null) {
-                    int MaxNotebookId = Convert.ToInt32(Row["MaxNotebookId"]);
+                    long MaxNotebookId = Convert.ToInt64(Row["MaxNotebookId"]);
                     this.Load(MaxNotebookId);
                 }
             }
@@ -67,7 +68,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void Load(int notebookId)
+        public void Load(long notebookId)
         {
             NotebookId = notebookId;
 
@@ -90,8 +91,6 @@ namespace Timekeeper.Classes
         }
 
         //---------------------------------------------------------------------
-        // Persistence
-        //---------------------------------------------------------------------
 
         public bool Save()
         {
@@ -106,6 +105,21 @@ namespace Timekeeper.Classes
                     // Update
                 }
                 Row["ModifyTime"] = Common.Now();
+
+                // FIXME: sweep the codebase for this stuff
+                // Seems to be any time we take a string, but
+                // I'd really like to figure out how to solve
+                // this in a less hacky, less one-off fashion.
+                // Could it be part of the constructor itself?
+                // Let's try that next! (Did that, commenting this out)
+                //this.EntryTime = DateTime.SpecifyKind(this.EntryTime, DateTimeKind.Local);
+
+                // EPIPHANY: I should have been using DateTimeOffset as the datatype for
+                // all my date/times and NOT just DateTime, which is ambiguous with 
+                // respect to the timezone. Crap. That's pretty fundamental, when it 
+                // comes down to an application that pretends to store and manipulate
+                // everything in UTC. Still experimenting, but it feels like this is
+                // the direction things are heading...
 
                 Row["EntryTime"] = this.EntryTime.ToString(Common.DATETIME_FORMAT);
                 Row["Memo"] = this.Memo;
@@ -136,6 +150,24 @@ namespace Timekeeper.Classes
 
             return true;
 
+        }
+
+        //---------------------------------------------------------------------
+        // Navigation Help
+        //---------------------------------------------------------------------
+
+        public bool AtBeginning()
+        {
+            DateTime FirstEntry = this.AllEntries.FirstEntry()["EntryTime"];
+            return this.EntryTime == FirstEntry;
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool AtEnd()
+        {
+            DateTime LastEntry = this.AllEntries.LastEntry()["EntryTime"];
+            return this.EntryTime == LastEntry;
         }
 
         //---------------------------------------------------------------------

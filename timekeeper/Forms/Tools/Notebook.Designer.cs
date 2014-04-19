@@ -57,6 +57,7 @@
             this.MenuToolbarSave = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFormat = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFormatBold = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarRevert = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.ControlPanel.SuspendLayout();
             this.LocationAndCategoryPanel.SuspendLayout();
@@ -107,22 +108,26 @@
             // ToolbarFirstEntry
             // 
             this.ToolbarFirstEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarFirstEntry.Enabled = false;
             this.ToolbarFirstEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonFirst;
             this.ToolbarFirstEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolbarFirstEntry.Name = "ToolbarFirstEntry";
             this.ToolbarFirstEntry.Size = new System.Drawing.Size(23, 22);
             this.ToolbarFirstEntry.Text = "|<";
             this.ToolbarFirstEntry.ToolTipText = "Go to First Entry";
+            this.ToolbarFirstEntry.Click += new System.EventHandler(this.ToolbarFirstEntry_Click);
             // 
             // ToolbarPreviousEntry
             // 
             this.ToolbarPreviousEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarPreviousEntry.Enabled = false;
             this.ToolbarPreviousEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonPrev;
             this.ToolbarPreviousEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolbarPreviousEntry.Name = "ToolbarPreviousEntry";
             this.ToolbarPreviousEntry.Size = new System.Drawing.Size(23, 22);
             this.ToolbarPreviousEntry.Text = "<<";
             this.ToolbarPreviousEntry.ToolTipText = "Go to Previous Entry";
+            this.ToolbarPreviousEntry.Click += new System.EventHandler(this.ToolbarPreviousEntry_Click);
             // 
             // ToolbarNextEntry
             // 
@@ -134,6 +139,7 @@
             this.ToolbarNextEntry.Size = new System.Drawing.Size(23, 22);
             this.ToolbarNextEntry.Text = ">>";
             this.ToolbarNextEntry.ToolTipText = "Go to Next Entry";
+            this.ToolbarNextEntry.Click += new System.EventHandler(this.ToolbarNextEntry_Click);
             // 
             // ToolbarLastEntry
             // 
@@ -145,6 +151,7 @@
             this.ToolbarLastEntry.Size = new System.Drawing.Size(23, 22);
             this.ToolbarLastEntry.Text = ">|";
             this.ToolbarLastEntry.ToolTipText = "Go to Last Entry";
+            this.ToolbarLastEntry.Click += new System.EventHandler(this.ToolbarLastEntry_Click);
             // 
             // ToolbarNewEntry
             // 
@@ -156,6 +163,7 @@
             this.ToolbarNewEntry.Size = new System.Drawing.Size(23, 22);
             this.ToolbarNewEntry.Text = "New Entry";
             this.ToolbarNewEntry.ToolTipText = "Go to New Entry";
+            this.ToolbarNewEntry.Click += new System.EventHandler(this.ToolbarNewEntry_Click);
             // 
             // ToolbarNotebookEntryId
             // 
@@ -171,6 +179,7 @@
             // 
             // ToolbarFind
             // 
+            this.ToolbarFind.Enabled = false;
             this.ToolbarFind.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
             this.ToolbarFind.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolbarFind.Name = "ToolbarFind";
@@ -203,6 +212,7 @@
             this.ToolbarRevert.Name = "ToolbarRevert";
             this.ToolbarRevert.Size = new System.Drawing.Size(23, 22);
             this.ToolbarRevert.Text = "Revert";
+            this.ToolbarRevert.Click += new System.EventHandler(this.ToolbarRevert_Click);
             // 
             // ControlPanel
             // 
@@ -301,16 +311,17 @@
             // MenuToolbar
             // 
             this.MenuToolbar.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuToolbarSave});
+            this.MenuToolbarSave,
+            this.MenuToolbarRevert});
             this.MenuToolbar.Name = "MenuToolbar";
-            this.MenuToolbar.Size = new System.Drawing.Size(95, 20);
-            this.MenuToolbar.Text = "Toolbar Buttons";
+            this.MenuToolbar.Size = new System.Drawing.Size(55, 20);
+            this.MenuToolbar.Text = "Toolbar";
             // 
             // MenuToolbarSave
             // 
             this.MenuToolbarSave.Name = "MenuToolbarSave";
             this.MenuToolbarSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.MenuToolbarSave.Size = new System.Drawing.Size(136, 22);
+            this.MenuToolbarSave.Size = new System.Drawing.Size(175, 22);
             this.MenuToolbarSave.Text = "Save";
             this.MenuToolbarSave.Click += new System.EventHandler(this.MenuToolbarSave_Click);
             // 
@@ -319,16 +330,24 @@
             this.MenuFormat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuFormatBold});
             this.MenuFormat.Name = "MenuFormat";
-            this.MenuFormat.Size = new System.Drawing.Size(93, 20);
-            this.MenuFormat.Text = "Format Buttons";
+            this.MenuFormat.Size = new System.Drawing.Size(53, 20);
+            this.MenuFormat.Text = "Format";
             // 
             // MenuFormatBold
             // 
             this.MenuFormatBold.Name = "MenuFormatBold";
             this.MenuFormatBold.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.MenuFormatBold.Size = new System.Drawing.Size(132, 22);
+            this.MenuFormatBold.Size = new System.Drawing.Size(152, 22);
             this.MenuFormatBold.Text = "Bold";
             this.MenuFormatBold.Click += new System.EventHandler(this.MenuFormatBold_Click);
+            // 
+            // MenuToolbarRevert
+            // 
+            this.MenuToolbarRevert.Name = "MenuToolbarRevert";
+            this.MenuToolbarRevert.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Z)));
+            this.MenuToolbarRevert.Size = new System.Drawing.Size(175, 22);
+            this.MenuToolbarRevert.Text = "Revert";
             // 
             // Notebook
             // 
@@ -391,5 +410,6 @@
         private System.Windows.Forms.ToolStripSeparator ToolbarSep1;
         private System.Windows.Forms.ToolStripButton ToolbarFind;
         private System.Windows.Forms.ToolStripLabel ToolbarNotebookEntryId;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarRevert;
     }
 }

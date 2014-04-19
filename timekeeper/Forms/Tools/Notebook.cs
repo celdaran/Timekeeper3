@@ -18,9 +18,13 @@ namespace Timekeeper.Forms.Tools
 
         private Classes.Options Options;
 
+        private Classes.NotebookEntry CurrentEntry;
+        private Classes.NotebookEntry PreviousEntry;
+        private Classes.NotebookEntryCollection AllEntries;
+
+        private bool IsBrowsing;
+
         private bool IgnoreTextChanges = false;
-        private bool IsDirty = false;
-        private Classes.NotebookEntry NotebookEntry;
 
         // MemoEditor control
         private Forms.Shared.MemoEditor MemoEditor;
@@ -41,36 +45,51 @@ namespace Timekeeper.Forms.Tools
 
         private void Notebook_Load(object sender, EventArgs e)
         {
-            IgnoreTextChanges = true;
+            try {
+                IgnoreTextChanges = true;
 
-            // Instantiate any run-time only controls
-            this.MemoEditor = new Forms.Shared.MemoEditor();
-            this.MemoEditor.Parent = EditPanel;
-            this.MemoEditor.BringToFront();
-            this.MemoEditor.Dock = DockStyle.Fill;
-            this.MemoEditor.TabIndex = 1;
-            this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.MemoEditor_TextChanged);
+                // Instantiate any run-time only controls
+                this.MemoEditor = new Forms.Shared.MemoEditor();
+                this.MemoEditor.Parent = EditPanel;
+                this.MemoEditor.BringToFront();
+                this.MemoEditor.Dock = DockStyle.Fill;
+                this.MemoEditor.TabIndex = 1;
+                this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.MemoEditor_TextChanged);
 
-            /*
-            this.MemoEditor.MemoEntry.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wMemo_KeyDown);
-            */
+                /*
+                this.MemoEditor.MemoEntry.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wMemo_KeyDown);
+                */
 
-            // Set up UI bits
-            LocationPanel.Visible = Options.Layout_UseLocations;
-            CategoryPanel.Visible = Options.Layout_UseCategories;
-            EntryDateTime.CustomFormat = Options.Advanced_DateTimeFormat;
+                // Set up UI bits
+                LocationPanel.Visible = Options.Layout_UseLocations;
+                CategoryPanel.Visible = Options.Layout_UseCategories;
+                EntryDateTime.CustomFormat = Options.Advanced_DateTimeFormat;
 
-            this.Height = Options.Notebook_Height;
-            this.Width = Options.Notebook_Width;
-            this.Top = Options.Notebook_Top;
-            this.Left = Options.Notebook_Left;
+                ControlPanel.Height = LocationPanel.Visible && CategoryPanel.Visible ? 64 : (64 - 27);
 
-            // Populate form (wait, no. open up with a blank form)
-            NotebookEntry = new Classes.NotebookEntry();
-            //NotebookEntry.Load();
-            //EntryToForm();
+                this.Height = Options.Notebook_Height;
+                this.Width = Options.Notebook_Width;
+                this.Top = Options.Notebook_Top;
+                this.Left = Options.Notebook_Left;
 
-            IgnoreTextChanges = false;
+                // Create in-memory entries
+                CurrentEntry = new Classes.NotebookEntry();
+                PreviousEntry = new Classes.NotebookEntry();
+                AllEntries = new Classes.NotebookEntryCollection();
+
+                IsBrowsing = false;
+
+                // Clear this out for starters
+                ToolbarNotebookEntryId.Text = "";
+
+                // Now set toolbar state
+                PaintToolbar();
+
+                IgnoreTextChanges = false;
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
         }
 
         //----------------------------------------------------------------------
@@ -84,11 +103,13 @@ namespace Timekeeper.Forms.Tools
 
         private void Notebook_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if ((this.IsDirty == true) && (DialogResult != DialogResult.OK)) {
+            if ((this.ToolbarSave.Enabled == true) && (DialogResult != DialogResult.OK)) {
                 if (Common.WarnPrompt("Notebook Entry has changed. Continue closing?") != DialogResult.Yes) {
                     e.Cancel = true;
                 }
             }
+
+            // Consider moving to new spot
             Options.Notebook_Height = this.Height;
             Options.Notebook_Width = this.Width;
             Options.Notebook_Top = this.Top;
@@ -108,21 +129,98 @@ namespace Timekeeper.Forms.Tools
         // Menu (and Toolbar) Events
         //----------------------------------------------------------------------
 
+        private void ToolbarFirstEntry_Click(object sender, EventArgs e)
+        {
+            IsBrowsing = true;
+
+            Row FirstEntryRow = AllEntries.FirstEntry();
+            CurrentEntry = new Classes.NotebookEntry(FirstEntryRow["NotebookId"]);
+
+            EntryToForm(CurrentEntry);
+
+            PaintToolbar();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void ToolbarPreviousEntry_Click(object sender, EventArgs e)
+        {
+            IsBrowsing = true;
+
+            Row PreviousEntryRow = AllEntries.PreviousEntry(CurrentEntry);
+            CurrentEntry = new Classes.NotebookEntry(PreviousEntryRow["NotebookId"]);
+
+            EntryToForm(CurrentEntry);
+
+            PaintToolbar();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void ToolbarNextEntry_Click(object sender, EventArgs e)
+        {
+            IsBrowsing = true;
+
+            Row NextEntryRow = AllEntries.NextEntry(CurrentEntry);
+            CurrentEntry = new Classes.NotebookEntry(NextEntryRow["NotebookId"]);
+
+            EntryToForm(CurrentEntry);
+
+            PaintToolbar();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void ToolbarLastEntry_Click(object sender, EventArgs e)
+        {
+            IsBrowsing = true;
+
+            Row LastEntryRow = AllEntries.LastEntry();
+            CurrentEntry = new Classes.NotebookEntry(LastEntryRow["NotebookId"]);
+
+            EntryToForm(CurrentEntry);
+
+            PaintToolbar();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void ToolbarNewEntry_Click(object sender, EventArgs e)
+        {
+            IsBrowsing = false;
+            PaintToolbar();
+        }
+
+        //----------------------------------------------------------------------
+
         private void MenuToolbarSave_Click(object sender, EventArgs e)
         {
             FormToEntry();
 
-            if (NotebookEntry.Save()) {
+            if (CurrentEntry.Save()) {
                 string Message = String.Format("Notebook entry saved.\n\nid={0}\ncreated={1}\nmodified={2}\nguid={3}",
-                    NotebookEntry.NotebookId,
-                    NotebookEntry.CreateTime,
-                    NotebookEntry.ModifyTime,
-                    NotebookEntry.NotebookGuid);
+                    CurrentEntry.NotebookId,
+                    CurrentEntry.CreateTime,
+                    CurrentEntry.ModifyTime,
+                    CurrentEntry.NotebookGuid);
                 Common.Info(Message);
             } else {
                 Common.Warn("Problem saving Notebook entry");
             }
+            EnableToolbar(false);
+            PaintToolbar();
+        }
 
+        //----------------------------------------------------------------------
+
+        private void ToolbarRevert_Click(object sender, EventArgs e)
+        {
+            if (this.ToolbarSave.Enabled) {
+                if (Common.WarnPrompt("Notebook Entry has changed. Continue reverting?") != DialogResult.Yes) {
+                    return;
+                }
+            }
+            EntryToForm(CurrentEntry);
             EnableToolbar(false);
         }
 
@@ -134,15 +232,60 @@ namespace Timekeeper.Forms.Tools
         }
 
         //----------------------------------------------------------------------
+
+        private void MenuFormatItalic_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatItalicButton_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuFormatUnderline_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatUnderlineButton_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuFormatStrikethrough_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatStrikethroughButton_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
         // Helpers
         //----------------------------------------------------------------------
 
         private void EntryToForm()
         {
+            EntryToForm(CurrentEntry);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void EntryToForm(Classes.NotebookEntry entry)
+        {
+            IgnoreTextChanges = true;
+
             try {
-                this.MemoEditor.Text = NotebookEntry.Memo;
-                this.EntryDateTime.Value = NotebookEntry.EntryTime;
-                this.ToolbarNotebookEntryId.Text = NotebookEntry.NotebookId.ToString();
+                this.MemoEditor.Text = entry.Memo;
+                this.EntryDateTime.Value = entry.EntryTime.DateTime == DateTime.MinValue ? DateTime.Now : entry.EntryTime.DateTime;
+                this.ToolbarNotebookEntryId.Text = entry.NotebookId.ToString();
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+
+            IgnoreTextChanges = false;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void FormToEntry()
+        {
+            try {
+                CurrentEntry.Memo = this.MemoEditor.Text;
+                CurrentEntry.EntryTime = this.EntryDateTime.Value;
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -151,15 +294,51 @@ namespace Timekeeper.Forms.Tools
 
         //---------------------------------------------------------------------
 
-        private void FormToEntry()
+        private void PaintToolbar()
         {
-            try {
-                NotebookEntry.Memo = this.MemoEditor.Text;
-                NotebookEntry.EntryTime = this.EntryDateTime.Value;
+            // The idea here is to paint the state of the toolbar at any 
+            // given point: just opening the form, navigating, clicking
+            // buttons that otherwise change button states, and so on.
+            // I've already done this for the main Journal Entry browser,
+            // but I'll take this opportunity to take another crack at it.
+            // Wisdom lies in the journey.
+
+            long Count = AllEntries.Count();
+
+            //Count = 0; // <--- FOR TESTING
+
+            if (Count == 0)
+                return;
+
+            if (IsBrowsing) 
+            {
+                ToolbarFirstEntry.Enabled = true;
+                ToolbarPreviousEntry.Enabled = true;
+                ToolbarNextEntry.Enabled = true;
+                ToolbarLastEntry.Enabled = true;
+
+                if (CurrentEntry.AtBeginning()) 
+                {
+                    ToolbarFirstEntry.Enabled = false;
+                    ToolbarPreviousEntry.Enabled = false;
+                }
+
+                if (CurrentEntry.AtEnd()) 
+                {
+                    ToolbarNextEntry.Enabled = false;
+                    ToolbarLastEntry.Enabled = false;
+                }
             }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
+            else
+            {
+                // Then we haven't loaded up an entry
+                // and therefore we're at a new entry
+                // and therefore, we can navigate back
+                ToolbarFirstEntry.Enabled = true;
+                ToolbarPreviousEntry.Enabled = true;
+                ToolbarFind.Enabled = true;
             }
+
         }
 
         //---------------------------------------------------------------------
@@ -169,7 +348,6 @@ namespace Timekeeper.Forms.Tools
         {
             ToolbarSave.Enabled = enabled;
             ToolbarRevert.Enabled = enabled;
-            IsDirty = enabled;
         }
 
         //---------------------------------------------------------------------

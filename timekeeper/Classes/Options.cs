@@ -25,12 +25,8 @@ namespace Timekeeper.Classes
         // Constants
         //----------------------------------------------------------------------
 
-        // TODO/FIXME!!!! DURING TESTING, USE A SPECIFIC, 4-DOT VERSION WHILE
-        // TRYING TO DIFFERENTIATE EACH TEST PHASE. FOR RELEASE: THIS SHOULD
-        // ONLY BE A 2-DOT VERSION (E.G., "3.0")
-
-        private readonly string REGKEY = String.Format(@"Software\Technitivity\Timekeeper\{0}\", Timekeeper.VERSION);
-        //const string REGKEY = String.Format(@"Software\Technitivity\Timekeeper\{0}\", Timekeeper.SHORT_VERSION);
+        //private readonly string REGKEY = String.Format(@"Software\Technitivity\Timekeeper\{0}\", Timekeeper.VERSION);
+        private readonly string REGKEY = String.Format(@"Software\Technitivity\Timekeeper\{0}\", Timekeeper.SHORT_VERSION);
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Options)
