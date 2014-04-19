@@ -164,6 +164,7 @@
     <Compile Include="Classes\LocationCollection.cs" />
     <Compile Include="Classes\Mail.cs" />
     <Compile Include="Classes\Meta.cs" />
+    <Compile Include="Classes\NotebookEntry.cs" />
     <Compile Include="Classes\NotebookEntryCollection.cs" />
     <Compile Include="Classes\Options.cs" />
     <Compile Include="Classes\ReferenceData.cs" />
@@ -299,7 +300,6 @@
     <Compile Include="Classes\Activity.cs" />
     <Compile Include="Classes\JournalEntryCollection.cs" />
     <Compile Include="Classes\JournalEntry.cs" />
-    <Compile Include="Classes\Notebook.cs" />
     <Compile Include="Classes\TreeAttribute.cs" />
     <Compile Include="Classes\TreeAttributeCollection.cs" />
     <Compile Include="Classes\Project.cs" />
