@@ -22,8 +22,8 @@ CREATE TABLE FilterOptions
     ModifyTime          DATETIME    NOT NULL,
 
     RefDatePresetId     INTEGER         NULL,
-    FromDate            DATETIME        NULL,
-    ToDate              DATETIME        NULL,
+    FromTime            DATETIME        NULL,
+    ToTime              DATETIME        NULL,
     MemoContains        TEXT            NULL,
     ProjectList         TEXT            NULL,
     ActivityList        TEXT            NULL,

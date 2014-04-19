@@ -17,8 +17,8 @@ CREATE TABLE Todo
     ProjectId               INTEGER     NOT NULL,
 
     RefTodoStatusId         INTEGER     NOT NULL,
-    StartDate               DATETIME        NULL,
-    DueDate                 DATETIME        NULL,
+    StartTime               DATETIME        NULL,
+    DueTime                 DATETIME        NULL,
     Memo                    TEXT            NULL,
 
     IsHidden                BOOLEAN     NOT NULL,

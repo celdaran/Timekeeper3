@@ -35,7 +35,7 @@ namespace Timekeeper
         // be updated. Note that prior to 3.0, this convention was not followed 
         // (nor were the DDL statements stored as resources or tracked in p4).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.6.2";
+        public const string SCHEMA_VERSION = "3.0.7.0";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
