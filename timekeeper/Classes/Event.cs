@@ -113,8 +113,8 @@ namespace Timekeeper.Classes
 
                     this.IsHidden = (bool)Timekeeper.GetValue(Event["IsHidden"], false);
                     this.IsDeleted = (bool)Timekeeper.GetValue(Event["IsDeleted"], false);
-                    this.HiddenTime = (DateTimeOffset)Timekeeper.GetValue(Event["HiddenTime"], DateTimeOffset.MaxValue);
-                    this.DeletedTime = (DateTimeOffset)Timekeeper.GetValue(Event["DeletedTime"], DateTimeOffset.MaxValue);
+                    this.HiddenTime = (DateTimeOffset)Timekeeper.GetValue(Event["HiddenTime"], Timekeeper.MaxDateTime());
+                    this.DeletedTime = (DateTimeOffset)Timekeeper.GetValue(Event["DeletedTime"], Timekeeper.MaxDateTime());
                 }
             }
             catch (Exception x) {

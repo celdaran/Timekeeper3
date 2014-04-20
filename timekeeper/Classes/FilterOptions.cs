@@ -132,7 +132,7 @@ namespace Timekeeper.Classes
 
                 DateRangePreset = (int)Timekeeper.GetValue(Options["RefDatePresetId"], DATE_PRESET_ALL);
                 FromTime = (DateTimeOffset)Timekeeper.GetValue(Options["FromTime"], DateTimeOffset.MinValue);
-                ToTime = (DateTimeOffset)Timekeeper.GetValue(Options["ToTime"], DateTimeOffset.MaxValue);
+                ToTime = (DateTimeOffset)Timekeeper.GetValue(Options["ToTime"], Timekeeper.MaxDateTime());
                 MemoContains = (string)Timekeeper.GetValue(Options["MemoContains"], "");
                 Projects = List((string)Timekeeper.GetValue(Options["ProjectList"], ""));
                 Activities = List((string)Timekeeper.GetValue(Options["ActivityList"], ""));

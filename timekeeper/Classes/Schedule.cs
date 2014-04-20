@@ -160,7 +160,7 @@ namespace Timekeeper.Classes
             // Duration
             this.DurationTypeId = row["DurationTypeId"];
             this.StopAfterCount = (long)Timekeeper.GetValue(row["StopAfterCount"], 10);
-            this.StopAfterTime = (DateTimeOffset)Timekeeper.GetValue(row["StopAfterTime"], DateTimeOffset.MaxValue);
+            this.StopAfterTime = (DateTimeOffset)Timekeeper.GetValue(row["StopAfterTime"], Timekeeper.MaxDateTime());
 
             // Event Metadata
             this.TriggerCount = row["TriggerCount"];
@@ -213,7 +213,7 @@ namespace Timekeeper.Classes
                 // Duration
                 Schedule["DurationTypeId"] = this.DurationTypeId;
                 Schedule["StopAfterCount"] = this.StopAfterCount;
-                Schedule["StopAfterTime"] = this.StopAfterTime.ToString(Common.UTC_DATETIME_FORMAT); // TODO: UTC-safe?
+                Schedule["StopAfterTime"] = this.StopAfterTime.ToString(Common.UTC_DATETIME_FORMAT);
 
                 // Event Metadata
                 Schedule["TriggerCount"] = this.TriggerCount;

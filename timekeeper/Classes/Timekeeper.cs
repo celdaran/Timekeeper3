@@ -304,49 +304,7 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        // Private helpers
-        //---------------------------------------------------------------------
-
-        private static Log GetLog()
-        {
-            if (Log == null) {
-                Log = new Technitivity.Toolbox.Log(GetLogPath());
-                Log.Level = GetLogLevel(Options.Advanced_Logging_Application);
-                Log.Debug("Log File Opened");
-            }
-            return Log;
-        }
-
-        //---------------------------------------------------------------------
-
-        public static string GetLogPath()
-        {
-            string LogPath = "";
-
-            try {
-                // Determine log file path
-                LogPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Timekeeper.TITLE);
-
-                // Create directory if it doesn't exist
-                if (!Directory.Exists(LogPath)) {
-                    Directory.CreateDirectory(LogPath);
-                }
-
-                // Add filename to path
-                LogPath += @"\" + Timekeeper.TITLE + @".log";
-
-                // And that's all we need.
-                return LogPath;
-            }
-            catch (Exception x) {
-                // FIXME: Is this appropriate at this level? Consider alternatives
-                Common.Warn("Could not open or write to log file.\n\n" + LogPath);
-                Common.Warn(x.Message);
-                return "";
-            }
-        }
-
+        // Random Things
         //---------------------------------------------------------------------
 
         public static long CurrentTimeZoneId()
@@ -405,6 +363,64 @@ namespace Timekeeper
                 return Row["HighestSortOrderNo"] + 1;
             } else {
                 return 1;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        public static DateTimeOffset MaxDateTime()
+        {
+            // Why not just use DateTime.MaxValue? Well, I'll tell you. For
+            // some reason when I do, and I store it in the database, it
+            // ends up being '9999-12-31T23:59:59.99-06:00', which is fine
+            // except that this value represents a UTC value in the year
+            // 10000, which is suddenly an invalid date/time. I'm making up
+            // my own MaxDateTime value, because I simply don't have time
+            // to figure out this peculiarity.
+            return DateTimeOffset.Parse("2999-12-31T23:59:59.99-00:00");
+        }
+
+        //---------------------------------------------------------------------
+        // Private helpers
+        //---------------------------------------------------------------------
+
+        private static Log GetLog()
+        {
+            if (Log == null) {
+                Log = new Technitivity.Toolbox.Log(GetLogPath());
+                Log.Level = GetLogLevel(Options.Advanced_Logging_Application);
+                Log.Debug("Log File Opened");
+            }
+            return Log;
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string GetLogPath()
+        {
+            string LogPath = "";
+
+            try {
+                // Determine log file path
+                LogPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Timekeeper.TITLE);
+
+                // Create directory if it doesn't exist
+                if (!Directory.Exists(LogPath)) {
+                    Directory.CreateDirectory(LogPath);
+                }
+
+                // Add filename to path
+                LogPath += @"\" + Timekeeper.TITLE + @".log";
+
+                // And that's all we need.
+                return LogPath;
+            }
+            catch (Exception x) {
+                // FIXME: Is this appropriate at this level? Consider alternatives
+                Common.Warn("Could not open or write to log file.\n\n" + LogPath);
+                Common.Warn(x.Message);
+                return "";
             }
         }
 
