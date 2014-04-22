@@ -20,6 +20,8 @@ CREATE TABLE FilterOptions
 
     CreateTime          DATETIME    NOT NULL,
     ModifyTime          DATETIME    NOT NULL,
+    
+    FilterOptionsType   INTEGER     NOT NULL, -- 1=Journal, 2=Notebook
 
     RefDatePresetId     INTEGER         NULL,
     FromTime            DATETIME        NULL,

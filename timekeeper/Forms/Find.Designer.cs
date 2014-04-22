@@ -30,8 +30,10 @@ namespace Timekeeper.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Find));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
-            this.FilterButton = new System.Windows.Forms.ToolStripButton();
+            this.JournalFilterButton = new System.Windows.Forms.ToolStripButton();
+            this.NotebookFilterButton = new System.Windows.Forms.ToolStripButton();
             this.SortButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.RefreshButton = new System.Windows.Forms.ToolStripButton();
@@ -41,7 +43,7 @@ namespace Timekeeper.Forms
             this.SaveViewButton = new System.Windows.Forms.ToolStripButton();
             this.SaveViewAsButton = new System.Windows.Forms.ToolStripButton();
             this.ManageViewsButton = new System.Windows.Forms.ToolStripButton();
-            this.FindResultsGrid = new System.Windows.Forms.DataGridView();
+            this.JournalResultsGrid = new System.Windows.Forms.DataGridView();
             this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.JournalIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ProjectId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -59,16 +61,26 @@ namespace Timekeeper.Forms
             this.IsLocked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.ResultCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.NotebookResultsGrid = new System.Windows.Forms.DataGridView();
+            this.NotebookId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookEntryTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookMemo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookLocationId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookCategoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.FindResultsGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.JournalResultsGrid)).BeginInit();
             this.StatusBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NotebookResultsGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // ToolStrip
             // 
             this.ToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FilterButton,
+            this.JournalFilterButton,
+            this.NotebookFilterButton,
             this.SortButton,
             this.toolStripSeparator2,
             this.RefreshButton,
@@ -80,18 +92,27 @@ namespace Timekeeper.Forms
             this.ManageViewsButton});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
-            this.ToolStrip.Size = new System.Drawing.Size(522, 25);
+            this.ToolStrip.Size = new System.Drawing.Size(893, 25);
             this.ToolStrip.TabIndex = 0;
             this.ToolStrip.Text = "ToolStrip";
             // 
-            // FilterButton
+            // JournalFilterButton
             // 
-            this.FilterButton.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
-            this.FilterButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FilterButton.Name = "FilterButton";
-            this.FilterButton.Size = new System.Drawing.Size(77, 22);
-            this.FilterButton.Text = "Filtering...";
-            this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);
+            this.JournalFilterButton.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
+            this.JournalFilterButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.JournalFilterButton.Name = "JournalFilterButton";
+            this.JournalFilterButton.Size = new System.Drawing.Size(77, 22);
+            this.JournalFilterButton.Text = "Filtering...";
+            this.JournalFilterButton.Click += new System.EventHandler(this.JournalFilterButton_Click);
+            // 
+            // NotebookFilterButton
+            // 
+            this.NotebookFilterButton.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
+            this.NotebookFilterButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.NotebookFilterButton.Name = "NotebookFilterButton";
+            this.NotebookFilterButton.Size = new System.Drawing.Size(77, 22);
+            this.NotebookFilterButton.Text = "Filtering...";
+            this.NotebookFilterButton.Click += new System.EventHandler(this.NotebookFilterButton_Click);
             // 
             // SortButton
             // 
@@ -178,16 +199,16 @@ namespace Timekeeper.Forms
             this.ManageViewsButton.ToolTipText = "Manage your saved Views";
             this.ManageViewsButton.Click += new System.EventHandler(this.ManageViewsButton_Click);
             // 
-            // FindResultsGrid
+            // JournalResultsGrid
             // 
-            this.FindResultsGrid.AllowUserToAddRows = false;
-            this.FindResultsGrid.AllowUserToDeleteRows = false;
-            this.FindResultsGrid.AllowUserToOrderColumns = true;
-            this.FindResultsGrid.AllowUserToResizeRows = false;
-            this.FindResultsGrid.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.FindResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.FindResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.FindResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.JournalResultsGrid.AllowUserToAddRows = false;
+            this.JournalResultsGrid.AllowUserToDeleteRows = false;
+            this.JournalResultsGrid.AllowUserToOrderColumns = true;
+            this.JournalResultsGrid.AllowUserToResizeRows = false;
+            this.JournalResultsGrid.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.JournalResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.JournalResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.JournalResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.JournalId,
             this.JournalIndex,
             this.ProjectId,
@@ -203,13 +224,12 @@ namespace Timekeeper.Forms
             this.CategoryId,
             this.CategoryName,
             this.IsLocked});
-            this.FindResultsGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FindResultsGrid.Location = new System.Drawing.Point(0, 25);
-            this.FindResultsGrid.Name = "FindResultsGrid";
-            this.FindResultsGrid.RowHeadersVisible = false;
-            this.FindResultsGrid.Size = new System.Drawing.Size(522, 246);
-            this.FindResultsGrid.TabIndex = 1;
-            this.FindResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FindResults_CellDoubleClick);
+            this.JournalResultsGrid.Location = new System.Drawing.Point(0, 25);
+            this.JournalResultsGrid.Name = "JournalResultsGrid";
+            this.JournalResultsGrid.RowHeadersVisible = false;
+            this.JournalResultsGrid.Size = new System.Drawing.Size(893, 110);
+            this.JournalResultsGrid.TabIndex = 1;
+            this.JournalResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JournalFindResults_CellDoubleClick);
             // 
             // JournalId
             // 
@@ -332,7 +352,7 @@ namespace Timekeeper.Forms
             this.ResultCount});
             this.StatusBar.Location = new System.Drawing.Point(0, 271);
             this.StatusBar.Name = "StatusBar";
-            this.StatusBar.Size = new System.Drawing.Size(522, 22);
+            this.StatusBar.Size = new System.Drawing.Size(893, 22);
             this.StatusBar.TabIndex = 2;
             this.StatusBar.Text = "statusStrip1";
             // 
@@ -341,12 +361,91 @@ namespace Timekeeper.Forms
             this.ResultCount.Name = "ResultCount";
             this.ResultCount.Size = new System.Drawing.Size(0, 17);
             // 
+            // NotebookResultsGrid
+            // 
+            this.NotebookResultsGrid.AllowUserToAddRows = false;
+            this.NotebookResultsGrid.AllowUserToDeleteRows = false;
+            this.NotebookResultsGrid.AllowUserToOrderColumns = true;
+            this.NotebookResultsGrid.AllowUserToResizeRows = false;
+            this.NotebookResultsGrid.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.NotebookResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.NotebookResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.NotebookResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NotebookId,
+            this.NotebookEntryTime,
+            this.NotebookMemo,
+            this.NotebookLocationId,
+            this.NotebookLocation,
+            this.NotebookCategoryId,
+            this.NotebookCategory});
+            this.NotebookResultsGrid.Location = new System.Drawing.Point(0, 141);
+            this.NotebookResultsGrid.Name = "NotebookResultsGrid";
+            this.NotebookResultsGrid.RowHeadersVisible = false;
+            this.NotebookResultsGrid.Size = new System.Drawing.Size(893, 110);
+            this.NotebookResultsGrid.TabIndex = 3;
+            this.NotebookResultsGrid.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.NotebookFindResults_CellDoubleClick);
+            // 
+            // NotebookId
+            // 
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.NotebookId.DefaultCellStyle = dataGridViewCellStyle3;
+            this.NotebookId.HeaderText = "ID";
+            this.NotebookId.MinimumWidth = 8;
+            this.NotebookId.Name = "NotebookId";
+            this.NotebookId.ReadOnly = true;
+            this.NotebookId.ToolTipText = "Internal Journal Entry Identifier";
+            this.NotebookId.Width = 43;
+            // 
+            // NotebookEntryTime
+            // 
+            this.NotebookEntryTime.HeaderText = "Entry Time";
+            this.NotebookEntryTime.Name = "NotebookEntryTime";
+            this.NotebookEntryTime.ReadOnly = true;
+            this.NotebookEntryTime.Width = 120;
+            // 
+            // NotebookMemo
+            // 
+            this.NotebookMemo.HeaderText = "Memo";
+            this.NotebookMemo.Name = "NotebookMemo";
+            this.NotebookMemo.ReadOnly = true;
+            // 
+            // NotebookLocationId
+            // 
+            this.NotebookLocationId.HeaderText = "LocationId";
+            this.NotebookLocationId.Name = "NotebookLocationId";
+            this.NotebookLocationId.ReadOnly = true;
+            this.NotebookLocationId.Visible = false;
+            // 
+            // NotebookLocation
+            // 
+            this.NotebookLocation.HeaderText = "Location";
+            this.NotebookLocation.Name = "NotebookLocation";
+            this.NotebookLocation.ReadOnly = true;
+            this.NotebookLocation.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.NotebookLocation.Width = 73;
+            // 
+            // NotebookCategoryId
+            // 
+            this.NotebookCategoryId.HeaderText = "CategoryId";
+            this.NotebookCategoryId.Name = "NotebookCategoryId";
+            this.NotebookCategoryId.ReadOnly = true;
+            this.NotebookCategoryId.Visible = false;
+            // 
+            // NotebookCategory
+            // 
+            this.NotebookCategory.HeaderText = "Category";
+            this.NotebookCategory.Name = "NotebookCategory";
+            this.NotebookCategory.ReadOnly = true;
+            this.NotebookCategory.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.NotebookCategory.Width = 74;
+            // 
             // Find
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(522, 293);
-            this.Controls.Add(this.FindResultsGrid);
+            this.ClientSize = new System.Drawing.Size(893, 293);
+            this.Controls.Add(this.NotebookResultsGrid);
+            this.Controls.Add(this.JournalResultsGrid);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.ToolStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -358,9 +457,10 @@ namespace Timekeeper.Forms
             this.Load += new System.EventHandler(this.Find_Load);
             this.ToolStrip.ResumeLayout(false);
             this.ToolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.FindResultsGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.JournalResultsGrid)).EndInit();
             this.StatusBar.ResumeLayout(false);
             this.StatusBar.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NotebookResultsGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -369,14 +469,14 @@ namespace Timekeeper.Forms
         #endregion
 
         private System.Windows.Forms.ToolStrip ToolStrip;
-        private System.Windows.Forms.ToolStripButton FilterButton;
+        private System.Windows.Forms.ToolStripButton JournalFilterButton;
         private System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
         private System.Windows.Forms.ToolStripDropDownButton LoadViewMenuButton;
         private System.Windows.Forms.ToolStripButton SaveViewAsButton;
         private System.Windows.Forms.ToolStripButton ManageViewsButton;
         private System.Windows.Forms.ToolStripButton RefreshButton;
         private System.Windows.Forms.ToolStripButton SortButton;
-        private System.Windows.Forms.DataGridView FindResultsGrid;
+        private System.Windows.Forms.DataGridView JournalResultsGrid;
         private System.Windows.Forms.StatusStrip StatusBar;
         private System.Windows.Forms.ToolStripStatusLabel ResultCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn JournalId;
@@ -397,5 +497,14 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton ClearViewButton;
         private System.Windows.Forms.ToolStripButton SaveViewButton;
+        private System.Windows.Forms.DataGridView NotebookResultsGrid;
+        private System.Windows.Forms.ToolStripButton NotebookFilterButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookEntryTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookMemo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookLocationId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookLocation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookCategoryId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookCategory;
     }
 }

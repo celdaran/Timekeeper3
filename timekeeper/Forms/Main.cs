@@ -309,7 +309,7 @@ namespace Timekeeper.Forms
         // Tools | Find
         private void MenuToolFind_Click(object sender, EventArgs e)
         {
-            Forms.Find FindDialog = new Forms.Find(Browser_GotoEntry);
+            Forms.Find FindDialog = new Forms.Find(Browser_GotoEntry, Find.FindDataSources.Journal);
             FindDialog.Show(this); // FIXME: why does this get flaky when "this" isn't specified?
             OpenForms.Add(FindDialog);
         }

@@ -92,12 +92,11 @@ namespace Timekeeper.Forms.Shared
             // Set Visibility
             //----------------------------------------
 
-            if (!Options.Layout_UseProjects) {
-                // TODO: I'm not sure I'm done with this
+            if ((!Options.Layout_UseProjects) || (this.FilterOptions.FilterOptionsType == 2)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("ProjectTab");
             }
 
-            if (!Options.Layout_UseActivities) {
+            if ((!Options.Layout_UseActivities) || (this.FilterOptions.FilterOptionsType == 2)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("ActivityTab");
             }
 
@@ -107,6 +106,10 @@ namespace Timekeeper.Forms.Shared
 
             if (!Options.Layout_UseCategories) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("CategoryTab");
+            }
+
+            if (this.FilterOptions.FilterOptionsType == 2) {
+                FilterOptionsTabControl.TabPages.RemoveByKey("AdvancedTab");
             }
 
             //----------------------------------------

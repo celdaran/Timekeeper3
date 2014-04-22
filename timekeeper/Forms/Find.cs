@@ -19,6 +19,10 @@ namespace Timekeeper.Forms
         // Properties
         //---------------------------------------------------------------------
 
+        public enum FindDataSources { Journal, Notebook };
+
+        //---------------------------------------------------------------------
+
         private Classes.Options Options;
         private Classes.Widgets Widgets;
 
@@ -33,11 +37,14 @@ namespace Timekeeper.Forms
 
         private Forms.Shared.Filtering FilterDialog;
 
+        // Find dialog type
+        private FindDataSources FindDataSource;
+
         //---------------------------------------------------------------------
         // Constructor
         //---------------------------------------------------------------------
 
-        public Find(BrowserCallback f)
+        public Find(BrowserCallback f, FindDataSources source)
         {
             InitializeComponent();
 
@@ -47,6 +54,26 @@ namespace Timekeeper.Forms
             this.Widgets = new Classes.Widgets();
 
             this.Browser_GotoEntry = f;
+
+            this.FindDataSource = source;
+
+            if (source == FindDataSources.Journal) {
+                JournalFilterButton.Visible = true;
+                NotebookFilterButton.Visible = false;
+
+                JournalResultsGrid.Visible = true;
+                NotebookResultsGrid.Visible = false;
+
+                JournalResultsGrid.Dock = DockStyle.Fill;
+            } else {
+                JournalFilterButton.Visible = false;
+                NotebookFilterButton.Visible = true;
+
+                JournalResultsGrid.Visible = false;
+                NotebookResultsGrid.Visible = true;
+
+                NotebookResultsGrid.Dock = DockStyle.Fill;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -63,16 +90,16 @@ namespace Timekeeper.Forms
                 Left = Options.Find_Left;
 
                 // Restore column widths
-                FindResultsGrid.Columns["JournalId"].Width = Options.Find_Grid_JournalIdWidth;
-                FindResultsGrid.Columns["ProjectName"].Width = Options.Find_Grid_ProjectNameWidth;
-                FindResultsGrid.Columns["ActivityName"].Width = Options.Find_Grid_ActivityNameWidth;
-                FindResultsGrid.Columns["StartTime"].Width = Options.Find_Grid_StartTimeWidth;
-                FindResultsGrid.Columns["StopTime"].Width = Options.Find_Grid_StopTimeWidth;
-                FindResultsGrid.Columns["Seconds"].Width = Options.Find_Grid_SecondsWidth;
-                FindResultsGrid.Columns["Memo"].Width = Options.Find_Grid_MemoWidth;
-                FindResultsGrid.Columns["LocationName"].Width = Options.Find_Grid_LocationNameWidth;
-                FindResultsGrid.Columns["CategoryName"].Width = Options.Find_Grid_CategoryNameWidth;
-                FindResultsGrid.Columns["IsLocked"].Width = Options.Find_Grid_IsLockedWidth;
+                JournalResultsGrid.Columns["JournalId"].Width = Options.Find_Grid_JournalIdWidth;
+                JournalResultsGrid.Columns["ProjectName"].Width = Options.Find_Grid_ProjectNameWidth;
+                JournalResultsGrid.Columns["ActivityName"].Width = Options.Find_Grid_ActivityNameWidth;
+                JournalResultsGrid.Columns["StartTime"].Width = Options.Find_Grid_StartTimeWidth;
+                JournalResultsGrid.Columns["StopTime"].Width = Options.Find_Grid_StopTimeWidth;
+                JournalResultsGrid.Columns["Seconds"].Width = Options.Find_Grid_SecondsWidth;
+                JournalResultsGrid.Columns["Memo"].Width = Options.Find_Grid_MemoWidth;
+                JournalResultsGrid.Columns["LocationName"].Width = Options.Find_Grid_LocationNameWidth;
+                JournalResultsGrid.Columns["CategoryName"].Width = Options.Find_Grid_CategoryNameWidth;
+                JournalResultsGrid.Columns["IsLocked"].Width = Options.Find_Grid_IsLockedWidth;
 
                 // Load up saved Find and paint
                 LoadAndRunFind(Options.State_LastFindViewId);
@@ -107,27 +134,61 @@ namespace Timekeeper.Forms
             Options.Find_Left = Left;
 
             // Save column widths
-            Options.Find_Grid_JournalIdWidth = FindResultsGrid.Columns["JournalId"].Width;
-            Options.Find_Grid_ProjectNameWidth = FindResultsGrid.Columns["ProjectName"].Width;
-            Options.Find_Grid_ActivityNameWidth = FindResultsGrid.Columns["ActivityName"].Width;
-            Options.Find_Grid_StartTimeWidth = FindResultsGrid.Columns["StartTime"].Width;
-            Options.Find_Grid_StopTimeWidth = FindResultsGrid.Columns["StopTime"].Width;
-            Options.Find_Grid_SecondsWidth = FindResultsGrid.Columns["Seconds"].Width;
-            Options.Find_Grid_MemoWidth = FindResultsGrid.Columns["Memo"].Width;
-            Options.Find_Grid_LocationNameWidth = FindResultsGrid.Columns["LocationName"].Width;
-            Options.Find_Grid_CategoryNameWidth = FindResultsGrid.Columns["CategoryName"].Width;
-            Options.Find_Grid_IsLockedWidth = FindResultsGrid.Columns["IsLocked"].Width;
+            Options.Find_Grid_JournalIdWidth = JournalResultsGrid.Columns["JournalId"].Width;
+            Options.Find_Grid_ProjectNameWidth = JournalResultsGrid.Columns["ProjectName"].Width;
+            Options.Find_Grid_ActivityNameWidth = JournalResultsGrid.Columns["ActivityName"].Width;
+            Options.Find_Grid_StartTimeWidth = JournalResultsGrid.Columns["StartTime"].Width;
+            Options.Find_Grid_StopTimeWidth = JournalResultsGrid.Columns["StopTime"].Width;
+            Options.Find_Grid_SecondsWidth = JournalResultsGrid.Columns["Seconds"].Width;
+            Options.Find_Grid_MemoWidth = JournalResultsGrid.Columns["Memo"].Width;
+            Options.Find_Grid_LocationNameWidth = JournalResultsGrid.Columns["LocationName"].Width;
+            Options.Find_Grid_CategoryNameWidth = JournalResultsGrid.Columns["CategoryName"].Width;
+            Options.Find_Grid_IsLockedWidth = JournalResultsGrid.Columns["IsLocked"].Width;
         }
 
         //----------------------------------------------------------------------
         // Toolbar Commands
         //----------------------------------------------------------------------
 
-        private void FilterButton_Click(object sender, EventArgs e)
+        private void JournalFilterButton_Click(object sender, EventArgs e)
         {
             // Re-instantiate just before opening. See comment surrounding the
             // only other instantiation of this object
             this.FilterDialog = new Forms.Shared.Filtering(FindView.FilterOptions);
+
+            FindView.FilterOptions = this.Widgets.FilteringDialog(this,
+                FilterDialog, FindView.FilterOptions.FilterOptionsId);
+
+            if (FindView.FilterOptions.Changed) {
+                FindView.Changed = true;
+                RunFind();
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void NotebookFilterButton_Click(object sender, EventArgs e)
+        {
+            /* Wait, don't... there's a better way...
+
+            // Temporarily "unuse" these items for Find dialog instantiation
+            bool SaveUseProjects = Options.Layout_UseProjects;
+            bool SaveUseActivities = Options.Layout_UseActivities;
+
+            Options.Layout_UseProjects = false;
+            Options.Layout_UseActivities = false;
+            */
+
+            FindView.FilterOptions.FilterOptionsType = 2; // TODO: Make a constant for this
+
+            // Re-instantiate just before opening. See comment surrounding the
+            // only other instantiation of this object
+            this.FilterDialog = new Forms.Shared.Filtering(FindView.FilterOptions);
+
+            /*
+            Options.Layout_UseProjects = SaveUseProjects;
+            Options.Layout_UseActivities = SaveUseActivities;
+            */
 
             FindView.FilterOptions = this.Widgets.FilteringDialog(this,
                 FilterDialog, FindView.FilterOptions.FilterOptionsId);
@@ -213,14 +274,30 @@ namespace Timekeeper.Forms
         // Other events
         //----------------------------------------------------------------------
 
-        private void FindResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void JournalFindResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0) {
-                DataGridViewRow Row = FindResultsGrid.Rows[e.RowIndex];
+                DataGridViewRow Row = JournalResultsGrid.Rows[e.RowIndex];
                 long JournalIndex = Convert.ToInt64(Row.Cells["JournalIndex"].Value);
+                // Browser_GotoEntry() is a callback. The call you see here is
+                // not the same as the call you see below.
                 this.Browser_GotoEntry(JournalIndex);
             }
         }
+
+        //----------------------------------------------------------------------
+
+        private void NotebookFindResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) {
+                DataGridViewRow Row = NotebookResultsGrid.Rows[e.RowIndex];
+                long NotebookId = Convert.ToInt64(Row.Cells[0].Value);
+                // Browser_GotoEntry() is a callback. The call you see here is
+                // not the same as the call you see above.
+                this.Browser_GotoEntry(NotebookId);
+            }
+        }
+
 
         //----------------------------------------------------------------------
         // Internal Helpers
@@ -302,10 +379,10 @@ namespace Timekeeper.Forms
             // Hide Columns based on Options
             // FIXME: Wrong spot for this
             try {
-                FindResultsGrid.Columns["ProjectName"].Visible = Options.Layout_UseProjects;
-                FindResultsGrid.Columns["ActivityName"].Visible = Options.Layout_UseActivities;
-                FindResultsGrid.Columns["LocationName"].Visible = Options.Layout_UseLocations;
-                FindResultsGrid.Columns["CategoryName"].Visible = Options.Layout_UseCategories;
+                JournalResultsGrid.Columns["ProjectName"].Visible = Options.Layout_UseProjects;
+                JournalResultsGrid.Columns["ActivityName"].Visible = Options.Layout_UseActivities;
+                JournalResultsGrid.Columns["LocationName"].Visible = Options.Layout_UseLocations;
+                JournalResultsGrid.Columns["CategoryName"].Visible = Options.Layout_UseCategories;
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -375,17 +452,35 @@ namespace Timekeeper.Forms
 
         private void RunFind(bool autoSaveView)
         {
+            int Count = 0;
+
+            if (this.FindView.FilterOptions.FilterOptionsType == 1) {
+                Count = RunJournalFind();
+            } else {
+                Count = RunNotebookFind();
+            }
+
+            ResultCount.Text = Count.ToString() + " entries found.";
+
+            // FIXME: Commenting this out for Notebook Find testing...
+            //UpdateViewState(autoSaveView);
+        }
+
+        //---------------------------------------------------------------------
+
+        private int RunJournalFind()
+        {
             //----------------------------------------------
             // Populate Table
             //----------------------------------------------
 
-            Table FindResults = FindView.Results();
+            Table FindResults = FindView.JournalResults();
 
-            FindResultsGrid.Rows.Clear();
+            JournalResultsGrid.Rows.Clear();
 
             foreach (Row JournalEntry in FindResults) {
 
-                FindResultsGrid.Rows.Add(
+                JournalResultsGrid.Rows.Add(
                     JournalEntry["JournalId"],
                     JournalEntry["JournalIndex"],
                     JournalEntry["ProjectId"],
@@ -408,26 +503,67 @@ namespace Timekeeper.Forms
             // Sort (or re-sort) the table
             //----------------------------------------------
 
-            DataGridViewColumn CurrentlySortedColumn = FindResultsGrid.SortedColumn;
+            DataGridViewColumn CurrentlySortedColumn = JournalResultsGrid.SortedColumn;
 
             if (CurrentlySortedColumn == null) {
-                DataGridViewColumn DefaultSortColumn = FindResultsGrid.Columns["StartTime"];
-                FindResultsGrid.Sort(DefaultSortColumn, ListSortDirection.Ascending);
+                DataGridViewColumn DefaultSortColumn = JournalResultsGrid.Columns["StartTime"];
+                JournalResultsGrid.Sort(DefaultSortColumn, ListSortDirection.Ascending);
             } else {
                 ListSortDirection CurrentDirection = ListSortDirection.Ascending;
-                if (FindResultsGrid.SortOrder == SortOrder.Descending) {
+                if (JournalResultsGrid.SortOrder == SortOrder.Descending) {
                     CurrentDirection = ListSortDirection.Descending;
                 }
-                FindResultsGrid.Sort(CurrentlySortedColumn, CurrentDirection);
+                JournalResultsGrid.Sort(CurrentlySortedColumn, CurrentDirection);
+            }
+
+            return FindResults.Count;
+        }
+
+        //---------------------------------------------------------------------
+
+        private int RunNotebookFind()
+        {
+            //----------------------------------------------
+            // Populate Table
+            //----------------------------------------------
+
+            Table FindResults = FindView.NotebookResults();
+
+            NotebookResultsGrid.Rows.Clear();
+
+            foreach (Row NotebookEntry in FindResults) {
+
+                NotebookResultsGrid.Rows.Add(
+                    NotebookEntry["NotebookId"],
+                    NotebookEntry["NotebookEntryTime"].ToString(Options.Advanced_DateTimeFormat),
+                    NotebookEntry["NotebookMemo"],
+                    NotebookEntry["NotebookLocationId"],
+                    NotebookEntry["NotebookLocationName"],
+                    NotebookEntry["NotebookCategoryId"],
+                    NotebookEntry["NotebookCategoryName"]
+                    );
             }
 
             //----------------------------------------------
-            // UI Updates
+            // Sort (or re-sort) the table
             //----------------------------------------------
 
-            ResultCount.Text = FindResultsGrid.Rows.Count.ToString() + " entries found.";
-            UpdateViewState(autoSaveView);
+            /*
+            DataGridViewColumn CurrentlySortedColumn = NotebookResultsGrid.SortedColumn;
 
+            if (CurrentlySortedColumn == null) {
+                DataGridViewColumn DefaultSortColumn = NotebookResultsGrid.Columns["StartTime"];
+                NotebookResultsGrid.Sort(DefaultSortColumn, ListSortDirection.Ascending);
+            } else {
+                ListSortDirection CurrentDirection = ListSortDirection.Ascending;
+                if (NotebookResultsGrid.SortOrder == SortOrder.Descending) {
+                    CurrentDirection = ListSortDirection.Descending;
+                }
+                NotebookResultsGrid.Sort(CurrentlySortedColumn, CurrentDirection);
+            }
+            */
+
+            return FindResults.Count;
         }
 
         //---------------------------------------------------------------------

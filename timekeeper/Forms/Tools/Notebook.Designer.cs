@@ -55,9 +55,9 @@
             this.MenuMain = new System.Windows.Forms.MenuStrip();
             this.MenuToolbar = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolbarSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarRevert = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFormat = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFormatBold = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuToolbarRevert = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.ControlPanel.SuspendLayout();
             this.LocationAndCategoryPanel.SuspendLayout();
@@ -186,6 +186,7 @@
             this.ToolbarFind.Size = new System.Drawing.Size(47, 22);
             this.ToolbarFind.Text = "Find";
             this.ToolbarFind.ToolTipText = "Find Entries";
+            this.ToolbarFind.Click += new System.EventHandler(this.ToolbarFind_Click);
             // 
             // ToolbarSep2
             // 
@@ -325,6 +326,14 @@
             this.MenuToolbarSave.Text = "Save";
             this.MenuToolbarSave.Click += new System.EventHandler(this.MenuToolbarSave_Click);
             // 
+            // MenuToolbarRevert
+            // 
+            this.MenuToolbarRevert.Name = "MenuToolbarRevert";
+            this.MenuToolbarRevert.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.Z)));
+            this.MenuToolbarRevert.Size = new System.Drawing.Size(175, 22);
+            this.MenuToolbarRevert.Text = "Revert";
+            // 
             // MenuFormat
             // 
             this.MenuFormat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -337,17 +346,9 @@
             // 
             this.MenuFormatBold.Name = "MenuFormatBold";
             this.MenuFormatBold.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.MenuFormatBold.Size = new System.Drawing.Size(152, 22);
+            this.MenuFormatBold.Size = new System.Drawing.Size(132, 22);
             this.MenuFormatBold.Text = "Bold";
             this.MenuFormatBold.Click += new System.EventHandler(this.MenuFormatBold_Click);
-            // 
-            // MenuToolbarRevert
-            // 
-            this.MenuToolbarRevert.Name = "MenuToolbarRevert";
-            this.MenuToolbarRevert.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.Z)));
-            this.MenuToolbarRevert.Size = new System.Drawing.Size(175, 22);
-            this.MenuToolbarRevert.Text = "Revert";
             // 
             // Notebook
             // 

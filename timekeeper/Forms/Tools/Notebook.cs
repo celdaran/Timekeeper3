@@ -17,9 +17,9 @@ namespace Timekeeper.Forms.Tools
         //----------------------------------------------------------------------
 
         private Classes.Options Options;
+        private Classes.Widgets Widgets;
 
         private Classes.NotebookEntry CurrentEntry;
-        private Classes.NotebookEntry PreviousEntry;
         private Classes.NotebookEntryCollection AllEntries;
 
         private bool IsBrowsing;
@@ -72,9 +72,12 @@ namespace Timekeeper.Forms.Tools
                 this.Top = Options.Notebook_Top;
                 this.Left = Options.Notebook_Left;
 
+                Widgets = new Classes.Widgets();
+                Widgets.PopulateLocationComboBox(wLocation);
+                Widgets.PopulateCategoryComboBox(wCategory);
+
                 // Create in-memory entries
                 CurrentEntry = new Classes.NotebookEntry();
-                PreviousEntry = new Classes.NotebookEntry();
                 AllEntries = new Classes.NotebookEntryCollection();
 
                 IsBrowsing = false;
@@ -188,6 +191,10 @@ namespace Timekeeper.Forms.Tools
         private void ToolbarNewEntry_Click(object sender, EventArgs e)
         {
             IsBrowsing = false;
+
+            CurrentEntry = new Classes.NotebookEntry();
+            EntryToForm(CurrentEntry);
+
             PaintToolbar();
         }
 
@@ -271,6 +278,36 @@ namespace Timekeeper.Forms.Tools
                 this.MemoEditor.Text = entry.Memo;
                 this.EntryDateTime.Value = entry.EntryTime.DateTime == DateTime.MinValue ? DateTime.Now : entry.EntryTime.DateTime;
                 this.ToolbarNotebookEntryId.Text = entry.NotebookId.ToString();
+
+                // FIXME: Serious copy/paste problems here.
+                // You really need to fix that. This was
+                // lifted directly from Main.Browser.cs.
+                // Let's move this to the Widgets class
+
+                if (entry.LocationId > 0) {
+                    Classes.Location Location = new Classes.Location(entry.LocationId);
+                    if (Location.Name != null) {
+                        int LocationIndex = wLocation.FindString(Location.Name);
+                        wLocation.SelectedIndex = LocationIndex;
+                    } else {
+                        wLocation.SelectedIndex = -1;
+                    }
+                } else {
+                    wLocation.SelectedIndex = -1;
+                }
+
+                if (entry.CategoryId > 0) {
+                    Classes.Category Category = new Classes.Category(entry.CategoryId);
+                    if (Category.Name != null) {
+                        int CategoryIndex = wCategory.FindString(Category.Name);
+                        wCategory.SelectedIndex = CategoryIndex;
+                    } else {
+                        wCategory.SelectedIndex = -1;
+                    }
+                } else {
+                    wCategory.SelectedIndex = -1;
+                }
+
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -286,6 +323,16 @@ namespace Timekeeper.Forms.Tools
             try {
                 CurrentEntry.Memo = this.MemoEditor.Text;
                 CurrentEntry.EntryTime = this.EntryDateTime.Value;
+
+                // Location & Category support
+                if (wLocation.SelectedIndex > -1) {
+                    Classes.Location Location = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
+                    CurrentEntry.LocationId = Location.Id;
+                }
+                if (wCategory.SelectedIndex > -1) {
+                    Classes.Category Category = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
+                    CurrentEntry.CategoryId = Category.Id;
+                }
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -317,6 +364,8 @@ namespace Timekeeper.Forms.Tools
                 ToolbarNextEntry.Enabled = true;
                 ToolbarLastEntry.Enabled = true;
 
+                ToolbarNewEntry.Enabled = true;
+
                 if (CurrentEntry.AtBeginning()) 
                 {
                     ToolbarFirstEntry.Enabled = false;
@@ -337,6 +386,9 @@ namespace Timekeeper.Forms.Tools
                 ToolbarFirstEntry.Enabled = true;
                 ToolbarPreviousEntry.Enabled = true;
                 ToolbarFind.Enabled = true;
+
+                ToolbarNewEntry.Enabled = false;
+                ToolbarNotebookEntryId.Text = "";
             }
 
         }
@@ -351,6 +403,18 @@ namespace Timekeeper.Forms.Tools
         }
 
         //---------------------------------------------------------------------
+
+        public void Browser_GotoEntry(long notebookId)
+        {
+            IsBrowsing = true;
+
+            CurrentEntry = new Classes.NotebookEntry(notebookId);
+            EntryToForm(CurrentEntry);
+
+            PaintToolbar();
+        }
+
+        //---------------------------------------------------------------------
         // Context-sensitive help
         //---------------------------------------------------------------------
 
@@ -359,6 +423,13 @@ namespace Timekeeper.Forms.Tools
             Control c = (Control)sender;
             string topic = String.Format("html\\context\\fToolJournal\\{0}.html", c.Name);
             Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
+        }
+
+        private void ToolbarFind_Click(object sender, EventArgs e)
+        {
+            Forms.Find FindDialog = new Forms.Find(Browser_GotoEntry, Find.FindDataSources.Notebook);
+            FindDialog.Show(this); // FIXME: why does this get flaky when "this" isn't specified?
+            //OpenForms.Add(FindDialog);
         }
 
         //---------------------------------------------------------------------

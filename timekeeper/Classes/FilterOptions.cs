@@ -61,6 +61,8 @@ namespace Timekeeper.Classes
         public DateTimeOffset CreateTime { get; private set; }
         public DateTimeOffset ModifyTime { get; private set; }
 
+        public int FilterOptionsType { get; set; }
+
         public int DateRangePreset { get; set; }
         public DateTimeOffset FromTime { get; set; }
         public DateTimeOffset ToTime { get; set; }
@@ -130,6 +132,7 @@ namespace Timekeeper.Classes
                 string Query = @"select * from FilterOptions where FilterOptionsId = " + filterOptionsId;
                 Row Options = this.Database.SelectRow(Query);
 
+                FilterOptionsType = (int)Timekeeper.GetValue(Options["FilterOptionsType"], 1);
                 DateRangePreset = (int)Timekeeper.GetValue(Options["RefDatePresetId"], DATE_PRESET_ALL);
                 FromTime = (DateTimeOffset)Timekeeper.GetValue(Options["FromTime"], DateTimeOffset.MinValue);
                 ToTime = (DateTimeOffset)Timekeeper.GetValue(Options["ToTime"], Timekeeper.MaxDateTime());
@@ -171,6 +174,8 @@ namespace Timekeeper.Classes
             this.CreateTime = that.CreateTime;
             this.ModifyTime = that.ModifyTime;
 
+            this.FilterOptionsType = that.FilterOptionsType;
+
             this.DateRangePreset = that.DateRangePreset;
             this.FromTime = that.FromTime;
             this.ToTime = that.ToTime;
@@ -207,6 +212,7 @@ namespace Timekeeper.Classes
             */
 
             if (
+                (this.FilterOptionsType == that.FilterOptionsType) &&
                 (this.DateRangePreset == that.DateRangePreset) &&
                 (this.FromTime == that.FromTime) &&
                 (this.ToTime == that.ToTime) &&
@@ -272,6 +278,7 @@ namespace Timekeeper.Classes
             try {
                 Row Options = new Row();
 
+                Options["FilterOptionsType"] = FilterOptionsType;
                 Options["RefDatePresetId"] = DateRangePreset;
                 Options["FromTime"] = FromTime.ToString(Common.UTC_DATETIME_FORMAT);
                 Options["ToTime"] = ToTime.ToString(Common.UTC_DATETIME_FORMAT);
@@ -321,6 +328,7 @@ namespace Timekeeper.Classes
         public void Clear()
         {
             FilterOptionsId = -1;
+            FilterOptionsType = 0;
             DateRangePreset = DATE_PRESET_ALL;
             FromTime = DateTimeOffset.UtcNow;
             ToTime = DateTimeOffset.UtcNow;
@@ -412,20 +420,28 @@ namespace Timekeeper.Classes
 
             Timekeeper.Warn("Filtering still needs some date/time love...");
 
-            WhereClause += String.Format("datetime(j.StartTime, 'localtime') >= datetime('{0}')",
-                this.FromTimeToString()) + System.Environment.NewLine;
+            if (this.FilterOptionsType == 1) {
+                WhereClause += String.Format("datetime(j.StartTime, 'localtime') >= datetime('{0}')",
+                    this.FromTimeToString()) + System.Environment.NewLine;
 
-            WhereClause += String.Format("and datetime(j.StopTime, 'localtime') <= datetime('{0}')",
-                this.ToTimeToString()) + System.Environment.NewLine;
+                WhereClause += String.Format("and datetime(j.StopTime, 'localtime') <= datetime('{0}')",
+                    this.ToTimeToString()) + System.Environment.NewLine;
 
-            if ((this.ImpliedProjects != null) && (this.ImpliedProjects.Count > 0)) {
-                WhereClause += String.Format("and j.ProjectId in ({0})",
-                    this.List(this.ImpliedProjects)) + System.Environment.NewLine;
-            }
+                if ((this.ImpliedProjects != null) && (this.ImpliedProjects.Count > 0)) {
+                    WhereClause += String.Format("and j.ProjectId in ({0})",
+                        this.List(this.ImpliedProjects)) + System.Environment.NewLine;
+                }
 
-            if ((this.ImpliedActivities != null) && (this.ImpliedActivities.Count > 0)) {
-                WhereClause += String.Format("and j.ActivityId in ({0})",
-                    this.List(this.ImpliedActivities)) + System.Environment.NewLine;
+                if ((this.ImpliedActivities != null) && (this.ImpliedActivities.Count > 0)) {
+                    WhereClause += String.Format("and j.ActivityId in ({0})",
+                        this.List(this.ImpliedActivities)) + System.Environment.NewLine;
+                }
+            } else {
+                WhereClause += String.Format("datetime(j.EntryTime, 'localtime') >= datetime('{0}')",
+                    this.FromTimeToString()) + System.Environment.NewLine;
+
+                WhereClause += String.Format("and datetime(j.EntryTime, 'localtime') <= datetime('{0}')",
+                    this.ToTimeToString()) + System.Environment.NewLine;
             }
 
             if ((this.MemoContains != null) && (this.MemoContains != "")) {

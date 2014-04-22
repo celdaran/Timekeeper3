@@ -50,7 +50,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public Table Results()
+        public Table JournalResults()
         {
             string Query = String.Format(@"
                 select
@@ -69,6 +69,28 @@ namespace Timekeeper.Classes
                 where {0}
                 order by {1}",
                 this.FilterOptions.WhereClause, "j.JournalId");
+
+            Table FindResults = Database.Select(Query);
+
+            return FindResults;
+        }
+
+        //---------------------------------------------------------------------
+
+        public Table NotebookResults()
+        {
+            string Query = String.Format(@"
+                select
+                    j.NotebookId, j.CreateTime, j.ModifyTime,
+                    j.LocationId as NotebookLocationId, l.Name as NotebookLocationName,
+                    j.CategoryId as NotebookCategoryId, c.Name as NotebookCategoryName,
+                    j.EntryTime as NotebookEntryTime, j.Memo as NotebookMemo
+                from Notebook j
+                left join Location l on l.LocationId = j.LocationId
+                left join Category c on c.CategoryId = j.CategoryId
+                where {0}
+                order by {1}",
+                this.FilterOptions.WhereClause, "j.NotebookId");
 
             Table FindResults = Database.Select(Query);
 
