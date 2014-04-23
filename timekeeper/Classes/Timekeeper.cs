@@ -107,89 +107,105 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public static void Schedule(Classes.ScheduledEvent ScheduledEvent, Forms.Main mainForm)
+        public static void Schedule(Classes.ScheduledEvent scheduledEvent, Forms.Main mainForm)
         {
-            if (ScheduledEvent.Schedule == null) {
+            if (scheduledEvent.Schedule == null) {
                 Timekeeper.Debug("Attempting to schedule an undefined schedule");
                 return;
             }
 
             // Create job
             IJobDetail Job = JobBuilder.Create<Classes.ReminderJob>()
-                .WithIdentity(ScheduledEvent.Event.Id.ToString(), "Timekeeper")
+                .WithIdentity(scheduledEvent.Event.Id.ToString(), "Timekeeper")
                 .Build();
             Job.JobDataMap.Add("MainForm", mainForm);
 
             // Determine reminder time
-            DateTime ReminderTime = ScheduledEvent.Schedule.ReminderTime(
-                ScheduledEvent.Event.NextOccurrenceTime.LocalDateTime,
-                (int)ScheduledEvent.Reminder.TimeUnit,
-                (int)ScheduledEvent.Reminder.TimeAmount);
+            DateTime ReminderTime = scheduledEvent.Schedule.ReminderTime(
+                scheduledEvent.Event.NextOccurrenceTime.LocalDateTime,
+                (int)scheduledEvent.Reminder.TimeUnit,
+                (int)scheduledEvent.Reminder.TimeAmount);
 
             string Debug =
                 "Created Job \"" + Job.Key.ToString() + "\"" +
-                " for Event \"" + ScheduledEvent.Event.Name + "\"" + 
+                " for Event \"" + scheduledEvent.Event.Name + "\"" + 
                 " to be Reminded at \"" + ReminderTime.ToString(Common.LOCAL_DATETIME_FORMAT) + "\"";
             Timekeeper.Debug(Debug);
 
             // Create trigger
-            switch (ScheduledEvent.Schedule.RefScheduleTypeId) {
+            Timekeeper.CreateTrigger(scheduledEvent, ReminderTime, Job);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static ITrigger CreateTrigger(Classes.ScheduledEvent scheduledEvent, DateTime reminderTime, IJobDetail job)
+        {
+            switch (scheduledEvent.Schedule.RefScheduleTypeId)
+            {
                 case 1: // one time
-                    ITrigger SimpleTrigger = ScheduledEvent.Schedule.OneTimeTrigger(
-                        ScheduledEvent.Event.Name, 
-                        ReminderTime);
-                    Timekeeper.Scheduler.ScheduleJob(Job, SimpleTrigger);
-                    break;
+                    ITrigger SimpleTrigger = scheduledEvent.Schedule.OneTimeTrigger(
+                        scheduledEvent.Event.Name,
+                        reminderTime);
+                    if (job != null)
+                        Timekeeper.Scheduler.ScheduleJob(job, SimpleTrigger);
+                    return SimpleTrigger;
 
                 case 2: // fixed period
-                    ITrigger FixedTrigger = ScheduledEvent.Schedule.FixedTrigger(
-                        ScheduledEvent.Event.Name, 
-                        ReminderTime,
-                        (int)ScheduledEvent.Schedule.OnceUnit,
-                        (int)ScheduledEvent.Schedule.OnceAmount);
-                    Timekeeper.Scheduler.ScheduleJob(Job, FixedTrigger);
-                    break;
+                    ITrigger FixedTrigger = scheduledEvent.Schedule.FixedTrigger(
+                        scheduledEvent.Event.Name,
+                        reminderTime,
+                        (int)scheduledEvent.Schedule.OnceUnit,
+                        (int)scheduledEvent.Schedule.OnceAmount);
+                    if (job != null)
+                        Timekeeper.Scheduler.ScheduleJob(job, FixedTrigger);
+                    return FixedTrigger;
 
                 case 3: // daily
-                    ITrigger DailyTrigger = ScheduledEvent.Schedule.DailyTrigger(
-                        ScheduledEvent.Event.Name,
-                        ReminderTime,
-                        (int)ScheduledEvent.Schedule.DailyTypeId,
-                        (int)ScheduledEvent.Schedule.DailyIntervalCount);
-                    Timekeeper.Scheduler.ScheduleJob(Job, DailyTrigger);
-                    break;
+                    ITrigger DailyTrigger = scheduledEvent.Schedule.DailyTrigger(
+                        scheduledEvent.Event.Name,
+                        reminderTime,
+                        (int)scheduledEvent.Schedule.DailyTypeId,
+                        (int)scheduledEvent.Schedule.DailyIntervalCount);
+                    if (job != null)
+                        Timekeeper.Scheduler.ScheduleJob(job, DailyTrigger);
+                    return DailyTrigger;
 
                 case 4: // weekly
-                    ITrigger WeeklyTrigger = ScheduledEvent.Schedule.WeeklyTrigger(
-                        ScheduledEvent.Event.Name,
-                        ReminderTime);
-                    Timekeeper.Scheduler.ScheduleJob(Job, WeeklyTrigger);
-                    Debug += WeeklyTrigger.Key.ToString();
-                    break;
+                    ITrigger WeeklyTrigger = scheduledEvent.Schedule.WeeklyTrigger(
+                        scheduledEvent.Event.Name,
+                        reminderTime);
+                    if (job != null)
+                        Timekeeper.Scheduler.ScheduleJob(job, WeeklyTrigger);
+                    return WeeklyTrigger;
 
                 case 5: // monthly
-                    ITrigger MonthlyTrigger = ScheduledEvent.Schedule.MonthlyTrigger(
-                        ScheduledEvent.Event.Name,
-                        ReminderTime);
-                    Timekeeper.Scheduler.ScheduleJob(Job, MonthlyTrigger);
-                    break;
+                    ITrigger MonthlyTrigger = scheduledEvent.Schedule.MonthlyTrigger(
+                        scheduledEvent.Event.Name,
+                        reminderTime);
+                    if (job != null)
+                        Timekeeper.Scheduler.ScheduleJob(job, MonthlyTrigger);
+                    return MonthlyTrigger;
 
                 case 6: // yearly
-                    ITrigger YearlyTrigger = ScheduledEvent.Schedule.YearlyTrigger(
-                        ScheduledEvent.Event.Name,
-                        ReminderTime);
-                    Timekeeper.Scheduler.ScheduleJob(Job, YearlyTrigger);
-                    break;
+                    ITrigger YearlyTrigger = scheduledEvent.Schedule.YearlyTrigger(
+                        scheduledEvent.Event.Name,
+                        reminderTime);
+                    if (job != null)
+                        Timekeeper.Scheduler.ScheduleJob(job, YearlyTrigger);
+                    return YearlyTrigger;
 
                 case 7: // cronly
-                    ITrigger CronTrigger = ScheduledEvent.Schedule.CronTrigger(
-                        ScheduledEvent.Event.Name,
-                        ReminderTime,
-                        ScheduledEvent.Schedule.CrontabExpression,
+                    ITrigger CronTrigger = scheduledEvent.Schedule.CronTrigger(
+                        scheduledEvent.Event.Name,
+                        reminderTime,
+                        scheduledEvent.Schedule.CrontabExpression,
                         "Cronly");
-                    Timekeeper.Scheduler.ScheduleJob(Job, CronTrigger);
-                    break;
+                    if (job != null)
+                        Timekeeper.Scheduler.ScheduleJob(job, CronTrigger);
+                    return CronTrigger;
             }
+
+            return null;
         }
 
         //---------------------------------------------------------------------

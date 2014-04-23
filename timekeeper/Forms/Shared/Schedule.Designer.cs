@@ -1043,7 +1043,7 @@ namespace Timekeeper.Forms.Shared
             // 
             this.label4.AutoSize = true;
             this.label4.Enabled = false;
-            this.label4.Location = new System.Drawing.Point(148, 43);
+            this.label4.Location = new System.Drawing.Point(158, 43);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(66, 13);
             this.label4.TabIndex = 11;
@@ -1054,7 +1054,7 @@ namespace Timekeeper.Forms.Shared
             this.StopAfterCountValue.Enabled = false;
             this.StopAfterCountValue.Location = new System.Drawing.Point(95, 38);
             this.StopAfterCountValue.Maximum = new decimal(new int[] {
-            999,
+            99999,
             0,
             0,
             0});
@@ -1064,7 +1064,7 @@ namespace Timekeeper.Forms.Shared
             0,
             0});
             this.StopAfterCountValue.Name = "StopAfterCountValue";
-            this.StopAfterCountValue.Size = new System.Drawing.Size(47, 20);
+            this.StopAfterCountValue.Size = new System.Drawing.Size(57, 20);
             this.StopAfterCountValue.TabIndex = 8;
             this.StopAfterCountValue.Value = new decimal(new int[] {
             1,
