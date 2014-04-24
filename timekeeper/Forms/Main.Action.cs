@@ -534,6 +534,22 @@ namespace Timekeeper.Forms
             // Set date/time formats
             wStartTime.CustomFormat = Options.Advanced_DateTimeFormat;
             wStopTime.CustomFormat = Options.Advanced_DateTimeFormat;
+
+            // Adjust Start/Stop time widths and LocationAndCategoryPanel location
+            wStartTime.Value = DateTime.Parse("1970-01-01T00:00:00.00-00:00");
+            Size DateSize = TextRenderer.MeasureText(wStartTime.Text, wStartTime.Font);
+            int DateTimeWidth = DateSize.Width;
+            int DropDownButtonWidth = 33;
+
+            StatusBarDebug1.Text = "Width: " + DateTimeWidth.ToString();
+
+            wStartTime.Width = DateTimeWidth + DropDownButtonWidth;
+            wStopTime.Width = DateTimeWidth + DropDownButtonWidth;
+
+            CloseStartGapButton.Left = Math.Max(wStartTime.Width + 73, 142);
+            CloseStopGapButton.Left = Math.Max(wStartTime.Width + 73, 142);
+
+            LocationAndCategoryPanel.Left = CloseStartGapButton.Left + DropDownButtonWidth;
         }
 
         //---------------------------------------------------------------------

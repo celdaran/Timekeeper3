@@ -458,6 +458,12 @@ namespace Timekeeper.Forms
         }
 
         // Toolbar Functions | Browser | Revert
+        private void MenuToolbarBrowserSave_Click(object sender, EventArgs e)
+        {
+            Browser_SaveRow(true);
+        }
+
+        // Toolbar Functions | Browser | Revert
         private void MenuToolbarBrowserRevert_Click(object sender, EventArgs e)
         {
             Browser_RevertEntry();
@@ -467,6 +473,78 @@ namespace Timekeeper.Forms
         private void MenuToolbarBrowserUnlock_Click(object sender, EventArgs e)
         {
             Browser_UnlockEntry();
+        }
+
+        // Toolbar Functions | Format | Bold
+        private void MenuToolbarFormatBold_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatBoldButton_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Italic
+        private void MenuToolbarFormatItalic_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatItalicButton_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Underline
+        private void MenuToolbarFormatUnderline_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatUnderlineButton_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Strikethrough
+        private void MenuToolbarFormatStrikethrough_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatStrikethroughButton_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Bulleted List
+        private void MenuToolbarFormatBulletedList_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatBulletedListButton_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Numbered List
+        private void MenuToolbarFormatNumberedList_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatNumberedListButton_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Heading 1
+        private void MenuToolbarFormatHeading1_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatHeading1Button_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Heading 2
+        private void MenuToolbarFormatHeading2_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatHeading2Button_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Heading 3
+        private void MenuToolbarFormatHeading3_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatHeading3Button_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Code
+        private void MenuToolbarFormatCode_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatCodeButton_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Blockquote
+        private void MenuToolbarFormatBlockquote_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatBlockquoteButton_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Horizontal Rule
+        private void MenuToolbarFormatHorizontalRule_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatHorizontalRuleButton_Click(sender, e);
         }
 
         //---------------------------------------------------------------------
@@ -1181,26 +1259,6 @@ namespace Timekeeper.Forms
         //---------------------------------------------------------------------
         // FIXME - EXPERIMENTAL - NOT READY FOR PRIME TIME
         //---------------------------------------------------------------------
-
-        private void MenuToolbarFormatBold_Click(object sender, EventArgs e)
-        {
-            this.MemoEditor.FormatBoldButton_Click(sender, e);
-        }
-
-        private void MenuToolbarFormatItalic_Click(object sender, EventArgs e)
-        {
-            this.MemoEditor.FormatItalicButton_Click(sender, e);
-        }
-
-        private void MenuToolbarFormatUnderline_Click(object sender, EventArgs e)
-        {
-            this.MemoEditor.FormatUnderlineButton_Click(sender, e);
-        }
-
-        private void MenuToolbarFormatStrikethrough_Click(object sender, EventArgs e)
-        {
-            this.MemoEditor.FormatStrikethroughButton_Click(sender, e);
-        }
 
         // Debugging
 

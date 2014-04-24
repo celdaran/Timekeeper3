@@ -289,6 +289,8 @@ namespace Timekeeper.Forms
         {
             toolControlRevert.Enabled = enabled;
             MenuToolbarBrowserRevert.Enabled = enabled;
+            toolControlSave.Enabled = enabled;
+            MenuToolbarBrowserSave.Enabled = enabled;
         }
 
         private void Browser_EnableSplit(bool enabled)
@@ -306,7 +308,7 @@ namespace Timekeeper.Forms
         private void Browser_EnableStopEntry(bool enabled)
         {
             wStopTime.Enabled = enabled;
-            labelEndTime.Enabled = enabled;
+            labelStopTime.Enabled = enabled;
         }
 
         private void Browser_EnableDurationEntry(bool enabled)
@@ -587,6 +589,7 @@ namespace Timekeeper.Forms
             toolControlCloseStartGap.ToolTipText = "Close Start Gap (" + kc.ConvertToString(MenuToolbarBrowserCloseStartGap.ShortcutKeys) + ")";
             toolControlCloseEndGap.ToolTipText = "Close End Gap (" + kc.ConvertToString(MenuToolbarBrowserCloseEndGap.ShortcutKeys) + ")";
 
+            toolControlSave.ToolTipText = "Save Changes to Database (" + kc.ConvertToString(MenuToolbarBrowserSave.ShortcutKeys) + ")";
             toolControlRevert.ToolTipText = "Revert Changes to Last Saved State (" + kc.ConvertToString(MenuToolbarBrowserRevert.ShortcutKeys) + ")";
 
             toolControlClose.ToolTipText = "Close Browser (Esc)";

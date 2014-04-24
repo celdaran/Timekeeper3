@@ -183,6 +183,14 @@ namespace Timekeeper.Forms
                 // So we need to find "MenuFileNew" on our list of items
                 // fetched from the registry and use it's (int)Object value.
                 NameObjectPair Pair = FindKeyboardMapping(MenuItem.Name);
+
+                if (Pair.Object == null) {
+                    // If we get this far, clearly a new menu item has
+                    // appeared and we need to add it to the list.
+                    Pair.Name = MenuItem.Name;
+                    Pair.Object = MenuItem.ShortcutKeys;
+                    Values.Keyboard_FunctionList.Add(Pair);
+                }
                 NewItem.Tag = (Keys)Pair.Object;
             }
 
