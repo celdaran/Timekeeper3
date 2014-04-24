@@ -347,7 +347,11 @@ namespace Timekeeper.Classes
 
         public bool Exists()
         {
-            return this.Name != "";
+            if (this.Name == null)
+                return false;
+            if (this.Name == "")
+                return false;
+            return true;
         }
 
         //---------------------------------------------------------------------
@@ -397,6 +401,11 @@ namespace Timekeeper.Classes
                 where {1} = {2}", this.TableName, this.IdColumnName, itemId);
 
             Row row = Database.SelectRow(Query);
+
+            if (row[this.IdColumnName] == null) {
+                Timekeeper.Warn("Attempted to look up non-existent attribute.");
+                return;
+            }
 
             this.ItemId = itemId;
             this.CreateTime = row["CreateTime"];

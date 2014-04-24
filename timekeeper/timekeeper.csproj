@@ -187,6 +187,12 @@
     <Compile Include="Forms\CategoryManager.Designer.cs">
       <DependentUpon>CategoryManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Reports\DatabaseCheck.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Reports\DatabaseCheck.Designer.cs">
+      <DependentUpon>DatabaseCheck.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Shared\MemoEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -432,6 +438,9 @@
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Reports\DatabaseCheck.resx">
+      <DependentUpon>DatabaseCheck.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Shared\MemoEditor.resx">
       <DependentUpon>MemoEditor.cs</DependentUpon>

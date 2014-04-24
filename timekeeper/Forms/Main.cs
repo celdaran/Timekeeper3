@@ -120,6 +120,29 @@ namespace Timekeeper.Forms
             }
         }
 
+        // File | Utilities | Import
+        private void MenuFileUtilitiesImport_Click(object sender, EventArgs e)
+        {
+            Forms.Wizards.Import DialogBox = new Forms.Wizards.Import();
+            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
+                reloadProjects();
+            }
+        }
+
+        // File | Utilities | Check
+        private void MenuFileUtilitiesCheck_Click(object sender, EventArgs e)
+        {
+            var DialogBox = new Reports.DatabaseCheck(Browser_GotoEntry);
+            DialogBox.Show(this);
+            OpenForms.Add(DialogBox);
+        }
+
+        // File | Utilities | Reindex
+        private void MenuFileUtilitiesReindex_Click(object sender, EventArgs e)
+        {
+            Action_Reindex();
+        }
+
         // File | Exit
         private void MenuFileExit_Click(object sender, EventArgs e)
         {
@@ -1182,19 +1205,6 @@ namespace Timekeeper.Forms
         private void MenuActionManageCategories_Click(object sender, EventArgs e)
         {
             Action_ChangedCategory();
-        }
-
-        private void MenuFileUtilitiesImport_Click(object sender, EventArgs e)
-        {
-            Forms.Wizards.Import DialogBox = new Forms.Wizards.Import();
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                reloadProjects();
-            }
-        }
-
-        private void MenuFileUtilitiesReindex_Click(object sender, EventArgs e)
-        {
-            Action_Reindex();
         }
 
         private void MenuToolTodo_Click(object sender, EventArgs e)

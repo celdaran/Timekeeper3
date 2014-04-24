@@ -100,15 +100,23 @@ namespace Timekeeper
 
         public static void OpenScheduler()
         {
-            ISchedulerFactory ScheduleFactory = new StdSchedulerFactory();
-            Scheduler = ScheduleFactory.GetScheduler();
-            Scheduler.Start();
+            bool SchedulerDisabled = true;
+            if (!SchedulerDisabled) {
+                ISchedulerFactory ScheduleFactory = new StdSchedulerFactory();
+                Scheduler = ScheduleFactory.GetScheduler();
+                Scheduler.Start();
+            }
         }
 
         //---------------------------------------------------------------------
 
         public static void Schedule(Classes.ScheduledEvent scheduledEvent, Forms.Main mainForm)
         {
+            bool SchedulerDisabled = true;
+            if (SchedulerDisabled) {
+                return;
+            }
+
             if (scheduledEvent.Schedule == null) {
                 Timekeeper.Debug("Attempting to schedule an undefined schedule");
                 return;

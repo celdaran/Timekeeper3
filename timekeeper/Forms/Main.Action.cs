@@ -502,6 +502,13 @@ namespace Timekeeper.Forms
                 NotebookWindow.ShowDialog(this);
                 Application.Exit();
                 */
+
+                //Forms.Find FindDialog = new Forms.Find(Browser_GotoEntry, Find.FindDataSources.Journal);
+                /*
+                var DatabaseCheckWindow = new Reports.DatabaseCheck(Browser_GotoEntry);
+                DatabaseCheckWindow.ShowDialog(this);
+                Application.Exit();
+                */
             }
             catch (Exception x) {
                 Common.Warn("There was an error loading the application. Depending on the error, additional information may exist in the application's log file.");

@@ -57,9 +57,9 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public JournalEntry(long journalId) : this()
+        public JournalEntry(long journalIndex) : this()
         {
-            this.Load(journalId);
+            this.Load(journalIndex);
         }
 
         //---------------------------------------------------------------------
@@ -168,6 +168,13 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        public void Load()
+        {
+            Load(this.JournalIndex);
+        }
+
+        //---------------------------------------------------------------------
+
         public void Load(long journalIndex)
         {
             try {
@@ -199,14 +206,38 @@ namespace Timekeeper.Classes
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
+                SetAttributes();
             }
         }
 
         //---------------------------------------------------------------------
 
-        public void Load()
+        public void LoadLite(long journalIndex)
         {
-            Load(this.JournalIndex);
+            // FIXME: Experiment
+            try {
+                string Query = @"
+                    select
+                        j.JournalId,
+                        datetime(j.StartTime, 'localtime') as StartTime,
+                        datetime(j.StopTime, 'localtime') as StopTime,
+                        j.Seconds,
+                        j.Memo,
+                        j.ProjectId, 'No Project' as ProjectName,
+                        j.ActivityId, 'No Activity' as ActivityName,
+                        j.LocationId, 'No Locaiton' as LocationName,
+                        j.CategoryId, 'No Category' as CategoryName,
+                        j.IsLocked,
+                        j.JournalIndex,
+                        j.CreateTime, j.ModifyTime, j.JournalGuid
+                    from Journal j
+                    where j.JournalIndex = " + journalIndex;
+                SetAttributes(Database.SelectRow(Query));
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                SetAttributes();
+            }
         }
 
         //---------------------------------------------------------------------
@@ -267,7 +298,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void LoadByIndex(long journalIndex)
+        public void LoadByNewIndex(long journalIndex)
         {
             this.JournalIndex = journalIndex;
             this.Load();
@@ -361,8 +392,6 @@ namespace Timekeeper.Classes
 
             // Now set default attributes
             Journal = new Row();
-
-            Journal["StartTime"] = DateTimeOffset.Now;
 
             Journal["JournalId"] = 0;
             Journal["ProjectId"] = 0;

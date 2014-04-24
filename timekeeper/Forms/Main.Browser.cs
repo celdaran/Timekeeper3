@@ -465,7 +465,7 @@ namespace Timekeeper.Forms
                     Browser_FormToEntry(ref newBrowserEntry, 0);
 
                 Browser_SaveRow(false);
-                browserEntry.LoadByIndex(journalIndex);
+                browserEntry.LoadByNewIndex(journalIndex);
                 long LastJournalIndex = priorLoadedBrowserEntry.JournalIndex;
                 priorLoadedBrowserEntry = browserEntry.Copy();
 

@@ -26,6 +26,11 @@ namespace Timekeeper.Classes
         {
             List<Classes.ScheduledEvent> ReturnList = new List<ScheduledEvent>();
 
+            bool SchedulerDisabled = true;
+            if (SchedulerDisabled) {
+                return ReturnList;
+            }
+
             string Query = String.Format(@"
                 SELECT e.EventId
                 FROM Event e
@@ -64,6 +69,11 @@ namespace Timekeeper.Classes
 
         private void SetNextOccurrenceTime(Classes.ScheduledEvent scheduledEvent)
         {
+            bool SchedulerDisabled = true;
+            if (SchedulerDisabled) {
+                return;
+            }
+
             try {
                 //return; // FOR NOW
 

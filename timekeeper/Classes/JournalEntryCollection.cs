@@ -80,6 +80,15 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        public Table FetchRaw()
+        {
+            string Query = "SELECT * FROM Journal ORDER BY JournalIndex";
+            Table Table = Database.Select(Query);
+            return Table;
+        }
+
+        //---------------------------------------------------------------------
+
         public void Reindex()
         {
             Reindex(new DateTime(1, 1, 1));
