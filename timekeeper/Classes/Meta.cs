@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 using Technitivity.Toolbox;
 
@@ -27,6 +28,7 @@ namespace Timekeeper.Classes
         public DateTimeOffset Upgraded;
         public Version Version;
         public string Id;
+        public int ProcessId;
 
         //---------------------------------------------------------------------
         // Constructor
@@ -45,9 +47,45 @@ namespace Timekeeper.Classes
                 this.Upgraded = DateTimeOffset.Parse(Rows[1]["Value"]);
                 this.Version = new Version(Rows[2]["Value"]);
                 this.Id = Rows[3]["Value"];
+                this.ProcessId = Convert.ToInt32(Rows[4]["Value"]);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool MarkInUse()
+        {
+            this.ProcessId = Process.GetCurrentProcess().Id;
+            return Save("ProcessId", this.ProcessId.ToString());
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool MarkFree()
+        {
+            return Save("ProcessId", "0");
+        }
+
+        //---------------------------------------------------------------------
+
+        private bool Save(string key, string value)
+        {
+            try {
+                Row Meta = new Row();
+                Meta["Value"] = value;
+
+                if (this.Database.Update(Timekeeper.MetaTableName(), Meta, "Key", key) > 0) {
+                    return true;
+                } else {
+                    throw new Exception("Error marking file in use.");
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                return false;
             }
         }
 

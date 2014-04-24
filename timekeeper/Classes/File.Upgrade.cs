@@ -274,6 +274,15 @@ namespace Timekeeper
             if (InsertedRowId == 0) throw new Exception("Insert failed");
             this.Progress.Value++;
 
+            RowId++;
+            Row = new Row() {
+                    {"Key", "ProcessId"},
+                    {"Value", "0"}
+                };
+            InsertedRowId = Database.Insert(Timekeeper.MetaTableName(), Row);
+            if (InsertedRowId == 0) throw new Exception("Insert failed");
+            this.Progress.Value++;
+
             // Drop old table
             this.Database.Exec("drop table meta");
         }

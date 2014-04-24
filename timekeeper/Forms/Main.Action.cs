@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Diagnostics;
 
 using Technitivity.Toolbox;
 
@@ -259,6 +260,34 @@ namespace Timekeeper.Forms
                             return false;
                         }
                 }
+
+                // Instantiate Meta class. This is used here
+                // and globally throughout the Main object realm.
+                Meta = new Classes.Meta();
+
+                if (Meta.ProcessId > 0) {
+
+                    string Message;
+                    string ProcessName = "Unknown";
+
+                    try {
+                        Process OpenProcess = Process.GetProcessById(Meta.ProcessId);
+                        ProcessName = OpenProcess.ProcessName;
+                    }
+                    catch {
+                        // Safe to ignore
+                    }
+
+                    Message = String.Format(
+                            "This database appears to be in use by another program (Name=\"{0}\", PID={1}). Continue opening?",
+                            ProcessName, Meta.ProcessId);
+
+                    if (Common.WarnPrompt(Message) == DialogResult.Yes) {
+                        Meta.MarkFree();
+                    } else {
+                        return false;
+                    }
+                }
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -304,6 +333,12 @@ namespace Timekeeper.Forms
                 Browser_Disable();
 
                 Options.SaveLocal();
+
+                if (Process.GetCurrentProcess().Id == Meta.ProcessId) {
+                    // Free up the file if this is the current process
+                    // attempting to do the freeing.
+                    Meta.MarkFree();
+                }
 
                 Timekeeper.Info("Closing Database: " + DatabaseFileName);
                 Timekeeper.CloseDatabase();
@@ -662,7 +697,6 @@ namespace Timekeeper.Forms
                 //------------------------------------------
 
                 Entries = new Classes.JournalEntryCollection();
-                Meta = new Classes.Meta();
                 Entry = new Classes.JournalEntry();
 
                 //------------------------------------------
@@ -710,6 +744,12 @@ namespace Timekeeper.Forms
                     ActivityTree.SelectedNode = LastNode;
                     ActivityTree.SelectedNode.Expand();
                 }
+
+                //------------------------------------------
+                // Mark Database in Use
+                //------------------------------------------
+
+                Meta.MarkInUse();
 
                 return true;
             }
