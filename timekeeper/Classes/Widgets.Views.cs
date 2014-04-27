@@ -32,7 +32,8 @@ namespace Timekeeper.Classes
             Classes.FilterOptions BeforeFilterOptions = new Classes.FilterOptions(filterOptionsId);
             Classes.FilterOptions ReturnFilterOptions = new Classes.FilterOptions();
 
-            if (filterDialog.ShowDialog(window) == DialogResult.OK) {
+            if (filterDialog.ShowDialog(window) == DialogResult.OK) 
+            {
                 if (BeforeFilterOptions.Equals(filterDialog.FilterOptions)) {
                     Common.Info("You didn't make no changes!");
                     ReturnFilterOptions.Copy(BeforeFilterOptions);

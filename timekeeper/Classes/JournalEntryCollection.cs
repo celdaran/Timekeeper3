@@ -16,6 +16,8 @@ namespace Timekeeper.Classes
 
         protected DBI Database;
 
+        public enum Dimension { Project, Activity, Location, Category };
+
         //---------------------------------------------------------------------
         // Constructor
         //---------------------------------------------------------------------
@@ -32,6 +34,31 @@ namespace Timekeeper.Classes
         public int Count()
         {
             string Query = "SELECT count(*) AS Count FROM Journal WHERE IsLocked = 0";
+            Row Row = Database.SelectRow(Query);
+            return (int)Row["Count"];
+        }
+
+        //---------------------------------------------------------------------
+
+        public int Count(Dimension dimension, long id)
+        {
+            string ColumnName = "";
+            switch (dimension) {
+                case Dimension.Project:
+                    ColumnName = "ProjectId";
+                    break;
+                case Dimension.Activity:
+                    ColumnName = "ActivityId";
+                    break;
+                case Dimension.Location:
+                    ColumnName = "LocationId";
+                    break;
+                case Dimension.Category:
+                    ColumnName = "CategoryId";
+                    break;
+            }
+            string Query = String.Format("SELECT count(*) AS Count FROM Journal WHERE {0} = {1}",
+                ColumnName, id);
             Row Row = Database.SelectRow(Query);
             return (int)Row["Count"];
         }

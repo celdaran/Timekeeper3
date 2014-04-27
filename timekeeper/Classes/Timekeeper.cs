@@ -310,6 +310,22 @@ namespace Timekeeper
             Log.Error(msg);
         }
 
+        //---------------------------------------------------------------------
+
+        public static void FIXME(string msg)
+        {
+            Log = GetLog();
+            Log.Warn("FIXME: " + msg);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static void TODO(string msg)
+        {
+            Log = GetLog();
+            Log.Info("TODO: " + msg);
+        }
+
         //----------------------------------------------------------------------
 
         public static int GetLogLevel(int level)

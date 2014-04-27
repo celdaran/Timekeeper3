@@ -358,10 +358,32 @@ namespace Timekeeper.Forms
                 return;
             }
 
-            // Remove item from the database
-            Classes.TreeAttribute item = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-            long result = item.Delete();
+            // Instantiate item
+            Classes.TreeAttribute SourceItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
 
+            // See if it's in use
+            Classes.JournalEntryCollection.Dimension Dim;
+            if (SourceItem.Type == Classes.TreeAttribute.ItemType.Project) {
+                Dim = Classes.JournalEntryCollection.Dimension.Project;
+            } else {
+                Dim = Classes.JournalEntryCollection.Dimension.Project;
+            }
+            var JournalEntries = new Classes.JournalEntryCollection();
+            int Count = JournalEntries.Count(Dim, SourceItem.ItemId);
+
+            if (Count > 0) {
+                string Prompt = String.Format(
+                    "You have {0} journal entries logged against this item. Would you like to merge them with another item?",
+                    Count);
+                if (Common.Prompt(Prompt) == DialogResult.Yes) {
+                    if (!Action_MergeItem(SourceItem)) {
+                        return;
+                    }
+                }
+            }
+
+            // Remove item from the database
+            long result = SourceItem.Delete();
             if (result == 0) {
                 Common.Warn("There was a problem deleting the item.");
                 return;
@@ -386,18 +408,6 @@ namespace Timekeeper.Forms
                     Browser_EnableRevert(true);
                 }
             }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_GetMetrics()
-        {
-            Options.Main_Height = Height;
-            Options.Main_Width = Width;
-            Options.Main_Top = Top;
-            Options.Main_Left = Left;
-            Options.Main_MainSplitterDistance = splitMain.SplitterDistance;
-            Options.Main_TreeSplitterDistance = splitTrees.SplitterDistance;
         }
 
         //---------------------------------------------------------------------
@@ -521,6 +531,18 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Action_GetMetrics()
+        {
+            Options.Main_Height = Height;
+            Options.Main_Width = Width;
+            Options.Main_Top = Top;
+            Options.Main_Left = Left;
+            Options.Main_MainSplitterDistance = splitMain.SplitterDistance;
+            Options.Main_TreeSplitterDistance = splitTrees.SplitterDistance;
+        }
+
+        //---------------------------------------------------------------------
+
         private void Action_InitializeUI()
         {
             // NOTE/TODO: Some of my "Actions" are user-initiated and
@@ -608,6 +630,21 @@ namespace Timekeeper.Forms
 
             // TODO: should this itself be an option?
             Timekeeper.Info("Timekeeper Version " + Timekeeper.VERSION + " Started");
+        }
+
+        //---------------------------------------------------------------------
+
+        private bool Action_MergeItem(Classes.TreeAttribute item)
+        {
+            Forms.Shared.Merge DialogBox = new Forms.Shared.Merge(item);
+            if (DialogBox.ShowDialog(this) == DialogResult.Cancel) {
+                return false;
+            } else {
+                Classes.TreeAttribute TargetItem = DialogBox.TargetItem;
+                string Message = String.Format("You just merged all of the entries for {0} into {1}", item.Name, TargetItem.Name);
+                Common.Info(Message);
+                return true;
+            }
         }
 
         //---------------------------------------------------------------------

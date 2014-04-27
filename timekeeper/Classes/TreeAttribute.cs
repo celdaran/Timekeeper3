@@ -6,7 +6,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class TreeAttribute
+    public class TreeAttribute
     {
         //---------------------------------------------------------------------
         // Public Properties
@@ -717,7 +717,7 @@ namespace Timekeeper.Classes
 
             if (status == "Deleted") {
                 // Frees up name for reuse
-                Row["Name"] = this.Name + "\t" + UUID.Get();
+                Row["Name"] = this.Name + "\t{" + this.ItemGuid + "}";
             }
 
             return Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);

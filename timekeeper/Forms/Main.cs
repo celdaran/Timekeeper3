@@ -198,6 +198,21 @@ namespace Timekeeper.Forms
             }
         }
 
+        // Action | Split Project
+        private void MenuActionSplitProject_Click(object sender, EventArgs e)
+        {
+        }
+
+        // Action | Merge Project
+        private void MenuActionMergeProject_Click(object sender, EventArgs e)
+        {
+            if (ProjectTree.SelectedNode != null) {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)ProjectTree.SelectedNode.Tag;
+                // TODO: Action_ or Dialog_ ???
+                Action_MergeItem(Item);
+            }
+        }
+
         // Action | Hide Project
         private void MenuActionHideProject_Click(object sender, EventArgs e)
         {
@@ -225,7 +240,7 @@ namespace Timekeeper.Forms
 
             if (currentProject != null) {
                 if (ProjectTree.SelectedNode.Text == currentProject.DisplayName()) {
-                    Common.Warn("Cannot delete the item being timed.");
+                    Common.Warn("Cannot delete the project being timed.");
                     return;
                 }
             }
@@ -256,6 +271,16 @@ namespace Timekeeper.Forms
             }
         }
 
+        // Action | Split Activity
+        private void MenuActionSplitActivity_Click(object sender, EventArgs e)
+        {
+        }
+
+        // Action | Merge Activity
+        private void MenuActionMergeActivity_Click(object sender, EventArgs e)
+        {
+        }
+
         // Action | Hide Activity
         private void MenuActionHideActivity_Click(object sender, EventArgs e)
         {
@@ -283,7 +308,7 @@ namespace Timekeeper.Forms
 
             if (currentActivity != null) {
                 if (ActivityTree.SelectedNode.Text == currentActivity.DisplayName()) {
-                    Common.Warn("Cannot delete the item being timed.");
+                    Common.Warn("Cannot delete the activity being timed.");
                     return;
                 }
             }

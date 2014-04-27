@@ -32,8 +32,7 @@ namespace Timekeeper.Forms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
-            this.JournalFilterButton = new System.Windows.Forms.ToolStripButton();
-            this.NotebookFilterButton = new System.Windows.Forms.ToolStripButton();
+            this.FilterButton = new System.Windows.Forms.ToolStripButton();
             this.SortButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.RefreshButton = new System.Windows.Forms.ToolStripButton();
@@ -79,8 +78,7 @@ namespace Timekeeper.Forms
             // 
             this.ToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.JournalFilterButton,
-            this.NotebookFilterButton,
+            this.FilterButton,
             this.SortButton,
             this.toolStripSeparator2,
             this.RefreshButton,
@@ -96,23 +94,14 @@ namespace Timekeeper.Forms
             this.ToolStrip.TabIndex = 0;
             this.ToolStrip.Text = "ToolStrip";
             // 
-            // JournalFilterButton
+            // FilterButton
             // 
-            this.JournalFilterButton.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
-            this.JournalFilterButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.JournalFilterButton.Name = "JournalFilterButton";
-            this.JournalFilterButton.Size = new System.Drawing.Size(77, 22);
-            this.JournalFilterButton.Text = "Filtering...";
-            this.JournalFilterButton.Click += new System.EventHandler(this.JournalFilterButton_Click);
-            // 
-            // NotebookFilterButton
-            // 
-            this.NotebookFilterButton.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
-            this.NotebookFilterButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.NotebookFilterButton.Name = "NotebookFilterButton";
-            this.NotebookFilterButton.Size = new System.Drawing.Size(77, 22);
-            this.NotebookFilterButton.Text = "Filtering...";
-            this.NotebookFilterButton.Click += new System.EventHandler(this.NotebookFilterButton_Click);
+            this.FilterButton.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
+            this.FilterButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FilterButton.Name = "FilterButton";
+            this.FilterButton.Size = new System.Drawing.Size(77, 22);
+            this.FilterButton.Text = "Filtering...";
+            this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);
             // 
             // SortButton
             // 
@@ -206,6 +195,7 @@ namespace Timekeeper.Forms
             this.JournalResultsGrid.AllowUserToOrderColumns = true;
             this.JournalResultsGrid.AllowUserToResizeRows = false;
             this.JournalResultsGrid.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.JournalResultsGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.JournalResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.JournalResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JournalResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -368,6 +358,7 @@ namespace Timekeeper.Forms
             this.NotebookResultsGrid.AllowUserToOrderColumns = true;
             this.NotebookResultsGrid.AllowUserToResizeRows = false;
             this.NotebookResultsGrid.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.NotebookResultsGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.NotebookResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.NotebookResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.NotebookResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -469,7 +460,7 @@ namespace Timekeeper.Forms
         #endregion
 
         private System.Windows.Forms.ToolStrip ToolStrip;
-        private System.Windows.Forms.ToolStripButton JournalFilterButton;
+        private System.Windows.Forms.ToolStripButton FilterButton;
         private System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
         private System.Windows.Forms.ToolStripDropDownButton LoadViewMenuButton;
         private System.Windows.Forms.ToolStripButton SaveViewAsButton;
@@ -498,7 +489,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripButton ClearViewButton;
         private System.Windows.Forms.ToolStripButton SaveViewButton;
         private System.Windows.Forms.DataGridView NotebookResultsGrid;
-        private System.Windows.Forms.ToolStripButton NotebookFilterButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookId;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookEntryTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookMemo;

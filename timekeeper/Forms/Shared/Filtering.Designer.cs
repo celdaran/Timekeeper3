@@ -53,9 +53,14 @@ namespace Timekeeper.Forms.Shared
             this.ProjectTree = new System.Windows.Forms.TreeView();
             this.FilterOptionsTabControl = new System.Windows.Forms.TabControl();
             this.CommonTab = new System.Windows.Forms.TabPage();
-            this.MemoGroup = new System.Windows.Forms.GroupBox();
+            this.OtherGroup = new System.Windows.Forms.GroupBox();
+            this.MemoOperator = new System.Windows.Forms.ComboBox();
+            this.DurationLabel = new System.Windows.Forms.Label();
             this.MemoLabel = new System.Windows.Forms.Label();
-            this.MemoFilter = new System.Windows.Forms.TextBox();
+            this.DurationUnit = new System.Windows.Forms.ComboBox();
+            this.DurationAmount = new System.Windows.Forms.NumericUpDown();
+            this.DurationOperator = new System.Windows.Forms.ComboBox();
+            this.MemoValue = new System.Windows.Forms.TextBox();
             this.DateRangeGroup = new System.Windows.Forms.GroupBox();
             this.ProjectTab = new System.Windows.Forms.TabPage();
             this.ActivityTab = new System.Windows.Forms.TabPage();
@@ -66,11 +71,6 @@ namespace Timekeeper.Forms.Shared
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.IsLocked = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.DurationLabel = new System.Windows.Forms.Label();
-            this.DurationOperator = new System.Windows.Forms.ComboBox();
-            this.DurationAmount = new System.Windows.Forms.NumericUpDown();
-            this.DurationUnit = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ModifyTimePresets = new System.Windows.Forms.ComboBox();
@@ -83,7 +83,8 @@ namespace Timekeeper.Forms.Shared
             this.TreeViewMenu.SuspendLayout();
             this.FilterOptionsTabControl.SuspendLayout();
             this.CommonTab.SuspendLayout();
-            this.MemoGroup.SuspendLayout();
+            this.OtherGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DurationAmount)).BeginInit();
             this.DateRangeGroup.SuspendLayout();
             this.ProjectTab.SuspendLayout();
             this.ActivityTab.SuspendLayout();
@@ -91,8 +92,6 @@ namespace Timekeeper.Forms.Shared
             this.CategoryTab.SuspendLayout();
             this.AdvancedTab.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DurationAmount)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.BottomPanel.SuspendLayout();
             this.ButtonPanel.SuspendLayout();
@@ -164,7 +163,7 @@ namespace Timekeeper.Forms.Shared
             this.LocationFilter.FormattingEnabled = true;
             this.LocationFilter.Location = new System.Drawing.Point(3, 3);
             this.LocationFilter.Name = "LocationFilter";
-            this.LocationFilter.Size = new System.Drawing.Size(387, 246);
+            this.LocationFilter.Size = new System.Drawing.Size(387, 221);
             this.LocationFilter.TabIndex = 5;
             // 
             // CheckedListBoxMenu
@@ -235,7 +234,7 @@ namespace Timekeeper.Forms.Shared
             this.ActivityTree.Location = new System.Drawing.Point(3, 3);
             this.ActivityTree.Name = "ActivityTree";
             this.ActivityTree.SelectedImageIndex = 0;
-            this.ActivityTree.Size = new System.Drawing.Size(387, 246);
+            this.ActivityTree.Size = new System.Drawing.Size(387, 221);
             this.ActivityTree.TabIndex = 0;
             // 
             // TreeViewMenu
@@ -299,7 +298,7 @@ namespace Timekeeper.Forms.Shared
             this.ProjectTree.Location = new System.Drawing.Point(3, 3);
             this.ProjectTree.Name = "ProjectTree";
             this.ProjectTree.SelectedImageIndex = 0;
-            this.ProjectTree.Size = new System.Drawing.Size(387, 246);
+            this.ProjectTree.Size = new System.Drawing.Size(387, 221);
             this.ProjectTree.TabIndex = 0;
             // 
             // FilterOptionsTabControl
@@ -315,48 +314,119 @@ namespace Timekeeper.Forms.Shared
             this.FilterOptionsTabControl.Margin = new System.Windows.Forms.Padding(13);
             this.FilterOptionsTabControl.Name = "FilterOptionsTabControl";
             this.FilterOptionsTabControl.SelectedIndex = 0;
-            this.FilterOptionsTabControl.Size = new System.Drawing.Size(401, 278);
+            this.FilterOptionsTabControl.Size = new System.Drawing.Size(401, 253);
             this.FilterOptionsTabControl.TabIndex = 0;
             this.FilterOptionsTabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.FilterOptionsTabControl_Selected);
             // 
             // CommonTab
             // 
-            this.CommonTab.Controls.Add(this.MemoGroup);
+            this.CommonTab.Controls.Add(this.OtherGroup);
             this.CommonTab.Controls.Add(this.DateRangeGroup);
             this.CommonTab.Location = new System.Drawing.Point(4, 22);
             this.CommonTab.Name = "CommonTab";
             this.CommonTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CommonTab.Size = new System.Drawing.Size(393, 252);
+            this.CommonTab.Size = new System.Drawing.Size(393, 227);
             this.CommonTab.TabIndex = 0;
             this.CommonTab.Text = "Common";
             this.CommonTab.UseVisualStyleBackColor = true;
             // 
-            // MemoGroup
+            // OtherGroup
             // 
-            this.MemoGroup.Controls.Add(this.MemoLabel);
-            this.MemoGroup.Controls.Add(this.MemoFilter);
-            this.MemoGroup.Location = new System.Drawing.Point(6, 130);
-            this.MemoGroup.Name = "MemoGroup";
-            this.MemoGroup.Size = new System.Drawing.Size(376, 100);
-            this.MemoGroup.TabIndex = 16;
-            this.MemoGroup.TabStop = false;
-            this.MemoGroup.Text = "Memo";
+            this.OtherGroup.Controls.Add(this.MemoOperator);
+            this.OtherGroup.Controls.Add(this.DurationLabel);
+            this.OtherGroup.Controls.Add(this.MemoLabel);
+            this.OtherGroup.Controls.Add(this.DurationUnit);
+            this.OtherGroup.Controls.Add(this.DurationAmount);
+            this.OtherGroup.Controls.Add(this.DurationOperator);
+            this.OtherGroup.Controls.Add(this.MemoValue);
+            this.OtherGroup.Location = new System.Drawing.Point(6, 130);
+            this.OtherGroup.Name = "OtherGroup";
+            this.OtherGroup.Size = new System.Drawing.Size(376, 86);
+            this.OtherGroup.TabIndex = 16;
+            this.OtherGroup.TabStop = false;
+            this.OtherGroup.Text = "Other";
+            // 
+            // MemoOperator
+            // 
+            this.MemoOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MemoOperator.FormattingEnabled = true;
+            this.MemoOperator.Items.AddRange(new object[] {
+            "Contains",
+            "Does Not Contain",
+            "Is Empty",
+            "Is Not Empty"});
+            this.MemoOperator.Location = new System.Drawing.Point(84, 21);
+            this.MemoOperator.Name = "MemoOperator";
+            this.MemoOperator.Size = new System.Drawing.Size(113, 21);
+            this.MemoOperator.TabIndex = 4;
+            this.MemoOperator.SelectedIndexChanged += new System.EventHandler(this.MemoOperator_SelectedIndexChanged);
+            // 
+            // DurationLabel
+            // 
+            this.DurationLabel.AutoSize = true;
+            this.DurationLabel.Location = new System.Drawing.Point(14, 51);
+            this.DurationLabel.Name = "DurationLabel";
+            this.DurationLabel.Size = new System.Drawing.Size(61, 13);
+            this.DurationLabel.TabIndex = 5;
+            this.DurationLabel.Text = "Duration Is:";
             // 
             // MemoLabel
             // 
             this.MemoLabel.AutoSize = true;
             this.MemoLabel.Location = new System.Drawing.Point(14, 25);
             this.MemoLabel.Name = "MemoLabel";
-            this.MemoLabel.Size = new System.Drawing.Size(51, 13);
+            this.MemoLabel.Size = new System.Drawing.Size(39, 13);
             this.MemoLabel.TabIndex = 15;
-            this.MemoLabel.Text = "Contains:";
+            this.MemoLabel.Text = "Memo:";
             // 
-            // MemoFilter
+            // DurationUnit
             // 
-            this.MemoFilter.Location = new System.Drawing.Point(84, 22);
-            this.MemoFilter.Name = "MemoFilter";
-            this.MemoFilter.Size = new System.Drawing.Size(278, 20);
-            this.MemoFilter.TabIndex = 4;
+            this.DurationUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DurationUnit.Enabled = false;
+            this.DurationUnit.FormattingEnabled = true;
+            this.DurationUnit.Items.AddRange(new object[] {
+            "Minutes",
+            "Hours"});
+            this.DurationUnit.Location = new System.Drawing.Point(262, 48);
+            this.DurationUnit.Name = "DurationUnit";
+            this.DurationUnit.Size = new System.Drawing.Size(100, 21);
+            this.DurationUnit.TabIndex = 8;
+            // 
+            // DurationAmount
+            // 
+            this.DurationAmount.Enabled = false;
+            this.DurationAmount.Location = new System.Drawing.Point(203, 49);
+            this.DurationAmount.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.DurationAmount.Name = "DurationAmount";
+            this.DurationAmount.Size = new System.Drawing.Size(53, 20);
+            this.DurationAmount.TabIndex = 7;
+            // 
+            // DurationOperator
+            // 
+            this.DurationOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DurationOperator.FormattingEnabled = true;
+            this.DurationOperator.Items.AddRange(new object[] {
+            "Any",
+            "Greater Than",
+            "Less Than",
+            "Equal To"});
+            this.DurationOperator.Location = new System.Drawing.Point(84, 48);
+            this.DurationOperator.Name = "DurationOperator";
+            this.DurationOperator.Size = new System.Drawing.Size(113, 21);
+            this.DurationOperator.TabIndex = 6;
+            this.DurationOperator.SelectedIndexChanged += new System.EventHandler(this.DurationOperator_SelectedIndexChanged);
+            // 
+            // MemoValue
+            // 
+            this.MemoValue.Enabled = false;
+            this.MemoValue.Location = new System.Drawing.Point(203, 22);
+            this.MemoValue.Name = "MemoValue";
+            this.MemoValue.Size = new System.Drawing.Size(159, 20);
+            this.MemoValue.TabIndex = 5;
             // 
             // DateRangeGroup
             // 
@@ -379,7 +449,7 @@ namespace Timekeeper.Forms.Shared
             this.ProjectTab.Location = new System.Drawing.Point(4, 22);
             this.ProjectTab.Name = "ProjectTab";
             this.ProjectTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ProjectTab.Size = new System.Drawing.Size(393, 252);
+            this.ProjectTab.Size = new System.Drawing.Size(393, 227);
             this.ProjectTab.TabIndex = 3;
             this.ProjectTab.Text = "Projects";
             this.ProjectTab.UseVisualStyleBackColor = true;
@@ -390,7 +460,7 @@ namespace Timekeeper.Forms.Shared
             this.ActivityTab.Location = new System.Drawing.Point(4, 22);
             this.ActivityTab.Name = "ActivityTab";
             this.ActivityTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ActivityTab.Size = new System.Drawing.Size(393, 252);
+            this.ActivityTab.Size = new System.Drawing.Size(393, 227);
             this.ActivityTab.TabIndex = 4;
             this.ActivityTab.Text = "Activities";
             this.ActivityTab.UseVisualStyleBackColor = true;
@@ -401,7 +471,7 @@ namespace Timekeeper.Forms.Shared
             this.LocationTab.Location = new System.Drawing.Point(4, 22);
             this.LocationTab.Name = "LocationTab";
             this.LocationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.LocationTab.Size = new System.Drawing.Size(393, 252);
+            this.LocationTab.Size = new System.Drawing.Size(393, 227);
             this.LocationTab.TabIndex = 1;
             this.LocationTab.Text = "Locations";
             this.LocationTab.UseVisualStyleBackColor = true;
@@ -412,7 +482,7 @@ namespace Timekeeper.Forms.Shared
             this.CategoryTab.Location = new System.Drawing.Point(4, 22);
             this.CategoryTab.Name = "CategoryTab";
             this.CategoryTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CategoryTab.Size = new System.Drawing.Size(393, 252);
+            this.CategoryTab.Size = new System.Drawing.Size(393, 227);
             this.CategoryTab.TabIndex = 5;
             this.CategoryTab.Text = "Categories";
             this.CategoryTab.UseVisualStyleBackColor = true;
@@ -424,18 +494,17 @@ namespace Timekeeper.Forms.Shared
             this.CategoryFilter.FormattingEnabled = true;
             this.CategoryFilter.Location = new System.Drawing.Point(3, 3);
             this.CategoryFilter.Name = "CategoryFilter";
-            this.CategoryFilter.Size = new System.Drawing.Size(387, 246);
+            this.CategoryFilter.Size = new System.Drawing.Size(387, 221);
             this.CategoryFilter.TabIndex = 7;
             // 
             // AdvancedTab
             // 
             this.AdvancedTab.Controls.Add(this.groupBox3);
-            this.AdvancedTab.Controls.Add(this.groupBox2);
             this.AdvancedTab.Controls.Add(this.groupBox1);
             this.AdvancedTab.Location = new System.Drawing.Point(4, 22);
             this.AdvancedTab.Name = "AdvancedTab";
             this.AdvancedTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AdvancedTab.Size = new System.Drawing.Size(393, 252);
+            this.AdvancedTab.Size = new System.Drawing.Size(393, 227);
             this.AdvancedTab.TabIndex = 2;
             this.AdvancedTab.Text = "Advanced";
             this.AdvancedTab.UseVisualStyleBackColor = true;
@@ -444,7 +513,7 @@ namespace Timekeeper.Forms.Shared
             // 
             this.groupBox3.Controls.Add(this.IsLocked);
             this.groupBox3.Controls.Add(this.checkBox1);
-            this.groupBox3.Location = new System.Drawing.Point(6, 171);
+            this.groupBox3.Location = new System.Drawing.Point(6, 99);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(379, 68);
             this.groupBox3.TabIndex = 15;
@@ -454,6 +523,7 @@ namespace Timekeeper.Forms.Shared
             // IsLocked
             // 
             this.IsLocked.AutoSize = true;
+            this.IsLocked.Enabled = false;
             this.IsLocked.Location = new System.Drawing.Point(20, 19);
             this.IsLocked.Name = "IsLocked";
             this.IsLocked.Size = new System.Drawing.Size(120, 17);
@@ -464,6 +534,7 @@ namespace Timekeeper.Forms.Shared
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
+            this.checkBox1.Enabled = false;
             this.checkBox1.Location = new System.Drawing.Point(20, 42);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(141, 17);
@@ -471,76 +542,13 @@ namespace Timekeeper.Forms.Shared
             this.checkBox1.Text = "Find Overlapping Entries";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.DurationLabel);
-            this.groupBox2.Controls.Add(this.DurationOperator);
-            this.groupBox2.Controls.Add(this.DurationAmount);
-            this.groupBox2.Controls.Add(this.DurationUnit);
-            this.groupBox2.Location = new System.Drawing.Point(6, 6);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(379, 66);
-            this.groupBox2.TabIndex = 14;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Duration";
-            // 
-            // DurationLabel
-            // 
-            this.DurationLabel.AutoSize = true;
-            this.DurationLabel.Location = new System.Drawing.Point(12, 32);
-            this.DurationLabel.Name = "DurationLabel";
-            this.DurationLabel.Size = new System.Drawing.Size(61, 13);
-            this.DurationLabel.TabIndex = 5;
-            this.DurationLabel.Text = "Duration Is:";
-            // 
-            // DurationOperator
-            // 
-            this.DurationOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DurationOperator.FormattingEnabled = true;
-            this.DurationOperator.Items.AddRange(new object[] {
-            "Any",
-            "Greater Than",
-            "Less Than",
-            "Equal To"});
-            this.DurationOperator.Location = new System.Drawing.Point(79, 29);
-            this.DurationOperator.Name = "DurationOperator";
-            this.DurationOperator.Size = new System.Drawing.Size(121, 21);
-            this.DurationOperator.TabIndex = 1;
-            this.DurationOperator.SelectedIndexChanged += new System.EventHandler(this.DurationOperator_SelectedIndexChanged);
-            // 
-            // DurationAmount
-            // 
-            this.DurationAmount.Enabled = false;
-            this.DurationAmount.Location = new System.Drawing.Point(206, 30);
-            this.DurationAmount.Maximum = new decimal(new int[] {
-            360,
-            0,
-            0,
-            0});
-            this.DurationAmount.Name = "DurationAmount";
-            this.DurationAmount.Size = new System.Drawing.Size(45, 20);
-            this.DurationAmount.TabIndex = 2;
-            // 
-            // DurationUnit
-            // 
-            this.DurationUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DurationUnit.Enabled = false;
-            this.DurationUnit.FormattingEnabled = true;
-            this.DurationUnit.Items.AddRange(new object[] {
-            "Minutes",
-            "Hours"});
-            this.DurationUnit.Location = new System.Drawing.Point(257, 29);
-            this.DurationUnit.Name = "DurationUnit";
-            this.DurationUnit.Size = new System.Drawing.Size(81, 21);
-            this.DurationUnit.TabIndex = 3;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.ModifyTimePresets);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.CreateTimePresets);
-            this.groupBox1.Location = new System.Drawing.Point(6, 78);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(379, 87);
             this.groupBox1.TabIndex = 13;
@@ -588,7 +596,7 @@ namespace Timekeeper.Forms.Shared
             this.BottomPanel.Controls.Add(this.ClearButton);
             this.BottomPanel.Controls.Add(this.ButtonPanel);
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BottomPanel.Location = new System.Drawing.Point(0, 278);
+            this.BottomPanel.Location = new System.Drawing.Point(0, 253);
             this.BottomPanel.Name = "BottomPanel";
             this.BottomPanel.Size = new System.Drawing.Size(401, 34);
             this.BottomPanel.TabIndex = 17;
@@ -619,7 +627,7 @@ namespace Timekeeper.Forms.Shared
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
-            this.ClientSize = new System.Drawing.Size(401, 312);
+            this.ClientSize = new System.Drawing.Size(401, 287);
             this.Controls.Add(this.FilterOptionsTabControl);
             this.Controls.Add(this.BottomPanel);
             this.MaximizeBox = false;
@@ -635,8 +643,9 @@ namespace Timekeeper.Forms.Shared
             this.TreeViewMenu.ResumeLayout(false);
             this.FilterOptionsTabControl.ResumeLayout(false);
             this.CommonTab.ResumeLayout(false);
-            this.MemoGroup.ResumeLayout(false);
-            this.MemoGroup.PerformLayout();
+            this.OtherGroup.ResumeLayout(false);
+            this.OtherGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DurationAmount)).EndInit();
             this.DateRangeGroup.ResumeLayout(false);
             this.DateRangeGroup.PerformLayout();
             this.ProjectTab.ResumeLayout(false);
@@ -646,9 +655,6 @@ namespace Timekeeper.Forms.Shared
             this.AdvancedTab.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DurationAmount)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.BottomPanel.ResumeLayout(false);
@@ -688,18 +694,13 @@ namespace Timekeeper.Forms.Shared
         private System.Windows.Forms.GroupBox DateRangeGroup;
         private System.Windows.Forms.TabPage ProjectTab;
         private System.Windows.Forms.TabPage ActivityTab;
-        private System.Windows.Forms.GroupBox MemoGroup;
+        private System.Windows.Forms.GroupBox OtherGroup;
         private System.Windows.Forms.Label MemoLabel;
-        private System.Windows.Forms.TextBox MemoFilter;
+        private System.Windows.Forms.TextBox MemoValue;
         private System.Windows.Forms.Panel BottomPanel;
         private System.Windows.Forms.Panel ButtonPanel;
-        private System.Windows.Forms.Label DurationLabel;
-        private System.Windows.Forms.ComboBox DurationOperator;
-        private System.Windows.Forms.ComboBox DurationUnit;
-        private System.Windows.Forms.NumericUpDown DurationAmount;
         private System.Windows.Forms.TabPage CategoryTab;
         private System.Windows.Forms.CheckedListBox CategoryFilter;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.ComboBox ModifyTimePresets;
@@ -709,5 +710,10 @@ namespace Timekeeper.Forms.Shared
         private System.Windows.Forms.CheckBox IsLocked;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button ClearButton;
+        private System.Windows.Forms.Label DurationLabel;
+        private System.Windows.Forms.ComboBox DurationUnit;
+        private System.Windows.Forms.NumericUpDown DurationAmount;
+        private System.Windows.Forms.ComboBox DurationOperator;
+        private System.Windows.Forms.ComboBox MemoOperator;
     }
 }

@@ -60,6 +60,7 @@
             this.PopupMenuTodoViewDetails = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoViewSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuTodoViewShowGroups = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuTodoViewShowCompletedItems = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoGroupBy = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoGroupByStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodoGroupByStartDate = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,6 +80,9 @@
             this.MenuTodoMarkAsOnHold = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuTodoMarkAsBlocked = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuTodoMarkAsComplete = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuTodoShow = new System.Windows.Forms.ToolStripDropDownButton();
+            this.MenuTodoShowGroups = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuTodoShowCompletedItems = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuTodoViewLargeIcons = new System.Windows.Forms.ToolStripButton();
             this.MenuTodoViewSmallIcons = new System.Windows.Forms.ToolStripButton();
@@ -87,10 +91,6 @@
             this.MenuTodoViewDetails = new System.Windows.Forms.ToolStripButton();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.StatusBarItemCount = new System.Windows.Forms.ToolStripStatusLabel();
-            this.MenuTodoShow = new System.Windows.Forms.ToolStripDropDownButton();
-            this.MenuTodoShowGroups = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuTodoShowCompletedItems = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuTodoViewShowCompletedItems = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTodo.SuspendLayout();
             this.TodoToolbar.SuspendLayout();
             this.StatusBar.SuspendLayout();
@@ -223,35 +223,35 @@
             // PopupMenuTodoMarkAsNotStarted
             // 
             this.PopupMenuTodoMarkAsNotStarted.Name = "PopupMenuTodoMarkAsNotStarted";
-            this.PopupMenuTodoMarkAsNotStarted.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoMarkAsNotStarted.Size = new System.Drawing.Size(130, 22);
             this.PopupMenuTodoMarkAsNotStarted.Text = "Not Started";
             this.PopupMenuTodoMarkAsNotStarted.Click += new System.EventHandler(this.MenuTodoMarkAsNotStarted_Click);
             // 
             // PopupMenuTodoMarkAsInProgress
             // 
             this.PopupMenuTodoMarkAsInProgress.Name = "PopupMenuTodoMarkAsInProgress";
-            this.PopupMenuTodoMarkAsInProgress.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoMarkAsInProgress.Size = new System.Drawing.Size(130, 22);
             this.PopupMenuTodoMarkAsInProgress.Text = "In Progress";
             this.PopupMenuTodoMarkAsInProgress.Click += new System.EventHandler(this.MenuTodoMarkAsInProgress_Click);
             // 
             // PopupMenuTodoMarkAsOnHold
             // 
             this.PopupMenuTodoMarkAsOnHold.Name = "PopupMenuTodoMarkAsOnHold";
-            this.PopupMenuTodoMarkAsOnHold.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoMarkAsOnHold.Size = new System.Drawing.Size(130, 22);
             this.PopupMenuTodoMarkAsOnHold.Text = "On Hold";
             this.PopupMenuTodoMarkAsOnHold.Click += new System.EventHandler(this.MenuTodoMarkAsOnHold_Click);
             // 
             // PopupMenuTodoMarkAsBlocked
             // 
             this.PopupMenuTodoMarkAsBlocked.Name = "PopupMenuTodoMarkAsBlocked";
-            this.PopupMenuTodoMarkAsBlocked.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoMarkAsBlocked.Size = new System.Drawing.Size(130, 22);
             this.PopupMenuTodoMarkAsBlocked.Text = "Blocked";
             this.PopupMenuTodoMarkAsBlocked.Click += new System.EventHandler(this.MenuTodoMarkAsBlocked_Click);
             // 
             // PopupMenuTodoMarkAsComplete
             // 
             this.PopupMenuTodoMarkAsComplete.Name = "PopupMenuTodoMarkAsComplete";
-            this.PopupMenuTodoMarkAsComplete.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoMarkAsComplete.Size = new System.Drawing.Size(130, 22);
             this.PopupMenuTodoMarkAsComplete.Text = "Completed";
             this.PopupMenuTodoMarkAsComplete.Click += new System.EventHandler(this.MenuTodoMarkAsComplete_Click);
             // 
@@ -326,6 +326,13 @@
             this.PopupMenuTodoViewShowGroups.Text = "Show Groups";
             this.PopupMenuTodoViewShowGroups.Click += new System.EventHandler(this.MenuTodoViewShowGroups_Click);
             // 
+            // PopupMenuTodoViewShowCompletedItems
+            // 
+            this.PopupMenuTodoViewShowCompletedItems.Name = "PopupMenuTodoViewShowCompletedItems";
+            this.PopupMenuTodoViewShowCompletedItems.Size = new System.Drawing.Size(155, 22);
+            this.PopupMenuTodoViewShowCompletedItems.Text = "Completed Items";
+            this.PopupMenuTodoViewShowCompletedItems.Click += new System.EventHandler(this.MenuTodoShowCompletedItems_Click);
+            // 
             // PopupMenuTodoGroupBy
             // 
             this.PopupMenuTodoGroupBy.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -341,21 +348,21 @@
             this.PopupMenuTodoGroupByStatus.Checked = true;
             this.PopupMenuTodoGroupByStatus.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuTodoGroupByStatus.Name = "PopupMenuTodoGroupByStatus";
-            this.PopupMenuTodoGroupByStatus.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoGroupByStatus.Size = new System.Drawing.Size(124, 22);
             this.PopupMenuTodoGroupByStatus.Text = "Status";
             // 
             // PopupMenuTodoGroupByStartDate
             // 
             this.PopupMenuTodoGroupByStartDate.Enabled = false;
             this.PopupMenuTodoGroupByStartDate.Name = "PopupMenuTodoGroupByStartDate";
-            this.PopupMenuTodoGroupByStartDate.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoGroupByStartDate.Size = new System.Drawing.Size(124, 22);
             this.PopupMenuTodoGroupByStartDate.Text = "Start Date";
             // 
             // PopupMenuTodoGroupByDueDate
             // 
             this.PopupMenuTodoGroupByDueDate.Enabled = false;
             this.PopupMenuTodoGroupByDueDate.Name = "PopupMenuTodoGroupByDueDate";
-            this.PopupMenuTodoGroupByDueDate.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoGroupByDueDate.Size = new System.Drawing.Size(124, 22);
             this.PopupMenuTodoGroupByDueDate.Text = "Due Date";
             // 
             // LargeImages
@@ -373,6 +380,7 @@
             // 
             // TodoToolbar
             // 
+            this.TodoToolbar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.TodoToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuTodoAction,
             this.MenuTodoMarkAs,
@@ -489,6 +497,34 @@
             this.MenuTodoMarkAsComplete.Size = new System.Drawing.Size(152, 22);
             this.MenuTodoMarkAsComplete.Text = "Complete";
             // 
+            // MenuTodoShow
+            // 
+            this.MenuTodoShow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.MenuTodoShow.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuTodoShowGroups,
+            this.MenuTodoShowCompletedItems});
+            this.MenuTodoShow.Image = ((System.Drawing.Image)(resources.GetObject("MenuTodoShow.Image")));
+            this.MenuTodoShow.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.MenuTodoShow.Name = "MenuTodoShow";
+            this.MenuTodoShow.Size = new System.Drawing.Size(46, 22);
+            this.MenuTodoShow.Text = "Show";
+            // 
+            // MenuTodoShowGroups
+            // 
+            this.MenuTodoShowGroups.Checked = true;
+            this.MenuTodoShowGroups.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.MenuTodoShowGroups.Name = "MenuTodoShowGroups";
+            this.MenuTodoShowGroups.Size = new System.Drawing.Size(155, 22);
+            this.MenuTodoShowGroups.Text = "Groups";
+            this.MenuTodoShowGroups.Click += new System.EventHandler(this.MenuTodoViewShowGroups_Click);
+            // 
+            // MenuTodoShowCompletedItems
+            // 
+            this.MenuTodoShowCompletedItems.Name = "MenuTodoShowCompletedItems";
+            this.MenuTodoShowCompletedItems.Size = new System.Drawing.Size(155, 22);
+            this.MenuTodoShowCompletedItems.Text = "Completed Items";
+            this.MenuTodoShowCompletedItems.Click += new System.EventHandler(this.MenuTodoShowCompletedItems_Click);
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -561,41 +597,6 @@
             this.StatusBarItemCount.Name = "StatusBarItemCount";
             this.StatusBarItemCount.Size = new System.Drawing.Size(13, 17);
             this.StatusBarItemCount.Text = "0";
-            // 
-            // MenuTodoShow
-            // 
-            this.MenuTodoShow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.MenuTodoShow.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuTodoShowGroups,
-            this.MenuTodoShowCompletedItems});
-            this.MenuTodoShow.Image = ((System.Drawing.Image)(resources.GetObject("MenuTodoShow.Image")));
-            this.MenuTodoShow.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.MenuTodoShow.Name = "MenuTodoShow";
-            this.MenuTodoShow.Size = new System.Drawing.Size(46, 22);
-            this.MenuTodoShow.Text = "Show";
-            // 
-            // MenuTodoShowGroups
-            // 
-            this.MenuTodoShowGroups.Checked = true;
-            this.MenuTodoShowGroups.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.MenuTodoShowGroups.Name = "MenuTodoShowGroups";
-            this.MenuTodoShowGroups.Size = new System.Drawing.Size(155, 22);
-            this.MenuTodoShowGroups.Text = "Groups";
-            this.MenuTodoShowGroups.Click += new System.EventHandler(this.MenuTodoViewShowGroups_Click);
-            // 
-            // MenuTodoShowCompletedItems
-            // 
-            this.MenuTodoShowCompletedItems.Name = "MenuTodoShowCompletedItems";
-            this.MenuTodoShowCompletedItems.Size = new System.Drawing.Size(155, 22);
-            this.MenuTodoShowCompletedItems.Text = "Completed Items";
-            this.MenuTodoShowCompletedItems.Click += new System.EventHandler(this.MenuTodoShowCompletedItems_Click);
-            // 
-            // PopupMenuTodoViewShowCompletedItems
-            // 
-            this.PopupMenuTodoViewShowCompletedItems.Name = "PopupMenuTodoViewShowCompletedItems";
-            this.PopupMenuTodoViewShowCompletedItems.Size = new System.Drawing.Size(155, 22);
-            this.PopupMenuTodoViewShowCompletedItems.Text = "Completed Items";
-            this.PopupMenuTodoViewShowCompletedItems.Click += new System.EventHandler(this.MenuTodoShowCompletedItems_Click);
             // 
             // Todo
             // 

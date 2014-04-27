@@ -17,7 +17,7 @@ CREATE TABLE FindView
     Description         TEXT            NULL,
     SortOrderNo         INTEGER         NULL,
 
-    FilterOptionsId     INTEGER     NOT NULL,
+    FilterOptionsId     INTEGER         NULL,
 
     FOREIGN KEY(FilterOptionsId)    REFERENCES FilterOptions(FilterOptionsId)
 );

@@ -18,9 +18,9 @@ CREATE TABLE GridView
     Description         TEXT            NULL,
     SortOrderNo         INTEGER         NULL,
 
-    FilterOptionsId     INTEGER     NOT NULL,
+    FilterOptionsId     INTEGER         NULL,
 
-    RefDimensionId       INTEGER         NULL,
+    RefDimensionId       INTEGER        NULL,
     RefGroupById        INTEGER         NULL,
     RefTimeDisplayId    INTEGER         NULL,
 

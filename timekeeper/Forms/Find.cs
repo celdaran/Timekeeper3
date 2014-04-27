@@ -58,20 +58,12 @@ namespace Timekeeper.Forms
             this.FindDataSource = source;
 
             if (source == FindDataSources.Journal) {
-                JournalFilterButton.Visible = true;
-                NotebookFilterButton.Visible = false;
-
                 JournalResultsGrid.Visible = true;
                 NotebookResultsGrid.Visible = false;
-
                 JournalResultsGrid.Dock = DockStyle.Fill;
             } else {
-                JournalFilterButton.Visible = false;
-                NotebookFilterButton.Visible = true;
-
                 JournalResultsGrid.Visible = false;
                 NotebookResultsGrid.Visible = true;
-
                 NotebookResultsGrid.Dock = DockStyle.Fill;
             }
         }
@@ -150,45 +142,17 @@ namespace Timekeeper.Forms
         // Toolbar Commands
         //----------------------------------------------------------------------
 
-        private void JournalFilterButton_Click(object sender, EventArgs e)
+        private void FilterButton_Click(object sender, EventArgs e)
         {
-            // Re-instantiate just before opening. See comment surrounding the
-            // only other instantiation of this object
-            this.FilterDialog = new Forms.Shared.Filtering(FindView.FilterOptions);
-
-            FindView.FilterOptions = this.Widgets.FilteringDialog(this,
-                FilterDialog, FindView.FilterOptions.FilterOptionsId);
-
-            if (FindView.FilterOptions.Changed) {
-                FindView.Changed = true;
-                RunFind();
-            }
-        }
-
-        //----------------------------------------------------------------------
-
-        private void NotebookFilterButton_Click(object sender, EventArgs e)
-        {
-            /* Wait, don't... there's a better way...
-
-            // Temporarily "unuse" these items for Find dialog instantiation
-            bool SaveUseProjects = Options.Layout_UseProjects;
-            bool SaveUseActivities = Options.Layout_UseActivities;
-
-            Options.Layout_UseProjects = false;
-            Options.Layout_UseActivities = false;
-            */
-
-            FindView.FilterOptions.FilterOptionsType = 2; // TODO: Make a constant for this
+            // TODO: Should these be one in the same?
+            if (this.FindDataSource == FindDataSources.Journal)
+                FindView.FilterOptions.FilterOptionsType = Classes.FilterOptions.OptionsType.Journal;
+            if (this.FindDataSource == FindDataSources.Notebook)
+                FindView.FilterOptions.FilterOptionsType = Classes.FilterOptions.OptionsType.Notebook;
 
             // Re-instantiate just before opening. See comment surrounding the
             // only other instantiation of this object
             this.FilterDialog = new Forms.Shared.Filtering(FindView.FilterOptions);
-
-            /*
-            Options.Layout_UseProjects = SaveUseProjects;
-            Options.Layout_UseActivities = SaveUseActivities;
-            */
 
             FindView.FilterOptions = this.Widgets.FilteringDialog(this,
                 FilterDialog, FindView.FilterOptions.FilterOptionsId);
@@ -454,16 +418,19 @@ namespace Timekeeper.Forms
         {
             int Count = 0;
 
-            if (this.FindView.FilterOptions.FilterOptionsType == 1) {
-                Count = RunJournalFind();
-            } else {
-                Count = RunNotebookFind();
+            switch (this.FindView.FilterOptions.FilterOptionsType) {
+                case Classes.FilterOptions.OptionsType.Journal:
+                    Count = RunJournalFind();
+                    UpdateViewState(autoSaveView);
+                    break;
+                case Classes.FilterOptions.OptionsType.Notebook:
+                    Count = RunNotebookFind();
+                    Timekeeper.FIXME("You're not auto-saving notebook views.");
+                    //UpdateViewState(autoSaveView);
+                    break;
             }
 
             ResultCount.Text = Count.ToString() + " entries found.";
-
-            // FIXME: Commenting this out for Notebook Find testing...
-            //UpdateViewState(autoSaveView);
         }
 
         //---------------------------------------------------------------------

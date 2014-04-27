@@ -29,17 +29,17 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DatabaseCheckResultsGrid = new System.Windows.Forms.DataGridView();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.StartButton = new System.Windows.Forms.ToolStripButton();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.ProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.StatusBox = new System.Windows.Forms.ToolStripStatusLabel();
             this.JournalIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Issue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StopTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.StartButton = new System.Windows.Forms.ToolStripButton();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.ProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.StatusBox = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.DatabaseCheckResultsGrid)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -52,6 +52,7 @@
             this.DatabaseCheckResultsGrid.AllowUserToOrderColumns = true;
             this.DatabaseCheckResultsGrid.AllowUserToResizeRows = false;
             this.DatabaseCheckResultsGrid.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.DatabaseCheckResultsGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.DatabaseCheckResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.DatabaseCheckResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DatabaseCheckResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -70,49 +71,6 @@
             this.DatabaseCheckResultsGrid.Size = new System.Drawing.Size(774, 245);
             this.DatabaseCheckResultsGrid.TabIndex = 4;
             this.DatabaseCheckResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DatabaseCheckResultsGrid_CellDoubleClick);
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.StartButton});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(774, 25);
-            this.toolStrip1.TabIndex = 5;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // StartButton
-            // 
-            this.StartButton.Image = global::Timekeeper.Properties.Resources.ImageButtonGo;
-            this.StartButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.StartButton.Name = "StartButton";
-            this.StartButton.Size = new System.Drawing.Size(51, 22);
-            this.StartButton.Text = "Start";
-            this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ProgressBar,
-            this.StatusBox});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 270);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(774, 22);
-            this.statusStrip1.TabIndex = 6;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // ProgressBar
-            // 
-            this.ProgressBar.Name = "ProgressBar";
-            this.ProgressBar.Size = new System.Drawing.Size(100, 16);
-            this.ProgressBar.Visible = false;
-            // 
-            // StatusBox
-            // 
-            this.StatusBox.Name = "StatusBox";
-            this.StatusBox.Size = new System.Drawing.Size(38, 17);
-            this.StatusBox.Text = "Status";
             // 
             // JournalIndex
             // 
@@ -158,6 +116,49 @@
             this.Memo.HeaderText = "Memo";
             this.Memo.Name = "Memo";
             this.Memo.ReadOnly = true;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StartButton});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(774, 25);
+            this.toolStrip1.TabIndex = 5;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // StartButton
+            // 
+            this.StartButton.Image = global::Timekeeper.Properties.Resources.ImageButtonGo;
+            this.StartButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.StartButton.Name = "StartButton";
+            this.StartButton.Size = new System.Drawing.Size(51, 22);
+            this.StartButton.Text = "Start";
+            this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ProgressBar,
+            this.StatusBox});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 270);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(774, 22);
+            this.statusStrip1.TabIndex = 6;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // ProgressBar
+            // 
+            this.ProgressBar.Name = "ProgressBar";
+            this.ProgressBar.Size = new System.Drawing.Size(100, 16);
+            this.ProgressBar.Visible = false;
+            // 
+            // StatusBox
+            // 
+            this.StatusBox.Name = "StatusBox";
+            this.StatusBox.Size = new System.Drawing.Size(38, 17);
+            this.StatusBox.Text = "Status";
             // 
             // DatabaseCheck
             // 

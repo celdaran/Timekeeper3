@@ -92,11 +92,22 @@ namespace Timekeeper.Forms.Shared
             // Set Visibility
             //----------------------------------------
 
-            if ((!Options.Layout_UseProjects) || (this.FilterOptions.FilterOptionsType == 2)) {
+            // FIXME: Options should have both a DATE and a DATETIME format
+            /*
+            FromDate.CustomFormat = this.Options.Advanced_DateTimeFormat;
+            ToDate.CustomFormat = this.Options.Advanced_DateTimeFormat;
+            */
+
+            DurationLabel.Visible = (this.FilterOptions.FilterOptionsType != Classes.FilterOptions.OptionsType.Notebook);
+            DurationAmount.Visible = (this.FilterOptions.FilterOptionsType != Classes.FilterOptions.OptionsType.Notebook);
+            DurationOperator.Visible = (this.FilterOptions.FilterOptionsType != Classes.FilterOptions.OptionsType.Notebook);
+            DurationUnit.Visible = (this.FilterOptions.FilterOptionsType != Classes.FilterOptions.OptionsType.Notebook);
+
+            if ((!Options.Layout_UseProjects) || (this.FilterOptions.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("ProjectTab");
             }
 
-            if ((!Options.Layout_UseActivities) || (this.FilterOptions.FilterOptionsType == 2)) {
+            if ((!Options.Layout_UseActivities) || (this.FilterOptions.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("ActivityTab");
             }
 
@@ -108,7 +119,10 @@ namespace Timekeeper.Forms.Shared
                 FilterOptionsTabControl.TabPages.RemoveByKey("CategoryTab");
             }
 
-            if (this.FilterOptions.FilterOptionsType == 2) {
+            if (this.FilterOptions.FilterOptionsType != Classes.FilterOptions.OptionsType.Journal) {
+                // problem: this isn't 'Advanced'
+                // I probably should have OptionsType-specific tabs and move 
+                // 'not advanced' (e.g., duration checks) to the main tab
                 FilterOptionsTabControl.TabPages.RemoveByKey("AdvancedTab");
             }
 
@@ -123,8 +137,26 @@ namespace Timekeeper.Forms.Shared
                 Timekeeper.Warn("DateRangePreset = DATE_PRESET_NONE");
             }
 
-            if (FilterOptions.MemoContains != null) {
-                MemoFilter.Text = FilterOptions.MemoContains;
+            if (FilterOptions.MemoOperator != -1) {
+                MemoOperator.SelectedIndex = FilterOptions.MemoOperator;
+                ChangeMemoValue();
+            }
+
+            if (FilterOptions.MemoValue != null) {
+                MemoValue.Text = FilterOptions.MemoValue;
+            }
+
+            if (FilterOptions.DurationOperator != -1) {
+                DurationOperator.SelectedIndex = FilterOptions.DurationOperator;
+                ChangeDuration();
+            }
+
+            if (FilterOptions.DurationAmount != 0) {
+                DurationAmount.Value = FilterOptions.DurationAmount;
+            }
+
+            if (FilterOptions.DurationUnit != -1) {
+                DurationUnit.SelectedIndex = FilterOptions.DurationUnit;
             }
 
             if (FilterOptions.Projects != null) {
@@ -152,18 +184,6 @@ namespace Timekeeper.Forms.Shared
             FilterOptions.ImpliedProjects = GetImpliedSelectedValues(ProjectTree.Nodes, false);
             // End populate self
 
-            if (FilterOptions.DurationOperator != -1) {
-                DurationOperator.SelectedIndex = FilterOptions.DurationOperator;
-                ChangeDuration();
-            }
-
-            if (FilterOptions.DurationAmount != 0) {
-                DurationAmount.Value = FilterOptions.DurationAmount;
-            }
-
-            if (FilterOptions.DurationUnit != -1) {
-                DurationUnit.SelectedIndex = FilterOptions.DurationUnit;
-            }
         }
 
         //----------------------------------------------------------------------
@@ -252,9 +272,34 @@ namespace Timekeeper.Forms.Shared
 
         //---------------------------------------------------------------------
 
+        private void MemoOperator_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ChangeMemoValue();
+        }
+
+        //---------------------------------------------------------------------
+
         private void DurationOperator_SelectedIndexChanged(object sender, EventArgs e)
         {
             ChangeDuration();
+        }
+
+        //---------------------------------------------------------------------
+        // TODO: Are these next two necessary?
+        //---------------------------------------------------------------------
+
+        private void ChangeMemoValue()
+        {
+            // -1: not selected
+            //  0 : contains
+            //  1 : does not contain
+            //  2 : empty
+            //  3 : not empty
+            if ((MemoOperator.SelectedIndex < 0) || (MemoOperator.SelectedIndex > 1)) {
+                MemoValue.Enabled = false;
+            } else {
+                MemoValue.Enabled = true;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -306,12 +351,13 @@ namespace Timekeeper.Forms.Shared
             FilterOptions.DateRangePreset = Presets.SelectedIndex + 1;
             FilterOptions.FromTime = FromDate.Value.Date;
             FilterOptions.ToTime = ToDate.Value.Date;
-            FilterOptions.MemoContains = MemoFilter.Text;
-            FilterOptions.Activities = GetActuallySelectedValues(ActivityTree.Nodes);
-            FilterOptions.Projects = GetActuallySelectedValues(ProjectTree.Nodes);
+            FilterOptions.MemoOperator = MemoOperator.SelectedIndex;
+            FilterOptions.MemoValue = MemoValue.Text;
             FilterOptions.DurationOperator = DurationOperator.SelectedIndex;
             FilterOptions.DurationAmount = (int)DurationAmount.Value;
             FilterOptions.DurationUnit = DurationUnit.SelectedIndex;
+            FilterOptions.Activities = GetActuallySelectedValues(ActivityTree.Nodes);
+            FilterOptions.Projects = GetActuallySelectedValues(ProjectTree.Nodes);
             FilterOptions.Locations = GetActuallySelectedValues(LocationFilter);
             FilterOptions.Categories = GetActuallySelectedValues(CategoryFilter);
             FilterOptions.ImpliedActivities = GetImpliedSelectedValues(ActivityTree.Nodes, false);
@@ -333,7 +379,8 @@ namespace Timekeeper.Forms.Shared
         {
             // TODO: need a better way to convert constants to combobox values
             Presets.SelectedIndex = Classes.FilterOptions.DATE_PRESET_ALL - 1;
-            MemoFilter.Text = "";
+            MemoOperator.SelectedIndex = -1;
+            MemoValue.Text = "";
 
             PopulateStuff();
 

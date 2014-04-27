@@ -56,7 +56,6 @@ namespace Timekeeper.Forms
             this.MenuActionNewProjectFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionNewProject = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionEditProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionSplitProject = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionMergeProject = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionHideProject = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionUnhideProject = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,7 +64,6 @@ namespace Timekeeper.Forms
             this.MenuActionNewActivity = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionNewActivityFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionEditActivity = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionSplitActivity = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionMergeActivity = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionHideActivity = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionUnhideActivity = new System.Windows.Forms.ToolStripMenuItem();
@@ -147,7 +145,6 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectNewFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectRename = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectSplit = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectMerge = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectHide = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectUnhide = new System.Windows.Forms.ToolStripMenuItem();
@@ -167,7 +164,6 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityNewFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuActivityEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuActivityRename = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuActivitySplit = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuActivityMerge = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuActivityHide = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuActivityUnhide = new System.Windows.Forms.ToolStripMenuItem();
@@ -354,7 +350,7 @@ namespace Timekeeper.Forms
             // MenuFileUtilitiesImport
             // 
             this.MenuFileUtilitiesImport.Name = "MenuFileUtilitiesImport";
-            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesImport.Text = "Import...";
             this.MenuFileUtilitiesImport.Click += new System.EventHandler(this.MenuFileUtilitiesImport_Click);
             // 
@@ -362,27 +358,27 @@ namespace Timekeeper.Forms
             // 
             this.MenuFileUtilitiesExport.Enabled = false;
             this.MenuFileUtilitiesExport.Name = "MenuFileUtilitiesExport";
-            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesExport.Text = "Export...";
             // 
             // MenuFileUtilitiesBackup
             // 
             this.MenuFileUtilitiesBackup.Enabled = false;
             this.MenuFileUtilitiesBackup.Name = "MenuFileUtilitiesBackup";
-            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesBackup.Text = "Backup...";
             // 
             // MenuFileUtilitiesCheck
             // 
             this.MenuFileUtilitiesCheck.Name = "MenuFileUtilitiesCheck";
-            this.MenuFileUtilitiesCheck.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesCheck.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesCheck.Text = "Check...";
             this.MenuFileUtilitiesCheck.Click += new System.EventHandler(this.MenuFileUtilitiesCheck_Click);
             // 
             // MenuFileUtilitiesReindex
             // 
             this.MenuFileUtilitiesReindex.Name = "MenuFileUtilitiesReindex";
-            this.MenuFileUtilitiesReindex.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesReindex.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesReindex.Text = "Reindex";
             this.MenuFileUtilitiesReindex.Click += new System.EventHandler(this.MenuFileUtilitiesReindex_Click);
             // 
@@ -461,7 +457,6 @@ namespace Timekeeper.Forms
             this.MenuActionNewProjectFolder,
             this.MenuActionNewProject,
             this.MenuActionEditProject,
-            this.MenuActionSplitProject,
             this.MenuActionMergeProject,
             this.MenuActionHideProject,
             this.MenuActionUnhideProject,
@@ -496,17 +491,12 @@ namespace Timekeeper.Forms
             this.MenuActionEditProject.Text = "Edit P&roject...";
             this.MenuActionEditProject.Click += new System.EventHandler(this.MenuActionEditProject_Click);
             // 
-            // MenuActionSplitProject
-            // 
-            this.MenuActionSplitProject.Name = "MenuActionSplitProject";
-            this.MenuActionSplitProject.Size = new System.Drawing.Size(177, 22);
-            this.MenuActionSplitProject.Text = "Split Project...";
-            // 
             // MenuActionMergeProject
             // 
             this.MenuActionMergeProject.Name = "MenuActionMergeProject";
             this.MenuActionMergeProject.Size = new System.Drawing.Size(177, 22);
             this.MenuActionMergeProject.Text = "Merge Project...";
+            this.MenuActionMergeProject.Click += new System.EventHandler(this.MenuActionMergeProject_Click);
             // 
             // MenuActionHideProject
             // 
@@ -536,7 +526,6 @@ namespace Timekeeper.Forms
             this.MenuActionNewActivity,
             this.MenuActionNewActivityFolder,
             this.MenuActionEditActivity,
-            this.MenuActionSplitActivity,
             this.MenuActionMergeActivity,
             this.MenuActionHideActivity,
             this.MenuActionUnhideActivity,
@@ -571,17 +560,12 @@ namespace Timekeeper.Forms
             this.MenuActionEditActivity.Text = "&Edit Activity...";
             this.MenuActionEditActivity.Click += new System.EventHandler(this.MenuActionEdit_Click);
             // 
-            // MenuActionSplitActivity
-            // 
-            this.MenuActionSplitActivity.Name = "MenuActionSplitActivity";
-            this.MenuActionSplitActivity.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionSplitActivity.Text = "Split Activity...";
-            // 
             // MenuActionMergeActivity
             // 
             this.MenuActionMergeActivity.Name = "MenuActionMergeActivity";
             this.MenuActionMergeActivity.Size = new System.Drawing.Size(179, 22);
             this.MenuActionMergeActivity.Text = "Merge Activity...";
+            this.MenuActionMergeActivity.Click += new System.EventHandler(this.MenuActionMergeActivity_Click);
             // 
             // MenuActionHideActivity
             // 
@@ -841,7 +825,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowserRevert,
             this.MenuToolbarBrowserUnlock});
             this.MenuToolbarBrowser.Name = "MenuToolbarBrowser";
-            this.MenuToolbarBrowser.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowser.Size = new System.Drawing.Size(113, 22);
             this.MenuToolbarBrowser.Text = "&Browser";
             // 
             // MenuToolbarBrowserFirst
@@ -983,7 +967,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarFormatBlockquote,
             this.MenuToolbarFormatHorizontalRule});
             this.MenuToolbarFormat.Name = "MenuToolbarFormat";
-            this.MenuToolbarFormat.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarFormat.Size = new System.Drawing.Size(113, 22);
             this.MenuToolbarFormat.Text = "&Format";
             // 
             // MenuToolbarFormatBold
@@ -1260,7 +1244,6 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectNewFolder,
             this.PopupMenuProjectEdit,
             this.PopupMenuProjectRename,
-            this.PopupMenuProjectSplit,
             this.PopupMenuProjectMerge,
             this.PopupMenuProjectHide,
             this.PopupMenuProjectUnhide,
@@ -1274,7 +1257,7 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectSep2,
             this.PopupMenuProjectProperties});
             this.PopupMenuProject.Name = "menuProject";
-            this.PopupMenuProject.Size = new System.Drawing.Size(165, 330);
+            this.PopupMenuProject.Size = new System.Drawing.Size(165, 308);
             this.PopupMenuProject.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenuProject_Opening);
             // 
             // PopupMenuProjectNewProject
@@ -1308,17 +1291,12 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectRename.Text = "&Rename";
             this.PopupMenuProjectRename.Click += new System.EventHandler(this.PopupMenuProjectRename_Click);
             // 
-            // PopupMenuProjectSplit
-            // 
-            this.PopupMenuProjectSplit.Name = "PopupMenuProjectSplit";
-            this.PopupMenuProjectSplit.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectSplit.Text = "Split...";
-            // 
             // PopupMenuProjectMerge
             // 
             this.PopupMenuProjectMerge.Name = "PopupMenuProjectMerge";
             this.PopupMenuProjectMerge.Size = new System.Drawing.Size(164, 22);
             this.PopupMenuProjectMerge.Text = "Merge...";
+            this.PopupMenuProjectMerge.Click += new System.EventHandler(this.MenuActionMergeProject_Click);
             // 
             // PopupMenuProjectHide
             // 
@@ -1447,7 +1425,6 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityNewFolder,
             this.PopupMenuActivityEdit,
             this.PopupMenuActivityRename,
-            this.PopupMenuActivitySplit,
             this.PopupMenuActivityMerge,
             this.PopupMenuActivityHide,
             this.PopupMenuActivityUnhide,
@@ -1459,7 +1436,7 @@ namespace Timekeeper.Forms
             this.PopupMenuActivitySep2,
             this.PopupMenuActivityProperties});
             this.PopupMenuActivity.Name = "menuTask";
-            this.PopupMenuActivity.Size = new System.Drawing.Size(147, 302);
+            this.PopupMenuActivity.Size = new System.Drawing.Size(147, 280);
             // 
             // PopupMenuActivityNewActivity
             // 
@@ -1492,17 +1469,12 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityRename.Text = "&Rename";
             this.PopupMenuActivityRename.Click += new System.EventHandler(this.PopupMenuActivityRename_Click);
             // 
-            // PopupMenuActivitySplit
-            // 
-            this.PopupMenuActivitySplit.Name = "PopupMenuActivitySplit";
-            this.PopupMenuActivitySplit.Size = new System.Drawing.Size(146, 22);
-            this.PopupMenuActivitySplit.Text = "Split...";
-            // 
             // PopupMenuActivityMerge
             // 
             this.PopupMenuActivityMerge.Name = "PopupMenuActivityMerge";
             this.PopupMenuActivityMerge.Size = new System.Drawing.Size(146, 22);
             this.PopupMenuActivityMerge.Text = "Merge...";
+            this.PopupMenuActivityMerge.Click += new System.EventHandler(this.MenuActionMergeActivity_Click);
             // 
             // PopupMenuActivityHide
             // 
@@ -2100,21 +2072,21 @@ namespace Timekeeper.Forms
             // toolControlSplitEntry2
             // 
             this.toolControlSplitEntry2.Name = "toolControlSplitEntry2";
-            this.toolControlSplitEntry2.Size = new System.Drawing.Size(152, 22);
+            this.toolControlSplitEntry2.Size = new System.Drawing.Size(151, 22);
             this.toolControlSplitEntry2.Text = "Split in Halves";
             this.toolControlSplitEntry2.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry2_Click);
             // 
             // toolControlSplitEntry3
             // 
             this.toolControlSplitEntry3.Name = "toolControlSplitEntry3";
-            this.toolControlSplitEntry3.Size = new System.Drawing.Size(152, 22);
+            this.toolControlSplitEntry3.Size = new System.Drawing.Size(151, 22);
             this.toolControlSplitEntry3.Text = "Split in Thirds";
             this.toolControlSplitEntry3.Click += new System.EventHandler(this.toolControlSplitEntry3_Click);
             // 
             // toolControlSplitEntry4
             // 
             this.toolControlSplitEntry4.Name = "toolControlSplitEntry4";
-            this.toolControlSplitEntry4.Size = new System.Drawing.Size(152, 22);
+            this.toolControlSplitEntry4.Size = new System.Drawing.Size(151, 22);
             this.toolControlSplitEntry4.Text = "Split in Quarters";
             this.toolControlSplitEntry4.Click += new System.EventHandler(this.toolControlSplitEntry4_Click);
             // 
@@ -2427,13 +2399,9 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuActionManageActivities;
         private System.Windows.Forms.ToolStripMenuItem MenuActionManageLocations;
         private System.Windows.Forms.ToolStripMenuItem MenuActionManageCategories;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionSplitProject;
         private System.Windows.Forms.ToolStripMenuItem MenuActionMergeProject;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionSplitActivity;
         private System.Windows.Forms.ToolStripMenuItem MenuActionMergeActivity;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectSplit;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectMerge;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivitySplit;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityMerge;
         private System.Windows.Forms.ToolStripMenuItem MenuToolTodo;
         private System.Windows.Forms.ToolStripSeparator PopupMenuProjectSep3;
