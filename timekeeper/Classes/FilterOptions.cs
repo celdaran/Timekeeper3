@@ -302,7 +302,14 @@ namespace Timekeeper.Classes
             try {
                 Row Options = new Row();
 
-                Options["FilterOptionsType"] = FilterOptionsType;
+                int DbFilterOptionsType = 0;
+                switch (FilterOptionsType) {
+                    case OptionsType.Journal: DbFilterOptionsType = 1; break;
+                    case OptionsType.Notebook: DbFilterOptionsType = 2; break;
+                    case OptionsType.Merge: DbFilterOptionsType = 3; break;
+                }
+
+                Options["FilterOptionsType"] = DbFilterOptionsType;
                 Options["RefDatePresetId"] = DateRangePreset;
                 Options["FromTime"] = FromTime.ToString(Common.UTC_DATETIME_FORMAT);
                 Options["ToTime"] = ToTime.ToString(Common.UTC_DATETIME_FORMAT);

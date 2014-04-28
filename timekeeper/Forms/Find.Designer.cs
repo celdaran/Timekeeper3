@@ -39,7 +39,6 @@ namespace Timekeeper.Forms
             this.ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ClearViewButton = new System.Windows.Forms.ToolStripButton();
             this.LoadViewMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.SaveViewButton = new System.Windows.Forms.ToolStripButton();
             this.SaveViewAsButton = new System.Windows.Forms.ToolStripButton();
             this.ManageViewsButton = new System.Windows.Forms.ToolStripButton();
             this.JournalResultsGrid = new System.Windows.Forms.DataGridView();
@@ -68,6 +67,15 @@ namespace Timekeeper.Forms
             this.NotebookLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotebookCategoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotebookCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SaveViewButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.ActionMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manageViewsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.JournalResultsGrid)).BeginInit();
             this.StatusBar.SuspendLayout();
@@ -85,6 +93,8 @@ namespace Timekeeper.Forms
             this.ToolStripSeparator1,
             this.ClearViewButton,
             this.LoadViewMenuButton,
+            this.ActionMenuButton,
+            this.toolStripSeparator3,
             this.SaveViewButton,
             this.SaveViewAsButton,
             this.ManageViewsButton});
@@ -143,6 +153,7 @@ namespace Timekeeper.Forms
             this.ClearViewButton.Size = new System.Drawing.Size(36, 22);
             this.ClearViewButton.Text = "Clear";
             this.ClearViewButton.ToolTipText = "Clear the current view";
+            this.ClearViewButton.Visible = false;
             this.ClearViewButton.Click += new System.EventHandler(this.ClearViewButton_Click);
             // 
             // LoadViewMenuButton
@@ -155,17 +166,6 @@ namespace Timekeeper.Forms
             this.LoadViewMenuButton.Text = "Load";
             this.LoadViewMenuButton.ToolTipText = "Load a saved View";
             // 
-            // SaveViewButton
-            // 
-            this.SaveViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.SaveViewButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewButton.Image")));
-            this.SaveViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SaveViewButton.Name = "SaveViewButton";
-            this.SaveViewButton.Size = new System.Drawing.Size(35, 22);
-            this.SaveViewButton.Text = "Save";
-            this.SaveViewButton.ToolTipText = "Save Current View";
-            this.SaveViewButton.Click += new System.EventHandler(this.SaveViewButton_Click);
-            // 
             // SaveViewAsButton
             // 
             this.SaveViewAsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -175,6 +175,7 @@ namespace Timekeeper.Forms
             this.SaveViewAsButton.Size = new System.Drawing.Size(62, 22);
             this.SaveViewAsButton.Text = "Save As...";
             this.SaveViewAsButton.ToolTipText = "Save current view for future use";
+            this.SaveViewAsButton.Visible = false;
             this.SaveViewAsButton.Click += new System.EventHandler(this.SaveViewAsButton_Click);
             // 
             // ManageViewsButton
@@ -186,6 +187,7 @@ namespace Timekeeper.Forms
             this.ManageViewsButton.Size = new System.Drawing.Size(61, 22);
             this.ManageViewsButton.Text = "Manage...";
             this.ManageViewsButton.ToolTipText = "Manage your saved Views";
+            this.ManageViewsButton.Visible = false;
             this.ManageViewsButton.Click += new System.EventHandler(this.ManageViewsButton_Click);
             // 
             // JournalResultsGrid
@@ -430,6 +432,79 @@ namespace Timekeeper.Forms
             this.NotebookCategory.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.NotebookCategory.Width = 74;
             // 
+            // SaveViewButton
+            // 
+            this.SaveViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SaveViewButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewButton.Image")));
+            this.SaveViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveViewButton.Name = "SaveViewButton";
+            this.SaveViewButton.Size = new System.Drawing.Size(35, 22);
+            this.SaveViewButton.Text = "Save";
+            this.SaveViewButton.ToolTipText = "Save Current View";
+            this.SaveViewButton.Visible = false;
+            this.SaveViewButton.Click += new System.EventHandler(this.SaveViewButton_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator3.Visible = false;
+            // 
+            // ActionMenuButton
+            // 
+            this.ActionMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ActionMenuButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.clearToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.manageViewsToolStripMenuItem});
+            this.ActionMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("ActionMenuButton.Image")));
+            this.ActionMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ActionMenuButton.Name = "ActionMenuButton";
+            this.ActionMenuButton.Size = new System.Drawing.Size(42, 22);
+            this.ActionMenuButton.Text = "View";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveViewButton_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveViewAsButton_Click);
+            // 
+            // manageViewsToolStripMenuItem
+            // 
+            this.manageViewsToolStripMenuItem.Name = "manageViewsToolStripMenuItem";
+            this.manageViewsToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.manageViewsToolStripMenuItem.Text = "Manage Views...";
+            this.manageViewsToolStripMenuItem.Click += new System.EventHandler(this.ManageViewsButton_Click);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.ClearViewButton_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(151, 6);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(151, 6);
+            // 
             // Find
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -487,7 +562,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsLocked;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton ClearViewButton;
-        private System.Windows.Forms.ToolStripButton SaveViewButton;
         private System.Windows.Forms.DataGridView NotebookResultsGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookId;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookEntryTime;
@@ -496,5 +570,14 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookLocation;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookCategoryId;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookCategory;
+        private System.Windows.Forms.ToolStripDropDownButton ActionMenuButton;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem manageViewsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton SaveViewButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
     }
 }

@@ -100,17 +100,28 @@ namespace Timekeeper.Classes
         // Replace() method call is a sign that You're Doing it Wrong.
         //----------------------------------------------------------------------
 
+        public bool Add()
+        {
+            bool Added = false;
+
+            try {
+                this.Insert();
+                Added = true;
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+
+            return Added;
+        }
+
+        //----------------------------------------------------------------------
+
         public bool Save()
         {
             bool Saved = false;
 
             try {
-                Row View = new Row();
-
-                View["Name"] = Name;
-                View["Description"] = Description;
-                View["SortOrderNo"] = SortOrderNo;
-
                 string Query = String.Format(@"
                     SELECT count(*) as Count 
                     FROM {0}
@@ -119,31 +130,9 @@ namespace Timekeeper.Classes
                 Row Count = this.Database.SelectRow(Query);
 
                 if (Count["Count"] == 0) {
-
-                    View["CreateTime"] = Common.Now();
-                    View["ModifyTime"] = Common.Now();
-
-                    // On insert, override any previously set SortOrderNo
-                    View["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName);
-
-                    this.Id = this.Database.Insert(this.TableName, View);
-                    Common.Info("Just inserted " + this.TableName + "Id: " + this.Id.ToString());
-                    if (this.Id > 0) {
-                        CreateTime = DateTimeOffset.Parse(View["CreateTime"]);
-                        ModifyTime = DateTimeOffset.Parse(View["ModifyTime"]);
-                        SortOrderNo = (int)View["SortOrderNo"];
-                    } else {
-                        throw new Exception("Error inserting into " + this.TableName);
-                    }
+                    this.Insert();
                 } else {
-
-                    View["ModifyTime"] = Common.Now();
-                    Common.Info("About to update " + this.TableName + "Id: " + this.Id.ToString());
-                    if (this.Database.Update(this.TableName, View, this.TableName + "Id", this.Id) == 1) {
-                        ModifyTime = DateTimeOffset.Parse(View["ModifyTime"]);
-                    } else {
-                        throw new Exception("Error updating " + this.TableName);
-                    }
+                    this.Update();
                 }
 
                 Saved = true;
@@ -177,7 +166,61 @@ namespace Timekeeper.Classes
         }
 
         //----------------------------------------------------------------------
-        // Helpers
+        // [2014-04-27: I'm about at the end of my wits with this half-baked
+        // database layer. If I do anything with Timekeeper 4.0 it's to figure
+        // this out. For now, I just apologize. That's all I got.]
+        //----------------------------------------------------------------------
+
+        private Row InitRow()
+        {
+            Row item = new Row();
+
+            item["Name"] = Name;
+            item["Description"] = Description;
+            item["SortOrderNo"] = SortOrderNo;
+
+            return item;
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Insert()
+        {
+            Row item = this.InitRow();
+
+            item["CreateTime"] = Common.Now();
+            item["ModifyTime"] = Common.Now();
+
+            // On insert, override any previously set SortOrderNo
+            item["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName);
+
+            this.Id = this.Database.Insert(this.TableName, item);
+            if (this.Id > 0) {
+                Common.Info("Just inserted " + this.TableName + "Id: " + this.Id.ToString());
+                CreateTime = DateTimeOffset.Parse(item["CreateTime"]);
+                ModifyTime = DateTimeOffset.Parse(item["ModifyTime"]);
+                SortOrderNo = (int)item["SortOrderNo"];
+            } else {
+                throw new Exception("Error inserting into " + this.TableName);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Update()
+        {
+            Row item = this.InitRow();
+
+            item["ModifyTime"] = Common.Now();
+
+            if (this.Database.Update(this.TableName, item, this.TableName + "Id", this.Id) == 1) {
+                Common.Info("Just updated " + this.TableName + "Id: " + this.Id.ToString());
+                ModifyTime = DateTimeOffset.Parse(item["ModifyTime"]);
+            } else {
+                throw new Exception("Error updating " + this.TableName);
+            }
+        }
+
         //----------------------------------------------------------------------
 
         protected long NameToId(string viewName)

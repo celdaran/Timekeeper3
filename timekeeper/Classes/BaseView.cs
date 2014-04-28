@@ -70,7 +70,17 @@ namespace Timekeeper.Classes
 
         public bool Save(bool filterOptionsChanged, long filterOptionsId)
         {
-            bool Saved = base.Save();
+            bool Saved = false;
+
+            if (filterOptionsChanged) {
+                Saved = base.Save();
+            } else {
+                if (filterOptionsId == this.FilterOptions.FilterOptionsId) {
+                    Saved = base.Save();
+                } else {
+                    Saved = base.Add();
+                }
+            }
 
             try {
                 if (Saved) {
