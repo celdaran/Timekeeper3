@@ -12,12 +12,14 @@ namespace Timekeeper.Classes
     class ScheduledEventCollection
     {
         private DBI Database;
+        private Classes.Options Options;
 
         //----------------------------------------------------------------------
 
         public ScheduledEventCollection()
         {
             this.Database = Timekeeper.Database;
+            this.Options = Timekeeper.Options;
         }
 
         //----------------------------------------------------------------------
@@ -26,8 +28,7 @@ namespace Timekeeper.Classes
         {
             List<Classes.ScheduledEvent> ReturnList = new List<ScheduledEvent>();
 
-            bool SchedulerDisabled = true;
-            if (SchedulerDisabled) {
+            if (Options.Advanced_Other_DisableScheduler) {
                 return ReturnList;
             }
 
@@ -69,14 +70,11 @@ namespace Timekeeper.Classes
 
         private void SetNextOccurrenceTime(Classes.ScheduledEvent scheduledEvent)
         {
-            bool SchedulerDisabled = true;
-            if (SchedulerDisabled) {
+            if (Options.Advanced_Other_DisableScheduler) {
                 return;
             }
 
             try {
-                //return; // FOR NOW
-
                 // Need to see if we missed one or more firings and catch us up with
                 // reality. e.g., an event that fires every two hours indefinitely
                 // has to pick things back up after the laptop was off for a weekend.

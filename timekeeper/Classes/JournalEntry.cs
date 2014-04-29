@@ -66,13 +66,6 @@ namespace Timekeeper.Classes
         // Primary Methods
         //---------------------------------------------------------------------
 
-        public void AdvanceIndex()
-        {
-            this.JournalIndex++;
-        }
-
-        //---------------------------------------------------------------------
-
         public bool Create()
         {
             try {
@@ -237,6 +230,24 @@ namespace Timekeeper.Classes
             catch (Exception x) {
                 Timekeeper.Exception(x);
                 SetAttributes();
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public void ResetIndex()
+        {
+            try {
+                // This method refreshes the JournalIndex value from the database.
+                // It's intended to be used on an already-instantiated entry after
+                // another part of the process has reindexed the table.
+                Row RefreshedRow = Database.SelectRow("SELECT JournalIndex FROM Journal WHERE JournalId = " + this.JournalId);
+                if (RefreshedRow["JournalIndex"] != null) {
+                    this.JournalIndex = Convert.ToInt64(RefreshedRow["JournalIndex"]);
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
             }
         }
 

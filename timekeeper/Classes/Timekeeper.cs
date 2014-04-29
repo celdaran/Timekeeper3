@@ -100,8 +100,7 @@ namespace Timekeeper
 
         public static void OpenScheduler()
         {
-            bool SchedulerDisabled = true;
-            if (!SchedulerDisabled) {
+            if (!Options.Advanced_Other_DisableScheduler) {
                 ISchedulerFactory ScheduleFactory = new StdSchedulerFactory();
                 Scheduler = ScheduleFactory.GetScheduler();
                 Scheduler.Start();
@@ -112,8 +111,7 @@ namespace Timekeeper
 
         public static void Schedule(Classes.ScheduledEvent scheduledEvent, Forms.Main mainForm)
         {
-            bool SchedulerDisabled = true;
-            if (SchedulerDisabled) {
+            if (Options.Advanced_Other_DisableScheduler) {
                 return;
             }
 

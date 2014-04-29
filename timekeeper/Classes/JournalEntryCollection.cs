@@ -123,7 +123,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void Reindex(DateTimeOffset since)
+        public long Reindex(DateTimeOffset since)
         {
             var t = new Stopwatch();
 
@@ -139,7 +139,7 @@ namespace Timekeeper.Classes
             Bench(t, "[Reindex] " + Table.Count.ToString() + " Rows fetched");
 
             if (Table.Count <= 1)
-                return;
+                return 0;
 
             // Then get our starting index
             Bench(t);
@@ -170,6 +170,9 @@ namespace Timekeeper.Classes
             Bench(t);
             Database.Exec("CREATE UNIQUE INDEX idx_Journal_JournalIndex ON Journal(JournalIndex);");
             Bench(t, "[Reindex] Re-created database index");
+
+            // Return the next index
+            return Index;
         }
 
         //---------------------------------------------------------------------

@@ -97,6 +97,7 @@ namespace Timekeeper.Classes
         public int Advanced_Logging_Database { get; set; }
         public string Advanced_DateTimeFormat { get; set; }
         public int Advanced_Other_MarkupLanguage { get; set; }
+        public bool Advanced_Other_DisableScheduler { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Metrics)
@@ -366,6 +367,7 @@ namespace Timekeeper.Classes
             Advanced_Logging_Database = (int)Key.GetValue("Logging_Database", 2);
             Advanced_DateTimeFormat = (string)Key.GetValue("DateTimeFormat", "yyyy-MM-dd HH:mm:ss");
             Advanced_Other_MarkupLanguage = (int)Key.GetValue("Other_MarkupLanguage", 1);
+            Advanced_Other_DisableScheduler = ((int)Key.GetValue("Other_DisableScheduler", 0)) == 1;
 
             //----------------------------------------------------------------------
 
@@ -650,6 +652,7 @@ namespace Timekeeper.Classes
             Key.SetValue("Logging_Database", Advanced_Logging_Database, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("DateTimeFormat", Advanced_DateTimeFormat, Microsoft.Win32.RegistryValueKind.String);
             Key.SetValue("Other_MarkupLanguage", Advanced_Other_MarkupLanguage, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Other_DisableScheduler", Advanced_Other_DisableScheduler, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 

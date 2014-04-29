@@ -40,12 +40,12 @@ namespace Timekeeper.Forms
         private Classes.Meta Meta;
         private Classes.Widgets Widgets;
 
-        // FIXME: current objects (bad names)
-        private Classes.JournalEntry Entry;
-        private Classes.Project currentProject;
-        private Classes.Activity currentActivity;
-        private Classes.Location currentLocation;
-        private Classes.Category currentCategory;
+        // Objects currently being timed
+        private Classes.JournalEntry TimedEntry;
+        private Classes.Project TimedProject;
+        private Classes.Activity TimedActivity;
+        private Classes.Location TimedLocation;
+        private Classes.Category TimedCategory;
 
         // MemoEditor control
         private Forms.Shared.MemoEditor MemoEditor;
@@ -64,12 +64,6 @@ namespace Timekeeper.Forms
 
         // Open form tracking
         public List<Form> OpenForms = new List<Form>();
-
-        //---------------------------------------------------------------------
-        // Constants
-        //---------------------------------------------------------------------
-
-        //const string REGKEY = "Software\\Technitivity\\Timekeeper\\3.0\\";
 
         //---------------------------------------------------------------------
         // Constructor
@@ -198,11 +192,6 @@ namespace Timekeeper.Forms
             }
         }
 
-        // Action | Split Project
-        private void MenuActionSplitProject_Click(object sender, EventArgs e)
-        {
-        }
-
         // Action | Merge Project
         private void MenuActionMergeProject_Click(object sender, EventArgs e)
         {
@@ -238,8 +227,8 @@ namespace Timekeeper.Forms
                 return;
             }
 
-            if (currentProject != null) {
-                if (ProjectTree.SelectedNode.Text == currentProject.DisplayName()) {
+            if (TimedProject != null) {
+                if (ProjectTree.SelectedNode.Text == TimedProject.DisplayName()) {
                     Common.Warn("Cannot delete the project being timed.");
                     return;
                 }
@@ -269,11 +258,6 @@ namespace Timekeeper.Forms
                 Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
                 Dialog_EditItem(ActivityTree, "Edit Activity", (Classes.TreeAttribute)Activity);
             }
-        }
-
-        // Action | Split Activity
-        private void MenuActionSplitActivity_Click(object sender, EventArgs e)
-        {
         }
 
         // Action | Merge Activity
@@ -306,8 +290,8 @@ namespace Timekeeper.Forms
                 return;
             }
 
-            if (currentActivity != null) {
-                if (ActivityTree.SelectedNode.Text == currentActivity.DisplayName()) {
+            if (TimedActivity != null) {
+                if (ActivityTree.SelectedNode.Text == TimedActivity.DisplayName()) {
                     Common.Warn("Cannot delete the activity being timed.");
                     return;
                 }
@@ -490,7 +474,8 @@ namespace Timekeeper.Forms
         private void MenuToolbarBrowserNew_Click(object sender, EventArgs e)
         {
             Browser_SetupForStarting();
-            Entry.AdvanceIndex();
+            // what does this do!?
+            //TimedEntry.AdvanceIndex();
         }
 
         // Toolbar Functions | Browser | Close Start Gap
@@ -814,6 +799,8 @@ namespace Timekeeper.Forms
         {
             Action_CenterSplitter(splitTrees);
         }
+
+        //---------------------------------------------------------------------
 
         private void splitMain_DoubleClick(object sender, EventArgs e)
         {

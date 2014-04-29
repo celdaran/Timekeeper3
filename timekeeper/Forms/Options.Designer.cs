@@ -165,6 +165,7 @@
             this.LoggingDatabaseLabel = new System.Windows.Forms.Label();
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -1577,6 +1578,7 @@
             // 
             // OtherAdvancedGroup
             // 
+            this.OtherAdvancedGroup.Controls.Add(this.checkBox4);
             this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_MarkupLanguage);
             this.OtherAdvancedGroup.Controls.Add(this.label12);
             this.OtherAdvancedGroup.Controls.Add(this.checkBox3);
@@ -1772,6 +1774,16 @@
             this.LoggingApplicationLabel.Size = new System.Drawing.Size(62, 13);
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(30, 228);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(112, 17);
+            this.checkBox4.TabIndex = 10;
+            this.checkBox4.Text = "Disable Scheduler";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // Options
             // 
@@ -2005,6 +2017,7 @@
         private System.Windows.Forms.NumericUpDown Mail_SmtpTimeout;
         private System.Windows.Forms.ComboBox Advanced_Other_MarkupLanguage;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.CheckBox checkBox4;
 
     }
 }

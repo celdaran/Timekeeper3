@@ -334,10 +334,12 @@ namespace Timekeeper.Forms
 
                 Options.SaveLocal();
 
-                if (Process.GetCurrentProcess().Id == Meta.ProcessId) {
-                    // Free up the file if this is the current process
-                    // attempting to do the freeing.
-                    Meta.MarkFree();
+                if (Meta != null) {
+                    if (Process.GetCurrentProcess().Id == Meta.ProcessId) {
+                        // Free up the file if this is the current process
+                        // attempting to do the freeing.
+                        Meta.MarkFree();
+                    }
                 }
 
                 Timekeeper.Info("Closing Database: " + DatabaseFileName);
@@ -741,7 +743,7 @@ namespace Timekeeper.Forms
                 //------------------------------------------
 
                 Entries = new Classes.JournalEntryCollection();
-                Entry = new Classes.JournalEntry();
+                TimedEntry = new Classes.JournalEntry();
 
                 //------------------------------------------
                 // Prepare UI elements
@@ -1125,7 +1127,7 @@ namespace Timekeeper.Forms
             //---------------------------------------------------------
 
             // Calculate status and window bar display values
-            if ((currentActivity != null) && (timerRunning == true)) {
+            if ((TimedActivity != null) && (timerRunning == true)) {
 
                 // Simple increment for the one-second timer
                 ElapsedSinceStart++;
@@ -1193,9 +1195,9 @@ namespace Timekeeper.Forms
         {
             if (timerRunning) {
                 // Refresh actual time values from database to correct for drift
-                ElapsedSinceStart = Convert.ToInt32(currentActivity.Elapsed().TotalSeconds); // FIXME: CURRENT ACTIVITY?
-                ElapsedProjectToday = Convert.ToInt32(currentProject.ElapsedToday().TotalSeconds);
-                ElapsedActivityToday = Convert.ToInt32(currentActivity.ElapsedToday().TotalSeconds);
+                ElapsedSinceStart = Convert.ToInt32(TimedActivity.Elapsed().TotalSeconds); // FIXME: CURRENT ACTIVITY?
+                ElapsedProjectToday = Convert.ToInt32(TimedProject.ElapsedToday().TotalSeconds);
+                ElapsedActivityToday = Convert.ToInt32(TimedActivity.ElapsedToday().TotalSeconds);
                 ElapsedAllToday = Convert.ToInt32(Entries.ElapsedToday());
             }
 
@@ -1271,39 +1273,39 @@ namespace Timekeeper.Forms
             // Grab instances of currently selected objects
             currentProjectNode = ProjectTree.SelectedNode;
             currentActivityNode = ActivityTree.SelectedNode;
-            currentProject = (Classes.Project)currentProjectNode.Tag;
-            currentActivity = (Classes.Activity)currentActivityNode.Tag;
+            TimedProject = (Classes.Project)currentProjectNode.Tag;
+            TimedActivity = (Classes.Activity)currentActivityNode.Tag;
 
             if (wLocation.SelectedItem != null)
-                currentLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
+                TimedLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
             if (wCategory.SelectedItem != null)
-                currentCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
+                TimedCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
 
-            if ((currentProject.IsFolder == true) || (currentActivity.IsFolder)) {
+            if ((TimedProject.IsFolder == true) || (TimedActivity.IsFolder)) {
                 Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
                 return;
             }
 
             // Now start timing
             DateTime StartTime = IsBrowserOpen() ? wStartTime.Value : DateTime.Now;
-            currentActivity.StartTiming(StartTime);
-            currentActivity.FollowedItemId = currentProject.ItemId;
+            TimedActivity.StartTiming(StartTime);
+            TimedActivity.FollowedItemId = TimedProject.ItemId;
 
-            currentProject.StartTiming(StartTime);
-            currentProject.FollowedItemId = currentActivity.ItemId;
+            TimedProject.StartTiming(StartTime);
+            TimedProject.FollowedItemId = TimedActivity.ItemId;
 
-            //currentEntry = new Classes.Journal(Database);
-            Entry.ProjectId = currentProject.ItemId;
-            Entry.ActivityId = currentActivity.ItemId;
-            Entry.StartTime = StartTime;
-            Entry.StopTime = StartTime;
-            Entry.Seconds = 0; // default to zero
+            TimedEntry = new Classes.JournalEntry(); // reinstantiate this entry upon timer start
+            TimedEntry.ProjectId = TimedProject.ItemId;
+            TimedEntry.ActivityId = TimedActivity.ItemId;
+            TimedEntry.StartTime = StartTime;
+            TimedEntry.StopTime = StartTime;
+            TimedEntry.Seconds = 0; // default to zero
             //Entry.Memo = wMemo.Text;
-            Entry.Memo = MemoEditor.Text;
-            Entry.IsLocked = true;
-            Entry.LocationId = currentLocation == null ? 0 : currentLocation.Id; // FIXME: Location should be not null.
-            Entry.CategoryId = currentCategory == null ? 0 : currentCategory.Id;
-            if (!Entry.Create()) {
+            TimedEntry.Memo = MemoEditor.Text;
+            TimedEntry.IsLocked = true;
+            TimedEntry.LocationId = TimedLocation == null ? 0 : TimedLocation.Id; // FIXME: Location should be not null.
+            TimedEntry.CategoryId = TimedCategory == null ? 0 : TimedCategory.Id;
+            if (!TimedEntry.Create()) {
                 Common.Warn("There was an error starting the timer.");
                 return;
             }
@@ -1313,9 +1315,9 @@ namespace Timekeeper.Forms
             timerLastRun = DateTime.Now;
 
             // Grab times (this is a database hit)
-            ElapsedSinceStart = (long)currentActivity.Elapsed().TotalSeconds;
-            ElapsedProjectToday = (long)currentProject.ElapsedToday().TotalSeconds;
-            ElapsedActivityToday = (long)currentActivity.ElapsedToday().TotalSeconds;
+            ElapsedSinceStart = (long)TimedActivity.Elapsed().TotalSeconds;
+            ElapsedProjectToday = (long)TimedProject.ElapsedToday().TotalSeconds;
+            ElapsedActivityToday = (long)TimedActivity.ElapsedToday().TotalSeconds;
             ElapsedAllToday = (long)Entries.ElapsedToday() + ElapsedSinceStart;
 
             // Make any UI changes based on the timer starting
@@ -1345,7 +1347,7 @@ namespace Timekeeper.Forms
 
             StatusBar_TimerStarted(currentProjectNode.Text, currentActivityNode.Text);
 
-            Text = currentActivity.Name;
+            Text = TimedActivity.Name;
 
             TrayIcon.Text = Common.Abbreviate(Text, 63);
 
@@ -1389,28 +1391,28 @@ namespace Timekeeper.Forms
         private void Action_StopTimer()
         {
             // Close off the timer for both objects
-            long Seconds = currentActivity.StopTiming(wStopTime.Value);
-                           currentProject.StopTiming(wStopTime.Value);
+            long Seconds = TimedActivity.StopTiming(wStopTime.Value);
+                           TimedProject.StopTiming(wStopTime.Value);
 
             // Close off timer
-            Entry.ProjectId = currentProject.ItemId;
-            Entry.ActivityId = currentActivity.ItemId;
-            Entry.StartTime = wStartTime.Value;
-            Entry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
-            Entry.Seconds = Seconds;
+            TimedEntry.ProjectId = TimedProject.ItemId;
+            TimedEntry.ActivityId = TimedActivity.ItemId;
+            TimedEntry.StartTime = wStartTime.Value;
+            TimedEntry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
+            TimedEntry.Seconds = Seconds;
             //Entry.Memo = wMemo.Text;
-            Entry.Memo = MemoEditor.Text;
-            Entry.IsLocked = false;
+            TimedEntry.Memo = MemoEditor.Text;
+            TimedEntry.IsLocked = false;
 //            Entry.LocationId = currentLocation.Id;
 //            Entry.CategoryId = currentCategory.Id;
-            Entry.Save();
+            TimedEntry.Save();
             timerRunning = false;
             //ShortTimer.Enabled = false;
             //timerLastRunNotified = false;
 
             // Clear instances of current object
-            currentProject = null;
-            currentActivity = null;
+            TimedProject = null;
+            TimedActivity = null;
             //currentEntry = null;
 
             // Make any UI changes 
@@ -1450,8 +1452,7 @@ namespace Timekeeper.Forms
 
             // FIXME: stopping the timer != opening the browser
             Browser_SetupForStarting();
-            // FIXME: EXPERIMENTAL
-            Entry.AdvanceIndex(); 
+            browserEntry.SetNextIndex();
 
             // In case any keyboard shortcuts were set while the timer
             // was running, take care of those now.
@@ -1514,6 +1515,7 @@ namespace Timekeeper.Forms
 
                 // Copy the last-created split entry back to the browser
                 browserEntry = SplitEntry.Copy();
+                browserEntry.ResetIndex();
                 Browser_EntryToForm(browserEntry);
             }
             catch (Exception x) {
