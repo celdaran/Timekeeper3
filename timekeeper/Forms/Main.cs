@@ -474,8 +474,7 @@ namespace Timekeeper.Forms
         private void MenuToolbarBrowserNew_Click(object sender, EventArgs e)
         {
             Browser_SetupForStarting();
-            // what does this do!?
-            //TimedEntry.AdvanceIndex();
+            TimedEntry.SetNextIndex();
         }
 
         // Toolbar Functions | Browser | Close Start Gap

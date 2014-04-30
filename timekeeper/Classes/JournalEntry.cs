@@ -353,37 +353,32 @@ namespace Timekeeper.Classes
 
         private Row GetAttributes(Mode mode)
         {
-            // Make sure everything's always localtime
-            // TODO: Something's not quite right here, I need to figure
-            // out where things are going wrong. This is nothing more
-            // than a band-aid.
-            // Ticket #1310 -- Figured this out on 2014-04-19
-            /*
-            StartTime = DateTime.SpecifyKind(StartTime, DateTimeKind.Local);
-            StopTime = DateTime.SpecifyKind(StopTime, DateTimeKind.Local);
-            */
-
             Row Journal = new Row();
 
-            string Now = Common.Now();
+            try {
+                string Now = Common.Now();
 
-            if (mode == Mode.Insert) {
-                Journal["CreateTime"] = Now;
-                Journal["JournalGuid"] = UUID.Get();
-                Journal["JournalIndex"] = NextJournalIndex;
+                if (mode == Mode.Insert) {
+                    Journal["CreateTime"] = Now;
+                    Journal["JournalGuid"] = UUID.Get();
+                    Journal["JournalIndex"] = NextJournalIndex;
+                }
+                Journal["ModifyTime"] = Now;
+
+                Journal["ProjectId"] = ProjectId;
+                Journal["ActivityId"] = ActivityId;
+                Journal["StartTime"] = StartTime.ToString(Common.UTC_DATETIME_FORMAT);
+                Journal["StopTime"] = StopTime.ToString(Common.UTC_DATETIME_FORMAT);
+                Journal["Seconds"] = Seconds;
+                Journal["Memo"] = Memo;
+                Journal["LocationId"] = LocationId;
+                Journal["CategoryId"] = CategoryId;
+
+                Journal["IsLocked"] = IsLocked ? 1 : 0;
             }
-            Journal["ModifyTime"] = Now;
-
-            Journal["ProjectId"] = ProjectId;
-            Journal["ActivityId"] = ActivityId;
-            Journal["StartTime"] = StartTime.ToString(Common.UTC_DATETIME_FORMAT);
-            Journal["StopTime"] = StopTime.ToString(Common.UTC_DATETIME_FORMAT);
-            Journal["Seconds"] = Seconds;
-            Journal["Memo"] = Memo;
-            Journal["LocationId"] = LocationId;
-            Journal["CategoryId"] = CategoryId;
-
-            Journal["IsLocked"] = IsLocked ? 1 : 0;
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
 
             return Journal;
         }
@@ -392,77 +387,90 @@ namespace Timekeeper.Classes
 
         private void SetAttributes()
         {
-            // Get Next JournalIndex value
-            Row Journal = Database.SelectRow("select max(JournalIndex) as HighestJournalIndex from Journal");
-            if (Journal["HighestJournalIndex"] != null) {
-                NextJournalIndex = Journal["HighestJournalIndex"] + 1;
-            } else {
-                // This is the first journal entry in a new database
-                NextJournalIndex = 1;
+            Row Journal = new Row();
+
+            try {
+                // Get Next JournalIndex value
+                Journal = Database.SelectRow("select max(JournalIndex) as HighestJournalIndex from Journal");
+                if (Journal["HighestJournalIndex"] != null) {
+                    NextJournalIndex = Journal["HighestJournalIndex"] + 1;
+                } else {
+                    // This is the first journal entry in a new database
+                    NextJournalIndex = 1;
+                }
+
+                // Now set default attributes
+                Journal = new Row();
+
+                Journal["JournalId"] = 0;
+                Journal["ProjectId"] = 0;
+                Journal["ActivityId"] = 0;
+                Journal["StartTime"] = DateTimeOffset.Now;
+                Journal["StopTime"] = DateTimeOffset.Now;
+                Journal["Seconds"] = 0;
+                Journal["Memo"] = "";
+                Journal["LocationId"] = 0;
+                Journal["CategoryId"] = 0;
+                Journal["IsLocked"] = false;
+                Journal["JournalIndex"] = NextJournalIndex;
+
+                Journal["ActivityName"] = "";
+                Journal["ProjectName"] = "";
+                Journal["LocationName"] = "";
+                Journal["CategoryName"] = "";
+
+                Journal["CreateTime"] = DateTimeOffset.Now;
+                Journal["ModifyTime"] = DateTimeOffset.Now;
+                Journal["JournalGuid"] = UUID.Get();
+
+                SetAttributes(Journal);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
             }
 
-            // Now set default attributes
-            Journal = new Row();
-
-            Journal["JournalId"] = 0;
-            Journal["ProjectId"] = 0;
-            Journal["ActivityId"] = 0;
-            Journal["StartTime"] = DateTimeOffset.Now;
-            Journal["StopTime"] = DateTimeOffset.Now;
-            Journal["Seconds"] = 0;
-            Journal["Memo"] = "";
-            Journal["LocationId"] = 0;
-            Journal["CategoryId"] = 0;
-            Journal["IsLocked"] = false;
-            Journal["JournalIndex"] = NextJournalIndex;
-
-            Journal["ActivityName"] = "";
-            Journal["ProjectName"] = "";
-            Journal["LocationName"] = "";
-            Journal["CategoryName"] = "";
-
-            Journal["CreateTime"] = DateTimeOffset.Now;
-            Journal["ModifyTime"] = DateTimeOffset.Now;
-            Journal["JournalGuid"] = UUID.Get();
-
-            SetAttributes(Journal);
         }
 
         //---------------------------------------------------------------------
 
         private void SetAttributes(Row Journal)
         {
-            Type t = Journal["StartTime"].GetType();
+            try {
+                Type t = Journal["StartTime"].GetType();
 
-            if (t.FullName == "System.String") {
-                Journal["StartTime"] = DateTimeOffset.Parse(Journal["StartTime"]);
-                Journal["StopTime"] = DateTimeOffset.Parse(Journal["StopTime"]);
-                /*
-                Journal["StartTime"] = DateTimeOffset.SpecifyKind(Journal["StartTime"], DateTimeKind.Local);
-                Journal["StopTime"] = DateTimeOffset.SpecifyKind(Journal["StopTime"], DateTimeKind.Local);
-                */
+                if (t.FullName == "System.String") {
+                    Journal["StartTime"] = DateTimeOffset.Parse(Journal["StartTime"]);
+                    Journal["StopTime"] = DateTimeOffset.Parse(Journal["StopTime"]);
+                    /*
+                    Journal["StartTime"] = DateTimeOffset.SpecifyKind(Journal["StartTime"], DateTimeKind.Local);
+                    Journal["StopTime"] = DateTimeOffset.SpecifyKind(Journal["StopTime"], DateTimeKind.Local);
+                    */
+                }
+
+                JournalId = Journal["JournalId"];
+                ActivityId = Journal["ActivityId"];
+                ProjectId = Journal["ProjectId"];
+                StartTime = Journal["StartTime"];
+                StopTime = Journal["StopTime"];
+                Seconds = Journal["Seconds"];
+                Memo = Journal["Memo"];
+                LocationId = Journal["LocationId"] ?? 0;
+                CategoryId = Journal["CategoryId"] ?? 0;
+                IsLocked = Journal["IsLocked"];
+                JournalIndex = Journal["JournalIndex"];
+
+                ActivityName = Journal["ActivityName"];
+                ProjectName = Journal["ProjectName"];
+                LocationName = Journal["LocationName"] ?? "";
+                CategoryName = Journal["CategoryName"] ?? "";
+
+                CreateTime = Journal["CreateTime"];
+                ModifyTime = Journal["ModifyTime"];
+                JournalGuid = Journal["JournalGuid"];
             }
-
-            JournalId = Journal["JournalId"];
-            ActivityId = Journal["ActivityId"];
-            ProjectId = Journal["ProjectId"];
-            StartTime = Journal["StartTime"];
-            StopTime = Journal["StopTime"];
-            Seconds = Journal["Seconds"];
-            Memo = Journal["Memo"];
-            LocationId = Journal["LocationId"] ?? 0;
-            CategoryId = Journal["CategoryId"] ?? 0;
-            IsLocked = Journal["IsLocked"];
-            JournalIndex = Journal["JournalIndex"];
-
-            ActivityName = Journal["ActivityName"];
-            ProjectName = Journal["ProjectName"];
-            LocationName = Journal["LocationName"] ?? "";
-            CategoryName = Journal["CategoryName"] ?? "";
-
-            CreateTime = Journal["CreateTime"];
-            ModifyTime = Journal["ModifyTime"];
-            JournalGuid = Journal["JournalGuid"];
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
         }
 
         //---------------------------------------------------------------------

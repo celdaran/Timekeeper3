@@ -82,6 +82,8 @@ namespace Timekeeper.Classes
                     String Line;
                     int LineNo = 1;
 
+                    DateTimeOffset EarliestImportedEntryDate = DateTimeOffset.MaxValue;
+
                     while ((Line = ADBFile.ReadLine()) != null) {
 
                         ImportProgress.Value = LineNo;
@@ -94,6 +96,13 @@ namespace Timekeeper.Classes
                             // A couple data conversions
                             TimeSpan ts = Entry.EndTime.Subtract(Entry.StartTime);
                             Classes.Project Project = new Classes.Project(Entry.TaskName);
+
+                            // Keep track of this value for reindexing purposes.
+                            // We'll only want to reindex from the earliest imported
+                            // entry forward, and not the entire file
+                            if (Entry.StartTime.CompareTo(EarliestImportedEntryDate) < 0) {
+                                EarliestImportedEntryDate = Entry.StartTime;
+                            }
 
                             // Now create the Journal Entry
                             Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
@@ -116,6 +125,10 @@ namespace Timekeeper.Classes
                         }
                         LineNo++;
                     }
+
+                    // Now reindex the Journal table
+                    Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
+                    Entries.Reindex(EarliestImportedEntryDate);
                 }
             }
             catch (Exception x)
@@ -133,6 +146,7 @@ namespace Timekeeper.Classes
         {
             bool Imported = false;
             int RowNo = 0;
+            DateTimeOffset EarliestImportedEntryDate = DateTimeOffset.MaxValue;
 
             try {
                 // Default positions
@@ -185,6 +199,13 @@ namespace Timekeeper.Classes
                             DateTimeOffset StopTime = DateTimeOffset.Parse(fields[StopTimePos]);
                             TimeSpan ts = StopTime.Subtract(StartTime);
 
+                            // Keep track of this value for reindexing purposes.
+                            // We'll only want to reindex from the earliest imported
+                            // entry forward, and not the entire file
+                            if (StartTime.CompareTo(EarliestImportedEntryDate) < 0) {
+                                EarliestImportedEntryDate = StartTime;
+                            }
+
                             // Create the Journal Entry
                             Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
                             JournalEntry.StartTime = StartTime;
@@ -213,7 +234,7 @@ namespace Timekeeper.Classes
 
                 // Now reindex the Journal table
                 Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
-                Entries.Reindex();
+                Entries.Reindex(EarliestImportedEntryDate);
 
                 // If we made it this far, we're good.
                 Imported = true;

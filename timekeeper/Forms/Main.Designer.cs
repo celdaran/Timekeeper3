@@ -2022,11 +2022,10 @@ namespace Timekeeper.Forms
             // 
             // toolControlEntryIndex
             // 
-            this.toolControlEntryIndex.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.toolControlEntryIndex.ForeColor = System.Drawing.Color.Red;
             this.toolControlEntryIndex.Name = "toolControlEntryIndex";
             this.toolControlEntryIndex.Size = new System.Drawing.Size(31, 22);
             this.toolControlEntryIndex.Text = "1111";
-            this.toolControlEntryIndex.Visible = false;
             // 
             // toolControlSep2
             // 

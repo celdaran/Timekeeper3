@@ -726,7 +726,7 @@ namespace Timekeeper.Forms
             // Once the entry has been saved, we may need to reindex
             if (browserEntry.StartTime != priorLoadedBrowserEntry.StartTime) {
                 Entries.Reindex(browserEntry.StartTime);
-                Entries.Reindex();
+                browserEntry.ResetIndex();
                 Timekeeper.Info("Reindexed Journal table starting at " + browserEntry.StartTime.ToString(Common.DATETIME_FORMAT));
             }
 
