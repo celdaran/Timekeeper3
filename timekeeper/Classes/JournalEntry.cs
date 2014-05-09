@@ -14,7 +14,7 @@ namespace Timekeeper.Classes
 
         private DBI Database;
 
-        private long NextJournalIndex;
+        private long _NextJournalIndex;
 
         private enum Mode { Insert, Update };
 
@@ -63,6 +63,30 @@ namespace Timekeeper.Classes
         }
 
         //---------------------------------------------------------------------
+        // "External" Method (I'll explain later)
+        //---------------------------------------------------------------------
+
+        private long NextJournalIndex
+        {
+            get {
+                // Now, every time NextJournalIndex is read, we go back
+                // to the source and find out what it's *supposed* to be,
+                // and not just what it *happened* to be when this object
+                // was first instantiated.
+                Row Journal = new Row();
+                Journal = Database.SelectRow("SELECT MAX(JournalIndex) AS HighestJournalIndex FROM Journal");
+                if (Journal["HighestJournalIndex"] != null) {
+                    _NextJournalIndex = Journal["HighestJournalIndex"] + 1;
+                } else {
+                    // This is the first journal entry in a new database
+                    _NextJournalIndex = 1;
+                }
+                return _NextJournalIndex; 
+            }
+
+            set { _NextJournalIndex = value; }
+        }
+        //---------------------------------------------------------------------
         // Primary Methods
         //---------------------------------------------------------------------
 
@@ -87,7 +111,7 @@ namespace Timekeeper.Classes
 
                 // Update JournalIndex and NextJournalIndex
                 this.JournalIndex = this.NextJournalIndex;
-                this.NextJournalIndex++;
+                //this.NextJournalIndex++;
 
                 return true;
             }
@@ -104,7 +128,7 @@ namespace Timekeeper.Classes
             JournalEntry copy = new JournalEntry();
 
             // copy properties
-            copy.NextJournalIndex = this.NextJournalIndex;
+            //copy.NextJournalIndex = this.NextJournalIndex;
 
             // copy attributes
             copy.JournalId = this.JournalId;
@@ -235,7 +259,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void ResetIndex()
+        public void RefreshIndex()
         {
             try {
                 // This method refreshes the JournalIndex value from the database.
@@ -279,6 +303,14 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
         // Browsing Helper Methods
+        //---------------------------------------------------------------------
+
+        public void AdvanceIndex()
+        {
+            // Semantic synonym
+            this.SetNextIndex();
+        }
+
         //---------------------------------------------------------------------
 
         public void SetFirstIndex()
@@ -361,7 +393,7 @@ namespace Timekeeper.Classes
                 if (mode == Mode.Insert) {
                     Journal["CreateTime"] = Now;
                     Journal["JournalGuid"] = UUID.Get();
-                    Journal["JournalIndex"] = NextJournalIndex;
+                    Journal["JournalIndex"] = this.NextJournalIndex;
                 }
                 Journal["ModifyTime"] = Now;
 
@@ -391,6 +423,7 @@ namespace Timekeeper.Classes
 
             try {
                 // Get Next JournalIndex value
+                /*
                 Journal = Database.SelectRow("select max(JournalIndex) as HighestJournalIndex from Journal");
                 if (Journal["HighestJournalIndex"] != null) {
                     NextJournalIndex = Journal["HighestJournalIndex"] + 1;
@@ -398,6 +431,7 @@ namespace Timekeeper.Classes
                     // This is the first journal entry in a new database
                     NextJournalIndex = 1;
                 }
+                */
 
                 // Now set default attributes
                 Journal = new Row();
@@ -412,7 +446,7 @@ namespace Timekeeper.Classes
                 Journal["LocationId"] = 0;
                 Journal["CategoryId"] = 0;
                 Journal["IsLocked"] = false;
-                Journal["JournalIndex"] = NextJournalIndex;
+                Journal["JournalIndex"] = this.NextJournalIndex;
 
                 Journal["ActivityName"] = "";
                 Journal["ProjectName"] = "";

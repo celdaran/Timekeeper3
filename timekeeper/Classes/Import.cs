@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -189,6 +189,15 @@ namespace Timekeeper.Classes
                                 else if (field == "CategoryId")
                                     CategoryPos = ColNo;
                                 else
+                                    // TODO: Can unknown columns just be ignored? Do they 
+                                    // have to stop the import?
+                                    // TODO #2: Accept Project, Activity, Location, and
+                                    // Category *names*, then look up the id based on those
+                                    // names.
+                                    // OR . . . have an option to auto-vivify data if we
+                                    // find a value not accounted for.
+                                    // OR EVEN BETTER . . . prompt for column mapping during
+                                    // the import wizard, then we'll know once we get here.
                                     throw new Exception("Unknown column encountered: " + field);
 
                                 ColNo++;

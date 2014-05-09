@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -35,11 +35,11 @@ namespace Timekeeper.Classes
             if (filterDialog.ShowDialog(window) == DialogResult.OK) 
             {
                 if (BeforeFilterOptions.Equals(filterDialog.FilterOptions)) {
-                    Common.Info("You didn't make no changes!");
+                    Timekeeper.Debug("You didn't make no changes!");
                     ReturnFilterOptions.Copy(BeforeFilterOptions);
                     ReturnFilterOptions.Changed = false;
                 } else {
-                    Common.Info("You made some changes!");
+                    Timekeeper.Debug("You made some changes!");
                     ReturnFilterOptions.Copy(filterDialog.FilterOptions);
                     ReturnFilterOptions.Changed = true;
                 }

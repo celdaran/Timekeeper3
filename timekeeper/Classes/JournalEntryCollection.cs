@@ -16,8 +16,6 @@ namespace Timekeeper.Classes
 
         protected DBI Database;
 
-        public enum Dimension { Project, Activity, Location, Category };
-
         //---------------------------------------------------------------------
         // Constructor
         //---------------------------------------------------------------------
@@ -40,23 +38,25 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public int Count(Dimension dimension, long id)
+        public int Count(Timekeeper.Dimension dimension, long id)
         {
-            string ColumnName = "";
+            string ColumnName = dimension.ToString() + "Id";
+            /*
             switch (dimension) {
-                case Dimension.Project:
+                case Timekeeper.Dimension.Project:
                     ColumnName = "ProjectId";
                     break;
-                case Dimension.Activity:
+                case Timekeeper.Dimension.Activity:
                     ColumnName = "ActivityId";
                     break;
-                case Dimension.Location:
+                case Timekeeper.Dimension.Location:
                     ColumnName = "LocationId";
                     break;
-                case Dimension.Category:
+                case Timekeeper.Dimension.Category:
                     ColumnName = "CategoryId";
                     break;
             }
+            */
             string Query = String.Format("SELECT count(*) AS Count FROM Journal WHERE {0} = {1}",
                 ColumnName, id);
             Row Row = Database.SelectRow(Query);
@@ -112,6 +112,16 @@ namespace Timekeeper.Classes
             string Query = "SELECT * FROM Journal ORDER BY JournalIndex";
             Table Table = Database.Select(Query);
             return Table;
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool Merge(string whereClause, string columnName, long columnValue)
+        {
+            Row Row = new Row();
+            Row[columnName] = columnValue;
+            long UpdateCount = Database.Update("Journal j", Row, whereClause);
+            return (UpdateCount > 0);
         }
 
         //---------------------------------------------------------------------

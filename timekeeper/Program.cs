@@ -29,7 +29,9 @@ namespace Timekeeper
             bool found = true;
 
             try {
-                CheckAssembly("Technitivity.Toolbox", new Version(3, 0, 7));
+                // TODO: For TBX, support Semantic Versioning (http://semver.org/)
+                // This would mean only checking the major version at this point.
+                CheckAssembly("Technitivity.Toolbox", new Version(3, 0, 15));
                 CheckAssembly("System.Data.SQLite", new Version(1, 0, 92));
             }
             catch {

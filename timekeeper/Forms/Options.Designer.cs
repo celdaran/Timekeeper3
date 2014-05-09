@@ -149,6 +149,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.AdvancedPage = new System.Windows.Forms.TabPage();
             this.OtherAdvancedGroup = new System.Windows.Forms.GroupBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.Advanced_Other_MarkupLanguage = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
@@ -165,7 +166,8 @@
             this.LoggingDatabaseLabel = new System.Windows.Forms.Label();
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -1578,6 +1580,8 @@
             // 
             // OtherAdvancedGroup
             // 
+            this.OtherAdvancedGroup.Controls.Add(this.checkBox6);
+            this.OtherAdvancedGroup.Controls.Add(this.checkBox5);
             this.OtherAdvancedGroup.Controls.Add(this.checkBox4);
             this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_MarkupLanguage);
             this.OtherAdvancedGroup.Controls.Add(this.label12);
@@ -1596,6 +1600,17 @@
             this.OtherAdvancedGroup.TabStop = false;
             this.OtherAdvancedGroup.Text = "Other";
             // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Enabled = false;
+            this.checkBox4.Location = new System.Drawing.Point(16, 143);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(112, 17);
+            this.checkBox4.TabIndex = 10;
+            this.checkBox4.Text = "Disable Scheduler";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
             // Advanced_Other_MarkupLanguage
             // 
             this.Advanced_Other_MarkupLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -1603,7 +1618,7 @@
             this.Advanced_Other_MarkupLanguage.Items.AddRange(new object[] {
             "HTML",
             "Markdown"});
-            this.Advanced_Other_MarkupLanguage.Location = new System.Drawing.Point(179, 176);
+            this.Advanced_Other_MarkupLanguage.Location = new System.Drawing.Point(197, 218);
             this.Advanced_Other_MarkupLanguage.Name = "Advanced_Other_MarkupLanguage";
             this.Advanced_Other_MarkupLanguage.Size = new System.Drawing.Size(121, 21);
             this.Advanced_Other_MarkupLanguage.TabIndex = 9;
@@ -1611,7 +1626,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(14, 179);
+            this.label12.Location = new System.Drawing.Point(32, 221);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(153, 13);
             this.label12.TabIndex = 8;
@@ -1620,17 +1635,17 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(17, 110);
+            this.checkBox3.Location = new System.Drawing.Point(17, 97);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(224, 17);
+            this.checkBox3.Size = new System.Drawing.Size(228, 17);
             this.checkBox3.TabIndex = 7;
-            this.checkBox3.Text = "Display journal entry ID on browser toolbar";
+            this.checkBox3.Text = "Display Journal Entry ID on browser toolbar";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(17, 87);
+            this.checkBox2.Location = new System.Drawing.Point(17, 74);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(152, 17);
             this.checkBox2.TabIndex = 6;
@@ -1640,7 +1655,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(238, 152);
+            this.label3.Location = new System.Drawing.Point(256, 194);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 5;
@@ -1648,7 +1663,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(179, 150);
+            this.numericUpDown1.Location = new System.Drawing.Point(197, 192);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             120,
             0,
@@ -1671,7 +1686,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 152);
+            this.label2.Location = new System.Drawing.Point(32, 194);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(165, 13);
             this.label2.TabIndex = 3;
@@ -1680,7 +1695,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(17, 64);
+            this.checkBox1.Location = new System.Drawing.Point(17, 51);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(229, 17);
             this.checkBox1.TabIndex = 2;
@@ -1775,15 +1790,26 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
-            // checkBox4
+            // checkBox5
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(30, 228);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(112, 17);
-            this.checkBox4.TabIndex = 10;
-            this.checkBox4.Text = "Disable Scheduler";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Enabled = false;
+            this.checkBox5.Location = new System.Drawing.Point(16, 166);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(122, 17);
+            this.checkBox5.TabIndex = 11;
+            this.checkBox5.Text = "Enable Stacktracing";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Location = new System.Drawing.Point(17, 120);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(243, 17);
+            this.checkBox6.TabIndex = 12;
+            this.checkBox6.Text = "Display Journal Entry Index on browser toolbar";
+            this.checkBox6.UseVisualStyleBackColor = true;
             // 
             // Options
             // 
@@ -2018,6 +2044,8 @@
         private System.Windows.Forms.ComboBox Advanced_Other_MarkupLanguage;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.CheckBox checkBox5;
 
     }
 }

@@ -103,19 +103,25 @@ namespace Timekeeper.Forms.Shared
             DurationOperator.Visible = (this.FilterOptions.FilterOptionsType != Classes.FilterOptions.OptionsType.Notebook);
             DurationUnit.Visible = (this.FilterOptions.FilterOptionsType != Classes.FilterOptions.OptionsType.Notebook);
 
-            if ((!Options.Layout_UseProjects) || (this.FilterOptions.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook)) {
+            if ((!Options.Layout_UseProjects) || 
+                (this.FilterOptions.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook) ||
+                (this.FilterOptions.FilterMergeType == Timekeeper.Dimension.Project)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("ProjectTab");
             }
 
-            if ((!Options.Layout_UseActivities) || (this.FilterOptions.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook)) {
+            if ((!Options.Layout_UseActivities) || 
+                (this.FilterOptions.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook) ||
+                (this.FilterOptions.FilterMergeType == Timekeeper.Dimension.Activity)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("ActivityTab");
             }
 
-            if (!Options.Layout_UseLocations) {
+            if ((!Options.Layout_UseLocations) ||
+                (this.FilterOptions.FilterMergeType == Timekeeper.Dimension.Location)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("LocationTab");
             }
 
-            if (!Options.Layout_UseCategories) {
+            if ((!Options.Layout_UseCategories) ||
+                (this.FilterOptions.FilterMergeType == Timekeeper.Dimension.Category)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("CategoryTab");
             }
 

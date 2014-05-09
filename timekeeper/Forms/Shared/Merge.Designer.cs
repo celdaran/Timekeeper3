@@ -30,14 +30,17 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Merge));
             this.ItemTree = new System.Windows.Forms.TreeView();
-            this.CloseButton = new System.Windows.Forms.Button();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
+            this.CloseButton = new System.Windows.Forms.Button();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.OkayButton = new System.Windows.Forms.Button();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.FilterButton = new System.Windows.Forms.ToolStripButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.BottomPanel.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ItemTree
@@ -50,17 +53,6 @@
             this.ItemTree.SelectedImageIndex = 0;
             this.ItemTree.Size = new System.Drawing.Size(510, 200);
             this.ItemTree.TabIndex = 1;
-            // 
-            // CloseButton
-            // 
-            this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.Location = new System.Drawing.Point(87, 6);
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(75, 23);
-            this.CloseButton.TabIndex = 2;
-            this.CloseButton.Text = "Cancel";
-            this.CloseButton.UseVisualStyleBackColor = true;
-            this.CloseButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // TreeImageList
             // 
@@ -77,10 +69,21 @@
             this.TreeImageList.Images.SetKeyName(8, "HiddenItem");
             this.TreeImageList.Images.SetKeyName(9, "HiddenFolder");
             // 
+            // CloseButton
+            // 
+            this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CloseButton.Location = new System.Drawing.Point(84, 6);
+            this.CloseButton.Name = "CloseButton";
+            this.CloseButton.Size = new System.Drawing.Size(75, 23);
+            this.CloseButton.TabIndex = 2;
+            this.CloseButton.Text = "Cancel";
+            this.CloseButton.UseVisualStyleBackColor = true;
+            this.CloseButton.Click += new System.EventHandler(this.CancelButton_Click);
+            // 
             // BottomPanel
             // 
-            this.BottomPanel.Controls.Add(this.OkayButton);
-            this.BottomPanel.Controls.Add(this.CloseButton);
+            this.BottomPanel.Controls.Add(this.panel1);
+            this.BottomPanel.Controls.Add(this.label1);
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.BottomPanel.Location = new System.Drawing.Point(0, 225);
             this.BottomPanel.Name = "BottomPanel";
@@ -89,7 +92,7 @@
             // 
             // OkayButton
             // 
-            this.OkayButton.Location = new System.Drawing.Point(6, 6);
+            this.OkayButton.Location = new System.Drawing.Point(3, 6);
             this.OkayButton.Name = "OkayButton";
             this.OkayButton.Size = new System.Drawing.Size(75, 23);
             this.OkayButton.TabIndex = 3;
@@ -117,6 +120,25 @@
             this.FilterButton.Text = "Filter";
             this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.CloseButton);
+            this.panel1.Controls.Add(this.OkayButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel1.Location = new System.Drawing.Point(345, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(165, 36);
+            this.panel1.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(260, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Select an item from the list above as the merge target.";
+            // 
             // Merge
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -133,8 +155,10 @@
             this.Text = "Merge";
             this.Load += new System.EventHandler(this.Merge_Load);
             this.BottomPanel.ResumeLayout(false);
+            this.BottomPanel.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -149,5 +173,7 @@
         private System.Windows.Forms.Button OkayButton;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton FilterButton;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label1;
     }
 }

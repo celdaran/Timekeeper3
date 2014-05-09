@@ -289,9 +289,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(15, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(165, 13);
+            this.label1.Size = new System.Drawing.Size(141, 13);
             this.label1.TabIndex = 3;
-            this.label1.Text = "What data do you wish to import?";
+            this.label1.Text = "Click \"Import Now\" to begin.";
             // 
             // Tab4
             // 

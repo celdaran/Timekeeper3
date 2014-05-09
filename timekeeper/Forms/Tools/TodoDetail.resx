@@ -133,7 +133,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABA
-        JAAAAk1TRnQBSQFMAgEBCQEAATABAAEwAQABEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        JAAAAk1TRnQBSQFMAgEBCQEAATgBAAE4AQABEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABMAMAAQEBAAEYBgABJBIAMP+QADD/kAAwpZAAA9Iq4QOlkAAD0gP6CfkG+AP3BvYG9Qb0A+EDpZAA
         A9IG+gn5BvgD9wb2BvUD9APhA6WQAAPSA/sG+gn5BvgD9wb2BvUD4QOlkAAD0gb7BvoJ+Qb4A/cG9gP1
         A+EDpZAAA9IJ+wb6BvkG+Ab3BvYD4QOlkAAD0gP8CfsG+gb5BvgG9wP2A+EDpZAAA9IG/Ab7BvoJ+Qb4
@@ -315,46 +315,46 @@
   <data name="&gt;&gt;ProjectTree.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="StartDate.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="StartTime.Location" type="System.Drawing.Point, System.Drawing">
     <value>100, 10</value>
   </data>
-  <data name="StartDate.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="StartTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 20</value>
   </data>
-  <data name="StartDate.TabIndex" type="System.Int32, mscorlib">
+  <data name="StartTime.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;StartDate.Name" xml:space="preserve">
-    <value>StartDate</value>
+  <data name="&gt;&gt;StartTime.Name" xml:space="preserve">
+    <value>StartTime</value>
   </data>
-  <data name="&gt;&gt;StartDate.Type" xml:space="preserve">
+  <data name="&gt;&gt;StartTime.Type" xml:space="preserve">
     <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;StartDate.Parent" xml:space="preserve">
+  <data name="&gt;&gt;StartTime.Parent" xml:space="preserve">
     <value>FixedDetailPanel</value>
   </data>
-  <data name="&gt;&gt;StartDate.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;StartTime.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="DueDate.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="DueTime.Location" type="System.Drawing.Point, System.Drawing">
     <value>100, 36</value>
   </data>
-  <data name="DueDate.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="DueTime.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 20</value>
   </data>
-  <data name="DueDate.TabIndex" type="System.Int32, mscorlib">
+  <data name="DueTime.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;DueDate.Name" xml:space="preserve">
-    <value>DueDate</value>
+  <data name="&gt;&gt;DueTime.Name" xml:space="preserve">
+    <value>DueTime</value>
   </data>
-  <data name="&gt;&gt;DueDate.Type" xml:space="preserve">
+  <data name="&gt;&gt;DueTime.Type" xml:space="preserve">
     <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;DueDate.Parent" xml:space="preserve">
+  <data name="&gt;&gt;DueTime.Parent" xml:space="preserve">
     <value>FixedDetailPanel</value>
   </data>
-  <data name="&gt;&gt;DueDate.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;DueTime.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="label3.AutoSize" type="System.Boolean, mscorlib">
@@ -453,90 +453,6 @@
   <data name="&gt;&gt;Memo.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;RightButtonPanel.Name" xml:space="preserve">
-    <value>RightButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.Parent" xml:space="preserve">
-    <value>ButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="ButtonPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
-  </data>
-  <data name="ButtonPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 293</value>
-  </data>
-  <data name="ButtonPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>542, 40</value>
-  </data>
-  <data name="ButtonPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;ButtonPanel.Name" xml:space="preserve">
-    <value>ButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;ButtonPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ButtonPanel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ButtonPanel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;CancelDialogButton.Name" xml:space="preserve">
-    <value>CancelDialogButton</value>
-  </data>
-  <data name="&gt;&gt;CancelDialogButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;CancelDialogButton.Parent" xml:space="preserve">
-    <value>RightButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;CancelDialogButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;AcceptDialogButton.Name" xml:space="preserve">
-    <value>AcceptDialogButton</value>
-  </data>
-  <data name="&gt;&gt;AcceptDialogButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;AcceptDialogButton.Parent" xml:space="preserve">
-    <value>RightButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;AcceptDialogButton.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="RightButtonPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Right</value>
-  </data>
-  <data name="RightButtonPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>342, 0</value>
-  </data>
-  <data name="RightButtonPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 40</value>
-  </data>
-  <data name="RightButtonPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.Name" xml:space="preserve">
-    <value>RightButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.Parent" xml:space="preserve">
-    <value>ButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="CancelDialogButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -588,6 +504,72 @@
   <data name="&gt;&gt;AcceptDialogButton.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="RightButtonPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="RightButtonPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>342, 0</value>
+  </data>
+  <data name="RightButtonPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 40</value>
+  </data>
+  <data name="RightButtonPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;RightButtonPanel.Name" xml:space="preserve">
+    <value>RightButtonPanel</value>
+  </data>
+  <data name="&gt;&gt;RightButtonPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RightButtonPanel.Parent" xml:space="preserve">
+    <value>ButtonPanel</value>
+  </data>
+  <data name="&gt;&gt;RightButtonPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ButtonPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="ButtonPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 293</value>
+  </data>
+  <data name="ButtonPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>542, 40</value>
+  </data>
+  <data name="ButtonPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;ButtonPanel.Name" xml:space="preserve">
+    <value>ButtonPanel</value>
+  </data>
+  <data name="&gt;&gt;ButtonPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ButtonPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ButtonPanel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="UseDueDate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="UseDueDate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="UseDueDate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 38</value>
+  </data>
+  <data name="UseDueDate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 17</value>
+  </data>
+  <data name="UseDueDate.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="UseDueDate.Text" xml:space="preserve">
+    <value>Due Date:</value>
+  </data>
   <data name="&gt;&gt;UseDueDate.Name" xml:space="preserve">
     <value>UseDueDate</value>
   </data>
@@ -599,6 +581,21 @@
   </data>
   <data name="&gt;&gt;UseDueDate.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="UseStartDate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="UseStartDate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>17, 13</value>
+  </data>
+  <data name="UseStartDate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 17</value>
+  </data>
+  <data name="UseStartDate.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="UseStartDate.Text" xml:space="preserve">
+    <value>Start Date:</value>
   </data>
   <data name="&gt;&gt;UseStartDate.Name" xml:space="preserve">
     <value>UseStartDate</value>
@@ -659,63 +656,6 @@
   </data>
   <data name="&gt;&gt;DetailPanel.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="UseStartDate.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="UseStartDate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 13</value>
-  </data>
-  <data name="UseStartDate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 17</value>
-  </data>
-  <data name="UseStartDate.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="UseStartDate.Text" xml:space="preserve">
-    <value>Start Date:</value>
-  </data>
-  <data name="&gt;&gt;UseStartDate.Name" xml:space="preserve">
-    <value>UseStartDate</value>
-  </data>
-  <data name="&gt;&gt;UseStartDate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;UseStartDate.Parent" xml:space="preserve">
-    <value>FixedDetailPanel</value>
-  </data>
-  <data name="&gt;&gt;UseStartDate.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="UseDueDate.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="UseDueDate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="UseDueDate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 38</value>
-  </data>
-  <data name="UseDueDate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 17</value>
-  </data>
-  <data name="UseDueDate.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="UseDueDate.Text" xml:space="preserve">
-    <value>Due Date:</value>
-  </data>
-  <data name="&gt;&gt;UseDueDate.Name" xml:space="preserve">
-    <value>UseDueDate</value>
-  </data>
-  <data name="&gt;&gt;UseDueDate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;UseDueDate.Parent" xml:space="preserve">
-    <value>FixedDetailPanel</value>
-  </data>
-  <data name="&gt;&gt;UseDueDate.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

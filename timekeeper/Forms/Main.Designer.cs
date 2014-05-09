@@ -82,7 +82,7 @@ namespace Timekeeper.Forms
             this.MenuToolFind = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuToolTodo = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuToolReminders = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolNotebook = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolCalendar = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolStopwatch = new System.Windows.Forms.ToolStripMenuItem();
@@ -669,7 +669,7 @@ namespace Timekeeper.Forms
             this.MenuToolFind,
             this.MenuToolSep1,
             this.MenuToolTodo,
-            this.MenuToolReminders,
+            this.MenuToolEvents,
             this.MenuToolNotebook,
             this.MenuToolCalendar,
             this.MenuToolStopwatch,
@@ -699,16 +699,17 @@ namespace Timekeeper.Forms
             // MenuToolTodo
             // 
             this.MenuToolTodo.Name = "MenuToolTodo";
-            this.MenuToolTodo.Size = new System.Drawing.Size(160, 22);
-            this.MenuToolTodo.Text = "To Do...";
+            this.MenuToolTodo.Size = new System.Drawing.Size(182, 22);
+            this.MenuToolTodo.Text = "To Do List...";
             this.MenuToolTodo.Click += new System.EventHandler(this.MenuToolTodo_Click);
             // 
-            // MenuToolReminders
+            // MenuToolEvents
             // 
-            this.MenuToolReminders.Name = "MenuToolReminders";
-            this.MenuToolReminders.Size = new System.Drawing.Size(160, 22);
-            this.MenuToolReminders.Text = "&Events...";
-            this.MenuToolReminders.Click += new System.EventHandler(this.MenuToolReminders_Click);
+            this.MenuToolEvents.Name = "MenuToolEvents";
+            this.MenuToolEvents.Size = new System.Drawing.Size(182, 22);
+            this.MenuToolEvents.Text = "&Events && Reminders...";
+            this.MenuToolEvents.Visible = false;
+            this.MenuToolEvents.Click += new System.EventHandler(this.MenuToolReminders_Click);
             // 
             // MenuToolNotebook
             // 
@@ -2251,7 +2252,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuReportGrid;
         private System.Windows.Forms.ToolStripSeparator MenuToolSep1;
         private System.Windows.Forms.ToolStripMenuItem MenuToolCalendar;
-        private System.Windows.Forms.ToolStripMenuItem MenuToolReminders;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolEvents;
         private System.Windows.Forms.ToolStripMenuItem MenuToolCountdown;
         private System.Windows.Forms.ToolStripMenuItem MenuToolDatecalc;
         private System.Windows.Forms.ToolStripSeparator MenuToolSep2;

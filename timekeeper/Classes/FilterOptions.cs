@@ -80,6 +80,8 @@ namespace Timekeeper.Classes
         public List<long> ImpliedActivities { get; set; }
 
         public bool Changed { get; set; }
+        public Timekeeper.Dimension FilterMergeType { get; set; }
+        public bool SuppressTableAlias { get; set; }
 
         //----------------------------------------------------------------------
 
@@ -120,6 +122,7 @@ namespace Timekeeper.Classes
             this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
             this.JournalEntries = new Classes.JournalEntryCollection();
+            this.SuppressTableAlias = false;
         }
 
         //---------------------------------------------------------------------
@@ -182,7 +185,7 @@ namespace Timekeeper.Classes
 
         public void Create()
         {
-            Common.Info("Creating a new FilterOptions row");
+            Timekeeper.Debug("Creating a new FilterOptions row");
             this.FilterOptionsId = -1;
             this.Upsert();
         }
@@ -219,7 +222,7 @@ namespace Timekeeper.Classes
 
         public bool Equals(Classes.FilterOptions that)
         {
-            //*
+            /*
             Timekeeper.Debug(String.Format("this.DateRangePreset={0}, that.DateRangePreset={1}", this.DateRangePreset, that.DateRangePreset));
             Timekeeper.Debug(String.Format("this.FromTime={0}, that.FromTime={1}", this.FromTime, that.FromTime));
             Timekeeper.Debug(String.Format("this.ToTime={0}, that.ToTime={1}", this.ToTime, that.ToTime));
@@ -232,7 +235,7 @@ namespace Timekeeper.Classes
             Timekeeper.Debug(String.Format("this.DurationOperator={0}, that.DurationOperator={1}", this.DurationOperator, that.DurationOperator));
             Timekeeper.Debug(String.Format("this.DurationAmount={0}, that.DurationAmount={1}", this.DurationAmount, that.DurationAmount));
             Timekeeper.Debug(String.Format("this.DurationUnit={0}, that.DurationUnit={1}", this.DurationUnit, that.DurationUnit));
-            //*/
+            */
 
             if (
                 (this.FilterOptionsType == that.FilterOptionsType) &&
@@ -451,41 +454,44 @@ namespace Timekeeper.Classes
         {
             string WhereClause = "";
 
-            Timekeeper.Warn("Filtering still needs some date/time love...");
+            //Timekeeper.Warn("Filtering still needs some date/time love...");
 
-            if (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Journal)
+            string TableAlias = this.SuppressTableAlias ? "" : "j.";
+
+            if ((this.FilterOptionsType == Classes.FilterOptions.OptionsType.Journal) ||
+                (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Merge))
             {
-                WhereClause += String.Format("datetime(j.StartTime, 'localtime') >= datetime('{0}')",
-                    this.FromTimeToString()) + System.Environment.NewLine;
+                WhereClause += String.Format("datetime({0}StartTime, 'localtime') >= datetime('{1}')",
+                    TableAlias, this.FromTimeToString()) + System.Environment.NewLine;
 
-                WhereClause += String.Format("and datetime(j.StopTime, 'localtime') <= datetime('{0}')",
-                    this.ToTimeToString()) + System.Environment.NewLine;
+                WhereClause += String.Format("and datetime({0}StopTime, 'localtime') <= datetime('{1}')",
+                    TableAlias, this.ToTimeToString()) + System.Environment.NewLine;
             }
 
             if (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook) {
-                WhereClause += String.Format("datetime(j.EntryTime, 'localtime') >= datetime('{0}')",
-                    this.FromTimeToString()) + System.Environment.NewLine;
+                WhereClause += String.Format("datetime({0}EntryTime, 'localtime') >= datetime('{1}')",
+                    TableAlias, this.FromTimeToString()) + System.Environment.NewLine;
 
-                WhereClause += String.Format("and datetime(j.EntryTime, 'localtime') <= datetime('{0}')",
-                    this.ToTimeToString()) + System.Environment.NewLine;
+                WhereClause += String.Format("and datetime({0}EntryTime, 'localtime') <= datetime('{1}')",
+                    TableAlias, this.ToTimeToString()) + System.Environment.NewLine;
             }
 
             if (this.FilterOptionsType != Classes.FilterOptions.OptionsType.Notebook)
             {
                 if ((this.ImpliedProjects != null) && (this.ImpliedProjects.Count > 0)) {
-                    WhereClause += String.Format("and j.ProjectId in ({0})",
-                        this.List(this.ImpliedProjects)) + System.Environment.NewLine;
+                    WhereClause += String.Format("and {0}ProjectId in ({1})",
+                        TableAlias, this.List(this.ImpliedProjects)) + System.Environment.NewLine;
                 }
 
                 if ((this.ImpliedActivities != null) && (this.ImpliedActivities.Count > 0)) {
-                    WhereClause += String.Format("and j.ActivityId in ({0})",
-                        this.List(this.ImpliedActivities)) + System.Environment.NewLine;
+                    WhereClause += String.Format("and {0}ActivityId in ({1})",
+                        TableAlias, this.List(this.ImpliedActivities)) + System.Environment.NewLine;
                 }
             }
 
             if (this.MemoOperator > -1) {
 
-                WhereClause += "and j.Memo ";
+                WhereClause += String.Format("and {0}Memo ", TableAlias);
 
                 switch (this.MemoOperator) {
                     case 0: // Contains
@@ -508,7 +514,7 @@ namespace Timekeeper.Classes
             if (this.DurationOperator > 0) {
                 // Meaning, if anything but "Any" was selected
 
-                WhereClause += "and j.Seconds ";
+                WhereClause += String.Format("and {0}Seconds ", TableAlias);
 
                 switch (this.DurationOperator) {
                     case 1: WhereClause += " > "; break;
@@ -520,13 +526,13 @@ namespace Timekeeper.Classes
             }
 
             if ((this.Locations != null) && (this.Locations.Count > 0)) {
-                WhereClause += String.Format("and j.LocationId in ({0})",
-                    this.List(this.Locations)) + System.Environment.NewLine;
+                WhereClause += String.Format("and {0}LocationId in ({1})",
+                    TableAlias, this.List(this.Locations)) + System.Environment.NewLine;
             }
 
             if ((this.Categories != null) && (this.Categories.Count > 0)) {
-                WhereClause += String.Format("and j.CategoryId in ({0})",
-                    this.List(this.Categories)) + System.Environment.NewLine;
+                WhereClause += String.Format("and {0}CategoryId in ({1})",
+                    TableAlias, this.List(this.Categories)) + System.Environment.NewLine;
             }
 
             return WhereClause;

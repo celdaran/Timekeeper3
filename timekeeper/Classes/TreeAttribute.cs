@@ -31,7 +31,7 @@ namespace Timekeeper.Classes
 
         public string ExternalProjectNo { get; set; }
 
-        public ItemType Type { get; set; }
+        public Timekeeper.Dimension Type { get; set; }
 
         // In-memory only
         public DateTimeOffset StartTime;
@@ -51,8 +51,6 @@ namespace Timekeeper.Classes
         private string OtherTableName;
         private long SecondsElapsedToday = 0;
 
-        public enum ItemType { Project, Activity };
-
         //---------------------------------------------------------------------
         // Constructors
         //---------------------------------------------------------------------
@@ -64,11 +62,8 @@ namespace Timekeeper.Classes
             this.IdColumnName = idColumnName;
             this.OtherTableName = this.TableName == "Project" ? "Activity" : "Project";
 
-            if (tableName == "Activity") {
-                this.Type = ItemType.Activity;
-            } else {
-                this.Type = ItemType.Project;
-            }
+            // Convert the table name into the enumerated dimension
+            this.Type = (Timekeeper.Dimension)Enum.Parse(typeof(Timekeeper.Dimension), tableName);
         }
 
         //---------------------------------------------------------------------

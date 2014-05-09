@@ -418,7 +418,7 @@ namespace Timekeeper.Forms
             string To = DateTime.Now.ToString(Common.DATE_FORMAT + " 23:59:59");
 
             // Determine the item type
-            string ItemType = item.Type == Classes.TreeAttribute.ItemType.Project ? "Project" : "Activity";
+            string ItemType = item.Type.ToString();
             if (item.IsFolder) ItemType += " Folder";
 
             // Set dialog box title
@@ -453,7 +453,7 @@ namespace Timekeeper.Forms
             if (item.IsDeleted)
                 properties.wDeletedTime.Text = item.DeletedTime.ToString(Common.LOCAL_DATETIME_FORMAT);
 
-            if (item.Type == Classes.TreeAttribute.ItemType.Project) {
+            if (item.Type == Timekeeper.Dimension.Project) {
                 long LastActivityId = item.FollowedItemId;
                 if (LastActivityId > 0) {
                     Classes.Activity Activity = new Classes.Activity(LastActivityId);

@@ -34,6 +34,8 @@ namespace Timekeeper
         public const int IMG_ITEM_HIDDEN = 8;
         public const int IMG_FOLDER_HIDDEN = 9;
 
+        public enum Dimension { Project, Activity, Location, Category };
+
         //---------------------------------------------------------------------
         // Properties
         //---------------------------------------------------------------------
@@ -90,7 +92,7 @@ namespace Timekeeper
         public static void CloseScheduler()
         {
             if (Scheduler == null) {
-                Timekeeper.Warn("Could not close a null Scheduler");
+                Timekeeper.Debug("Attempt to close a null Scheduler.");
             } else {
                 Scheduler.Shutdown();
             }
@@ -100,7 +102,9 @@ namespace Timekeeper
 
         public static void OpenScheduler()
         {
-            if (!Options.Advanced_Other_DisableScheduler) {
+            if (Options.Advanced_Other_DisableScheduler) {
+                Scheduler = null;
+            } else {
                 ISchedulerFactory ScheduleFactory = new StdSchedulerFactory();
                 Scheduler = ScheduleFactory.GetScheduler();
                 Scheduler.Start();
@@ -116,7 +120,7 @@ namespace Timekeeper
             }
 
             if (scheduledEvent.Schedule == null) {
-                Timekeeper.Debug("Attempting to schedule an undefined schedule");
+                Timekeeper.Debug("Attempting to schedule an undefined schedule.");
                 return;
             }
 
@@ -146,6 +150,10 @@ namespace Timekeeper
 
         public static ITrigger CreateTrigger(Classes.ScheduledEvent scheduledEvent, DateTime reminderTime, IJobDetail job)
         {
+            if (Options.Advanced_Other_DisableScheduler) {
+                return null;
+            }
+
             switch (scheduledEvent.Schedule.RefScheduleTypeId)
             {
                 case 1: // one time
@@ -223,6 +231,9 @@ namespace Timekeeper
             Log = GetLog();
             string msg = Common.Exception(x, 2);
             Log.Warn(msg);
+            if (Options.Advanced_Other_EnableStackTracing) {
+                Log.Warn(Environment.StackTrace);
+            }
         }
 
         //---------------------------------------------------------------------

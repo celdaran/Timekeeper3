@@ -85,6 +85,28 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void MenuBar_ShowMergeProject(bool isFolder)
+        {
+            MenuActionMergeProject.Enabled = !isFolder;
+            PopupMenuProjectMerge.Enabled = !isFolder;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void MenuBar_ShowDeleteProject(bool isDeleted)
+        {
+            MenuActionEditProject.Enabled = !isDeleted;
+            MenuActionHideProject.Enabled = !isDeleted;
+            MenuActionDeleteProject.Enabled = !isDeleted;
+
+            PopupMenuProjectEdit.Enabled = !isDeleted;
+            PopupMenuProjectRename.Enabled = !isDeleted;
+            PopupMenuProjectHide.Enabled = !isDeleted;
+            PopupMenuProjectDelete.Enabled = !isDeleted;
+        }
+
+        //---------------------------------------------------------------------
+
         private void MenuBar_ShowHideActivity(bool visible)
         {
             if (Options.View_HiddenActivities) {

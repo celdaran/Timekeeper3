@@ -726,7 +726,7 @@ namespace Timekeeper.Forms
             // Once the entry has been saved, we may need to reindex
             if (browserEntry.StartTime != priorLoadedBrowserEntry.StartTime) {
                 Entries.Reindex(browserEntry.StartTime);
-                browserEntry.ResetIndex();
+                browserEntry.RefreshIndex();
                 Timekeeper.Info("Reindexed Journal table starting at " + browserEntry.StartTime.ToString(Common.DATETIME_FORMAT));
             }
 
@@ -852,7 +852,9 @@ namespace Timekeeper.Forms
 
                 // Create browser objects
                 //browserEntry = new Classes.Journal(Database);
-                browserEntry = TimedEntry;
+                //browserEntry = new Classes.JournalEntry();
+                //browserEntry = TimedEntry;
+                browserEntry = TimedEntry.Copy();
 
                 priorLoadedBrowserEntry = new Classes.JournalEntry();
                 if (newBrowserEntry == null) {

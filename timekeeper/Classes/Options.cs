@@ -98,6 +98,7 @@ namespace Timekeeper.Classes
         public string Advanced_DateTimeFormat { get; set; }
         public int Advanced_Other_MarkupLanguage { get; set; }
         public bool Advanced_Other_DisableScheduler { get; set; }
+        public bool Advanced_Other_EnableStackTracing { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Metrics)
@@ -368,6 +369,7 @@ namespace Timekeeper.Classes
             Advanced_DateTimeFormat = (string)Key.GetValue("DateTimeFormat", "yyyy-MM-dd HH:mm:ss");
             Advanced_Other_MarkupLanguage = (int)Key.GetValue("Other_MarkupLanguage", 1);
             Advanced_Other_DisableScheduler = ((int)Key.GetValue("Other_DisableScheduler", 0)) == 1;
+            Advanced_Other_EnableStackTracing = ((int)Key.GetValue("Other_EnableStackTracing", 0)) == 1;
 
             //----------------------------------------------------------------------
 
@@ -653,6 +655,7 @@ namespace Timekeeper.Classes
             Key.SetValue("DateTimeFormat", Advanced_DateTimeFormat, Microsoft.Win32.RegistryValueKind.String);
             Key.SetValue("Other_MarkupLanguage", Advanced_Other_MarkupLanguage, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_DisableScheduler", Advanced_Other_DisableScheduler, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Other_EnableStackTracing", Advanced_Other_EnableStackTracing, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 

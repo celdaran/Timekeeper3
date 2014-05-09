@@ -9,7 +9,7 @@ using Technitivity.Toolbox;
 using Quartz;
 using Quartz.Impl;
 
-using System.Net.Mail;
+using System.Net.Mail;  
 using System.Media;
 
 namespace Timekeeper.Classes
@@ -29,7 +29,9 @@ namespace Timekeeper.Classes
         public void Execute(IJobExecutionContext context)
         {
             try {
-                Timekeeper.Debug("Event " + context.JobDetail.Key.Name + " just fired");
+                // TODO: Temporarily (?) changing this from Debug to Info to help 
+                // me figure out my contention issues...
+                Timekeeper.Info("Event " + context.JobDetail.Key.Name + " just fired");
 
                 long EventId = Convert.ToInt64(context.JobDetail.Key.Name);
                 Classes.ScheduledEvent ScheduledEvent = new Classes.ScheduledEvent(EventId);

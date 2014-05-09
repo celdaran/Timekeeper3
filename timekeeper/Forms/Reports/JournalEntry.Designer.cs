@@ -47,6 +47,13 @@
             this.PrintSetupButton = new System.Windows.Forms.ToolStripMenuItem();
             this.PrintPreviewButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.ActionMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.manageViewsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,9 +78,10 @@
             this.SortButton,
             this.RefreshButton,
             this.ToolStripSeparator1,
+            this.LoadViewMenuButton,
+            this.ActionMenuButton,
             this.ClearViewButton,
             this.SaveViewButton,
-            this.LoadViewMenuButton,
             this.SaveViewAsButton,
             this.ManageViewsButton,
             this.ToolStripSeparator2,
@@ -128,6 +136,7 @@
             this.ClearViewButton.Size = new System.Drawing.Size(36, 22);
             this.ClearViewButton.Text = "Clear";
             this.ClearViewButton.ToolTipText = "Clear the current view";
+            this.ClearViewButton.Visible = false;
             this.ClearViewButton.Click += new System.EventHandler(this.ClearViewButton_Click);
             // 
             // SaveViewButton
@@ -139,6 +148,7 @@
             this.SaveViewButton.Size = new System.Drawing.Size(35, 22);
             this.SaveViewButton.Text = "Save";
             this.SaveViewButton.ToolTipText = "Save Current View";
+            this.SaveViewButton.Visible = false;
             this.SaveViewButton.Click += new System.EventHandler(this.SaveViewButton_Click);
             // 
             // LoadViewMenuButton
@@ -158,6 +168,7 @@
             this.SaveViewAsButton.Name = "SaveViewAsButton";
             this.SaveViewAsButton.Size = new System.Drawing.Size(62, 22);
             this.SaveViewAsButton.Text = "Save As...";
+            this.SaveViewAsButton.Visible = false;
             this.SaveViewAsButton.Click += new System.EventHandler(this.SaveViewAsButton_Click);
             // 
             // ManageViewsButton
@@ -168,12 +179,14 @@
             this.ManageViewsButton.Name = "ManageViewsButton";
             this.ManageViewsButton.Size = new System.Drawing.Size(61, 22);
             this.ManageViewsButton.Text = "Manage...";
+            this.ManageViewsButton.Visible = false;
             this.ManageViewsButton.Click += new System.EventHandler(this.ManageViewsButton_Click);
             // 
             // ToolStripSeparator2
             // 
             this.ToolStripSeparator2.Name = "ToolStripSeparator2";
             this.ToolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.ToolStripSeparator2.Visible = false;
             // 
             // PrintMenuButton
             // 
@@ -212,6 +225,61 @@
             // 
             this.ToolStripSeparator3.Name = "ToolStripSeparator3";
             this.ToolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // ActionMenuButton
+            // 
+            this.ActionMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ActionMenuButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.clearToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.manageViewsToolStripMenuItem});
+            this.ActionMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("ActionMenuButton.Image")));
+            this.ActionMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ActionMenuButton.Name = "ActionMenuButton";
+            this.ActionMenuButton.Size = new System.Drawing.Size(42, 22);
+            this.ActionMenuButton.Text = "View";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveViewButton_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveViewAsButton_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(151, 6);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.ClearViewButton_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(151, 6);
+            // 
+            // manageViewsToolStripMenuItem
+            // 
+            this.manageViewsToolStripMenuItem.Name = "manageViewsToolStripMenuItem";
+            this.manageViewsToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.manageViewsToolStripMenuItem.Text = "Manage Views...";
+            this.manageViewsToolStripMenuItem.Click += new System.EventHandler(this.ManageViewsButton_Click);
             // 
             // JournalEntry
             // 
@@ -252,5 +320,12 @@
         private System.Windows.Forms.ToolStripButton SortButton;
         private System.Windows.Forms.ToolStripButton ClearViewButton;
         private System.Windows.Forms.ToolStripButton SaveViewButton;
+        private System.Windows.Forms.ToolStripDropDownButton ActionMenuButton;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem manageViewsToolStripMenuItem;
     }
 }

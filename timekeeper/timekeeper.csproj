@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Timekeeper</RootNamespace>
     <AssemblyName>Timekeeper</AssemblyName>
-    <ApplicationIcon>Properties\timekeeper.ico</ApplicationIcon>
+    <ApplicationIcon>tk3.icon.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ManifestCertificateThumbprint>29A84029ED05BE963F800826055015A93EFFA767</ManifestCertificateThumbprint>
     <ManifestKeyFile>timekeeper_TemporaryKey.pfx</ManifestKeyFile>
@@ -603,6 +603,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="tk3.icon.ico" />
     <None Include="Resources\Images\Icons\Speaker.png" />
     <None Include="Resources\Images\Icons\Warning.png" />
     <None Include="Resources\SQL\3.0\EventGroup.Insert.sql" />

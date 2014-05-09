@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -102,11 +102,11 @@ namespace Timekeeper.Classes
                             // while simply hitting "OK" on the Filtering dialog
                             // box (before explicitly saving the view).
                             this.FilterOptions.Save();
-                            Common.Info("Just updated FilterOptionsId: " + filterOptionsId.ToString());
+                            Timekeeper.Debug("Just updated FilterOptionsId: " + filterOptionsId.ToString());
                         } else {
                             // Otherwise, create a new row
                             this.FilterOptions.Create();
-                            Common.Info("Just created FilterOptionsId: " + this.FilterOptions.FilterOptionsId.ToString());
+                            Timekeeper.Debug("Just created FilterOptionsId: " + this.FilterOptions.FilterOptionsId.ToString());
                         }
 
                         if (this.FilterOptions.FilterOptionsId < 1) {
@@ -117,7 +117,7 @@ namespace Timekeeper.Classes
                     }
 
                     View["ModifyTime"] = Common.Now();
-                    Common.Info("About to update " + this.TableName + "Id: " + this.Id.ToString());
+                    Timekeeper.Debug("About to update " + this.TableName + "Id: " + this.Id.ToString());
                     if (this.Database.Update(this.TableName, View, this.TableName + "Id", this.Id) == 1) {
                         ModifyTime = Convert.ToDateTime(View["ModifyTime"]);
                         FilterOptionsId = View["FilterOptionsId"];

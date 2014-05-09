@@ -65,8 +65,11 @@ namespace Timekeeper.Forms
             }
 
             // TODO: Implement auto-follow the other direction
+
             // Set hide mode based on projects's IsHidden property
             MenuBar_ShowHideProject(!Project.IsHidden);
+            MenuBar_ShowMergeProject(Project.IsFolder);
+            MenuBar_ShowDeleteProject(Project.IsDeleted);
 
             // Update calendar to reflect change
             Action_UpdateCalendar(ProjectTree);
@@ -364,14 +367,8 @@ namespace Timekeeper.Forms
             Classes.TreeAttribute SourceItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
 
             // See if it's in use
-            Classes.JournalEntryCollection.Dimension Dim;
-            if (SourceItem.Type == Classes.TreeAttribute.ItemType.Project) {
-                Dim = Classes.JournalEntryCollection.Dimension.Project;
-            } else {
-                Dim = Classes.JournalEntryCollection.Dimension.Project;
-            }
             var JournalEntries = new Classes.JournalEntryCollection();
-            int Count = JournalEntries.Count(Dim, SourceItem.ItemId);
+            int Count = JournalEntries.Count(SourceItem.Type, SourceItem.ItemId);
 
             if (Count > 0) {
                 string Prompt = String.Format(
@@ -470,8 +467,15 @@ namespace Timekeeper.Forms
                 this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
                 this.ActivityTree.ItemDrag += new ItemDragEventHandler(ActivityTree_ItemDrag);
 
-                // Schedule events and reminders
-                Action_Schedule();
+                // Is the scheduler subsystem enabled?
+                if (Options.Advanced_Other_DisableScheduler) {
+                    // Remove from UI
+                    MenuToolEvents.Visible = false;
+                } else {
+                    // Schedule events and reminders
+                    Action_Schedule();
+                    MenuToolEvents.Visible = true;
+                }
 
                 // SHORTCUTS
                 /*
@@ -707,7 +711,7 @@ namespace Timekeeper.Forms
                 tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
             } else {
                 int Icon = Timekeeper.IMG_PROJECT;
-                if (item.Type == Classes.TreeAttribute.ItemType.Activity) {
+                if (item.Type == Timekeeper.Dimension.Activity) {
                     Icon = Timekeeper.IMG_ACTIVITY;
                 }
                 tree.SelectedNode.ImageIndex = Icon;
@@ -1452,7 +1456,7 @@ namespace Timekeeper.Forms
 
             // FIXME: stopping the timer != opening the browser
             Browser_SetupForStarting();
-            browserEntry.SetNextIndex();
+            TimedEntry.AdvanceIndex();
 
             // In case any keyboard shortcuts were set while the timer
             // was running, take care of those now.
@@ -1489,6 +1493,7 @@ namespace Timekeeper.Forms
                 browserEntry.StopTime = browserEntry.StartTime.AddTicks(ChunkSize);
                 browserEntry.Seconds = ChunkSizeInSeconds;
                 browserEntry.Save(); // FIXME: rethink a global "save" and support specific updates
+                                     // TODO: I swear I typed stuff in, hit Split, and it didn't save my current edits
                 DateTimeOffset LastChunkTime = browserEntry.StopTime;
 
                 // Clone the current entry
@@ -1515,7 +1520,7 @@ namespace Timekeeper.Forms
 
                 // Copy the last-created split entry back to the browser
                 browserEntry = SplitEntry.Copy();
-                browserEntry.ResetIndex();
+                browserEntry.RefreshIndex();
                 Browser_EntryToForm(browserEntry);
             }
             catch (Exception x) {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,7 +57,7 @@ namespace Timekeeper.Classes
                     t.TodoId, t.CreateTime, t.ModifyTime,
                     p.ProjectId, p.Name as ProjectName,
                     r.RefTodoStatusId, r.Name as StatusName , r.Description as StatusDescription,
-                    t.StartDate, t.DueDate, t.Memo,
+                    t.StartTime, t.DueTime, t.Memo,
                     t.IsHidden, t.HiddenTime,
                     t.IsDeleted, t.DeletedTime
                 FROM Todo t
@@ -80,10 +80,10 @@ namespace Timekeeper.Classes
                 this.StatusName = TodoItem["StatusName"];
                 this.StatusDescription = TodoItem["StatusDescription"];
 
-                if (TodoItem["StartDate"] != null)
-                    this.StartTime = TodoItem["StartDate"];
-                if (TodoItem["DueDate"] != null)
-                    this.DueTime = TodoItem["DueDate"];
+                if (TodoItem["StartTime"] != null)
+                    this.StartTime = TodoItem["StartTime"];
+                if (TodoItem["DueTime"] != null)
+                    this.DueTime = TodoItem["DueTime"];
                 if (TodoItem["Memo"] != null)
                     this.Memo = TodoItem["Memo"];
 
@@ -111,8 +111,8 @@ namespace Timekeeper.Classes
                 TodoItem["ProjectId"] = this.ProjectId;
                 TodoItem["RefTodoStatusId"] = this.RefTodoStatusId;
 
-                TodoItem["StartDate"] = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
-                TodoItem["DueDate"] = this.DueTime.ToString(Common.UTC_DATETIME_FORMAT);
+                TodoItem["StartTime"] = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
+                TodoItem["DueTime"] = this.DueTime.ToString(Common.UTC_DATETIME_FORMAT);
                 TodoItem["Memo"] = this.Memo;
 
                 TodoItem["IsHidden"] = 0;
@@ -155,8 +155,8 @@ namespace Timekeeper.Classes
                 TodoItem["ProjectId"] = this.ProjectId;
                 TodoItem["RefTodoStatusId"] = this.RefTodoStatusId;
 
-                TodoItem["StartDate"] = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
-                TodoItem["DueDate"] = this.DueTime.ToString(Common.UTC_DATETIME_FORMAT);
+                TodoItem["StartTime"] = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
+                TodoItem["DueTime"] = this.DueTime.ToString(Common.UTC_DATETIME_FORMAT);
                 TodoItem["Memo"] = this.Memo;
 
                 if (Database.Update("Todo", TodoItem, "TodoId", this.TodoId) != 1) {

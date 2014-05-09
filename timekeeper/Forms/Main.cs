@@ -263,6 +263,11 @@ namespace Timekeeper.Forms
         // Action | Merge Activity
         private void MenuActionMergeActivity_Click(object sender, EventArgs e)
         {
+            if (ActivityTree.SelectedNode != null) {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)ActivityTree.SelectedNode.Tag;
+                // TODO: Action_ or Dialog_ ???
+                Action_MergeItem(Item);
+            }
         }
 
         // Action | Hide Activity
@@ -314,7 +319,7 @@ namespace Timekeeper.Forms
         private void menuReportsQuick_Click(object sender, EventArgs e)
         {
             Forms.Reports.JournalEntry Report = new Forms.Reports.JournalEntry();
-            Report.Show(this);
+            Report.Show();
 
             /*
             fReport rpt = new fReport(Database, 
@@ -474,7 +479,7 @@ namespace Timekeeper.Forms
         private void MenuToolbarBrowserNew_Click(object sender, EventArgs e)
         {
             Browser_SetupForStarting();
-            TimedEntry.SetNextIndex();
+            TimedEntry.AdvanceIndex();
         }
 
         // Toolbar Functions | Browser | Close Start Gap
@@ -1262,15 +1267,19 @@ namespace Timekeeper.Forms
 
         private void PopupMenuProject_Opening(object sender, CancelEventArgs e)
         {
-            // Enable/disable todo list
-            Classes.TodoItemCollection TodoItems = new Classes.TodoItemCollection();
+            // FIXME: too much logic here
             if (ProjectTree.SelectedNode != null) {
                 Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
 
                 if (Project.IsFolder) {
                     PopupMenuProjectAddtoTodoList.Enabled = false;
                 } else {
-                    PopupMenuProjectAddtoTodoList.Enabled = !TodoItems.Exists(Project.ItemId);
+                    if (Project.IsDeleted) {
+                        PopupMenuProjectAddtoTodoList.Enabled = false;
+                    } else {
+                        Classes.TodoItemCollection TodoItems = new Classes.TodoItemCollection();
+                        PopupMenuProjectAddtoTodoList.Enabled = !TodoItems.Exists(Project.ItemId);
+                    }
                 }
             } else {
                 PopupMenuProjectAddtoTodoList.Enabled = false;

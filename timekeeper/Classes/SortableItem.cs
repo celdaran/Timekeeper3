@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -196,7 +196,7 @@ namespace Timekeeper.Classes
 
             this.Id = this.Database.Insert(this.TableName, item);
             if (this.Id > 0) {
-                Common.Info("Just inserted " + this.TableName + "Id: " + this.Id.ToString());
+                Timekeeper.Debug("Just inserted " + this.TableName + "Id: " + this.Id.ToString());
                 CreateTime = DateTimeOffset.Parse(item["CreateTime"]);
                 ModifyTime = DateTimeOffset.Parse(item["ModifyTime"]);
                 SortOrderNo = (int)item["SortOrderNo"];
@@ -214,7 +214,7 @@ namespace Timekeeper.Classes
             item["ModifyTime"] = Common.Now();
 
             if (this.Database.Update(this.TableName, item, this.TableName + "Id", this.Id) == 1) {
-                Common.Info("Just updated " + this.TableName + "Id: " + this.Id.ToString());
+                Timekeeper.Debug("Just updated " + this.TableName + "Id: " + this.Id.ToString());
                 ModifyTime = DateTimeOffset.Parse(item["ModifyTime"]);
             } else {
                 throw new Exception("Error updating " + this.TableName);

@@ -32,8 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TodoDetail));
             this.ProjectTree = new System.Windows.Forms.TreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
-            this.StartDate = new System.Windows.Forms.DateTimePicker();
-            this.DueDate = new System.Windows.Forms.DateTimePicker();
+            this.StartTime = new System.Windows.Forms.DateTimePicker();
+            this.DueTime = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.RefTodoStatus = new System.Windows.Forms.ComboBox();
             this.Memo = new System.Windows.Forms.RichTextBox();
@@ -43,8 +43,8 @@
             this.AcceptDialogButton = new System.Windows.Forms.Button();
             this.DetailPanel = new System.Windows.Forms.Panel();
             this.FixedDetailPanel = new System.Windows.Forms.Panel();
-            this.UseStartDate = new System.Windows.Forms.CheckBox();
             this.UseDueDate = new System.Windows.Forms.CheckBox();
+            this.UseStartDate = new System.Windows.Forms.CheckBox();
             this.ButtonPanel.SuspendLayout();
             this.RightButtonPanel.SuspendLayout();
             this.DetailPanel.SuspendLayout();
@@ -74,17 +74,17 @@
             this.TreeImageList.Images.SetKeyName(7, "task-clock4.bmp");
             this.TreeImageList.Images.SetKeyName(8, "menu-item-hidden.bmp");
             // 
-            // StartDate
+            // StartTime
             // 
-            this.StartDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            resources.ApplyResources(this.StartDate, "StartDate");
-            this.StartDate.Name = "StartDate";
+            this.StartTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            resources.ApplyResources(this.StartTime, "StartTime");
+            this.StartTime.Name = "StartTime";
             // 
-            // DueDate
+            // DueTime
             // 
-            this.DueDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            resources.ApplyResources(this.DueDate, "DueDate");
-            this.DueDate.Name = "DueDate";
+            this.DueTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            resources.ApplyResources(this.DueTime, "DueTime");
+            this.DueTime.Name = "DueTime";
             // 
             // label3
             // 
@@ -150,23 +150,23 @@
             this.FixedDetailPanel.Controls.Add(this.UseDueDate);
             this.FixedDetailPanel.Controls.Add(this.UseStartDate);
             this.FixedDetailPanel.Controls.Add(this.label3);
-            this.FixedDetailPanel.Controls.Add(this.StartDate);
+            this.FixedDetailPanel.Controls.Add(this.StartTime);
             this.FixedDetailPanel.Controls.Add(this.RefTodoStatus);
-            this.FixedDetailPanel.Controls.Add(this.DueDate);
+            this.FixedDetailPanel.Controls.Add(this.DueTime);
             resources.ApplyResources(this.FixedDetailPanel, "FixedDetailPanel");
             this.FixedDetailPanel.Name = "FixedDetailPanel";
-            // 
-            // UseStartDate
-            // 
-            resources.ApplyResources(this.UseStartDate, "UseStartDate");
-            this.UseStartDate.Name = "UseStartDate";
-            this.UseStartDate.UseVisualStyleBackColor = true;
             // 
             // UseDueDate
             // 
             resources.ApplyResources(this.UseDueDate, "UseDueDate");
             this.UseDueDate.Name = "UseDueDate";
             this.UseDueDate.UseVisualStyleBackColor = true;
+            // 
+            // UseStartDate
+            // 
+            resources.ApplyResources(this.UseStartDate, "UseStartDate");
+            this.UseStartDate.Name = "UseStartDate";
+            this.UseStartDate.UseVisualStyleBackColor = true;
             // 
             // TodoDetail
             // 
@@ -195,8 +195,8 @@
 
         #endregion
 
-        private System.Windows.Forms.DateTimePicker StartDate;
-        private System.Windows.Forms.DateTimePicker DueDate;
+        private System.Windows.Forms.DateTimePicker StartTime;
+        private System.Windows.Forms.DateTimePicker DueTime;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox RefTodoStatus;
         private System.Windows.Forms.RichTextBox Memo;

@@ -48,8 +48,8 @@ namespace Timekeeper.Forms.Tools
                 Classes.Widgets Widgets = new Classes.Widgets();
                 Widgets.BuildProjectTree(ProjectTree.Nodes);
 
-                this.StartDate.CustomFormat = Options.Advanced_DateTimeFormat;
-                this.DueDate.CustomFormat = Options.Advanced_DateTimeFormat;
+                this.StartTime.CustomFormat = Options.Advanced_DateTimeFormat;
+                this.DueTime.CustomFormat = Options.Advanced_DateTimeFormat;
 
                 if (this.TodoId > 0) {
                     this.TodoItem = new Classes.TodoItem(this.TodoId);
@@ -65,9 +65,9 @@ namespace Timekeeper.Forms.Tools
                     this.RefTodoStatus.SelectedIndex = (int)TodoItem.RefTodoStatusId - 1;
 
                     if ((TodoItem.StartTime != null) && (TodoItem.StartTime != DateTime.MinValue))
-                        this.StartDate.Value = TodoItem.StartTime.LocalDateTime;
+                        this.StartTime.Value = TodoItem.StartTime.LocalDateTime;
                     if ((TodoItem.DueTime != null) && (TodoItem.DueTime != DateTime.MinValue))
-                        this.DueDate.Value = TodoItem.DueTime.LocalDateTime;
+                        this.DueTime.Value = TodoItem.DueTime.LocalDateTime;
                     if (TodoItem.Memo != null)
                         this.Memo.Text = TodoItem.Memo;
                 } else {
@@ -81,8 +81,8 @@ namespace Timekeeper.Forms.Tools
 
                     this.TodoItem = new Classes.TodoItem();
                     this.RefTodoStatus.SelectedIndex = 0;
-                    this.StartDate.Value = DateTime.Now;
-                    this.DueDate.Value = DateTime.Now;
+                    this.StartTime.Value = DateTime.Now;
+                    this.DueTime.Value = DateTime.Now;
                     this.Memo.Text = "";
                 }
             }
@@ -113,8 +113,8 @@ namespace Timekeeper.Forms.Tools
 
             this.TodoItem.ProjectId = Project.ItemId;
             this.TodoItem.RefTodoStatusId = this.RefTodoStatus.SelectedIndex + 1;
-            this.TodoItem.StartTime = this.StartDate.Value;
-            this.TodoItem.DueTime = this.DueDate.Value;
+            this.TodoItem.StartTime = this.StartTime.Value;
+            this.TodoItem.DueTime = this.DueTime.Value;
             this.TodoItem.Memo = this.Memo.Text;
 
             DialogResult = DialogResult.OK;

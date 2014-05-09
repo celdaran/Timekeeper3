@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -174,7 +174,7 @@ namespace Timekeeper.Classes
 
                     this.Id = this.Database.Insert("Event", Event);
                     if (this.Id > 0) {
-                        //Common.Info("Just inserted EventId: " + this.Id.ToString());
+                        Timekeeper.Debug("Just inserted EventId: " + this.Id.ToString());
                         CreateTime = Convert.ToDateTime(Event["CreateTime"]);
                         ModifyTime = Convert.ToDateTime(Event["ModifyTime"]);
                     } else {
@@ -184,7 +184,7 @@ namespace Timekeeper.Classes
 
                     Event["ModifyTime"] = Common.Now();
 
-                    //Common.Info("About to update EventId: " + this.Id.ToString());
+                    Timekeeper.Debug("About to update EventId: " + this.Id.ToString());
                     if (this.Database.Update("Event", Event, "EventId", this.Id) == 1) {
                         ModifyTime = Convert.ToDateTime(Event["ModifyTime"]);
                     } else {

@@ -13,6 +13,13 @@ namespace Timekeeper.Forms.Shared
 {
     public partial class Merge : Form
     {
+        //----------------------------------------------------------------------
+        // TODO: this thing is more or less hard wired to just allow for project
+        // and activity merging. But it should be made available for use by 
+        // locations and categories too. *Parts* of this are ready for these
+        // other two dimensions, but other parts are very much not.
+        //----------------------------------------------------------------------
+
         private Classes.TreeAttribute SourceItem;
 
         public Classes.TreeAttribute TargetItem;
@@ -49,7 +56,7 @@ namespace Timekeeper.Forms.Shared
             ItemTree.Nodes.Clear();
             this.Widgets = new Classes.Widgets();
 
-            if (this.SourceItem.Type == Classes.TreeAttribute.ItemType.Project) {
+            if (this.SourceItem.Type == Timekeeper.Dimension.Project) {
                 Widgets.BuildProjectTree(ItemTree.Nodes);
             } else {
                 Widgets.BuildActivityTree(ItemTree.Nodes);
@@ -59,6 +66,8 @@ namespace Timekeeper.Forms.Shared
 
         private void FilterButton_Click(object sender, EventArgs e)
         {
+            FindView.FilterOptions.FilterOptionsType = Classes.FilterOptions.OptionsType.Merge;
+            FindView.FilterOptions.FilterMergeType = this.SourceItem.Type;
             this.FilterDialog = new Forms.Shared.Filtering(FindView.FilterOptions);
 
             FindView.FilterOptions = this.Widgets.FilteringDialog(this,
@@ -66,8 +75,24 @@ namespace Timekeeper.Forms.Shared
 
             if (FindView.FilterOptions.Changed) {
                 FindView.Changed = true;
+                List<long> ImpliedProjects = new List<long>();
+                ImpliedProjects.Add(this.SourceItem.ItemId);
+                FindView.FilterOptions.ImpliedProjects = ImpliedProjects;
+                FindView.FilterOptions.SuppressTableAlias = true;
                 Common.Info(this.FindView.FilterOptions.WhereClause);
-                //RunFind();
+                //RunMerge();
+            }
+        }
+
+        private void RunMerge()
+        {
+            Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
+            bool Result = Entries.Merge(
+                this.FindView.FilterOptions.WhereClause, 
+                this.SourceItem.Type.ToString() + "Id", 
+                this.SourceItem.ItemId);
+            if (!Result) {
+                Timekeeper.DoubleWarn("Error encountered during merge operation.");
             }
         }
 
