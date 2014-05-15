@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -108,7 +108,7 @@
   <Choose>
     <When Condition="'$(Platform)' == 'x64'">
       <ItemGroup>
-        <Reference Include="Technitivity.Toolbox, Version=3.0.7.12, Culture=neutral, processorArchitecture=MSIL">
+        <Reference Include="Technitivity.Toolbox, Version=3.0.15.2, Culture=neutral, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>References\x64\Technitivity.Toolbox.dll</HintPath>
         </Reference>
@@ -116,7 +116,7 @@
     </When>
     <When Condition="'$(Platform)' == 'x86'">
       <ItemGroup>
-        <Reference Include="Technitivity.Toolbox, Version=3.0.7.12, Culture=neutral, processorArchitecture=MSIL">
+        <Reference Include="Technitivity.Toolbox, Version=3.0.15.2, Culture=neutral, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>References\x86\Technitivity.Toolbox.dll</HintPath>
         </Reference>
@@ -124,6 +124,10 @@
     </When>
   </Choose>
   <ItemGroup>
+    <Reference Include="DropDownControls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\DropDownControls.dll</HintPath>
+    </Reference>
     <Reference Include="MarkdownSharp">
       <HintPath>References\MarkdownSharp.dll</HintPath>
     </Reference>
@@ -139,7 +143,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Technitivity.Toolbox, Version=3.0.15.2, Culture=neutral, PublicKeyToken=null" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\BaseView.cs" />

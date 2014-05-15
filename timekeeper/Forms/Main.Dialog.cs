@@ -308,21 +308,14 @@ namespace Timekeeper.Forms
                     case 0:
                         Height = 200;
                         Width = 364;
-                        Browser_Close();
                         break;
                     case 1:
                         Height = 460;
                         Width = 572;
-                        splitMain.SplitterDistance = 180;
-                        splitTrees.SplitterDistance = Width / 2;
-                        Browser_Open();
                         break;
                     case 2:
                         Height = 460;
                         Width = 572;
-                        splitMain.SplitterDistance = 180;
-                        splitTrees.SplitterDistance = Width / 2;
-                        Browser_Open();
                         break;
                 }
             }

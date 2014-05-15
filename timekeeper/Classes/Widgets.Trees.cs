@@ -17,8 +17,6 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        //----------------------------------------------------------------------
-
         public void BuildProjectTree(TreeNodeCollection tree)
         {
             BuildProjectTree(tree, null, 0);
@@ -30,6 +28,14 @@ namespace Timekeeper.Classes
         public void BuildActivityTree(TreeNodeCollection tree)
         {
             BuildActivityTree(tree, null, 0);
+            ExpandTree(tree);
+        }
+
+        //----------------------------------------------------------------------
+
+        public void BuildProjectTree(ComboTreeNodeCollection tree)
+        {
+            BuildProjectTree(tree, null, 0);
             ExpandTree(tree);
         }
 
@@ -95,6 +101,37 @@ namespace Timekeeper.Classes
             DateTime showHiddenSince = GetShowHiddenSinceTime();
             string orderByClause = GetOrderBy(Options.Behavior_SortProjectsBy, Options.Behavior_SortProjectsByDirection);
 
+            // Instantiate Project collection
+            ProjectCollection Projects = new ProjectCollection(orderByClause);
+
+            // Iterate over Projects
+            foreach (Project Project in Projects.Fetch(parentId, showHidden, showHiddenSince)) {
+
+                // Choose icon
+                int Icon = Timekeeper.IMG_PROJECT;
+
+                if (Project.IsHidden) {
+                    Icon = Timekeeper.IMG_ITEM_HIDDEN;
+                }
+
+                // Create the new node
+                TreeNode Node = AddItemToTree(tree, parentNode, Project, Icon);
+
+                // Then recurse
+                if (Project.ItemId != parentId) {
+                    BuildProjectTree(tree, Node, Project.ItemId);
+                }
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void BuildProjectTree(ComboTreeNodeCollection tree, ComboTreeNode parentNode, long parentId)
+        {
+            bool showHidden = Options.View_HiddenProjects;
+            DateTime showHiddenSince = GetShowHiddenSinceTime();
+            string orderByClause = GetOrderBy(Options.Behavior_SortProjectsBy, Options.Behavior_SortProjectsByDirection);
+
             // Instantiate Activities object
             ProjectCollection Projects = new ProjectCollection(orderByClause);
 
@@ -109,7 +146,7 @@ namespace Timekeeper.Classes
                 }
 
                 // Create the new node
-                TreeNode Node = AddItemToTree(tree, parentNode, Project, Icon);
+                ComboTreeNode Node = AddItemToTree(tree, parentNode, Project, Icon);
 
                 // Then recurse
                 if (Project.ItemId != parentId) {
@@ -168,6 +205,22 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
+        private void ExpandTree(ComboTreeNodeCollection tree)
+        {
+            foreach (ComboTreeNode Node in tree) {
+                TreeAttribute Item = (TreeAttribute)Node.Tag;
+                if (Item.IsFolderOpened) {
+                    if (!Node.IsExpanded) {
+                        Node.Expand();
+                    }
+                }
+                if (Item.IsFolder) {
+                    ExpandTree(Node.Nodes);
+                }
+            }
+        }
+        //----------------------------------------------------------------------
+
         private TreeNode AddItemToTree(TreeNodeCollection tree, TreeNode parentNode, TreeAttribute item, int imageIndex)
         {
             TreeNode Node = new TreeNode();
@@ -189,6 +242,36 @@ namespace Timekeeper.Classes
             } else {
                 Node.ImageIndex = imageIndex;
                 Node.SelectedImageIndex = imageIndex;
+            }
+
+            if (parentNode == null) {
+                tree.Add(Node);
+            } else {
+                parentNode.Nodes.Add(Node);
+            }
+
+            return Node;
+        }
+
+        //----------------------------------------------------------------------
+
+        private ComboTreeNode AddItemToTree(ComboTreeNodeCollection tree, ComboTreeNode parentNode, TreeAttribute item, int imageIndex)
+        {
+            ComboTreeNode Node = new ComboTreeNode();
+            Node.Tag = item;
+            Node.Text = item.DisplayName();
+            if (item.IsHidden) {
+                Node.ForeColor = Color.Gray;
+            }
+
+            if (item.IsFolder) {
+                if (item.IsHidden) {
+                    Node.ImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
+                } else {
+                    Node.ImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
+                }
+            } else {
+                Node.ImageIndex = imageIndex;
             }
 
             if (parentNode == null) {
@@ -314,6 +397,29 @@ namespace Timekeeper.Classes
             return FoundNode;
         }
 
+        //----------------------------------------------------------------------
+
+        public ComboTreeNode FindTreeNode(ComboTreeNodeCollection nodes, long itemId)
+        {
+            // FIXME: Look at all the copy/paste. LOOK AT IT.
+
+            ComboTreeNode FoundNode = null;
+
+            foreach (ComboTreeNode Node in nodes) {
+                TreeAttribute item = (TreeAttribute)Node.Tag;
+
+                if (item.ItemId == itemId) {
+                    FoundNode = Node;
+                } else {
+                    FoundNode = FindTreeNode(Node.Nodes, itemId);
+                }
+                if (FoundNode != null) {
+                    break;
+                }
+            }
+
+            return FoundNode;
+        }
         //----------------------------------------------------------------------
 
         private void ShowRootLines(TreeView tree)

@@ -49,8 +49,6 @@ namespace Timekeeper.Forms
             this.MenuAction = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionStartTimer = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionStopTimer = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionOpenBrowser = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionCloseBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuActionManageProjects = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionNewProjectFolder = new System.Windows.Forms.ToolStripMenuItem();
@@ -138,7 +136,6 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedAllToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarFileName = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarDebug1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.splitTrees = new System.Windows.Forms.SplitContainer();
             this.ProjectTree = new System.Windows.Forms.TreeView();
             this.PopupMenuProject = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuProjectNewProject = new System.Windows.Forms.ToolStripMenuItem();
@@ -154,7 +151,6 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuProjectUseProjects = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectUseActivities = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectSwapPanes = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuProjectSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuProjectProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
@@ -171,7 +167,6 @@ namespace Timekeeper.Forms
             this.PopupMenuActivitySep1 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuActivityUseProjects = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuActivityUseActivities = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuActivitySwapPanes = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuActivitySep2 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuActivityProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -191,8 +186,8 @@ namespace Timekeeper.Forms
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutTimekeeperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.splitMain = new System.Windows.Forms.SplitContainer();
             this.panelControls = new System.Windows.Forms.Panel();
+            this.ProjectTreeDropdown = new ComboTreeBox();
             this.CloseStartGapButton = new System.Windows.Forms.Button();
             this.CloseStopGapButton = new System.Windows.Forms.Button();
             this.LocationAndCategoryPanel = new System.Windows.Forms.Panel();
@@ -214,7 +209,6 @@ namespace Timekeeper.Forms
             this.BrowserToolbar = new System.Windows.Forms.ToolStrip();
             this.toolControlStart = new System.Windows.Forms.ToolStripButton();
             this.toolControlStop = new System.Windows.Forms.ToolStripButton();
-            this.toolControlClose = new System.Windows.Forms.ToolStripButton();
             this.toolControlSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolControlFirstEntry = new System.Windows.Forms.ToolStripButton();
             this.toolControlPrevEntry = new System.Windows.Forms.ToolStripButton();
@@ -241,19 +235,12 @@ namespace Timekeeper.Forms
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
+            this.MainPanel = new System.Windows.Forms.Panel();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).BeginInit();
-            this.splitTrees.Panel1.SuspendLayout();
-            this.splitTrees.Panel2.SuspendLayout();
-            this.splitTrees.SuspendLayout();
             this.PopupMenuProject.SuspendLayout();
             this.PopupMenuActivity.SuspendLayout();
             this.PopupMenuTrayIcon.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitMain)).BeginInit();
-            this.splitMain.Panel1.SuspendLayout();
-            this.splitMain.Panel2.SuspendLayout();
-            this.splitMain.SuspendLayout();
             this.panelControls.SuspendLayout();
             this.LocationAndCategoryPanel.SuspendLayout();
             this.CategoryPanel.SuspendLayout();
@@ -261,10 +248,12 @@ namespace Timekeeper.Forms
             this.PopupMenuDates.SuspendLayout();
             this.BrowserToolbar.SuspendLayout();
             this.PopupMenuMemo.SuspendLayout();
+            this.MainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuMain
             // 
+            this.MenuMain.BackColor = System.Drawing.SystemColors.ControlLight;
             this.MenuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuFile,
             this.MenuAction,
@@ -274,7 +263,7 @@ namespace Timekeeper.Forms
             this.MenuToolbar});
             this.MenuMain.Location = new System.Drawing.Point(0, 0);
             this.MenuMain.Name = "MenuMain";
-            this.MenuMain.Size = new System.Drawing.Size(650, 24);
+            this.MenuMain.Size = new System.Drawing.Size(742, 24);
             this.MenuMain.TabIndex = 0;
             // 
             // MenuFile
@@ -399,8 +388,6 @@ namespace Timekeeper.Forms
             this.MenuAction.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuActionStartTimer,
             this.MenuActionStopTimer,
-            this.MenuActionOpenBrowser,
-            this.MenuActionCloseBrowser,
             this.MenuActionSep1,
             this.MenuActionManageProjects,
             this.MenuActionManageActivities,
@@ -429,22 +416,6 @@ namespace Timekeeper.Forms
             this.MenuActionStopTimer.Text = "&Stop Timer";
             this.MenuActionStopTimer.Visible = false;
             this.MenuActionStopTimer.Click += new System.EventHandler(this.MenuActionStopTimer_Click);
-            // 
-            // MenuActionOpenBrowser
-            // 
-            this.MenuActionOpenBrowser.Name = "MenuActionOpenBrowser";
-            this.MenuActionOpenBrowser.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionOpenBrowser.Text = "Open &Browser";
-            this.MenuActionOpenBrowser.Click += new System.EventHandler(this.MenuActionOpenBrowser_Click);
-            // 
-            // MenuActionCloseBrowser
-            // 
-            this.MenuActionCloseBrowser.Image = global::Timekeeper.Properties.Resources.ImageButtonClose;
-            this.MenuActionCloseBrowser.Name = "MenuActionCloseBrowser";
-            this.MenuActionCloseBrowser.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionCloseBrowser.Text = "Close &Browser";
-            this.MenuActionCloseBrowser.Visible = false;
-            this.MenuActionCloseBrowser.Click += new System.EventHandler(this.MenuActionCloseBrowser_Click);
             // 
             // MenuActionSep1
             // 
@@ -687,14 +658,14 @@ namespace Timekeeper.Forms
             // 
             this.MenuToolFind.Name = "MenuToolFind";
             this.MenuToolFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.MenuToolFind.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolFind.Size = new System.Drawing.Size(182, 22);
             this.MenuToolFind.Text = "&Find...";
             this.MenuToolFind.Click += new System.EventHandler(this.MenuToolFind_Click);
             // 
             // MenuToolSep1
             // 
             this.MenuToolSep1.Name = "MenuToolSep1";
-            this.MenuToolSep1.Size = new System.Drawing.Size(157, 6);
+            this.MenuToolSep1.Size = new System.Drawing.Size(179, 6);
             // 
             // MenuToolTodo
             // 
@@ -714,28 +685,28 @@ namespace Timekeeper.Forms
             // MenuToolNotebook
             // 
             this.MenuToolNotebook.Name = "MenuToolNotebook";
-            this.MenuToolNotebook.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolNotebook.Size = new System.Drawing.Size(182, 22);
             this.MenuToolNotebook.Text = "&Notebook...";
             this.MenuToolNotebook.Click += new System.EventHandler(this.MenuToolNotebook_Click);
             // 
             // MenuToolCalendar
             // 
             this.MenuToolCalendar.Name = "MenuToolCalendar";
-            this.MenuToolCalendar.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolCalendar.Size = new System.Drawing.Size(182, 22);
             this.MenuToolCalendar.Text = "&Calendar...";
             this.MenuToolCalendar.Click += new System.EventHandler(this.MenuToolCalendar_Click);
             // 
             // MenuToolStopwatch
             // 
             this.MenuToolStopwatch.Name = "MenuToolStopwatch";
-            this.MenuToolStopwatch.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolStopwatch.Size = new System.Drawing.Size(182, 22);
             this.MenuToolStopwatch.Text = "Stopwatch...";
             this.MenuToolStopwatch.Click += new System.EventHandler(this.MenuToolStopwatch_Click);
             // 
             // MenuToolCountdown
             // 
             this.MenuToolCountdown.Name = "MenuToolCountdown";
-            this.MenuToolCountdown.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolCountdown.Size = new System.Drawing.Size(182, 22);
             this.MenuToolCountdown.Text = "C&ountdown...";
             this.MenuToolCountdown.Click += new System.EventHandler(this.MenuToolCountdown_Click);
             // 
@@ -743,7 +714,7 @@ namespace Timekeeper.Forms
             // 
             this.MenuToolDatecalc.Enabled = false;
             this.MenuToolDatecalc.Name = "MenuToolDatecalc";
-            this.MenuToolDatecalc.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolDatecalc.Size = new System.Drawing.Size(182, 22);
             this.MenuToolDatecalc.Text = "&Date Calculator...";
             this.MenuToolDatecalc.Visible = false;
             this.MenuToolDatecalc.Click += new System.EventHandler(this.menuToolsDatecalc_Click);
@@ -751,13 +722,13 @@ namespace Timekeeper.Forms
             // MenuToolSep2
             // 
             this.MenuToolSep2.Name = "MenuToolSep2";
-            this.MenuToolSep2.Size = new System.Drawing.Size(157, 6);
+            this.MenuToolSep2.Size = new System.Drawing.Size(179, 6);
             // 
             // MenuToolOptions
             // 
             this.MenuToolOptions.Name = "MenuToolOptions";
             this.MenuToolOptions.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.MenuToolOptions.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolOptions.Size = new System.Drawing.Size(182, 22);
             this.MenuToolOptions.Text = "Options";
             this.MenuToolOptions.Click += new System.EventHandler(this.MenuToolOptions_Click);
             // 
@@ -1088,10 +1059,10 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedAllToday,
             this.StatusBarFileName,
             this.StatusBarDebug1});
-            this.StatusBar.Location = new System.Drawing.Point(0, 386);
+            this.StatusBar.Location = new System.Drawing.Point(0, 300);
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.ShowItemToolTips = true;
-            this.StatusBar.Size = new System.Drawing.Size(650, 22);
+            this.StatusBar.Size = new System.Drawing.Size(742, 22);
             this.StatusBar.TabIndex = 12;
             // 
             // StatusBarCurrentProject
@@ -1190,40 +1161,20 @@ namespace Timekeeper.Forms
             this.StatusBarDebug1.Size = new System.Drawing.Size(47, 17);
             this.StatusBarDebug1.Text = "Debug 1";
             // 
-            // splitTrees
-            // 
-            this.splitTrees.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitTrees.Location = new System.Drawing.Point(0, 0);
-            this.splitTrees.Name = "splitTrees";
-            // 
-            // splitTrees.Panel1
-            // 
-            this.splitTrees.Panel1.Controls.Add(this.ProjectTree);
-            // 
-            // splitTrees.Panel2
-            // 
-            this.splitTrees.Panel2.Controls.Add(this.ActivityTree);
-            this.splitTrees.Size = new System.Drawing.Size(650, 115);
-            this.splitTrees.SplitterDistance = 325;
-            this.splitTrees.TabIndex = 2;
-            this.splitTrees.TabStop = false;
-            this.splitTrees.DoubleClick += new System.EventHandler(this.splitTrees_DoubleClick);
-            // 
             // ProjectTree
             // 
             this.ProjectTree.AllowDrop = true;
             this.ProjectTree.ContextMenuStrip = this.PopupMenuProject;
-            this.ProjectTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProjectTree.HideSelection = false;
             this.ProjectTree.ImageIndex = 1;
             this.ProjectTree.ImageList = this.TreeImageList;
             this.ProjectTree.LabelEdit = true;
-            this.ProjectTree.Location = new System.Drawing.Point(0, 0);
+            this.ProjectTree.Location = new System.Drawing.Point(459, 8);
             this.ProjectTree.Name = "ProjectTree";
             this.ProjectTree.SelectedImageIndex = 0;
             this.ProjectTree.ShowLines = false;
             this.ProjectTree.ShowNodeToolTips = true;
-            this.ProjectTree.Size = new System.Drawing.Size(325, 115);
+            this.ProjectTree.Size = new System.Drawing.Size(174, 101);
             this.ProjectTree.TabIndex = 0;
             this.ProjectTree.Tag = "Project";
             this.ProjectTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ProjectTree_AfterLabelEdit);
@@ -1254,11 +1205,10 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectSep1,
             this.PopupMenuProjectUseProjects,
             this.PopupMenuProjectUseActivities,
-            this.PopupMenuProjectSwapPanes,
             this.PopupMenuProjectSep2,
             this.PopupMenuProjectProperties});
             this.PopupMenuProject.Name = "menuProject";
-            this.PopupMenuProject.Size = new System.Drawing.Size(165, 308);
+            this.PopupMenuProject.Size = new System.Drawing.Size(165, 286);
             this.PopupMenuProject.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenuProject_Opening);
             // 
             // PopupMenuProjectNewProject
@@ -1356,13 +1306,6 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectUseActivities.Text = "Use Activities";
             this.PopupMenuProjectUseActivities.Click += new System.EventHandler(this.PopupMenuProjectUseActivities_Click);
             // 
-            // PopupMenuProjectSwapPanes
-            // 
-            this.PopupMenuProjectSwapPanes.Name = "PopupMenuProjectSwapPanes";
-            this.PopupMenuProjectSwapPanes.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectSwapPanes.Text = "S&wap Panes";
-            this.PopupMenuProjectSwapPanes.Click += new System.EventHandler(this.PopupMenuProjectSwapPanes_Click);
-            // 
             // PopupMenuProjectSep2
             // 
             this.PopupMenuProjectSep2.Name = "PopupMenuProjectSep2";
@@ -1394,17 +1337,16 @@ namespace Timekeeper.Forms
             // 
             this.ActivityTree.AllowDrop = true;
             this.ActivityTree.ContextMenuStrip = this.PopupMenuActivity;
-            this.ActivityTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ActivityTree.HideSelection = false;
             this.ActivityTree.ImageIndex = 1;
             this.ActivityTree.ImageList = this.TreeImageList;
             this.ActivityTree.LabelEdit = true;
-            this.ActivityTree.Location = new System.Drawing.Point(0, 0);
+            this.ActivityTree.Location = new System.Drawing.Point(639, 8);
             this.ActivityTree.Name = "ActivityTree";
             this.ActivityTree.SelectedImageIndex = 0;
             this.ActivityTree.ShowLines = false;
             this.ActivityTree.ShowNodeToolTips = true;
-            this.ActivityTree.Size = new System.Drawing.Size(321, 115);
+            this.ActivityTree.Size = new System.Drawing.Size(100, 101);
             this.ActivityTree.TabIndex = 0;
             this.ActivityTree.Tag = "Activity";
             this.ActivityTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ActivityTree_AfterLabelEdit);
@@ -1433,11 +1375,10 @@ namespace Timekeeper.Forms
             this.PopupMenuActivitySep1,
             this.PopupMenuActivityUseProjects,
             this.PopupMenuActivityUseActivities,
-            this.PopupMenuActivitySwapPanes,
             this.PopupMenuActivitySep2,
             this.PopupMenuActivityProperties});
             this.PopupMenuActivity.Name = "menuTask";
-            this.PopupMenuActivity.Size = new System.Drawing.Size(147, 280);
+            this.PopupMenuActivity.Size = new System.Drawing.Size(147, 258);
             // 
             // PopupMenuActivityNewActivity
             // 
@@ -1521,13 +1462,6 @@ namespace Timekeeper.Forms
             this.PopupMenuActivityUseActivities.Size = new System.Drawing.Size(146, 22);
             this.PopupMenuActivityUseActivities.Text = "Use Activities";
             this.PopupMenuActivityUseActivities.Click += new System.EventHandler(this.PopupMenuActivityUseActivities_Click);
-            // 
-            // PopupMenuActivitySwapPanes
-            // 
-            this.PopupMenuActivitySwapPanes.Name = "PopupMenuActivitySwapPanes";
-            this.PopupMenuActivitySwapPanes.Size = new System.Drawing.Size(146, 22);
-            this.PopupMenuActivitySwapPanes.Text = "Swap Panes";
-            this.PopupMenuActivitySwapPanes.Click += new System.EventHandler(this.PopupMenuActivitySwapPanes_Click);
             // 
             // PopupMenuActivitySep2
             // 
@@ -1668,33 +1602,12 @@ namespace Timekeeper.Forms
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.MenuFileExit_Click);
             // 
-            // splitMain
-            // 
-            this.splitMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitMain.Location = new System.Drawing.Point(0, 24);
-            this.splitMain.Name = "splitMain";
-            this.splitMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitMain.Panel1
-            // 
-            this.splitMain.Panel1.Controls.Add(this.splitTrees);
-            // 
-            // splitMain.Panel2
-            // 
-            this.splitMain.Panel2.Controls.Add(this.panelControls);
-            this.splitMain.Size = new System.Drawing.Size(650, 362);
-            this.splitMain.SplitterDistance = 115;
-            this.splitMain.TabIndex = 4;
-            this.splitMain.TabStop = false;
-            this.splitMain.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitMain_SplitterMoved);
-            this.splitMain.DoubleClick += new System.EventHandler(this.splitMain_DoubleClick);
-            this.splitMain.Resize += new System.EventHandler(this.splitMain_Resize);
-            // 
             // panelControls
             // 
             this.panelControls.BackColor = System.Drawing.SystemColors.Control;
-            this.panelControls.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelControls.Controls.Add(this.ProjectTreeDropdown);
+            this.panelControls.Controls.Add(this.ActivityTree);
+            this.panelControls.Controls.Add(this.ProjectTree);
             this.panelControls.Controls.Add(this.CloseStartGapButton);
             this.panelControls.Controls.Add(this.CloseStopGapButton);
             this.panelControls.Controls.Add(this.LocationAndCategoryPanel);
@@ -1704,19 +1617,29 @@ namespace Timekeeper.Forms
             this.panelControls.Controls.Add(this.labelStopTime);
             this.panelControls.Controls.Add(this.wDuration);
             this.panelControls.Controls.Add(this.labelDuration);
-            this.panelControls.Controls.Add(this.BrowserToolbar);
             this.panelControls.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelControls.Location = new System.Drawing.Point(0, 0);
+            this.panelControls.Location = new System.Drawing.Point(0, 25);
             this.panelControls.Name = "panelControls";
-            this.panelControls.Size = new System.Drawing.Size(650, 112);
+            this.panelControls.Size = new System.Drawing.Size(742, 112);
             this.panelControls.TabIndex = 0;
             this.panelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
+            // 
+            // ProjectTreeDropdown
+            // 
+            this.ProjectTreeDropdown.DrawWithVisualStyles = false;
+            this.ProjectTreeDropdown.DroppedDown = false;
+            this.ProjectTreeDropdown.Images = this.TreeImageList;
+            this.ProjectTreeDropdown.Location = new System.Drawing.Point(243, 80);
+            this.ProjectTreeDropdown.Name = "ProjectTreeDropdown";
+            this.ProjectTreeDropdown.SelectedNode = null;
+            this.ProjectTreeDropdown.Size = new System.Drawing.Size(203, 23);
+            this.ProjectTreeDropdown.TabIndex = 19;
             // 
             // CloseStartGapButton
             // 
             this.CloseStartGapButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CloseStartGapButton.Font = new System.Drawing.Font("Wingdings 3", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.CloseStartGapButton.Location = new System.Drawing.Point(204, 30);
+            this.CloseStartGapButton.Location = new System.Drawing.Point(204, 10);
             this.CloseStartGapButton.Name = "CloseStartGapButton";
             this.CloseStartGapButton.Size = new System.Drawing.Size(27, 20);
             this.CloseStartGapButton.TabIndex = 18;
@@ -1728,7 +1651,7 @@ namespace Timekeeper.Forms
             // 
             this.CloseStopGapButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CloseStopGapButton.Font = new System.Drawing.Font("Wingdings 3", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.CloseStopGapButton.Location = new System.Drawing.Point(204, 57);
+            this.CloseStopGapButton.Location = new System.Drawing.Point(204, 35);
             this.CloseStopGapButton.Name = "CloseStopGapButton";
             this.CloseStopGapButton.Size = new System.Drawing.Size(27, 20);
             this.CloseStopGapButton.TabIndex = 17;
@@ -1740,9 +1663,9 @@ namespace Timekeeper.Forms
             // 
             this.LocationAndCategoryPanel.Controls.Add(this.CategoryPanel);
             this.LocationAndCategoryPanel.Controls.Add(this.LocationPanel);
-            this.LocationAndCategoryPanel.Location = new System.Drawing.Point(237, 28);
+            this.LocationAndCategoryPanel.Location = new System.Drawing.Point(237, 8);
             this.LocationAndCategoryPanel.Name = "LocationAndCategoryPanel";
-            this.LocationAndCategoryPanel.Size = new System.Drawing.Size(216, 74);
+            this.LocationAndCategoryPanel.Size = new System.Drawing.Size(216, 66);
             this.LocationAndCategoryPanel.TabIndex = 16;
             // 
             // CategoryPanel
@@ -1806,7 +1729,7 @@ namespace Timekeeper.Forms
             this.wStopTime.ContextMenuStrip = this.PopupMenuDates;
             this.wStopTime.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.wStopTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.wStopTime.Location = new System.Drawing.Point(67, 56);
+            this.wStopTime.Location = new System.Drawing.Point(67, 36);
             this.wStopTime.Name = "wStopTime";
             this.wStopTime.Size = new System.Drawing.Size(130, 20);
             this.wStopTime.TabIndex = 2;
@@ -1842,7 +1765,7 @@ namespace Timekeeper.Forms
             this.wStartTime.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.wStartTime.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
             this.wStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.wStartTime.Location = new System.Drawing.Point(67, 30);
+            this.wStartTime.Location = new System.Drawing.Point(67, 10);
             this.wStartTime.Name = "wStartTime";
             this.wStartTime.Size = new System.Drawing.Size(130, 20);
             this.wStartTime.TabIndex = 1;
@@ -1853,7 +1776,7 @@ namespace Timekeeper.Forms
             // 
             // labelStartTime
             // 
-            this.labelStartTime.Location = new System.Drawing.Point(3, 33);
+            this.labelStartTime.Location = new System.Drawing.Point(3, 13);
             this.labelStartTime.Name = "labelStartTime";
             this.labelStartTime.Size = new System.Drawing.Size(58, 13);
             this.labelStartTime.TabIndex = 6;
@@ -1862,7 +1785,7 @@ namespace Timekeeper.Forms
             // labelStopTime
             // 
             this.labelStopTime.AutoSize = true;
-            this.labelStopTime.Location = new System.Drawing.Point(3, 59);
+            this.labelStopTime.Location = new System.Drawing.Point(3, 38);
             this.labelStopTime.Name = "labelStopTime";
             this.labelStopTime.Size = new System.Drawing.Size(29, 13);
             this.labelStopTime.TabIndex = 8;
@@ -1870,7 +1793,7 @@ namespace Timekeeper.Forms
             // 
             // wDuration
             // 
-            this.wDuration.Location = new System.Drawing.Point(67, 82);
+            this.wDuration.Location = new System.Drawing.Point(67, 62);
             this.wDuration.Name = "wDuration";
             this.wDuration.Size = new System.Drawing.Size(69, 20);
             this.wDuration.TabIndex = 3;
@@ -1880,7 +1803,7 @@ namespace Timekeeper.Forms
             // labelDuration
             // 
             this.labelDuration.AutoSize = true;
-            this.labelDuration.Location = new System.Drawing.Point(3, 85);
+            this.labelDuration.Location = new System.Drawing.Point(3, 64);
             this.labelDuration.Name = "labelDuration";
             this.labelDuration.Size = new System.Drawing.Size(50, 13);
             this.labelDuration.TabIndex = 10;
@@ -1893,7 +1816,6 @@ namespace Timekeeper.Forms
             this.BrowserToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolControlStart,
             this.toolControlStop,
-            this.toolControlClose,
             this.toolControlSep1,
             this.toolControlFirstEntry,
             this.toolControlPrevEntry,
@@ -1912,8 +1834,8 @@ namespace Timekeeper.Forms
             this.toolControlUnlock});
             this.BrowserToolbar.Location = new System.Drawing.Point(0, 0);
             this.BrowserToolbar.Name = "BrowserToolbar";
-            this.BrowserToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.BrowserToolbar.Size = new System.Drawing.Size(646, 25);
+            this.BrowserToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.BrowserToolbar.Size = new System.Drawing.Size(742, 25);
             this.BrowserToolbar.TabIndex = 0;
             this.BrowserToolbar.Text = "toolStrip2";
             // 
@@ -1937,18 +1859,6 @@ namespace Timekeeper.Forms
             this.toolControlStop.ToolTipText = "Stop the Timer";
             this.toolControlStop.Visible = false;
             this.toolControlStop.Click += new System.EventHandler(this.MenuActionStopTimer_Click);
-            // 
-            // toolControlClose
-            // 
-            this.toolControlClose.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolControlClose.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolControlClose.Image = global::Timekeeper.Properties.Resources.ImageButtonClose;
-            this.toolControlClose.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolControlClose.Name = "toolControlClose";
-            this.toolControlClose.Size = new System.Drawing.Size(23, 22);
-            this.toolControlClose.Text = "&Close Browser";
-            this.toolControlClose.ToolTipText = "Close This Pane";
-            this.toolControlClose.Click += new System.EventHandler(this.MenuActionCloseBrowser_Click);
             // 
             // toolControlSep1
             // 
@@ -2178,12 +2088,22 @@ namespace Timekeeper.Forms
     "base|*.tkdb|Timekeeper 2.1 Database|*.tkdb|Timekeeper 2.0 Database|*.tkdb";
             this.SaveAsDialog.Title = "Save As";
             // 
+            // MainPanel
+            // 
+            this.MainPanel.Controls.Add(this.panelControls);
+            this.MainPanel.Controls.Add(this.BrowserToolbar);
+            this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainPanel.Location = new System.Drawing.Point(0, 24);
+            this.MainPanel.Name = "MainPanel";
+            this.MainPanel.Size = new System.Drawing.Size(742, 276);
+            this.MainPanel.TabIndex = 13;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(650, 408);
-            this.Controls.Add(this.splitMain);
+            this.ClientSize = new System.Drawing.Size(742, 322);
+            this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.MenuMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -2193,23 +2113,14 @@ namespace Timekeeper.Forms
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
-            this.ResizeEnd += new System.EventHandler(this.Main_ResizeEnd);
             this.Resize += new System.EventHandler(this.Main_Resize);
             this.MenuMain.ResumeLayout(false);
             this.MenuMain.PerformLayout();
             this.StatusBar.ResumeLayout(false);
             this.StatusBar.PerformLayout();
-            this.splitTrees.Panel1.ResumeLayout(false);
-            this.splitTrees.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitTrees)).EndInit();
-            this.splitTrees.ResumeLayout(false);
             this.PopupMenuProject.ResumeLayout(false);
             this.PopupMenuActivity.ResumeLayout(false);
             this.PopupMenuTrayIcon.ResumeLayout(false);
-            this.splitMain.Panel1.ResumeLayout(false);
-            this.splitMain.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitMain)).EndInit();
-            this.splitMain.ResumeLayout(false);
             this.panelControls.ResumeLayout(false);
             this.panelControls.PerformLayout();
             this.LocationAndCategoryPanel.ResumeLayout(false);
@@ -2219,6 +2130,8 @@ namespace Timekeeper.Forms
             this.BrowserToolbar.ResumeLayout(false);
             this.BrowserToolbar.PerformLayout();
             this.PopupMenuMemo.ResumeLayout(false);
+            this.MainPanel.ResumeLayout(false);
+            this.MainPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2242,8 +2155,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuHelpContents;
         private System.Windows.Forms.ToolStripSeparator MenuHelpSep1;
         private System.Windows.Forms.ToolStripMenuItem MenuHelpAbout;
-        private System.Windows.Forms.StatusStrip StatusBar;
-        private System.Windows.Forms.SplitContainer splitTrees;
+		private System.Windows.Forms.StatusStrip StatusBar;
         private System.Windows.Forms.TreeView ActivityTree;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarFileName;
@@ -2306,8 +2218,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuActionUnhideProject;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityUnhide;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectUnhide;
-        private System.Windows.Forms.ToolStripMenuItem MenuFileRecent;
-        private System.Windows.Forms.SplitContainer splitMain;
+		private System.Windows.Forms.ToolStripMenuItem MenuFileRecent;
         private System.Windows.Forms.Panel panelControls;
         private System.Windows.Forms.ToolStrip BrowserToolbar;
         private System.Windows.Forms.ToolStripButton toolControlFirstEntry;
@@ -2320,17 +2231,14 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.Label labelStopTime;
         private System.Windows.Forms.TextBox wDuration;
         private System.Windows.Forms.Label labelDuration;
-        private System.Windows.Forms.ToolStripButton toolControlStop;
-        private System.Windows.Forms.ToolStripButton toolControlClose;
+		private System.Windows.Forms.ToolStripButton toolControlStop;
         private System.Windows.Forms.ToolStripSeparator toolControlSep1;
         private System.Windows.Forms.ToolStripSeparator toolControlSep2;
         private System.Windows.Forms.ToolStripButton toolControlCloseStartGap;
         private System.Windows.Forms.ToolStripButton toolControlCloseEndGap;
         private System.Windows.Forms.ToolStripLabel toolControlEntryId;
         private System.Windows.Forms.ToolStripMenuItem MenuActionStartTimer;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionOpenBrowser;
         private System.Windows.Forms.ToolStripMenuItem MenuActionStopTimer;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionCloseBrowser;
         private System.Windows.Forms.ToolStripButton toolControlStart;
         private System.Windows.Forms.ToolStripMenuItem MenuToolFind;
         private System.Windows.Forms.Label labelCategory;
@@ -2353,8 +2261,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ContextMenuStrip PopupMenuTrayIcon;
         private System.Windows.Forms.ToolStripMenuItem helloToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator PopupMenuActivitySep2;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivitySwapPanes;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectSwapPanes;
         private System.Windows.Forms.ToolStripSeparator PopupMenuProjectSep2;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityUseProjects;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityUseActivities;
@@ -2437,5 +2343,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarFormatCode;
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarFormatBlockquote;
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarFormatHorizontalRule;
+		private System.Windows.Forms.Panel MainPanel;
+        private ComboTreeBox ProjectTreeDropdown;
     }
 }

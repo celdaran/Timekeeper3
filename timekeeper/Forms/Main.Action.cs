@@ -436,11 +436,10 @@ namespace Timekeeper.Forms
 
                 // Next, instantiate any run-time only controls
                 this.MemoEditor = new Forms.Shared.MemoEditor();
-                this.MemoEditor.Parent = splitMain.Panel2;
+                this.MemoEditor.Parent = MainPanel;
                 this.MemoEditor.BringToFront();
                 this.MemoEditor.Dock = DockStyle.Fill;
                 this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
-                this.MemoEditor.MemoEntry.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wMemo_KeyDown);
 
                 // Instantiate persistent dialog boxes
                 properties = new Forms.Properties();
@@ -543,8 +542,6 @@ namespace Timekeeper.Forms
             Options.Main_Width = Width;
             Options.Main_Top = Top;
             Options.Main_Left = Left;
-            Options.Main_MainSplitterDistance = splitMain.SplitterDistance;
-            Options.Main_TreeSplitterDistance = splitTrees.SplitterDistance;
         }
 
         //---------------------------------------------------------------------
@@ -562,11 +559,6 @@ namespace Timekeeper.Forms
             Top = Options.Main_Top;
             Width = Options.Main_Width;
             Height = Options.Main_Height;
-            splitTrees.SplitterDistance = Options.Main_TreeSplitterDistance;
-            splitMain.SplitterDistance = Options.Main_MainSplitterDistance;
-
-            // Hide browser panel until file is opened
-            splitMain.Panel2Collapsed = true;
 
             // Until a file is opened, treat it as closed
             MenuBar_FileClosed();
@@ -759,6 +751,8 @@ namespace Timekeeper.Forms
                 Widgets.PopulateLocationComboBox(wLocation);
                 Widgets.PopulateCategoryComboBox(wCategory);
 
+                Widgets.BuildProjectTree(ProjectTreeDropdown.Nodes);
+
                 Action_TreeView_ShowRootLines();
 
                 MenuBar_FileOpened();
@@ -775,7 +769,6 @@ namespace Timekeeper.Forms
                 Browser_Load();
                 Browser_SetupForStarting();
                 Browser_Enable();
-                Browser_Show(Options.Main_BrowserOpen);
 
                 //------------------------------------------
                 // Restore Prior State
@@ -793,6 +786,13 @@ namespace Timekeeper.Forms
                 if (LastNode != null) {
                     ActivityTree.SelectedNode = LastNode;
                     ActivityTree.SelectedNode.Expand();
+                }
+
+                // Re-select last selected project
+                ComboTreeNode LastComboTreeNode = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, Options.State_LastProjectId);
+                if (LastComboTreeNode != null) {
+                    ProjectTreeDropdown.SelectedNode = LastComboTreeNode;
+                    //ProjectTreeDropdown.SelectedNode.Expand();
                 }
 
                 //------------------------------------------
@@ -872,12 +872,6 @@ namespace Timekeeper.Forms
 
         private void Action_UseProjects(bool show)
         {
-            // Hide or Show the Project Pane
-            if (splitTrees.Panel1.Contains(this.ProjectTree)) {
-                splitTrees.Panel1Collapsed = !show;
-            } else {
-                splitTrees.Panel2Collapsed = !show;
-            }
             Options.Layout_UseProjects = show;
 
             // Update the action menu accordingly
@@ -895,22 +889,12 @@ namespace Timekeeper.Forms
             // Mirror update the other popup menu accordingly
             PopupMenuActivityUseProjects.Checked = show;
             PopupMenuActivityUseActivities.Enabled = show;
-
-            // Swap menu handling is a bit different
-            PopupMenuProjectSwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
-            PopupMenuActivitySwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
         }
 
         //----------------------------------------------------------------------
 
         private void Action_UseActivities(bool show)
         {
-            // Hide or Show the Activity Pane
-            if (splitTrees.Panel1.Contains(this.ActivityTree)) {
-                splitTrees.Panel1Collapsed = !show;
-            } else {
-                splitTrees.Panel2Collapsed = !show;
-            }
             Options.Layout_UseActivities = show;
 
             // Update the action menu accordingly
@@ -928,10 +912,6 @@ namespace Timekeeper.Forms
             // Mirror update the other popup menu accordingly
             PopupMenuProjectUseActivities.Checked = show;
             PopupMenuProjectUseProjects.Enabled = show;
-
-            // Swap menu handling is a bit different
-            PopupMenuProjectSwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
-            PopupMenuActivitySwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
         }
 
         //---------------------------------------------------------------------
@@ -1291,7 +1271,7 @@ namespace Timekeeper.Forms
             }
 
             // Now start timing
-            DateTime StartTime = IsBrowserOpen() ? wStartTime.Value : DateTime.Now;
+            DateTime StartTime = wStartTime.Value;
             TimedActivity.StartTiming(StartTime);
             TimedActivity.FollowedItemId = TimedProject.ItemId;
 
@@ -1402,7 +1382,7 @@ namespace Timekeeper.Forms
             TimedEntry.ProjectId = TimedProject.ItemId;
             TimedEntry.ActivityId = TimedActivity.ItemId;
             TimedEntry.StartTime = wStartTime.Value;
-            TimedEntry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
+            TimedEntry.StopTime = wStopTime.Value;
             TimedEntry.Seconds = Seconds;
             //Entry.Memo = wMemo.Text;
             TimedEntry.Memo = MemoEditor.Text;
@@ -1432,13 +1412,9 @@ namespace Timekeeper.Forms
             // swap start/stop keystrokes
             // FIXME: this is a mess
             Keys saveKeys = new Keys();
-            Keys saveKeysAdvanced = new Keys();
             saveKeys = MenuActionStopTimer.ShortcutKeys;
-            saveKeysAdvanced = MenuActionCloseBrowser.ShortcutKeys;
             MenuActionStopTimer.ShortcutKeys = Keys.None;
-            MenuActionCloseBrowser.ShortcutKeys = Keys.None;
             MenuActionStartTimer.ShortcutKeys = saveKeys;
-            MenuActionOpenBrowser.ShortcutKeys = saveKeysAdvanced;
             /*
             saveKeys = menuToolControlStop.ShortcutKeys;
             menuToolControlStop.ShortcutKeys = Keys.None;
@@ -1526,25 +1502,6 @@ namespace Timekeeper.Forms
             catch (Exception x) {
                 Common.Warn("There was a problem splitting the entry");
                 Timekeeper.Exception(x);
-            }
-        }
-
-        //----------------------------------------------------------------------
-
-        private void Action_SwapPanes()
-        {
-            if (splitTrees.Panel1.Contains(this.ActivityTree)) {
-                splitTrees.Panel1.Controls.Remove(this.ActivityTree);
-                splitTrees.Panel2.Controls.Remove(this.ProjectTree);
-
-                splitTrees.Panel1.Controls.Add(this.ProjectTree);
-                splitTrees.Panel2.Controls.Add(this.ActivityTree);
-            } else {
-                splitTrees.Panel1.Controls.Remove(this.ProjectTree);
-                splitTrees.Panel2.Controls.Remove(this.ActivityTree);
-
-                splitTrees.Panel1.Controls.Add(this.ActivityTree);
-                splitTrees.Panel2.Controls.Add(this.ProjectTree);
             }
         }
 

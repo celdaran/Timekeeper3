@@ -157,18 +157,6 @@ namespace Timekeeper.Forms
             Action_StopTimer();
         }
 
-        // Action | Open Browser
-        private void MenuActionOpenBrowser_Click(object sender, EventArgs e)
-        {
-            Browser_Open();
-        }
-
-        // Action | Close Browser
-        private void MenuActionCloseBrowser_Click(object sender, EventArgs e)
-        {
-            Browser_Close();
-        }
-
         // Action | New Project
         private void MenuActionNewProject_Click(object sender, EventArgs e)
         {
@@ -610,12 +598,6 @@ namespace Timekeeper.Forms
             Action_UseActivities(!PopupMenuProjectUseActivities.Checked);
         }
 
-        // Poup Project | Swap Panes
-        private void PopupMenuProjectSwapPanes_Click(object sender, EventArgs e)
-        {
-            Action_SwapPanes();
-        }
-
         // Popup Projects | Properties
         private void PopupMenuProjectProperties_Click(object sender, EventArgs e)
         {
@@ -643,12 +625,6 @@ namespace Timekeeper.Forms
         private void PopupMenuActivityUseActivities_Click(object sender, EventArgs e)
         {
             Action_UseActivities(!PopupMenuActivityUseActivities.Checked);
-        }
-
-        // Poup Activity | Swap Panes
-        private void PopupMenuActivitySwapPanes_Click(object sender, EventArgs e)
-        {
-            Action_SwapPanes();
         }
 
         // Poup Activity | Properties
@@ -691,20 +667,6 @@ namespace Timekeeper.Forms
             }
             else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
                 PopupMenuActivityProperties_Click(sender, e);
-            }
-        }
-
-        // Memo keys
-        private void wMemo_KeyDown(object sender, KeyEventArgs e)
-        {
-            // No matter what, whether the timer is running or not, Escape
-            // is what closes the browser pane. So it's "unconditionally"
-            // handled here, rather than through menu item or toolbar 
-            // button shortcuts.
-
-            if (e.KeyCode == Keys.Escape) {
-                MenuActionCloseBrowser_Click(sender, e);
-                //menuToolControlClose_Click(sender, e);
             }
         }
 
@@ -794,21 +756,6 @@ namespace Timekeeper.Forms
         private void ActivityTree_DoubleClick(object sender, EventArgs e)
         {
             Action_StartTimer();
-        }
-
-        //---------------------------------------------------------------------
-
-        // Center the splitter when double-clicked
-        private void splitTrees_DoubleClick(object sender, EventArgs e)
-        {
-            Action_CenterSplitter(splitTrees);
-        }
-
-        //---------------------------------------------------------------------
-
-        private void splitMain_DoubleClick(object sender, EventArgs e)
-        {
-            Action_CenterSplitter(splitMain);
         }
 
         //---------------------------------------------------------------------
@@ -945,10 +892,7 @@ namespace Timekeeper.Forms
             }
         }
 
-        private void Main_ResizeEnd(object sender, EventArgs e)
-        {
-            DebugWindowMetrics();
-        }
+        //---------------------------------------------------------------------
 
         private void TrayIcon_DoubleClick(object sender, EventArgs e)
         {
@@ -1289,40 +1233,6 @@ namespace Timekeeper.Forms
         //---------------------------------------------------------------------
         // FIXME - EXPERIMENTAL - NOT READY FOR PRIME TIME
         //---------------------------------------------------------------------
-
-        // Debugging
-
-        private void splitMain_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-            DebugWindowMetrics();
-        }
-
-        private void DebugWindowMetrics()
-        {
-            string Display = "";
-
-            Display = String.Format(@"Panel 1: {0}x{1}, Panel 2: {2}x{3}",
-                splitMain.Panel1.Width,
-                splitMain.Panel1.Height,
-                splitMain.Panel2.Width,
-                splitMain.Panel2.Height);
-            /*
-            Display = String.Format(@"Panel 1: {0}x{1}, Panel 2: {2}x{3}",
-                splitTrees.Panel1.Width,
-                splitTrees.Panel1.Height,
-                splitTrees.Panel2.Width,
-                splitTrees.Panel2.Height);
-            Display = String.Format(@"Browser Height = {0}",
-                splitMain.SplitterDistance);
-            */
-
-            StatusBarDebug1.Text = Display;
-        }
-
-        private void splitMain_Resize(object sender, EventArgs e)
-        {
-            //Common.Info("You just resized splitMain");
-        }
 
         //---------------------------------------------------------------------
 

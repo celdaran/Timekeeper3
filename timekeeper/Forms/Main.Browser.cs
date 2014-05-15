@@ -29,19 +29,6 @@ namespace Timekeeper.Forms
         // Methods
         //---------------------------------------------------------------------
 
-        private void Browser_Close()
-        {
-            // Save row, just in case
-            Browser_SaveRow(false);
-
-            // Kill any existing "new" entry
-            newBrowserEntry = null;
-
-            Browser_Show(false);
-        }
-
-        //---------------------------------------------------------------------
-
         private void Browser_CloseStartGap()
         {
             try {
@@ -102,7 +89,6 @@ namespace Timekeeper.Forms
 
         private void Browser_Disable()
         {
-            splitMain.Panel2Collapsed = true;
             Action_SetMenuAvailability(MenuToolbar, false);
             browserEntry = null;
             priorLoadedBrowserEntry = null;
@@ -237,12 +223,6 @@ namespace Timekeeper.Forms
             //menuToolControlStop.Enabled = enabled;
         }
 
-        private void Browser_EnableClose(bool enabled)
-        {
-            toolControlClose.Enabled = enabled;
-            //menuToolControlClose.Enabled = enabled;
-        }
-
         private void Browser_EnableFirst(bool enabled)
         {
             toolControlFirstEntry.Enabled = enabled;
@@ -355,6 +335,10 @@ namespace Timekeeper.Forms
             Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
             TimeSpan Delta = wStopTime.Value.Subtract(wStartTime.Value);
 
+            // NOW OVERRIDE TO USE THE NEW CONTROL
+            if (ProjectTreeDropdown.SelectedNode != null)
+                Project = (Classes.Project)ProjectTreeDropdown.SelectedNode.Tag;
+
             // Update browserEntry with current form data
             entry.JournalId = entryId;
             entry.ProjectId = Project.ItemId;
@@ -410,6 +394,12 @@ namespace Timekeeper.Forms
 
                 ActivityTree.SelectedNode = HiddenNode;
                 ActivityTree.SelectedNode.Expand();
+            }
+
+            // And now again, for the new ComboTreeView
+            ComboTreeNode ProjectNode2 = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, entry.ProjectId);
+            if (ProjectNode2 != null) {
+                ProjectTreeDropdown.SelectedNode = ProjectNode2;
             }
 
             // Display entry
@@ -553,13 +543,6 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private bool IsBrowserOpen()
-        {
-            return !splitMain.Panel2Collapsed;
-        }
-
-        //---------------------------------------------------------------------
-
         private void Browser_Load()
         {
             try {
@@ -591,8 +574,6 @@ namespace Timekeeper.Forms
 
             toolControlSave.ToolTipText = "Save Changes to Database (" + kc.ConvertToString(MenuToolbarBrowserSave.ShortcutKeys) + ")";
             toolControlRevert.ToolTipText = "Revert Changes to Last Saved State (" + kc.ConvertToString(MenuToolbarBrowserRevert.ShortcutKeys) + ")";
-
-            toolControlClose.ToolTipText = "Close Browser (Esc)";
         }
 
         //---------------------------------------------------------------------
@@ -601,43 +582,6 @@ namespace Timekeeper.Forms
         {
             LocationPanel.Height = Options.Layout_UseLocations ? 27 : 0;
             CategoryPanel.Height = Options.Layout_UseCategories ? 27 : 0;
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Browser_Open()
-        {
-            // Set a fallback height, if we're manually opening the browser window
-            bool hack = false;
-            if (LastBrowserHeight == 0) {
-                // If browser hasn't been opened, set a default browser height.
-                // But this won't work because splitMain.Height is not my current height.
-                // I need to know what it was before... I should be saving this somewhere
-                // if I can't easily calculate it.
-                // Wait a sec. I figured this out in the car after struggling with this
-                // all morning: don't do anything except set a default. If the user closes
-                // the browser then closes the app with that state, they've effectively
-                // reset themselves to a state where it was never open. In short: just
-                // set a reasonable default here and be done with it.
-                //LastBrowserHeight = splitMain.Height - Options.Main_MainSplitterDistance;
-                LastBrowserHeight = 340; // nothing magic: just a reasonable, default browser height
-                hack = true;
-            }
-
-            Browser_Show(true);
-
-            if (hack) {
-                // Next line needed only when the BrowserOpen saved state was 0
-                // and we then open up the browser for the first time *after*
-                // TK has been started and the file loaded. We're doing this
-                // now, rather than before, because the .NET code being called
-                // in Browser_Show will whomp this.
-                Action_CenterSplitter(splitMain);
-            }
-
-            if (timerRunning && TimedEntry.AtEnd()) {
-                Browser_SetupForStopping();
-            }
         }
 
         //---------------------------------------------------------------------
@@ -740,11 +684,9 @@ namespace Timekeeper.Forms
         {
             Browser_ShowStart(true);
             Browser_ShowStop(false);
-            Browser_ShowClose(true);
 
             Browser_EnableStart(true);
             Browser_EnableStop(false);
-            Browser_EnableClose(true);
 
             Browser_EnableFirst(true);
             Browser_EnablePrev(true);
@@ -769,11 +711,9 @@ namespace Timekeeper.Forms
             if (timerRunning) {
                 Browser_ShowStart(false);
                 Browser_ShowStop(true);
-                Browser_ShowClose(true);
 
                 Browser_EnableStart(false);
                 Browser_EnableStop(false);
-                Browser_EnableClose(true);
 
                 Browser_EnableNew(false);
 
@@ -788,11 +728,9 @@ namespace Timekeeper.Forms
             } else {
                 Browser_ShowStart(true);
                 Browser_ShowStop(false);
-                Browser_ShowClose(true);
 
                 Browser_EnableStart(false);
                 Browser_EnableStop(false);
-                Browser_EnableClose(true);
 
                 Browser_EnableNew(true);
 
@@ -811,11 +749,9 @@ namespace Timekeeper.Forms
         {
             Browser_ShowStart(false);
             Browser_ShowStop(true);
-            Browser_ShowClose(true);
 
             Browser_EnableStart(false);
             Browser_EnableStop(true);
-            Browser_EnableClose(true);
 
             Browser_EnableFirst(true);
             Browser_EnablePrev(true);
@@ -893,33 +829,6 @@ namespace Timekeeper.Forms
             MemoEditor.Focus();
         }
 
-        //----------------------------------------------------------------------
-
-        private int LastBrowserHeight = 0;
-
-        //----------------------------------------------------------------------
-
-        private void Browser_Show(bool show)
-        {
-            MenuActionOpenBrowser.Visible = !show;
-            MenuActionCloseBrowser.Visible = show;
-            Options.Main_BrowserOpen = show;
-
-            if (show) {
-                this.Height += LastBrowserHeight;
-                // For some reason, setting Panel2Collapsed = false is adding 22 pixels
-                // to the SplitterDistance. I haven't figured this out, so I'm just going
-                // to save the value, un-Collapse the panel, then set it back.
-                int Voodoo = splitMain.SplitterDistance;
-                splitMain.Panel2Collapsed = false;
-                splitMain.SplitterDistance = Voodoo;
-            } else {
-                LastBrowserHeight = splitMain.Panel2.Height;
-                splitMain.Panel2Collapsed = true;
-                this.Height -= LastBrowserHeight;
-            }
-        }
-
         //---------------------------------------------------------------------
         // Are these types of things candidates for fMain.MenuBar?
         //---------------------------------------------------------------------
@@ -934,12 +843,6 @@ namespace Timekeeper.Forms
         {
             toolControlStop.Visible = show;
             //menuToolControlStop.Visible = show;
-        }
-
-        private void Browser_ShowClose(bool show)
-        {
-            toolControlClose.Visible = show;
-            //menuToolControlClose.Visible = show;
         }
 
         private void Browser_ShowUnlock(bool show)
