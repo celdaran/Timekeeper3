@@ -16,7 +16,7 @@ namespace Timekeeper
         // Properties
         //----------------------------------------------------------------------
 
-        private string TableName;
+        private Timekeeper.Dimension Dimension;
 
         private bool ClickedCancel = false;
         private string PreviousItemName = "";
@@ -26,14 +26,14 @@ namespace Timekeeper
         // Constructor
         //----------------------------------------------------------------------
 
-        public ItemEditor(string tableName)
+        public ItemEditor(Timekeeper.Dimension dimension)
         {
             InitializeComponent();
 
-            this.TableName = tableName;
+            this.Dimension = dimension;
             this.PopulateParents();
 
-            if (tableName == "Project") {
+            if (this.Dimension == Timekeeper.Dimension.Project) {
                 //this.Project = new Project(database);
             } else {
                 //this.Activity = new Activity(database);
@@ -69,11 +69,11 @@ namespace Timekeeper
 
             string Messages = "";
 
-            if (this.TableName == "Project") {
+            if (this.Dimension == Timekeeper.Dimension.Project) {
                 if (PreviousItemName != ItemName.Text) {
                     Classes.Project Project = new Classes.Project(ItemName.Text);
                     if (ItemName.Text == Project.Name) {
-                        Messages += this.TableName + " '" + ItemName.Text + "' already exists." + Environment.NewLine;
+                        Messages += this.Dimension.ToString() + " '" + ItemName.Text + "' already exists." + Environment.NewLine;
                     }
                 }
 
@@ -89,11 +89,11 @@ namespace Timekeeper
                 }
             }
 
-            if (this.TableName == "Activity") {
+            if (this.Dimension == Timekeeper.Dimension.Activity) {
                 if (PreviousItemName != ItemName.Text) {
                     Classes.Activity Activity = new Classes.Activity(ItemName.Text);
                     if (ItemName.Text == Activity.Name) {
-                        Messages += this.TableName + " already exists." + Environment.NewLine;
+                        Messages += this.Dimension.ToString() + " already exists." + Environment.NewLine;
                     }
                 }
             }
@@ -125,7 +125,7 @@ namespace Timekeeper
 
         private void PopulateParents()
         {
-            Table ParentList = new Classes.TreeAttributeCollection(this.TableName, "CreateTime").GetFolders();
+            Table ParentList = new Classes.TreeAttributeCollection(this.Dimension.ToString(), "CreateTime").GetFolders();
             IdValuePair Pair = new IdValuePair(-1, "(Top Level)");
 
             ItemParent.Items.Add(Pair);

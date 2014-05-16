@@ -30,7 +30,6 @@ namespace Timekeeper.Forms
         // FIXME: why? Why these?
         //private Forms.OptionsLegacy options;
         private Forms.Tools.Calendar calendar;
-        private Forms.Properties properties;
 
         // Misc
         private bool StartTimeManuallySet = false;
@@ -51,8 +50,8 @@ namespace Timekeeper.Forms
         private Forms.Shared.MemoEditor MemoEditor;
 
         // FIXME: class-wide values?
-        private TreeNode currentProjectNode;
-        private TreeNode currentActivityNode;
+        private ComboTreeNode currentProjectNode;
+        private ComboTreeNode currentActivityNode;
 
         // Timer properties
         private bool timerRunning = false;
@@ -157,140 +156,32 @@ namespace Timekeeper.Forms
             Action_StopTimer();
         }
 
-        // Action | New Project
-        private void MenuActionNewProject_Click(object sender, EventArgs e)
+        // Action | Manage Projects
+        private void MenuActionManageProjects_Click(object sender, EventArgs e)
         {
-            Classes.Project project = new Classes.Project();
-            Dialog_NewItem(ProjectTree, "New Project", false, (Classes.TreeAttribute)project, Timekeeper.IMG_PROJECT);
+            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Project);
+            Form.ShowDialog(this);
         }
 
-        // Action | New Project Folder
-        private void MenuActionNewProjectFolder_Click(object sender, EventArgs e)
+        // Action | Manage Activities
+        private void MenuActionManageActivities_Click(object sender, EventArgs e)
         {
-            Classes.Project project = new Classes.Project();
-            Dialog_NewItem(ProjectTree, "New Project Folder", true, (Classes.TreeAttribute)project, Timekeeper.IMG_PROJECT);
+            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Activity);
+            Form.ShowDialog(this);
         }
 
-        // Action | Edit Project
-        private void MenuActionEditProject_Click(object sender, EventArgs e)
+        // Action | Manage Locations
+        private void MenuActionManageLocations_Click(object sender, EventArgs e)
         {
-            if (ProjectTree.SelectedNode != null) {
-                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-                Dialog_EditItem(ProjectTree, "Edit Project", (Classes.TreeAttribute)Project);
-            }
+            int SavedSelection = wLocation.SelectedIndex;
+            Dialog_LocationManager();
+            wLocation.SelectedIndex = SavedSelection;
         }
 
-        // Action | Merge Project
-        private void MenuActionMergeProject_Click(object sender, EventArgs e)
+        // Action | Manage Categories
+        private void MenuActionManageCategories_Click(object sender, EventArgs e)
         {
-            if (ProjectTree.SelectedNode != null) {
-                Classes.TreeAttribute Item = (Classes.TreeAttribute)ProjectTree.SelectedNode.Tag;
-                // TODO: Action_ or Dialog_ ???
-                Action_MergeItem(Item);
-            }
-        }
-
-        // Action | Hide Project
-        private void MenuActionHideProject_Click(object sender, EventArgs e)
-        {
-            if (ProjectTree.SelectedNode != null) {
-                Dialog_HideItem(ProjectTree, Options.View_HiddenProjects);
-                MenuBar_ShowHideProject(false);
-            }
-        }
-
-        // Action | Unhide Project
-        private void MenuActionUnhideProject_Click(object sender, EventArgs e)
-        {
-            if (ProjectTree.SelectedNode != null) {
-                Action_UnhideItem(ProjectTree);
-                MenuBar_ShowHideProject(true);
-            }
-        }
-
-        // Action | Delete Project
-        private void MenuActionDeleteProject_Click(object sender, EventArgs e)
-        {
-            if (ProjectTree.SelectedNode == null) {
-                return;
-            }
-
-            if (TimedProject != null) {
-                if (ProjectTree.SelectedNode.Text == TimedProject.DisplayName()) {
-                    Common.Warn("Cannot delete the project being timed.");
-                    return;
-                }
-            }
-
-            Action_DeleteItem(ProjectTree);
-        }
-
-        // Action | New Activity
-        private void MenuActionNewActivity_Click(object sender, EventArgs e)
-        {
-            Classes.Activity Activity = new Classes.Activity();
-            Dialog_NewItem(ActivityTree, "New Activity", false, (Classes.TreeAttribute)Activity, Timekeeper.IMG_ACTIVITY);
-        }
-
-        // Action | New Activity Folder
-        private void MenuActionNewActivityFolder_Click(object sender, EventArgs e)
-        {
-            Classes.Activity Activity = new Classes.Activity();
-            Dialog_NewItem(ActivityTree, "New Activity Folder", true, (Classes.TreeAttribute)Activity, Timekeeper.IMG_ACTIVITY);
-        }
-
-        // Action | Edit Activity
-        private void MenuActionEdit_Click(object sender, EventArgs e)
-        {
-            if (ActivityTree.SelectedNode != null) {
-                Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
-                Dialog_EditItem(ActivityTree, "Edit Activity", (Classes.TreeAttribute)Activity);
-            }
-        }
-
-        // Action | Merge Activity
-        private void MenuActionMergeActivity_Click(object sender, EventArgs e)
-        {
-            if (ActivityTree.SelectedNode != null) {
-                Classes.TreeAttribute Item = (Classes.TreeAttribute)ActivityTree.SelectedNode.Tag;
-                // TODO: Action_ or Dialog_ ???
-                Action_MergeItem(Item);
-            }
-        }
-
-        // Action | Hide Activity
-        private void MenuActionHideActivity_Click(object sender, EventArgs e)
-        {
-            if (ActivityTree.SelectedNode != null) {
-                Dialog_HideItem(ActivityTree, Options.View_HiddenActivities);
-                MenuBar_ShowHideActivity(false);
-            }
-        }
-
-        // Action | Unhide Activity
-        private void MenuActionUnhideActivity_Click(object sender, EventArgs e)
-        {
-            if (ActivityTree.SelectedNode != null) {
-                Action_UnhideItem(ActivityTree);
-                MenuBar_ShowHideActivity(true);
-            }
-        }
-
-        // Action | Delete Activity
-        private void MenuActionDeleteActivity_Click(object sender, EventArgs e)
-        {
-            if (ActivityTree.SelectedNode == null) {
-                return;
-            }
-
-            if (TimedActivity != null) {
-                if (ActivityTree.SelectedNode.Text == TimedActivity.DisplayName()) {
-                    Common.Warn("Cannot delete the activity being timed.");
-                    return;
-                }
-            }
-
-            Action_DeleteItem(ActivityTree);
+            Action_ChangedCategory();
         }
 
         //---------------------------------------------------------------------
@@ -308,17 +199,6 @@ namespace Timekeeper.Forms
         {
             Forms.Reports.JournalEntry Report = new Forms.Reports.JournalEntry();
             Report.Show();
-
-            /*
-            fReport rpt = new fReport(Database, 
-                options.wFontList.SelectedItem.ToString(), 
-                Convert.ToInt32(options.wFontSize.Value),
-                reportHeight, reportWidth);
-            rpt.Show(this);
-            OpenForms.Add(rpt);
-            reportHeight = rpt.Height;
-            reportWidth = rpt.Width;
-            */
         }
 
         // Report | Punch Card
@@ -339,7 +219,29 @@ namespace Timekeeper.Forms
             OpenForms.Add(FindDialog);
         }
 
-        // Tools | Reminders (EVENTS)
+        // Tools | To Do List
+        private void MenuToolTodo_Click(object sender, EventArgs e)
+        {
+            // Only allow one open Todo list at a time
+            foreach (Form Form in OpenForms) {
+                if (Form.Name == "Todo") {
+                    if (Form.IsDisposed) {
+                        // Ignore
+                    } else {
+                        Form.Show();
+                        Form.Focus();
+                        return;
+                    }
+                }
+            }
+
+            // If we've made it this far, instantiate a new one.
+            Forms.Tools.Todo DialogBox = new Forms.Tools.Todo();
+            DialogBox.Show();
+            OpenForms.Add(DialogBox);
+        }
+
+        // Tools | Events & Reminders
         private void MenuToolReminders_Click(object sender, EventArgs e)
         {
             Forms.Tools.Event DialogBox = new Forms.Tools.Event(this);
@@ -387,14 +289,6 @@ namespace Timekeeper.Forms
             OpenForms.Add(dlg);
         }
 
-        // Tools | Date Calculator
-        private void menuToolsDatecalc_Click(object sender, EventArgs e)
-        {
-            Forms.Tools.DateCalculator dlg = new Forms.Tools.DateCalculator();
-            dlg.Show(this);
-            OpenForms.Add(dlg);
-        }
-
         // Tools | Countdown
         private void MenuToolCountdown_Click(object sender, EventArgs e)
         {
@@ -403,15 +297,18 @@ namespace Timekeeper.Forms
             OpenForms.Add(DialogBox);
         }
 
+        // Tools | Date Calculator
+        private void menuToolsDatecalc_Click(object sender, EventArgs e)
+        {
+            Forms.Tools.DateCalculator dlg = new Forms.Tools.DateCalculator();
+            dlg.Show(this);
+            OpenForms.Add(dlg);
+        }
+
         // Tools | Options
         private void MenuToolOptions_Click(object sender, EventArgs e)
         {
             Dialog_Options();
-        }
-
-        private void MenuToolOptionsLegacy_Click(object sender, EventArgs e)
-        {
-            Dialog_Options_Legacy();
         }
 
         //---------------------------------------------------------------------
@@ -576,17 +473,8 @@ namespace Timekeeper.Forms
         // Context Menu Events
         //---------------------------------------------------------------------
 
-        // Popup Project | Rename
-        private void PopupMenuProjectRename_Click(object sender, EventArgs e)
-        {
-            if (ProjectTree.SelectedNode != null) {
-                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-                ProjectTree.SelectedNode.Text = Project.Name;
-                ProjectTree.SelectedNode.BeginEdit();
-            }
-        }
-
         // Popup Project | Use Projects
+        /*
         private void PopupMenuProjectUseProjects_Click(object sender, EventArgs e)
         {
             Action_UseProjects(!PopupMenuProjectUseProjects.Checked);
@@ -596,23 +484,6 @@ namespace Timekeeper.Forms
         private void PopupMenuProjectUseActivities_Click(object sender, EventArgs e)
         {
             Action_UseActivities(!PopupMenuProjectUseActivities.Checked);
-        }
-
-        // Popup Projects | Properties
-        private void PopupMenuProjectProperties_Click(object sender, EventArgs e)
-        {
-            if (ProjectTree.SelectedNode != null) {
-                Classes.Project item = (Classes.Project)ProjectTree.SelectedNode.Tag;
-                Dialog_Properties((Classes.TreeAttribute)item);
-            }
-        }
-
-        // Popup Activity | Rename
-        private void PopupMenuActivityRename_Click(object sender, EventArgs e)
-        {
-            if (ActivityTree.SelectedNode != null) {
-                ActivityTree.SelectedNode.BeginEdit();
-            }
         }
 
         // Popup Activity | Use Projects
@@ -626,137 +497,7 @@ namespace Timekeeper.Forms
         {
             Action_UseActivities(!PopupMenuActivityUseActivities.Checked);
         }
-
-        // Poup Activity | Properties
-        private void PopupMenuActivityProperties_Click(object sender, EventArgs e)
-        {
-            if (ActivityTree.SelectedNode != null) {
-                Classes.Activity item = (Classes.Activity)ActivityTree.SelectedNode.Tag;
-                Dialog_Properties((Classes.TreeAttribute)item);
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // Keyboard events
-        //---------------------------------------------------------------------
-
-        // Project window keys
-        private void ProjectTree_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F2) {
-                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-                ProjectTree.SelectedNode.Text = Project.Name;
-                ProjectTree.SelectedNode.BeginEdit();
-            }
-            else if (e.KeyCode == Keys.Delete) {
-                Action_DeleteItem(ProjectTree);
-            }
-            else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
-                PopupMenuProjectProperties_Click(sender, e);
-            }
-        }
-
-        // Action window keys
-        private void ActivityTree_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F2) {
-                ActivityTree.SelectedNode.BeginEdit();
-            }
-            else if (e.KeyCode == Keys.Delete) {
-                Action_DeleteItem(ActivityTree);
-            }
-            else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
-                PopupMenuActivityProperties_Click(sender, e);
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // Mouse events
-        //---------------------------------------------------------------------
-
-        // Allow right-click selection in ProjectTree window
-        private void ProjectTree_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right) {
-                ProjectTree.SelectedNode = ProjectTree.GetNodeAt(e.X, e.Y);
-            }
-        }
-
-        // Allow right-click selection in ActivityTree window
-        private void ActivityTree_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right) {
-                ActivityTree.SelectedNode = ActivityTree.GetNodeAt(e.X, e.Y);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        // Drag and Drop: Initiate drag sequence
-        private void ProjectTree_ItemDrag(object sender, ItemDragEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left) {
-                DoDragDrop(e.Item, DragDropEffects.Move);
-            }
-        }
-
-        private void ActivityTree_ItemDrag(object sender, ItemDragEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left) {
-                DoDragDrop(e.Item, DragDropEffects.Move);
-            }
-        }
-
-        // Drag and Drop: Set drag entry effect
-        private void Tree_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = e.AllowedEffect;
-        }
-
-        // Drag and Drop: Node selection on DragOver (Projects)
-        private void ProjectTree_DragOver(object sender, DragEventArgs e)
-        {
-            // Retrieve the client coordinates of the mouse position.
-            Point targetPoint = ProjectTree.PointToClient(new Point(e.X, e.Y));
-
-            // Select the node at the mouse position.
-            ProjectTree.SelectedNode = ProjectTree.GetNodeAt(targetPoint);
-        }
-
-        // Drag and Drop: Node selection on DragOver (Activities)
-        private void ActivityTree_DragOver(object sender, DragEventArgs e)
-        {
-            // Retrieve the client coordinates of the mouse position.
-            Point targetPoint = ActivityTree.PointToClient(new Point(e.X, e.Y));
-
-            // Select the node at the mouse position.
-            ActivityTree.SelectedNode = ActivityTree.GetNodeAt(targetPoint);
-        }
-
-        // Drag and Drop: Wrapper around the core drop logic
-        private void ProjectTree_DragDrop(object sender, DragEventArgs e)
-        {
-            Action_TreeView_DragDrop(ProjectTree, sender, e);
-        }
-
-        private void ActivityTree_DragDrop(object sender, DragEventArgs e)
-        {
-            Action_TreeView_DragDrop(ActivityTree, sender, e);
-        }
-
-        //---------------------------------------------------------------------
-
-        // Mouse shortcut
-        private void ProjectTree_DoubleClick(object sender, EventArgs e)
-        {
-            Action_StartTimer();
-        }
-
-        // Mouse shortcut
-        private void ActivityTree_DoubleClick(object sender, EventArgs e)
-        {
-            Action_StartTimer();
-        }
+        */
 
         //---------------------------------------------------------------------
         // Timer Events
@@ -806,52 +547,19 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
-        // Label-Editing Events
-        //---------------------------------------------------------------------
-
-        private void ProjectTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            TreeNode Node  = ProjectTree.SelectedNode;
-            Classes.Project Project = (Classes.Project)Node.Tag;
-
-            if (e.Label == null) {
-                // This means they hit escape, so just reset the
-                // node's text to what it was before this started.
-                Node.Text = Project.DisplayName();
-            } else {
-                if (Action_RenameItem(Node, Project, e.Label)) {
-                    Node.Text = Project.DisplayName();
-                }
-            }
-
-            // Edit's never cancelled: we're manually handling all cases,
-            // so don't give control back to the framework.
-            e.CancelEdit = true;
-        }
-
-        //---------------------------------------------------------------------
-
-        private void ActivityTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            TreeNode node  = ActivityTree.SelectedNode;
-            Classes.TreeAttribute item = (Classes.TreeAttribute)node.Tag;
-            e.CancelEdit = !Action_RenameItem(node, item, e.Label);
-        }
-
-        //---------------------------------------------------------------------
         // On Item Change
         //---------------------------------------------------------------------
 
         private void ProjectTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            Action_ChangedProject();
+            //Action_ChangedProject();
         }
 
         //---------------------------------------------------------------------
 
         private void ActivityTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            Action_ChangedActivity();
+            //Action_ChangedActivity();
         }
 
         //---------------------------------------------------------------------
@@ -936,14 +644,14 @@ namespace Timekeeper.Forms
 
         private void reloadProjects()
         {
-            ProjectTree.Nodes.Clear();
-            Widgets.BuildProjectTree(ProjectTree.Nodes);
+            ProjectTreeDropdown.Nodes.Clear();
+            Widgets.BuildProjectTree(ProjectTreeDropdown.Nodes);
         }
 
         private void reloadActivities()
         {
-            ActivityTree.Nodes.Clear();
-            Widgets.BuildActivityTree(ActivityTree.Nodes);
+            ActivityTreeDropdown.Nodes.Clear();
+            Widgets.BuildActivityTree(ActivityTreeDropdown.Nodes);
         }
 
         //---------------------------------------------------------------------
@@ -964,39 +672,6 @@ namespace Timekeeper.Forms
                 Classes.Project Project = (Classes.Project)SelectedNode.Tag;
                 if (!Project.IsFolderOpened) {
                     Project.OpenFolder();
-                }
-            }
-        }
-
-        private void ProjectTree_AfterCollapse(object sender, TreeViewEventArgs e)
-        {
-            TreeNode SelectedNode = e.Node;
-            if (SelectedNode != null) {
-                Classes.Project Project = (Classes.Project)SelectedNode.Tag;
-                if (Project.IsFolderOpened) {
-                    Project.CloseFolder();
-                }
-            }
-        }
-
-        private void ActivityTree_AfterExpand(object sender, TreeViewEventArgs e)
-        {
-            TreeNode SelectedNode = e.Node;
-            if (SelectedNode != null) {
-                Classes.Activity Activity = (Classes.Activity)SelectedNode.Tag;
-                if (!Activity.IsFolderOpened) {
-                    Activity.OpenFolder();
-                }
-            }
-        }
-
-        private void ActivityTree_AfterCollapse(object sender, TreeViewEventArgs e)
-        {
-            TreeNode SelectedNode = e.Node;
-            if (SelectedNode != null) {
-                Classes.Activity Activity = (Classes.Activity)SelectedNode.Tag;
-                if (Activity.IsFolderOpened) {
-                    Activity.CloseFolder();
                 }
             }
         }
@@ -1153,81 +828,6 @@ namespace Timekeeper.Forms
         private void toolControlSplitEntry4_Click(object sender, EventArgs e)
         {
             Action_SplitEntry(4);
-        }
-
-        private void MenuActionManageLocations_Click(object sender, EventArgs e)
-        {
-            int SavedSelection = wLocation.SelectedIndex;
-            Dialog_LocationManager();
-            wLocation.SelectedIndex = SavedSelection;
-        }
-
-        private void MenuActionManageCategories_Click(object sender, EventArgs e)
-        {
-            Action_ChangedCategory();
-        }
-
-        private void MenuToolTodo_Click(object sender, EventArgs e)
-        {
-            // Only allow one open Todo list at a time
-            foreach (Form Form in OpenForms) {
-                if (Form.Name == "Todo") {
-                    if (Form.IsDisposed) {
-                        // Ignore
-                    } else {
-                        Form.Show();
-                        Form.Focus();
-                        return;
-                    }
-                }
-            }
-
-            // If we've made it this far, instantiate a new one.
-            Forms.Tools.Todo DialogBox = new Forms.Tools.Todo();
-            DialogBox.Show();
-            OpenForms.Add(DialogBox);
-        }
-
-        private void PopupMenuProjectAddtoTodoList_Click(object sender, EventArgs e)
-        {
-            Forms.Tools.TodoDetail DialogBox = new Forms.Tools.TodoDetail();
-
-            Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-            DialogBox.ProjectId = Project.ItemId;
-
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                Classes.TodoItem TodoItem = DialogBox.TodoItem;
-                TodoItem.Create();
-
-                // If a Todo form is open, add it to its list
-                foreach (Form Form in OpenForms) {
-                    if (Form.Name == "Todo") {
-                        Forms.Tools.Todo Todo = (Forms.Tools.Todo)Form;
-                        Todo.AddItem(Project.DisplayName(), TodoItem, Todo.TodoList.Groups[TodoItem.StatusName]);
-                    }
-                }
-            }
-        }
-
-        private void PopupMenuProject_Opening(object sender, CancelEventArgs e)
-        {
-            // FIXME: too much logic here
-            if (ProjectTree.SelectedNode != null) {
-                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-
-                if (Project.IsFolder) {
-                    PopupMenuProjectAddtoTodoList.Enabled = false;
-                } else {
-                    if (Project.IsDeleted) {
-                        PopupMenuProjectAddtoTodoList.Enabled = false;
-                    } else {
-                        Classes.TodoItemCollection TodoItems = new Classes.TodoItemCollection();
-                        PopupMenuProjectAddtoTodoList.Enabled = !TodoItems.Exists(Project.ItemId);
-                    }
-                }
-            } else {
-                PopupMenuProjectAddtoTodoList.Enabled = false;
-            }
         }
 
         //---------------------------------------------------------------------

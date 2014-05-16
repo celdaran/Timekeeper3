@@ -41,6 +41,14 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
+        public void BuildActivityTree(ComboTreeNodeCollection tree)
+        {
+            BuildActivityTree(tree, null, 0);
+            ExpandTree(tree);
+        }
+
+        //----------------------------------------------------------------------
+
         private DateTime GetShowHiddenSinceTime()
         {
             DateTime showHiddenSince = DateTime.Now;
@@ -178,6 +186,37 @@ namespace Timekeeper.Classes
 
                 // Create the new node
                 TreeNode Node = AddItemToTree(tree, parentNode, Activity, Icon);
+
+                // Then recurse
+                if (Activity.ItemId != parentId) {
+                    BuildActivityTree(tree, Node, Activity.ItemId);
+                }
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void BuildActivityTree(ComboTreeNodeCollection tree, ComboTreeNode parentNode, long parentId)
+        {
+            bool showHidden = true; // FIXME: should not be hardcoded // DOUBLE FIXME: should not be copy/pasted like this.
+            DateTime showHiddenSince = GetShowHiddenSinceTime();
+            string orderByClause = GetOrderBy(Options.Behavior_SortItemsBy, Options.Behavior_SortItemsByDirection);
+
+            // Instantiate Activities object
+            ActivityCollection Activities = new ActivityCollection(orderByClause);
+
+            // Iterate over Activities
+            foreach (Activity Activity in Activities.Fetch(parentId, showHidden, showHiddenSince)) {
+
+                // Choose icon
+                int Icon = Timekeeper.IMG_ACTIVITY;
+
+                if (Activity.IsHidden) {
+                    Icon = Timekeeper.IMG_ITEM_HIDDEN;
+                }
+
+                // Create the new node
+                ComboTreeNode Node = AddItemToTree(tree, parentNode, Activity, Icon);
 
                 // Then recurse
                 if (Activity.ItemId != parentId) {
@@ -343,6 +382,63 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
+        public ComboTreeNode AddHiddenProjectToTree(ComboTreeNodeCollection tree, Project project)
+        {
+            Project parentProject = new Project(project.ParentId);
+
+            if (parentProject.ItemId == 0) {
+                // If we've gone all the way up, add the item itself as a root
+                return AddItemToTree(tree, null, project, Timekeeper.IMG_ITEM_HIDDEN);
+            } else {
+                // Otherwise, try to add the item to the found parent
+
+                long parentId = parentProject.ItemId;
+
+                ComboTreeNode ParentNode = FindTreeNode(tree, parentId);
+                if (ParentNode != null) {
+                    // If we got one, add it
+                    return AddItemToTree(tree, ParentNode, project, Timekeeper.IMG_ITEM_HIDDEN);
+                } else {
+                    // Otherwise, attempt to add the parent, recursively
+                    //Project grandparentProject = new Project(Database, parentProject.ParentId);
+                    ComboTreeNode NewNode = AddHiddenProjectToTree(tree, parentProject);
+                    return AddItemToTree(tree, NewNode, project, Timekeeper.IMG_ITEM_HIDDEN);
+                }
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        public ComboTreeNode AddHiddenActivityToTree(ComboTreeNodeCollection tree, Activity activity)
+        {
+            // Yes, this is a complete copy/paste of the above.
+            // Yes, I tried to genericize this with the Item type.
+            // Yes, I ran into problems.
+            // Brute forcing it now, just to get on with life.
+
+            Activity parentActivity = new Activity(activity.ParentId);
+
+            if (parentActivity.ItemId == 0) {
+                // If we've gone all the way up, add the item itself as a root
+                return AddItemToTree(tree, null, activity, Timekeeper.IMG_ITEM_HIDDEN);
+            } else {
+                // Otherwise, try to add the item to the found parent
+
+                long parentId = parentActivity.ItemId;
+
+                ComboTreeNode ParentNode = FindTreeNode(tree, parentId);
+                if (ParentNode != null) {
+                    // If we got one, add it
+                    return AddItemToTree(tree, ParentNode, activity, Timekeeper.IMG_ITEM_HIDDEN);
+                } else {
+                    // Otherwise, attempt to add the parent, recursively
+                    ComboTreeNode NewNode = AddHiddenActivityToTree(tree, parentActivity);
+                    return AddItemToTree(tree, NewNode, activity, Timekeeper.IMG_ITEM_HIDDEN);
+                }
+            }
+        }
+        //----------------------------------------------------------------------
+
         public int CreateTreeItem(TreeNodeCollection tree, TreeAttribute item, long parentId, int imageIndex)
         {
             TreeNode ParentNode = null;
@@ -420,6 +516,7 @@ namespace Timekeeper.Classes
 
             return FoundNode;
         }
+
         //----------------------------------------------------------------------
 
         private void ShowRootLines(TreeView tree)

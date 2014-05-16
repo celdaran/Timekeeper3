@@ -51,22 +51,7 @@ namespace Timekeeper.Forms
             this.MenuActionStopTimer = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuActionManageProjects = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionNewProjectFolder = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionNewProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionEditProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionMergeProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionHideProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionUnhideProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionDeleteProject = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionManageActivities = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionNewActivity = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionNewActivityFolder = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionEditActivity = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionMergeActivity = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionHideActivity = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionUnhideActivity = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionDeleteActivity = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuActionManageLocations = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionManageCategories = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReport = new System.Windows.Forms.ToolStripMenuItem();
@@ -136,37 +121,15 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedAllToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarFileName = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarDebug1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ProjectTree = new System.Windows.Forms.TreeView();
-            this.PopupMenuProject = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.PopupMenuProjectNewProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectNewFolder = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectRename = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectMerge = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectHide = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectUnhide = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectSep3 = new System.Windows.Forms.ToolStripSeparator();
-            this.PopupMenuProjectAddtoTodoList = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectSep1 = new System.Windows.Forms.ToolStripSeparator();
-            this.PopupMenuProjectUseProjects = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectUseActivities = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuProjectSep2 = new System.Windows.Forms.ToolStripSeparator();
-            this.PopupMenuProjectProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
-            this.ActivityTree = new System.Windows.Forms.TreeView();
             this.PopupMenuActivity = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuActivityNewActivity = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuActivityNewFolder = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuActivityEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuActivityRename = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuActivityMerge = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuActivityHide = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuActivityUnhide = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuActivityDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuActivityManageActivities = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuActivitySep1 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuActivityUseProjects = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuActivityUseActivities = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuActivityUseLocations = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuActivityUseCategories = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuActivitySep2 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuActivityProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -187,7 +150,6 @@ namespace Timekeeper.Forms
             this.aboutTimekeeperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelControls = new System.Windows.Forms.Panel();
-            this.ProjectTreeDropdown = new ComboTreeBox();
             this.CloseStartGapButton = new System.Windows.Forms.Button();
             this.CloseStopGapButton = new System.Windows.Forms.Button();
             this.LocationAndCategoryPanel = new System.Windows.Forms.Panel();
@@ -197,6 +159,24 @@ namespace Timekeeper.Forms
             this.LocationPanel = new System.Windows.Forms.Panel();
             this.labelLocation = new System.Windows.Forms.Label();
             this.wLocation = new System.Windows.Forms.ComboBox();
+            this.ActivityPanel = new System.Windows.Forms.Panel();
+            this.ActivityManagerButton = new System.Windows.Forms.Button();
+            this.ActivityTreeDropdown = new ComboTreeBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ProjectPanel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ProjectManagerButton = new System.Windows.Forms.Button();
+            this.ProjectTreeDropdown = new ComboTreeBox();
+            this.PopupMenuProject = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
             this.wStopTime = new System.Windows.Forms.DateTimePicker();
             this.PopupMenuDates = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuDatesCopy = new System.Windows.Forms.ToolStripMenuItem();
@@ -238,13 +218,15 @@ namespace Timekeeper.Forms
             this.MainPanel = new System.Windows.Forms.Panel();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
-            this.PopupMenuProject.SuspendLayout();
             this.PopupMenuActivity.SuspendLayout();
             this.PopupMenuTrayIcon.SuspendLayout();
             this.panelControls.SuspendLayout();
             this.LocationAndCategoryPanel.SuspendLayout();
             this.CategoryPanel.SuspendLayout();
             this.LocationPanel.SuspendLayout();
+            this.ActivityPanel.SuspendLayout();
+            this.ProjectPanel.SuspendLayout();
+            this.PopupMenuProject.SuspendLayout();
             this.PopupMenuDates.SuspendLayout();
             this.BrowserToolbar.SuspendLayout();
             this.PopupMenuMemo.SuspendLayout();
@@ -263,7 +245,7 @@ namespace Timekeeper.Forms
             this.MenuToolbar});
             this.MenuMain.Location = new System.Drawing.Point(0, 0);
             this.MenuMain.Name = "MenuMain";
-            this.MenuMain.Size = new System.Drawing.Size(742, 24);
+            this.MenuMain.Size = new System.Drawing.Size(574, 24);
             this.MenuMain.TabIndex = 0;
             // 
             // MenuFile
@@ -391,7 +373,6 @@ namespace Timekeeper.Forms
             this.MenuActionSep1,
             this.MenuActionManageProjects,
             this.MenuActionManageActivities,
-            this.MenuActionSep2,
             this.MenuActionManageLocations,
             this.MenuActionManageCategories});
             this.MenuAction.Enabled = false;
@@ -424,146 +405,17 @@ namespace Timekeeper.Forms
             // 
             // MenuActionManageProjects
             // 
-            this.MenuActionManageProjects.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuActionNewProjectFolder,
-            this.MenuActionNewProject,
-            this.MenuActionEditProject,
-            this.MenuActionMergeProject,
-            this.MenuActionHideProject,
-            this.MenuActionUnhideProject,
-            this.MenuActionDeleteProject});
             this.MenuActionManageProjects.Name = "MenuActionManageProjects";
             this.MenuActionManageProjects.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionManageProjects.Text = "Manage Projects";
-            // 
-            // MenuActionNewProjectFolder
-            // 
-            this.MenuActionNewProjectFolder.Image = global::Timekeeper.Properties.Resources.ImageIconSmallFolder;
-            this.MenuActionNewProjectFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.MenuActionNewProjectFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
-            this.MenuActionNewProjectFolder.Name = "MenuActionNewProjectFolder";
-            this.MenuActionNewProjectFolder.Size = new System.Drawing.Size(177, 22);
-            this.MenuActionNewProjectFolder.Text = "New Project Folder...";
-            this.MenuActionNewProjectFolder.Click += new System.EventHandler(this.MenuActionNewProjectFolder_Click);
-            // 
-            // MenuActionNewProject
-            // 
-            this.MenuActionNewProject.Image = global::Timekeeper.Properties.Resources.ImageIconSmallProject;
-            this.MenuActionNewProject.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.MenuActionNewProject.Name = "MenuActionNewProject";
-            this.MenuActionNewProject.Size = new System.Drawing.Size(177, 22);
-            this.MenuActionNewProject.Text = "New &Project...";
-            this.MenuActionNewProject.Click += new System.EventHandler(this.MenuActionNewProject_Click);
-            // 
-            // MenuActionEditProject
-            // 
-            this.MenuActionEditProject.Name = "MenuActionEditProject";
-            this.MenuActionEditProject.Size = new System.Drawing.Size(177, 22);
-            this.MenuActionEditProject.Text = "Edit P&roject...";
-            this.MenuActionEditProject.Click += new System.EventHandler(this.MenuActionEditProject_Click);
-            // 
-            // MenuActionMergeProject
-            // 
-            this.MenuActionMergeProject.Name = "MenuActionMergeProject";
-            this.MenuActionMergeProject.Size = new System.Drawing.Size(177, 22);
-            this.MenuActionMergeProject.Text = "Merge Project...";
-            this.MenuActionMergeProject.Click += new System.EventHandler(this.MenuActionMergeProject_Click);
-            // 
-            // MenuActionHideProject
-            // 
-            this.MenuActionHideProject.Name = "MenuActionHideProject";
-            this.MenuActionHideProject.Size = new System.Drawing.Size(177, 22);
-            this.MenuActionHideProject.Text = "H&ide Project...";
-            this.MenuActionHideProject.Click += new System.EventHandler(this.MenuActionHideProject_Click);
-            // 
-            // MenuActionUnhideProject
-            // 
-            this.MenuActionUnhideProject.Name = "MenuActionUnhideProject";
-            this.MenuActionUnhideProject.Size = new System.Drawing.Size(177, 22);
-            this.MenuActionUnhideProject.Text = "Unh&ide Project...";
-            this.MenuActionUnhideProject.Visible = false;
-            this.MenuActionUnhideProject.Click += new System.EventHandler(this.MenuActionUnhideProject_Click);
-            // 
-            // MenuActionDeleteProject
-            // 
-            this.MenuActionDeleteProject.Name = "MenuActionDeleteProject";
-            this.MenuActionDeleteProject.Size = new System.Drawing.Size(177, 22);
-            this.MenuActionDeleteProject.Text = "Delete Pr&oject...";
-            this.MenuActionDeleteProject.Click += new System.EventHandler(this.MenuActionDeleteProject_Click);
+            this.MenuActionManageProjects.Text = "Manage Projects...";
+            this.MenuActionManageProjects.Click += new System.EventHandler(this.MenuActionManageProjects_Click);
             // 
             // MenuActionManageActivities
             // 
-            this.MenuActionManageActivities.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuActionNewActivity,
-            this.MenuActionNewActivityFolder,
-            this.MenuActionEditActivity,
-            this.MenuActionMergeActivity,
-            this.MenuActionHideActivity,
-            this.MenuActionUnhideActivity,
-            this.MenuActionDeleteActivity});
             this.MenuActionManageActivities.Name = "MenuActionManageActivities";
             this.MenuActionManageActivities.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionManageActivities.Text = "Manage Activities";
-            // 
-            // MenuActionNewActivity
-            // 
-            this.MenuActionNewActivity.Image = global::Timekeeper.Properties.Resources.ImageIconSmallActivity;
-            this.MenuActionNewActivity.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.MenuActionNewActivity.Name = "MenuActionNewActivity";
-            this.MenuActionNewActivity.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionNewActivity.Text = "&New Activity...";
-            this.MenuActionNewActivity.Click += new System.EventHandler(this.MenuActionNewActivity_Click);
-            // 
-            // MenuActionNewActivityFolder
-            // 
-            this.MenuActionNewActivityFolder.Image = global::Timekeeper.Properties.Resources.ImageIconSmallFolder;
-            this.MenuActionNewActivityFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.MenuActionNewActivityFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
-            this.MenuActionNewActivityFolder.Name = "MenuActionNewActivityFolder";
-            this.MenuActionNewActivityFolder.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionNewActivityFolder.Text = "New Activity Folder...";
-            this.MenuActionNewActivityFolder.Click += new System.EventHandler(this.MenuActionNewActivityFolder_Click);
-            // 
-            // MenuActionEditActivity
-            // 
-            this.MenuActionEditActivity.Name = "MenuActionEditActivity";
-            this.MenuActionEditActivity.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionEditActivity.Text = "&Edit Activity...";
-            this.MenuActionEditActivity.Click += new System.EventHandler(this.MenuActionEdit_Click);
-            // 
-            // MenuActionMergeActivity
-            // 
-            this.MenuActionMergeActivity.Name = "MenuActionMergeActivity";
-            this.MenuActionMergeActivity.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionMergeActivity.Text = "Merge Activity...";
-            this.MenuActionMergeActivity.Click += new System.EventHandler(this.MenuActionMergeActivity_Click);
-            // 
-            // MenuActionHideActivity
-            // 
-            this.MenuActionHideActivity.Name = "MenuActionHideActivity";
-            this.MenuActionHideActivity.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionHideActivity.Text = "&Hide Activity...";
-            this.MenuActionHideActivity.Click += new System.EventHandler(this.MenuActionHideActivity_Click);
-            // 
-            // MenuActionUnhideActivity
-            // 
-            this.MenuActionUnhideActivity.Name = "MenuActionUnhideActivity";
-            this.MenuActionUnhideActivity.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionUnhideActivity.Text = "Un&hide Activity...";
-            this.MenuActionUnhideActivity.Visible = false;
-            this.MenuActionUnhideActivity.Click += new System.EventHandler(this.MenuActionUnhideActivity_Click);
-            // 
-            // MenuActionDeleteActivity
-            // 
-            this.MenuActionDeleteActivity.Name = "MenuActionDeleteActivity";
-            this.MenuActionDeleteActivity.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionDeleteActivity.Text = "&Delete Activity...";
-            this.MenuActionDeleteActivity.Click += new System.EventHandler(this.MenuActionDeleteActivity_Click);
-            // 
-            // MenuActionSep2
-            // 
-            this.MenuActionSep2.Name = "MenuActionSep2";
-            this.MenuActionSep2.Size = new System.Drawing.Size(176, 6);
+            this.MenuActionManageActivities.Text = "Manage Activities...";
+            this.MenuActionManageActivities.Click += new System.EventHandler(this.MenuActionManageActivities_Click);
             // 
             // MenuActionManageLocations
             // 
@@ -1059,10 +911,10 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedAllToday,
             this.StatusBarFileName,
             this.StatusBarDebug1});
-            this.StatusBar.Location = new System.Drawing.Point(0, 300);
+            this.StatusBar.Location = new System.Drawing.Point(0, 294);
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.ShowItemToolTips = true;
-            this.StatusBar.Size = new System.Drawing.Size(742, 22);
+            this.StatusBar.Size = new System.Drawing.Size(574, 22);
             this.StatusBar.TabIndex = 12;
             // 
             // StatusBarCurrentProject
@@ -1161,163 +1013,6 @@ namespace Timekeeper.Forms
             this.StatusBarDebug1.Size = new System.Drawing.Size(47, 17);
             this.StatusBarDebug1.Text = "Debug 1";
             // 
-            // ProjectTree
-            // 
-            this.ProjectTree.AllowDrop = true;
-            this.ProjectTree.ContextMenuStrip = this.PopupMenuProject;
-            this.ProjectTree.HideSelection = false;
-            this.ProjectTree.ImageIndex = 1;
-            this.ProjectTree.ImageList = this.TreeImageList;
-            this.ProjectTree.LabelEdit = true;
-            this.ProjectTree.Location = new System.Drawing.Point(459, 8);
-            this.ProjectTree.Name = "ProjectTree";
-            this.ProjectTree.SelectedImageIndex = 0;
-            this.ProjectTree.ShowLines = false;
-            this.ProjectTree.ShowNodeToolTips = true;
-            this.ProjectTree.Size = new System.Drawing.Size(174, 101);
-            this.ProjectTree.TabIndex = 0;
-            this.ProjectTree.Tag = "Project";
-            this.ProjectTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ProjectTree_AfterLabelEdit);
-            this.ProjectTree.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.ProjectTree_AfterCollapse);
-            this.ProjectTree.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.ProjectTree_AfterExpand);
-            this.ProjectTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ProjectTree_AfterSelect);
-            this.ProjectTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.ProjectTree_DragDrop);
-            this.ProjectTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.Tree_DragEnter);
-            this.ProjectTree.DragOver += new System.Windows.Forms.DragEventHandler(this.ProjectTree_DragOver);
-            this.ProjectTree.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
-            this.ProjectTree.DoubleClick += new System.EventHandler(this.ProjectTree_DoubleClick);
-            this.ProjectTree.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ProjectTree_KeyDown);
-            this.ProjectTree.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ProjectTree_MouseDown);
-            // 
-            // PopupMenuProject
-            // 
-            this.PopupMenuProject.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.PopupMenuProjectNewProject,
-            this.PopupMenuProjectNewFolder,
-            this.PopupMenuProjectEdit,
-            this.PopupMenuProjectRename,
-            this.PopupMenuProjectMerge,
-            this.PopupMenuProjectHide,
-            this.PopupMenuProjectUnhide,
-            this.PopupMenuProjectDelete,
-            this.PopupMenuProjectSep3,
-            this.PopupMenuProjectAddtoTodoList,
-            this.PopupMenuProjectSep1,
-            this.PopupMenuProjectUseProjects,
-            this.PopupMenuProjectUseActivities,
-            this.PopupMenuProjectSep2,
-            this.PopupMenuProjectProperties});
-            this.PopupMenuProject.Name = "menuProject";
-            this.PopupMenuProject.Size = new System.Drawing.Size(165, 286);
-            this.PopupMenuProject.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenuProject_Opening);
-            // 
-            // PopupMenuProjectNewProject
-            // 
-            this.PopupMenuProjectNewProject.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.PopupMenuProjectNewProject.Name = "PopupMenuProjectNewProject";
-            this.PopupMenuProjectNewProject.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectNewProject.Text = "&New Project...";
-            this.PopupMenuProjectNewProject.Click += new System.EventHandler(this.MenuActionNewProject_Click);
-            // 
-            // PopupMenuProjectNewFolder
-            // 
-            this.PopupMenuProjectNewFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.PopupMenuProjectNewFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
-            this.PopupMenuProjectNewFolder.Name = "PopupMenuProjectNewFolder";
-            this.PopupMenuProjectNewFolder.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectNewFolder.Text = "New &Folder...";
-            this.PopupMenuProjectNewFolder.Click += new System.EventHandler(this.MenuActionNewProjectFolder_Click);
-            // 
-            // PopupMenuProjectEdit
-            // 
-            this.PopupMenuProjectEdit.Name = "PopupMenuProjectEdit";
-            this.PopupMenuProjectEdit.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectEdit.Text = "&Edit...";
-            this.PopupMenuProjectEdit.Click += new System.EventHandler(this.MenuActionEditProject_Click);
-            // 
-            // PopupMenuProjectRename
-            // 
-            this.PopupMenuProjectRename.Name = "PopupMenuProjectRename";
-            this.PopupMenuProjectRename.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectRename.Text = "&Rename";
-            this.PopupMenuProjectRename.Click += new System.EventHandler(this.PopupMenuProjectRename_Click);
-            // 
-            // PopupMenuProjectMerge
-            // 
-            this.PopupMenuProjectMerge.Name = "PopupMenuProjectMerge";
-            this.PopupMenuProjectMerge.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectMerge.Text = "Merge...";
-            this.PopupMenuProjectMerge.Click += new System.EventHandler(this.MenuActionMergeProject_Click);
-            // 
-            // PopupMenuProjectHide
-            // 
-            this.PopupMenuProjectHide.Name = "PopupMenuProjectHide";
-            this.PopupMenuProjectHide.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectHide.Text = "&Hide";
-            this.PopupMenuProjectHide.Click += new System.EventHandler(this.MenuActionHideProject_Click);
-            // 
-            // PopupMenuProjectUnhide
-            // 
-            this.PopupMenuProjectUnhide.Name = "PopupMenuProjectUnhide";
-            this.PopupMenuProjectUnhide.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectUnhide.Text = "Un&hide";
-            this.PopupMenuProjectUnhide.Visible = false;
-            this.PopupMenuProjectUnhide.Click += new System.EventHandler(this.MenuActionUnhideProject_Click);
-            // 
-            // PopupMenuProjectDelete
-            // 
-            this.PopupMenuProjectDelete.Name = "PopupMenuProjectDelete";
-            this.PopupMenuProjectDelete.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectDelete.Text = "&Delete...";
-            this.PopupMenuProjectDelete.Click += new System.EventHandler(this.MenuActionDeleteProject_Click);
-            // 
-            // PopupMenuProjectSep3
-            // 
-            this.PopupMenuProjectSep3.Name = "PopupMenuProjectSep3";
-            this.PopupMenuProjectSep3.Size = new System.Drawing.Size(161, 6);
-            // 
-            // PopupMenuProjectAddtoTodoList
-            // 
-            this.PopupMenuProjectAddtoTodoList.Name = "PopupMenuProjectAddtoTodoList";
-            this.PopupMenuProjectAddtoTodoList.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectAddtoTodoList.Text = "Add to Todo List...";
-            this.PopupMenuProjectAddtoTodoList.Click += new System.EventHandler(this.PopupMenuProjectAddtoTodoList_Click);
-            // 
-            // PopupMenuProjectSep1
-            // 
-            this.PopupMenuProjectSep1.Name = "PopupMenuProjectSep1";
-            this.PopupMenuProjectSep1.Size = new System.Drawing.Size(161, 6);
-            // 
-            // PopupMenuProjectUseProjects
-            // 
-            this.PopupMenuProjectUseProjects.Checked = true;
-            this.PopupMenuProjectUseProjects.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.PopupMenuProjectUseProjects.Name = "PopupMenuProjectUseProjects";
-            this.PopupMenuProjectUseProjects.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectUseProjects.Text = "Use Projects";
-            this.PopupMenuProjectUseProjects.Click += new System.EventHandler(this.PopupMenuProjectUseProjects_Click);
-            // 
-            // PopupMenuProjectUseActivities
-            // 
-            this.PopupMenuProjectUseActivities.Checked = true;
-            this.PopupMenuProjectUseActivities.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.PopupMenuProjectUseActivities.Name = "PopupMenuProjectUseActivities";
-            this.PopupMenuProjectUseActivities.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectUseActivities.Text = "Use Activities";
-            this.PopupMenuProjectUseActivities.Click += new System.EventHandler(this.PopupMenuProjectUseActivities_Click);
-            // 
-            // PopupMenuProjectSep2
-            // 
-            this.PopupMenuProjectSep2.Name = "PopupMenuProjectSep2";
-            this.PopupMenuProjectSep2.Size = new System.Drawing.Size(161, 6);
-            // 
-            // PopupMenuProjectProperties
-            // 
-            this.PopupMenuProjectProperties.Name = "PopupMenuProjectProperties";
-            this.PopupMenuProjectProperties.Size = new System.Drawing.Size(164, 22);
-            this.PopupMenuProjectProperties.Text = "&Properties...";
-            this.PopupMenuProjectProperties.Click += new System.EventHandler(this.PopupMenuProjectProperties_Click);
-            // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
@@ -1333,147 +1028,81 @@ namespace Timekeeper.Forms
             this.TreeImageList.Images.SetKeyName(8, "HiddenItem");
             this.TreeImageList.Images.SetKeyName(9, "HiddenFolder");
             // 
-            // ActivityTree
-            // 
-            this.ActivityTree.AllowDrop = true;
-            this.ActivityTree.ContextMenuStrip = this.PopupMenuActivity;
-            this.ActivityTree.HideSelection = false;
-            this.ActivityTree.ImageIndex = 1;
-            this.ActivityTree.ImageList = this.TreeImageList;
-            this.ActivityTree.LabelEdit = true;
-            this.ActivityTree.Location = new System.Drawing.Point(639, 8);
-            this.ActivityTree.Name = "ActivityTree";
-            this.ActivityTree.SelectedImageIndex = 0;
-            this.ActivityTree.ShowLines = false;
-            this.ActivityTree.ShowNodeToolTips = true;
-            this.ActivityTree.Size = new System.Drawing.Size(100, 101);
-            this.ActivityTree.TabIndex = 0;
-            this.ActivityTree.Tag = "Activity";
-            this.ActivityTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.ActivityTree_AfterLabelEdit);
-            this.ActivityTree.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.ActivityTree_AfterCollapse);
-            this.ActivityTree.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.ActivityTree_AfterExpand);
-            this.ActivityTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ActivityTree_AfterSelect);
-            this.ActivityTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.ActivityTree_DragDrop);
-            this.ActivityTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.Tree_DragEnter);
-            this.ActivityTree.DragOver += new System.Windows.Forms.DragEventHandler(this.ActivityTree_DragOver);
-            this.ActivityTree.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
-            this.ActivityTree.DoubleClick += new System.EventHandler(this.ActivityTree_DoubleClick);
-            this.ActivityTree.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ActivityTree_KeyDown);
-            this.ActivityTree.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ActivityTree_MouseDown);
-            // 
             // PopupMenuActivity
             // 
             this.PopupMenuActivity.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PopupMenuActivityNewActivity,
-            this.PopupMenuActivityNewFolder,
-            this.PopupMenuActivityEdit,
-            this.PopupMenuActivityRename,
-            this.PopupMenuActivityMerge,
-            this.PopupMenuActivityHide,
-            this.PopupMenuActivityUnhide,
-            this.PopupMenuActivityDelete,
+            this.PopupMenuActivityManageActivities,
             this.PopupMenuActivitySep1,
             this.PopupMenuActivityUseProjects,
             this.PopupMenuActivityUseActivities,
+            this.PopupMenuActivityUseLocations,
+            this.PopupMenuActivityUseCategories,
             this.PopupMenuActivitySep2,
             this.PopupMenuActivityProperties});
             this.PopupMenuActivity.Name = "menuTask";
-            this.PopupMenuActivity.Size = new System.Drawing.Size(147, 258);
+            this.PopupMenuActivity.Size = new System.Drawing.Size(171, 170);
             // 
             // PopupMenuActivityNewActivity
             // 
             this.PopupMenuActivityNewActivity.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.PopupMenuActivityNewActivity.Name = "PopupMenuActivityNewActivity";
-            this.PopupMenuActivityNewActivity.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityNewActivity.Size = new System.Drawing.Size(170, 22);
             this.PopupMenuActivityNewActivity.Text = "&New Activity...";
-            this.PopupMenuActivityNewActivity.Click += new System.EventHandler(this.MenuActionNewActivity_Click);
             // 
-            // PopupMenuActivityNewFolder
+            // PopupMenuActivityManageActivities
             // 
-            this.PopupMenuActivityNewFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.PopupMenuActivityNewFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
-            this.PopupMenuActivityNewFolder.Name = "PopupMenuActivityNewFolder";
-            this.PopupMenuActivityNewFolder.Size = new System.Drawing.Size(146, 22);
-            this.PopupMenuActivityNewFolder.Text = "New &Folder...";
-            this.PopupMenuActivityNewFolder.Click += new System.EventHandler(this.MenuActionNewActivityFolder_Click);
-            // 
-            // PopupMenuActivityEdit
-            // 
-            this.PopupMenuActivityEdit.Name = "PopupMenuActivityEdit";
-            this.PopupMenuActivityEdit.Size = new System.Drawing.Size(146, 22);
-            this.PopupMenuActivityEdit.Text = "&Edit...";
-            this.PopupMenuActivityEdit.Click += new System.EventHandler(this.MenuActionEdit_Click);
-            // 
-            // PopupMenuActivityRename
-            // 
-            this.PopupMenuActivityRename.Name = "PopupMenuActivityRename";
-            this.PopupMenuActivityRename.Size = new System.Drawing.Size(146, 22);
-            this.PopupMenuActivityRename.Text = "&Rename";
-            this.PopupMenuActivityRename.Click += new System.EventHandler(this.PopupMenuActivityRename_Click);
-            // 
-            // PopupMenuActivityMerge
-            // 
-            this.PopupMenuActivityMerge.Name = "PopupMenuActivityMerge";
-            this.PopupMenuActivityMerge.Size = new System.Drawing.Size(146, 22);
-            this.PopupMenuActivityMerge.Text = "Merge...";
-            this.PopupMenuActivityMerge.Click += new System.EventHandler(this.MenuActionMergeActivity_Click);
-            // 
-            // PopupMenuActivityHide
-            // 
-            this.PopupMenuActivityHide.Name = "PopupMenuActivityHide";
-            this.PopupMenuActivityHide.Size = new System.Drawing.Size(146, 22);
-            this.PopupMenuActivityHide.Text = "&Hide";
-            this.PopupMenuActivityHide.Click += new System.EventHandler(this.MenuActionHideActivity_Click);
-            // 
-            // PopupMenuActivityUnhide
-            // 
-            this.PopupMenuActivityUnhide.Name = "PopupMenuActivityUnhide";
-            this.PopupMenuActivityUnhide.Size = new System.Drawing.Size(146, 22);
-            this.PopupMenuActivityUnhide.Text = "Un&hide";
-            this.PopupMenuActivityUnhide.Visible = false;
-            this.PopupMenuActivityUnhide.Click += new System.EventHandler(this.MenuActionUnhideActivity_Click);
-            // 
-            // PopupMenuActivityDelete
-            // 
-            this.PopupMenuActivityDelete.Name = "PopupMenuActivityDelete";
-            this.PopupMenuActivityDelete.Size = new System.Drawing.Size(146, 22);
-            this.PopupMenuActivityDelete.Text = "&Delete...";
-            this.PopupMenuActivityDelete.Click += new System.EventHandler(this.MenuActionDeleteActivity_Click);
+            this.PopupMenuActivityManageActivities.Name = "PopupMenuActivityManageActivities";
+            this.PopupMenuActivityManageActivities.Size = new System.Drawing.Size(170, 22);
+            this.PopupMenuActivityManageActivities.Text = "Manage Activities...";
             // 
             // PopupMenuActivitySep1
             // 
             this.PopupMenuActivitySep1.Name = "PopupMenuActivitySep1";
-            this.PopupMenuActivitySep1.Size = new System.Drawing.Size(143, 6);
+            this.PopupMenuActivitySep1.Size = new System.Drawing.Size(167, 6);
             // 
             // PopupMenuActivityUseProjects
             // 
             this.PopupMenuActivityUseProjects.Checked = true;
             this.PopupMenuActivityUseProjects.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuActivityUseProjects.Name = "PopupMenuActivityUseProjects";
-            this.PopupMenuActivityUseProjects.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityUseProjects.Size = new System.Drawing.Size(170, 22);
             this.PopupMenuActivityUseProjects.Text = "Use Projects";
-            this.PopupMenuActivityUseProjects.Click += new System.EventHandler(this.PopupMenuActivityUseProjects_Click);
             // 
             // PopupMenuActivityUseActivities
             // 
             this.PopupMenuActivityUseActivities.Checked = true;
             this.PopupMenuActivityUseActivities.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuActivityUseActivities.Name = "PopupMenuActivityUseActivities";
-            this.PopupMenuActivityUseActivities.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityUseActivities.Size = new System.Drawing.Size(170, 22);
             this.PopupMenuActivityUseActivities.Text = "Use Activities";
-            this.PopupMenuActivityUseActivities.Click += new System.EventHandler(this.PopupMenuActivityUseActivities_Click);
+            // 
+            // PopupMenuActivityUseLocations
+            // 
+            this.PopupMenuActivityUseLocations.Checked = true;
+            this.PopupMenuActivityUseLocations.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PopupMenuActivityUseLocations.Name = "PopupMenuActivityUseLocations";
+            this.PopupMenuActivityUseLocations.Size = new System.Drawing.Size(170, 22);
+            this.PopupMenuActivityUseLocations.Text = "Use Locations";
+            // 
+            // PopupMenuActivityUseCategories
+            // 
+            this.PopupMenuActivityUseCategories.Checked = true;
+            this.PopupMenuActivityUseCategories.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PopupMenuActivityUseCategories.Name = "PopupMenuActivityUseCategories";
+            this.PopupMenuActivityUseCategories.Size = new System.Drawing.Size(170, 22);
+            this.PopupMenuActivityUseCategories.Text = "Use Categories";
             // 
             // PopupMenuActivitySep2
             // 
             this.PopupMenuActivitySep2.Name = "PopupMenuActivitySep2";
-            this.PopupMenuActivitySep2.Size = new System.Drawing.Size(143, 6);
+            this.PopupMenuActivitySep2.Size = new System.Drawing.Size(167, 6);
             // 
             // PopupMenuActivityProperties
             // 
             this.PopupMenuActivityProperties.Name = "PopupMenuActivityProperties";
-            this.PopupMenuActivityProperties.Size = new System.Drawing.Size(146, 22);
+            this.PopupMenuActivityProperties.Size = new System.Drawing.Size(170, 22);
             this.PopupMenuActivityProperties.Text = "&Properties...";
-            this.PopupMenuActivityProperties.Click += new System.EventHandler(this.PopupMenuActivityProperties_Click);
             // 
             // OpenFileDialog
             // 
@@ -1605,9 +1234,6 @@ namespace Timekeeper.Forms
             // panelControls
             // 
             this.panelControls.BackColor = System.Drawing.SystemColors.Control;
-            this.panelControls.Controls.Add(this.ProjectTreeDropdown);
-            this.panelControls.Controls.Add(this.ActivityTree);
-            this.panelControls.Controls.Add(this.ProjectTree);
             this.panelControls.Controls.Add(this.CloseStartGapButton);
             this.panelControls.Controls.Add(this.CloseStopGapButton);
             this.panelControls.Controls.Add(this.LocationAndCategoryPanel);
@@ -1620,20 +1246,9 @@ namespace Timekeeper.Forms
             this.panelControls.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelControls.Location = new System.Drawing.Point(0, 25);
             this.panelControls.Name = "panelControls";
-            this.panelControls.Size = new System.Drawing.Size(742, 112);
+            this.panelControls.Size = new System.Drawing.Size(574, 120);
             this.panelControls.TabIndex = 0;
             this.panelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
-            // 
-            // ProjectTreeDropdown
-            // 
-            this.ProjectTreeDropdown.DrawWithVisualStyles = false;
-            this.ProjectTreeDropdown.DroppedDown = false;
-            this.ProjectTreeDropdown.Images = this.TreeImageList;
-            this.ProjectTreeDropdown.Location = new System.Drawing.Point(243, 80);
-            this.ProjectTreeDropdown.Name = "ProjectTreeDropdown";
-            this.ProjectTreeDropdown.SelectedNode = null;
-            this.ProjectTreeDropdown.Size = new System.Drawing.Size(203, 23);
-            this.ProjectTreeDropdown.TabIndex = 19;
             // 
             // CloseStartGapButton
             // 
@@ -1663,9 +1278,11 @@ namespace Timekeeper.Forms
             // 
             this.LocationAndCategoryPanel.Controls.Add(this.CategoryPanel);
             this.LocationAndCategoryPanel.Controls.Add(this.LocationPanel);
+            this.LocationAndCategoryPanel.Controls.Add(this.ActivityPanel);
+            this.LocationAndCategoryPanel.Controls.Add(this.ProjectPanel);
             this.LocationAndCategoryPanel.Location = new System.Drawing.Point(237, 8);
             this.LocationAndCategoryPanel.Name = "LocationAndCategoryPanel";
-            this.LocationAndCategoryPanel.Size = new System.Drawing.Size(216, 66);
+            this.LocationAndCategoryPanel.Size = new System.Drawing.Size(326, 122);
             this.LocationAndCategoryPanel.TabIndex = 16;
             // 
             // CategoryPanel
@@ -1673,9 +1290,9 @@ namespace Timekeeper.Forms
             this.CategoryPanel.Controls.Add(this.labelCategory);
             this.CategoryPanel.Controls.Add(this.wCategory);
             this.CategoryPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.CategoryPanel.Location = new System.Drawing.Point(0, 27);
+            this.CategoryPanel.Location = new System.Drawing.Point(0, 81);
             this.CategoryPanel.Name = "CategoryPanel";
-            this.CategoryPanel.Size = new System.Drawing.Size(216, 27);
+            this.CategoryPanel.Size = new System.Drawing.Size(326, 27);
             this.CategoryPanel.TabIndex = 1;
             // 
             // labelCategory
@@ -1692,7 +1309,7 @@ namespace Timekeeper.Forms
             this.wCategory.FormattingEnabled = true;
             this.wCategory.Location = new System.Drawing.Point(58, 1);
             this.wCategory.Name = "wCategory";
-            this.wCategory.Size = new System.Drawing.Size(151, 21);
+            this.wCategory.Size = new System.Drawing.Size(232, 21);
             this.wCategory.TabIndex = 5;
             this.wCategory.SelectedIndexChanged += new System.EventHandler(this.wCategory_SelectedIndexChanged);
             // 
@@ -1701,9 +1318,9 @@ namespace Timekeeper.Forms
             this.LocationPanel.Controls.Add(this.labelLocation);
             this.LocationPanel.Controls.Add(this.wLocation);
             this.LocationPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LocationPanel.Location = new System.Drawing.Point(0, 0);
+            this.LocationPanel.Location = new System.Drawing.Point(0, 54);
             this.LocationPanel.Name = "LocationPanel";
-            this.LocationPanel.Size = new System.Drawing.Size(216, 27);
+            this.LocationPanel.Size = new System.Drawing.Size(326, 27);
             this.LocationPanel.TabIndex = 0;
             // 
             // labelLocation
@@ -1720,9 +1337,173 @@ namespace Timekeeper.Forms
             this.wLocation.FormattingEnabled = true;
             this.wLocation.Location = new System.Drawing.Point(58, 2);
             this.wLocation.Name = "wLocation";
-            this.wLocation.Size = new System.Drawing.Size(151, 21);
+            this.wLocation.Size = new System.Drawing.Size(232, 21);
             this.wLocation.TabIndex = 4;
             this.wLocation.SelectedIndexChanged += new System.EventHandler(this.wLocation_SelectedIndexChanged);
+            // 
+            // ActivityPanel
+            // 
+            this.ActivityPanel.Controls.Add(this.ActivityManagerButton);
+            this.ActivityPanel.Controls.Add(this.ActivityTreeDropdown);
+            this.ActivityPanel.Controls.Add(this.label2);
+            this.ActivityPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ActivityPanel.Location = new System.Drawing.Point(0, 27);
+            this.ActivityPanel.Name = "ActivityPanel";
+            this.ActivityPanel.Size = new System.Drawing.Size(326, 27);
+            this.ActivityPanel.TabIndex = 3;
+            // 
+            // ActivityManagerButton
+            // 
+            this.ActivityManagerButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ActivityManagerButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ActivityManagerButton.Location = new System.Drawing.Point(296, 4);
+            this.ActivityManagerButton.Name = "ActivityManagerButton";
+            this.ActivityManagerButton.Size = new System.Drawing.Size(27, 23);
+            this.ActivityManagerButton.TabIndex = 22;
+            this.ActivityManagerButton.Text = "...";
+            this.ActivityManagerButton.UseVisualStyleBackColor = true;
+            this.ActivityManagerButton.Click += new System.EventHandler(this.MenuActionManageActivities_Click);
+            // 
+            // ActivityTreeDropdown
+            // 
+            this.ActivityTreeDropdown.ContextMenuStrip = this.PopupMenuActivity;
+            this.ActivityTreeDropdown.DrawWithVisualStyles = false;
+            this.ActivityTreeDropdown.DroppedDown = false;
+            this.ActivityTreeDropdown.Images = this.TreeImageList;
+            this.ActivityTreeDropdown.Location = new System.Drawing.Point(58, 3);
+            this.ActivityTreeDropdown.Name = "ActivityTreeDropdown";
+            this.ActivityTreeDropdown.SelectedNode = null;
+            this.ActivityTreeDropdown.Size = new System.Drawing.Size(232, 23);
+            this.ActivityTreeDropdown.TabIndex = 22;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.TabIndex = 22;
+            this.label2.Text = "&Activity:";
+            // 
+            // ProjectPanel
+            // 
+            this.ProjectPanel.Controls.Add(this.label1);
+            this.ProjectPanel.Controls.Add(this.ProjectManagerButton);
+            this.ProjectPanel.Controls.Add(this.ProjectTreeDropdown);
+            this.ProjectPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ProjectPanel.Location = new System.Drawing.Point(0, 0);
+            this.ProjectPanel.Name = "ProjectPanel";
+            this.ProjectPanel.Size = new System.Drawing.Size(326, 27);
+            this.ProjectPanel.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 3);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "&Project:";
+            // 
+            // ProjectManagerButton
+            // 
+            this.ProjectManagerButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ProjectManagerButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ProjectManagerButton.Location = new System.Drawing.Point(296, 2);
+            this.ProjectManagerButton.Name = "ProjectManagerButton";
+            this.ProjectManagerButton.Size = new System.Drawing.Size(27, 23);
+            this.ProjectManagerButton.TabIndex = 21;
+            this.ProjectManagerButton.Text = "...";
+            this.ProjectManagerButton.UseVisualStyleBackColor = true;
+            this.ProjectManagerButton.Click += new System.EventHandler(this.MenuActionManageProjects_Click);
+            // 
+            // ProjectTreeDropdown
+            // 
+            this.ProjectTreeDropdown.ContextMenuStrip = this.PopupMenuProject;
+            this.ProjectTreeDropdown.DrawWithVisualStyles = false;
+            this.ProjectTreeDropdown.DroppedDown = false;
+            this.ProjectTreeDropdown.Images = this.TreeImageList;
+            this.ProjectTreeDropdown.Location = new System.Drawing.Point(58, 3);
+            this.ProjectTreeDropdown.Name = "ProjectTreeDropdown";
+            this.ProjectTreeDropdown.SelectedNode = null;
+            this.ProjectTreeDropdown.Size = new System.Drawing.Size(232, 23);
+            this.ProjectTreeDropdown.TabIndex = 19;
+            // 
+            // PopupMenuProject
+            // 
+            this.PopupMenuProject.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem4,
+            this.toolStripMenuItem5,
+            this.toolStripSeparator1,
+            this.toolStripMenuItem6,
+            this.toolStripMenuItem7,
+            this.toolStripMenuItem8,
+            this.toolStripMenuItem9,
+            this.toolStripSeparator2,
+            this.toolStripMenuItem10});
+            this.PopupMenuProject.Name = "menuTask";
+            this.PopupMenuProject.Size = new System.Drawing.Size(167, 170);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(166, 22);
+            this.toolStripMenuItem4.Text = "&New Project...";
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(166, 22);
+            this.toolStripMenuItem5.Text = "Manage Projects...";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(163, 6);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Checked = true;
+            this.toolStripMenuItem6.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(166, 22);
+            this.toolStripMenuItem6.Text = "Use Projects";
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.Checked = true;
+            this.toolStripMenuItem7.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(166, 22);
+            this.toolStripMenuItem7.Text = "Use Activities";
+            // 
+            // toolStripMenuItem8
+            // 
+            this.toolStripMenuItem8.Checked = true;
+            this.toolStripMenuItem8.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(166, 22);
+            this.toolStripMenuItem8.Text = "Use Locations";
+            // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.Checked = true;
+            this.toolStripMenuItem9.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(166, 22);
+            this.toolStripMenuItem9.Text = "Use Categories";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(163, 6);
+            // 
+            // toolStripMenuItem10
+            // 
+            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(166, 22);
+            this.toolStripMenuItem10.Text = "&Properties...";
             // 
             // wStopTime
             // 
@@ -1835,7 +1616,7 @@ namespace Timekeeper.Forms
             this.BrowserToolbar.Location = new System.Drawing.Point(0, 0);
             this.BrowserToolbar.Name = "BrowserToolbar";
             this.BrowserToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.BrowserToolbar.Size = new System.Drawing.Size(742, 25);
+            this.BrowserToolbar.Size = new System.Drawing.Size(574, 25);
             this.BrowserToolbar.TabIndex = 0;
             this.BrowserToolbar.Text = "toolStrip2";
             // 
@@ -2095,14 +1876,14 @@ namespace Timekeeper.Forms
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 24);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(742, 276);
+            this.MainPanel.Size = new System.Drawing.Size(574, 270);
             this.MainPanel.TabIndex = 13;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(742, 322);
+            this.ClientSize = new System.Drawing.Size(574, 316);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.MenuMain);
@@ -2118,7 +1899,6 @@ namespace Timekeeper.Forms
             this.MenuMain.PerformLayout();
             this.StatusBar.ResumeLayout(false);
             this.StatusBar.PerformLayout();
-            this.PopupMenuProject.ResumeLayout(false);
             this.PopupMenuActivity.ResumeLayout(false);
             this.PopupMenuTrayIcon.ResumeLayout(false);
             this.panelControls.ResumeLayout(false);
@@ -2126,6 +1906,11 @@ namespace Timekeeper.Forms
             this.LocationAndCategoryPanel.ResumeLayout(false);
             this.CategoryPanel.ResumeLayout(false);
             this.LocationPanel.ResumeLayout(false);
+            this.ActivityPanel.ResumeLayout(false);
+            this.ActivityPanel.PerformLayout();
+            this.ProjectPanel.ResumeLayout(false);
+            this.ProjectPanel.PerformLayout();
+            this.PopupMenuProject.ResumeLayout(false);
             this.PopupMenuDates.ResumeLayout(false);
             this.BrowserToolbar.ResumeLayout(false);
             this.BrowserToolbar.PerformLayout();
@@ -2147,19 +1932,15 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripSeparator MenuFileSep2;
         private System.Windows.Forms.ToolStripMenuItem MenuFileExit;
         private System.Windows.Forms.ToolStripMenuItem MenuAction;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionNewActivity;
         private System.Windows.Forms.ToolStripSeparator MenuActionSep1;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionNewProject;
         private System.Windows.Forms.ToolStripMenuItem MenuTool;
         private System.Windows.Forms.ToolStripMenuItem MenuHelp;
         private System.Windows.Forms.ToolStripMenuItem MenuHelpContents;
         private System.Windows.Forms.ToolStripSeparator MenuHelpSep1;
         private System.Windows.Forms.ToolStripMenuItem MenuHelpAbout;
-		private System.Windows.Forms.StatusStrip StatusBar;
-        private System.Windows.Forms.TreeView ActivityTree;
+        private System.Windows.Forms.StatusStrip StatusBar;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarFileName;
-        private System.Windows.Forms.TreeView ProjectTree;
         private System.Windows.Forms.ToolStripMenuItem MenuReport;
         private System.Windows.Forms.ToolStripMenuItem MenuReportGrid;
         private System.Windows.Forms.ToolStripSeparator MenuToolSep1;
@@ -2173,34 +1954,16 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripStatusLabel StatusBarElapsedActivityToday;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarElapsedSinceStart;
         private System.Windows.Forms.Timer ShortTimer;
-        private System.Windows.Forms.ContextMenuStrip PopupMenuProject;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectNewProject;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectRename;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectDelete;
         private System.Windows.Forms.ContextMenuStrip PopupMenuActivity;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityNewFolder;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityNewActivity;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityRename;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityDelete;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionEditActivity;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionDeleteActivity;
-        private System.Windows.Forms.ToolStripSeparator MenuActionSep2;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionEditProject;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionDeleteProject;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityManageActivities;
         private System.Windows.Forms.Timer LongTimer;
         private System.Windows.Forms.OpenFileDialog NewFileDialog;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionNewActivityFolder;
         private System.Windows.Forms.ToolStripSeparator PopupMenuActivitySep1;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityProperties;
         private System.Windows.Forms.ToolStripMenuItem MenuToolStopwatch;
         private System.Windows.Forms.ToolStripMenuItem MenuFileSaveAs;
         private System.Windows.Forms.ToolStripMenuItem MenuReportJournal;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityEdit;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionNewProjectFolder;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectNewFolder;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectEdit;
-        private System.Windows.Forms.ToolStripSeparator PopupMenuProjectSep1;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectProperties;
         private System.Windows.Forms.ToolStripMenuItem MenuToolNotebook;
         private System.Windows.Forms.ToolStripSeparator MenuFileSep1;
         private System.Windows.Forms.ToolStripMenuItem MenuFileUtilities;
@@ -2210,14 +1973,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuReportPunch;
         private System.Windows.Forms.ToolStripMenuItem MenuFileUtilitiesCheck;
         private System.Windows.Forms.ToolStripMenuItem MenuHelpWeb;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityHide;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectHide;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionHideActivity;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionHideProject;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionUnhideActivity;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionUnhideProject;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityUnhide;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectUnhide;
 		private System.Windows.Forms.ToolStripMenuItem MenuFileRecent;
         private System.Windows.Forms.Panel panelControls;
         private System.Windows.Forms.ToolStrip BrowserToolbar;
@@ -2261,11 +2016,8 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ContextMenuStrip PopupMenuTrayIcon;
         private System.Windows.Forms.ToolStripMenuItem helloToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator PopupMenuActivitySep2;
-        private System.Windows.Forms.ToolStripSeparator PopupMenuProjectSep2;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityUseProjects;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityUseActivities;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectUseProjects;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectUseActivities;
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowser;
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserFirst;
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserPrev;
@@ -2301,17 +2053,9 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserSplitEntry3;
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserSplitEntry4;
         private System.Windows.Forms.ToolStripLabel toolControlEntryIndex;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionManageProjects;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionManageActivities;
         private System.Windows.Forms.ToolStripMenuItem MenuActionManageLocations;
         private System.Windows.Forms.ToolStripMenuItem MenuActionManageCategories;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionMergeProject;
-        private System.Windows.Forms.ToolStripMenuItem MenuActionMergeActivity;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectMerge;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityMerge;
         private System.Windows.Forms.ToolStripMenuItem MenuToolTodo;
-        private System.Windows.Forms.ToolStripSeparator PopupMenuProjectSep3;
-        private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectAddtoTodoList;
         private System.Windows.Forms.ToolStripMenuItem remindersToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem aboutTimekeeperToolStripMenuItem;
@@ -2345,5 +2089,26 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarFormatHorizontalRule;
 		private System.Windows.Forms.Panel MainPanel;
         private ComboTreeBox ProjectTreeDropdown;
+        private System.Windows.Forms.Button ProjectManagerButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button ActivityManagerButton;
+        private System.Windows.Forms.Panel ActivityPanel;
+        private ComboTreeBox ActivityTreeDropdown;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel ProjectPanel;
+        private System.Windows.Forms.ToolStripMenuItem MenuActionManageProjects;
+        private System.Windows.Forms.ToolStripMenuItem MenuActionManageActivities;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityUseLocations;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuActivityUseCategories;
+        private System.Windows.Forms.ContextMenuStrip PopupMenuProject;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
     }
 }

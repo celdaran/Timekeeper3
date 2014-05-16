@@ -138,15 +138,15 @@ namespace Timekeeper.Forms
                         Browser_EnableMemoEntry(true);
                         Browser_ShowUnlock(false);
                     } else {
-                        ProjectTree.Enabled = false;
-                        ActivityTree.Enabled = false;
+                        ProjectTreeDropdown.Enabled = false;
+                        ActivityTreeDropdown.Enabled = false;
                         Browser_EnableMemoEntry(false);
                         Browser_ShowUnlock(true);
                     }
                     Browser_EnableSplit(false);
                 } else {
-                    ProjectTree.Enabled = true;
-                    ActivityTree.Enabled = true;
+                    ProjectTreeDropdown.Enabled = true;
+                    ActivityTreeDropdown.Enabled = true;
                     Browser_EnableCloseStartGap(true);
                     Browser_EnableCloseEndGap(true);
                     Browser_EnableStartEntry(true);
@@ -326,18 +326,14 @@ namespace Timekeeper.Forms
         private void Browser_FormToEntry(ref Classes.JournalEntry entry, long entryId)
         {
             // Don't update the browser entry if nothing is selected
-            if ((ProjectTree.SelectedNode == null) || (ActivityTree.SelectedNode == null)) {
+            if ((ProjectTreeDropdown.SelectedNode == null) || (ActivityTreeDropdown.SelectedNode == null)) {
                 return;
             }
 
             // First translate some necessary data from the form 
-            Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-            Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
+            Classes.Project Project = (Classes.Project)ProjectTreeDropdown.SelectedNode.Tag;
+            Classes.Activity Activity = (Classes.Activity)ActivityTreeDropdown.SelectedNode.Tag;
             TimeSpan Delta = wStopTime.Value.Subtract(wStartTime.Value);
-
-            // NOW OVERRIDE TO USE THE NEW CONTROL
-            if (ProjectTreeDropdown.SelectedNode != null)
-                Project = (Classes.Project)ProjectTreeDropdown.SelectedNode.Tag;
 
             // Update browserEntry with current form data
             entry.JournalId = entryId;
@@ -365,41 +361,46 @@ namespace Timekeeper.Forms
         private void Browser_EntryToForm(Classes.JournalEntry entry)
         {
             // Now select projects and activities while browsing.
-            TreeNode ProjectNode = Widgets.FindTreeNode(ProjectTree.Nodes, entry.ProjectId);
+            ComboTreeNode ProjectNode = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, entry.ProjectId);
             if (ProjectNode != null) {
-                ProjectTree.SelectedNode = ProjectNode;
-                ProjectTree.SelectedNode.Expand();
+                ProjectTreeDropdown.SelectedNode = ProjectNode;
+                ProjectTreeDropdown.SelectedNode.Expand();
             }
             if ((ProjectNode == null) && (entry.JournalId != 0)) {
 
                 Classes.Project HiddenProject = new Classes.Project(entry.ProjectName);
-                TreeNode HiddenNode = Widgets.AddHiddenProjectToTree(ProjectTree.Nodes, HiddenProject);
+                ComboTreeNode HiddenNode = Widgets.AddHiddenProjectToTree(ProjectTreeDropdown.Nodes, HiddenProject);
 
-                ProjectTree.SelectedNode = HiddenNode;
-                ProjectTree.SelectedNode.Expand();
+                ProjectTreeDropdown.SelectedNode = HiddenNode;
+                //ProjectTree.SelectedNode.Expand();
             }
 
             // Yes, this is a nice copy/paste job from above.
-            TreeNode ActivityNode = Widgets.FindTreeNode(ActivityTree.Nodes, entry.ActivityId);
+            ComboTreeNode ActivityNode = Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, entry.ActivityId);
             if (ActivityNode != null) {
-                ActivityTree.SelectedNode = ActivityNode;
-                ActivityTree.SelectedNode.Expand();
+                ActivityTreeDropdown.SelectedNode = ActivityNode;
+                //ActivityTree.SelectedNode.Expand();
             }
             if ((ActivityNode == null) && (entry.JournalId != 0)) {
                 // If we didn't find the node, it's been hidden. So
                 // load it from the database and display it as hidden.
 
                 Classes.Activity HiddenActivity = new Classes.Activity(entry.ActivityName);
-                TreeNode HiddenNode = Widgets.AddHiddenActivityToTree(ActivityTree.Nodes, HiddenActivity);
+                ComboTreeNode HiddenNode = Widgets.AddHiddenActivityToTree(ActivityTreeDropdown.Nodes, HiddenActivity);
 
-                ActivityTree.SelectedNode = HiddenNode;
-                ActivityTree.SelectedNode.Expand();
+                ActivityTreeDropdown.SelectedNode = HiddenNode;
+                //ActivityTree.SelectedNode.Expand();
             }
 
             // And now again, for the new ComboTreeView
             ComboTreeNode ProjectNode2 = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, entry.ProjectId);
             if (ProjectNode2 != null) {
                 ProjectTreeDropdown.SelectedNode = ProjectNode2;
+            }
+
+            ComboTreeNode ActivityNode2 = Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, entry.ActivityId);
+            if (ActivityNode2 != null) {
+                ActivityTreeDropdown.SelectedNode = ActivityNode2;
             }
 
             // Display entry

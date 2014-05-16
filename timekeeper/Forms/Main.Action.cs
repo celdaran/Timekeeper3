@@ -23,8 +23,10 @@ namespace Timekeeper.Forms
     partial class Main
     {
         // These prevent potentially infinite following
+        /*
         private bool DontChangeProject = false;
         private bool DontChangeActivity = false;
+        */
 
         // Deferred keyboard shortcut setting
         private bool DeferShortcutAssignment = false;
@@ -33,6 +35,7 @@ namespace Timekeeper.Forms
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
 
+        /*
         private void Action_ChangedProject()
         {
             // Get current project
@@ -79,9 +82,11 @@ namespace Timekeeper.Forms
                 toolControlRevert.Enabled = true;
             }
         }
+        */
 
         //---------------------------------------------------------------------
 
+        /*
         private void Action_ChangedActivity()
         {
             // Get current items
@@ -123,6 +128,7 @@ namespace Timekeeper.Forms
                 toolControlRevert.Enabled = true;
             }
         }
+        */
 
         //---------------------------------------------------------------------
 
@@ -328,8 +334,8 @@ namespace Timekeeper.Forms
         {
             if (Timekeeper.Database != null) {
 
-                ProjectTree.Nodes.Clear();
-                ActivityTree.Nodes.Clear();
+                ProjectTreeDropdown.Nodes.Clear();
+                ActivityTreeDropdown.Nodes.Clear();
 
                 StatusBar_FileClosed();
                 MenuBar_FileClosed();
@@ -352,49 +358,6 @@ namespace Timekeeper.Forms
                     Form.Close();
                 }
             }
-        }
-
-        //---------------------------------------------------------------------
-
-        public void Action_DeleteItem(TreeView tree)
-        {
-            // Confirm
-            if (Common.Prompt("Delete this item?") != DialogResult.Yes) {
-                return;
-            }
-
-            // Instantiate item
-            Classes.TreeAttribute SourceItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-
-            // See if it's in use
-            var JournalEntries = new Classes.JournalEntryCollection();
-            int Count = JournalEntries.Count(SourceItem.Type, SourceItem.ItemId);
-
-            if (Count > 0) {
-                string Prompt = String.Format(
-                    "You have {0} journal entries logged against this item. Would you like to merge them with another item?",
-                    Count);
-                if (Common.Prompt(Prompt) == DialogResult.Yes) {
-                    if (!Action_MergeItem(SourceItem)) {
-                        return;
-                    }
-                }
-            }
-
-            // Remove item from the database
-            long result = SourceItem.Delete();
-            if (result == 0) {
-                Common.Warn("There was a problem deleting the item.");
-                return;
-            }
-
-            // Now remove from the UI
-            tree.SelectedNode.Remove();
-
-            // Display root lines?
-            Action_TreeView_ShowRootLines();
-
-            //tree.ShowRootLines = Activities.HasParents();
         }
 
         //---------------------------------------------------------------------
@@ -442,7 +405,7 @@ namespace Timekeeper.Forms
                 this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
 
                 // Instantiate persistent dialog boxes
-                properties = new Forms.Properties();
+                //properties = new Forms.Properties();
 
                 // Initialize timer
                 timerLastRun = DateTime.Now;
@@ -463,8 +426,10 @@ namespace Timekeeper.Forms
                 }
 
                 // Initialize drag drop operations
+                /*
                 this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
                 this.ActivityTree.ItemDrag += new ItemDragEventHandler(ActivityTree_ItemDrag);
+                */
 
                 // Is the scheduler subsystem enabled?
                 if (Options.Advanced_Other_DisableScheduler) {
@@ -626,23 +591,7 @@ namespace Timekeeper.Forms
             Options.LoadMetrics();
             Options.LoadMRU();
 
-            // TODO: should this itself be an option?
             Timekeeper.Info("Timekeeper Version " + Timekeeper.VERSION + " Started");
-        }
-
-        //---------------------------------------------------------------------
-
-        private bool Action_MergeItem(Classes.TreeAttribute item)
-        {
-            Forms.Shared.Merge DialogBox = new Forms.Shared.Merge(item);
-            if (DialogBox.ShowDialog(this) == DialogResult.Cancel) {
-                return false;
-            } else {
-                Classes.TreeAttribute TargetItem = DialogBox.TargetItem;
-                string Message = String.Format("You just merged all of the entries for {0} into {1}", item.Name, TargetItem.Name);
-                Common.Info(Message);
-                return true;
-            }
         }
 
         //---------------------------------------------------------------------
@@ -652,65 +601,6 @@ namespace Timekeeper.Forms
             Action_CloseFile();
             DatabaseFileName = fileName;
             Action_LoadFile();
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_HideItem(TreeView tree, bool viewingHiddenItems)
-        {
-            // Hide in the database
-            Classes.TreeAttribute Item = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-
-            if (Item.Hide() == 0) {
-                Common.Warn("There was a problem hiding the item.");
-                return;
-            }
-
-            // Now handle the UI
-            if (viewingHiddenItems) {
-                tree.SelectedNode.ForeColor = Color.Gray;
-                if (Item.IsFolder) {
-                    tree.SelectedNode.ImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
-                    tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
-                } else {
-                    tree.SelectedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                    tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                }
-            } else {
-                tree.SelectedNode.Remove();
-            }
-
-            Action_TreeView_ShowRootLines();
-        }
-
-        //----------------------------------------------------------------------
-
-        private void Action_UnhideItem(TreeView tree)
-        {
-            // Unhide in the database
-            Classes.TreeAttribute item = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-            long result = item.Unhide();
-
-            if (result == 0) {
-                Common.Warn("There was a problem unhiding the item.");
-                return;
-            }
-
-            // Update the UI
-            tree.SelectedNode.ForeColor = Color.Black;
-            if (item.IsFolder) {
-                tree.SelectedNode.ImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
-                tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
-            } else {
-                int Icon = Timekeeper.IMG_PROJECT;
-                if (item.Type == Timekeeper.Dimension.Activity) {
-                    Icon = Timekeeper.IMG_ACTIVITY;
-                }
-                tree.SelectedNode.ImageIndex = Icon;
-                tree.SelectedNode.SelectedImageIndex = Icon;
-            }
-
-            Action_TreeView_ShowRootLines();
         }
 
         //----------------------------------------------------------------------
@@ -746,14 +636,15 @@ namespace Timekeeper.Forms
                 //------------------------------------------
 
                 Widgets = new Classes.Widgets();
-                Widgets.BuildProjectTree(ProjectTree.Nodes);
-                Widgets.BuildActivityTree(ActivityTree.Nodes);
+                //Widgets.BuildProjectTree(ProjectTree.Nodes);
+                //Widgets.BuildActivityTree(ActivityTree.Nodes);
                 Widgets.PopulateLocationComboBox(wLocation);
                 Widgets.PopulateCategoryComboBox(wCategory);
 
                 Widgets.BuildProjectTree(ProjectTreeDropdown.Nodes);
+                Widgets.BuildActivityTree(ActivityTreeDropdown.Nodes);
 
-                Action_TreeView_ShowRootLines();
+                //Action_TreeView_ShowRootLines();
 
                 MenuBar_FileOpened();
                 StatusBar_FileOpened();
@@ -775,24 +666,15 @@ namespace Timekeeper.Forms
                 //------------------------------------------
 
                 // Re-select last selected project
-                TreeNode LastNode = Widgets.FindTreeNode(ProjectTree.Nodes, Options.State_LastProjectId);
-                if (LastNode != null) {
-                    ProjectTree.SelectedNode = LastNode;
-                    ProjectTree.SelectedNode.Expand();
-                }
-
-                // Re-select last selected activity
-                LastNode = Widgets.FindTreeNode(ActivityTree.Nodes, Options.State_LastActivityId);
-                if (LastNode != null) {
-                    ActivityTree.SelectedNode = LastNode;
-                    ActivityTree.SelectedNode.Expand();
-                }
-
-                // Re-select last selected project
                 ComboTreeNode LastComboTreeNode = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, Options.State_LastProjectId);
                 if (LastComboTreeNode != null) {
                     ProjectTreeDropdown.SelectedNode = LastComboTreeNode;
-                    //ProjectTreeDropdown.SelectedNode.Expand();
+                }
+
+                // Re-select last selected activity
+                LastComboTreeNode = Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, Options.State_LastActivityId);
+                if (LastComboTreeNode != null) {
+                    ActivityTreeDropdown.SelectedNode = LastComboTreeNode;
                 }
 
                 //------------------------------------------
@@ -876,15 +758,19 @@ namespace Timekeeper.Forms
 
             // Update the action menu accordingly
             MenuActionSep1.Visible = show;
+            /*
             MenuActionNewProject.Visible = show;
             MenuActionNewProjectFolder.Visible = show;
             MenuActionEditProject.Visible = show;
             MenuActionHideProject.Visible = show;
             MenuActionDeleteProject.Visible = show;
+            */
 
             // Update the popup menu state accordingly
+            /*
             PopupMenuProjectUseProjects.Checked = show;
             PopupMenuProjectUseActivities.Enabled = show;
+            */
 
             // Mirror update the other popup menu accordingly
             PopupMenuActivityUseProjects.Checked = show;
@@ -898,20 +784,24 @@ namespace Timekeeper.Forms
             Options.Layout_UseActivities = show;
 
             // Update the action menu accordingly
+            /*
             MenuActionSep2.Visible = show;
             MenuActionNewActivity.Visible = show;
             MenuActionNewActivityFolder.Visible = show;
             MenuActionEditActivity.Visible = show;
             MenuActionHideActivity.Visible = show;
             MenuActionDeleteActivity.Visible = show;
+            */
 
             // Update the popup menu state accordingly
             PopupMenuActivityUseActivities.Checked = show;
             PopupMenuActivityUseProjects.Enabled = show;
 
             // Mirror update the other popup menu accordingly
+            /*
             PopupMenuProjectUseActivities.Checked = show;
             PopupMenuProjectUseProjects.Enabled = show;
+            */
         }
 
         //---------------------------------------------------------------------
@@ -975,80 +865,6 @@ namespace Timekeeper.Forms
             return BackupFileName;
         }
 
-        //---------------------------------------------------------------------
-
-        private void Action_RedescribeItem(TreeNode node, Classes.TreeAttribute item, string newDescription)
-        {
-            int result = item.Redescribe(newDescription);
-            if (result == Timekeeper.SUCCESS) {
-                node.ToolTipText = item.Description;
-            } else {
-                Common.Warn("Error updating item description.");
-                return;
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private bool Action_RenameItem(TreeNode node, Classes.TreeAttribute item, string newName)
-        {
-            int result = item.Rename(newName);
-            if (result == Timekeeper.SUCCESS) {
-                return true;
-            } else if (result == Classes.TreeAttribute.ERR_RENAME_EXISTS) {
-                Common.Warn("An item with that name already exists.");
-                return false;
-            } else if (result == Timekeeper.FAILURE) {
-                Common.Warn("Error renaming item.");
-                return false;
-            } else {
-                // Don't care
-                return false;
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_ReparentItem(TreeView tree, Classes.TreeAttribute item, long parentId)
-        {
-            TreeNode ParentNode = Widgets.FindTreeNode(tree.Nodes, parentId);
-
-            if (ParentNode == null) {
-                item.Reparent(0);
-            } else {
-                Classes.TreeAttribute parentItem = (Classes.TreeAttribute)ParentNode.Tag;
-                if (item.IsDescendentOf(parentItem.ItemId)) {
-                    Common.Warn("Item renamed, but not reparented. Cannot reparent to a descendent.");
-                    return;
-                }
-                item.Reparent((Classes.TreeAttribute)ParentNode.Tag);
-            }
-
-            // and reload
-            // FIXME! BEGIN WTF: this sucks...
-            tree.Nodes.Clear();
-            // FIXME: bit of a hack, here (okay, more than a bit)
-            if (tree.Name == "ProjectTree") {
-                Widgets.BuildProjectTree(ProjectTree.Nodes);
-            } else {
-                Widgets.BuildActivityTree(ActivityTree.Nodes);
-            }
-            // END WTF
-
-            // display root lines?
-            Action_TreeView_ShowRootLines();
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_RepointItem(TreeNode node, Classes.Project project, string newExternalProjectNo)
-        {
-            int result = project.Repoint(newExternalProjectNo);
-
-            if (result == 0) {
-                Common.Warn("Error updating External Project Number.");
-            }
-        }
 
         //---------------------------------------------------------------------
 
@@ -1147,6 +963,7 @@ namespace Timekeeper.Forms
             }
 
             // Animate the selected item icons
+            /*
             if (timerRunning == true) {
                 int currentIndex = currentActivityNode.SelectedImageIndex;
                 if (currentIndex > Timekeeper.IMG_TIMER_END - 1) {
@@ -1159,6 +976,7 @@ namespace Timekeeper.Forms
                 currentProjectNode.ImageIndex = currentActivityNode.ImageIndex;
                 currentProjectNode.SelectedImageIndex = currentActivityNode.SelectedImageIndex;
             }
+            */
 
             if (timerRunning == false) {
                 if (!isBrowsing && (browserEntry != null)) {
@@ -1216,28 +1034,28 @@ namespace Timekeeper.Forms
             }
 
             // Find the currently selected project
-            if (ProjectTree.SelectedNode == null) {
-                if (ProjectTree.Nodes.Count == 1) {
-                    ProjectTree.SelectedNode = ProjectTree.Nodes[0];
+            if (ProjectTreeDropdown.SelectedNode == null) {
+                if (ProjectTreeDropdown.Nodes.Count == 1) {
+                    ProjectTreeDropdown.SelectedNode = ProjectTreeDropdown.Nodes[0];
                 } else {
                     if (Options.Layout_UseProjects) {
                         Common.Warn("No Project selected.");
                         return;
                     } else {
-                        ProjectTree.SelectedNode = GetFirstNonFolder(ProjectTree.Nodes);
+                        ProjectTreeDropdown.SelectedNode = GetFirstNonFolder(ProjectTreeDropdown.Nodes);
                     }
                 }
             }
 
             // Check for a currently selected activity
-            if (ActivityTree.SelectedNode == null) {
-                if (ActivityTree.Nodes.Count == 1) {
+            if (ActivityTreeDropdown.SelectedNode == null) {
+                if (ActivityTreeDropdown.Nodes.Count == 1) {
                     // If there's only one, just select it. If it turns
                     // out this is a folder, then the user can fix this
                     // manually. But it's highly likely we're here 
                     // because they're not using Activities and only
                     // the default activity is present.
-                    ActivityTree.SelectedNode = ActivityTree.Nodes[0];
+                    ActivityTreeDropdown.SelectedNode = ActivityTreeDropdown.Nodes[0];
                 } else {
                     if (Options.Layout_UseActivities) {
                         // If there's more than one, and we're supposed
@@ -1249,14 +1067,14 @@ namespace Timekeeper.Forms
                         // If activities aren't in use, just find the
                         // first activity that isn't a folder and
                         // select it.
-                        ActivityTree.SelectedNode = GetFirstNonFolder(ActivityTree.Nodes);
+                        ActivityTreeDropdown.SelectedNode = GetFirstNonFolder(ActivityTreeDropdown.Nodes);
                     }
                 }
             }
 
             // Grab instances of currently selected objects
-            currentProjectNode = ProjectTree.SelectedNode;
-            currentActivityNode = ActivityTree.SelectedNode;
+            currentProjectNode = ProjectTreeDropdown.SelectedNode;
+            currentActivityNode = ActivityTreeDropdown.SelectedNode;
             TimedProject = (Classes.Project)currentProjectNode.Tag;
             TimedActivity = (Classes.Activity)currentActivityNode.Tag;
 
@@ -1352,11 +1170,11 @@ namespace Timekeeper.Forms
             Browser_SetupForStopping();
         }
 
-        private TreeNode GetFirstNonFolder(TreeNodeCollection nodes)
+        private ComboTreeNode GetFirstNonFolder(ComboTreeNodeCollection nodes)
         {
-            TreeNode ReturnValue = null;
+            ComboTreeNode ReturnValue = null;
 
-            foreach (TreeNode Node in nodes) {
+            foreach (ComboTreeNode Node in nodes) {
                 Classes.TreeAttribute Temp = (Classes.TreeAttribute)Node.Tag;
                 if (Temp.IsFolder) {
                     ReturnValue = GetFirstNonFolder(Node.Nodes);
@@ -1420,10 +1238,13 @@ namespace Timekeeper.Forms
             menuToolControlStop.ShortcutKeys = Keys.None;
             menuToolControlStart.ShortcutKeys = saveKeys;
             */
+            /*
+            // Restore after animating
             currentProjectNode.ImageIndex = Timekeeper.IMG_PROJECT;
             currentProjectNode.SelectedImageIndex = Timekeeper.IMG_PROJECT;
             currentActivityNode.ImageIndex = Timekeeper.IMG_ACTIVITY;
             currentActivityNode.SelectedImageIndex = Timekeeper.IMG_ACTIVITY;
+            */
 
             Action_SetMenuAvailability(MenuFile, true);
 
@@ -1503,197 +1324,6 @@ namespace Timekeeper.Forms
                 Common.Warn("There was a problem splitting the entry");
                 Timekeeper.Exception(x);
             }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_TreeView_DragDrop(TreeView tree, object sender, DragEventArgs e)
-        {
-            // Retrieve the client coordinates of the drop location.
-            Point targetPoint = tree.PointToClient(new Point(e.X, e.Y));
-
-            // Retrieve the node at the drop location.
-            TreeNode targetNode = tree.GetNodeAt(targetPoint);
-
-            // Retrieve the node that was dragged.
-            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-
-            // Get the Timekeeper Item of the node that was dragged.
-            Classes.TreeAttribute draggedItem = (Classes.TreeAttribute)draggedNode.Tag;
-
-            // Cross-tree dragging warning
-            bool CrossDragAccepted = false;
-            if (tree.Name != draggedNode.TreeView.Name) {
-                // TODO: Allow conversion via drag and drop. This means that once confirmed
-                string ToItem = (string)tree.Tag;
-                string FromItem = (ToItem == "Project") ? "Activity" : "Project";
-                string Message;
-                if (draggedItem.IsFolder) {
-                    Message = String.Format("You cannot drag this {0} folder to the {1} tree.", FromItem, ToItem);
-                    Common.Warn(Message);
-                    return;
-                } else {
-                    Message = "You are dragging an item to a different tree. ";
-                    Message += String.Format("Do you wish to convert this {0} to a {1}?", FromItem, ToItem);
-                    if (draggedItem.GetType() == typeof(Classes.Project)) {
-                        Message += Environment.NewLine + Environment.NewLine + 
-                            "Note that any External Project Number associated with this Project will be lost. This action cannot be undone.";
-                    }
-                    if (Common.WarnPrompt(Message) == DialogResult.Yes) {
-                        CrossDragAccepted = true;
-                    } else {
-                        return;
-                    }
-                }
-            }
-
-            // Confirm that the node at the drop location is not 
-            // the dragged node or a descendant of the dragged node.
-            // Also confirm that a folder isn't being dropped on top
-            // of an item: items can only go into folders.
-            bool DropAllowed = false;
-
-            if (targetNode == null) {
-                DropAllowed = true;
-            } else {
-                Classes.TreeAttribute targetItem = (Classes.TreeAttribute)targetNode.Tag;
-                if (targetItem.IsFolder) {
-                    DropAllowed = true;
-                }
-            }
-
-            if (!draggedNode.Equals(targetNode) && !Action_TreeView_ContainsNode(draggedNode, targetNode) && (DropAllowed)) {
-                if (e.Effect == DragDropEffects.Move) {
-                    draggedNode.Remove();
-                    if (targetNode == null) {
-                        // Move to the root
-                        tree.Nodes.Add(draggedNode);
-                        // Update the database
-                        draggedItem.Reparent(0);
-                    } else {
-                        // Otherwise, drop it on the target
-                        targetNode.Nodes.Add(draggedNode);
-
-                        // Update the database
-                        Classes.TreeAttribute targetItem = (Classes.TreeAttribute)targetNode.Tag;
-                        draggedItem.Reparent(targetItem.ItemId);
-
-                        // Expand the node at the location 
-                        // to show the dropped node.
-                        targetNode.Expand();
-                    }
-                }
-            }
-            else if (!draggedNode.Equals(targetNode) && Action_TreeView_IsSibling(draggedNode, targetNode)) {
-
-                int OldIndex = targetNode.Index;
-                TreeNode Parent = targetNode.Parent;
-
-                draggedNode.Remove();
-                targetNode.Parent.Nodes.Insert(targetNode.Index + 1, draggedNode);
-                targetNode.Remove();
-                Parent.Nodes.Insert(OldIndex + 1, targetNode);
-
-                long Index = 1;
-                foreach (TreeNode node in Parent.Nodes) {
-                    Classes.TreeAttribute Item = (Classes.TreeAttribute)node.Tag;
-                    Item.Reorder(Index);
-                    Index++;
-                }
-
-            }
-
-            if (CrossDragAccepted) {
-
-                // Conversion
-                if (draggedItem.GetType() == typeof(Classes.Project)) {
-
-                    // Create an Activity in the database
-                    Classes.Activity Activity = new Classes.Activity();
-                    Activity.Copy(draggedItem);
-                    Activity.Create();
-
-                    draggedNode.Tag = (Classes.TreeAttribute)Activity;
-
-                    // Update the UI
-                    if (Activity.IsHidden) {
-                        draggedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                    } else {
-                        draggedNode.ImageIndex = Timekeeper.IMG_ACTIVITY;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ACTIVITY;
-                    }
-                } else {
-                    // Create a Project in the database
-                    Classes.Project Project = new Classes.Project();
-                    Project.Copy(draggedItem);
-                    Project.Create();
-
-                    draggedNode.Tag = (Classes.TreeAttribute)Project;
-
-                    // Update the UI
-                    if (Project.IsHidden) {
-                        draggedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                    } else {
-                        draggedNode.ImageIndex = Timekeeper.IMG_PROJECT;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_PROJECT;
-                    }
-                }
-
-                // Removal
-                draggedItem.Delete();
-                //draggedItem.Rename(draggedItem.ItemGuid);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private bool Action_TreeView_ContainsNode(TreeNode node1, TreeNode node2)
-        {
-            // A TreeView Drag-and-Drop Helper method
-            if (node2 == null) {
-                // We're moving it to the top level
-                return false;
-            } else {
-                // Check the parent node of the second node.
-                if (node2.Parent == null) return false;
-                if (node2.Parent.Equals(node1)) return true;
-
-                // If the parent node is not null or equal to the first node, 
-                // call the ContainsNode method recursively using the parent of 
-                // the second node.
-                return Action_TreeView_ContainsNode(node1, node2.Parent);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private bool Action_TreeView_IsSibling(TreeNode node1, TreeNode node2)
-        {
-            // A TreeView Drag-and-Drop Helper method
-            if (node2 == null) {
-                return false;
-            } else {
-                Classes.TreeAttribute draggedItem = (Classes.TreeAttribute)node1.Tag;
-                Classes.TreeAttribute targetItem = (Classes.TreeAttribute)node2.Tag;
-                if (draggedItem.ParentId == targetItem.ParentId) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_TreeView_ShowRootLines()
-        {
-            Classes.ProjectCollection Projects = new Classes.ProjectCollection();
-            ProjectTree.ShowRootLines = Projects.HasParents();
-
-            Classes.ActivityCollection Activities = new Classes.ActivityCollection();
-            ActivityTree.ShowRootLines = Activities.HasParents();
         }
 
         //---------------------------------------------------------------------
