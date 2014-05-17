@@ -559,24 +559,24 @@ namespace Timekeeper.Forms
             }
 
             // Set date/time formats
-            wStartTime.CustomFormat = Options.Advanced_DateTimeFormat;
-            wStopTime.CustomFormat = Options.Advanced_DateTimeFormat;
+            StartTimeSelector.CustomFormat = Options.Advanced_DateTimeFormat;
+            StopTimeSelector.CustomFormat = Options.Advanced_DateTimeFormat;
 
             // Adjust Start/Stop time widths and LocationAndCategoryPanel location
-            wStartTime.Value = DateTime.Parse("1970-01-01T00:00:00.00-00:00");
-            Size DateSize = TextRenderer.MeasureText(wStartTime.Text, wStartTime.Font);
+            StartTimeSelector.Value = DateTime.Parse("1970-01-01T00:00:00.00-00:00");
+            Size DateSize = TextRenderer.MeasureText(StartTimeSelector.Text, StartTimeSelector.Font);
             int DateTimeWidth = DateSize.Width;
             int DropDownButtonWidth = 33;
 
             StatusBarDebug1.Text = "Width: " + DateTimeWidth.ToString();
 
-            wStartTime.Width = DateTimeWidth + DropDownButtonWidth;
-            wStopTime.Width = DateTimeWidth + DropDownButtonWidth;
+            StartTimeSelector.Width = DateTimeWidth + DropDownButtonWidth;
+            StopTimeSelector.Width = DateTimeWidth + DropDownButtonWidth;
 
-            CloseStartGapButton.Left = Math.Max(wStartTime.Width + 73, 142);
-            CloseStopGapButton.Left = Math.Max(wStartTime.Width + 73, 142);
+            CloseStartGapButton.Left = Math.Max(StartTimeSelector.Width + 73, 142);
+            CloseStopGapButton.Left = Math.Max(StartTimeSelector.Width + 73, 142);
 
-            LocationAndCategoryPanel.Left = CloseStartGapButton.Left + DropDownButtonWidth;
+            DimensionPanel.Left = CloseStartGapButton.Left + DropDownButtonWidth;
         }
 
         //---------------------------------------------------------------------
@@ -938,8 +938,8 @@ namespace Timekeeper.Forms
                 StatusBar_Update();
 
                 if (!isBrowsing) {
-                    wDuration.Text = StatusBarElapsedSinceStart.Text;
-                    wStopTime.Value = DateTime.Now;
+                    DurationBox.Text = StatusBarElapsedSinceStart.Text;
+                    StopTimeSelector.Value = DateTime.Now;
                 }
 
                 // FIXME: More Options Overhaul
@@ -981,12 +981,12 @@ namespace Timekeeper.Forms
             if (timerRunning == false) {
                 if (!isBrowsing && (browserEntry != null)) {
                     if (!StartTimeManuallySet) {
-                        wStartTime.Value = DateTime.Now;
-                        wStopTime.Value = DateTime.Now;
+                        StartTimeSelector.Value = DateTime.Now;
+                        StopTimeSelector.Value = DateTime.Now;
                     } else {
-                        wStopTime.Value = DateTime.Now;
+                        StopTimeSelector.Value = DateTime.Now;
                     }
-                    wDuration.Text = Browser_CalculateDuration();
+                    DurationBox.Text = Browser_CalculateDuration();
                 }
             }
         }
@@ -1089,7 +1089,7 @@ namespace Timekeeper.Forms
             }
 
             // Now start timing
-            DateTime StartTime = wStartTime.Value;
+            DateTime StartTime = StartTimeSelector.Value;
             TimedActivity.StartTiming(StartTime);
             TimedActivity.FollowedItemId = TimedProject.ItemId;
 
@@ -1193,14 +1193,14 @@ namespace Timekeeper.Forms
         private void Action_StopTimer()
         {
             // Close off the timer for both objects
-            long Seconds = TimedActivity.StopTiming(wStopTime.Value);
-                           TimedProject.StopTiming(wStopTime.Value);
+            long Seconds = TimedActivity.StopTiming(StopTimeSelector.Value);
+                           TimedProject.StopTiming(StopTimeSelector.Value);
 
             // Close off timer
             TimedEntry.ProjectId = TimedProject.ItemId;
             TimedEntry.ActivityId = TimedActivity.ItemId;
-            TimedEntry.StartTime = wStartTime.Value;
-            TimedEntry.StopTime = wStopTime.Value;
+            TimedEntry.StartTime = StartTimeSelector.Value;
+            TimedEntry.StopTime = StopTimeSelector.Value;
             TimedEntry.Seconds = Seconds;
             //Entry.Memo = wMemo.Text;
             TimedEntry.Memo = MemoEditor.Text;
@@ -1354,7 +1354,7 @@ namespace Timekeeper.Forms
         {
             if (isBrowsing) {
                 if (currentTime != previousTime) {
-                    wDuration.Text = Browser_CalculateDuration();
+                    DurationBox.Text = Browser_CalculateDuration();
                     Browser_EnableRevert(true);
                 }
             }

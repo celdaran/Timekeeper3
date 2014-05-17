@@ -521,15 +521,15 @@ namespace Timekeeper.Forms
         private void wStartTime_Leave(object sender, EventArgs e)
         {
             // FIXME: move this into Action
-            StartTimeManuallySet = (wStartTime.Value != priorLoadedBrowserEntry.StartTime);
-            Action_UpdateDuration(wStartTime.Value, priorLoadedBrowserEntry.StartTime);
+            StartTimeManuallySet = (StartTimeSelector.Value != priorLoadedBrowserEntry.StartTime);
+            Action_UpdateDuration(StartTimeSelector.Value, priorLoadedBrowserEntry.StartTime);
         }
 
         //---------------------------------------------------------------------
 
         private void wStopTime_Leave(object sender, EventArgs e)
         {
-            Action_UpdateDuration(wStopTime.Value, priorLoadedBrowserEntry.StopTime);
+            Action_UpdateDuration(StopTimeSelector.Value, priorLoadedBrowserEntry.StopTime);
         }
 
         //---------------------------------------------------------------------
@@ -688,12 +688,12 @@ namespace Timekeeper.Forms
 
         private void wStartTime_KeyDown(object sender, KeyEventArgs e)
         {
-            Action_DateTimeClipboard(wStartTime, e);
+            Action_DateTimeClipboard(StartTimeSelector, e);
         }
 
         private void wStopTime_KeyDown(object sender, KeyEventArgs e)
         {
-            Action_DateTimeClipboard(wStopTime, e);
+            Action_DateTimeClipboard(StopTimeSelector, e);
         }
 
         private void Action_DateTimeClipboard(DateTimePicker picker, KeyEventArgs e)

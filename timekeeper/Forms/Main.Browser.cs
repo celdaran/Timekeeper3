@@ -37,11 +37,11 @@ namespace Timekeeper.Forms
                 if (PreviousEndTime == DateTime.MinValue) {
                     // something went wrong, do nothing
                 } else {
-                    wStartTime.Value = PreviousEndTime;
+                    StartTimeSelector.Value = PreviousEndTime;
                 }
 
                 // Recalculate duration
-                wDuration.Text = Browser_CalculateDuration();
+                DurationBox.Text = Browser_CalculateDuration();
 
                 // Disable button (already done)
                 Browser_EnableCloseStartGap(false);
@@ -69,13 +69,13 @@ namespace Timekeeper.Forms
                 // Set next start date
                 DateTime NextStartTime = Browser_GetNextStartTime();
                 if (NextStartTime == DateTime.MaxValue) {
-                    wStopTime.Value = DateTime.Now;
+                    StopTimeSelector.Value = DateTime.Now;
                 } else {
-                    wStopTime.Value = NextStartTime;
+                    StopTimeSelector.Value = NextStartTime;
                 }
 
                 // And recalculate duration
-                wDuration.Text = Browser_CalculateDuration();
+                DurationBox.Text = Browser_CalculateDuration();
 
                 // Enable revert
                 Browser_EnableRevert(true);
@@ -164,7 +164,7 @@ namespace Timekeeper.Forms
                     Browser_EnableCloseStartGap(false);
                 } else {
                     DateTime PreviousEndTime = Browser_GetPreviousEndTime();
-                    if (PreviousEndTime == wStartTime.Value) {
+                    if (PreviousEndTime == StartTimeSelector.Value) {
                         Browser_EnableCloseStartGap(false);
                     } else {
                         Browser_EnableCloseStartGap(true);
@@ -176,7 +176,7 @@ namespace Timekeeper.Forms
                     Browser_EnableCloseEndGap(true);
                 } else {
                     DateTime NextStartTime = Browser_GetNextStartTime();
-                    if (NextStartTime == wStopTime.Value) {
+                    if (NextStartTime == StopTimeSelector.Value) {
                         Browser_EnableCloseEndGap(false);
                     } else {
                         Browser_EnableCloseEndGap(true);
@@ -205,51 +205,51 @@ namespace Timekeeper.Forms
 
         private void Browser_EnableStart(bool enabled)
         {
-            toolControlStart.Enabled = enabled;
+            ToolbarStartButton.Enabled = enabled;
             MenuActionStartTimer.Enabled = enabled;
             //menuToolControlStart.Enabled = enabled;
             if (enabled) {
                 var kc = new KeysConverter();
-                toolControlStart.ToolTipText = "Start the Timer (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
+                ToolbarStartButton.ToolTipText = "Start the Timer (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
             } else {
-                toolControlStart.ToolTipText = "Timer cannot be started while browsing old entries. Click 'Go to New Entry' to begin timing.";
+                ToolbarStartButton.ToolTipText = "Timer cannot be started while browsing old entries. Click 'Go to New Entry' to begin timing.";
             }
         }
 
         private void Browser_EnableStop(bool enabled)
         {
-            toolControlStop.Enabled = enabled;
+            ToolbarStopButton.Enabled = enabled;
             MenuActionStopTimer.Enabled = enabled;
             //menuToolControlStop.Enabled = enabled;
         }
 
         private void Browser_EnableFirst(bool enabled)
         {
-            toolControlFirstEntry.Enabled = enabled;
+            ToolbarFirstEntry.Enabled = enabled;
             MenuToolbarBrowserFirst.Enabled = enabled;
         }
 
         private void Browser_EnablePrev(bool enabled)
         {
-            toolControlPrevEntry.Enabled = enabled;
+            ToolbarPrevEntry.Enabled = enabled;
             MenuToolbarBrowserPrev.Enabled = enabled;
         }
 
         private void Browser_EnableNext(bool enabled)
         {
-            toolControlNextEntry.Enabled = enabled;
+            ToolbarNextEntry.Enabled = enabled;
             MenuToolbarBrowserNext.Enabled = enabled;
         }
 
         private void Browser_EnableLast(bool enabled)
         {
-            toolControlLastEntry.Enabled = enabled;
+            ToolbarLastEntry.Enabled = enabled;
             MenuToolbarBrowserLast.Enabled = enabled;
         }
 
         private void Browser_EnableNew(bool enabled)
         {
-            toolControlNewEntry.Enabled = enabled;
+            ToolbarNewEntry.Enabled = enabled;
             MenuToolbarBrowserNew.Enabled = enabled;
         }
 
@@ -267,46 +267,46 @@ namespace Timekeeper.Forms
 
         private void Browser_EnableRevert(bool enabled)
         {
-            toolControlRevert.Enabled = enabled;
+            ToolbarRevert.Enabled = enabled;
             MenuToolbarBrowserRevert.Enabled = enabled;
-            toolControlSave.Enabled = enabled;
+            ToolbarSave.Enabled = enabled;
             MenuToolbarBrowserSave.Enabled = enabled;
         }
 
         private void Browser_EnableSplit(bool enabled)
         {
-            toolControlSplitEntry.Enabled = enabled;
+            ToolbarSplitEntry.Enabled = enabled;
             MenuToolbarBrowserSplitEntry.Enabled = enabled;
         }
 
         private void Browser_EnableStartEntry(bool enabled)
         {
-            wStartTime.Enabled = enabled;
-            labelStartTime.Enabled = enabled;
+            StartTimeSelector.Enabled = enabled;
+            StartLabel.Enabled = enabled;
         }
 
         private void Browser_EnableStopEntry(bool enabled)
         {
-            wStopTime.Enabled = enabled;
-            labelStopTime.Enabled = enabled;
+            StopTimeSelector.Enabled = enabled;
+            StopLabel.Enabled = enabled;
         }
 
         private void Browser_EnableDurationEntry(bool enabled)
         {
-            wDuration.Enabled = enabled;
-            labelDuration.Enabled = enabled;
+            DurationBox.Enabled = enabled;
+            DurationLabel.Enabled = enabled;
         }
 
         private void Browser_EnableLocationEntry(bool enabled)
         {
             wLocation.Enabled = enabled;
-            labelLocation.Enabled = enabled;
+            LocationLabel.Enabled = enabled;
         }
 
         private void Browser_EnableCategoryEntry(bool enabled)
         {
             wCategory.Enabled = enabled;
-            labelCategory.Enabled = enabled;
+            CategoryLabel.Enabled = enabled;
         }
 
         private void Browser_EnableMemoEntry(bool enabled)
@@ -333,14 +333,14 @@ namespace Timekeeper.Forms
             // First translate some necessary data from the form 
             Classes.Project Project = (Classes.Project)ProjectTreeDropdown.SelectedNode.Tag;
             Classes.Activity Activity = (Classes.Activity)ActivityTreeDropdown.SelectedNode.Tag;
-            TimeSpan Delta = wStopTime.Value.Subtract(wStartTime.Value);
+            TimeSpan Delta = StopTimeSelector.Value.Subtract(StartTimeSelector.Value);
 
             // Update browserEntry with current form data
             entry.JournalId = entryId;
             entry.ProjectId = Project.ItemId;
             entry.ActivityId = Activity.ItemId;
-            entry.StartTime = wStartTime.Value;
-            entry.StopTime = wStopTime.Value;
+            entry.StartTime = StartTimeSelector.Value;
+            entry.StopTime = StopTimeSelector.Value;
             entry.Seconds = (long)Delta.TotalSeconds;
             //entry.Memo = wMemo.Text;
             entry.Memo = MemoEditor.Text;
@@ -404,9 +404,9 @@ namespace Timekeeper.Forms
             }
 
             // Display entry
-            wStartTime.Value = entry.StartTime.LocalDateTime;
-            wStopTime.Value = entry.StopTime.LocalDateTime;
-            wDuration.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
+            StartTimeSelector.Value = entry.StartTime.LocalDateTime;
+            StopTimeSelector.Value = entry.StopTime.LocalDateTime;
+            DurationBox.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
             //wMemo.Text = entry.Memo;
             MemoEditor.Text = entry.Memo;
 
@@ -437,8 +437,8 @@ namespace Timekeeper.Forms
             }
 
             // And any other relevant values
-            toolControlEntryId.Text = entry.JournalId > 0 ? entry.JournalId.ToString() : "";
-            toolControlEntryIndex.Text = entry.JournalIndex > 0 ? entry.JournalIndex.ToString() : "";
+            ToolbarJournalId.Text = entry.JournalId > 0 ? entry.JournalId.ToString() : "";
+            ToolbarJournalIndex.Text = entry.JournalIndex > 0 ? entry.JournalIndex.ToString() : "";
         }
 
         //----------------------------------------------------------------------
@@ -561,20 +561,20 @@ namespace Timekeeper.Forms
         {
             var kc = new KeysConverter();
 
-            toolControlStart.ToolTipText = "Start Timer (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
-            toolControlStop.ToolTipText = "Stop Timer (" + kc.ConvertToString(MenuActionStopTimer.ShortcutKeys) + ")";
+            ToolbarStartButton.ToolTipText = "Start Timer (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
+            ToolbarStopButton.ToolTipText = "Stop Timer (" + kc.ConvertToString(MenuActionStopTimer.ShortcutKeys) + ")";
 
-            toolControlFirstEntry.ToolTipText = "Go to First Entry (" + kc.ConvertToString(MenuToolbarBrowserFirst.ShortcutKeys) + ")";
-            toolControlLastEntry.ToolTipText = "Go to Last Entry (" + kc.ConvertToString(MenuToolbarBrowserLast.ShortcutKeys) + ")";
-            toolControlNextEntry.ToolTipText = "Go to Next Entry (" + kc.ConvertToString(MenuToolbarBrowserNext.ShortcutKeys) + ")";
-            toolControlPrevEntry.ToolTipText = "Go to Previous Entry (" + kc.ConvertToString(MenuToolbarBrowserPrev.ShortcutKeys) + ")";
+            ToolbarFirstEntry.ToolTipText = "Go to First Entry (" + kc.ConvertToString(MenuToolbarBrowserFirst.ShortcutKeys) + ")";
+            ToolbarLastEntry.ToolTipText = "Go to Last Entry (" + kc.ConvertToString(MenuToolbarBrowserLast.ShortcutKeys) + ")";
+            ToolbarNextEntry.ToolTipText = "Go to Next Entry (" + kc.ConvertToString(MenuToolbarBrowserNext.ShortcutKeys) + ")";
+            ToolbarPrevEntry.ToolTipText = "Go to Previous Entry (" + kc.ConvertToString(MenuToolbarBrowserPrev.ShortcutKeys) + ")";
 
-            toolControlNewEntry.ToolTipText = "Go to New Entry (" + kc.ConvertToString(MenuToolbarBrowserNew.ShortcutKeys) + ")";
+            ToolbarNewEntry.ToolTipText = "Go to New Entry (" + kc.ConvertToString(MenuToolbarBrowserNew.ShortcutKeys) + ")";
             toolControlCloseStartGap.ToolTipText = "Close Start Gap (" + kc.ConvertToString(MenuToolbarBrowserCloseStartGap.ShortcutKeys) + ")";
             toolControlCloseEndGap.ToolTipText = "Close End Gap (" + kc.ConvertToString(MenuToolbarBrowserCloseEndGap.ShortcutKeys) + ")";
 
-            toolControlSave.ToolTipText = "Save Changes to Database (" + kc.ConvertToString(MenuToolbarBrowserSave.ShortcutKeys) + ")";
-            toolControlRevert.ToolTipText = "Revert Changes to Last Saved State (" + kc.ConvertToString(MenuToolbarBrowserRevert.ShortcutKeys) + ")";
+            ToolbarSave.ToolTipText = "Save Changes to Database (" + kc.ConvertToString(MenuToolbarBrowserSave.ShortcutKeys) + ")";
+            ToolbarRevert.ToolTipText = "Revert Changes to Last Saved State (" + kc.ConvertToString(MenuToolbarBrowserRevert.ShortcutKeys) + ")";
         }
 
         //---------------------------------------------------------------------
@@ -624,7 +624,7 @@ namespace Timekeeper.Forms
                 }
                 */
 
-                if (toolControlRevert.Enabled == false) {
+                if (ToolbarRevert.Enabled == false) {
                     // Instead of comparing the current to previous browser
                     // entry, let's just check the revert button, which
                     // is a user-facing visual indication that something
@@ -836,19 +836,19 @@ namespace Timekeeper.Forms
 
         private void Browser_ShowStart(bool show)
         {
-            toolControlStart.Visible = show;
+            ToolbarStartButton.Visible = show;
             //menuToolControlStart.Visible = show;
         }
 
         private void Browser_ShowStop(bool show)
         {
-            toolControlStop.Visible = show;
+            ToolbarStopButton.Visible = show;
             //menuToolControlStop.Visible = show;
         }
 
         private void Browser_ShowUnlock(bool show)
         {
-            toolControlUnlock.Visible = show;
+            ToolbarUnlock.Visible = show;
             MenuToolbarBrowserUnlock.Visible = show;
         }
 
@@ -866,27 +866,27 @@ namespace Timekeeper.Forms
         private void Browser_UpdateTimes()
         {
             if (isBrowsing) {
-                long seconds = ConvertToSeconds(wDuration.Text);
+                long seconds = ConvertToSeconds(DurationBox.Text);
 
                 if (seconds != priorLoadedBrowserEntry.Seconds) {
                     if (seconds < 0) {
                         // either set the start time backwards
                         browserEntry.Seconds = -seconds;
                         browserEntry.StartTime = browserEntry.StopTime.AddSeconds(Convert.ToDouble(seconds));
-                        wStartTime.Value = browserEntry.StartTime.LocalDateTime;
+                        StartTimeSelector.Value = browserEntry.StartTime.LocalDateTime;
                         Browser_EnableRevert(true);
                     } else if (seconds > 0) {
                         // or the end time forward
                         browserEntry.Seconds = seconds;
                         browserEntry.StopTime = browserEntry.StartTime.AddSeconds(Convert.ToDouble(seconds));
-                        wStopTime.Value = browserEntry.StopTime.LocalDateTime;
+                        StopTimeSelector.Value = browserEntry.StopTime.LocalDateTime;
                         Browser_EnableRevert(true);
                     } else {
                         // duration is zero, do nothing
                     }
 
                     // reformat duration before leaving
-                    wDuration.Text = Timekeeper.FormatSeconds(browserEntry.Seconds);
+                    DurationBox.Text = Timekeeper.FormatSeconds(browserEntry.Seconds);
                 }
             }
         }
@@ -898,8 +898,8 @@ namespace Timekeeper.Forms
         private string Browser_CalculateDuration()
         {
             try {
-                browserEntry.StartTime = wStartTime.Value;
-                browserEntry.StopTime = wStopTime.Value;
+                browserEntry.StartTime = StartTimeSelector.Value;
+                browserEntry.StopTime = StopTimeSelector.Value;
                 //timestamp_s = Convert.ToDateTime(wStartTime.Text);
                 //timestamp_e = Convert.ToDateTime(wStopTime.Text);
                 TimeSpan ts = browserEntry.StopTime.Subtract(browserEntry.StartTime);
