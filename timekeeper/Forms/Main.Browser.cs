@@ -328,9 +328,9 @@ namespace Timekeeper.Forms
                 return;
             }
 
-            // First translate some necessary data from the form 
-            Classes.Project Project = (Classes.Project)ProjectTreeDropdown.SelectedNode.Tag;
-            Classes.Activity Activity = (Classes.Activity)ActivityTreeDropdown.SelectedNode.Tag;
+            // First translate some necessary data from the form
+            Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+            Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
             TimeSpan Delta = StopTimeSelector.Value.Subtract(StartTimeSelector.Value);
 
             // Update browserEntry with current form data
@@ -362,12 +362,12 @@ namespace Timekeeper.Forms
             ComboTreeNode ProjectNode = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, entry.ProjectId);
             if (ProjectNode != null) {
                 ProjectTreeDropdown.SelectedNode = ProjectNode;
-                ProjectTreeDropdown.SelectedNode.Expand();
+                //ProjectTreeDropdown.SelectedNode.Expand();
             }
             if ((ProjectNode == null) && (entry.JournalId != 0)) {
 
                 Classes.Project HiddenProject = new Classes.Project(entry.ProjectName);
-                ComboTreeNode HiddenNode = Widgets.AddHiddenProjectToTree(ProjectTreeDropdown.Nodes, HiddenProject);
+                ComboTreeNode HiddenNode = Widgets.AddHiddenItemToTree(ProjectTreeDropdown.Nodes, HiddenProject);
 
                 ProjectTreeDropdown.SelectedNode = HiddenNode;
                 //ProjectTree.SelectedNode.Expand();
@@ -384,7 +384,7 @@ namespace Timekeeper.Forms
                 // load it from the database and display it as hidden.
 
                 Classes.Activity HiddenActivity = new Classes.Activity(entry.ActivityName);
-                ComboTreeNode HiddenNode = Widgets.AddHiddenActivityToTree(ActivityTreeDropdown.Nodes, HiddenActivity);
+                ComboTreeNode HiddenNode = Widgets.AddHiddenItemToTree(ActivityTreeDropdown.Nodes, HiddenActivity);
 
                 ActivityTreeDropdown.SelectedNode = HiddenNode;
                 //ActivityTree.SelectedNode.Expand();

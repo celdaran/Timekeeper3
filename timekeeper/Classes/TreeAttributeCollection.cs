@@ -28,6 +28,23 @@ namespace Timekeeper.Classes
         }
 
         //---------------------------------------------------------------------
+
+        public List<Classes.TreeAttribute> Fetch(long parentId, bool showHidden, DateTime showHiddenSince)
+        {
+            Table Table = this.GetItems(parentId, showHidden, showHiddenSince);
+
+            List<Classes.TreeAttribute> TreeAttributes = new List<Classes.TreeAttribute>();
+
+            foreach (Row Row in Table) {
+                var KeyColumnName = this.TableName + "Id";
+                var TreeAttribute = new Classes.TreeAttribute(Row[KeyColumnName], this.TableName, KeyColumnName);
+                TreeAttributes.Add(TreeAttribute);
+            }
+
+            return TreeAttributes;
+        }
+
+        //---------------------------------------------------------------------
         // Public Methods
         //---------------------------------------------------------------------
 

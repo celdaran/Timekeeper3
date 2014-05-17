@@ -665,16 +665,6 @@ namespace Timekeeper.Forms
             Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
         }
 
-        private void ProjectTree_AfterExpand(object sender, TreeViewEventArgs e)
-        {
-            TreeNode SelectedNode = e.Node;
-            if (SelectedNode != null) {
-                Classes.Project Project = (Classes.Project)SelectedNode.Tag;
-                if (!Project.IsFolderOpened) {
-                    Project.OpenFolder();
-                }
-            }
-        }
 
         private void wStartTime_Enter(object sender, EventArgs e)
         {

@@ -48,7 +48,7 @@ namespace Timekeeper.Classes
         // Private Properties
         //---------------------------------------------------------------------
 
-        private string OtherTableName;
+        private string MirrorTableName;
         private long SecondsElapsedToday = 0;
 
         //---------------------------------------------------------------------
@@ -60,10 +60,15 @@ namespace Timekeeper.Classes
             this.Database = Timekeeper.Database;
             this.TableName = tableName;
             this.IdColumnName = idColumnName;
-            this.OtherTableName = this.TableName == "Project" ? "Activity" : "Project";
 
             // Convert the table name into the enumerated dimension
             this.Type = (Timekeeper.Dimension)Enum.Parse(typeof(Timekeeper.Dimension), tableName);
+
+            // Set MirrorTableName
+            if (this.Type == Timekeeper.Dimension.Project)
+                this.MirrorTableName = "Activity";
+            if (this.Type == Timekeeper.Dimension.Activity)
+                this.MirrorTableName = "Project";
         }
 
         //---------------------------------------------------------------------
@@ -281,7 +286,8 @@ namespace Timekeeper.Classes
             Row["Description"] = this.Description;
             Row["ParentId"] = this.ParentId;
             Row["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName, this.ParentId);
-            Row["Last" + OtherTableName + "Id"] = this.FollowedItemId;
+            if (this.MirrorTableName != null)
+                Row["Last" + MirrorTableName + "Id"] = this.FollowedItemId;
             Row["IsFolder"] = this.IsFolder ? 1 : 0;
             Row["IsFolderOpened"] = this.IsFolder ? 1 : 0;
             Row["IsHidden"] = 0;
@@ -411,7 +417,8 @@ namespace Timekeeper.Classes
             this.Description = row["Description"];
             this.ParentId = row["ParentId"];
             this.SortOrderNo = row["SortOrderNo"];
-            this.FollowedItemId = row["Last" + this.OtherTableName + "Id"];
+            if (this.MirrorTableName != null)
+                this.FollowedItemId = row["Last" + this.MirrorTableName + "Id"];
             this.IsFolder = row["IsFolder"];
             this.IsFolderOpened = row["IsFolderOpened"];
             this.IsHidden = row["IsHidden"];

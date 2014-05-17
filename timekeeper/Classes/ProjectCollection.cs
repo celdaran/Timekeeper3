@@ -8,9 +8,9 @@ namespace Timekeeper.Classes
 {
     class ProjectCollection : Classes.TreeAttributeCollection
     {
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // Constructor
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public ProjectCollection(string orderByClause)
             : base("Project", orderByClause)
@@ -20,11 +20,11 @@ namespace Timekeeper.Classes
             : this ("CreateTime")
         {}
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // Public Methods
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        public List<Classes.Project> Fetch(long parentId, bool showHidden, DateTime showHiddenSince)
+        new public List<Classes.Project> Fetch(long parentId, bool showHidden, DateTime showHiddenSince)
         {
             Table Table = base.GetItems(parentId, showHidden, showHiddenSince);
 
@@ -38,7 +38,7 @@ namespace Timekeeper.Classes
             return Projects;
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public bool ExternalProjectNoExists(string externalProjectNo)
         {
@@ -60,7 +60,7 @@ namespace Timekeeper.Classes
 
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
     }
 }

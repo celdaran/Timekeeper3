@@ -179,6 +179,8 @@ namespace Timekeeper.Forms
             this.PopupMenuDates = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuDatesCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuDatesPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.closeGapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StartTimeSelector = new System.Windows.Forms.DateTimePicker();
             this.StartLabel = new System.Windows.Forms.Label();
             this.StopLabel = new System.Windows.Forms.Label();
@@ -212,8 +214,8 @@ namespace Timekeeper.Forms
             this.PopupMenuMemoCutSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.closeGapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LocationTreeDropdown = new ComboTreeBox();
+            this.CategoryTreeDropdown = new ComboTreeBox();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuActivity.SuspendLayout();
@@ -1233,6 +1235,8 @@ namespace Timekeeper.Forms
             // 
             this.PanelControls.BackColor = System.Drawing.SystemColors.Control;
             this.PanelControls.Controls.Add(this.CloseStartGapButton);
+            this.PanelControls.Controls.Add(this.wCategory);
+            this.PanelControls.Controls.Add(this.wLocation);
             this.PanelControls.Controls.Add(this.CloseStopGapButton);
             this.PanelControls.Controls.Add(this.DimensionPanel);
             this.PanelControls.Controls.Add(this.StopTimeSelector);
@@ -1244,7 +1248,7 @@ namespace Timekeeper.Forms
             this.PanelControls.Dock = System.Windows.Forms.DockStyle.Top;
             this.PanelControls.Location = new System.Drawing.Point(0, 25);
             this.PanelControls.Name = "PanelControls";
-            this.PanelControls.Size = new System.Drawing.Size(562, 121);
+            this.PanelControls.Size = new System.Drawing.Size(562, 162);
             this.PanelControls.TabIndex = 0;
             this.PanelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
@@ -1285,8 +1289,8 @@ namespace Timekeeper.Forms
             // 
             // CategoryPanel
             // 
+            this.CategoryPanel.Controls.Add(this.CategoryTreeDropdown);
             this.CategoryPanel.Controls.Add(this.CategoryLabel);
-            this.CategoryPanel.Controls.Add(this.wCategory);
             this.CategoryPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.CategoryPanel.Location = new System.Drawing.Point(0, 81);
             this.CategoryPanel.Name = "CategoryPanel";
@@ -1305,16 +1309,16 @@ namespace Timekeeper.Forms
             // 
             this.wCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.wCategory.FormattingEnabled = true;
-            this.wCategory.Location = new System.Drawing.Point(57, 2);
+            this.wCategory.Location = new System.Drawing.Point(67, 115);
             this.wCategory.Name = "wCategory";
-            this.wCategory.Size = new System.Drawing.Size(251, 21);
+            this.wCategory.Size = new System.Drawing.Size(143, 21);
             this.wCategory.TabIndex = 13;
             this.wCategory.SelectedIndexChanged += new System.EventHandler(this.wCategory_SelectedIndexChanged);
             // 
             // LocationPanel
             // 
+            this.LocationPanel.Controls.Add(this.LocationTreeDropdown);
             this.LocationPanel.Controls.Add(this.LocationLabel);
-            this.LocationPanel.Controls.Add(this.wLocation);
             this.LocationPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.LocationPanel.Location = new System.Drawing.Point(0, 54);
             this.LocationPanel.Name = "LocationPanel";
@@ -1333,9 +1337,9 @@ namespace Timekeeper.Forms
             // 
             this.wLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.wLocation.FormattingEnabled = true;
-            this.wLocation.Location = new System.Drawing.Point(57, 2);
+            this.wLocation.Location = new System.Drawing.Point(67, 88);
             this.wLocation.Name = "wLocation";
-            this.wLocation.Size = new System.Drawing.Size(251, 21);
+            this.wLocation.Size = new System.Drawing.Size(143, 21);
             this.wLocation.TabIndex = 11;
             this.wLocation.SelectedIndexChanged += new System.EventHandler(this.wLocation_SelectedIndexChanged);
             // 
@@ -1503,16 +1507,27 @@ namespace Timekeeper.Forms
             // PopupMenuDatesCopy
             // 
             this.PopupMenuDatesCopy.Name = "PopupMenuDatesCopy";
-            this.PopupMenuDatesCopy.Size = new System.Drawing.Size(101, 22);
+            this.PopupMenuDatesCopy.Size = new System.Drawing.Size(122, 22);
             this.PopupMenuDatesCopy.Text = "Copy";
             this.PopupMenuDatesCopy.Click += new System.EventHandler(this.PopupMenuDatesCopy_Click);
             // 
             // PopupMenuDatesPaste
             // 
             this.PopupMenuDatesPaste.Name = "PopupMenuDatesPaste";
-            this.PopupMenuDatesPaste.Size = new System.Drawing.Size(101, 22);
+            this.PopupMenuDatesPaste.Size = new System.Drawing.Size(122, 22);
             this.PopupMenuDatesPaste.Text = "Paste";
             this.PopupMenuDatesPaste.Click += new System.EventHandler(this.PopupMenuDatesPaste_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(119, 6);
+            // 
+            // closeGapToolStripMenuItem
+            // 
+            this.closeGapToolStripMenuItem.Name = "closeGapToolStripMenuItem";
+            this.closeGapToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.closeGapToolStripMenuItem.Text = "Close Gap";
             // 
             // StartTimeSelector
             // 
@@ -1713,21 +1728,21 @@ namespace Timekeeper.Forms
             // ToolbarSplitEntry2
             // 
             this.ToolbarSplitEntry2.Name = "ToolbarSplitEntry2";
-            this.ToolbarSplitEntry2.Size = new System.Drawing.Size(152, 22);
+            this.ToolbarSplitEntry2.Size = new System.Drawing.Size(151, 22);
             this.ToolbarSplitEntry2.Text = "Split in Halves";
             this.ToolbarSplitEntry2.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry2_Click);
             // 
             // ToolbarSplitEntry3
             // 
             this.ToolbarSplitEntry3.Name = "ToolbarSplitEntry3";
-            this.ToolbarSplitEntry3.Size = new System.Drawing.Size(152, 22);
+            this.ToolbarSplitEntry3.Size = new System.Drawing.Size(151, 22);
             this.ToolbarSplitEntry3.Text = "Split in Thirds";
             this.ToolbarSplitEntry3.Click += new System.EventHandler(this.toolControlSplitEntry3_Click);
             // 
             // ToolbarSplitEntry4
             // 
             this.ToolbarSplitEntry4.Name = "ToolbarSplitEntry4";
-            this.ToolbarSplitEntry4.Size = new System.Drawing.Size(152, 22);
+            this.ToolbarSplitEntry4.Size = new System.Drawing.Size(151, 22);
             this.ToolbarSplitEntry4.Text = "Split in Quarters";
             this.ToolbarSplitEntry4.Click += new System.EventHandler(this.toolControlSplitEntry4_Click);
             // 
@@ -1829,16 +1844,29 @@ namespace Timekeeper.Forms
             this.MainPanel.Size = new System.Drawing.Size(562, 273);
             this.MainPanel.TabIndex = 13;
             // 
-            // toolStripMenuItem1
+            // LocationTreeDropdown
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(119, 6);
+            this.LocationTreeDropdown.ContextMenuStrip = this.PopupMenuProject;
+            this.LocationTreeDropdown.DrawWithVisualStyles = false;
+            this.LocationTreeDropdown.DroppedDown = false;
+            this.LocationTreeDropdown.Images = this.TreeImageList;
+            this.LocationTreeDropdown.Location = new System.Drawing.Point(57, 2);
+            this.LocationTreeDropdown.Name = "LocationTreeDropdown";
+            this.LocationTreeDropdown.SelectedNode = null;
+            this.LocationTreeDropdown.Size = new System.Drawing.Size(251, 21);
+            this.LocationTreeDropdown.TabIndex = 21;
             // 
-            // closeGapToolStripMenuItem
+            // CategoryTreeDropdown
             // 
-            this.closeGapToolStripMenuItem.Name = "closeGapToolStripMenuItem";
-            this.closeGapToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.closeGapToolStripMenuItem.Text = "Close Gap";
+            this.CategoryTreeDropdown.ContextMenuStrip = this.PopupMenuProject;
+            this.CategoryTreeDropdown.DrawWithVisualStyles = false;
+            this.CategoryTreeDropdown.DroppedDown = false;
+            this.CategoryTreeDropdown.Images = this.TreeImageList;
+            this.CategoryTreeDropdown.Location = new System.Drawing.Point(57, 2);
+            this.CategoryTreeDropdown.Name = "CategoryTreeDropdown";
+            this.CategoryTreeDropdown.SelectedNode = null;
+            this.CategoryTreeDropdown.Size = new System.Drawing.Size(251, 21);
+            this.CategoryTreeDropdown.TabIndex = 22;
             // 
             // Main
             // 
@@ -2069,5 +2097,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectProperties;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem closeGapToolStripMenuItem;
+        private ComboTreeBox LocationTreeDropdown;
+        private ComboTreeBox CategoryTreeDropdown;
     }
 }

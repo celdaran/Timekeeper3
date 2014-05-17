@@ -636,13 +636,14 @@ namespace Timekeeper.Forms
                 //------------------------------------------
 
                 Widgets = new Classes.Widgets();
-                //Widgets.BuildProjectTree(ProjectTree.Nodes);
-                //Widgets.BuildActivityTree(ActivityTree.Nodes);
                 Widgets.PopulateLocationComboBox(wLocation);
                 Widgets.PopulateCategoryComboBox(wCategory);
 
+                //Widgets.BuildProjectTree(ProjectTree.Nodes);
+                //Widgets.BuildActivityTree(ActivityTree.Nodes);
                 Widgets.BuildProjectTree(ProjectTreeDropdown.Nodes);
                 Widgets.BuildActivityTree(ActivityTreeDropdown.Nodes);
+                Widgets.BuildLocationTree(LocationTreeDropdown.Nodes);
 
                 //Action_TreeView_ShowRootLines();
 
@@ -665,16 +666,22 @@ namespace Timekeeper.Forms
                 // Restore Prior State
                 //------------------------------------------
 
-                // Re-select last selected project
+                // Re-select last used project
                 ComboTreeNode LastComboTreeNode = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, Options.State_LastProjectId);
                 if (LastComboTreeNode != null) {
                     ProjectTreeDropdown.SelectedNode = LastComboTreeNode;
                 }
 
-                // Re-select last selected activity
+                // Re-select last used activity
                 LastComboTreeNode = Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, Options.State_LastActivityId);
                 if (LastComboTreeNode != null) {
                     ActivityTreeDropdown.SelectedNode = LastComboTreeNode;
+                }
+
+                // Re-select last used location
+                LastComboTreeNode = Widgets.FindTreeNode(LocationTreeDropdown.Nodes, 1); // FIXME: NEED TO KNOW LAST-USED ITEM
+                if (LastComboTreeNode != null) {
+                    LocationTreeDropdown.SelectedNode = LastComboTreeNode;
                 }
 
                 //------------------------------------------

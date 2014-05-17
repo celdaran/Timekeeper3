@@ -989,5 +989,18 @@ namespace Timekeeper.Forms.Shared
 
         //---------------------------------------------------------------------
 
+        /*
+        private void ProjectTree_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Classes.Project Project = (Classes.Project)SelectedNode.Tag;
+                if (!Project.IsFolderOpened) {
+                    Project.OpenFolder();
+                }
+            }
+        }
+        */
+
     }
 }
