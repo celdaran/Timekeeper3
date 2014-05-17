@@ -212,6 +212,8 @@ namespace Timekeeper.Forms
             this.PopupMenuMemoCutSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.closeGapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuActivity.SuspendLayout();
@@ -1412,7 +1414,7 @@ namespace Timekeeper.Forms
             this.PopupMenuProjectSep2,
             this.PopupMenuProjectProperties});
             this.PopupMenuProject.Name = "menuTask";
-            this.PopupMenuProject.Size = new System.Drawing.Size(167, 192);
+            this.PopupMenuProject.Size = new System.Drawing.Size(167, 170);
             // 
             // PopupMenuProjectNewProject
             // 
@@ -1492,9 +1494,11 @@ namespace Timekeeper.Forms
             // 
             this.PopupMenuDates.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PopupMenuDatesCopy,
-            this.PopupMenuDatesPaste});
+            this.PopupMenuDatesPaste,
+            this.toolStripMenuItem1,
+            this.closeGapToolStripMenuItem});
             this.PopupMenuDates.Name = "PopupMenuDates";
-            this.PopupMenuDates.Size = new System.Drawing.Size(102, 48);
+            this.PopupMenuDates.Size = new System.Drawing.Size(123, 76);
             // 
             // PopupMenuDatesCopy
             // 
@@ -1825,6 +1829,17 @@ namespace Timekeeper.Forms
             this.MainPanel.Size = new System.Drawing.Size(562, 273);
             this.MainPanel.TabIndex = 13;
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(119, 6);
+            // 
+            // closeGapToolStripMenuItem
+            // 
+            this.closeGapToolStripMenuItem.Name = "closeGapToolStripMenuItem";
+            this.closeGapToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.closeGapToolStripMenuItem.Text = "Close Gap";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2052,5 +2067,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectUseCategories;
         private System.Windows.Forms.ToolStripSeparator PopupMenuProjectSep2;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuProjectProperties;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem closeGapToolStripMenuItem;
     }
 }

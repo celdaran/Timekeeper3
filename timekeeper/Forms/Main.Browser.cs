@@ -255,13 +255,11 @@ namespace Timekeeper.Forms
 
         private void Browser_EnableCloseStartGap(bool enabled)
         {
-            toolControlCloseStartGap.Enabled = enabled;
             MenuToolbarBrowserCloseStartGap.Enabled = enabled;
         }
 
         private void Browser_EnableCloseEndGap(bool enabled)
         {
-            toolControlCloseEndGap.Enabled = enabled;
             MenuToolbarBrowserCloseEndGap.Enabled = enabled;
         }
 
@@ -570,8 +568,6 @@ namespace Timekeeper.Forms
             ToolbarPrevEntry.ToolTipText = "Go to Previous Entry (" + kc.ConvertToString(MenuToolbarBrowserPrev.ShortcutKeys) + ")";
 
             ToolbarNewEntry.ToolTipText = "Go to New Entry (" + kc.ConvertToString(MenuToolbarBrowserNew.ShortcutKeys) + ")";
-            toolControlCloseStartGap.ToolTipText = "Close Start Gap (" + kc.ConvertToString(MenuToolbarBrowserCloseStartGap.ShortcutKeys) + ")";
-            toolControlCloseEndGap.ToolTipText = "Close End Gap (" + kc.ConvertToString(MenuToolbarBrowserCloseEndGap.ShortcutKeys) + ")";
 
             ToolbarSave.ToolTipText = "Save Changes to Database (" + kc.ConvertToString(MenuToolbarBrowserSave.ShortcutKeys) + ")";
             ToolbarRevert.ToolTipText = "Revert Changes to Last Saved State (" + kc.ConvertToString(MenuToolbarBrowserRevert.ShortcutKeys) + ")";
