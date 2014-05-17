@@ -22,13 +22,14 @@ CREATE TABLE Activity
 
     ParentId            INTEGER         NULL,
     SortOrderNo         INTEGER         NULL,
-    LastProjectId       INTEGER         NULL,
     IsFolder            BOOLEAN     NOT NULL,
     IsFolderOpened      BOOLEAN     NOT NULL,
     IsHidden            BOOLEAN     NOT NULL,
     IsDeleted           BOOLEAN     NOT NULL,
     HiddenTime          DATETIME        NULL,
     DeletedTime         DATETIME        NULL,
+
+    LastProjectId       INTEGER         NULL,
 
     FOREIGN KEY(ParentId)           REFERENCES Activity(ActivityId)
     FOREIGN KEY(LastProjectId)      REFERENCES Project(ProjectId)

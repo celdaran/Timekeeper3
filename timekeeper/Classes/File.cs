@@ -23,6 +23,8 @@ namespace Timekeeper
         //
         //   MAJOR: Matches the major version of TK which created this schema.
         //   MINOR: Matches the minor version of TK which created this schema.
+        //          Note: this doesn't necessarily have to match the *current*
+        //          version of Timekeeper.
         //   BUILD: Increments whenever the schema changes in a way that 
         //          would case code incompatabilities. This would mean a new 
         //          table, a new column, or an object rename.
@@ -33,9 +35,10 @@ namespace Timekeeper
         //
         // If the schema version changes, then the SQL file resources must also
         // be updated. Note that prior to 3.0, this convention was not followed 
-        // (nor were the DDL statements stored as resources or tracked in p4).
+        // (nor were the DDL statements stored as resources or under version 
+        // control).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.7.2";
+        public const string SCHEMA_VERSION = "3.0.7.3";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;

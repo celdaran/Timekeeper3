@@ -19,12 +19,14 @@ CREATE TABLE Location
     Name                TEXT        NOT NULL,
     Description         TEXT            NULL,
 
-    RefTimeZoneId       INTEGER     NOT NULL,
+    ParentId            INTEGER         NULL,
     SortOrderNo         INTEGER     NOT NULL,
     IsHidden            BOOLEAN     NOT NULL,
     IsDeleted           BOOLEAN     NOT NULL,
     HiddenTime          DATETIME        NULL,
     DeletedTime         DATETIME        NULL,
+
+    RefTimeZoneId       INTEGER     NOT NULL,
 
     FOREIGN KEY(RefTimeZoneId)      REFERENCES RefTimeZone(RefTimeZoneId)
 );

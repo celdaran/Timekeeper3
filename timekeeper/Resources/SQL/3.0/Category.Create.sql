@@ -18,6 +18,7 @@ CREATE TABLE Category
     Name                TEXT        NOT NULL,
     Description         TEXT            NULL,
 
+    ParentId            INTEGER         NULL,
     SortOrderNo         INTEGER     NOT NULL,
     IsHidden            BOOLEAN     NOT NULL,
     IsDeleted           BOOLEAN     NOT NULL,

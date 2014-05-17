@@ -22,7 +22,6 @@ CREATE TABLE Project
 
     ParentId            INTEGER         NULL,
     SortOrderNo         INTEGER         NULL,
-    LastActivityId      INTEGER         NULL,
     IsFolder            BOOLEAN     NOT NULL,
     IsFolderOpened      BOOLEAN     NOT NULL,
     IsHidden            BOOLEAN     NOT NULL,
@@ -30,6 +29,7 @@ CREATE TABLE Project
     HiddenTime          DATETIME        NULL,
     DeletedTime         DATETIME        NULL,
 
+    LastActivityId      INTEGER         NULL,
     ExternalProjectNo   TEXT            NULL,
 
     FOREIGN KEY(ParentId)           REFERENCES Project(ProjectId)
