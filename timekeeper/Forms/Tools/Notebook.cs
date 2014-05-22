@@ -17,7 +17,7 @@ namespace Timekeeper.Forms.Tools
         //----------------------------------------------------------------------
 
         private Classes.Options Options;
-        private Classes.Widgets Widgets;
+        //private Classes.Widgets Widgets;
 
         private Classes.NotebookEntry CurrentEntry;
         private Classes.NotebookEntryCollection AllEntries;
@@ -71,10 +71,6 @@ namespace Timekeeper.Forms.Tools
                 this.Width = Options.Notebook_Width;
                 this.Top = Options.Notebook_Top;
                 this.Left = Options.Notebook_Left;
-
-                Widgets = new Classes.Widgets();
-                Widgets.PopulateLocationComboBox(wLocation);
-                Widgets.PopulateCategoryComboBox(wCategory);
 
                 // Create in-memory entries
                 CurrentEntry = new Classes.NotebookEntry();

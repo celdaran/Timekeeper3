@@ -17,7 +17,7 @@ namespace Timekeeper.Forms.Shared
         private Classes.Widgets Widgets;
         private Classes.Project Project;
         //private Classes.Activity Activity;
-        private Classes.TreeAttribute Item;
+        //private Classes.TreeAttribute Item;
 
         //----------------------------------------------------------------------
         // Constructor
@@ -63,14 +63,14 @@ namespace Timekeeper.Forms.Shared
 
         private void MenuNew_Click(object sender, EventArgs e)
         {
-            CreateNewItem(false);
+            this.Widgets.CreateTreeItemDialog(Tree, this.Dimension, false);
         }
 
         //----------------------------------------------------------------------
 
         private void MenuNewFolder_Click(object sender, EventArgs e)
         {
-            CreateNewItem(true);
+            this.Widgets.CreateTreeItemDialog(Tree, this.Dimension, true);
         }
 
         //---------------------------------------------------------------------
@@ -113,21 +113,12 @@ namespace Timekeeper.Forms.Shared
             }
         }
 
-        private void PopupMenuProjectProperties_Click(object sender, EventArgs e)
+        private void PopupMenuProperties_Click(object sender, EventArgs e)
         {
-            // FIXME: COPY/PASTE
             if (Tree.SelectedNode != null) {
-                Classes.Project item = (Classes.Project)Tree.SelectedNode.Tag;
-                PropertiesDialog((Classes.TreeAttribute)item);
-            }
-        }
-
-        private void PopupMenuActivityProperties_Click(object sender, EventArgs e)
-        {
-            // FIXME: COPY/PASTE
-            if (Tree.SelectedNode != null) {
-                Classes.Activity item = (Classes.Activity)Tree.SelectedNode.Tag;
-                PropertiesDialog((Classes.TreeAttribute)item);
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)Tree.SelectedNode.Tag;
+                Forms.Properties Dialog = Widgets.GetPropertiesDialog(Item);
+                Dialog.ShowDialog(this);
             }
         }
 
@@ -157,7 +148,7 @@ namespace Timekeeper.Forms.Shared
             } else if (e.KeyCode == Keys.Delete) {
                 Action_DeleteItem(Tree);
             } else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
-                PopupMenuProjectProperties_Click(sender, e);
+                PopupMenuProperties_Click(sender, e);
             }
         }
 
@@ -169,7 +160,7 @@ namespace Timekeeper.Forms.Shared
             } else if (e.KeyCode == Keys.Delete) {
                 Action_DeleteItem(Tree);
             } else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
-                PopupMenuActivityProperties_Click(sender, e);
+                PopupMenuProperties_Click(sender, e);
             }
         }
 
@@ -236,80 +227,7 @@ namespace Timekeeper.Forms.Shared
             }
         }
 
-        //----------------------------------------------------------------------
 
-        private void CreateNewItem(bool isFolder)
-        {
-            string DialogTitle = 
-                "New " + 
-                this.Dimension.ToString() + 
-                (isFolder ? " Folder" : "");
-            int Icon = 0;
-
-            switch (this.Dimension) {
-                case Timekeeper.Dimension.Project:
-                    this.Item = new Classes.Project();
-                    Icon = Timekeeper.IMG_PROJECT;
-                    break;
-                case Timekeeper.Dimension.Activity:
-                    this.Item = new Classes.Activity();
-                    Icon = Timekeeper.IMG_ACTIVITY;
-                    break;
-            }
-
-            CreateNewItemDialog(Tree, DialogTitle, isFolder, Item, Icon);
-        }
-
-        //----------------------------------------------------------------------
-
-        private void CreateNewItemDialog(TreeView tree, string title, bool isFolder, Classes.TreeAttribute item, int imageIndex)
-        {
-            // Instantiate Dialog
-            ItemEditor Dialog = new ItemEditor(this.Dimension);
-            Dialog.Text = title;
-
-            // Determine preselected folder
-            int ParentIndex = 0;
-            if (tree.SelectedNode != null) {
-
-                Classes.TreeAttribute SelectedItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-
-                if (SelectedItem.IsFolder) {
-                    ParentIndex = Dialog.ItemParent.FindString(SelectedItem.Name);
-                } else if (tree.SelectedNode.Parent != null) {
-                    ParentIndex = Dialog.ItemParent.FindString(SelectedItem.Parent().Name);
-                } else {
-                    // Do nothing?
-                }
-            }
-            Dialog.ItemParent.SelectedIndex = ParentIndex;
-
-            if (Dialog.ShowDialog(this) == DialogResult.OK) {
-                item.Name = Dialog.ItemName.Text;
-                item.Description = Dialog.ItemDescription.Text;
-                item.IsFolder = isFolder;
-                item.ExternalProjectNo = Dialog.ItemExternalProjectNo.Text == "" ? null : Dialog.ItemExternalProjectNo.Text;
-
-                IdValuePair Pair = (IdValuePair)Dialog.ItemParent.SelectedItem;
-                int ParentItemId = Pair.Id;
-
-                int CreateResult = Widgets.CreateTreeItem(tree.Nodes, item, ParentItemId, imageIndex);
-                switch (CreateResult) {
-                    case Classes.Widgets.TREES_ITEM_CREATED:
-                        //Action_TreeView_ShowRootLines();
-                        break;
-                    case Classes.Widgets.TREES_ERROR_CREATING_ITEM:
-                        Common.Warn("There was an error creating the item.");
-                        break;
-                    case Classes.Widgets.TREES_DUPLICATE_ITEM:
-                        Common.Warn("An item with that name already exists.");
-                        break;
-                    default:
-                        Common.Warn("An unexpected error occurred creating item.");
-                        break;
-                }
-            }
-        }
 
         //----------------------------------------------------------------------
 
@@ -404,84 +322,6 @@ namespace Timekeeper.Forms.Shared
             }
 
             Action_HideItem(tree, viewingHiddenItems);
-        }
-
-        //---------------------------------------------------------------------
-
-        private void PropertiesDialog(Classes.TreeAttribute item)
-        {
-            Forms.Properties Dialog = new Forms.Properties();
-
-            // Set date range for time calculations
-            string From = DateTime.Now.ToString(Common.DATE_FORMAT + " 00:00:00");
-            string To = DateTime.Now.ToString(Common.DATE_FORMAT + " 23:59:59");
-
-            // Determine the item type
-            string ItemType = item.Type.ToString();
-            if (item.IsFolder) ItemType += " Folder";
-
-            // Set dialog box title
-            Dialog.Text = ItemType + " Properties";
-
-            // Set description
-            string Description;
-            if (item.Description.Length > 0) {
-                Description = Common.Abbreviate(item.Description, 42);
-                Dialog.wDescription.Enabled = true;
-            } else {
-                Description = "None";
-                Dialog.wDescription.Enabled = false;
-            }
-
-            // Now fill in all the values
-            Dialog.wName.Text = Common.Abbreviate(item.Name, 42);
-            Dialog.wDescription.Text = Description;
-            Dialog.wType.Text = ItemType;
-            Dialog.wID.Text = item.ItemId.ToString();
-            Dialog.wGUID.Text = item.ItemGuid;
-
-            Dialog.wCreated.Text = item.CreateTime.ToString(Common.LOCAL_DATETIME_FORMAT);
-            Dialog.wModified.Text = item.ModifyTime.ToString(Common.LOCAL_DATETIME_FORMAT);
-            Dialog.wTotalTime.Text = Timekeeper.FormatSeconds(item.RecursiveSecondsElapsed(item.ItemId, "1900-01-01", "2999-01-01"));
-            Dialog.wTimeToday.Text = Timekeeper.FormatSeconds(item.RecursiveSecondsElapsed(item.ItemId, From, To));
-
-            Dialog.wIsHidden.Checked = item.IsHidden;
-            Dialog.wIsDeleted.Checked = item.IsDeleted;
-            if (item.IsHidden)
-                Dialog.wHiddenTime.Text = item.HiddenTime.ToString(Common.LOCAL_DATETIME_FORMAT);
-            if (item.IsDeleted)
-                Dialog.wDeletedTime.Text = item.DeletedTime.ToString(Common.LOCAL_DATETIME_FORMAT);
-
-            if (item.Type == Timekeeper.Dimension.Project) {
-                long LastActivityId = item.FollowedItemId;
-                if (LastActivityId > 0) {
-                    Classes.Activity Activity = new Classes.Activity(LastActivityId);
-                    Dialog.wLastItemName.Enabled = true;
-                    Dialog.wLastItemName.Text = Activity.Name;
-                    Dialog.wLastItemLabel.Text = "Last Activity:";
-                } else {
-                    Dialog.wLastItemName.Enabled = false;
-                    Dialog.wLastItemName.Text = "None";
-                }
-                Dialog.wExternalProjectNo.Text = item.ExternalProjectNo;
-                Dialog.wExternalProjectNoLabel.Visible = true;
-                Dialog.wExternalProjectNo.Visible = true;
-            } else {
-                long LastProjectId = item.FollowedItemId;
-                if (LastProjectId > 0) {
-                    Classes.Project Project = new Classes.Project(LastProjectId);
-                    Dialog.wLastItemLabel.Text = "Last Project:";
-                    Dialog.wLastItemName.Enabled = true;
-                    Dialog.wLastItemName.Text = Project.Name;
-                } else {
-                    Dialog.wLastItemName.Enabled = false;
-                    Dialog.wLastItemName.Text = "None";
-                }
-                Dialog.wExternalProjectNoLabel.Visible = false;
-                Dialog.wExternalProjectNo.Visible = false;
-            }
-
-            Dialog.ShowDialog(this);
         }
 
 

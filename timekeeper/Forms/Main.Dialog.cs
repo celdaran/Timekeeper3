@@ -15,33 +15,6 @@ namespace Timekeeper.Forms
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
 
-        private IdObjectPair Dialog_LocationManager()
-        {
-            // Display the Location Manager dialog box
-            Forms.LocationManager DialogBox = new Forms.LocationManager();
-            DialogBox.ShowDialog(this);
-
-            // Rebuild the list
-            wLocation.Items.Clear();
-            Widgets.PopulateLocationComboBox(wLocation);
-
-            // Set the return value
-            IdObjectPair CurrentItem;
-            if (DialogBox.CurrentItem != null) {
-                CurrentItem = (IdObjectPair)DialogBox.CurrentItem;
-            } else {
-                CurrentItem = new IdObjectPair();
-            }
-
-            // Dispose of the dialog
-            DialogBox.Dispose();
-
-            // Return the selection
-            return CurrentItem;
-        }
-
-        //---------------------------------------------------------------------
-
         private void Dialog_NewFile()
         {
             string FileName;
@@ -138,7 +111,6 @@ namespace Timekeeper.Forms
         private void Dialog_ApplyOptions(bool interfaceChanged)
         {
             StatusBar_SetVisibility();
-            Browser_ViewOtherAttributes();
 
             if (timerRunning) {
                 DeferShortcutAssignment = true;
@@ -149,6 +121,9 @@ namespace Timekeeper.Forms
 
             Action_UseProjects(Options.Layout_UseProjects);
             Action_UseActivities(Options.Layout_UseActivities);
+            Action_UseLocations(Options.Layout_UseLocations);
+            Action_UseCategories(Options.Layout_UseCategories);
+            Action_AdjustControlPanel();
 
             TrayIcon.Visible = Options.Behavior_Window_ShowInTray;
 

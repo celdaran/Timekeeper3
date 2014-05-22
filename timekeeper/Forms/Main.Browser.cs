@@ -140,6 +140,8 @@ namespace Timekeeper.Forms
                     } else {
                         ProjectTreeDropdown.Enabled = false;
                         ActivityTreeDropdown.Enabled = false;
+                        LocationTreeDropdown.Enabled = false;
+                        CategoryTreeDropdown.Enabled = false;
                         Browser_EnableMemoEntry(false);
                         Browser_ShowUnlock(true);
                     }
@@ -147,6 +149,8 @@ namespace Timekeeper.Forms
                 } else {
                     ProjectTreeDropdown.Enabled = true;
                     ActivityTreeDropdown.Enabled = true;
+                    LocationTreeDropdown.Enabled = true;
+                    CategoryTreeDropdown.Enabled = true;
                     Browser_EnableCloseStartGap(true);
                     Browser_EnableCloseEndGap(true);
                     Browser_EnableStartEntry(true);
@@ -297,13 +301,13 @@ namespace Timekeeper.Forms
 
         private void Browser_EnableLocationEntry(bool enabled)
         {
-            wLocation.Enabled = enabled;
+            LocationTreeDropdown.Enabled = enabled;
             LocationLabel.Enabled = enabled;
         }
 
         private void Browser_EnableCategoryEntry(bool enabled)
         {
-            wCategory.Enabled = enabled;
+            CategoryTreeDropdown.Enabled = enabled;
             CategoryLabel.Enabled = enabled;
         }
 
@@ -324,19 +328,26 @@ namespace Timekeeper.Forms
         private void Browser_FormToEntry(ref Classes.JournalEntry entry, long entryId)
         {
             // Don't update the browser entry if nothing is selected
+            /* still needed?
             if ((ProjectTreeDropdown.SelectedNode == null) || (ActivityTreeDropdown.SelectedNode == null)) {
                 return;
             }
+            */
 
             // First translate some necessary data from the form
             Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
             Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
+            Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+            Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
+
             TimeSpan Delta = StopTimeSelector.Value.Subtract(StartTimeSelector.Value);
 
             // Update browserEntry with current form data
             entry.JournalId = entryId;
             entry.ProjectId = Project.ItemId;
             entry.ActivityId = Activity.ItemId;
+            entry.LocationId = Location.ItemId;
+            entry.CategoryId = Category.ItemId;
             entry.StartTime = StartTimeSelector.Value;
             entry.StopTime = StopTimeSelector.Value;
             entry.Seconds = (long)Delta.TotalSeconds;
@@ -344,62 +355,29 @@ namespace Timekeeper.Forms
             entry.Memo = MemoEditor.Text;
             entry.ProjectName = Project.Name;
             entry.ActivityName = Activity.Name;
+        }
 
-            // Location & Category support
-            if (wLocation.SelectedIndex > -1) {
-                Classes.Location Location = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
-                entry.LocationId = Location.Id;
-            }
-            if (wCategory.SelectedIndex > -1) {
-                Classes.Category Category = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
-                entry.CategoryId = Category.Id;
+        private void Foo(ComboTreeBox treebox, long itemId, string itemName, string tableName)
+        {
+            if (itemId == 0)
+                return;
+
+            ComboTreeNode Node = Widgets.FindTreeNode(treebox.Nodes, itemId);
+            if (Node != null) {
+                treebox.SelectedNode = Node;
+            } else {
+                Classes.TreeAttribute HiddenItem = new Classes.TreeAttribute(itemName, tableName, tableName + "Id");
+                ComboTreeNode HiddenNode = Widgets.AddHiddenItemToTree(treebox.Nodes, HiddenItem);
+                treebox.SelectedNode = HiddenNode;
             }
         }
 
         private void Browser_EntryToForm(Classes.JournalEntry entry)
         {
-            // Now select projects and activities while browsing.
-            ComboTreeNode ProjectNode = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, entry.ProjectId);
-            if (ProjectNode != null) {
-                ProjectTreeDropdown.SelectedNode = ProjectNode;
-                //ProjectTreeDropdown.SelectedNode.Expand();
-            }
-            if ((ProjectNode == null) && (entry.JournalId != 0)) {
-
-                Classes.Project HiddenProject = new Classes.Project(entry.ProjectName);
-                ComboTreeNode HiddenNode = Widgets.AddHiddenItemToTree(ProjectTreeDropdown.Nodes, HiddenProject);
-
-                ProjectTreeDropdown.SelectedNode = HiddenNode;
-                //ProjectTree.SelectedNode.Expand();
-            }
-
-            // Yes, this is a nice copy/paste job from above.
-            ComboTreeNode ActivityNode = Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, entry.ActivityId);
-            if (ActivityNode != null) {
-                ActivityTreeDropdown.SelectedNode = ActivityNode;
-                //ActivityTree.SelectedNode.Expand();
-            }
-            if ((ActivityNode == null) && (entry.JournalId != 0)) {
-                // If we didn't find the node, it's been hidden. So
-                // load it from the database and display it as hidden.
-
-                Classes.Activity HiddenActivity = new Classes.Activity(entry.ActivityName);
-                ComboTreeNode HiddenNode = Widgets.AddHiddenItemToTree(ActivityTreeDropdown.Nodes, HiddenActivity);
-
-                ActivityTreeDropdown.SelectedNode = HiddenNode;
-                //ActivityTree.SelectedNode.Expand();
-            }
-
-            // And now again, for the new ComboTreeView
-            ComboTreeNode ProjectNode2 = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, entry.ProjectId);
-            if (ProjectNode2 != null) {
-                ProjectTreeDropdown.SelectedNode = ProjectNode2;
-            }
-
-            ComboTreeNode ActivityNode2 = Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, entry.ActivityId);
-            if (ActivityNode2 != null) {
-                ActivityTreeDropdown.SelectedNode = ActivityNode2;
-            }
+            Foo(ProjectTreeDropdown, entry.ProjectId, entry.ProjectName, "Project");
+            Foo(ActivityTreeDropdown, entry.ActivityId, entry.ActivityName, "Activity");
+            Foo(LocationTreeDropdown, entry.LocationId, entry.LocationName, "Location");
+            Foo(CategoryTreeDropdown, entry.CategoryId, entry.CategoryName, "Category");
 
             // Display entry
             StartTimeSelector.Value = entry.StartTime.LocalDateTime;
@@ -407,32 +385,6 @@ namespace Timekeeper.Forms
             DurationBox.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
             //wMemo.Text = entry.Memo;
             MemoEditor.Text = entry.Memo;
-
-            // Handle Location
-            if (entry.LocationId > 0) {
-                Classes.Location Location = new Classes.Location(entry.LocationId);
-                if (Location.Name != null) {
-                    int LocationIndex = wLocation.FindString(Location.Name);
-                    wLocation.SelectedIndex = LocationIndex;
-                } else {
-                    wLocation.SelectedIndex = 0;
-                }
-            } else {
-                wLocation.SelectedIndex = 0;
-            }
-
-            // FIXME: MORE COPY/PASTE CODE.  :(
-            if (entry.CategoryId > 0) {
-                Classes.Category Category = new Classes.Category(entry.CategoryId);
-                if (Category.Name != null) {
-                    int CategoryIndex = wCategory.FindString(Category.Name);
-                    wCategory.SelectedIndex = CategoryIndex;
-                } else {
-                    wCategory.SelectedIndex = 0;
-                }
-            } else {
-                wCategory.SelectedIndex = 0;
-            }
 
             // And any other relevant values
             ToolbarJournalId.Text = entry.JournalId > 0 ? entry.JournalId.ToString() : "";
@@ -546,7 +498,6 @@ namespace Timekeeper.Forms
         {
             try {
                 Browser_SetShortcuts();
-                Browser_ViewOtherAttributes();
             }
             catch (Exception x) {
                 Common.Info("Error loading Browser.\n\n" + x.ToString());
@@ -571,14 +522,6 @@ namespace Timekeeper.Forms
 
             ToolbarSave.ToolTipText = "Save Changes to Database (" + kc.ConvertToString(MenuToolbarBrowserSave.ShortcutKeys) + ")";
             ToolbarRevert.ToolTipText = "Revert Changes to Last Saved State (" + kc.ConvertToString(MenuToolbarBrowserRevert.ShortcutKeys) + ")";
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Browser_ViewOtherAttributes()
-        {
-            LocationPanel.Height = Options.Layout_UseLocations ? 27 : 0;
-            CategoryPanel.Height = Options.Layout_UseCategories ? 27 : 0;
         }
 
         //---------------------------------------------------------------------

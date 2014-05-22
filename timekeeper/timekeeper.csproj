@@ -186,12 +186,6 @@
     <Compile Include="Classes\Widgets.Trees.cs" />
     <Compile Include="Classes\Widgets.Views.cs" />
     <Compile Include="Classes\Widgets.Wizard.cs" />
-    <Compile Include="Forms\CategoryManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\CategoryManager.Designer.cs">
-      <DependentUpon>CategoryManager.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Reports\DatabaseCheck.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -263,18 +257,6 @@
     </Compile>
     <Compile Include="Forms\Wizards\Import.Designer.cs">
       <DependentUpon>Import.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ListAttributeManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ListAttributeManager.Designer.cs">
-      <DependentUpon>ListAttributeManager.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\LocationManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\LocationManager.Designer.cs">
-      <DependentUpon>LocationManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Wizards\NewDatabase.cs">
       <SubType>Form</SubType>
@@ -449,9 +431,6 @@
       <DependentUpon>Stopwatch.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\CategoryManager.resx">
-      <DependentUpon>CategoryManager.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -531,12 +510,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Wizards\Import.resx">
       <DependentUpon>Import.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ListAttributeManager.resx">
-      <DependentUpon>ListAttributeManager.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\LocationManager.resx">
-      <DependentUpon>LocationManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Main.resx">
       <SubType>Designer</SubType>

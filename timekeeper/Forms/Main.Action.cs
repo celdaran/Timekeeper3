@@ -135,10 +135,12 @@ namespace Timekeeper.Forms
         private void Action_ChangedLocation()
         {
             // First make sure an item has been selected
+            /*
             if (Action_ItemSelected(wLocation)) {
                 IdObjectPair CurrentItem = Dialog_LocationManager();
                 Action_SelectItem(wLocation, CurrentItem);
             }
+            */
         }
 
         //---------------------------------------------------------------------
@@ -146,6 +148,7 @@ namespace Timekeeper.Forms
         private void Action_ChangedCategory()
         {
             // First make sure an item has been selected
+            /*
             if (Action_ItemSelected(wCategory)) {
 
                 // Display the Category Manager dialog box
@@ -162,6 +165,7 @@ namespace Timekeeper.Forms
                 // All done
                 Dialog.Dispose();
             }
+            */
         }
 
         //----------------------------------------------------------------------
@@ -336,6 +340,8 @@ namespace Timekeeper.Forms
 
                 ProjectTreeDropdown.Nodes.Clear();
                 ActivityTreeDropdown.Nodes.Clear();
+                LocationTreeDropdown.Nodes.Clear();
+                CategoryTreeDropdown.Nodes.Clear();
 
                 StatusBar_FileClosed();
                 MenuBar_FileClosed();
@@ -511,6 +517,21 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Action_AdjustControlPanel()
+        {
+            int Count = 0;
+
+            if (Options.Layout_UseProjects) Count++;
+            if (Options.Layout_UseActivities) Count++;
+            if (Options.Layout_UseLocations) Count++;
+            if (Options.Layout_UseCategories) Count++;
+
+            if (Count < 4)
+                PanelControls.Height = 117 - 27;
+            else
+                PanelControls.Height = 117;
+        }
+
         private void Action_InitializeUI()
         {
             // NOTE/TODO: Some of my "Actions" are user-initiated and
@@ -533,6 +554,9 @@ namespace Timekeeper.Forms
             // Using Projects and/or Activities?
             Action_UseProjects(Options.Layout_UseProjects);
             Action_UseActivities(Options.Layout_UseActivities);
+            Action_UseLocations(Options.Layout_UseLocations);
+            Action_UseCategories(Options.Layout_UseCategories);
+            Action_AdjustControlPanel();
 
             // Populate MRU List
             foreach (string FileName in Options.MRU_List) {
@@ -636,16 +660,11 @@ namespace Timekeeper.Forms
                 //------------------------------------------
 
                 Widgets = new Classes.Widgets();
-                Widgets.PopulateLocationComboBox(wLocation);
-                Widgets.PopulateCategoryComboBox(wCategory);
 
-                //Widgets.BuildProjectTree(ProjectTree.Nodes);
-                //Widgets.BuildActivityTree(ActivityTree.Nodes);
                 Widgets.BuildProjectTree(ProjectTreeDropdown.Nodes);
                 Widgets.BuildActivityTree(ActivityTreeDropdown.Nodes);
                 Widgets.BuildLocationTree(LocationTreeDropdown.Nodes);
-
-                //Action_TreeView_ShowRootLines();
+                Widgets.BuildCategoryTree(CategoryTreeDropdown.Nodes);
 
                 MenuBar_FileOpened();
                 StatusBar_FileOpened();
@@ -653,6 +672,9 @@ namespace Timekeeper.Forms
 
                 Action_UseProjects(Options.Layout_UseProjects);
                 Action_UseActivities(Options.Layout_UseActivities);
+                Action_UseLocations(Options.Layout_UseLocations);
+                Action_UseCategories(Options.Layout_UseCategories);
+            	Action_AdjustControlPanel();
 
                 //------------------------------------------
                 // Prepare Browser
@@ -667,21 +689,27 @@ namespace Timekeeper.Forms
                 //------------------------------------------
 
                 // Re-select last used project
-                ComboTreeNode LastComboTreeNode = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, Options.State_LastProjectId);
+                ComboTreeNode LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, Options.State_LastProjectId);
                 if (LastComboTreeNode != null) {
                     ProjectTreeDropdown.SelectedNode = LastComboTreeNode;
                 }
 
                 // Re-select last used activity
-                LastComboTreeNode = Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, Options.State_LastActivityId);
+                LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, Options.State_LastActivityId);
                 if (LastComboTreeNode != null) {
                     ActivityTreeDropdown.SelectedNode = LastComboTreeNode;
                 }
 
                 // Re-select last used location
-                LastComboTreeNode = Widgets.FindTreeNode(LocationTreeDropdown.Nodes, 1); // FIXME: NEED TO KNOW LAST-USED ITEM
+                LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(LocationTreeDropdown.Nodes, 1); // FIXME: NEED TO KNOW LAST-USED ITEM
                 if (LastComboTreeNode != null) {
                     LocationTreeDropdown.SelectedNode = LastComboTreeNode;
+                }
+
+                // Re-select last used category
+                LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(CategoryTreeDropdown.Nodes, 1); // FIXME: NEED TO KNOW LAST-USED ITEM
+                if (LastComboTreeNode != null) {
+                    CategoryTreeDropdown.SelectedNode = LastComboTreeNode;
                 }
 
                 //------------------------------------------
@@ -761,54 +789,46 @@ namespace Timekeeper.Forms
 
         private void Action_UseProjects(bool show)
         {
+            if (show == false) {
+                if (Options.Layout_UseActivities == false) {
+                    return;
+                }
+            }
             Options.Layout_UseProjects = show;
-
-            // Update the action menu accordingly
-            MenuActionSep1.Visible = show;
-            /*
-            MenuActionNewProject.Visible = show;
-            MenuActionNewProjectFolder.Visible = show;
-            MenuActionEditProject.Visible = show;
-            MenuActionHideProject.Visible = show;
-            MenuActionDeleteProject.Visible = show;
-            */
-
-            // Update the popup menu state accordingly
-            /*
-            PopupMenuProjectUseProjects.Checked = show;
-            PopupMenuProjectUseActivities.Enabled = show;
-            */
-
-            // Mirror update the other popup menu accordingly
-            PopupMenuActivityUseProjects.Checked = show;
-            PopupMenuActivityUseActivities.Enabled = show;
+            ProjectPanel.Visible = show;
+            ProjectTreeDropdown.Enabled = show;
         }
 
         //----------------------------------------------------------------------
 
         private void Action_UseActivities(bool show)
         {
+            if (show == false) {
+                if (Options.Layout_UseProjects == false) {
+                    return;
+                }
+            }
             Options.Layout_UseActivities = show;
+            ActivityPanel.Visible = show;
+            ActivityTreeDropdown.Enabled = show;
+        }
 
-            // Update the action menu accordingly
-            /*
-            MenuActionSep2.Visible = show;
-            MenuActionNewActivity.Visible = show;
-            MenuActionNewActivityFolder.Visible = show;
-            MenuActionEditActivity.Visible = show;
-            MenuActionHideActivity.Visible = show;
-            MenuActionDeleteActivity.Visible = show;
-            */
+        //----------------------------------------------------------------------
 
-            // Update the popup menu state accordingly
-            PopupMenuActivityUseActivities.Checked = show;
-            PopupMenuActivityUseProjects.Enabled = show;
+        private void Action_UseLocations(bool show)
+        {
+            Options.Layout_UseLocations = show;
+            LocationPanel.Visible = show;
+            LocationTreeDropdown.Enabled = show;
+        }
 
-            // Mirror update the other popup menu accordingly
-            /*
-            PopupMenuProjectUseActivities.Checked = show;
-            PopupMenuProjectUseProjects.Enabled = show;
-            */
+        //----------------------------------------------------------------------
+
+        private void Action_UseCategories(bool show)
+        {
+            Options.Layout_UseCategories = show;
+            CategoryPanel.Visible = show;
+            CategoryTreeDropdown.Enabled = show;
         }
 
         //---------------------------------------------------------------------
@@ -1082,13 +1102,17 @@ namespace Timekeeper.Forms
             // Grab instances of currently selected objects
             currentProjectNode = ProjectTreeDropdown.SelectedNode;
             currentActivityNode = ActivityTreeDropdown.SelectedNode;
-            TimedProject = (Classes.Project)currentProjectNode.Tag;
-            TimedActivity = (Classes.Activity)currentActivityNode.Tag;
+            TimedProject = (Classes.TreeAttribute)currentProjectNode.Tag;
+            TimedActivity = (Classes.TreeAttribute)currentActivityNode.Tag;
+            TimedLocation = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+            TimedCategory = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
 
+            /*
             if (wLocation.SelectedItem != null)
                 TimedLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
             if (wCategory.SelectedItem != null)
                 TimedCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
+            */
 
             if ((TimedProject.IsFolder == true) || (TimedActivity.IsFolder)) {
                 Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
@@ -1112,8 +1136,8 @@ namespace Timekeeper.Forms
             //Entry.Memo = wMemo.Text;
             TimedEntry.Memo = MemoEditor.Text;
             TimedEntry.IsLocked = true;
-            TimedEntry.LocationId = TimedLocation == null ? 0 : TimedLocation.Id; // FIXME: Location should be not null.
-            TimedEntry.CategoryId = TimedCategory == null ? 0 : TimedCategory.Id;
+            TimedEntry.LocationId = TimedLocation.ItemId;
+            TimedEntry.CategoryId = TimedCategory.ItemId;
             if (!TimedEntry.Create()) {
                 Common.Warn("There was an error starting the timer.");
                 return;

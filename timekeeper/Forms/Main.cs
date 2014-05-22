@@ -41,10 +41,10 @@ namespace Timekeeper.Forms
 
         // Objects currently being timed
         private Classes.JournalEntry TimedEntry;
-        private Classes.Project TimedProject;
-        private Classes.Activity TimedActivity;
-        private Classes.Location TimedLocation;
-        private Classes.Category TimedCategory;
+        private Classes.TreeAttribute TimedProject;
+        private Classes.TreeAttribute TimedActivity;
+        private Classes.TreeAttribute TimedLocation;
+        private Classes.TreeAttribute TimedCategory;
 
         // MemoEditor control
         private Forms.Shared.MemoEditor MemoEditor;
@@ -173,15 +173,15 @@ namespace Timekeeper.Forms
         // Action | Manage Locations
         private void MenuActionManageLocations_Click(object sender, EventArgs e)
         {
-            int SavedSelection = wLocation.SelectedIndex;
-            Dialog_LocationManager();
-            wLocation.SelectedIndex = SavedSelection;
+            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Location);
+            Form.ShowDialog(this);
         }
 
         // Action | Manage Categories
         private void MenuActionManageCategories_Click(object sender, EventArgs e)
         {
-            Action_ChangedCategory();
+            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Category);
+            Form.ShowDialog(this);
         }
 
         //---------------------------------------------------------------------
@@ -473,31 +473,118 @@ namespace Timekeeper.Forms
         // Context Menu Events
         //---------------------------------------------------------------------
 
-        // Popup Project | Use Projects
-        /*
-        private void PopupMenuProjectUseProjects_Click(object sender, EventArgs e)
+        private Timekeeper.Dimension GetPopupDimension()
         {
-            Action_UseProjects(!PopupMenuProjectUseProjects.Checked);
+            int Control = Convert.ToInt32((string)PopupMenuDimension.SourceControl.Tag);
+            Timekeeper.Dimension Dim = (Timekeeper.Dimension)Control;
+            return Dim;
         }
 
-        // Popup Project | Use Activities
-        private void PopupMenuProjectUseActivities_Click(object sender, EventArgs e)
+        private void PopupMenuDimension_Opening(object sender, CancelEventArgs e)
         {
-            Action_UseActivities(!PopupMenuProjectUseActivities.Checked);
+            // Alter menu item text
+            Timekeeper.Dimension Dim = GetPopupDimension();
+            switch (Dim) {
+                case Timekeeper.Dimension.Project:
+                    PopupMenuDimensionNewItem.Text = "New Project";
+                    PopupMenuDimensionManageItems.Text = "Manage Projects";
+                    break;
+                case Timekeeper.Dimension.Activity:
+                    PopupMenuDimensionNewItem.Text = "New Activity";
+                    PopupMenuDimensionManageItems.Text = "Manage Activities";
+                    break;
+                case Timekeeper.Dimension.Location:
+                    PopupMenuDimensionNewItem.Text = "New Location";
+                    PopupMenuDimensionManageItems.Text = "Manage Locations";
+                    break;
+                case Timekeeper.Dimension.Category:
+                    PopupMenuDimensionNewItem.Text = "New Category";
+                    PopupMenuDimensionManageItems.Text = "Manage Categories";
+                    break;
+            }
+
+            // Check dimensional usage
+            PopupMenuDimensionUseProjects.Checked = Options.Layout_UseProjects;
+            PopupMenuDimensionUseActivities.Checked = Options.Layout_UseActivities;
+            PopupMenuDimensionUseLocations.Checked = Options.Layout_UseLocations;
+            PopupMenuDimensionUseCategories.Checked = Options.Layout_UseCategories;
         }
 
-        // Popup Activity | Use Projects
-        private void PopupMenuActivityUseProjects_Click(object sender, EventArgs e)
+        private void PopupMenuDimensionNewItem_Click(object sender, EventArgs e)
         {
-            Action_UseProjects(!PopupMenuActivityUseProjects.Checked);
+            ComboTreeBox Box = (ComboTreeBox)PopupMenuDimension.SourceControl;
+            Timekeeper.Dimension Dim = GetPopupDimension();
+            this.Widgets.CreateTreeItemDialog(Box, Dim, false);
         }
 
-        // Popup Activity | Use Activities
-        private void PopupMenuActivityUseActivities_Click(object sender, EventArgs e)
+        private void PopupMenuDimensionManageItems_Click(object sender, EventArgs e)
         {
-            Action_UseActivities(!PopupMenuActivityUseActivities.Checked);
+            Timekeeper.Dimension Dim = GetPopupDimension();
+            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Dim);
+
+            // This isn't working. I'd like it to work.
+            /*
+            ComboTreeBox Box = (ComboTreeBox)PopupMenuDimension.SourceControl;
+            Rectangle Rect = Box.Bounds;
+            Point StartPoint = PanelControls.PointToScreen(new Point(Rect.X, Rect.Y));
+            Form.StartPosition = FormStartPosition.Manual;
+            Form.Location = StartPoint;
+            */
+            Form.StartPosition = FormStartPosition.CenterParent;
+
+            Form.ShowDialog(this);
         }
-        */
+
+        private void PopupMenuDimensionUseProjects_Click(object sender, EventArgs e)
+        {
+            Action_UseProjects(!PopupMenuDimensionUseProjects.Checked);
+            Action_AdjustControlPanel();
+        }
+
+        private void PopupMenuDimensionUseActivities_Click(object sender, EventArgs e)
+        {
+            Action_UseActivities(!PopupMenuDimensionUseActivities.Checked);
+            Action_AdjustControlPanel();
+        }
+
+        private void PopupMenuDimensionUseLocations_Click(object sender, EventArgs e)
+        {
+            Action_UseLocations(!PopupMenuDimensionUseLocations.Checked);
+            Action_AdjustControlPanel();
+        }
+
+        private void PopupMenuDimensionUseCategories_Click(object sender, EventArgs e)
+        {
+            Action_UseCategories(!PopupMenuDimensionUseCategories.Checked);
+            Action_AdjustControlPanel();
+        }
+
+        private void PopupMenuDimensionProperties_Click(object sender, EventArgs e)
+        {
+            Timekeeper.Dimension Dim = GetPopupDimension();
+            ComboTreeBox Box = null;
+
+            switch (Dim) {
+                case Timekeeper.Dimension.Project:
+                    Box = ProjectTreeDropdown;
+                    break;
+                case Timekeeper.Dimension.Activity:
+                    Box = ActivityTreeDropdown;
+                    break;
+                case Timekeeper.Dimension.Location:
+                    Box = LocationTreeDropdown;
+                    break;
+                case Timekeeper.Dimension.Category:
+                    Box = CategoryTreeDropdown;
+                    break;
+            }
+
+            if ((Box != null) && (Box.SelectedNode != null)) {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)Box.SelectedNode.Tag;
+                Forms.Properties Dialog = Widgets.GetPropertiesDialog(Item);
+                Dialog.ShowDialog(this);
+            }
+        }
 
         //---------------------------------------------------------------------
         // Timer Events
@@ -819,6 +906,8 @@ namespace Timekeeper.Forms
         {
             Action_SplitEntry(4);
         }
+
+
 
         //---------------------------------------------------------------------
         // FIXME - EXPERIMENTAL - NOT READY FOR PRIME TIME

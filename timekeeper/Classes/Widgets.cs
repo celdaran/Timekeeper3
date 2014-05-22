@@ -26,72 +26,6 @@ namespace Timekeeper.Classes
         }
 
         //----------------------------------------------------------------------
-        // Drop Down Populators
-        //----------------------------------------------------------------------
-
-        public void PopulateLocationComboBox(ComboBox box)
-        {
-            try {
-                //----------------------------------------
-                // Add items from database
-                //----------------------------------------
-
-                LocationCollection Locations = new LocationCollection();
-                List<IdObjectPair> Items = Locations.Fetch();
-
-                PopulateGenericComboBox(box, Items);
-
-                //----------------------------------------
-                // Add special item
-                //----------------------------------------
-
-                Location Location = new Location();
-                Location.Id = -1;
-                Location.Name = "(Manage Entries...)";
-
-                IdObjectPair NewEntry = new IdObjectPair(-1, Location);
-                box.Items.Add(NewEntry);
-
-                box.SelectedIndex = -1;
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
-        }
-
-        //----------------------------------------------------------------------
-
-        public void PopulateCategoryComboBox(ComboBox box)
-        {
-            try {
-                //----------------------------------------
-                // Add items from database
-                //----------------------------------------
-
-                CategoryCollection Categories = new CategoryCollection();
-                List<IdObjectPair> Items = Categories.Fetch();
-
-                PopulateGenericComboBox(box, Items);
-
-                //----------------------------------------
-                // Add special item
-                //----------------------------------------
-
-                Category Category = new Category();
-                Category.Id = -1;
-                Category.Name = "(Manage Entries...)";
-
-                IdObjectPair NewEntry = new IdObjectPair(-1, Category);
-                box.Items.Add(NewEntry);
-
-                box.SelectedIndex = -1;
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
-        }
-
-        //----------------------------------------------------------------------
 
         public void PopulateGenericComboBox(ComboBox box, List<IdObjectPair> items)
         {
@@ -150,6 +84,85 @@ namespace Timekeeper.Classes
             TimeZoneInfo CurrentTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(CurrentTimeZone.StandardName);
             int Index = box.FindString(CurrentTimeZoneInfo.DisplayName);
             box.SelectedIndex = Index;
+        }
+
+
+        //----------------------------------------------------------------------
+
+        public Forms.Properties GetPropertiesDialog(Classes.TreeAttribute item)
+        {
+            Forms.Properties Dialog = new Forms.Properties();
+
+            // Set date range for time calculations
+            string From = DateTime.Now.ToString(Common.DATE_FORMAT + " 00:00:00");
+            string To = DateTime.Now.ToString(Common.DATE_FORMAT + " 23:59:59");
+
+            // Determine the item type
+            string ItemType = item.Type.ToString();
+            if (item.IsFolder) ItemType += " Folder";
+
+            // Set dialog box title
+            Dialog.Text = ItemType + " Properties";
+
+            // Set description
+            string Description;
+            if (item.Description.Length > 0) {
+                Description = Common.Abbreviate(item.Description, 42);
+                Dialog.wDescription.Enabled = true;
+            } else {
+                Description = "None";
+                Dialog.wDescription.Enabled = false;
+            }
+
+            // Now fill in all the values
+            Dialog.wName.Text = Common.Abbreviate(item.Name, 42);
+            Dialog.wDescription.Text = Description;
+            Dialog.wType.Text = ItemType;
+            Dialog.wID.Text = item.ItemId.ToString();
+            Dialog.wGUID.Text = item.ItemGuid;
+
+            Dialog.wCreated.Text = item.CreateTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+            Dialog.wModified.Text = item.ModifyTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+            Dialog.wTotalTime.Text = Timekeeper.FormatSeconds(item.RecursiveSecondsElapsed(item.ItemId, "1900-01-01", "2999-01-01"));
+            Dialog.wTimeToday.Text = Timekeeper.FormatSeconds(item.RecursiveSecondsElapsed(item.ItemId, From, To));
+
+            Dialog.wIsHidden.Checked = item.IsHidden;
+            Dialog.wIsDeleted.Checked = item.IsDeleted;
+            if (item.IsHidden)
+                Dialog.wHiddenTime.Text = item.HiddenTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+            if (item.IsDeleted)
+                Dialog.wDeletedTime.Text = item.DeletedTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+
+            if (item.Type == Timekeeper.Dimension.Project) {
+                long LastActivityId = item.FollowedItemId;
+                if (LastActivityId > 0) {
+                    Classes.Activity Activity = new Classes.Activity(LastActivityId);
+                    Dialog.wLastItemName.Enabled = true;
+                    Dialog.wLastItemName.Text = Activity.Name;
+                    Dialog.wLastItemLabel.Text = "Last Activity:";
+                } else {
+                    Dialog.wLastItemName.Enabled = false;
+                    Dialog.wLastItemName.Text = "None";
+                }
+                Dialog.wExternalProjectNo.Text = item.ExternalProjectNo;
+                Dialog.wExternalProjectNoLabel.Visible = true;
+                Dialog.wExternalProjectNo.Visible = true;
+            } else {
+                long LastProjectId = item.FollowedItemId;
+                if (LastProjectId > 0) {
+                    Classes.Project Project = new Classes.Project(LastProjectId);
+                    Dialog.wLastItemLabel.Text = "Last Project:";
+                    Dialog.wLastItemName.Enabled = true;
+                    Dialog.wLastItemName.Text = Project.Name;
+                } else {
+                    Dialog.wLastItemName.Enabled = false;
+                    Dialog.wLastItemName.Text = "None";
+                }
+                Dialog.wExternalProjectNoLabel.Visible = false;
+                Dialog.wExternalProjectNo.Visible = false;
+            }
+
+            return Dialog;
         }
 
         //----------------------------------------------------------------------
