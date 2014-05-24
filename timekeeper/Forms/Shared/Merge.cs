@@ -56,7 +56,7 @@ namespace Timekeeper.Forms.Shared
             ItemTree.Nodes.Clear();
             this.Widgets = new Classes.Widgets();
 
-            if (this.SourceItem.Type == Timekeeper.Dimension.Project) {
+            if (this.SourceItem.Dimension == Timekeeper.Dimension.Project) {
                 Widgets.BuildProjectTree(ItemTree.Nodes);
             } else {
                 Widgets.BuildActivityTree(ItemTree.Nodes);
@@ -67,7 +67,7 @@ namespace Timekeeper.Forms.Shared
         private void FilterButton_Click(object sender, EventArgs e)
         {
             FindView.FilterOptions.FilterOptionsType = Classes.FilterOptions.OptionsType.Merge;
-            FindView.FilterOptions.FilterMergeType = this.SourceItem.Type;
+            FindView.FilterOptions.FilterMergeType = this.SourceItem.Dimension;
             this.FilterDialog = new Forms.Shared.Filtering(FindView.FilterOptions);
 
             FindView.FilterOptions = this.Widgets.FilteringDialog(this,
@@ -89,7 +89,7 @@ namespace Timekeeper.Forms.Shared
             Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
             bool Result = Entries.Merge(
                 this.FindView.FilterOptions.WhereClause, 
-                this.SourceItem.Type.ToString() + "Id", 
+                this.SourceItem.Dimension.ToString() + "Id", 
                 this.SourceItem.ItemId);
             if (!Result) {
                 Timekeeper.DoubleWarn("Error encountered during merge operation.");

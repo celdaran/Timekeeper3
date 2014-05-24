@@ -1122,10 +1122,10 @@ namespace Timekeeper.Forms
             // Now start timing
             DateTime StartTime = StartTimeSelector.Value;
             TimedActivity.StartTiming(StartTime);
-            TimedActivity.FollowedItemId = TimedProject.ItemId;
+            TimedActivity.LastProjectId = TimedProject.ItemId;
 
             TimedProject.StartTiming(StartTime);
-            TimedProject.FollowedItemId = TimedActivity.ItemId;
+            TimedProject.LastActivityId = TimedActivity.ItemId;
 
             TimedEntry = new Classes.JournalEntry(); // reinstantiate this entry upon timer start
             TimedEntry.ProjectId = TimedProject.ItemId;

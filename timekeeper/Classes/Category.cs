@@ -1,36 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class Category : Classes.ListAttribute
+    class Category : Classes.TreeAttribute
     {
-        //----------------------------------------------------------------------
-        // Constructors
-        //----------------------------------------------------------------------
+        private static string CategoryTableName = "Category";
+        private static string CategoryIdColumnName = "CategoryId";
 
+        // constructor, no lookup
         public Category()
-            : base("Category")
+            : base(CategoryTableName, CategoryIdColumnName)
         { }
 
-        //----------------------------------------------------------------------
-
-        public Category(long locationId)
-            : base("Category", locationId)
+        // constructor, by id
+        public Category(long categoryId)
+            : base(categoryId, CategoryTableName, CategoryIdColumnName)
         { }
 
-        //----------------------------------------------------------------------
-
-        public static bool Exists(string name)
-        {
-            return ListAttribute.Exists("Category", name);
-        }
-
-        //----------------------------------------------------------------------
+        // constructor, by name
+        public Category(string categoryName)
+            : base(categoryName, CategoryTableName, CategoryIdColumnName)
+        { }
 
     }
 }

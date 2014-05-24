@@ -18,7 +18,7 @@ namespace Timekeeper
 
         private Timekeeper.Dimension Dimension;
 
-        private bool ClickedCancel = false;
+        private bool ClickedCancel = true;
         private string PreviousItemName = "";
         private string PreviousExternalProjectNo = null;
 
@@ -26,20 +26,37 @@ namespace Timekeeper
         // Constructor
         //----------------------------------------------------------------------
 
-        public ItemEditor(Timekeeper.Dimension dimension)
+        public ItemEditor(Timekeeper.Dimension dimension, bool isFolder)
         {
             InitializeComponent();
 
             this.Dimension = dimension;
             this.PopulateParents();
 
-            if (this.Dimension == Timekeeper.Dimension.Project) {
-                //this.Project = new Project(database);
-            } else {
-                //this.Activity = new Activity(database);
-                ExternalProjectNoLabel.Visible = false;
-                ItemExternalProjectNo.Visible = false;
-                this.Height -= 30;
+            switch (this.Dimension) {
+
+                case Timekeeper.Dimension.Project:
+                    ExternalProjectNoLabel.Visible = true;
+                    ExternalProjectNoLabel.Top = FolderLabel.Top + 104;
+                    ItemExternalProjectNo.Visible = true;
+                    ItemExternalProjectNo.Top = ItemParent.Top + 104;
+                    this.Height += 30;
+                    break;
+
+                case Timekeeper.Dimension.Location:
+                    Classes.Widgets Widgets = new Classes.Widgets();
+                    Widgets.PopulateTimeZoneComboBox(ItemRefTimeZone);
+                    if (!isFolder) {
+                        TimeZoneLabel.Visible = true;
+                        TimeZoneLabel.Top = FolderLabel.Top + 104;
+                        ItemRefTimeZone.Visible = true;
+                        ItemRefTimeZone.Top = ItemParent.Top + 104;
+                        this.Height += 30;
+                    } else {
+                        // Folders don't have time zones.
+                        ItemRefTimeZone.SelectedIndex = -1;
+                    }
+                    break;
             }
         }
 

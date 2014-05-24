@@ -65,7 +65,7 @@ namespace Timekeeper.Classes
         public void BuildLocationTree(dynamic tree)
         {
             this.CurrentDimension = Timekeeper.Dimension.Location;
-            this.CurrentIcon = Timekeeper.IMG_ACTIVITY; // FIXME
+            this.CurrentIcon = Timekeeper.IMG_LOCATION;
             BuildTree(tree, null, 0);
             ExpandTree(tree);
         }
@@ -75,7 +75,7 @@ namespace Timekeeper.Classes
         public void BuildCategoryTree(dynamic tree)
         {
             this.CurrentDimension = Timekeeper.Dimension.Category;
-            this.CurrentIcon = Timekeeper.IMG_ACTIVITY; // FIXME
+            this.CurrentIcon = Timekeeper.IMG_CATEGORY;
             BuildTree(tree, null, 0);
             ExpandTree(tree);
         }
@@ -84,8 +84,8 @@ namespace Timekeeper.Classes
 
         private void BuildTree(dynamic tree, dynamic parentNode, long parentId)
         {
-            bool showHidden = false; // FIXME: should not be hardcoded
-            DateTime showHiddenSince = GetShowHiddenSinceTime();
+            bool showHidden = GetViewHidden();
+            DateTime showHiddenSince = GetViewHiddenSinceTime();
             string orderByClause = GetOrderBy(Options.Behavior_SortItemsBy, Options.Behavior_SortItemsByDirection);
 
             // Instantiate Items
@@ -164,8 +164,8 @@ namespace Timekeeper.Classes
                         Node.ImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
                         Node.SelectedImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
                     } else {
-                        Node.ImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
-                        Node.SelectedImageIndex = Timekeeper.IMG_FOLDER_OPEN;
+                        Node.ImageIndex = Timekeeper.IMG_FOLDER;
+                        Node.SelectedImageIndex = Timekeeper.IMG_FOLDER;
                     }
                 } else {
                     Node.ImageIndex = imageIndex;
@@ -292,10 +292,18 @@ namespace Timekeeper.Classes
                     Item = new Classes.Activity();
                     Icon = Timekeeper.IMG_ACTIVITY;
                     break;
+                case Timekeeper.Dimension.Location:
+                    Item = new Classes.Location();
+                    Icon = Timekeeper.IMG_LOCATION;
+                    break;
+                case Timekeeper.Dimension.Category:
+                    Item = new Classes.Category();
+                    Icon = Timekeeper.IMG_CATEGORY;
+                    break;
             }
 
             // Instantiate Dialog
-            ItemEditor Dialog = new ItemEditor(dim);
+            ItemEditor Dialog = new ItemEditor(dim, isFolder);
             Dialog.Text = DialogTitle;
 
             // Determine preselected folder
@@ -345,12 +353,59 @@ namespace Timekeeper.Classes
         // Helpers
         //----------------------------------------------------------------------
 
-        private DateTime GetShowHiddenSinceTime()
+        private bool GetViewHidden()
+        {
+            return GetViewHidden(this.CurrentDimension);
+        }
+
+        //----------------------------------------------------------------------
+
+        public bool GetViewHidden(Timekeeper.Dimension dim)
+        {
+            bool Show = false;
+
+            switch (dim) {
+                case Timekeeper.Dimension.Project:
+                    Show = Options.View_HiddenProjects;
+                    break;
+                case Timekeeper.Dimension.Activity:
+                    Show = Options.View_HiddenActivities;
+                    break;
+                case Timekeeper.Dimension.Location:
+                    Show = Options.View_HiddenLocations;
+                    break;
+                case Timekeeper.Dimension.Category:
+                    Show = Options.View_HiddenCategories;
+                    break;
+            }
+
+            return Show;
+        }
+
+        //----------------------------------------------------------------------
+
+        private DateTime GetViewHiddenSinceTime()
         {
             DateTime showHiddenSince = DateTime.Now;
             TimeSpan Offset;
+            int HiddenSinceSetting = -1;
 
-            switch (Options.View_HiddenProjectsSince) {
+            switch (this.CurrentDimension) {
+                case Timekeeper.Dimension.Project:
+                    HiddenSinceSetting = Options.View_HiddenProjectsSince;
+                    break;
+                case Timekeeper.Dimension.Activity:
+                    HiddenSinceSetting = Options.View_HiddenActivitiesSince;
+                    break;
+                case Timekeeper.Dimension.Location:
+                    HiddenSinceSetting = Options.View_HiddenLocationsSince;
+                    break;
+                case Timekeeper.Dimension.Category:
+                    HiddenSinceSetting = Options.View_HiddenCategoriesSince;
+                    break;
+            }
+
+            switch (HiddenSinceSetting) {
                 case 0: Offset = new TimeSpan(-1, 0, 0, 0); break;
                 case 1: Offset = new TimeSpan(-7, 0, 0, 0); break;
                 case 2: Offset = new TimeSpan(-30, 0, 0, 0); break;
@@ -367,16 +422,6 @@ namespace Timekeeper.Classes
 
         private string GetOrderBy(int sortBy, int sortDirection)
         {
-            /*
-            string[] Entries = new string[5] { 
-                "Alphabetically",
-                "as Placed",
-                "by Created Date",
-                "by Modified Date",
-                "by External Project Number" };
-            AddItems(Behavior_SortProjectsBy, Entries);
-             */
-
             string OrderBy;
 
             switch (sortBy) {
@@ -385,11 +430,10 @@ namespace Timekeeper.Classes
                 case 2: OrderBy = "CreateTime"; break;
                 case 3: OrderBy = "ModifyTime"; break;
                 // FIXME: the cast below needs to be an option
+                // FIXME: also ONLY supported by Projects
                 case 4: OrderBy = "cast(ExternalProjectNo as int)"; break;
                 default: OrderBy = "SortOrderNo"; break;
             }
-
-            //cast(some_integer_column as text)
 
             string Direction = sortDirection == 0 ? "asc" : "desc";
 

@@ -13,11 +13,11 @@ namespace Timekeeper.Forms.Shared
 {
     public partial class TreeAttributeManager : Form
     {
+        private Classes.Options Options;
         private Timekeeper.Dimension Dimension;
         private Classes.Widgets Widgets;
         private Classes.Project Project;
-        //private Classes.Activity Activity;
-        //private Classes.TreeAttribute Item;
+        private string EditDialogTitle;
 
         //----------------------------------------------------------------------
         // Constructor
@@ -26,26 +26,39 @@ namespace Timekeeper.Forms.Shared
         public TreeAttributeManager(Timekeeper.Dimension dimension)
         {
             InitializeComponent();
+
+            // Important things
+            this.Options = Timekeeper.Options;
+            this.Widgets = new Classes.Widgets();
+
+            // Set the window flavor
             this.Dimension = dimension;
 
             switch (this.Dimension) {
                 case Timekeeper.Dimension.Project:
                     this.Text = "Manage Projects";
+                    this.EditDialogTitle = "Edit Project";
+                    this.MenuNew.Text = "New Project";
                     break;
                 case Timekeeper.Dimension.Activity:
                     this.Text = "Manage Activities";
+                    this.EditDialogTitle = "Edit Activity";
+                    this.MenuNew.Text = "New Activity";
                     break;
                 case Timekeeper.Dimension.Location:
                     this.Text = "Manage Locations";
+                    this.EditDialogTitle = "Edit Location";
+                    this.MenuNew.Text = "New Location";
                     break;
                 case Timekeeper.Dimension.Category:
                     this.Text = "Manage Categories";
+                    this.EditDialogTitle = "Edit Category";
+                    this.MenuNew.Text = "New Category";
                     break;
             }
 
+            // Ensure right-clicking a tree item selects it.
             Tree.NodeMouseClick += (sender, args) => Tree.SelectedNode = args.Node;
-
-            this.Widgets = new Classes.Widgets();
         }
 
         //----------------------------------------------------------------------
@@ -73,14 +86,18 @@ namespace Timekeeper.Forms.Shared
             this.Widgets.CreateTreeItemDialog(Tree, this.Dimension, true);
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private void MenuEdit_Click(object sender, EventArgs e)
         {
-            EditItemDialog(Tree, "FIX ME", (Classes.TreeAttribute)Tree.SelectedNode.Tag);
+            Classes.TreeAttribute Item = (Classes.TreeAttribute)Tree.SelectedNode.Tag;
+            string Title = this.EditDialogTitle;
+            if (Item.IsFolder)
+                Title += " Folder";
+            EditItemDialog(Tree, Title, Item);
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private void MenuRename_Click(object sender, EventArgs e)
         {
@@ -91,29 +108,46 @@ namespace Timekeeper.Forms.Shared
             }
         }
 
-        //---------------------------------------------------------------------
-        // gets messy below --- still needs cleanup
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        private void MenuActionHideProject_Click(object sender, EventArgs e)
+        private void MenuHide_Click(object sender, EventArgs e)
         {
             if (Tree.SelectedNode != null) {
-                Dialog_HideItem(Tree, true); // FIXME: NEED SUPPORT FOR THIS STILL: Options.View_HiddenProjects);
-                //MenuBar_ShowHideProject(false);
+                Dialog_HideItem(Tree);
+                SetHideUnhide();
             }
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        private void MenuActionUnhideProject_Click(object sender, EventArgs e)
+        private void MenuUnhide_Click(object sender, EventArgs e)
         {
             if (Tree.SelectedNode != null) {
                 Action_UnhideItem(Tree);
-                //MenuBar_ShowHideProject(true);
+                SetHideUnhide();
             }
         }
 
-        private void PopupMenuProperties_Click(object sender, EventArgs e)
+        //----------------------------------------------------------------------
+
+        private void MenuMerge_Click(object sender, EventArgs e)
+        {
+            if (Tree.SelectedNode != null) {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)Tree.SelectedNode.Tag;
+                Action_MergeItem(Item);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuDelete_Click(object sender, EventArgs e)
+        {
+            Action_DeleteItem(Tree);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuProperties_Click(object sender, EventArgs e)
         {
             if (Tree.SelectedNode != null) {
                 Classes.TreeAttribute Item = (Classes.TreeAttribute)Tree.SelectedNode.Tag;
@@ -122,93 +156,76 @@ namespace Timekeeper.Forms.Shared
             }
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        // Tree events
+        //----------------------------------------------------------------------
+
+        private void Tree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            SetHideUnhide();
+        }
+
+        private void SetHideUnhide()
+        {
+            TreeNode Node = Tree.SelectedNode;
+            Classes.TreeAttribute Item = (Classes.TreeAttribute)Node.Tag;
+
+            MenuHide.Visible = !Item.IsHidden;
+            PopupMenuHide.Visible = !Item.IsHidden;
+            MenuUnhide.Visible = Item.IsHidden;
+            PopupMenuUnhide.Visible = Item.IsHidden;
+        }
+
+        //----------------------------------------------------------------------
         // Keyboard events
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private void Tree_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (this.Dimension) {
-                case Timekeeper.Dimension.Project:
-                    ProjectTree_KeyDown(sender, e);
-                    break;
-                case Timekeeper.Dimension.Activity:
-                    ActivityTree_KeyDown(sender, e);
-                    break;
-            }
-        }
-
-        // Project window keys
-        private void ProjectTree_KeyDown(object sender, KeyEventArgs e)
-        {
             if (e.KeyCode == Keys.F2) {
-                Classes.Project Project = (Classes.Project)Tree.SelectedNode.Tag;
+                // Note, this Text replacement is only needed for Projects (which can
+                // display the External project no in the TreeView) but it's harmless
+                // for the other dimensions, so I'm leaving it here unconditionally.
+                // I'm still calling the TreeAttribute "Project" as a reminder of 
+                // what it's here for, even though this is used for all dimensions.
+                Classes.TreeAttribute Project = (Classes.TreeAttribute)Tree.SelectedNode.Tag;
                 Tree.SelectedNode.Text = Project.Name;
                 Tree.SelectedNode.BeginEdit();
             } else if (e.KeyCode == Keys.Delete) {
                 Action_DeleteItem(Tree);
             } else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
-                PopupMenuProperties_Click(sender, e);
+                MenuProperties_Click(sender, e);
             }
         }
 
-        // Action window keys
-        private void ActivityTree_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F2) {
-                Tree.SelectedNode.BeginEdit();
-            } else if (e.KeyCode == Keys.Delete) {
-                Action_DeleteItem(Tree);
-            } else if ((e.KeyCode == Keys.Enter) && (e.Modifiers == Keys.Alt)) {
-                PopupMenuProperties_Click(sender, e);
-            }
-        }
-
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // Label-Editing Events
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private void Tree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            switch (this.Dimension) {
-                case Timekeeper.Dimension.Project:
-                    ProjectTree_AfterLabelEdit(sender, e);
-                    break;
-                case Timekeeper.Dimension.Activity:
-                    ActivityTree_AfterLabelEdit(sender, e);
-                    break;
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void ProjectTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
             TreeNode Node = Tree.SelectedNode;
-            Classes.Project Project = (Classes.Project)Node.Tag;
+            Classes.TreeAttribute Item = (Classes.TreeAttribute)Node.Tag;
+
+            /* Old, simple approach. (Can't be used when ExternalProjectNo is involved.)
+            TreeNode node = Tree.SelectedNode;
+            Classes.TreeAttribute item = (Classes.TreeAttribute)node.Tag;
+            e.CancelEdit = !Action_RenameItem(node, item, e.Label);
+            */
 
             if (e.Label == null) {
                 // This means they hit escape, so just reset the
                 // node's text to what it was before this started.
-                Node.Text = Project.DisplayName();
+                Node.Text = Item.DisplayName();
             } else {
-                if (Action_RenameItem(Node, Project, e.Label)) {
-                    Node.Text = Project.DisplayName();
+                if (Action_RenameItem(Node, Item, e.Label)) {
+                    Node.Text = Item.DisplayName();
                 }
             }
 
             // Edit's never cancelled: we're manually handling all cases,
             // so don't give control back to the framework.
             e.CancelEdit = true;
-        }
-
-        //---------------------------------------------------------------------
-
-        private void ActivityTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            TreeNode node = Tree.SelectedNode;
-            Classes.TreeAttribute item = (Classes.TreeAttribute)node.Tag;
-            e.CancelEdit = !Action_RenameItem(node, item, e.Label);
         }
 
         //----------------------------------------------------------------------
@@ -224,17 +241,21 @@ namespace Timekeeper.Forms.Shared
                 case Timekeeper.Dimension.Activity:
                     Widgets.BuildActivityTree(Tree.Nodes);
                     break;
+                case Timekeeper.Dimension.Location:
+                    Widgets.BuildLocationTree(Tree.Nodes);
+                    break;
+                case Timekeeper.Dimension.Category:
+                    Widgets.BuildCategoryTree(Tree.Nodes);
+                    break;
             }
         }
-
-
 
         //----------------------------------------------------------------------
 
         private void EditItemDialog(TreeView tree, string title, Classes.TreeAttribute item)
         {
             // Instantiate Dialog
-            ItemEditor Dialog = new ItemEditor(this.Dimension);
+            ItemEditor Dialog = new ItemEditor(this.Dimension, item.IsFolder);
             Dialog.Text = title;
 
             // Store the object in the dialog's tag
@@ -277,7 +298,6 @@ namespace Timekeeper.Forms.Shared
                 if (Dialog.ItemName.Text != PreviousName) {
                     if (Action_RenameItem(tree.SelectedNode, item, Dialog.ItemName.Text)) {
                         tree.SelectedNode.Text = item.DisplayName();
-                        tree.SelectedNode.Tag = item;
                     } else {
                         return;
                     }
@@ -293,21 +313,28 @@ namespace Timekeeper.Forms.Shared
                 }
 
                 if ((this.Dimension == Timekeeper.Dimension.Project) && 
+                    (Dialog.ItemExternalProjectNo.Text != "") &&
                     (Dialog.ItemExternalProjectNo.Text != PreviousExternalProjectNo))
                 {
                     Project.Name = Dialog.ItemName.Text;
                     Action_RepointItem(tree.SelectedNode, Project, Dialog.ItemExternalProjectNo.Text);
                     tree.SelectedNode.Text = Project.DisplayName();
+                    item = Project;
                 }
+
+                tree.SelectedNode.Tag = item;
             }
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        // gets messy below --- still needs cleanup
+        //----------------------------------------------------------------------
 
-        private void Dialog_HideItem(TreeView tree, bool viewingHiddenItems)
+        //----------------------------------------------------------------------
+
+        private void Dialog_HideItem(TreeView tree)
         {
-            //if (Options.Behavior_Annoy_PromptBeforeHiding) {
-            if (true) {
+            if (Options.Behavior_Annoy_PromptBeforeHiding) {
                 Forms.Shared.Prompt Dialog = new Forms.Shared.Prompt();
                 Dialog.wInstructions.Text = "Hide this item?\n\nTo display hidden items, go to Tools | Options and check the appropriate boxes on the View tab. Hidden items are always available on reports.";
 
@@ -321,13 +348,13 @@ namespace Timekeeper.Forms.Shared
                 }
             }
 
-            Action_HideItem(tree, viewingHiddenItems);
+            Action_HideItem(tree);
         }
 
 
         //----------------------------------------------------------------------
         // Actions
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public void Action_DeleteItem(TreeView tree)
         {
@@ -341,7 +368,7 @@ namespace Timekeeper.Forms.Shared
 
             // See if it's in use
             var JournalEntries = new Classes.JournalEntryCollection();
-            int Count = JournalEntries.Count(SourceItem.Type, SourceItem.ItemId);
+            int Count = JournalEntries.Count(SourceItem.Dimension, SourceItem.ItemId);
 
             if (Count > 0) {
                 string Prompt = String.Format(
@@ -365,9 +392,9 @@ namespace Timekeeper.Forms.Shared
             tree.SelectedNode.Remove();
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        private void Action_HideItem(TreeView tree, bool viewingHiddenItems)
+        private void Action_HideItem(TreeView tree)
         {
             // Hide in the database
             Classes.TreeAttribute Item = (Classes.TreeAttribute)tree.SelectedNode.Tag;
@@ -378,6 +405,7 @@ namespace Timekeeper.Forms.Shared
             }
 
             // Now handle the UI
+            bool viewingHiddenItems = this.Widgets.GetViewHidden(this.Dimension);
             if (viewingHiddenItems) {
                 tree.SelectedNode.ForeColor = Color.Gray;
                 if (Item.IsFolder) {
@@ -408,11 +436,11 @@ namespace Timekeeper.Forms.Shared
             // Update the UI
             tree.SelectedNode.ForeColor = Color.Black;
             if (item.IsFolder) {
-                tree.SelectedNode.ImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
-                tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
+                tree.SelectedNode.ImageIndex = Timekeeper.IMG_FOLDER;
+                tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_FOLDER;
             } else {
                 int Icon = Timekeeper.IMG_PROJECT;
-                if (item.Type == Timekeeper.Dimension.Activity) {
+                if (item.Dimension == Timekeeper.Dimension.Activity) {
                     Icon = Timekeeper.IMG_ACTIVITY;
                 }
                 tree.SelectedNode.ImageIndex = Icon;
@@ -420,7 +448,7 @@ namespace Timekeeper.Forms.Shared
             }
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private bool Action_MergeItem(Classes.TreeAttribute item)
         {
@@ -536,7 +564,7 @@ namespace Timekeeper.Forms.Shared
         }
         */
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         // Drag and Drop: Initiate drag sequence
         /*
@@ -648,7 +676,7 @@ namespace Timekeeper.Forms.Shared
 
         //----------------------------------------------------------------------
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private void Action_TreeView_DragDrop(TreeView tree, object sender, DragEventArgs e)
         {
@@ -789,7 +817,7 @@ namespace Timekeeper.Forms.Shared
             }
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private bool Action_TreeView_ContainsNode(TreeNode node1, TreeNode node2)
         {
@@ -809,7 +837,7 @@ namespace Timekeeper.Forms.Shared
             }
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         private bool Action_TreeView_IsSibling(TreeNode node1, TreeNode node2)
         {
@@ -827,7 +855,7 @@ namespace Timekeeper.Forms.Shared
             }
         }
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         /*
         private void ProjectTree_AfterExpand(object sender, TreeViewEventArgs e)

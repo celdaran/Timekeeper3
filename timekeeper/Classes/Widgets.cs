@@ -98,7 +98,7 @@ namespace Timekeeper.Classes
             string To = DateTime.Now.ToString(Common.DATE_FORMAT + " 23:59:59");
 
             // Determine the item type
-            string ItemType = item.Type.ToString();
+            string ItemType = item.Dimension.ToString();
             if (item.IsFolder) ItemType += " Folder";
 
             // Set dialog box title
@@ -133,10 +133,9 @@ namespace Timekeeper.Classes
             if (item.IsDeleted)
                 Dialog.wDeletedTime.Text = item.DeletedTime.ToString(Common.LOCAL_DATETIME_FORMAT);
 
-            if (item.Type == Timekeeper.Dimension.Project) {
-                long LastActivityId = item.FollowedItemId;
-                if (LastActivityId > 0) {
-                    Classes.Activity Activity = new Classes.Activity(LastActivityId);
+            if (item.Dimension == Timekeeper.Dimension.Project) {
+                if (item.LastActivityId > 0) {
+                    Classes.Activity Activity = new Classes.Activity(item.LastActivityId);
                     Dialog.wLastItemName.Enabled = true;
                     Dialog.wLastItemName.Text = Activity.Name;
                     Dialog.wLastItemLabel.Text = "Last Activity:";
@@ -148,9 +147,8 @@ namespace Timekeeper.Classes
                 Dialog.wExternalProjectNoLabel.Visible = true;
                 Dialog.wExternalProjectNo.Visible = true;
             } else {
-                long LastProjectId = item.FollowedItemId;
-                if (LastProjectId > 0) {
-                    Classes.Project Project = new Classes.Project(LastProjectId);
+                if (item.LastProjectId > 0) {
+                    Classes.Project Project = new Classes.Project(item.LastProjectId);
                     Dialog.wLastItemLabel.Text = "Last Project:";
                     Dialog.wLastItemName.Enabled = true;
                     Dialog.wLastItemName.Text = Project.Name;

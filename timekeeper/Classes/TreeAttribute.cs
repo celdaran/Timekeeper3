@@ -12,16 +12,15 @@ namespace Timekeeper.Classes
         // Public Properties
         //---------------------------------------------------------------------
 
+        // Common properties
         public long ItemId { get; set; }
         public DateTimeOffset CreateTime { get; set; }
         public DateTimeOffset ModifyTime { get; set; }
         public string ItemGuid { get; set; }
-
         public string Name { get; set; }
         public string Description { get; set; }
         public long ParentId { get; set; }
         public long SortOrderNo { get; set; }
-        public long FollowedItemId { get; set; }
         public bool IsFolder { get; set; }
         public bool IsFolderOpened { get; set; }
         public bool IsHidden { get; set; }
@@ -29,9 +28,13 @@ namespace Timekeeper.Classes
         public DateTimeOffset HiddenTime { get; set; }
         public DateTimeOffset DeletedTime { get; set; }
 
-        public string ExternalProjectNo { get; set; }
+        // Table-specific properties
+        public long LastActivityId { get; set; }        // used by Project
+        public string ExternalProjectNo { get; set; }   // used by Project
+        public long LastProjectId { get; set; }         // used by Activity
+        public long RefTimeZoneId { get; set; }         // used by Location
 
-        public Timekeeper.Dimension Type { get; set; }
+        public Timekeeper.Dimension Dimension { get; set; }
 
         // In-memory only
         public DateTimeOffset StartTime;
@@ -48,7 +51,6 @@ namespace Timekeeper.Classes
         // Private Properties
         //---------------------------------------------------------------------
 
-        private string MirrorTableName;
         private long SecondsElapsedToday = 0;
 
         //---------------------------------------------------------------------
@@ -62,13 +64,7 @@ namespace Timekeeper.Classes
             this.IdColumnName = idColumnName;
 
             // Convert the table name into the enumerated dimension
-            this.Type = (Timekeeper.Dimension)Enum.Parse(typeof(Timekeeper.Dimension), tableName);
-
-            // Set MirrorTableName
-            if (this.Type == Timekeeper.Dimension.Project)
-                this.MirrorTableName = "Activity";
-            if (this.Type == Timekeeper.Dimension.Activity)
-                this.MirrorTableName = "Project";
+            this.Dimension = (Timekeeper.Dimension)Enum.Parse(typeof(Timekeeper.Dimension), tableName);
         }
 
         //---------------------------------------------------------------------
@@ -148,7 +144,7 @@ namespace Timekeeper.Classes
             // not sure how to get UI options at this layer of
             // the codebase.  :-/
 
-            if (this.TableName == "Project") {
+            if (this.Dimension == Timekeeper.Dimension.Project) {
                 if (1 == 1) { // Option check here
                     if (this.ExternalProjectNo != null) {
                         DisplayName = this.ExternalProjectNo + " - " + this.Name;
@@ -258,14 +254,17 @@ namespace Timekeeper.Classes
             this.Description = source.Description;
             this.ParentId = source.ParentId;
             this.SortOrderNo = source.SortOrderNo;
-            this.FollowedItemId = source.FollowedItemId;
             this.IsFolder = source.IsFolder;
             this.IsFolderOpened = source.IsFolderOpened;
             this.IsHidden = source.IsHidden;
             this.HiddenTime = source.HiddenTime;
             this.IsDeleted = source.IsDeleted;
             this.DeletedTime = source.DeletedTime;
+
+            this.LastActivityId = source.LastActivityId;
+            this.LastProjectId = source.LastProjectId;
             this.ExternalProjectNo = source.ExternalProjectNo;
+            this.RefTimeZoneId = source.RefTimeZoneId;
         }
 
         //---------------------------------------------------------------------
@@ -286,8 +285,6 @@ namespace Timekeeper.Classes
             Row["Description"] = this.Description;
             Row["ParentId"] = this.ParentId;
             Row["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName, this.ParentId);
-            if (this.MirrorTableName != null)
-                Row["Last" + MirrorTableName + "Id"] = this.FollowedItemId;
             Row["IsFolder"] = this.IsFolder ? 1 : 0;
             Row["IsFolderOpened"] = this.IsFolder ? 1 : 0;
             Row["IsHidden"] = 0;
@@ -295,8 +292,17 @@ namespace Timekeeper.Classes
             Row["HiddenTime"] = null;
             Row["DeletedTime"] = null;
 
-            if (this.TableName == "Project") {
+            if (this.Dimension == Timekeeper.Dimension.Project) {
+                Row["LastActivityId"] = this.LastActivityId;
                 Row["ExternalProjectNo"] = this.ExternalProjectNo;
+            }
+
+            if (this.Dimension == Timekeeper.Dimension.Activity) {
+                Row["LastProjectId"] = this.LastProjectId;
+            }
+
+            if (this.Dimension == Timekeeper.Dimension.Location) {
+                Row["RefTimeZoneId"] = this.RefTimeZoneId;
             }
 
             this.ItemId = this.Database.Insert(this.TableName, Row);
@@ -417,8 +423,6 @@ namespace Timekeeper.Classes
             this.Description = row["Description"];
             this.ParentId = row["ParentId"];
             this.SortOrderNo = row["SortOrderNo"];
-            if (this.MirrorTableName != null)
-                this.FollowedItemId = row["Last" + this.MirrorTableName + "Id"];
             this.IsFolder = row["IsFolder"];
             this.IsFolderOpened = row["IsFolderOpened"];
             this.IsHidden = row["IsHidden"];
@@ -429,8 +433,17 @@ namespace Timekeeper.Classes
             if (row["DeletedTime"] != null)
                 this.DeletedTime = row["DeletedTime"];
 
-            if (this.TableName == "Project") {
+            if (this.Dimension == Timekeeper.Dimension.Project) {
+                this.LastActivityId = row["LastActivityId"];
                 this.ExternalProjectNo = row["ExternalProjectNo"];
+            }
+
+            if (this.Dimension == Timekeeper.Dimension.Activity) {
+                this.LastActivityId = row["LastProjectId"];
+            }
+
+            if (this.Dimension == Timekeeper.Dimension.Location) {
+                this.RefTimeZoneId = row["RefTimeZoneId"];
             }
 
             // Initialize times

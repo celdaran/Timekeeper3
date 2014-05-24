@@ -121,44 +121,49 @@
             // MenuRename
             // 
             this.MenuRename.Name = "MenuRename";
-            this.MenuRename.Size = new System.Drawing.Size(123, 22);
+            this.MenuRename.Size = new System.Drawing.Size(152, 22);
             this.MenuRename.Text = "Rename";
             this.MenuRename.Click += new System.EventHandler(this.MenuRename_Click);
             // 
             // MenuHide
             // 
             this.MenuHide.Name = "MenuHide";
-            this.MenuHide.Size = new System.Drawing.Size(123, 22);
+            this.MenuHide.Size = new System.Drawing.Size(152, 22);
             this.MenuHide.Text = "Hide";
+            this.MenuHide.Click += new System.EventHandler(this.MenuHide_Click);
             // 
             // MenuUnhide
             // 
             this.MenuUnhide.Name = "MenuUnhide";
-            this.MenuUnhide.Size = new System.Drawing.Size(123, 22);
+            this.MenuUnhide.Size = new System.Drawing.Size(152, 22);
             this.MenuUnhide.Text = "Unhide";
+            this.MenuUnhide.Click += new System.EventHandler(this.MenuUnhide_Click);
             // 
             // MenuMerge
             // 
             this.MenuMerge.Name = "MenuMerge";
-            this.MenuMerge.Size = new System.Drawing.Size(123, 22);
+            this.MenuMerge.Size = new System.Drawing.Size(152, 22);
             this.MenuMerge.Text = "Merge";
+            this.MenuMerge.Click += new System.EventHandler(this.MenuMerge_Click);
             // 
             // MenuDelete
             // 
             this.MenuDelete.Name = "MenuDelete";
-            this.MenuDelete.Size = new System.Drawing.Size(123, 22);
+            this.MenuDelete.Size = new System.Drawing.Size(152, 22);
             this.MenuDelete.Text = "Delete";
+            this.MenuDelete.Click += new System.EventHandler(this.MenuDelete_Click);
             // 
             // MenuSep1
             // 
             this.MenuSep1.Name = "MenuSep1";
-            this.MenuSep1.Size = new System.Drawing.Size(120, 6);
+            this.MenuSep1.Size = new System.Drawing.Size(149, 6);
             // 
             // MenuProperties
             // 
             this.MenuProperties.Name = "MenuProperties";
-            this.MenuProperties.Size = new System.Drawing.Size(123, 22);
+            this.MenuProperties.Size = new System.Drawing.Size(152, 22);
             this.MenuProperties.Text = "Properties";
+            this.MenuProperties.Click += new System.EventHandler(this.MenuProperties_Click);
             // 
             // toolStripButton1
             // 
@@ -207,24 +212,28 @@
             this.PopupMenuEdit.Name = "PopupMenuEdit";
             this.PopupMenuEdit.Size = new System.Drawing.Size(140, 22);
             this.PopupMenuEdit.Text = "&Edit...";
+            this.PopupMenuEdit.Click += new System.EventHandler(this.MenuEdit_Click);
             // 
             // PopupMenuRename
             // 
             this.PopupMenuRename.Name = "PopupMenuRename";
             this.PopupMenuRename.Size = new System.Drawing.Size(140, 22);
             this.PopupMenuRename.Text = "&Rename";
+            this.PopupMenuRename.Click += new System.EventHandler(this.MenuRename_Click);
             // 
             // PopupMenuMerge
             // 
             this.PopupMenuMerge.Name = "PopupMenuMerge";
             this.PopupMenuMerge.Size = new System.Drawing.Size(140, 22);
             this.PopupMenuMerge.Text = "Merge...";
+            this.PopupMenuMerge.Click += new System.EventHandler(this.MenuMerge_Click);
             // 
             // PopupMenuHide
             // 
             this.PopupMenuHide.Name = "PopupMenuHide";
             this.PopupMenuHide.Size = new System.Drawing.Size(140, 22);
             this.PopupMenuHide.Text = "&Hide";
+            this.PopupMenuHide.Click += new System.EventHandler(this.MenuHide_Click);
             // 
             // PopupMenuUnhide
             // 
@@ -232,12 +241,14 @@
             this.PopupMenuUnhide.Size = new System.Drawing.Size(140, 22);
             this.PopupMenuUnhide.Text = "Un&hide";
             this.PopupMenuUnhide.Visible = false;
+            this.PopupMenuUnhide.Click += new System.EventHandler(this.MenuUnhide_Click);
             // 
             // PopupMenuDelete
             // 
             this.PopupMenuDelete.Name = "PopupMenuDelete";
             this.PopupMenuDelete.Size = new System.Drawing.Size(140, 22);
             this.PopupMenuDelete.Text = "&Delete...";
+            this.PopupMenuDelete.Click += new System.EventHandler(this.MenuDelete_Click);
             // 
             // PopupMenuSep1
             // 
@@ -249,18 +260,19 @@
             this.PopupMenuProperties.Name = "PopupMenuProperties";
             this.PopupMenuProperties.Size = new System.Drawing.Size(140, 22);
             this.PopupMenuProperties.Text = "&Properties...";
-            this.PopupMenuProperties.Click += new System.EventHandler(this.PopupMenuProperties_Click);
+            this.PopupMenuProperties.Click += new System.EventHandler(this.MenuProperties_Click);
             // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
-            this.TreeImageList.TransparentColor = System.Drawing.Color.Magenta;
-            this.TreeImageList.Images.SetKeyName(0, "OpenFolder");
-            this.TreeImageList.Images.SetKeyName(1, "ClosedFolder");
-            this.TreeImageList.Images.SetKeyName(2, "Project");
-            this.TreeImageList.Images.SetKeyName(3, "Activity");
-            this.TreeImageList.Images.SetKeyName(4, "HiddenItem");
-            this.TreeImageList.Images.SetKeyName(5, "HiddenFolder");
+            this.TreeImageList.TransparentColor = System.Drawing.Color.White;
+            this.TreeImageList.Images.SetKeyName(0, "Folder");
+            this.TreeImageList.Images.SetKeyName(1, "Project");
+            this.TreeImageList.Images.SetKeyName(2, "Activity");
+            this.TreeImageList.Images.SetKeyName(3, "Location");
+            this.TreeImageList.Images.SetKeyName(4, "Category");
+            this.TreeImageList.Images.SetKeyName(5, "HiddenItem");
+            this.TreeImageList.Images.SetKeyName(6, "HiddenFolder");
             // 
             // Tree
             // 
@@ -280,6 +292,7 @@
             this.Tree.TabIndex = 3;
             this.Tree.Tag = "Project";
             this.Tree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.Tree_AfterLabelEdit);
+            this.Tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterSelect);
             this.Tree.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Tree_KeyDown);
             // 
             // TreeAttributeManager

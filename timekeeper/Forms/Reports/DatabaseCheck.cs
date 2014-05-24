@@ -198,13 +198,13 @@ namespace Timekeeper.Forms.Reports
             }
 
             Classes.Location Location = new Classes.Location(currentEntry.LocationId);
-            if (Location.Id != currentEntry.LocationId) {
+            if (!Location.Exists()) {
                 this.IssueCounter++;
                 AddToGrid(currentEntry, "Location does not exist.");
             }
 
             Classes.Category Category = new Classes.Category(currentEntry.CategoryId);
-            if (Category.Id != currentEntry.CategoryId) {
+            if (!Category.Exists()) {
                 this.IssueCounter++;
                 AddToGrid(currentEntry, "Category does not exist.");
             }

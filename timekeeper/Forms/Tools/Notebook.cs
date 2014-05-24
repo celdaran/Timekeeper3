@@ -323,11 +323,11 @@ namespace Timekeeper.Forms.Tools
                 // Location & Category support
                 if (wLocation.SelectedIndex > -1) {
                     Classes.Location Location = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
-                    CurrentEntry.LocationId = Location.Id;
+                    CurrentEntry.LocationId = Location.ItemId;
                 }
                 if (wCategory.SelectedIndex > -1) {
                     Classes.Category Category = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
-                    CurrentEntry.CategoryId = Category.Id;
+                    CurrentEntry.CategoryId = Category.ItemId;
                 }
             }
             catch (Exception x) {

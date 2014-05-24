@@ -25,6 +25,7 @@ namespace Timekeeper
         public const int SUCCESS = 1;
         public const int FAILURE = 0;
 
+        /*
         public const int IMG_FOLDER_OPEN = 0;
         public const int IMG_FOLDER_CLOSED = 1;
         public const int IMG_PROJECT = 2;
@@ -33,6 +34,15 @@ namespace Timekeeper
         public const int IMG_TIMER_END = 7;
         public const int IMG_ITEM_HIDDEN = 8;
         public const int IMG_FOLDER_HIDDEN = 9;
+        */
+
+        public const int IMG_FOLDER = 0;
+        public const int IMG_PROJECT = 1;
+        public const int IMG_ACTIVITY = 2;
+        public const int IMG_LOCATION = 3;
+        public const int IMG_CATEGORY = 4;
+        public const int IMG_ITEM_HIDDEN = 5;
+        public const int IMG_FOLDER_HIDDEN = 6;
 
         public enum Dimension { Project, Activity, Location, Category };
 

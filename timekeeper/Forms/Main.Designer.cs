@@ -1004,16 +1004,13 @@ namespace Timekeeper.Forms
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
             this.TreeImageList.TransparentColor = System.Drawing.Color.White;
-            this.TreeImageList.Images.SetKeyName(0, "OpenFolder");
-            this.TreeImageList.Images.SetKeyName(1, "ClosedFolder");
-            this.TreeImageList.Images.SetKeyName(2, "Project");
-            this.TreeImageList.Images.SetKeyName(3, "Activity");
-            this.TreeImageList.Images.SetKeyName(4, "task-clock1.bmp");
-            this.TreeImageList.Images.SetKeyName(5, "task-clock2.bmp");
-            this.TreeImageList.Images.SetKeyName(6, "task-clock3.bmp");
-            this.TreeImageList.Images.SetKeyName(7, "task-clock4.bmp");
-            this.TreeImageList.Images.SetKeyName(8, "HiddenItem");
-            this.TreeImageList.Images.SetKeyName(9, "HiddenFolder");
+            this.TreeImageList.Images.SetKeyName(0, "Folder");
+            this.TreeImageList.Images.SetKeyName(1, "Project");
+            this.TreeImageList.Images.SetKeyName(2, "Activity");
+            this.TreeImageList.Images.SetKeyName(3, "Location");
+            this.TreeImageList.Images.SetKeyName(4, "Category");
+            this.TreeImageList.Images.SetKeyName(5, "HiddenItem");
+            this.TreeImageList.Images.SetKeyName(6, "HiddenFolder");
             // 
             // OpenFileDialog
             // 

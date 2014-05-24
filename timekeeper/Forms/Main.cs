@@ -160,6 +160,7 @@ namespace Timekeeper.Forms
         private void MenuActionManageProjects_Click(object sender, EventArgs e)
         {
             Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Project);
+            Form.StartPosition = FormStartPosition.CenterParent;
             Form.ShowDialog(this);
         }
 
@@ -167,6 +168,7 @@ namespace Timekeeper.Forms
         private void MenuActionManageActivities_Click(object sender, EventArgs e)
         {
             Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Activity);
+            Form.StartPosition = FormStartPosition.CenterParent;
             Form.ShowDialog(this);
         }
 
@@ -174,6 +176,7 @@ namespace Timekeeper.Forms
         private void MenuActionManageLocations_Click(object sender, EventArgs e)
         {
             Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Location);
+            Form.StartPosition = FormStartPosition.CenterParent;
             Form.ShowDialog(this);
         }
 
@@ -181,6 +184,7 @@ namespace Timekeeper.Forms
         private void MenuActionManageCategories_Click(object sender, EventArgs e)
         {
             Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Category);
+            Form.StartPosition = FormStartPosition.CenterParent;
             Form.ShowDialog(this);
         }
 
