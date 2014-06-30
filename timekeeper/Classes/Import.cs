@@ -149,14 +149,18 @@ namespace Timekeeper.Classes
             DateTimeOffset EarliestImportedEntryDate = DateTimeOffset.MaxValue;
 
             try {
-                // Default positions
-                int StartTimePos = 0;
-                int StopTimePos = 1;
-                int MemoPos = 2;
-                int ProjectPos = 3;
-                int ActivityPos = 4;
-                int LocationPos = 5;
-                int CategoryPos = 6;
+                // Initialize positions
+                int StartTimePos = -1;
+                int StopTimePos = -1;
+                int MemoPos = -1;
+                int ProjectIdPos = -1;
+                int ActivityIdPos = -1;
+                int LocationIdPos = -1;
+                int CategoryIdPos = -1;
+                int ProjectPos = -1;
+                int ActivityPos = -1;
+                int LocationPos = -1;
+                int CategoryPos = -1;
 
                 // Set progress bar
                 var TotalLines = System.IO.File.ReadLines(this.ImportFileName).Count();
@@ -167,28 +171,41 @@ namespace Timekeeper.Classes
                     parser.SetDelimiters(",");
 
                     while (!parser.EndOfData) {
-                        string[] fields = parser.ReadFields();
+                        string[] Fields = parser.ReadFields();
 
                         if (RowNo == 0) {
                             // Read header
                             int ColNo = 0;
 
-                            foreach (string field in fields) {
-                                if (field == "StartTime")
+                            foreach (string Field in Fields) {
+                                if (Field == "StartTime")
                                     StartTimePos = ColNo;
-                                else if (field == "StopTime")
+                                else if (Field == "StopTime")
                                     StopTimePos = ColNo;
-                                else if (field == "Memo")
+                                else if (Field == "Memo")
                                     MemoPos = ColNo;
-                                else if (field == "ProjectId")
+
+                                // ID values
+                                else if (Field == "ProjectId")
+                                    ProjectIdPos = ColNo;
+                                else if (Field == "ActivityId")
+                                    ActivityIdPos = ColNo;
+                                else if (Field == "LocationId")
+                                    LocationIdPos = ColNo;
+                                else if (Field == "CategoryId")
+                                    CategoryIdPos = ColNo;
+
+                                // Name values
+                                else if (Field == "Project")
                                     ProjectPos = ColNo;
-                                else if (field == "ActivityId")
+                                else if (Field == "Activity")
                                     ActivityPos = ColNo;
-                                else if (field == "LocationId")
+                                else if (Field == "Location")
                                     LocationPos = ColNo;
-                                else if (field == "CategoryId")
+                                else if (Field == "Category")
                                     CategoryPos = ColNo;
-                                else
+
+                                else {
                                     // TODO: Can unknown columns just be ignored? Do they 
                                     // have to stop the import?
                                     // TODO #2: Accept Project, Activity, Location, and
@@ -198,14 +215,36 @@ namespace Timekeeper.Classes
                                     // find a value not accounted for.
                                     // OR EVEN BETTER . . . prompt for column mapping during
                                     // the import wizard, then we'll know once we get here.
-                                    throw new Exception("Unknown column encountered: " + field);
+
+                                    // throw new Exception("Unknown column encountered: " + field);
+                                }
 
                                 ColNo++;
                             }
+
+                            // Quick sanity check: did we get our required columns?
+                            if ((StartTimePos == -1) || (StopTimePos == -1)) {
+                                throw new Exception("Both StartTime and StopTime must be specified.");
+                            }
                         }
                         else {
-                            DateTimeOffset StartTime = DateTimeOffset.Parse(fields[StartTimePos]);
-                            DateTimeOffset StopTime = DateTimeOffset.Parse(fields[StopTimePos]);
+                            // Instantiate a new JournalEntry object
+                            Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
+
+                            // StartTime is our key
+                            DateTimeOffset StartTime = DateTimeOffset.Parse(Fields[StartTimePos]);
+
+                            Classes.JournalEntryCollection JournalEntryCollection = new Classes.JournalEntryCollection();
+                            if (JournalEntryCollection.Exists(StartTime)) {
+                                Console.AppendText(
+                                    "CSV entry already exists: " + StartTime.ToString(Common.UTC_DATETIME_FORMAT) + "\n");
+                                // Move on to the next row
+                                continue;
+                            }
+
+                            // If StartTime is okay, continue
+
+                            DateTimeOffset StopTime = DateTimeOffset.Parse(Fields[StopTimePos]);
                             TimeSpan ts = StopTime.Subtract(StartTime);
 
                             // Keep track of this value for reindexing purposes.
@@ -215,24 +254,28 @@ namespace Timekeeper.Classes
                                 EarliestImportedEntryDate = StartTime;
                             }
 
-                            // Create the Journal Entry
-                            Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
                             JournalEntry.StartTime = StartTime;
                             JournalEntry.StopTime = StopTime;
                             JournalEntry.Seconds = (long)ts.TotalSeconds;
-                            JournalEntry.Memo = fields[MemoPos];
-                            JournalEntry.ProjectId = Convert.ToInt32(fields[ProjectPos]);
-                            JournalEntry.ActivityId = Convert.ToInt32(fields[ActivityPos]);
-                            JournalEntry.LocationId = Convert.ToInt32(fields[LocationPos]);
-                            JournalEntry.CategoryId = Convert.ToInt32(fields[CategoryPos]);
+
+                            JournalEntry.Memo = MemoPos == -1 ? "" : Fields[MemoPos];
+
+                            JournalEntry.ProjectId = DetermineDimension(Timekeeper.Dimension.Project, ProjectIdPos, ProjectPos, Fields);
+                            JournalEntry.ActivityId = DetermineDimension(Timekeeper.Dimension.Activity, ActivityIdPos, ActivityPos, Fields);
+                            JournalEntry.LocationId = DetermineDimension(Timekeeper.Dimension.Location, LocationIdPos, LocationPos, Fields);
+                            JournalEntry.CategoryId = DetermineDimension(Timekeeper.Dimension.Category, CategoryIdPos, CategoryPos, Fields);
+
                             JournalEntry.IsLocked = false;
                             if (JournalEntry.Create()) {
                                 Console.AppendText(
                                     "Imported " + JournalEntry.JournalId.ToString() + 
-                                    " for CSV entry " + StartTime.ToString(Common.UTC_DATETIME_FORMAT) + 
-                                    "\t" + JournalEntry.Memo + "\n");
+                                    " for CSV entry: " + StartTime.ToString(Common.UTC_DATETIME_FORMAT) + 
+                                    "\t" + JournalEntry.Memo.Substring(0, 40) + "\n");
                             } else {
-                                throw new Exception("There was an error creating the journal entry.");
+                                Console.AppendText(
+                                    "Did NOT Import CSV entry: " + StartTime.ToString(Common.UTC_DATETIME_FORMAT) +
+                                    "\t" + JournalEntry.Memo.Substring(0, 40) + "\n");
+                                //throw new Exception("There was an error creating the journal entry.");
                             }
                         }
 
@@ -256,6 +299,34 @@ namespace Timekeeper.Classes
             }
 
             return Imported;
+        }
+
+        private long DetermineDimension(Timekeeper.Dimension dimension, int idPos, int namePos, string[] fields)
+        {
+            long returnId;
+
+            if (idPos == -1) {
+                if (namePos == -1) {
+                    returnId = 1;
+                } else {
+                    Classes.TreeAttribute Item = new Classes.TreeAttribute(
+                        fields[namePos], 
+                        dimension.ToString(), 
+                        dimension.ToString() + "Id");
+                    if (Item.ItemId == 0) {
+                        Item.Name = fields[namePos];
+                        Item.Description = "Item created automatically during Import process.";
+                        Item.Dimension = dimension;
+                        Item.IsFolder = false;
+                        Item.Create();
+                    }
+                    returnId = Item.ItemId;
+                }
+            } else {
+                returnId = Convert.ToInt32(fields[idPos]);
+            }
+
+            return returnId;
         }
 
         //----------------------------------------------------------------------
