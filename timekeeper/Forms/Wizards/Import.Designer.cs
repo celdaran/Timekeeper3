@@ -49,7 +49,7 @@
             this.Tab3 = new System.Windows.Forms.Panel();
             this.ImportTK1Instructions = new System.Windows.Forms.Label();
             this.Tab5 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.EndLabel = new System.Windows.Forms.Label();
             this.Tab4 = new System.Windows.Forms.Panel();
             this.WizardReviewInstructions = new System.Windows.Forms.Label();
             this.WizardReview = new System.Windows.Forms.TextBox();
@@ -68,7 +68,7 @@
             this.ImportFileName.Name = "ImportFileName";
             this.ImportFileName.Size = new System.Drawing.Size(282, 20);
             this.ImportFileName.TabIndex = 1;
-            this.ImportFileName.Text = "C:\\Users\\hillsc\\Projects\\timekeeper\\testing\\3.0\\import-test-1.csv";
+            this.ImportFileName.Text = "C:\\Users\\hillsc\\Google Drive\\Timekeeper\\Import-Test-1.csv";
             // 
             // ImportButton
             // 
@@ -88,9 +88,10 @@
             this.Console.ForeColor = System.Drawing.Color.Lime;
             this.Console.Location = new System.Drawing.Point(18, 71);
             this.Console.Name = "Console";
-            this.Console.Size = new System.Drawing.Size(315, 118);
+            this.Console.Size = new System.Drawing.Size(315, 189);
             this.Console.TabIndex = 3;
             this.Console.Text = "";
+            this.Console.WordWrap = false;
             // 
             // ImportProgress
             // 
@@ -198,8 +199,8 @@
             this.ImportDataTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ImportDataTypeList.FormattingEnabled = true;
             this.ImportDataTypeList.Items.AddRange(new object[] {
-            "Timekeeper 1.x",
-            "Comma Separated Values"});
+            "Comma Separated Values",
+            "Timekeeper 1.x"});
             this.ImportDataTypeList.Location = new System.Drawing.Point(18, 85);
             this.ImportDataTypeList.Name = "ImportDataTypeList";
             this.ImportDataTypeList.Size = new System.Drawing.Size(321, 21);
@@ -276,7 +277,7 @@
             // Tab5
             // 
             this.Tab5.BackColor = System.Drawing.SystemColors.Window;
-            this.Tab5.Controls.Add(this.label1);
+            this.Tab5.Controls.Add(this.EndLabel);
             this.Tab5.Controls.Add(this.Console);
             this.Tab5.Controls.Add(this.ImportProgress);
             this.Tab5.Location = new System.Drawing.Point(1604, 0);
@@ -284,14 +285,14 @@
             this.Tab5.Size = new System.Drawing.Size(354, 283);
             this.Tab5.TabIndex = 19;
             // 
-            // label1
+            // EndLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(141, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Click \"Import Now\" to begin.";
+            this.EndLabel.AutoSize = true;
+            this.EndLabel.Location = new System.Drawing.Point(15, 13);
+            this.EndLabel.Name = "EndLabel";
+            this.EndLabel.Size = new System.Drawing.Size(141, 13);
+            this.EndLabel.TabIndex = 3;
+            this.EndLabel.Text = "Click \"Import Now\" to begin.";
             // 
             // Tab4
             // 
@@ -386,7 +387,7 @@
         private System.Windows.Forms.Panel Tab3;
         private System.Windows.Forms.Label ImportTK1Instructions;
         private System.Windows.Forms.Panel Tab5;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label EndLabel;
         private System.Windows.Forms.Panel Tab4;
         private System.Windows.Forms.TextBox WizardReview;
         private System.Windows.Forms.Label WizardReviewInstructions;

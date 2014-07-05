@@ -150,6 +150,8 @@ namespace Timekeeper.Forms
             if (this.FindDataSource == FindDataSources.Notebook)
                 FindView.FilterOptions.FilterOptionsType = Classes.FilterOptions.OptionsType.Notebook;
 
+            FindView.FilterOptions.FilterMergeType = null;
+
             // Re-instantiate just before opening. See comment surrounding the
             // only other instantiation of this object
             this.FilterDialog = new Forms.Shared.Filtering(FindView.FilterOptions);
@@ -376,6 +378,8 @@ namespace Timekeeper.Forms
             if (findViewId > 0) {
                 // Load Last Saved Options
                 FindView.Load(findViewId);
+
+            	FindView.FilterOptions.FilterMergeType = null;
 
                 // This requires some explanation. It's definitely a hack but something
                 // for which I don't currently have the time or energy to handle otherwise.

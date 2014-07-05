@@ -20,6 +20,11 @@ namespace Timekeeper.Classes
         private DBI Database;
         private string ImportFileName;
 
+        private Dictionary<long, long> FoundProjects = new Dictionary<long,long>();
+        private Dictionary<long, long> FoundActivities = new Dictionary<long,long>();
+        private Dictionary<long, long> FoundLocations = new Dictionary<long,long>();
+        private Dictionary<long, long> FoundCategories = new Dictionary<long,long>();
+
         public RichTextBox Console { get; set; }
         public ProgressBar ImportProgress { get; set; }
 
@@ -148,91 +153,147 @@ namespace Timekeeper.Classes
             int RowNo = 0;
             DateTimeOffset EarliestImportedEntryDate = DateTimeOffset.MaxValue;
 
+            string Message;
+            int ImportedRows = 0;
+            int DuplicateRows = 0;
+            int InvalidRows = 0;
+            int ErrorRows = 0;
+            int ExceptionsCaught = 0;
+            int ProjectsCreated = 0;
+            int ActivitiesCreated = 0;
+            int LocationsCreated = 0;
+            int CategoriesCreated = 0;
+
             try {
-                // Default positions
-                int StartTimePos = 0;
-                int StopTimePos = 1;
-                int MemoPos = 2;
-                int ProjectPos = 3;
-                int ActivityPos = 4;
-                int LocationPos = 5;
-                int CategoryPos = 6;
+                // Initialize positions
+                int StartTimePos = -1;
+                int StopTimePos = -1;
+                int MemoPos = -1;
+                int ProjectIdPos = -1;
+                int ActivityIdPos = -1;
+                int LocationIdPos = -1;
+                int CategoryIdPos = -1;
+                int ProjectPos = -1;
+                int ActivityPos = -1;
+                int LocationPos = -1;
+                int CategoryPos = -1;
 
                 // Set progress bar
                 var TotalLines = System.IO.File.ReadLines(this.ImportFileName).Count();
                 ImportProgress.Maximum = TotalLines;
+
+                Message = String.Format("Import started at {0}.\n\n", Common.Now());
+                Console.AppendText(Message);
 
                 using (TextFieldParser parser = new TextFieldParser(this.ImportFileName)) {
                     parser.TextFieldType = FieldType.Delimited;
                     parser.SetDelimiters(",");
 
                     while (!parser.EndOfData) {
-                        string[] fields = parser.ReadFields();
+                        string[] Fields = parser.ReadFields();
 
                         if (RowNo == 0) {
                             // Read header
                             int ColNo = 0;
 
-                            foreach (string field in fields) {
-                                if (field == "StartTime")
+                            foreach (string Field in Fields) {
+                                if (Field == "StartTime")
                                     StartTimePos = ColNo;
-                                else if (field == "StopTime")
+                                else if (Field == "StopTime")
                                     StopTimePos = ColNo;
-                                else if (field == "Memo")
+                                else if (Field == "Memo")
                                     MemoPos = ColNo;
-                                else if (field == "ProjectId")
+
+                                // ID values
+                                else if (Field == "ProjectId")
+                                    ProjectIdPos = ColNo;
+                                else if (Field == "ActivityId")
+                                    ActivityIdPos = ColNo;
+                                else if (Field == "LocationId")
+                                    LocationIdPos = ColNo;
+                                else if (Field == "CategoryId")
+                                    CategoryIdPos = ColNo;
+
+                                // Name values
+                                else if (Field == "Project")
                                     ProjectPos = ColNo;
-                                else if (field == "ActivityId")
+                                else if (Field == "Activity")
                                     ActivityPos = ColNo;
-                                else if (field == "LocationId")
+                                else if (Field == "Location")
                                     LocationPos = ColNo;
-                                else if (field == "CategoryId")
+                                else if (Field == "Category")
                                     CategoryPos = ColNo;
-                                else
-                                    // TODO: Can unknown columns just be ignored? Do they 
-                                    // have to stop the import?
-                                    // TODO #2: Accept Project, Activity, Location, and
-                                    // Category *names*, then look up the id based on those
-                                    // names.
-                                    // OR . . . have an option to auto-vivify data if we
-                                    // find a value not accounted for.
-                                    // OR EVEN BETTER . . . prompt for column mapping during
-                                    // the import wizard, then we'll know once we get here.
-                                    throw new Exception("Unknown column encountered: " + field);
+
+                                else {
+                                    // Just ignore it...
+                                }
 
                                 ColNo++;
                             }
-                        }
-                        else {
-                            DateTimeOffset StartTime = DateTimeOffset.Parse(fields[StartTimePos]);
-                            DateTimeOffset StopTime = DateTimeOffset.Parse(fields[StopTimePos]);
-                            TimeSpan ts = StopTime.Subtract(StartTime);
 
-                            // Keep track of this value for reindexing purposes.
-                            // We'll only want to reindex from the earliest imported
-                            // entry forward, and not the entire file
-                            if (StartTime.CompareTo(EarliestImportedEntryDate) < 0) {
-                                EarliestImportedEntryDate = StartTime;
+                            // Quick sanity check: did we get our required columns?
+                            if ((StartTimePos == -1) || (StopTimePos == -1)) {
+                                throw new Exception("Both StartTime and StopTime columns must exist.");
                             }
-
-                            // Create the Journal Entry
+                        } else {
+                            // Instantiate a new JournalEntry object
                             Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
-                            JournalEntry.StartTime = StartTime;
-                            JournalEntry.StopTime = StopTime;
-                            JournalEntry.Seconds = (long)ts.TotalSeconds;
-                            JournalEntry.Memo = fields[MemoPos];
-                            JournalEntry.ProjectId = Convert.ToInt32(fields[ProjectPos]);
-                            JournalEntry.ActivityId = Convert.ToInt32(fields[ActivityPos]);
-                            JournalEntry.LocationId = Convert.ToInt32(fields[LocationPos]);
-                            JournalEntry.CategoryId = Convert.ToInt32(fields[CategoryPos]);
-                            JournalEntry.IsLocked = false;
-                            if (JournalEntry.Create()) {
-                                Console.AppendText(
-                                    "Imported " + JournalEntry.JournalId.ToString() + 
-                                    " for CSV entry " + StartTime.ToString(Common.UTC_DATETIME_FORMAT) + 
-                                    "\t" + JournalEntry.Memo + "\n");
-                            } else {
-                                throw new Exception("There was an error creating the journal entry.");
+
+                            // StartTime is our key
+                            DateTimeOffset StartTime = DateTimeOffset.Parse(Fields[StartTimePos]);
+
+                            if (CsvRowExists(StartTime)) {
+                                Message = String.Format("Row {0}. Journal entry already exists: {1}\n",
+                                    RowNo, StartTime.ToString(Common.UTC_DATETIME_FORMAT));
+                                Console.AppendText(Message);
+                                DuplicateRows++;
+                            }
+                            else {
+                                // If StartTime is okay, continue
+
+                                DateTimeOffset StopTime = DateTimeOffset.Parse(Fields[StopTimePos]);
+                                TimeSpan ts = StopTime.Subtract(StartTime);
+
+                                // Keep track of this value for reindexing purposes.
+                                // We'll only want to reindex from the earliest imported
+                                // entry forward, and not the entire file
+                                if (StartTime.CompareTo(EarliestImportedEntryDate) < 0) {
+                                    EarliestImportedEntryDate = StartTime;
+                                }
+
+                                JournalEntry.StartTime = StartTime;
+                                JournalEntry.StopTime = StopTime;
+                                JournalEntry.Seconds = (long)ts.TotalSeconds;
+
+                                JournalEntry.Memo = MemoPos == -1 ? "" : Fields[MemoPos];
+
+                                JournalEntry.ProjectId = DetermineDimension(Timekeeper.Dimension.Project, ProjectIdPos, ProjectPos, Fields, ref ProjectsCreated);
+                                JournalEntry.ActivityId = DetermineDimension(Timekeeper.Dimension.Activity, ActivityIdPos, ActivityPos, Fields, ref ActivitiesCreated);
+                                JournalEntry.LocationId = DetermineDimension(Timekeeper.Dimension.Location, LocationIdPos, LocationPos, Fields, ref LocationsCreated);
+                                JournalEntry.CategoryId = DetermineDimension(Timekeeper.Dimension.Category, CategoryIdPos, CategoryPos, Fields, ref CategoriesCreated);
+
+                                JournalEntry.IsLocked = false;
+
+                                string ValidMessage = CsvRowIsValid(JournalEntry);
+
+                                if (ValidMessage.Length == 0) {
+                                    if (JournalEntry.Create()) {
+                                        Message = String.Format("Row {0}. Imported CSV entry as TKID {1}.\n",
+                                            RowNo, JournalEntry.JournalId);
+                                        Console.AppendText(Message);
+                                        ImportedRows++;
+                                    } else {
+                                        Message = String.Format("Row {0}. Error creating CSV entry.\n",
+                                            RowNo);
+                                        Console.AppendText(Message);
+                                        ErrorRows++;
+                                    }
+                                } else {
+                                    Message = String.Format("Row {0}. Invalid CSV entry: {1}\n",
+                                        RowNo, ValidMessage);
+                                    Console.AppendText(Message);
+                                    InvalidRows++;
+                                }
                             }
                         }
 
@@ -240,6 +301,9 @@ namespace Timekeeper.Classes
                         ImportProgress.Value = RowNo;
                     }
                 }
+
+                // Correct row number
+                RowNo--;
 
                 // Now reindex the Journal table
                 Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
@@ -249,14 +313,210 @@ namespace Timekeeper.Classes
                 Imported = true;
             }
             catch (Exception x) {
-                string Message = "Error on row " + RowNo.ToString() + ": " + x.Message;
-                Console.AppendText(Message + "\n");
-                Common.Warn(Message);
+                Message = String.Format("Row {0}. Exception caught: {1}.\n",
+                    RowNo, x.Message);
+                Console.AppendText(Message);
+
+                //Common.Warn(Message);
                 Timekeeper.Exception(x);
+
+                ExceptionsCaught++;
             }
+
+            // Close up bar (in case of errors or whatever)
+            ImportProgress.Value = ImportProgress.Maximum;
+
+            // Write stats to console
+            Console.AppendText("\nImport Stats:\n\n");
+            Console.AppendText("CSV rows read.......: " + RowNo.ToString() + "\n");
+            Console.AppendText("Duplicate rows......: " + DuplicateRows.ToString() + "\n");
+            Console.AppendText("Invalid rows........: " + InvalidRows.ToString() + "\n");
+            Console.AppendText("Error rows..........: " + ErrorRows.ToString() + "\n");
+            Console.AppendText("Exceptions caught...: " + ExceptionsCaught.ToString() + "\n");
+            Console.AppendText("Projects created....: " + ProjectsCreated.ToString() + "\n");
+            Console.AppendText("Activities created..: " + ActivitiesCreated.ToString() + "\n");
+            Console.AppendText("Locations created...: " + LocationsCreated.ToString() + "\n");
+            Console.AppendText("Categories created..: " + CategoriesCreated.ToString() + "\n\n");
+            Console.AppendText("Rows imported.......: " + ImportedRows.ToString() + "\n");
+
+            Message = String.Format("\nImport completed at {0}.\n", Common.Now());
+            Console.AppendText(Message);
 
             return Imported;
         }
+
+        private bool CsvRowExists(DateTimeOffset StartTime)
+        {
+            Classes.JournalEntryCollection JournalEntryCollection = new Classes.JournalEntryCollection();
+            if (JournalEntryCollection.Exists(StartTime)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        private string CsvRowIsValid(Classes.JournalEntry JournalEntry)
+        {
+            string Message = "";
+
+            if (JournalEntry.Seconds < 0) {
+                Message += "Stop time cannot be before start time. ";
+            }
+
+            if (FoundProjects.ContainsKey(JournalEntry.ProjectId)) {
+                FoundProjects[JournalEntry.ProjectId]++;
+            } else {
+                FoundProjects.Add(JournalEntry.ProjectId, 1);
+                Classes.Project Project = new Classes.Project(JournalEntry.ProjectId);
+                if (!Project.Exists()) {
+                    Message += "ProjectId " + JournalEntry.ProjectId.ToString() + " could not be found. ";
+                }
+            }
+
+            if (FoundActivities.ContainsKey(JournalEntry.ActivityId)) {
+                FoundActivities[JournalEntry.ActivityId]++;
+            } else {
+                FoundActivities.Add(JournalEntry.ActivityId, 1);
+                Classes.Activity Activity = new Classes.Activity(JournalEntry.ActivityId);
+                if (!Activity.Exists()) {
+                    Message += "ActivityId " + JournalEntry.ActivityId.ToString() + " could not be found. ";
+                }
+            }
+
+            if (FoundLocations.ContainsKey(JournalEntry.LocationId)) {
+                FoundLocations[JournalEntry.LocationId]++;
+            } else {
+                FoundLocations.Add(JournalEntry.LocationId, 1);
+                Classes.Location Location = new Classes.Location(JournalEntry.LocationId);
+                if (!Location.Exists(Location.Name)) {
+                    Message += "LocationId " + JournalEntry.LocationId.ToString() + " could not be found. ";
+                }
+            }
+
+            if (FoundCategories.ContainsKey(JournalEntry.CategoryId)) {
+                FoundCategories[JournalEntry.CategoryId]++;
+            } else {
+                FoundCategories.Add(JournalEntry.CategoryId, 1);
+                Classes.Category Category = new Classes.Category(JournalEntry.CategoryId);
+                if (!Category.Exists(Category.Name)) {
+                    Message += "CategoryId " + JournalEntry.CategoryId.ToString() + " could not be found. ";
+                }
+            }
+
+            return Message;
+        }
+
+        private long DetermineDimension(Timekeeper.Dimension dimension, int idPos, int namePos, string[] fields, ref int createdCount)
+        {
+            long returnId = -1;
+
+            try {
+                if (idPos == -1)
+                    if (namePos == -1)
+                        returnId = 1;
+                    else
+                        if ((dimension == Timekeeper.Dimension.Project) || (dimension == Timekeeper.Dimension.Activity))
+                            returnId = CheckName_Tree(dimension, namePos, fields, ref createdCount);
+                        else
+                            returnId = CheckName_List(dimension, namePos, fields, ref createdCount);
+                else
+                    returnId = Convert.ToInt32(fields[idPos]);
+                    /*
+                    if ((dimension == Timekeeper.Dimension.Project) || (dimension == Timekeeper.Dimension.Activity))
+                        returnId = CheckId_Tree(dimension, fields[idPos]);
+                    else
+                        returnId = CheckId_List(dimension, fields[idPos]);
+                    */
+            }
+            catch (Exception x) {
+                throw new Exception("Could not read " + dimension.ToString() + ". " + x.Message);
+            }
+
+            return returnId;
+        }
+
+        private long CheckName_List(Timekeeper.Dimension dimension, int namePos, string[] fields, ref int createdCount)
+        {
+            long returnId = 0;
+
+            Classes.ListAttribute Item = new Classes.ListAttribute(dimension.ToString(), fields[namePos]);
+            if (Item.Id == 0) {
+                Item.Name = fields[namePos];
+                Item.Description = "Item created automatically during Import process.";
+                Item.Create();
+                if (Item.Id > 0) {
+                    string Message = String.Format("  Created {0} \"{1}\"\n", dimension, Item.Name);
+                    Console.AppendText(Message);
+                    createdCount++;
+                }
+            }
+            if (Item.Id == 0) {
+                throw new Exception("The non-existent " + dimension.ToString() + " \"" + Item.Name + "\" could not be created.");
+            } else {
+                returnId = Item.Id;
+            }
+
+            return returnId;
+        }
+
+        private long CheckName_Tree(Timekeeper.Dimension dimension, int namePos, string[] fields, ref int createdCount)
+        {
+            long returnId = 0;
+
+            Classes.TreeAttribute Item = new Classes.TreeAttribute(fields[namePos], dimension.ToString(), dimension.ToString() + "Id");
+            if (Item.ItemId == 0) {
+                Item.Name = fields[namePos];
+                Item.Description = "Item created automatically during Import process.";
+                //Item.Dimension = dimension;
+                Item.IsFolder = false;
+                Item.ParentId = 0;
+                Item.Create();
+                if (Item.ItemId > 0) {
+                    string Message = String.Format("  Created {0} \"{1}\"\n", dimension, Item.Name);
+                    Console.AppendText(Message);
+                    createdCount++;
+                }
+            }
+            if (Item.ItemId == 0) {
+                throw new Exception("The non-existent " + dimension.ToString() + " \"" + Item.Name + "\" could not be created.");
+            } else {
+                returnId = Item.ItemId;
+            }
+
+            return returnId;
+        }
+
+        // Actually, not using the following two any more
+
+        private long CheckId_List(Timekeeper.Dimension dimension, string idValue)
+        {
+            long returnId = Convert.ToInt32(idValue);
+
+            Classes.ListAttribute Item = new Classes.ListAttribute(dimension.ToString(), returnId);
+            if (Item.Id > 0) {
+                // All is well
+            } else {
+                throw new Exception("The specified " + dimension.ToString() + " " + idValue + " does not exist.");
+            }
+
+            return returnId;
+        }
+
+        private long CheckId_Tree(Timekeeper.Dimension dimension, string idValue)
+        {
+            long returnId = Convert.ToInt32(idValue);
+
+            Classes.TreeAttribute Item = new Classes.TreeAttribute(returnId, dimension.ToString(), dimension.ToString() + "Id");
+            if (Item.Exists()) {
+                // All is well
+            } else {
+                throw new Exception("The specified " + dimension.ToString() + " " + idValue + " does not exist.");
+            }
+
+            return returnId;
+        }
+
+        //----------------------------------------------------------------------
 
         //----------------------------------------------------------------------
         // File Readers
