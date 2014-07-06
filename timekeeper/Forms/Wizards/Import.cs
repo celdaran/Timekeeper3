@@ -52,6 +52,8 @@ namespace Timekeeper.Forms.Wizards
             Widgets.AddTab(Tab5);
 
             Widgets.GoToFirstTab();
+
+            ImportDataTypeList.SelectedIndex = 0;
         }
 
         //----------------------------------------------------------------------
@@ -140,6 +142,11 @@ namespace Timekeeper.Forms.Wizards
             BackButton.Enabled = false;
             NextButton.Visible = false; // FIXME: why is this still showing?
 
+            EndLabel.Text = "Importing...";
+
+            // Clear pending events before importing
+            Application.DoEvents();
+
             Classes.Import Importer = new Classes.Import(ImportFileName.Text);
             Importer.Console = Console;
             Importer.ImportProgress = ImportProgress;
@@ -159,6 +166,8 @@ namespace Timekeeper.Forms.Wizards
 
             CloseButton.Visible = true;
             CloseButton.Left = CancelDialogButton.Left;
+
+            EndLabel.Text = "Import complete.";
         }
 
         //----------------------------------------------------------------------

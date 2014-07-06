@@ -418,8 +418,12 @@ namespace Timekeeper
                 tableName, WhereClause);
             Row Row = Database.SelectRow(Query);
 
-            if (Row["HighestSortOrderNo"] != null) {
-                return Row["HighestSortOrderNo"] + 1;
+            if (Row.ContainsKey("HighestSortOrderNo")) {
+                if (Row["HighestSortOrderNo"] != null) {
+                    return Row["HighestSortOrderNo"] + 1;
+                } else {
+                    return 1;
+                }
             } else {
                 return 1;
             }

@@ -80,7 +80,7 @@ namespace Timekeeper.Classes
         public List<long> ImpliedActivities { get; set; }
 
         public bool Changed { get; set; }
-        public Timekeeper.Dimension FilterMergeType { get; set; }
+        public Timekeeper.Dimension? FilterMergeType { get; set; }
         public bool SuppressTableAlias { get; set; }
 
         //----------------------------------------------------------------------
