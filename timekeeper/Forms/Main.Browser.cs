@@ -389,15 +389,14 @@ namespace Timekeeper.Forms
 
             // And any other relevant values
             ToolbarJournalId.Text = entry.JournalId > 0 ? entry.JournalId.ToString() : "";
-            ToolbarJournalIndex.Text = entry.JournalIndex > 0 ? entry.JournalIndex.ToString() : "";
         }
 
         //----------------------------------------------------------------------
 
-        public void Browser_GotoEntry(long journalIndex)
+        public void Browser_GotoEntry(long journalId)
         {
             try {
-                if (journalIndex == 0) {
+                if (journalId == 0) {
                     // Degenerate case
                     Browser_DisableNavigation();
                     return;
@@ -407,11 +406,11 @@ namespace Timekeeper.Forms
                     Browser_FormToEntry(ref newBrowserEntry, 0);
 
                 Browser_SaveRow(false);
-                browserEntry.LoadByNewIndex(journalIndex);
-                long LastJournalIndex = priorLoadedBrowserEntry.JournalIndex;
+                browserEntry.LoadByNewIndex(journalId);
+                long LastJournalId = priorLoadedBrowserEntry.JournalId;
                 priorLoadedBrowserEntry = browserEntry.Copy();
 
-                if (browserEntry.JournalIndex > 0) {
+                if (browserEntry.JournalId > 0) {
 
                     Browser_DisplayRow();
 
@@ -442,7 +441,7 @@ namespace Timekeeper.Forms
                         Browser_EnableLast(true);
                     }
                 } else {
-                    Common.Warn("browserEntry.JournalIndex <= 0");
+                    Common.Warn("browserEntry.JournalId <= 0");
 
                     /* wait, what is this code? When is the JournalId
                        or JournalIndex ever going to be zero?
@@ -465,32 +464,32 @@ namespace Timekeeper.Forms
 
         private void Browser_GotoFirstEntry()
         {
-            browserEntry.SetFirstIndex();
-            Browser_GotoEntry(browserEntry.JournalIndex);
+            browserEntry.SetFirstId();
+            Browser_GotoEntry(browserEntry.JournalId);
         }
 
         //---------------------------------------------------------------------
 
         private void Browser_GotoLastEntry()
         {
-            browserEntry.SetLastIndex();
-            Browser_GotoEntry(browserEntry.JournalIndex);
+            browserEntry.SetLastId();
+            Browser_GotoEntry(browserEntry.JournalId);
         }
 
         //---------------------------------------------------------------------
 
         private void Browser_GotoNextEntry()
         {
-            browserEntry.SetNextIndex();
-            Browser_GotoEntry(browserEntry.JournalIndex);
+            browserEntry.SetNextId();
+            Browser_GotoEntry(browserEntry.JournalId);
         }
 
         //---------------------------------------------------------------------
 
         private void Browser_GotoPreviousEntry()
         {
-            browserEntry.SetPreviousIndex();
-            Browser_GotoEntry(browserEntry.JournalIndex);
+            browserEntry.SetPreviousId();
+            Browser_GotoEntry(browserEntry.JournalId);
         }
 
         //---------------------------------------------------------------------
@@ -607,13 +606,6 @@ namespace Timekeeper.Forms
             Timekeeper.Warn(Message);
             */
             browserEntry.Save();
-
-            // Once the entry has been saved, we may need to reindex
-            if (browserEntry.StartTime != priorLoadedBrowserEntry.StartTime) {
-                Entries.Reindex(browserEntry.StartTime);
-                browserEntry.RefreshIndex();
-                Timekeeper.Info("Reindexed Journal table starting at " + browserEntry.StartTime.ToString(Common.DATETIME_FORMAT));
-            }
 
             // And disable reverting, just in case
             Browser_EnableRevert(false);

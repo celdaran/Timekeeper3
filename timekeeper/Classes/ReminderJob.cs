@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -155,7 +155,7 @@ namespace Timekeeper.Classes
                    -(int)scheduledEvent.Reminder.TimeAmount);
                 scheduledEvent.Event.Save();
 
-                Timekeeper.Debug("context.NextFireItemUtc: " + NextFire.Value.DateTime.ToString(Common.DATETIME_FORMAT));
+                Timekeeper.Debug("context.NextFireItemUtc: " + NextFire.Value.DateTime.ToString(Common.UTC_DATETIME_FORMAT));
             }
 
             //------------------------------------

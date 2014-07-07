@@ -134,10 +134,6 @@ namespace Timekeeper.Classes
                         }
                         LineNo++;
                     }
-
-                    // Now reindex the Journal table
-                    Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
-                    Entries.Reindex(EarliestImportedEntryDate);
                 }
             }
             catch (Exception x)
@@ -310,10 +306,6 @@ namespace Timekeeper.Classes
 
                 // Correct row number
                 RowNo--;
-
-                // Now reindex the Journal table
-                Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
-                Entries.Reindex(EarliestImportedEntryDate);
 
                 // If we made it this far, we're good.
                 Imported = true;

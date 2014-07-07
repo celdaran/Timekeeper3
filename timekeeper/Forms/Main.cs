@@ -130,12 +130,6 @@ namespace Timekeeper.Forms
             OpenForms.Add(DialogBox);
         }
 
-        // File | Utilities | Reindex
-        private void MenuFileUtilitiesReindex_Click(object sender, EventArgs e)
-        {
-            Action_Reindex();
-        }
-
         // File | Exit
         private void MenuFileExit_Click(object sender, EventArgs e)
         {
@@ -368,7 +362,6 @@ namespace Timekeeper.Forms
         private void MenuToolbarBrowserNew_Click(object sender, EventArgs e)
         {
             Browser_SetupForStarting();
-            TimedEntry.AdvanceIndex();
         }
 
         // Toolbar Functions | Browser | Close Start Gap

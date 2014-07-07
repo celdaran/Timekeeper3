@@ -244,10 +244,10 @@ namespace Timekeeper.Forms
         {
             if (e.RowIndex >= 0) {
                 DataGridViewRow Row = JournalResultsGrid.Rows[e.RowIndex];
-                long JournalIndex = Convert.ToInt64(Row.Cells["JournalIndex"].Value);
+                long JournalId = Convert.ToInt64(Row.Cells["JournalId"].Value);
                 // Browser_GotoEntry() is a callback. The call you see here is
                 // not the same as the call you see below.
-                this.Browser_GotoEntry(JournalIndex);
+                this.Browser_GotoEntry(JournalId);
             }
         }
 
@@ -453,7 +453,6 @@ namespace Timekeeper.Forms
 
                 JournalResultsGrid.Rows.Add(
                     JournalEntry["JournalId"],
-                    JournalEntry["JournalIndex"],
                     JournalEntry["ProjectId"],
                     JournalEntry["ProjectName"],
                     JournalEntry["ActivityId"],

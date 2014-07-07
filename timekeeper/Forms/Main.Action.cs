@@ -728,21 +728,6 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
-        private void Action_Reindex()
-        {
-            try {
-                Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
-                Entries.Reindex();
-                Common.Info("Journal entries have been successfully reindexed.");
-            }
-            catch (Exception x) {
-                Common.Warn(x.Message);
-                Timekeeper.Exception(x);
-            }
-        }
-
-        //----------------------------------------------------------------------
-
         private void Action_Schedule()
         {
             try
@@ -1284,7 +1269,6 @@ namespace Timekeeper.Forms
 
             // FIXME: stopping the timer != opening the browser
             Browser_SetupForStarting();
-            TimedEntry.AdvanceIndex();
 
             // In case any keyboard shortcuts were set while the timer
             // was running, take care of those now.
@@ -1343,12 +1327,8 @@ namespace Timekeeper.Forms
                     }
                 }
 
-                // Reindex the Journal table
-                Entries.Reindex(browserEntry.StartTime);
-
                 // Copy the last-created split entry back to the browser
                 browserEntry = SplitEntry.Copy();
-                browserEntry.RefreshIndex();
                 Browser_EntryToForm(browserEntry);
             }
             catch (Exception x) {

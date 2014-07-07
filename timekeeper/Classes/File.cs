@@ -26,7 +26,7 @@ namespace Timekeeper
         //          Note: this doesn't necessarily have to match the *current*
         //          version of Timekeeper.
         //   BUILD: Increments whenever the schema changes in a way that 
-        //          would case code incompatabilities. This would mean a new 
+        //          would cause code incompatabilities. This would mean a new 
         //          table, a new column, or an object rename.
         //   REV'N: Increments whenever the schema changes in a way that
         //          does NOT cause any code incompatabilities. This would be
@@ -38,7 +38,7 @@ namespace Timekeeper
         // (nor were the DDL statements stored as resources or under version 
         // control).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.7.3";
+        public const string SCHEMA_VERSION = "3.0.8.0";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;

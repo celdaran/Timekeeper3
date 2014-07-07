@@ -29,17 +29,16 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DatabaseCheckResultsGrid = new System.Windows.Forms.DataGridView();
-            this.JournalIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Issue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StopTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.StartButton = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.StatusBox = new System.Windows.Forms.ToolStripStatusLabel();
+            this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Issue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StopTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DatabaseCheckResultsGrid)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -56,7 +55,6 @@
             this.DatabaseCheckResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.DatabaseCheckResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DatabaseCheckResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.JournalIndex,
             this.JournalId,
             this.Issue,
             this.StartTime,
@@ -71,51 +69,6 @@
             this.DatabaseCheckResultsGrid.Size = new System.Drawing.Size(774, 245);
             this.DatabaseCheckResultsGrid.TabIndex = 4;
             this.DatabaseCheckResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DatabaseCheckResultsGrid_CellDoubleClick);
-            // 
-            // JournalIndex
-            // 
-            this.JournalIndex.HeaderText = "JournalIndex";
-            this.JournalIndex.Name = "JournalIndex";
-            this.JournalIndex.ReadOnly = true;
-            this.JournalIndex.Visible = false;
-            // 
-            // JournalId
-            // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.JournalId.DefaultCellStyle = dataGridViewCellStyle1;
-            this.JournalId.HeaderText = "ID";
-            this.JournalId.MinimumWidth = 8;
-            this.JournalId.Name = "JournalId";
-            this.JournalId.ReadOnly = true;
-            this.JournalId.ToolTipText = "Internal Journal Entry Identifier";
-            this.JournalId.Width = 43;
-            // 
-            // Issue
-            // 
-            this.Issue.HeaderText = "Issue";
-            this.Issue.Name = "Issue";
-            this.Issue.ReadOnly = true;
-            this.Issue.Width = 200;
-            // 
-            // StartTime
-            // 
-            this.StartTime.HeaderText = "Start Time";
-            this.StartTime.Name = "StartTime";
-            this.StartTime.ReadOnly = true;
-            this.StartTime.Width = 120;
-            // 
-            // StopTime
-            // 
-            this.StopTime.HeaderText = "Stop Time";
-            this.StopTime.Name = "StopTime";
-            this.StopTime.ReadOnly = true;
-            this.StopTime.Width = 120;
-            // 
-            // Memo
-            // 
-            this.Memo.HeaderText = "Memo";
-            this.Memo.Name = "Memo";
-            this.Memo.ReadOnly = true;
             // 
             // toolStrip1
             // 
@@ -160,6 +113,44 @@
             this.StatusBox.Size = new System.Drawing.Size(38, 17);
             this.StatusBox.Text = "Status";
             // 
+            // JournalId
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.JournalId.DefaultCellStyle = dataGridViewCellStyle1;
+            this.JournalId.HeaderText = "ID";
+            this.JournalId.MinimumWidth = 8;
+            this.JournalId.Name = "JournalId";
+            this.JournalId.ReadOnly = true;
+            this.JournalId.ToolTipText = "Internal Journal Entry Identifier";
+            this.JournalId.Width = 43;
+            // 
+            // Issue
+            // 
+            this.Issue.HeaderText = "Issue";
+            this.Issue.Name = "Issue";
+            this.Issue.ReadOnly = true;
+            this.Issue.Width = 200;
+            // 
+            // StartTime
+            // 
+            this.StartTime.HeaderText = "Start Time";
+            this.StartTime.Name = "StartTime";
+            this.StartTime.ReadOnly = true;
+            this.StartTime.Width = 120;
+            // 
+            // StopTime
+            // 
+            this.StopTime.HeaderText = "Stop Time";
+            this.StopTime.Name = "StopTime";
+            this.StopTime.ReadOnly = true;
+            this.StopTime.Width = 120;
+            // 
+            // Memo
+            // 
+            this.Memo.HeaderText = "Memo";
+            this.Memo.Name = "Memo";
+            this.Memo.ReadOnly = true;
+            // 
             // DatabaseCheck
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -190,7 +181,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar ProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel StatusBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JournalIndex;
         private System.Windows.Forms.DataGridViewTextBoxColumn JournalId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Issue;
         private System.Windows.Forms.DataGridViewTextBoxColumn StartTime;

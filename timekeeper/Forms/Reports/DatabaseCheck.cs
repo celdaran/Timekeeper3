@@ -42,10 +42,9 @@ namespace Timekeeper.Forms.Reports
         {
             if (e.RowIndex >= 0) {
                 DataGridViewRow Row = DatabaseCheckResultsGrid.Rows[e.RowIndex];
-                long JournalIndex = Convert.ToInt64(Row.Cells["JournalIndex"].Value);
                 long JournalId = Convert.ToInt64(Row.Cells["JournalId"].Value);
                 if (JournalId > 0) {
-                    this.Browser_GotoEntry(JournalIndex);
+                    this.Browser_GotoEntry(JournalId);
                 }
             }
         }
@@ -66,7 +65,6 @@ namespace Timekeeper.Forms.Reports
                 ProgressBar.Minimum = 1;
                 ProgressBar.Maximum = EntryCount;
                 ProgressBar.Visible = true;
-                long ExpectedJournalIndex = 1;
 
                 Classes.JournalEntry PriorEntry = new Classes.JournalEntry();
                 PriorEntry.StartTime = DateTimeOffset.MinValue;
@@ -77,16 +75,16 @@ namespace Timekeeper.Forms.Reports
 
                 foreach (Row EntryRow in EntryRows)
                 {
-                    Classes.JournalEntry CurrentEntry = new Classes.JournalEntry(EntryRow["JournalIndex"]);
+                    Classes.JournalEntry CurrentEntry = new Classes.JournalEntry(EntryRow["JournalId"]);
 
                     // If JournalId is 0, we couldn't instantiate a JournalEntry
-                    // based on the known-good JournalIndex value. This means a
+                    // based on the known-good JournalId value. This means a
                     // lookup failed (perhaps a failed join) and we'll make a last-
                     // ditched attempt to look up *only* the JournalEntry row,
                     // without any joins.
 
                     if (CurrentEntry.JournalId == 0) {
-                        CurrentEntry.LoadLite(EntryRow["JournalIndex"]);
+                        CurrentEntry.LoadLite(EntryRow["JournalId"]);
                     }
 
                     // Integrity checks
@@ -97,16 +95,12 @@ namespace Timekeeper.Forms.Reports
                         CheckTimestamps(CurrentEntry);
                         CheckForOverlaps(CurrentEntry, PriorEntry);
                         CheckDuration(CurrentEntry);
-                        CheckJournalIndex(CurrentEntry, ExpectedJournalIndex);
                         CheckDimensions(CurrentEntry);
                         CheckForLocks(CurrentEntry);
                     }
 
                     // Set Prior Entry
                     PriorEntry = CurrentEntry.Copy();
-
-                    // Move to next Journal Index
-                    ExpectedJournalIndex++;
 
                     // Lastly, update progress
                     Counter++;
@@ -152,16 +146,6 @@ namespace Timekeeper.Forms.Reports
             if (currentEntry.StartTime.CompareTo(priorEntry.StopTime) < 0) {
                 this.IssueCounter++;
                 AddToGrid(currentEntry, "Start time is prior to previous row's stop time.");
-            }
-        }
-
-        //----------------------------------------------------------------------
-
-        private void CheckJournalIndex(Classes.JournalEntry currentEntry, long expectedJournalIndex)
-        {
-            if (currentEntry.JournalIndex != expectedJournalIndex) {
-                this.IssueCounter++;
-                AddToGrid(currentEntry, "Journal index " + currentEntry.JournalIndex.ToString() + " is unexpected.");
             }
         }
 
@@ -227,7 +211,6 @@ namespace Timekeeper.Forms.Reports
         private void AddToGrid(Classes.JournalEntry entry, string issueText)
         {
             DatabaseCheckResultsGrid.Rows.Add(
-                entry.JournalIndex,
                 entry.JournalId,
                 issueText,
                 entry.StartTime.ToString(Options.Advanced_DateTimeFormat),

@@ -26,7 +26,6 @@ CREATE TABLE Journal
     CategoryId              INTEGER         NULL,
 
     IsLocked                BOOLEAN     NOT NULL,
-    JournalIndex            INTEGER     NOT NULL,
 
     -- Thinking about a 'natural' flag: was this entry timed naturally? or otherwise subject to human intervention?
     
@@ -43,6 +42,5 @@ CREATE TABLE Journal
 CREATE UNIQUE INDEX idx_Journal_JournalId           ON Journal(JournalId);
 CREATE UNIQUE INDEX idx_Journal_JournalGuid         ON Journal(JournalGuid);
 CREATE UNIQUE INDEX idx_Journal_StartTime           ON Journal(StartTime);
-CREATE UNIQUE INDEX idx_Journal_JournalIndex        ON Journal(JournalIndex);
 CREATE        INDEX idx_Journal_ProjectId           ON Journal(ProjectId);
 CREATE        INDEX idx_Journal_ActivityId          ON Journal(ActivityId);

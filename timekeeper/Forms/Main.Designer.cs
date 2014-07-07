@@ -43,7 +43,6 @@ namespace Timekeeper.Forms
             this.MenuFileUtilitiesExport = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFileUtilitiesBackup = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFileUtilitiesCheck = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuFileUtilitiesReindex = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFileSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuAction = new System.Windows.Forms.ToolStripMenuItem();
@@ -186,7 +185,6 @@ namespace Timekeeper.Forms
             this.ToolbarLastEntry = new System.Windows.Forms.ToolStripButton();
             this.ToolbarNewEntry = new System.Windows.Forms.ToolStripButton();
             this.ToolbarJournalId = new System.Windows.Forms.ToolStripLabel();
-            this.ToolbarJournalIndex = new System.Windows.Forms.ToolStripLabel();
             this.ToolbarSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolbarSplitEntry = new System.Windows.Forms.ToolStripSplitButton();
             this.ToolbarSplitEntry2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -299,8 +297,7 @@ namespace Timekeeper.Forms
             this.MenuFileUtilitiesImport,
             this.MenuFileUtilitiesExport,
             this.MenuFileUtilitiesBackup,
-            this.MenuFileUtilitiesCheck,
-            this.MenuFileUtilitiesReindex});
+            this.MenuFileUtilitiesCheck});
             this.MenuFileUtilities.Name = "MenuFileUtilities";
             this.MenuFileUtilities.Size = new System.Drawing.Size(152, 22);
             this.MenuFileUtilities.Text = "Utilities";
@@ -308,7 +305,7 @@ namespace Timekeeper.Forms
             // MenuFileUtilitiesImport
             // 
             this.MenuFileUtilitiesImport.Name = "MenuFileUtilitiesImport";
-            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(120, 22);
+            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(152, 22);
             this.MenuFileUtilitiesImport.Text = "Import...";
             this.MenuFileUtilitiesImport.Click += new System.EventHandler(this.MenuFileUtilitiesImport_Click);
             // 
@@ -316,29 +313,22 @@ namespace Timekeeper.Forms
             // 
             this.MenuFileUtilitiesExport.Enabled = false;
             this.MenuFileUtilitiesExport.Name = "MenuFileUtilitiesExport";
-            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(120, 22);
+            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(152, 22);
             this.MenuFileUtilitiesExport.Text = "Export...";
             // 
             // MenuFileUtilitiesBackup
             // 
             this.MenuFileUtilitiesBackup.Enabled = false;
             this.MenuFileUtilitiesBackup.Name = "MenuFileUtilitiesBackup";
-            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(120, 22);
+            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(152, 22);
             this.MenuFileUtilitiesBackup.Text = "Backup...";
             // 
             // MenuFileUtilitiesCheck
             // 
             this.MenuFileUtilitiesCheck.Name = "MenuFileUtilitiesCheck";
-            this.MenuFileUtilitiesCheck.Size = new System.Drawing.Size(120, 22);
+            this.MenuFileUtilitiesCheck.Size = new System.Drawing.Size(152, 22);
             this.MenuFileUtilitiesCheck.Text = "Check...";
             this.MenuFileUtilitiesCheck.Click += new System.EventHandler(this.MenuFileUtilitiesCheck_Click);
-            // 
-            // MenuFileUtilitiesReindex
-            // 
-            this.MenuFileUtilitiesReindex.Name = "MenuFileUtilitiesReindex";
-            this.MenuFileUtilitiesReindex.Size = new System.Drawing.Size(120, 22);
-            this.MenuFileUtilitiesReindex.Text = "Reindex";
-            this.MenuFileUtilitiesReindex.Click += new System.EventHandler(this.MenuFileUtilitiesReindex_Click);
             // 
             // MenuFileSep2
             // 
@@ -1514,7 +1504,6 @@ namespace Timekeeper.Forms
             this.ToolbarLastEntry,
             this.ToolbarNewEntry,
             this.ToolbarJournalId,
-            this.ToolbarJournalIndex,
             this.ToolbarSep2,
             this.ToolbarSplitEntry,
             this.ToolbarSep3,
@@ -1621,13 +1610,6 @@ namespace Timekeeper.Forms
             this.ToolbarJournalId.Size = new System.Drawing.Size(43, 22);
             this.ToolbarJournalId.Text = "523455";
             this.ToolbarJournalId.ToolTipText = "Timekeeper Entry Number";
-            // 
-            // ToolbarJournalIndex
-            // 
-            this.ToolbarJournalIndex.ForeColor = System.Drawing.Color.Red;
-            this.ToolbarJournalIndex.Name = "ToolbarJournalIndex";
-            this.ToolbarJournalIndex.Size = new System.Drawing.Size(31, 22);
-            this.ToolbarJournalIndex.Text = "1111";
             // 
             // ToolbarSep2
             // 
@@ -1927,7 +1909,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserSplitEntry2;
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserSplitEntry3;
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserSplitEntry4;
-        private System.Windows.Forms.ToolStripLabel ToolbarJournalIndex;
         private System.Windows.Forms.ToolStripMenuItem MenuActionManageLocations;
         private System.Windows.Forms.ToolStripMenuItem MenuActionManageCategories;
         private System.Windows.Forms.ToolStripMenuItem MenuToolTodo;
@@ -1941,7 +1922,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTrayCountdown;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTrayStopwatch;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTrayExit;
-        private System.Windows.Forms.ToolStripMenuItem MenuFileUtilitiesReindex;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarDebug1;
         private System.Windows.Forms.ToolStripMenuItem MenuReportTodo;
         private System.Windows.Forms.ToolStripMenuItem MenuReportEvents;

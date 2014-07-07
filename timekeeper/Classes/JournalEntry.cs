@@ -14,8 +14,6 @@ namespace Timekeeper.Classes
 
         private DBI Database;
 
-        private long _NextJournalIndex;
-
         private enum Mode { Insert, Update };
 
         //---------------------------------------------------------------------
@@ -38,8 +36,6 @@ namespace Timekeeper.Classes
         public long CategoryId { get; set; }
         public bool IsLocked { get; set; }
 
-        public long JournalIndex { get; private set; }
-
         public string ProjectName { get; set; }
         public string ActivityName { get; set; }
         public string LocationName { get; set; }
@@ -57,35 +53,11 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public JournalEntry(long journalIndex) : this()
+        public JournalEntry(long journalId) : this()
         {
-            this.Load(journalIndex);
+            this.Load(journalId);
         }
 
-        //---------------------------------------------------------------------
-        // "External" Method (I'll explain later)
-        //---------------------------------------------------------------------
-
-        private long NextJournalIndex
-        {
-            get {
-                // Now, every time NextJournalIndex is read, we go back
-                // to the source and find out what it's *supposed* to be,
-                // and not just what it *happened* to be when this object
-                // was first instantiated.
-                Row Journal = new Row();
-                Journal = Database.SelectRow("SELECT MAX(JournalIndex) AS HighestJournalIndex FROM Journal");
-                if (Journal["HighestJournalIndex"] != null) {
-                    _NextJournalIndex = Journal["HighestJournalIndex"] + 1;
-                } else {
-                    // This is the first journal entry in a new database
-                    _NextJournalIndex = 1;
-                }
-                return _NextJournalIndex; 
-            }
-
-            set { _NextJournalIndex = value; }
-        }
         //---------------------------------------------------------------------
         // Primary Methods
         //---------------------------------------------------------------------
@@ -101,17 +73,13 @@ namespace Timekeeper.Classes
                 }
 
                 // Update bidirectional tracking
-                Row row = new Row();
-                row["LastProjectId"] = this.ProjectId;
-                Database.Update("Activity", row, "ActivityId", this.ActivityId);
+                Row JournalEntry = new Row();
+                JournalEntry["LastProjectId"] = this.ProjectId;
+                Database.Update("Activity", JournalEntry, "ActivityId", this.ActivityId);
 
-                row = new Row();
-                row["LastActivityId"] = this.ActivityId;
-                Database.Update("Project", row, "ProjectId", this.ProjectId);
-
-                // Update JournalIndex and NextJournalIndex
-                this.JournalIndex = this.NextJournalIndex;
-                //this.NextJournalIndex++;
+                JournalEntry = new Row();
+                JournalEntry["LastActivityId"] = this.ActivityId;
+                Database.Update("Project", JournalEntry, "ProjectId", this.ProjectId);
 
                 return true;
             }
@@ -126,9 +94,6 @@ namespace Timekeeper.Classes
         public JournalEntry Copy()
         {
             JournalEntry copy = new JournalEntry();
-
-            // copy properties
-            //copy.NextJournalIndex = this.NextJournalIndex;
 
             // copy attributes
             copy.JournalId = this.JournalId;
@@ -146,8 +111,6 @@ namespace Timekeeper.Classes
             copy.LocationId = this.LocationId;
             copy.CategoryId = this.CategoryId;
             copy.IsLocked = this.IsLocked;
-
-            copy.JournalIndex = this.JournalIndex;
 
             copy.ActivityName = this.ActivityName;
             copy.ProjectName = this.ProjectName;
@@ -187,15 +150,15 @@ namespace Timekeeper.Classes
 
         public void Load()
         {
-            Load(this.JournalIndex);
+            Load(this.JournalId);
         }
 
         //---------------------------------------------------------------------
 
-        public void Load(long journalIndex)
+        public void Load(long journalId)
         {
             try {
-                if ((journalIndex == 0) || (journalIndex == NextJournalIndex)) {
+                if (journalId == 0) {
                     SetAttributes();
                 } else {
                     string Query = @"
@@ -210,14 +173,13 @@ namespace Timekeeper.Classes
                             j.LocationId, l.Name as LocationName,
                             j.CategoryId, c.Name as CategoryName,
                             j.IsLocked,
-                            j.JournalIndex,
                             j.CreateTime, j.ModifyTime, j.JournalGuid
                         from Journal j
                         join Activity a on a.ActivityId  = j.ActivityId
                         join Project p  on p.ProjectId   = j.ProjectId
                         left outer join Location l on l.LocationId  = j.LocationId
                         left outer join Category c on c.CategoryId = j.CategoryId
-                        where j.JournalIndex = " + journalIndex;
+                        where j.JournalId = " + journalId;
                     SetAttributes(Database.SelectRow(Query));
                 }
             }
@@ -229,9 +191,10 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void LoadLite(long journalIndex)
+        public void LoadLite(long journalId)
         {
-            // FIXME: Experiment
+            // FIXME: Experiment. Loading a Journal row without any joins.
+            // At the moment, only used by the DatabaseCheck report.
             try {
                 string Query = @"
                     select
@@ -245,33 +208,14 @@ namespace Timekeeper.Classes
                         j.LocationId, 'No Locaiton' as LocationName,
                         j.CategoryId, 'No Category' as CategoryName,
                         j.IsLocked,
-                        j.JournalIndex,
                         j.CreateTime, j.ModifyTime, j.JournalGuid
                     from Journal j
-                    where j.JournalIndex = " + journalIndex;
+                    where j.JournalId = " + journalId;
                 SetAttributes(Database.SelectRow(Query));
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
                 SetAttributes();
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        public void RefreshIndex()
-        {
-            try {
-                // This method refreshes the JournalIndex value from the database.
-                // It's intended to be used on an already-instantiated entry after
-                // another part of the process has reindexed the table.
-                Row RefreshedRow = Database.SelectRow("SELECT JournalIndex FROM Journal WHERE JournalId = " + this.JournalId);
-                if (RefreshedRow["JournalIndex"] != null) {
-                    this.JournalIndex = Convert.ToInt64(RefreshedRow["JournalIndex"]);
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
             }
         }
 
@@ -302,48 +246,113 @@ namespace Timekeeper.Classes
         }
 
         //---------------------------------------------------------------------
-        // Browsing Helper Methods
+        // Navigational Getters
         //---------------------------------------------------------------------
 
-        public void AdvanceIndex()
+        private long GetFirstId()
         {
-            // Semantic synonym
-            this.SetNextIndex();
+            string Query = String.Format(@"
+                SELECT JournalId
+                FROM Journal
+                ORDER BY StartTime ASC
+                LIMIT 1");
+            return GetJournalId(Query);
         }
 
         //---------------------------------------------------------------------
 
-        public void SetFirstIndex()
+        private long GetLastId()
         {
-            this.JournalIndex = 1;
+            string Query = String.Format(@"
+                SELECT JournalId
+                FROM Journal
+                ORDER BY StartTime DESC
+                LIMIT 1");
+            return GetJournalId(Query);
         }
 
         //---------------------------------------------------------------------
 
-        public void SetPreviousIndex()
+        private long GetPrevId()
         {
-            this.JournalIndex--;
+            // select JournalId from Journal where StartTime < '2015-07-07T08:48:28-05:00' order by StartTime desc limit 1;
+            string Query = String.Format(@"
+                SELECT JournalId, StartTime 
+                FROM Journal
+                WHERE StartTime < '{0}'
+                ORDER BY StartTime DESC
+                LIMIT 1", this.StartTime.ToString(Common.UTC_DATETIME_FORMAT));
+            return GetJournalId(Query);
         }
 
         //---------------------------------------------------------------------
 
-        public void SetNextIndex()
+        private long GetNextId()
         {
-            this.JournalIndex++;
+            // select JournalId from Journal where StartTime >  '2014-07-07T08:48:28-05:00' order by StartTime asc limit 1;
+            string Query = String.Format(@"
+                SELECT JournalId, StartTime 
+                FROM Journal
+                WHERE StartTime > '{0}'
+                ORDER BY StartTime ASC
+                LIMIT 1", this.StartTime.ToString(Common.UTC_DATETIME_FORMAT));
+            return GetJournalId(Query);
         }
 
         //---------------------------------------------------------------------
 
-        public void SetLastIndex()
+        private long GetJournalId(string query)
         {
-            this.JournalIndex = NextJournalIndex - 1;
+            long JournalId = 0;
+
+            try {
+                Row JournalEntry = Database.SelectRow(query);
+                JournalId = Convert.ToInt64(JournalEntry["JournalId"]);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+
+            return JournalId;
+        }
+
+        //---------------------------------------------------------------------
+        // Navigational Setters
+        //---------------------------------------------------------------------
+
+        public void SetFirstId()
+        {
+            this.JournalId = GetFirstId();
         }
 
         //---------------------------------------------------------------------
 
-        public void LoadByNewIndex(long journalIndex)
+        public void SetLastId()
         {
-            this.JournalIndex = journalIndex;
+            this.JournalId = GetLastId();
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SetPreviousId()
+        {
+            this.JournalId = GetPrevId();
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SetNextId()
+        {
+            this.JournalId = GetNextId();
+        }
+
+        //---------------------------------------------------------------------
+        // Loaders
+        //---------------------------------------------------------------------
+
+        public void LoadByNewIndex(long journalId)
+        {
+            this.JournalId = journalId;
             this.Load();
         }
 
@@ -351,7 +360,7 @@ namespace Timekeeper.Classes
 
         public void LoadFirst()
         {
-            this.SetFirstIndex();
+            this.SetFirstId();
             this.Load();
         }
 
@@ -359,7 +368,7 @@ namespace Timekeeper.Classes
 
         public void LoadPrevious()
         {
-            this.SetPreviousIndex();
+            this.SetPreviousId();
             this.Load();
         }
 
@@ -367,7 +376,7 @@ namespace Timekeeper.Classes
 
         public void LoadNext()
         {
-            this.SetNextIndex();
+            this.SetNextId();
             this.Load();
         }
 
@@ -375,7 +384,7 @@ namespace Timekeeper.Classes
 
         public void LoadLast()
         {
-            this.SetLastIndex();
+            this.SetLastId();
             this.Load();
         }
 
@@ -393,7 +402,6 @@ namespace Timekeeper.Classes
                 if (mode == Mode.Insert) {
                     Journal["CreateTime"] = Now;
                     Journal["JournalGuid"] = UUID.Get();
-                    Journal["JournalIndex"] = this.NextJournalIndex;
                 }
                 Journal["ModifyTime"] = Now;
 
@@ -422,17 +430,6 @@ namespace Timekeeper.Classes
             Row Journal = new Row();
 
             try {
-                // Get Next JournalIndex value
-                /*
-                Journal = Database.SelectRow("select max(JournalIndex) as HighestJournalIndex from Journal");
-                if (Journal["HighestJournalIndex"] != null) {
-                    NextJournalIndex = Journal["HighestJournalIndex"] + 1;
-                } else {
-                    // This is the first journal entry in a new database
-                    NextJournalIndex = 1;
-                }
-                */
-
                 // Now set default attributes
                 Journal = new Row();
 
@@ -446,7 +443,6 @@ namespace Timekeeper.Classes
                 Journal["LocationId"] = 0;
                 Journal["CategoryId"] = 0;
                 Journal["IsLocked"] = false;
-                Journal["JournalIndex"] = this.NextJournalIndex;
 
                 Journal["ActivityName"] = "";
                 Journal["ProjectName"] = "";
@@ -491,7 +487,6 @@ namespace Timekeeper.Classes
                 LocationId = Journal["LocationId"] ?? 0;
                 CategoryId = Journal["CategoryId"] ?? 0;
                 IsLocked = Journal["IsLocked"];
-                JournalIndex = Journal["JournalIndex"];
 
                 ActivityName = Journal["ActivityName"];
                 ProjectName = Journal["ProjectName"];
@@ -513,14 +508,14 @@ namespace Timekeeper.Classes
 
         public bool AtEnd()
         {
-            return this.JournalIndex == this.NextJournalIndex - 1;
+            return this.JournalId == this.GetLastId();
         }
 
         //---------------------------------------------------------------------
 
         public bool AtBeginning()
         {
-            return this.JournalIndex == 1;
+            return this.JournalId == this.GetFirstId();
         }
 
         //---------------------------------------------------------------------

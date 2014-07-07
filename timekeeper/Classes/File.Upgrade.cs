@@ -585,15 +585,6 @@ namespace Timekeeper
             // Create new table
             this.CreateTable("Journal", CurrentSchemaVersion, false);
 
-            // Journal Index
-            // This value is used primarily for navigational purposes. We don't use the
-            // JournalId identity column, because this does not indicate chronology (and
-            // is also immutable). We don't use StartTime, because it's unpredictable.
-            // Therefore, JournalIndex acts like a JournalId value that can be updated
-            // as StartTime is updated: it's both chronologically correct and predictable,
-            // which makes for lightning-fast navigation when browsing Journal entries.
-            int JournalIndex = 1;
-
             // Delta Bucket
             int CumulativeDrift = 0;
 
@@ -662,7 +653,6 @@ namespace Timekeeper
                     {"LocationId", 1},
                     {"CategoryId", null},
                     {"IsLocked", OldRow["is_locked"] ? 1 : 0},
-                    {"JournalIndex", JournalIndex},
                     // FIXME: Don't forget to get rid of these
                     {"OriginalStartTime", OldRow["timestamp_s"].ToString(Common.LOCAL_DATETIME_FORMAT)},
                     {"OriginalStopTime", OldRow["timestamp_e"].ToString(Common.LOCAL_DATETIME_FORMAT)},
@@ -681,7 +671,6 @@ namespace Timekeeper
                     throw new Exception("Insert failed");
                 }
 
-                JournalIndex++;
                 this.Progress.Value++;
 
                 if (RowId % 10 == 0) {
