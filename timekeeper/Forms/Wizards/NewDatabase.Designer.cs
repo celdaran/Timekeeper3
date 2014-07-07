@@ -35,40 +35,40 @@
             this.LaterButton = new System.Windows.Forms.Button();
             this.WizardPicture = new System.Windows.Forms.PictureBox();
             this.TopPanel = new System.Windows.Forms.Panel();
-            this.IntroductionInstructions = new System.Windows.Forms.Label();
-            this.SelectFileButton = new System.Windows.Forms.Button();
-            this.NewDatabaseFileName = new System.Windows.Forms.TextBox();
-            this.NewDatabaseInstructions = new System.Windows.Forms.Label();
-            this.UseActivities = new System.Windows.Forms.CheckBox();
-            this.UseProjects = new System.Windows.Forms.CheckBox();
-            this.DimensionInstructions = new System.Windows.Forms.Label();
-            this.ItemPreset = new System.Windows.Forms.ComboBox();
-            this.ItemPresetInstructions = new System.Windows.Forms.Label();
-            this.LocationTimeZone = new System.Windows.Forms.ComboBox();
-            this.LocationDescription = new System.Windows.Forms.TextBox();
-            this.LocationName = new System.Windows.Forms.TextBox();
-            this.LocationTimeZoneLabel = new System.Windows.Forms.Label();
-            this.LocationDescriptionLabel = new System.Windows.Forms.Label();
-            this.LocationNameLabel = new System.Windows.Forms.Label();
-            this.LocationInstructions = new System.Windows.Forms.Label();
+            this.Tab6 = new System.Windows.Forms.Panel();
             this.WizardReview = new System.Windows.Forms.TextBox();
             this.WizardReviewInstructions = new System.Windows.Forms.Label();
-            this.NewFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.Tab1 = new System.Windows.Forms.Panel();
-            this.Tab2 = new System.Windows.Forms.Panel();
-            this.Tab3 = new System.Windows.Forms.Panel();
-            this.Tab4 = new System.Windows.Forms.Panel();
             this.Tab5 = new System.Windows.Forms.Panel();
-            this.Tab6 = new System.Windows.Forms.Panel();
+            this.LocationTimeZone = new System.Windows.Forms.ComboBox();
+            this.LocationInstructions = new System.Windows.Forms.Label();
+            this.LocationTimeZoneLabel = new System.Windows.Forms.Label();
+            this.LocationDescriptionLabel = new System.Windows.Forms.Label();
+            this.LocationDescription = new System.Windows.Forms.TextBox();
+            this.LocationName = new System.Windows.Forms.TextBox();
+            this.LocationNameLabel = new System.Windows.Forms.Label();
+            this.Tab4 = new System.Windows.Forms.Panel();
+            this.ItemPreset = new System.Windows.Forms.ComboBox();
+            this.ItemPresetInstructions = new System.Windows.Forms.Label();
+            this.Tab3 = new System.Windows.Forms.Panel();
+            this.UseActivities = new System.Windows.Forms.CheckBox();
+            this.DimensionInstructions = new System.Windows.Forms.Label();
+            this.UseProjects = new System.Windows.Forms.CheckBox();
+            this.Tab2 = new System.Windows.Forms.Panel();
+            this.SelectFileButton = new System.Windows.Forms.Button();
+            this.NewDatabaseInstructions = new System.Windows.Forms.Label();
+            this.NewDatabaseFileName = new System.Windows.Forms.TextBox();
+            this.Tab1 = new System.Windows.Forms.Panel();
+            this.IntroductionInstructions = new System.Windows.Forms.Label();
+            this.NewFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ButtonPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WizardPicture)).BeginInit();
             this.TopPanel.SuspendLayout();
-            this.Tab1.SuspendLayout();
-            this.Tab2.SuspendLayout();
-            this.Tab3.SuspendLayout();
-            this.Tab4.SuspendLayout();
-            this.Tab5.SuspendLayout();
             this.Tab6.SuspendLayout();
+            this.Tab5.SuspendLayout();
+            this.Tab4.SuspendLayout();
+            this.Tab3.SuspendLayout();
+            this.Tab2.SuspendLayout();
+            this.Tab1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ButtonPanel
@@ -151,84 +151,129 @@
             this.TopPanel.Size = new System.Drawing.Size(2394, 282);
             this.TopPanel.TabIndex = 17;
             // 
-            // IntroductionInstructions
+            // Tab6
             // 
-            this.IntroductionInstructions.AutoSize = true;
-            this.IntroductionInstructions.Location = new System.Drawing.Point(3, 9);
-            this.IntroductionInstructions.MaximumSize = new System.Drawing.Size(336, 0);
-            this.IntroductionInstructions.Name = "IntroductionInstructions";
-            this.IntroductionInstructions.Size = new System.Drawing.Size(332, 195);
-            this.IntroductionInstructions.TabIndex = 12;
-            this.IntroductionInstructions.Text = resources.GetString("IntroductionInstructions.Text");
+            this.Tab6.BackColor = System.Drawing.SystemColors.Window;
+            this.Tab6.Controls.Add(this.WizardReview);
+            this.Tab6.Controls.Add(this.WizardReviewInstructions);
+            this.Tab6.Location = new System.Drawing.Point(1964, 0);
+            this.Tab6.Name = "Tab6";
+            this.Tab6.Size = new System.Drawing.Size(354, 283);
+            this.Tab6.TabIndex = 20;
             // 
-            // SelectFileButton
+            // WizardReview
             // 
-            this.SelectFileButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.SelectFileButton.Location = new System.Drawing.Point(311, 47);
-            this.SelectFileButton.Name = "SelectFileButton";
-            this.SelectFileButton.Size = new System.Drawing.Size(26, 20);
-            this.SelectFileButton.TabIndex = 18;
-            this.SelectFileButton.Text = "...";
-            this.SelectFileButton.UseVisualStyleBackColor = false;
-            this.SelectFileButton.Click += new System.EventHandler(this.SelectFileButton_Click);
+            this.WizardReview.Location = new System.Drawing.Point(6, 60);
+            this.WizardReview.Multiline = true;
+            this.WizardReview.Name = "WizardReview";
+            this.WizardReview.ReadOnly = true;
+            this.WizardReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.WizardReview.Size = new System.Drawing.Size(328, 196);
+            this.WizardReview.TabIndex = 25;
             // 
-            // NewDatabaseFileName
+            // WizardReviewInstructions
             // 
-            this.NewDatabaseFileName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.NewDatabaseFileName.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.NewDatabaseFileName.Location = new System.Drawing.Point(6, 48);
-            this.NewDatabaseFileName.Name = "NewDatabaseFileName";
-            this.NewDatabaseFileName.Size = new System.Drawing.Size(299, 20);
-            this.NewDatabaseFileName.TabIndex = 17;
+            this.WizardReviewInstructions.AutoSize = true;
+            this.WizardReviewInstructions.Location = new System.Drawing.Point(3, 9);
+            this.WizardReviewInstructions.MaximumSize = new System.Drawing.Size(336, 0);
+            this.WizardReviewInstructions.Name = "WizardReviewInstructions";
+            this.WizardReviewInstructions.Size = new System.Drawing.Size(331, 39);
+            this.WizardReviewInstructions.TabIndex = 24;
+            this.WizardReviewInstructions.Text = "Please review your upgrade options and click Finish to upgrade your database. Not" +
+    "e, depending on the size of your database, this operation could take several min" +
+    "utes.";
             // 
-            // NewDatabaseInstructions
+            // Tab5
             // 
-            this.NewDatabaseInstructions.AutoSize = true;
-            this.NewDatabaseInstructions.Location = new System.Drawing.Point(3, 9);
-            this.NewDatabaseInstructions.MaximumSize = new System.Drawing.Size(336, 0);
-            this.NewDatabaseInstructions.Name = "NewDatabaseInstructions";
-            this.NewDatabaseInstructions.Size = new System.Drawing.Size(309, 26);
-            this.NewDatabaseInstructions.TabIndex = 16;
-            this.NewDatabaseInstructions.Text = "Choose a name for your new Timekeeper database, or click the Browse button to nav" +
-    "igate to a location.";
+            this.Tab5.BackColor = System.Drawing.SystemColors.Window;
+            this.Tab5.Controls.Add(this.LocationTimeZone);
+            this.Tab5.Controls.Add(this.LocationInstructions);
+            this.Tab5.Controls.Add(this.LocationTimeZoneLabel);
+            this.Tab5.Controls.Add(this.LocationDescriptionLabel);
+            this.Tab5.Controls.Add(this.LocationDescription);
+            this.Tab5.Controls.Add(this.LocationName);
+            this.Tab5.Controls.Add(this.LocationNameLabel);
+            this.Tab5.Location = new System.Drawing.Point(1604, 0);
+            this.Tab5.Name = "Tab5";
+            this.Tab5.Size = new System.Drawing.Size(354, 283);
+            this.Tab5.TabIndex = 19;
             // 
-            // UseActivities
+            // LocationTimeZone
             // 
-            this.UseActivities.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.UseActivities.Checked = true;
-            this.UseActivities.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.UseActivities.Location = new System.Drawing.Point(16, 136);
-            this.UseActivities.Name = "UseActivities";
-            this.UseActivities.Size = new System.Drawing.Size(319, 44);
-            this.UseActivities.TabIndex = 19;
-            this.UseActivities.Text = "Activities. An activity is a verb and most closely represents an action to be tra" +
-    "cked. Some Activity examples: Developing, Writing, Recording.";
-            this.UseActivities.UseVisualStyleBackColor = true;
+            this.LocationTimeZone.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.LocationTimeZone.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LocationTimeZone.FormattingEnabled = true;
+            this.LocationTimeZone.Location = new System.Drawing.Point(77, 190);
+            this.LocationTimeZone.Name = "LocationTimeZone";
+            this.LocationTimeZone.Size = new System.Drawing.Size(260, 21);
+            this.LocationTimeZone.TabIndex = 28;
             // 
-            // UseProjects
+            // LocationInstructions
             // 
-            this.UseProjects.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.UseProjects.Checked = true;
-            this.UseProjects.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.UseProjects.Location = new System.Drawing.Point(16, 64);
-            this.UseProjects.Name = "UseProjects";
-            this.UseProjects.Size = new System.Drawing.Size(319, 57);
-            this.UseProjects.TabIndex = 18;
-            this.UseProjects.Text = "Projects. A project is a noun and most closely represents a deliverable and/or cu" +
-    "stomer. Some Project examples: Software Update 2.0, My Great American Novel, My " +
-    "New CD Release.";
-            this.UseProjects.UseVisualStyleBackColor = true;
+            this.LocationInstructions.AutoSize = true;
+            this.LocationInstructions.Location = new System.Drawing.Point(3, 9);
+            this.LocationInstructions.MaximumSize = new System.Drawing.Size(336, 0);
+            this.LocationInstructions.Name = "LocationInstructions";
+            this.LocationInstructions.Size = new System.Drawing.Size(330, 91);
+            this.LocationInstructions.TabIndex = 22;
+            this.LocationInstructions.Text = resources.GetString("LocationInstructions.Text");
             // 
-            // DimensionInstructions
+            // LocationTimeZoneLabel
             // 
-            this.DimensionInstructions.AutoSize = true;
-            this.DimensionInstructions.Location = new System.Drawing.Point(3, 9);
-            this.DimensionInstructions.MaximumSize = new System.Drawing.Size(336, 0);
-            this.DimensionInstructions.Name = "DimensionInstructions";
-            this.DimensionInstructions.Size = new System.Drawing.Size(332, 39);
-            this.DimensionInstructions.TabIndex = 17;
-            this.DimensionInstructions.Text = "Timekeeper supports time tracking in one or two dimensions. Check which ones you\'" +
-    "d like to use in your new database. You can change your mind later at any time:";
+            this.LocationTimeZoneLabel.AutoSize = true;
+            this.LocationTimeZoneLabel.Location = new System.Drawing.Point(3, 193);
+            this.LocationTimeZoneLabel.Name = "LocationTimeZoneLabel";
+            this.LocationTimeZoneLabel.Size = new System.Drawing.Size(64, 13);
+            this.LocationTimeZoneLabel.TabIndex = 25;
+            this.LocationTimeZoneLabel.Text = "Time Zone: ";
+            // 
+            // LocationDescriptionLabel
+            // 
+            this.LocationDescriptionLabel.AutoSize = true;
+            this.LocationDescriptionLabel.Location = new System.Drawing.Point(3, 141);
+            this.LocationDescriptionLabel.Name = "LocationDescriptionLabel";
+            this.LocationDescriptionLabel.Size = new System.Drawing.Size(63, 13);
+            this.LocationDescriptionLabel.TabIndex = 24;
+            this.LocationDescriptionLabel.Text = "Description:";
+            // 
+            // LocationDescription
+            // 
+            this.LocationDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.LocationDescription.Location = new System.Drawing.Point(77, 138);
+            this.LocationDescription.Multiline = true;
+            this.LocationDescription.Name = "LocationDescription";
+            this.LocationDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.LocationDescription.Size = new System.Drawing.Size(260, 46);
+            this.LocationDescription.TabIndex = 27;
+            this.LocationDescription.Text = "My default location.";
+            // 
+            // LocationName
+            // 
+            this.LocationName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.LocationName.Location = new System.Drawing.Point(77, 112);
+            this.LocationName.Name = "LocationName";
+            this.LocationName.Size = new System.Drawing.Size(260, 20);
+            this.LocationName.TabIndex = 26;
+            this.LocationName.Text = "Default Location";
+            // 
+            // LocationNameLabel
+            // 
+            this.LocationNameLabel.AutoSize = true;
+            this.LocationNameLabel.Location = new System.Drawing.Point(3, 115);
+            this.LocationNameLabel.Name = "LocationNameLabel";
+            this.LocationNameLabel.Size = new System.Drawing.Size(38, 13);
+            this.LocationNameLabel.TabIndex = 23;
+            this.LocationNameLabel.Text = "Name:";
+            // 
+            // Tab4
+            // 
+            this.Tab4.BackColor = System.Drawing.SystemColors.Window;
+            this.Tab4.Controls.Add(this.ItemPreset);
+            this.Tab4.Controls.Add(this.ItemPresetInstructions);
+            this.Tab4.Location = new System.Drawing.Point(1244, 0);
+            this.Tab4.Name = "Tab4";
+            this.Tab4.Size = new System.Drawing.Size(354, 283);
+            this.Tab4.TabIndex = 18;
             // 
             // ItemPreset
             // 
@@ -261,108 +306,54 @@
             this.ItemPresetInstructions.TabIndex = 18;
             this.ItemPresetInstructions.Text = resources.GetString("ItemPresetInstructions.Text");
             // 
-            // LocationTimeZone
+            // Tab3
             // 
-            this.LocationTimeZone.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.LocationTimeZone.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.LocationTimeZone.FormattingEnabled = true;
-            this.LocationTimeZone.Location = new System.Drawing.Point(77, 190);
-            this.LocationTimeZone.Name = "LocationTimeZone";
-            this.LocationTimeZone.Size = new System.Drawing.Size(260, 21);
-            this.LocationTimeZone.TabIndex = 28;
+            this.Tab3.BackColor = System.Drawing.SystemColors.Window;
+            this.Tab3.Controls.Add(this.UseActivities);
+            this.Tab3.Controls.Add(this.DimensionInstructions);
+            this.Tab3.Controls.Add(this.UseProjects);
+            this.Tab3.Location = new System.Drawing.Point(884, 0);
+            this.Tab3.Name = "Tab3";
+            this.Tab3.Size = new System.Drawing.Size(354, 283);
+            this.Tab3.TabIndex = 17;
             // 
-            // LocationDescription
+            // UseActivities
             // 
-            this.LocationDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.LocationDescription.Location = new System.Drawing.Point(77, 138);
-            this.LocationDescription.Multiline = true;
-            this.LocationDescription.Name = "LocationDescription";
-            this.LocationDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LocationDescription.Size = new System.Drawing.Size(260, 46);
-            this.LocationDescription.TabIndex = 27;
-            this.LocationDescription.Text = "My default location.";
+            this.UseActivities.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.UseActivities.Checked = true;
+            this.UseActivities.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.UseActivities.Location = new System.Drawing.Point(16, 136);
+            this.UseActivities.Name = "UseActivities";
+            this.UseActivities.Size = new System.Drawing.Size(319, 44);
+            this.UseActivities.TabIndex = 19;
+            this.UseActivities.Text = "Activities. An activity is a verb and most closely represents an action to be tra" +
+    "cked. Some Activity examples: Developing, Writing, Recording.";
+            this.UseActivities.UseVisualStyleBackColor = true;
             // 
-            // LocationName
+            // DimensionInstructions
             // 
-            this.LocationName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.LocationName.Location = new System.Drawing.Point(77, 112);
-            this.LocationName.Name = "LocationName";
-            this.LocationName.Size = new System.Drawing.Size(260, 20);
-            this.LocationName.TabIndex = 26;
-            this.LocationName.Text = "Default";
+            this.DimensionInstructions.AutoSize = true;
+            this.DimensionInstructions.Location = new System.Drawing.Point(3, 9);
+            this.DimensionInstructions.MaximumSize = new System.Drawing.Size(336, 0);
+            this.DimensionInstructions.Name = "DimensionInstructions";
+            this.DimensionInstructions.Size = new System.Drawing.Size(332, 39);
+            this.DimensionInstructions.TabIndex = 17;
+            this.DimensionInstructions.Text = "Timekeeper supports time tracking in one or two dimensions. Check which ones you\'" +
+    "d like to use in your new database. You can change your mind later at any time:";
             // 
-            // LocationTimeZoneLabel
+            // UseProjects
             // 
-            this.LocationTimeZoneLabel.AutoSize = true;
-            this.LocationTimeZoneLabel.Location = new System.Drawing.Point(3, 193);
-            this.LocationTimeZoneLabel.Name = "LocationTimeZoneLabel";
-            this.LocationTimeZoneLabel.Size = new System.Drawing.Size(64, 13);
-            this.LocationTimeZoneLabel.TabIndex = 25;
-            this.LocationTimeZoneLabel.Text = "Time Zone: ";
-            // 
-            // LocationDescriptionLabel
-            // 
-            this.LocationDescriptionLabel.AutoSize = true;
-            this.LocationDescriptionLabel.Location = new System.Drawing.Point(3, 141);
-            this.LocationDescriptionLabel.Name = "LocationDescriptionLabel";
-            this.LocationDescriptionLabel.Size = new System.Drawing.Size(63, 13);
-            this.LocationDescriptionLabel.TabIndex = 24;
-            this.LocationDescriptionLabel.Text = "Description:";
-            // 
-            // LocationNameLabel
-            // 
-            this.LocationNameLabel.AutoSize = true;
-            this.LocationNameLabel.Location = new System.Drawing.Point(3, 115);
-            this.LocationNameLabel.Name = "LocationNameLabel";
-            this.LocationNameLabel.Size = new System.Drawing.Size(38, 13);
-            this.LocationNameLabel.TabIndex = 23;
-            this.LocationNameLabel.Text = "Name:";
-            // 
-            // LocationInstructions
-            // 
-            this.LocationInstructions.AutoSize = true;
-            this.LocationInstructions.Location = new System.Drawing.Point(3, 9);
-            this.LocationInstructions.MaximumSize = new System.Drawing.Size(336, 0);
-            this.LocationInstructions.Name = "LocationInstructions";
-            this.LocationInstructions.Size = new System.Drawing.Size(330, 91);
-            this.LocationInstructions.TabIndex = 22;
-            this.LocationInstructions.Text = resources.GetString("LocationInstructions.Text");
-            // 
-            // WizardReview
-            // 
-            this.WizardReview.Location = new System.Drawing.Point(6, 60);
-            this.WizardReview.Multiline = true;
-            this.WizardReview.Name = "WizardReview";
-            this.WizardReview.ReadOnly = true;
-            this.WizardReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.WizardReview.Size = new System.Drawing.Size(328, 196);
-            this.WizardReview.TabIndex = 25;
-            // 
-            // WizardReviewInstructions
-            // 
-            this.WizardReviewInstructions.AutoSize = true;
-            this.WizardReviewInstructions.Location = new System.Drawing.Point(3, 9);
-            this.WizardReviewInstructions.MaximumSize = new System.Drawing.Size(336, 0);
-            this.WizardReviewInstructions.Name = "WizardReviewInstructions";
-            this.WizardReviewInstructions.Size = new System.Drawing.Size(331, 39);
-            this.WizardReviewInstructions.TabIndex = 24;
-            this.WizardReviewInstructions.Text = "Please review your upgrade options and click Finish to upgrade your database. Not" +
-    "e, depending on the size of your database, this operation could take several min" +
-    "utes.";
-            // 
-            // NewFileDialog
-            // 
-            this.NewFileDialog.CheckFileExists = false;
-            this.NewFileDialog.DefaultExt = "tkdb";
-            // 
-            // Tab1
-            // 
-            this.Tab1.BackColor = System.Drawing.SystemColors.Window;
-            this.Tab1.Controls.Add(this.IntroductionInstructions);
-            this.Tab1.Location = new System.Drawing.Point(164, 0);
-            this.Tab1.Name = "Tab1";
-            this.Tab1.Size = new System.Drawing.Size(354, 283);
-            this.Tab1.TabIndex = 15;
+            this.UseProjects.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.UseProjects.Checked = true;
+            this.UseProjects.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.UseProjects.Location = new System.Drawing.Point(16, 64);
+            this.UseProjects.Name = "UseProjects";
+            this.UseProjects.Size = new System.Drawing.Size(319, 57);
+            this.UseProjects.TabIndex = 18;
+            this.UseProjects.Text = "Projects. A project is a noun and most closely represents a deliverable and/or cu" +
+    "stomer. Some Project examples: Software Update 2.0, My Great American Novel, My " +
+    "New CD Release.";
+            this.UseProjects.UseVisualStyleBackColor = true;
             // 
             // Tab2
             // 
@@ -375,51 +366,60 @@
             this.Tab2.Size = new System.Drawing.Size(354, 283);
             this.Tab2.TabIndex = 16;
             // 
-            // Tab3
+            // SelectFileButton
             // 
-            this.Tab3.BackColor = System.Drawing.SystemColors.Window;
-            this.Tab3.Controls.Add(this.UseActivities);
-            this.Tab3.Controls.Add(this.DimensionInstructions);
-            this.Tab3.Controls.Add(this.UseProjects);
-            this.Tab3.Location = new System.Drawing.Point(884, 0);
-            this.Tab3.Name = "Tab3";
-            this.Tab3.Size = new System.Drawing.Size(354, 283);
-            this.Tab3.TabIndex = 17;
+            this.SelectFileButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.SelectFileButton.Location = new System.Drawing.Point(311, 47);
+            this.SelectFileButton.Name = "SelectFileButton";
+            this.SelectFileButton.Size = new System.Drawing.Size(26, 20);
+            this.SelectFileButton.TabIndex = 18;
+            this.SelectFileButton.Text = "...";
+            this.SelectFileButton.UseVisualStyleBackColor = false;
+            this.SelectFileButton.Click += new System.EventHandler(this.SelectFileButton_Click);
             // 
-            // Tab4
+            // NewDatabaseInstructions
             // 
-            this.Tab4.BackColor = System.Drawing.SystemColors.Window;
-            this.Tab4.Controls.Add(this.ItemPreset);
-            this.Tab4.Controls.Add(this.ItemPresetInstructions);
-            this.Tab4.Location = new System.Drawing.Point(1244, 0);
-            this.Tab4.Name = "Tab4";
-            this.Tab4.Size = new System.Drawing.Size(354, 283);
-            this.Tab4.TabIndex = 18;
+            this.NewDatabaseInstructions.AutoSize = true;
+            this.NewDatabaseInstructions.Location = new System.Drawing.Point(3, 9);
+            this.NewDatabaseInstructions.MaximumSize = new System.Drawing.Size(336, 0);
+            this.NewDatabaseInstructions.Name = "NewDatabaseInstructions";
+            this.NewDatabaseInstructions.Size = new System.Drawing.Size(309, 26);
+            this.NewDatabaseInstructions.TabIndex = 16;
+            this.NewDatabaseInstructions.Text = "Choose a name for your new Timekeeper database, or click the Browse button to nav" +
+    "igate to a location.";
             // 
-            // Tab5
+            // NewDatabaseFileName
             // 
-            this.Tab5.BackColor = System.Drawing.SystemColors.Window;
-            this.Tab5.Controls.Add(this.LocationTimeZone);
-            this.Tab5.Controls.Add(this.LocationInstructions);
-            this.Tab5.Controls.Add(this.LocationTimeZoneLabel);
-            this.Tab5.Controls.Add(this.LocationDescriptionLabel);
-            this.Tab5.Controls.Add(this.LocationDescription);
-            this.Tab5.Controls.Add(this.LocationName);
-            this.Tab5.Controls.Add(this.LocationNameLabel);
-            this.Tab5.Location = new System.Drawing.Point(1604, 0);
-            this.Tab5.Name = "Tab5";
-            this.Tab5.Size = new System.Drawing.Size(354, 283);
-            this.Tab5.TabIndex = 19;
+            this.NewDatabaseFileName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.NewDatabaseFileName.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.NewDatabaseFileName.Location = new System.Drawing.Point(6, 48);
+            this.NewDatabaseFileName.Name = "NewDatabaseFileName";
+            this.NewDatabaseFileName.Size = new System.Drawing.Size(299, 20);
+            this.NewDatabaseFileName.TabIndex = 17;
             // 
-            // Tab6
+            // Tab1
             // 
-            this.Tab6.BackColor = System.Drawing.SystemColors.Window;
-            this.Tab6.Controls.Add(this.WizardReview);
-            this.Tab6.Controls.Add(this.WizardReviewInstructions);
-            this.Tab6.Location = new System.Drawing.Point(1964, 0);
-            this.Tab6.Name = "Tab6";
-            this.Tab6.Size = new System.Drawing.Size(354, 283);
-            this.Tab6.TabIndex = 20;
+            this.Tab1.BackColor = System.Drawing.SystemColors.Window;
+            this.Tab1.Controls.Add(this.IntroductionInstructions);
+            this.Tab1.Location = new System.Drawing.Point(164, 0);
+            this.Tab1.Name = "Tab1";
+            this.Tab1.Size = new System.Drawing.Size(354, 283);
+            this.Tab1.TabIndex = 15;
+            // 
+            // IntroductionInstructions
+            // 
+            this.IntroductionInstructions.AutoSize = true;
+            this.IntroductionInstructions.Location = new System.Drawing.Point(3, 9);
+            this.IntroductionInstructions.MaximumSize = new System.Drawing.Size(336, 0);
+            this.IntroductionInstructions.Name = "IntroductionInstructions";
+            this.IntroductionInstructions.Size = new System.Drawing.Size(332, 195);
+            this.IntroductionInstructions.TabIndex = 12;
+            this.IntroductionInstructions.Text = resources.GetString("IntroductionInstructions.Text");
+            // 
+            // NewFileDialog
+            // 
+            this.NewFileDialog.CheckFileExists = false;
+            this.NewFileDialog.DefaultExt = "tkdb";
             // 
             // NewDatabase
             // 
@@ -443,18 +443,18 @@
             this.ButtonPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.WizardPicture)).EndInit();
             this.TopPanel.ResumeLayout(false);
-            this.Tab1.ResumeLayout(false);
-            this.Tab1.PerformLayout();
-            this.Tab2.ResumeLayout(false);
-            this.Tab2.PerformLayout();
-            this.Tab3.ResumeLayout(false);
-            this.Tab3.PerformLayout();
-            this.Tab4.ResumeLayout(false);
-            this.Tab4.PerformLayout();
-            this.Tab5.ResumeLayout(false);
-            this.Tab5.PerformLayout();
             this.Tab6.ResumeLayout(false);
             this.Tab6.PerformLayout();
+            this.Tab5.ResumeLayout(false);
+            this.Tab5.PerformLayout();
+            this.Tab4.ResumeLayout(false);
+            this.Tab4.PerformLayout();
+            this.Tab3.ResumeLayout(false);
+            this.Tab3.PerformLayout();
+            this.Tab2.ResumeLayout(false);
+            this.Tab2.PerformLayout();
+            this.Tab1.ResumeLayout(false);
+            this.Tab1.PerformLayout();
             this.ResumeLayout(false);
 
         }
