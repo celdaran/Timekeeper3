@@ -320,12 +320,15 @@ namespace Timekeeper
             Location["LocationGuid"] = UUID.Get();
             Location["Name"] = options.LocationName;
             Location["Description"] = options.LocationDescription;
-            Location["RefTimeZoneId"] = options.LocationTimeZoneId;
+            Location["ParentId"] = 0;
             Location["SortOrderNo"] = 0;
+            Location["IsFolder"] = false;
+            Location["IsFolderOpened"] = false;
             Location["IsHidden"] = 0;
             Location["IsDeleted"] = 0;
             Location["HiddenTime"] = null;
             Location["DeletedTime"] = null;
+            Location["RefTimeZoneId"] = options.LocationTimeZoneId;
 
             this.InsertedRowId = Database.Insert("Location", Location);
             if (InsertedRowId == 0) throw new Exception("Insert failed");

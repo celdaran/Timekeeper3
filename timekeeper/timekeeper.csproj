@@ -591,6 +591,7 @@
   <ItemGroup>
     <None Include="Resources\Images\Icons\SmallCategory.png" />
     <None Include="Resources\Images\Icons\SmallLocation.png" />
+    <None Include="Resources\SQL\3.0\Schedule.Insert.sql" />
     <Content Include="tk3.icon.ico" />
     <None Include="Resources\Images\Icons\Speaker.png" />
     <None Include="Resources\Images\Icons\Warning.png" />

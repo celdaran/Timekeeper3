@@ -12,7 +12,10 @@ INSERT INTO Category
     Name,
     Description,
 
+    ParentId,
     SortOrderNo,
+    IsFolder,
+    IsFolderOpened,
 
     IsHidden,
     IsDeleted,
@@ -28,10 +31,12 @@ INSERT INTO Category
     'This is the default category. Rename this or create your own.',
     
     0,
+    0,
+    0,
+    0,
     
     0,
     0,
-    
     null,
     null
 );

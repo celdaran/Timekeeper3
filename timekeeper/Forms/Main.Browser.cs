@@ -328,11 +328,12 @@ namespace Timekeeper.Forms
         private void Browser_FormToEntry(ref Classes.JournalEntry entry, long entryId)
         {
             // Don't update the browser entry if nothing is selected
-            /* still needed?
-            if ((ProjectTreeDropdown.SelectedNode == null) || (ActivityTreeDropdown.SelectedNode == null)) {
+            if ((ProjectTreeDropdown.SelectedNode == null) ||
+                (ActivityTreeDropdown.SelectedNode == null) ||
+                (LocationTreeDropdown.SelectedNode == null) ||
+                (CategoryTreeDropdown.SelectedNode == null)) {
                 return;
             }
-            */
 
             // First translate some necessary data from the form
             Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;

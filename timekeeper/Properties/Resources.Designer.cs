@@ -1157,7 +1157,10 @@ namespace Timekeeper.Properties {
         ///    Name,
         ///    Description,
         ///
+        ///    ParentId,
         ///    SortOrderNo,
+        ///    IsFolder,
+        ///    IsFolderOpened,
         ///
         ///    IsHidden,
         ///    IsDeleted,
@@ -1168,9 +1171,7 @@ namespace Timekeeper.Properties {
         ///    &apos;{0}&apos;,
         ///    &apos;{0}&apos;,
         ///    &apos;{1}&apos;,
-        ///
-        ///    &apos;Default Category&apos;,
-        ///    &apos;This is the default  [rest of string was truncated]&quot;;.
+        ///        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SQL_3073_Category_Insert {
             get {
@@ -1884,6 +1885,45 @@ namespace Timekeeper.Properties {
         internal static string SQL_3073_Schedule_Create {
             get {
                 return ResourceManager.GetString("SQL_3073_Schedule_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ------------------------------------------------------------------------
+        ///-- Table..: Schedule
+        ///-- Purpose: Create the fallback schedule
+        ///------------------------------------------------------------------------
+        ///
+        ///INSERT INTO Schedule
+        ///(
+        ///    ScheduleId,
+        ///
+        ///    CreateTime,
+        ///    ModifyTime,
+        ///
+        ///    DurationTypeId,
+        ///    
+        ///    TriggerCount,
+        ///    
+        ///    RefScheduleTypeId
+        ///
+        ///) VALUES (
+        ///    0,
+        ///
+        ///    &apos;{0}&apos;,
+        ///    &apos;{0}&apos;,
+        ///
+        ///    1,
+        ///
+        ///    0,
+        ///    
+        ///    1
+        ///);
+        ///.
+        /// </summary>
+        internal static string SQL_3073_Schedule_Insert {
+            get {
+                return ResourceManager.GetString("SQL_3073_Schedule_Insert", resourceCulture);
             }
         }
         

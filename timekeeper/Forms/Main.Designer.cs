@@ -1502,7 +1502,7 @@ namespace Timekeeper.Forms
             // 
             // BrowserToolbar
             // 
-            this.BrowserToolbar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.BrowserToolbar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.BrowserToolbar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.BrowserToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolbarStartButton,
@@ -1523,7 +1523,7 @@ namespace Timekeeper.Forms
             this.ToolbarUnlock});
             this.BrowserToolbar.Location = new System.Drawing.Point(0, 0);
             this.BrowserToolbar.Name = "BrowserToolbar";
-            this.BrowserToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.BrowserToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.BrowserToolbar.Size = new System.Drawing.Size(562, 25);
             this.BrowserToolbar.TabIndex = 0;
             this.BrowserToolbar.Text = "toolStrip2";
