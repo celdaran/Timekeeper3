@@ -9,11 +9,6 @@ namespace Timekeeper.Classes
 {
     public partial class Options
     {
-        // TODO (possibly). I hate to say it, but it feels like this thing
-        // should be named Settings, so as there's no confusion with other
-        // options. The class structure is confusing, especially now that
-        // I have BaseOptions which has nothing to do with Options.
-
         //----------------------------------------------------------------------
         // Private Properties
         //----------------------------------------------------------------------
@@ -77,6 +72,8 @@ namespace Timekeeper.Classes
         public int Behavior_SortProjectsByDirection { get; set; }
         public int Behavior_SortItemsBy { get; set; }
         public int Behavior_SortItemsByDirection { get; set; }
+        public int Behavior_BrowsePrevBy { get; set; }
+        public int Behavior_BrowseNextBy { get; set; }
 
         public string Report_FontName { get; set; }
         public int Report_FontSize { get; set; }
@@ -326,6 +323,8 @@ namespace Timekeeper.Classes
             Behavior_SortProjectsByDirection = (int)Key.GetValue("SortProjectsByDirection", 0);
             Behavior_SortItemsBy = (int)Key.GetValue("SortItemsBy", 0);
             Behavior_SortItemsByDirection = (int)Key.GetValue("SortItemsByDirection", 0);
+            Behavior_BrowsePrevBy = (int)Key.GetValue("BrowsePrevBy", 0);
+            Behavior_BrowseNextBy = (int)Key.GetValue("BrowseNextBy", 0);
 
             //----------------------------------------------------------------------
 
@@ -624,6 +623,8 @@ namespace Timekeeper.Classes
             Key.SetValue("SortProjectsByDirection", Behavior_SortProjectsByDirection, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("SortItemsBy", Behavior_SortItemsBy, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("SortItemsByDirection", Behavior_SortItemsByDirection, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("BrowsePrevBy", Behavior_BrowsePrevBy, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("BrowseNextBy", Behavior_BrowseNextBy, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 

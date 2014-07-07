@@ -25,6 +25,9 @@ namespace Timekeeper.Forms
         private Classes.JournalEntry newBrowserEntry;
         private bool isBrowsing = false;
 
+        private Classes.JournalEntry.BrowseByMode PrevBrowseBy;
+        private Classes.JournalEntry.BrowseByMode NextBrowseBy;
+
         //---------------------------------------------------------------------
         // Methods
         //---------------------------------------------------------------------
@@ -383,7 +386,9 @@ namespace Timekeeper.Forms
             // Display entry
             StartTimeSelector.Value = entry.StartTime.LocalDateTime;
             StopTimeSelector.Value = entry.StopTime.LocalDateTime;
-            DurationBox.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
+            DurationBox.Text = Timekeeper.FormatSeconds(entry.Seconds);
+            DurationBox.ForeColor = entry.Seconds == 0 ? Color.Red : SystemColors.ControlText;
+            //DurationBox.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
             //wMemo.Text = entry.Memo;
             MemoEditor.Text = entry.Memo;
 
@@ -480,7 +485,8 @@ namespace Timekeeper.Forms
 
         private void Browser_GotoNextEntry()
         {
-            browserEntry.SetNextId();
+            Application.DoEvents();
+            browserEntry.SetNextId(this.NextBrowseBy);
             Browser_GotoEntry(browserEntry.JournalId);
         }
 
@@ -488,7 +494,8 @@ namespace Timekeeper.Forms
 
         private void Browser_GotoPreviousEntry()
         {
-            browserEntry.SetPreviousId();
+            Application.DoEvents();
+            browserEntry.SetPreviousId(this.PrevBrowseBy);
             Browser_GotoEntry(browserEntry.JournalId);
         }
 
@@ -609,6 +616,94 @@ namespace Timekeeper.Forms
 
             // And disable reverting, just in case
             Browser_EnableRevert(false);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_SetBrowseModePrev(ToolStripMenuItem item)
+        {
+            // Uncheck all
+            ToolbarPrevEntryBrowseByEntry.Checked = false;
+            ToolbarPrevEntryBrowseByDay.Checked = false;
+            ToolbarPrevEntryBrowseByWeek.Checked = false;
+            ToolbarPrevEntryBrowseByMonth.Checked = false;
+            ToolbarPrevEntryBrowseByYear.Checked = false;
+
+            // Set mode
+            int EnumValue = Convert.ToInt32(item.Tag);
+            PrevBrowseBy = (Classes.JournalEntry.BrowseByMode)EnumValue;
+
+            if (item.Name.Substring(0, 4) == "Menu") {
+                // HACK -- need to sync toolbar with menubar
+                // This means we got hear due to a keyboard shortcut
+                // (which is tied to the invisible menu items and not
+                // the visible toolbar dropdown). In this case, we
+                // need to check the corresponding visible item and
+                // not the invisible one that got us here
+                switch (PrevBrowseBy) {
+                    case Classes.JournalEntry.BrowseByMode.Entry: item = ToolbarPrevEntryBrowseByEntry; break;
+                    case Classes.JournalEntry.BrowseByMode.Day: item = ToolbarPrevEntryBrowseByDay; break;
+                    case Classes.JournalEntry.BrowseByMode.Week: item = ToolbarPrevEntryBrowseByWeek; break;
+                    case Classes.JournalEntry.BrowseByMode.Month: item = ToolbarPrevEntryBrowseByMonth; break;
+                    case Classes.JournalEntry.BrowseByMode.Year: item = ToolbarPrevEntryBrowseByYear; break;
+                }
+            }
+
+            // Check currently selected item
+            item.Checked = true;
+
+            // Set parent's tooltip
+            var kc = new KeysConverter();
+            ToolbarPrevEntry.ToolTipText =
+                "Go to Previous " + PrevBrowseBy.ToString() +
+                " (" + kc.ConvertToString(MenuToolbarBrowserPrev.ShortcutKeys) + ")";
+
+            // Update options
+            Options.Behavior_BrowsePrevBy = EnumValue;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_SetBrowseModeNext(ToolStripMenuItem item)
+        {
+            // Uncheck all
+            ToolbarNextEntryBrowseByEntry.Checked = false;
+            ToolbarNextEntryBrowseByDay.Checked = false;
+            ToolbarNextEntryBrowseByWeek.Checked = false;
+            ToolbarNextEntryBrowseByMonth.Checked = false;
+            ToolbarNextEntryBrowseByYear.Checked = false;
+
+            // Set mode
+            int EnumValue = Convert.ToInt32(item.Tag);
+            NextBrowseBy = (Classes.JournalEntry.BrowseByMode)EnumValue;
+
+            // HACK -- need to sync toolbar with menubar
+            if (item.Name.Substring(0, 4) == "Menu") {
+                // This means we got hear due to a keyboard shortcut
+                // (which is tied to the invisible menu items and not
+                // the visible toolbar dropdown). In this case, we
+                // need to check the corresponding visible item and
+                // not the invisible one that got us here
+                switch (NextBrowseBy) {
+                    case Classes.JournalEntry.BrowseByMode.Entry: item = ToolbarNextEntryBrowseByEntry; break;
+                    case Classes.JournalEntry.BrowseByMode.Day: item = ToolbarNextEntryBrowseByDay; break;
+                    case Classes.JournalEntry.BrowseByMode.Week: item = ToolbarNextEntryBrowseByWeek; break;
+                    case Classes.JournalEntry.BrowseByMode.Month: item = ToolbarNextEntryBrowseByMonth; break;
+                    case Classes.JournalEntry.BrowseByMode.Year: item = ToolbarNextEntryBrowseByYear; break;
+                }
+            }
+
+            // Check currently selected item
+            item.Checked = true;
+
+            // Set tooltip
+            var kc = new KeysConverter();
+            ToolbarNextEntry.ToolTipText =
+                "Go to Next " + NextBrowseBy.ToString() +
+                " (" + kc.ConvertToString(MenuToolbarBrowserNext.ShortcutKeys) + ")";
+
+            // Update options
+            Options.Behavior_BrowseNextBy = EnumValue;
         }
 
         //---------------------------------------------------------------------

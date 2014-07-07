@@ -431,6 +431,9 @@ namespace Timekeeper.Forms
                     Action_LoadFile();
                 }
 
+                // Set browser options
+                Action_SetBrowserOptions();
+
                 // Initialize drag drop operations
                 /*
                 this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
@@ -723,6 +726,27 @@ namespace Timekeeper.Forms
             catch (Exception x) {
                 Timekeeper.Exception(x);
                 return false;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Action_SetBrowserOptions()
+        {
+            switch (Options.Behavior_BrowsePrevBy) {
+                case 0: Browser_SetBrowseModePrev(ToolbarPrevEntryBrowseByEntry); break;
+                case 1: Browser_SetBrowseModePrev(ToolbarPrevEntryBrowseByDay); break;
+                case 2: Browser_SetBrowseModePrev(ToolbarPrevEntryBrowseByWeek); break;
+                case 3: Browser_SetBrowseModePrev(ToolbarPrevEntryBrowseByMonth); break;
+                case 4: Browser_SetBrowseModePrev(ToolbarPrevEntryBrowseByYear); break;
+            }
+
+            switch (Options.Behavior_BrowseNextBy) {
+                case 0: Browser_SetBrowseModeNext(ToolbarNextEntryBrowseByEntry); break;
+                case 1: Browser_SetBrowseModeNext(ToolbarNextEntryBrowseByDay); break;
+                case 2: Browser_SetBrowseModeNext(ToolbarNextEntryBrowseByWeek); break;
+                case 3: Browser_SetBrowseModeNext(ToolbarNextEntryBrowseByMonth); break;
+                case 4: Browser_SetBrowseModeNext(ToolbarNextEntryBrowseByYear); break;
             }
         }
 

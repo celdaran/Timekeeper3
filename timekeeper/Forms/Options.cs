@@ -63,9 +63,11 @@ namespace Timekeeper.Forms
             if (DialogResult == DialogResult.OK) {
                 FormToOptions();
             } else {
+                /*
                 if (Common.WarnPrompt("Are you sure?") != DialogResult.Yes) {
                     e.Cancel = true;
                 }
+                */
             }
         }
 
@@ -296,6 +298,8 @@ namespace Timekeeper.Forms
             Behavior_SortProjectsByDirection.SelectedIndex = Values.Behavior_SortProjectsByDirection;
             Behavior_SortItemsBy.SelectedIndex = Values.Behavior_SortItemsBy;
             Behavior_SortItemsByDirection.SelectedIndex = Values.Behavior_SortItemsByDirection;
+            Behavior_BrowsePrevBy.SelectedIndex = Values.Behavior_BrowsePrevBy;
+            Behavior_BrowseNextBy.SelectedIndex = Values.Behavior_BrowseNextBy;
 
             //----------------------------------------------------------------------
 
@@ -377,6 +381,8 @@ namespace Timekeeper.Forms
             Values.Behavior_SortProjectsByDirection = Behavior_SortProjectsByDirection.SelectedIndex;
             Values.Behavior_SortItemsBy = Behavior_SortItemsBy.SelectedIndex;
             Values.Behavior_SortItemsByDirection = Behavior_SortItemsByDirection.SelectedIndex;
+            Values.Behavior_BrowsePrevBy = Behavior_BrowsePrevBy.SelectedIndex;
+            Values.Behavior_BrowseNextBy = Behavior_BrowseNextBy.SelectedIndex;
 
             //----------------------------------------------------------------------
 

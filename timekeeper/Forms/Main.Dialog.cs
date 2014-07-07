@@ -127,6 +127,8 @@ namespace Timekeeper.Forms
 
             TrayIcon.Visible = Options.Behavior_Window_ShowInTray;
 
+            Action_SetBrowserOptions();
+
             MemoEditor.ToolbarVisible(Options.View_Other_MemoEditorToolbar);
             MemoEditor.SwitchMarkdown(Options.Advanced_Other_MarkupLanguage);
 

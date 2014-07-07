@@ -149,6 +149,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.AdvancedPage = new System.Windows.Forms.TabPage();
             this.OtherAdvancedGroup = new System.Windows.Forms.GroupBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.Advanced_Other_MarkupLanguage = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -166,8 +168,13 @@
             this.LoggingDatabaseLabel = new System.Windows.Forms.Label();
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.BrowsingGroup = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.Behavior_BrowsePrevBy = new System.Windows.Forms.ComboBox();
+            this.Behavior_BrowseNextBy = new System.Windows.Forms.ComboBox();
+            this.Behavior_BottomSpacerLabel = new System.Windows.Forms.Label();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -210,6 +217,7 @@
             this.OtherAdvancedGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.LoggingGroup.SuspendLayout();
+            this.BrowsingGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -760,6 +768,7 @@
             // BehaviorPage
             // 
             this.BehaviorPage.AutoScroll = true;
+            this.BehaviorPage.Controls.Add(this.BrowsingGroup);
             this.BehaviorPage.Controls.Add(this.SortingGroup);
             this.BehaviorPage.Controls.Add(this.AnnoyGroup);
             this.BehaviorPage.Controls.Add(this.WindowControlGroup);
@@ -824,9 +833,9 @@
             this.SortItemsLabel.AutoSize = true;
             this.SortItemsLabel.Location = new System.Drawing.Point(11, 6);
             this.SortItemsLabel.Name = "SortItemsLabel";
-            this.SortItemsLabel.Size = new System.Drawing.Size(57, 13);
+            this.SortItemsLabel.Size = new System.Drawing.Size(63, 13);
             this.SortItemsLabel.TabIndex = 18;
-            this.SortItemsLabel.Text = "Sort Items:";
+            this.SortItemsLabel.Text = "Sort Others:";
             // 
             // SortingGroup_ProjectPanel
             // 
@@ -1600,6 +1609,27 @@
             this.OtherAdvancedGroup.TabStop = false;
             this.OtherAdvancedGroup.Text = "Other";
             // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Location = new System.Drawing.Point(17, 120);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(243, 17);
+            this.checkBox6.TabIndex = 12;
+            this.checkBox6.Text = "Display Journal Entry Index on browser toolbar";
+            this.checkBox6.UseVisualStyleBackColor = true;
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Enabled = false;
+            this.checkBox5.Location = new System.Drawing.Point(16, 166);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(122, 17);
+            this.checkBox5.TabIndex = 11;
+            this.checkBox5.Text = "Enable Stacktracing";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
@@ -1790,26 +1820,86 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
-            // checkBox5
+            // BrowsingGroup
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Enabled = false;
-            this.checkBox5.Location = new System.Drawing.Point(16, 166);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(122, 17);
-            this.checkBox5.TabIndex = 11;
-            this.checkBox5.Text = "Enable Stacktracing";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.BrowsingGroup.Controls.Add(this.checkBox7);
+            this.BrowsingGroup.Controls.Add(this.Behavior_BrowseNextBy);
+            this.BrowsingGroup.Controls.Add(this.Behavior_BrowsePrevBy);
+            this.BrowsingGroup.Controls.Add(this.label14);
+            this.BrowsingGroup.Controls.Add(this.label13);
+            this.BrowsingGroup.Location = new System.Drawing.Point(17, 436);
+            this.BrowsingGroup.Name = "BrowsingGroup";
+            this.BrowsingGroup.Size = new System.Drawing.Size(345, 102);
+            this.BrowsingGroup.TabIndex = 5;
+            this.BrowsingGroup.TabStop = false;
+            this.BrowsingGroup.Text = "Browsing";
             // 
-            // checkBox6
+            // label13
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(17, 120);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(243, 17);
-            this.checkBox6.TabIndex = 12;
-            this.checkBox6.Text = "Display Journal Entry Index on browser toolbar";
-            this.checkBox6.UseVisualStyleBackColor = true;
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(14, 29);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(138, 13);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Browse Previous Entries by:";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(14, 56);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(119, 13);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Browse Next Entries by:";
+            // 
+            // Behavior_BrowsePrevBy
+            // 
+            this.Behavior_BrowsePrevBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Behavior_BrowsePrevBy.FormattingEnabled = true;
+            this.Behavior_BrowsePrevBy.Items.AddRange(new object[] {
+            "Entry",
+            "Day",
+            "Week",
+            "Month",
+            "Year"});
+            this.Behavior_BrowsePrevBy.Location = new System.Drawing.Point(158, 26);
+            this.Behavior_BrowsePrevBy.Name = "Behavior_BrowsePrevBy";
+            this.Behavior_BrowsePrevBy.Size = new System.Drawing.Size(121, 21);
+            this.Behavior_BrowsePrevBy.TabIndex = 2;
+            // 
+            // Behavior_BrowseNextBy
+            // 
+            this.Behavior_BrowseNextBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Behavior_BrowseNextBy.FormattingEnabled = true;
+            this.Behavior_BrowseNextBy.Items.AddRange(new object[] {
+            "Entry",
+            "Day",
+            "Week",
+            "Month",
+            "Year"});
+            this.Behavior_BrowseNextBy.Location = new System.Drawing.Point(158, 53);
+            this.Behavior_BrowseNextBy.Name = "Behavior_BrowseNextBy";
+            this.Behavior_BrowseNextBy.Size = new System.Drawing.Size(121, 21);
+            this.Behavior_BrowseNextBy.TabIndex = 3;
+            // 
+            // Behavior_BottomSpacerLabel
+            // 
+            this.Behavior_BottomSpacerLabel.AutoSize = true;
+            this.Behavior_BottomSpacerLabel.Location = new System.Drawing.Point(127, 435);
+            this.Behavior_BottomSpacerLabel.Name = "Behavior_BottomSpacerLabel";
+            this.Behavior_BottomSpacerLabel.Size = new System.Drawing.Size(0, 13);
+            this.Behavior_BottomSpacerLabel.TabIndex = 6;
+            // 
+            // checkBox7
+            // 
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Enabled = false;
+            this.checkBox7.Location = new System.Drawing.Point(17, 79);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(225, 17);
+            this.checkBox7.TabIndex = 4;
+            this.checkBox7.Text = "Lock Previous and Next browsing options.";
+            this.checkBox7.UseVisualStyleBackColor = true;
             // 
             // Options
             // 
@@ -1818,6 +1908,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelDialogButton;
             this.ClientSize = new System.Drawing.Size(519, 467);
+            this.Controls.Add(this.Behavior_BottomSpacerLabel);
             this.Controls.Add(this.AcceptDialogButton);
             this.Controls.Add(this.CancelDialogButton);
             this.Controls.Add(this.OptionsPanelCollection);
@@ -1900,7 +1991,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
+            this.BrowsingGroup.ResumeLayout(false);
+            this.BrowsingGroup.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -2046,6 +2140,13 @@
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.GroupBox BrowsingGroup;
+        private System.Windows.Forms.ComboBox Behavior_BrowseNextBy;
+        private System.Windows.Forms.ComboBox Behavior_BrowsePrevBy;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label Behavior_BottomSpacerLabel;
+        private System.Windows.Forms.CheckBox checkBox7;
 
     }
 }

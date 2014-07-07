@@ -346,10 +346,22 @@ namespace Timekeeper.Forms
             Browser_GotoPreviousEntry();
         }
 
+        // Toolbar Functions | Browser | Previous Entry | Browse by UNIT
+        private void ToolbarPrevEntryBrowseByUnit_Click(object sender, EventArgs e)
+        {
+            Browser_SetBrowseModePrev((ToolStripMenuItem)sender);
+        }
+
         // Toolbar Functions | Browser | Next Entry
         private void MenuToolbarBrowserNext_Click(object sender, EventArgs e)
         {
             Browser_GotoNextEntry();
+        }
+
+        // Toolbar Functions | Browser | Previous Entry | Browse by UNIT
+        private void ToolbarNextEntryBrowseByUnit_Click(object sender, EventArgs e)
+        {
+            Browser_SetBrowseModeNext((ToolStripMenuItem)sender);
         }
 
         // Toolbar Functions | Browser | Last Entry
@@ -374,6 +386,24 @@ namespace Timekeeper.Forms
         private void MenuToolbarBrowserCloseEndGap_Click(object sender, EventArgs e)
         {
             Browser_CloseStopGap();
+        }
+
+        // Toolbar Functions | Browser | Split | in Halves
+        private void MenuToolbarBrowserSplitEntry2_Click(object sender, EventArgs e)
+        {
+            Action_SplitEntry(2);
+        }
+
+        // Toolbar Functions | Browser | Split | in Thirds
+        private void MenuToolbarBrowserSplitEntry3_Click(object sender, EventArgs e)
+        {
+            Action_SplitEntry(3);
+        }
+
+        // Toolbar Functions | Browser | Split | in Fourths
+        private void MenuToolbarBrowserSplitEntry4_Click(object sender, EventArgs e)
+        {
+            Action_SplitEntry(4);
         }
 
         // Toolbar Functions | Browser | Revert
@@ -749,16 +779,15 @@ namespace Timekeeper.Forms
             Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
         }
 
+        //---------------------------------------------------------------------
+        // Testing Area
+        //---------------------------------------------------------------------
 
         private void wStartTime_Enter(object sender, EventArgs e)
         {
             // This is in anticipation that the value will change
             StartTimeManuallySet = true;
         }
-
-        //---------------------------------------------------------------------
-        // Testing Area
-        //---------------------------------------------------------------------
 
         private void wStartTime_KeyDown(object sender, KeyEventArgs e)
         {
@@ -862,10 +891,6 @@ namespace Timekeeper.Forms
             // TODO: Lastly, move this logic to Main.Action.cs
         }
 
-        private void wStartTime_ValueChanged(object sender, EventArgs e)
-        {
-        }
-
         private void MenuToolbarBrowserSplitEntry_Click(object sender, EventArgs e)
         {
             /*
@@ -888,23 +913,6 @@ namespace Timekeeper.Forms
             DialogBox.ShowDialog(this);
             */
         }
-
-        private void MenuToolbarBrowserSplitEntry2_Click(object sender, EventArgs e)
-        {
-            Action_SplitEntry(2);
-        }
-
-        private void toolControlSplitEntry3_Click(object sender, EventArgs e)
-        {
-            Action_SplitEntry(3);
-        }
-
-        private void toolControlSplitEntry4_Click(object sender, EventArgs e)
-        {
-            Action_SplitEntry(4);
-        }
-
-
 
         //---------------------------------------------------------------------
         // FIXME - EXPERIMENTAL - NOT READY FOR PRIME TIME

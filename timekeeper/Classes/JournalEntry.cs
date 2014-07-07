@@ -15,6 +15,7 @@ namespace Timekeeper.Classes
         private DBI Database;
 
         private enum Mode { Insert, Update };
+        public enum BrowseByMode { Entry, Day, Week, Month, Year };
 
         //---------------------------------------------------------------------
         // Attributes
@@ -275,28 +276,143 @@ namespace Timekeeper.Classes
 
         private long GetPrevId()
         {
+            return GetPrevId(BrowseByMode.Entry);
+        }
+
+        //---------------------------------------------------------------------
+
+        private long GetPrevId(BrowseByMode mode)
+        {
             // select JournalId from Journal where StartTime < '2015-07-07T08:48:28-05:00' order by StartTime desc limit 1;
+
+            string StartSearchAt = Common.Now();
+            switch (mode) {
+                case BrowseByMode.Entry:
+                    StartSearchAt = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
+                    break;
+
+                case BrowseByMode.Day:
+                    DateTimeOffset Yesterday = this.StartTime.AddDays(-1);
+                    // FIXME: need to figure out how to handle time zones
+                    StartSearchAt = Yesterday.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
+                    break;
+
+                case BrowseByMode.Week:
+                    /*
+                    int Delta = DayOfWeek.Monday - this.StartTime.DayOfWeek;
+                    Delta = 7 - Math.Abs(Delta);
+                    DateTimeOffset LastWeek = this.StartTime.AddDays(-Delta);
+                    */
+                    DateTimeOffset LastWeek = this.StartTime.AddDays(-7);
+                    StartSearchAt = LastWeek.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
+                    break;
+
+                case BrowseByMode.Month:
+                    DateTimeOffset LastMonth = this.StartTime.AddMonths(-1);
+                    StartSearchAt = LastMonth.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
+                    break;
+
+                case BrowseByMode.Year:
+                    DateTimeOffset LastYear = this.StartTime.AddYears(-1);
+                    StartSearchAt = LastYear.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
+                    break;
+            }
+
             string Query = String.Format(@"
-                SELECT JournalId, StartTime 
-                FROM Journal
-                WHERE StartTime < '{0}'
-                ORDER BY StartTime DESC
-                LIMIT 1", this.StartTime.ToString(Common.UTC_DATETIME_FORMAT));
-            return GetJournalId(Query);
+                    SELECT JournalId
+                    FROM Journal
+                    WHERE StartTime < '{0}'
+                    ORDER BY StartTime DESC
+                    LIMIT 1", StartSearchAt);
+            long JournalId = GetJournalId(Query);
+
+            if (JournalId == 0) {
+                // If we got a zero, we ran past the end of the dataset
+                // so let's just fetch the first one.
+                JournalId = GetFirstId();
+            }
+
+            return JournalId;
         }
 
         //---------------------------------------------------------------------
 
         private long GetNextId()
         {
+            return GetNextId(BrowseByMode.Entry);
+        }
+
+        //---------------------------------------------------------------------
+
+        private long GetNextId(BrowseByMode mode)
+        {
+            /*
+
             // select JournalId from Journal where StartTime >  '2014-07-07T08:48:28-05:00' order by StartTime asc limit 1;
+
+            --> browse by week (find the first item after the previous day's last tick: hey, same thing. These *all* start at the first entry of a day, so the only real trick is finding out what the day is supposed to be)
+            
+            select JournalId from Journal 
+            where StartTime > '2015-06-22T23:59:59.99-05:00' 
+            order by StartTime asc limit 1;
+
+            // FIXME: This is another area where a user-definable midnight will need to be considered.
+            */
+
+            string StartSearchAt = Common.Now();
+            switch (mode) {
+                case BrowseByMode.Entry:
+                    StartSearchAt = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
+                    break;
+
+                case BrowseByMode.Day:
+                    DateTimeOffset Tomorrow = this.StartTime.AddDays(1);
+                    // FIXME: need to figure out how to handle time zones
+                    //StartSearchAt = tmp.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:53-05:00";
+                    StartSearchAt = Tomorrow.DateTime.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    break;
+
+                case BrowseByMode.Week:
+                    /*
+                    // This code was intended to jump by Mondays.
+                    // Maybe make an option to jump # of days/weeks/months/years
+                    // versus jump to the start of the next day/week/month/year
+                    int Delta = DayOfWeek.Monday - this.StartTime.DayOfWeek;
+                    Delta = 7 - Math.Abs(Delta);
+                    DateTimeOffset NextWeek = this.StartTime.AddDays(Delta);
+                    */
+                    DateTimeOffset NextWeek = this.StartTime.AddDays(7);
+                    StartSearchAt = NextWeek.DateTime.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    break;
+
+                case BrowseByMode.Month:
+                    DateTimeOffset NextMonth = this.StartTime.AddMonths(1);
+                    //StartSearchAt = NextMonth.DateTime.ToString("yyyy-MM-01") + "T00:00:00-05:00";
+                    StartSearchAt = NextMonth.DateTime.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    break;
+
+                case BrowseByMode.Year:
+                    DateTimeOffset NextYear = this.StartTime.AddYears(1);
+                    StartSearchAt = NextYear.DateTime.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    break;
+            }
+
             string Query = String.Format(@"
-                SELECT JournalId, StartTime 
+                SELECT JournalId
                 FROM Journal
                 WHERE StartTime > '{0}'
                 ORDER BY StartTime ASC
-                LIMIT 1", this.StartTime.ToString(Common.UTC_DATETIME_FORMAT));
-            return GetJournalId(Query);
+                LIMIT 1", StartSearchAt);
+
+            long JournalId = GetJournalId(Query);
+
+            if (JournalId == 0) {
+                // If we got a zero, we ran past the end of the dataset
+                // so let's just fetch the last one.
+                JournalId = GetLastId();
+            }
+
+            return JournalId;
         }
 
         //---------------------------------------------------------------------
@@ -336,14 +452,28 @@ namespace Timekeeper.Classes
 
         public void SetPreviousId()
         {
-            this.JournalId = GetPrevId();
+            SetPreviousId(BrowseByMode.Entry);
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SetPreviousId(BrowseByMode mode)
+        {
+            this.JournalId = GetPrevId(mode);
         }
 
         //---------------------------------------------------------------------
 
         public void SetNextId()
         {
-            this.JournalId = GetNextId();
+            SetNextId(BrowseByMode.Entry);
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SetNextId(BrowseByMode mode)
+        {
+            this.JournalId = GetNextId(mode);
         }
 
         //---------------------------------------------------------------------

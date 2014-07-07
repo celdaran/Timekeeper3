@@ -81,7 +81,19 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolbarBrowserFirst = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolbarBrowserPrev = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserPrevBrowseBy = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserPrevBrowseByEntry = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserPrevBrowseByDay = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserPrevBrowseByWeek = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserPrevBrowseByMonth = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserPrevBrowseByYear = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolbarBrowserNext = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserNextBrowseBy = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserNextBrowseByEntry = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserNextBrowseByDay = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserNextBrowseByWeek = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserNextBrowseByMonth = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarBrowserNextBrowseByYear = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolbarBrowserLast = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolbarBrowserNew = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolbarBrowserSep1 = new System.Windows.Forms.ToolStripSeparator();
@@ -180,8 +192,18 @@ namespace Timekeeper.Forms
             this.ToolbarStopButton = new System.Windows.Forms.ToolStripButton();
             this.ToolbarSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolbarFirstEntry = new System.Windows.Forms.ToolStripButton();
-            this.ToolbarPrevEntry = new System.Windows.Forms.ToolStripButton();
-            this.ToolbarNextEntry = new System.Windows.Forms.ToolStripButton();
+            this.ToolbarPrevEntry = new System.Windows.Forms.ToolStripSplitButton();
+            this.ToolbarPrevEntryBrowseByEntry = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolbarPrevEntryBrowseByDay = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolbarPrevEntryBrowseByWeek = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolbarPrevEntryBrowseByMonth = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolbarPrevEntryBrowseByYear = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolbarNextEntry = new System.Windows.Forms.ToolStripSplitButton();
+            this.ToolbarNextEntryBrowseByEntry = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolbarNextEntryBrowseByDay = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolbarNextEntryBrowseByWeek = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolbarNextEntryBrowseByMonth = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolbarNextEntryBrowseByYear = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolbarLastEntry = new System.Windows.Forms.ToolStripButton();
             this.ToolbarNewEntry = new System.Windows.Forms.ToolStripButton();
             this.ToolbarJournalId = new System.Windows.Forms.ToolStripLabel();
@@ -305,7 +327,7 @@ namespace Timekeeper.Forms
             // MenuFileUtilitiesImport
             // 
             this.MenuFileUtilitiesImport.Name = "MenuFileUtilitiesImport";
-            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesImport.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesImport.Text = "Import...";
             this.MenuFileUtilitiesImport.Click += new System.EventHandler(this.MenuFileUtilitiesImport_Click);
             // 
@@ -313,20 +335,20 @@ namespace Timekeeper.Forms
             // 
             this.MenuFileUtilitiesExport.Enabled = false;
             this.MenuFileUtilitiesExport.Name = "MenuFileUtilitiesExport";
-            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesExport.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesExport.Text = "Export...";
             // 
             // MenuFileUtilitiesBackup
             // 
             this.MenuFileUtilitiesBackup.Enabled = false;
             this.MenuFileUtilitiesBackup.Name = "MenuFileUtilitiesBackup";
-            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesBackup.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesBackup.Text = "Backup...";
             // 
             // MenuFileUtilitiesCheck
             // 
             this.MenuFileUtilitiesCheck.Name = "MenuFileUtilitiesCheck";
-            this.MenuFileUtilitiesCheck.Size = new System.Drawing.Size(152, 22);
+            this.MenuFileUtilitiesCheck.Size = new System.Drawing.Size(120, 22);
             this.MenuFileUtilitiesCheck.Text = "Check...";
             this.MenuFileUtilitiesCheck.Click += new System.EventHandler(this.MenuFileUtilitiesCheck_Click);
             // 
@@ -614,7 +636,9 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowser.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuToolbarBrowserFirst,
             this.MenuToolbarBrowserPrev,
+            this.MenuToolbarBrowserPrevBrowseBy,
             this.MenuToolbarBrowserNext,
+            this.MenuToolbarBrowserNextBrowseBy,
             this.MenuToolbarBrowserLast,
             this.MenuToolbarBrowserNew,
             this.MenuToolbarBrowserSep1,
@@ -626,14 +650,14 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowserRevert,
             this.MenuToolbarBrowserUnlock});
             this.MenuToolbarBrowser.Name = "MenuToolbarBrowser";
-            this.MenuToolbarBrowser.Size = new System.Drawing.Size(113, 22);
+            this.MenuToolbarBrowser.Size = new System.Drawing.Size(152, 22);
             this.MenuToolbarBrowser.Text = "&Browser";
             // 
             // MenuToolbarBrowserFirst
             // 
             this.MenuToolbarBrowserFirst.Name = "MenuToolbarBrowserFirst";
             this.MenuToolbarBrowserFirst.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Home)));
-            this.MenuToolbarBrowserFirst.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserFirst.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserFirst.Text = "&First Entry";
             this.MenuToolbarBrowserFirst.Click += new System.EventHandler(this.MenuToolbarBrowserFirst_Click);
             // 
@@ -641,23 +665,127 @@ namespace Timekeeper.Forms
             // 
             this.MenuToolbarBrowserPrev.Name = "MenuToolbarBrowserPrev";
             this.MenuToolbarBrowserPrev.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Left)));
-            this.MenuToolbarBrowserPrev.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserPrev.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserPrev.Text = "&Previous Entry";
             this.MenuToolbarBrowserPrev.Click += new System.EventHandler(this.MenuToolbarBrowserPrev_Click);
+            // 
+            // MenuToolbarBrowserPrevBrowseBy
+            // 
+            this.MenuToolbarBrowserPrevBrowseBy.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuToolbarBrowserPrevBrowseByEntry,
+            this.MenuToolbarBrowserPrevBrowseByDay,
+            this.MenuToolbarBrowserPrevBrowseByWeek,
+            this.MenuToolbarBrowserPrevBrowseByMonth,
+            this.MenuToolbarBrowserPrevBrowseByYear});
+            this.MenuToolbarBrowserPrevBrowseBy.Name = "MenuToolbarBrowserPrevBrowseBy";
+            this.MenuToolbarBrowserPrevBrowseBy.Size = new System.Drawing.Size(197, 22);
+            this.MenuToolbarBrowserPrevBrowseBy.Text = "Previous Entry Browse By";
+            // 
+            // MenuToolbarBrowserPrevBrowseByEntry
+            // 
+            this.MenuToolbarBrowserPrevBrowseByEntry.Name = "MenuToolbarBrowserPrevBrowseByEntry";
+            this.MenuToolbarBrowserPrevBrowseByEntry.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowserPrevBrowseByEntry.Tag = "0";
+            this.MenuToolbarBrowserPrevBrowseByEntry.Text = "Entry";
+            this.MenuToolbarBrowserPrevBrowseByEntry.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
+            // 
+            // MenuToolbarBrowserPrevBrowseByDay
+            // 
+            this.MenuToolbarBrowserPrevBrowseByDay.Name = "MenuToolbarBrowserPrevBrowseByDay";
+            this.MenuToolbarBrowserPrevBrowseByDay.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowserPrevBrowseByDay.Tag = "1";
+            this.MenuToolbarBrowserPrevBrowseByDay.Text = "Day";
+            this.MenuToolbarBrowserPrevBrowseByDay.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
+            // 
+            // MenuToolbarBrowserPrevBrowseByWeek
+            // 
+            this.MenuToolbarBrowserPrevBrowseByWeek.Name = "MenuToolbarBrowserPrevBrowseByWeek";
+            this.MenuToolbarBrowserPrevBrowseByWeek.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowserPrevBrowseByWeek.Tag = "2";
+            this.MenuToolbarBrowserPrevBrowseByWeek.Text = "Week";
+            this.MenuToolbarBrowserPrevBrowseByWeek.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
+            // 
+            // MenuToolbarBrowserPrevBrowseByMonth
+            // 
+            this.MenuToolbarBrowserPrevBrowseByMonth.Name = "MenuToolbarBrowserPrevBrowseByMonth";
+            this.MenuToolbarBrowserPrevBrowseByMonth.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowserPrevBrowseByMonth.Tag = "3";
+            this.MenuToolbarBrowserPrevBrowseByMonth.Text = "Month";
+            this.MenuToolbarBrowserPrevBrowseByMonth.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
+            // 
+            // MenuToolbarBrowserPrevBrowseByYear
+            // 
+            this.MenuToolbarBrowserPrevBrowseByYear.Name = "MenuToolbarBrowserPrevBrowseByYear";
+            this.MenuToolbarBrowserPrevBrowseByYear.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowserPrevBrowseByYear.Tag = "4";
+            this.MenuToolbarBrowserPrevBrowseByYear.Text = "Year";
+            this.MenuToolbarBrowserPrevBrowseByYear.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
             // 
             // MenuToolbarBrowserNext
             // 
             this.MenuToolbarBrowserNext.Name = "MenuToolbarBrowserNext";
             this.MenuToolbarBrowserNext.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Right)));
-            this.MenuToolbarBrowserNext.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserNext.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserNext.Text = "&Next Entry";
             this.MenuToolbarBrowserNext.Click += new System.EventHandler(this.MenuToolbarBrowserNext_Click);
+            // 
+            // MenuToolbarBrowserNextBrowseBy
+            // 
+            this.MenuToolbarBrowserNextBrowseBy.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuToolbarBrowserNextBrowseByEntry,
+            this.MenuToolbarBrowserNextBrowseByDay,
+            this.MenuToolbarBrowserNextBrowseByWeek,
+            this.MenuToolbarBrowserNextBrowseByMonth,
+            this.MenuToolbarBrowserNextBrowseByYear});
+            this.MenuToolbarBrowserNextBrowseBy.Name = "MenuToolbarBrowserNextBrowseBy";
+            this.MenuToolbarBrowserNextBrowseBy.Size = new System.Drawing.Size(197, 22);
+            this.MenuToolbarBrowserNextBrowseBy.Text = "Next Entry Browse By";
+            // 
+            // MenuToolbarBrowserNextBrowseByEntry
+            // 
+            this.MenuToolbarBrowserNextBrowseByEntry.Name = "MenuToolbarBrowserNextBrowseByEntry";
+            this.MenuToolbarBrowserNextBrowseByEntry.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowserNextBrowseByEntry.Tag = "0";
+            this.MenuToolbarBrowserNextBrowseByEntry.Text = "Entry";
+            this.MenuToolbarBrowserNextBrowseByEntry.Click += new System.EventHandler(this.ToolbarNextEntryBrowseByUnit_Click);
+            // 
+            // MenuToolbarBrowserNextBrowseByDay
+            // 
+            this.MenuToolbarBrowserNextBrowseByDay.Name = "MenuToolbarBrowserNextBrowseByDay";
+            this.MenuToolbarBrowserNextBrowseByDay.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowserNextBrowseByDay.Tag = "1";
+            this.MenuToolbarBrowserNextBrowseByDay.Text = "Day";
+            this.MenuToolbarBrowserNextBrowseByDay.Click += new System.EventHandler(this.ToolbarNextEntryBrowseByUnit_Click);
+            // 
+            // MenuToolbarBrowserNextBrowseByWeek
+            // 
+            this.MenuToolbarBrowserNextBrowseByWeek.Name = "MenuToolbarBrowserNextBrowseByWeek";
+            this.MenuToolbarBrowserNextBrowseByWeek.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowserNextBrowseByWeek.Tag = "2";
+            this.MenuToolbarBrowserNextBrowseByWeek.Text = "Week";
+            this.MenuToolbarBrowserNextBrowseByWeek.Click += new System.EventHandler(this.ToolbarNextEntryBrowseByUnit_Click);
+            // 
+            // MenuToolbarBrowserNextBrowseByMonth
+            // 
+            this.MenuToolbarBrowserNextBrowseByMonth.Name = "MenuToolbarBrowserNextBrowseByMonth";
+            this.MenuToolbarBrowserNextBrowseByMonth.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowserNextBrowseByMonth.Tag = "3";
+            this.MenuToolbarBrowserNextBrowseByMonth.Text = "Month";
+            this.MenuToolbarBrowserNextBrowseByMonth.Click += new System.EventHandler(this.ToolbarNextEntryBrowseByUnit_Click);
+            // 
+            // MenuToolbarBrowserNextBrowseByYear
+            // 
+            this.MenuToolbarBrowserNextBrowseByYear.Name = "MenuToolbarBrowserNextBrowseByYear";
+            this.MenuToolbarBrowserNextBrowseByYear.Size = new System.Drawing.Size(152, 22);
+            this.MenuToolbarBrowserNextBrowseByYear.Tag = "4";
+            this.MenuToolbarBrowserNextBrowseByYear.Text = "Year";
+            this.MenuToolbarBrowserNextBrowseByYear.Click += new System.EventHandler(this.ToolbarNextEntryBrowseByUnit_Click);
             // 
             // MenuToolbarBrowserLast
             // 
             this.MenuToolbarBrowserLast.Name = "MenuToolbarBrowserLast";
             this.MenuToolbarBrowserLast.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.End)));
-            this.MenuToolbarBrowserLast.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserLast.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserLast.Text = "&Last Entry";
             this.MenuToolbarBrowserLast.Click += new System.EventHandler(this.MenuToolbarBrowserLast_Click);
             // 
@@ -666,26 +794,26 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowserNew.Name = "MenuToolbarBrowserNew";
             this.MenuToolbarBrowserNew.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.N)));
-            this.MenuToolbarBrowserNew.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserNew.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserNew.Text = "&New Entry";
             this.MenuToolbarBrowserNew.Click += new System.EventHandler(this.MenuToolbarBrowserNew_Click);
             // 
             // MenuToolbarBrowserSep1
             // 
             this.MenuToolbarBrowserSep1.Name = "MenuToolbarBrowserSep1";
-            this.MenuToolbarBrowserSep1.Size = new System.Drawing.Size(190, 6);
+            this.MenuToolbarBrowserSep1.Size = new System.Drawing.Size(194, 6);
             // 
             // MenuToolbarBrowserCloseStartGap
             // 
             this.MenuToolbarBrowserCloseStartGap.Name = "MenuToolbarBrowserCloseStartGap";
-            this.MenuToolbarBrowserCloseStartGap.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserCloseStartGap.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserCloseStartGap.Text = "&Close Start Gap";
             this.MenuToolbarBrowserCloseStartGap.Click += new System.EventHandler(this.MenuToolbarBrowserCloseStartGap_Click);
             // 
             // MenuToolbarBrowserCloseEndGap
             // 
             this.MenuToolbarBrowserCloseEndGap.Name = "MenuToolbarBrowserCloseEndGap";
-            this.MenuToolbarBrowserCloseEndGap.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserCloseEndGap.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserCloseEndGap.Text = "&Close End Gap";
             this.MenuToolbarBrowserCloseEndGap.Click += new System.EventHandler(this.MenuToolbarBrowserCloseEndGap_Click);
             // 
@@ -696,7 +824,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowserSplitEntry3,
             this.MenuToolbarBrowserSplitEntry4});
             this.MenuToolbarBrowserSplitEntry.Name = "MenuToolbarBrowserSplitEntry";
-            this.MenuToolbarBrowserSplitEntry.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserSplitEntry.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserSplitEntry.Text = "Split Entry";
             this.MenuToolbarBrowserSplitEntry.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry_Click);
             // 
@@ -712,24 +840,26 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowserSplitEntry3.Name = "MenuToolbarBrowserSplitEntry3";
             this.MenuToolbarBrowserSplitEntry3.Size = new System.Drawing.Size(151, 22);
             this.MenuToolbarBrowserSplitEntry3.Text = "Split in Thirds";
+            this.MenuToolbarBrowserSplitEntry3.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry3_Click);
             // 
             // MenuToolbarBrowserSplitEntry4
             // 
             this.MenuToolbarBrowserSplitEntry4.Name = "MenuToolbarBrowserSplitEntry4";
             this.MenuToolbarBrowserSplitEntry4.Size = new System.Drawing.Size(151, 22);
             this.MenuToolbarBrowserSplitEntry4.Text = "Split in Quarters";
+            this.MenuToolbarBrowserSplitEntry4.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry4_Click);
             // 
             // MenuToolbarBrowserSep2
             // 
             this.MenuToolbarBrowserSep2.Name = "MenuToolbarBrowserSep2";
-            this.MenuToolbarBrowserSep2.Size = new System.Drawing.Size(190, 6);
+            this.MenuToolbarBrowserSep2.Size = new System.Drawing.Size(194, 6);
             // 
             // MenuToolbarBrowserSave
             // 
             this.MenuToolbarBrowserSave.Name = "MenuToolbarBrowserSave";
             this.MenuToolbarBrowserSave.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.S)));
-            this.MenuToolbarBrowserSave.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserSave.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserSave.Text = "Save";
             this.MenuToolbarBrowserSave.Click += new System.EventHandler(this.MenuToolbarBrowserSave_Click);
             // 
@@ -738,14 +868,14 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowserRevert.Name = "MenuToolbarBrowserRevert";
             this.MenuToolbarBrowserRevert.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.Z)));
-            this.MenuToolbarBrowserRevert.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserRevert.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserRevert.Text = "&Revert";
             this.MenuToolbarBrowserRevert.Click += new System.EventHandler(this.MenuToolbarBrowserRevert_Click);
             // 
             // MenuToolbarBrowserUnlock
             // 
             this.MenuToolbarBrowserUnlock.Name = "MenuToolbarBrowserUnlock";
-            this.MenuToolbarBrowserUnlock.Size = new System.Drawing.Size(193, 22);
+            this.MenuToolbarBrowserUnlock.Size = new System.Drawing.Size(197, 22);
             this.MenuToolbarBrowserUnlock.Text = "&Unlock";
             this.MenuToolbarBrowserUnlock.Click += new System.EventHandler(this.MenuToolbarBrowserUnlock_Click);
             // 
@@ -768,7 +898,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarFormatBlockquote,
             this.MenuToolbarFormatHorizontalRule});
             this.MenuToolbarFormat.Name = "MenuToolbarFormat";
-            this.MenuToolbarFormat.Size = new System.Drawing.Size(113, 22);
+            this.MenuToolbarFormat.Size = new System.Drawing.Size(152, 22);
             this.MenuToolbarFormat.Text = "&Format";
             // 
             // MenuToolbarFormatBold
@@ -1451,7 +1581,6 @@ namespace Timekeeper.Forms
             this.StartTimeSelector.Name = "StartTimeSelector";
             this.StartTimeSelector.Size = new System.Drawing.Size(130, 20);
             this.StartTimeSelector.TabIndex = 1;
-            this.StartTimeSelector.ValueChanged += new System.EventHandler(this.wStartTime_ValueChanged);
             this.StartTimeSelector.Enter += new System.EventHandler(this.wStartTime_Enter);
             this.StartTimeSelector.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wStartTime_KeyDown);
             this.StartTimeSelector.Leave += new System.EventHandler(this.wStartTime_Leave);
@@ -1559,25 +1688,121 @@ namespace Timekeeper.Forms
             // ToolbarPrevEntry
             // 
             this.ToolbarPrevEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarPrevEntry.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolbarPrevEntryBrowseByEntry,
+            this.ToolbarPrevEntryBrowseByDay,
+            this.ToolbarPrevEntryBrowseByWeek,
+            this.ToolbarPrevEntryBrowseByMonth,
+            this.ToolbarPrevEntryBrowseByYear});
             this.ToolbarPrevEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonPrev;
             this.ToolbarPrevEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolbarPrevEntry.Name = "ToolbarPrevEntry";
-            this.ToolbarPrevEntry.Size = new System.Drawing.Size(23, 22);
+            this.ToolbarPrevEntry.Size = new System.Drawing.Size(32, 22);
             this.ToolbarPrevEntry.Text = "<<";
             this.ToolbarPrevEntry.ToolTipText = "Go to Previous Entry";
             this.ToolbarPrevEntry.Click += new System.EventHandler(this.MenuToolbarBrowserPrev_Click);
             // 
+            // ToolbarPrevEntryBrowseByEntry
+            // 
+            this.ToolbarPrevEntryBrowseByEntry.Checked = true;
+            this.ToolbarPrevEntryBrowseByEntry.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ToolbarPrevEntryBrowseByEntry.Name = "ToolbarPrevEntryBrowseByEntry";
+            this.ToolbarPrevEntryBrowseByEntry.Size = new System.Drawing.Size(157, 22);
+            this.ToolbarPrevEntryBrowseByEntry.Tag = "0";
+            this.ToolbarPrevEntryBrowseByEntry.Text = "Browse by Entry";
+            this.ToolbarPrevEntryBrowseByEntry.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
+            // 
+            // ToolbarPrevEntryBrowseByDay
+            // 
+            this.ToolbarPrevEntryBrowseByDay.Name = "ToolbarPrevEntryBrowseByDay";
+            this.ToolbarPrevEntryBrowseByDay.Size = new System.Drawing.Size(157, 22);
+            this.ToolbarPrevEntryBrowseByDay.Tag = "1";
+            this.ToolbarPrevEntryBrowseByDay.Text = "Browse by Day";
+            this.ToolbarPrevEntryBrowseByDay.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
+            // 
+            // ToolbarPrevEntryBrowseByWeek
+            // 
+            this.ToolbarPrevEntryBrowseByWeek.Name = "ToolbarPrevEntryBrowseByWeek";
+            this.ToolbarPrevEntryBrowseByWeek.Size = new System.Drawing.Size(157, 22);
+            this.ToolbarPrevEntryBrowseByWeek.Tag = "2";
+            this.ToolbarPrevEntryBrowseByWeek.Text = "Browse by Week";
+            this.ToolbarPrevEntryBrowseByWeek.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
+            // 
+            // ToolbarPrevEntryBrowseByMonth
+            // 
+            this.ToolbarPrevEntryBrowseByMonth.Name = "ToolbarPrevEntryBrowseByMonth";
+            this.ToolbarPrevEntryBrowseByMonth.Size = new System.Drawing.Size(157, 22);
+            this.ToolbarPrevEntryBrowseByMonth.Tag = "3";
+            this.ToolbarPrevEntryBrowseByMonth.Text = "Browse by Month";
+            this.ToolbarPrevEntryBrowseByMonth.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
+            // 
+            // ToolbarPrevEntryBrowseByYear
+            // 
+            this.ToolbarPrevEntryBrowseByYear.Name = "ToolbarPrevEntryBrowseByYear";
+            this.ToolbarPrevEntryBrowseByYear.Size = new System.Drawing.Size(157, 22);
+            this.ToolbarPrevEntryBrowseByYear.Tag = "4";
+            this.ToolbarPrevEntryBrowseByYear.Text = "Browse by Year";
+            this.ToolbarPrevEntryBrowseByYear.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
+            // 
             // ToolbarNextEntry
             // 
             this.ToolbarNextEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarNextEntry.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolbarNextEntryBrowseByEntry,
+            this.ToolbarNextEntryBrowseByDay,
+            this.ToolbarNextEntryBrowseByWeek,
+            this.ToolbarNextEntryBrowseByMonth,
+            this.ToolbarNextEntryBrowseByYear});
             this.ToolbarNextEntry.Enabled = false;
             this.ToolbarNextEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonNext;
             this.ToolbarNextEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolbarNextEntry.Name = "ToolbarNextEntry";
-            this.ToolbarNextEntry.Size = new System.Drawing.Size(23, 22);
+            this.ToolbarNextEntry.Size = new System.Drawing.Size(32, 22);
             this.ToolbarNextEntry.Text = ">>";
             this.ToolbarNextEntry.ToolTipText = "Go to Next Entry";
             this.ToolbarNextEntry.Click += new System.EventHandler(this.MenuToolbarBrowserNext_Click);
+            // 
+            // ToolbarNextEntryBrowseByEntry
+            // 
+            this.ToolbarNextEntryBrowseByEntry.Checked = true;
+            this.ToolbarNextEntryBrowseByEntry.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ToolbarNextEntryBrowseByEntry.Name = "ToolbarNextEntryBrowseByEntry";
+            this.ToolbarNextEntryBrowseByEntry.Size = new System.Drawing.Size(157, 22);
+            this.ToolbarNextEntryBrowseByEntry.Tag = "0";
+            this.ToolbarNextEntryBrowseByEntry.Text = "Browse by Entry";
+            this.ToolbarNextEntryBrowseByEntry.Click += new System.EventHandler(this.ToolbarNextEntryBrowseByUnit_Click);
+            // 
+            // ToolbarNextEntryBrowseByDay
+            // 
+            this.ToolbarNextEntryBrowseByDay.Name = "ToolbarNextEntryBrowseByDay";
+            this.ToolbarNextEntryBrowseByDay.Size = new System.Drawing.Size(157, 22);
+            this.ToolbarNextEntryBrowseByDay.Tag = "1";
+            this.ToolbarNextEntryBrowseByDay.Text = "Browse by Day";
+            this.ToolbarNextEntryBrowseByDay.Click += new System.EventHandler(this.ToolbarNextEntryBrowseByUnit_Click);
+            // 
+            // ToolbarNextEntryBrowseByWeek
+            // 
+            this.ToolbarNextEntryBrowseByWeek.Name = "ToolbarNextEntryBrowseByWeek";
+            this.ToolbarNextEntryBrowseByWeek.Size = new System.Drawing.Size(157, 22);
+            this.ToolbarNextEntryBrowseByWeek.Tag = "2";
+            this.ToolbarNextEntryBrowseByWeek.Text = "Browse by Week";
+            this.ToolbarNextEntryBrowseByWeek.Click += new System.EventHandler(this.ToolbarNextEntryBrowseByUnit_Click);
+            // 
+            // ToolbarNextEntryBrowseByMonth
+            // 
+            this.ToolbarNextEntryBrowseByMonth.Name = "ToolbarNextEntryBrowseByMonth";
+            this.ToolbarNextEntryBrowseByMonth.Size = new System.Drawing.Size(157, 22);
+            this.ToolbarNextEntryBrowseByMonth.Tag = "3";
+            this.ToolbarNextEntryBrowseByMonth.Text = "Browse by Month";
+            this.ToolbarNextEntryBrowseByMonth.Click += new System.EventHandler(this.ToolbarNextEntryBrowseByUnit_Click);
+            // 
+            // ToolbarNextEntryBrowseByYear
+            // 
+            this.ToolbarNextEntryBrowseByYear.Name = "ToolbarNextEntryBrowseByYear";
+            this.ToolbarNextEntryBrowseByYear.Size = new System.Drawing.Size(157, 22);
+            this.ToolbarNextEntryBrowseByYear.Tag = "4";
+            this.ToolbarNextEntryBrowseByYear.Text = "Browse by Year";
+            this.ToolbarNextEntryBrowseByYear.Click += new System.EventHandler(this.ToolbarNextEntryBrowseByUnit_Click);
             // 
             // ToolbarLastEntry
             // 
@@ -1642,14 +1867,14 @@ namespace Timekeeper.Forms
             this.ToolbarSplitEntry3.Name = "ToolbarSplitEntry3";
             this.ToolbarSplitEntry3.Size = new System.Drawing.Size(151, 22);
             this.ToolbarSplitEntry3.Text = "Split in Thirds";
-            this.ToolbarSplitEntry3.Click += new System.EventHandler(this.toolControlSplitEntry3_Click);
+            this.ToolbarSplitEntry3.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry3_Click);
             // 
             // ToolbarSplitEntry4
             // 
             this.ToolbarSplitEntry4.Name = "ToolbarSplitEntry4";
             this.ToolbarSplitEntry4.Size = new System.Drawing.Size(151, 22);
             this.ToolbarSplitEntry4.Text = "Split in Quarters";
-            this.ToolbarSplitEntry4.Click += new System.EventHandler(this.toolControlSplitEntry4_Click);
+            this.ToolbarSplitEntry4.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry4_Click);
             // 
             // ToolbarSep3
             // 
@@ -1841,8 +2066,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.Panel PanelControls;
         private System.Windows.Forms.ToolStrip BrowserToolbar;
         private System.Windows.Forms.ToolStripButton ToolbarFirstEntry;
-        private System.Windows.Forms.ToolStripButton ToolbarPrevEntry;
-        private System.Windows.Forms.ToolStripButton ToolbarNextEntry;
         private System.Windows.Forms.ToolStripButton ToolbarLastEntry;
         private System.Windows.Forms.DateTimePicker StopTimeSelector;
         private System.Windows.Forms.DateTimePicker StartTimeSelector;
@@ -1965,5 +2188,29 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem PopupMenuDimensionUseCategories;
         private System.Windows.Forms.ToolStripSeparator PopupMenuDimensionSep2;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuDimensionProperties;
+        private System.Windows.Forms.ToolStripSplitButton ToolbarPrevEntry;
+        private System.Windows.Forms.ToolStripMenuItem ToolbarPrevEntryBrowseByEntry;
+        private System.Windows.Forms.ToolStripMenuItem ToolbarPrevEntryBrowseByDay;
+        private System.Windows.Forms.ToolStripMenuItem ToolbarPrevEntryBrowseByWeek;
+        private System.Windows.Forms.ToolStripMenuItem ToolbarPrevEntryBrowseByMonth;
+        private System.Windows.Forms.ToolStripMenuItem ToolbarPrevEntryBrowseByYear;
+        private System.Windows.Forms.ToolStripSplitButton ToolbarNextEntry;
+        private System.Windows.Forms.ToolStripMenuItem ToolbarNextEntryBrowseByEntry;
+        private System.Windows.Forms.ToolStripMenuItem ToolbarNextEntryBrowseByDay;
+        private System.Windows.Forms.ToolStripMenuItem ToolbarNextEntryBrowseByWeek;
+        private System.Windows.Forms.ToolStripMenuItem ToolbarNextEntryBrowseByMonth;
+        private System.Windows.Forms.ToolStripMenuItem ToolbarNextEntryBrowseByYear;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserPrevBrowseBy;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserPrevBrowseByEntry;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserPrevBrowseByDay;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserPrevBrowseByWeek;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserPrevBrowseByMonth;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserPrevBrowseByYear;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseBy;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseByEntry;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseByDay;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseByWeek;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseByMonth;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseByYear;
     }
 }
