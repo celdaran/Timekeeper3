@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Diagnostics;
+using System.Windows.Forms;
+using System.Drawing;
 using System.Reflection;
 using System.Collections.ObjectModel;
 
@@ -364,6 +366,22 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
         // Random Things
+        //---------------------------------------------------------------------
+
+        public static Point CenterInParent(Form parentForm, int width, int height)
+        {
+            // A manual "CenterParent" function, due to the way I'm
+            // managing the wizard forms (sans tabs). These forms, in
+            // spite of their visible width, are thousands of pixels
+            // wide, and that's what .NET uses to "center" it, which 
+            // always puts it to the far left of the monitor. This gets
+            // a point which represents the Center in the parent after
+            // the width has been visually adjusted.
+            int x = parentForm.Location.X + ((parentForm.Width - width) / 2);
+            int y = parentForm.Location.Y + ((parentForm.Height - height) / 2);
+            return new Point(x, y);
+        }
+
         //---------------------------------------------------------------------
 
         public static long CurrentTimeZoneId()

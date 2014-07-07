@@ -52,6 +52,9 @@ namespace Timekeeper.Forms.Wizards
             Widgets.PopulateTimeZoneComboBox(LocationTimeZone);
 
             Width = 525;
+
+            this.Location = Timekeeper.CenterInParent(this.Owner, this.Width, this.Height);
+
             Widgets.WizardWidth = Width;
             Widgets.BackButton = BackButton;
             Widgets.NextButton = NextButton;

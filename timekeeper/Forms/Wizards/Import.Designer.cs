@@ -331,6 +331,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.CancelDialogButton;
             this.ClientSize = new System.Drawing.Size(2001, 323);
             this.Controls.Add(this.Tab4);
             this.Controls.Add(this.Tab5);
@@ -341,11 +342,13 @@
             this.Controls.Add(this.ButtonPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.HelpButton = true;
+            this.Location = new System.Drawing.Point(1000, 400);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Import";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Import Wizard";
             this.Load += new System.EventHandler(this.ImportWizard_Load);
             this.ButtonPanel.ResumeLayout(false);
