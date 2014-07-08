@@ -664,14 +664,14 @@ namespace Timekeeper.Forms
         // On Item Change
         //---------------------------------------------------------------------
 
-        private void ProjectTree_AfterSelect(object sender, TreeViewEventArgs e)
+        private void ProjectTreeDropdown_SelectedNodeChanged(object sender, EventArgs e)
         {
-            //Action_ChangedProject();
+            Action_ChangedProject();
         }
 
         //---------------------------------------------------------------------
 
-        private void ActivityTree_AfterSelect(object sender, TreeViewEventArgs e)
+        private void ActivityTreeDropdown_SelectedNodeChanged(object sender, EventArgs e)
         {
             //Action_ChangedActivity();
         }

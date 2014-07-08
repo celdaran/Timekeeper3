@@ -234,6 +234,7 @@ namespace Timekeeper.Forms.Shared
 
         private void BuildTree()
         {
+            Tree.Nodes.Clear();
             switch (this.Dimension) {
                 case Timekeeper.Dimension.Project:
                     Widgets.BuildProjectTree(Tree.Nodes);

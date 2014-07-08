@@ -41,7 +41,6 @@
             this.MenuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuProperties = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.PopupMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuNew = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuNewFolder = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,8 +65,7 @@
             this.MenuNew,
             this.MenuNewFolder,
             this.MenuEdit,
-            this.MenuOther,
-            this.toolStripButton1});
+            this.MenuOther});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(350, 25);
@@ -164,15 +162,6 @@
             this.MenuProperties.Size = new System.Drawing.Size(152, 22);
             this.MenuProperties.Text = "Properties";
             this.MenuProperties.Click += new System.EventHandler(this.MenuProperties_Click);
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(37, 22);
-            this.toolStripButton1.Text = "Close";
             // 
             // PopupMenu
             // 
@@ -343,7 +332,6 @@
         private System.Windows.Forms.ToolStripMenuItem PopupMenuProperties;
         public System.Windows.Forms.ImageList TreeImageList;
         private System.Windows.Forms.TreeView Tree;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripMenuItem MenuRename;
         private System.Windows.Forms.ToolStripSeparator MenuSep1;
         private System.Windows.Forms.ToolStripMenuItem MenuProperties;

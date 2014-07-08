@@ -23,10 +23,8 @@ namespace Timekeeper.Forms
     partial class Main
     {
         // These prevent potentially infinite following
-        /*
         private bool DontChangeProject = false;
         private bool DontChangeActivity = false;
-        */
 
         // Deferred keyboard shortcut setting
         private bool DeferShortcutAssignment = false;
@@ -35,18 +33,17 @@ namespace Timekeeper.Forms
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
 
-        /*
         private void Action_ChangedProject()
         {
             // Get current project
-            Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
+            Classes.Project Project = (Classes.Project)ProjectTreeDropdown.SelectedNode.Tag;
             Options.State_LastProjectId = Project.ItemId;
 
             // Update status bar
             if (timerRunning == false) {
                 Classes.Activity Activity;
-                if (ActivityTree.SelectedNode != null) {
-                    Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
+                if (ActivityTreeDropdown.SelectedNode != null) {
+                    Activity = (Classes.Activity)ActivityTreeDropdown.SelectedNode.Tag;
                 } else {
                     Activity = new Classes.Activity();
                 }
@@ -56,11 +53,11 @@ namespace Timekeeper.Forms
             // Auto-follow
             if (!isBrowsing) {
                 if (Options.Behavior_Annoy_ActivityFollowsProject) {
-                    if (Project.FollowedItemId > 0) {
-                        TreeNode node = Widgets.FindTreeNode(ActivityTree.Nodes, Project.FollowedItemId);
-                        if ((node != null) && (!DontChangeProject)) {
+                    if (Project.LastActivityId > 0) {
+                        ComboTreeNode Node = Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, Project.LastActivityId);
+                        if ((Node != null) && (!DontChangeProject)) {
                             DontChangeActivity = true;
-                            ActivityTree.SelectedNode = node;
+                            ActivityTreeDropdown.SelectedNode = Node;
                             DontChangeActivity = false;
                         }
                     }
@@ -75,14 +72,13 @@ namespace Timekeeper.Forms
             MenuBar_ShowDeleteProject(Project.IsDeleted);
 
             // Update calendar to reflect change
-            Action_UpdateCalendar(ProjectTree);
+            //Action_UpdateCalendar(ProjectTreeDropdown);
 
             // Set our dirty bit
             if ((isBrowsing) && (Project.ItemId != browserEntry.ProjectId)) {
-                toolControlRevert.Enabled = true;
+                ToolbarRevert.Enabled = true;
             }
         }
-        */
 
         //---------------------------------------------------------------------
 
@@ -409,9 +405,6 @@ namespace Timekeeper.Forms
                 this.MemoEditor.BringToFront();
                 this.MemoEditor.Dock = DockStyle.Fill;
                 this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
-
-                // Instantiate persistent dialog boxes
-                //properties = new Forms.Properties();
 
                 // Initialize timer
                 timerLastRun = DateTime.Now;
