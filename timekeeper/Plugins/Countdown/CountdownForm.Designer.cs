@@ -1,6 +1,6 @@
-﻿namespace Timekeeper.Forms.Tools
+﻿namespace Timekeeper.Plugins
 {
-    partial class Countdown
+    partial class CountdownForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Countdown));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CountdownForm));
             this.Display = new System.Windows.Forms.TextBox();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.DisplayMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
@@ -39,9 +39,6 @@
             this.DynamicSizeButton = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.AlwaysOnTopButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.LoadEventMenu = new System.Windows.Forms.ToolStripDropDownButton();
-            this.EventsButton = new System.Windows.Forms.ToolStripButton();
             this.SecondTimer = new System.Windows.Forms.Timer(this.components);
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
@@ -69,10 +66,7 @@
             // 
             this.ToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.DisplayMenuButton,
-            this.toolStripSeparator2,
-            this.LoadEventMenu,
-            this.EventsButton});
+            this.DisplayMenuButton});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
             this.ToolStrip.Size = new System.Drawing.Size(292, 25);
@@ -138,30 +132,6 @@
             this.AlwaysOnTopButton.Text = "Always on Top";
             this.AlwaysOnTopButton.Click += new System.EventHandler(this.AlwaysOnTopButton_Click);
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // LoadEventMenu
-            // 
-            this.LoadEventMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.LoadEventMenu.Image = ((System.Drawing.Image)(resources.GetObject("LoadEventMenu.Image")));
-            this.LoadEventMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LoadEventMenu.Name = "LoadEventMenu";
-            this.LoadEventMenu.Size = new System.Drawing.Size(43, 22);
-            this.LoadEventMenu.Text = "Load";
-            // 
-            // EventsButton
-            // 
-            this.EventsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.EventsButton.Image = ((System.Drawing.Image)(resources.GetObject("EventsButton.Image")));
-            this.EventsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.EventsButton.Name = "EventsButton";
-            this.EventsButton.Size = new System.Drawing.Size(56, 22);
-            this.EventsButton.Text = "Events...";
-            this.EventsButton.Click += new System.EventHandler(this.EventsButton_Click);
-            // 
             // SecondTimer
             // 
             this.SecondTimer.Interval = 1000;
@@ -184,7 +154,7 @@
             this.panel1.Size = new System.Drawing.Size(292, 33);
             this.panel1.TabIndex = 8;
             // 
-            // Countdown
+            // CountdownForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -192,11 +162,9 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.ToolStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Countdown";
+            this.Name = "CountdownForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Countdown";
-            this.Activated += new System.EventHandler(this.Countdown_Activated);
-            this.Load += new System.EventHandler(this.Countdown_Load);
             this.ResizeEnd += new System.EventHandler(this.Countdown_ResizeEnd);
             this.ToolStrip.ResumeLayout(false);
             this.ToolStrip.PerformLayout();
@@ -211,10 +179,7 @@
 
         private System.Windows.Forms.TextBox Display;
         private System.Windows.Forms.ToolStrip ToolStrip;
-        private System.Windows.Forms.ToolStripButton EventsButton;
-        private System.Windows.Forms.ToolStripDropDownButton LoadEventMenu;
         private System.Windows.Forms.Timer SecondTimer;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripDropDownButton DisplayMenuButton;
         private System.Windows.Forms.ToolStripMenuItem SmallSizeButton;
         private System.Windows.Forms.ToolStripMenuItem MediumSizeButton;

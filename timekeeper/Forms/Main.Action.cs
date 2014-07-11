@@ -443,6 +443,8 @@ namespace Timekeeper.Forms
                     MenuToolEvents.Visible = true;
                 }
 
+                Action_LoadPlugins();
+
                 // SHORTCUTS
                 /*
                 Forms.Shared.Schedule DialogBox = new Forms.Shared.Schedule();
@@ -670,7 +672,7 @@ namespace Timekeeper.Forms
                 Action_UseActivities(Options.Layout_UseActivities);
                 Action_UseLocations(Options.Layout_UseLocations);
                 Action_UseCategories(Options.Layout_UseCategories);
-            	Action_AdjustControlPanel();
+                Action_AdjustControlPanel();
 
                 //------------------------------------------
                 // Prepare Browser
@@ -720,6 +722,89 @@ namespace Timekeeper.Forms
                 Timekeeper.Exception(x);
                 return false;
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        private List<string> PluginList = new List<string>();
+
+        private void DirSearch(string DirectoryName)
+        {
+            foreach (string d in Directory.GetDirectories(DirectoryName)) {
+                foreach (string f in Directory.GetFiles(d)) {
+                    string Extension = Path.GetExtension(f);
+                    if (String.Equals(Extension, ".tkplugin", StringComparison.OrdinalIgnoreCase))
+                        PluginList.Add(f);
+                }
+                DirSearch(d);
+            }
+        }
+
+        private void Action_LoadPlugins()
+        {
+            // EXPERIMENTAL - NOT FOR TK 3.0 - EXPERIMENTAL
+
+            DirectoryInfo PluginDirectory = new DirectoryInfo("Plugins");
+
+            if (PluginDirectory.Exists)
+            {
+                DirSearch(PluginDirectory.FullName);
+
+                foreach (string PluginFileName in PluginList) 
+                {
+                    try {
+                        // Load the plugin assembly
+                        Assembly PluginAssembly = Assembly.LoadFrom(PluginFileName);
+                        string PluginName = Path.GetFileNameWithoutExtension(PluginFileName);
+                        Type PluginType = PluginAssembly.GetType("Timekeeper.Plugins." + PluginName);
+                        if (PluginType == null)
+                            throw new Exception("Could not load " + PluginName);
+
+                        // Create an instance of the plugin and add to the internal list
+                        object Plugin = Activator.CreateInstance(PluginType, "en-US");
+                        LoadedPlugins.Add(PluginType, Plugin);
+
+                        // Get the user-visible (and possibly localized) plugin name
+                        PropertyInfo Property = PluginType.GetProperty("Name");
+                        MethodInfo NameMethod = Property.GetGetMethod();
+                        string PluginUserVisibleName = (string)NameMethod.Invoke(Plugin, null);
+
+                        // Now add to the menu
+                        ToolStripMenuItem PluginMenuItem = new ToolStripMenuItem(PluginUserVisibleName);
+                        PluginMenuItem.Click += new EventHandler(PluginMenuItem_Click);
+                        PluginMenuItem.Tag = PluginType;
+                        MenuTool.DropDownItems.Add(PluginMenuItem);
+
+                        // All done!
+                        Timekeeper.Info("Plugin " + PluginName + " loaded");
+                    }
+                    catch (Exception x) {
+                        // Just log it and move on.
+                        // Failure to load a plugin should not prevent TK from launching.
+                        Timekeeper.Exception(x);
+                    }
+                }
+            }
+            else
+            {
+                Timekeeper.Warn("Could not find Plugin Directory: " + PluginDirectory.FullName);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        void PluginMenuItem_Click(object sender, EventArgs e)
+        {
+            try {
+                ToolStripMenuItem PluginMenuItem = (ToolStripMenuItem)sender;
+                Type PluginType = (Type)PluginMenuItem.Tag;
+                MethodInfo RunMethod = PluginType.GetMethod("Run");
+                RunMethod.Invoke(LoadedPlugins[PluginType], null);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+
         }
 
         //----------------------------------------------------------------------

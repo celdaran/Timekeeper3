@@ -61,8 +61,6 @@ namespace Timekeeper.Forms
             this.MenuReportNotebook = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuReportPunch = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuTool = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuToolFind = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuToolSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuToolTodo = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolEvents = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolNotebook = new System.Windows.Forms.ToolStripMenuItem();
@@ -224,6 +222,8 @@ namespace Timekeeper.Forms
             this.PopupMenuMemoCutSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.MenuActionFind = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuActionSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -370,6 +370,8 @@ namespace Timekeeper.Forms
             this.MenuActionStartTimer,
             this.MenuActionStopTimer,
             this.MenuActionSep1,
+            this.MenuActionFind,
+            this.MenuActionSep2,
             this.MenuActionManageProjects,
             this.MenuActionManageActivities,
             this.MenuActionManageLocations,
@@ -488,8 +490,6 @@ namespace Timekeeper.Forms
             // MenuTool
             // 
             this.MenuTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuToolFind,
-            this.MenuToolSep1,
             this.MenuToolTodo,
             this.MenuToolEvents,
             this.MenuToolNotebook,
@@ -504,19 +504,6 @@ namespace Timekeeper.Forms
             this.MenuTool.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
             this.MenuTool.Size = new System.Drawing.Size(44, 20);
             this.MenuTool.Text = "T&ools";
-            // 
-            // MenuToolFind
-            // 
-            this.MenuToolFind.Name = "MenuToolFind";
-            this.MenuToolFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.MenuToolFind.Size = new System.Drawing.Size(182, 22);
-            this.MenuToolFind.Text = "&Find...";
-            this.MenuToolFind.Click += new System.EventHandler(this.MenuToolFind_Click);
-            // 
-            // MenuToolSep1
-            // 
-            this.MenuToolSep1.Name = "MenuToolSep1";
-            this.MenuToolSep1.Size = new System.Drawing.Size(179, 6);
             // 
             // MenuToolTodo
             // 
@@ -1975,6 +1962,19 @@ namespace Timekeeper.Forms
             this.MainPanel.Size = new System.Drawing.Size(562, 273);
             this.MainPanel.TabIndex = 13;
             // 
+            // MenuActionFind
+            // 
+            this.MenuActionFind.Name = "MenuActionFind";
+            this.MenuActionFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.MenuActionFind.Size = new System.Drawing.Size(179, 22);
+            this.MenuActionFind.Text = "&Find...";
+            this.MenuActionFind.Click += new System.EventHandler(this.MenuActionFind_Click);
+            // 
+            // MenuActionSep2
+            // 
+            this.MenuActionSep2.Name = "MenuActionSep2";
+            this.MenuActionSep2.Size = new System.Drawing.Size(176, 6);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2038,7 +2038,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripStatusLabel StatusBarFileName;
         private System.Windows.Forms.ToolStripMenuItem MenuReport;
         private System.Windows.Forms.ToolStripMenuItem MenuReportGrid;
-        private System.Windows.Forms.ToolStripSeparator MenuToolSep1;
         private System.Windows.Forms.ToolStripMenuItem MenuToolCalendar;
         private System.Windows.Forms.ToolStripMenuItem MenuToolEvents;
         private System.Windows.Forms.ToolStripMenuItem MenuToolCountdown;
@@ -2081,7 +2080,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuActionStartTimer;
         private System.Windows.Forms.ToolStripMenuItem MenuActionStopTimer;
         private System.Windows.Forms.ToolStripButton ToolbarStartButton;
-        private System.Windows.Forms.ToolStripMenuItem MenuToolFind;
         private System.Windows.Forms.Label CategoryLabel;
         private System.Windows.Forms.Label LocationLabel;
         private System.Windows.Forms.ContextMenuStrip PopupMenuMemo;
@@ -2213,5 +2211,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseByWeek;
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseByMonth;
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseByYear;
+        private System.Windows.Forms.ToolStripMenuItem MenuActionFind;
+        private System.Windows.Forms.ToolStripSeparator MenuActionSep2;
     }
 }
