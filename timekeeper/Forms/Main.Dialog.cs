@@ -129,11 +129,14 @@ namespace Timekeeper.Forms
 
             Action_SetBrowserOptions();
 
-            MemoEditor.ToolbarVisible(Options.View_Other_MemoEditorToolbar);
+            MemoEditor.ToolbarVisible(Options.View_MemoEditor_ShowToolbar);
             MemoEditor.SwitchMarkdown(Options.Advanced_Other_MarkupLanguage);
+            MemoEditor.RightMargin = Options.View_MemoEditor_RightMargin;
+            MemoEditor.ShowGutter = Options.View_MemoEditor_ShowGutter;
+            MemoEditor.EditorFont = Options.View_MemoEditor_Font;
 
             if (interfaceChanged) {
-                switch (Options.InterfacePreset) {
+                switch (Options.Layout_InterfacePreset) {
                     case 0:
                         Height = 200;
                         Width = 364;

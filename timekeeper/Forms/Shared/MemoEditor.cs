@@ -20,9 +20,17 @@ namespace Timekeeper.Forms.Shared
         // the notebook editor and todo list.
         //---------------------------------------------------------------------
 
+        private Classes.Options Options;
+
         public MemoEditor()
         {
             InitializeComponent();
+
+            this.Options = Timekeeper.Options;
+
+            this.RightMargin = Options.View_MemoEditor_RightMargin;
+            this.ShowGutter = Options.View_MemoEditor_ShowGutter;
+            this.EditorFont = Options.View_MemoEditor_Font;
         }
 
         //---------------------------------------------------------------------
@@ -33,6 +41,39 @@ namespace Timekeeper.Forms.Shared
         {
             get { return MemoEntry.Text; }
             set { MemoEntry.Text = value; }
+        }
+
+        public int RightMargin
+        {
+            get { return MemoEntry.RightMargin; }
+            set {
+                MemoEntry.RightMargin = value;
+                RightMarginMarker.Location = new Point(value, 0);
+                Options.View_MemoEditor_RightMargin = value;
+            }
+        }
+
+        public bool ShowGutter
+        {
+            get { return MemoEntry.ShowSelectionMargin; }
+            set {
+                MemoEntry.ShowSelectionMargin = value;
+                Options.View_MemoEditor_ShowGutter = value;
+            }
+        }
+
+        public string EditorFont
+        {
+            get {
+                FontConverter fc = new FontConverter();
+                return (string) fc.ConvertToString(MemoEntry.Font);
+            }
+
+            set {
+                FontConverter fc = new FontConverter();
+                MemoEntry.Font = (Font)fc.ConvertFromString(value);
+                Options.View_MemoEditor_Font = value;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -65,7 +106,7 @@ namespace Timekeeper.Forms.Shared
         private void MemoEditor_Load(object sender, EventArgs e)
         {
             // Is the formatting toolbar visible?
-            ToolbarVisible(Timekeeper.Options.View_Other_MemoEditorToolbar);
+            ToolbarVisible(Timekeeper.Options.View_MemoEditor_ShowToolbar);
 
             // Adjust interface based on markup language
             SwitchMarkdown(Timekeeper.Options.Advanced_Other_MarkupLanguage);
@@ -124,7 +165,8 @@ namespace Timekeeper.Forms.Shared
             PopupMenuShowToolbar.Visible = !visible;
             PopupMenuHideToolbar.Visible = visible;
             MemoToolbar.Visible = visible;
-            Timekeeper.Options.View_Other_MemoEditorToolbar = visible;
+            RulerPanel.Visible = visible;
+            Timekeeper.Options.View_MemoEditor_ShowToolbar = visible;
         }
 
         //---------------------------------------------------------------------
@@ -155,6 +197,19 @@ namespace Timekeeper.Forms.Shared
         //---------------------------------------------------------------------
         // Toolbar
         //---------------------------------------------------------------------
+
+        internal void FormatFontButton_Click(object sender, EventArgs e)
+        {
+            // Prepopulate Font dialog box with the currently selected font
+            FontConverter fc = new FontConverter();
+            FontDialog.Font = (Font)fc.ConvertFromString(Options.View_MemoEditor_Font);
+
+            // Display dialog
+            if (FontDialog.ShowDialog(this) == DialogResult.OK) {
+                // If OK, save selected Font
+                this.EditorFont = (string)fc.ConvertToString(FontDialog.Font);
+            }
+        }
 
         internal void FormatBoldButton_Click(object sender, EventArgs e)
         {
@@ -406,6 +461,59 @@ namespace Timekeeper.Forms.Shared
             }
 
             return NewLine;
+        }
+
+        //---------------------------------------------------------------------
+
+        bool isDragged = false;
+        Point ptOffset;
+        private void RightMarginMarker_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left) {
+                isDragged = true;
+                Point ptStartPosition = RightMarginMarker.PointToScreen(new Point(e.X, e.Y));
+
+                ptOffset = new Point();
+                ptOffset.X = RightMarginMarker.Location.X - ptStartPosition.X;
+                //ptOffset.Y = RightMarginMarker.Location.Y - ptStartPosition.Y;
+            } else {
+                isDragged = false;
+            }
+        }
+
+        private void RightMarginMarker_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragged) {
+                Point newPoint = RightMarginMarker.PointToScreen(new Point(e.X, e.Y));
+                newPoint.Offset(ptOffset);
+                RightMarginMarker.Location = new Point(newPoint.X, 0);
+                if (RightMarginMarker.Location.X >= 0) {
+                    this.RightMargin = RightMarginMarker.Location.X;
+                }
+            }
+        }
+
+        private void RightMarginMarker_MouseUp(object sender, MouseEventArgs e)
+        {
+            isDragged = false;
+        }
+
+        private void RightMarginMarker_DoubleClick(object sender, EventArgs e)
+        {
+            this.RightMargin = MemoEntry.Size.Width - (RightMarginMarker.Width / 2);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void ShowLeftMargin_Click(object sender, EventArgs e)
+        {
+            this.ShowGutter = !this.ShowGutter;
+        }
+
+        private void RulerPanel_DoubleClick(object sender, EventArgs e)
+        {
+            MouseEventArgs me = (MouseEventArgs)e;
+            this.RightMargin = me.X - (RightMarginMarker.Width / 2);
         }
 
         //---------------------------------------------------------------------

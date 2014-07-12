@@ -28,8 +28,8 @@ namespace Timekeeper.Classes
         //----------------------------------------------------------------------
 
         public int LastOptionTab { get; set; }
-        public int InterfacePreset { get; set; }
 
+        public int Layout_InterfacePreset { get; set; }
         public bool Layout_UseProjects { get; set; }
         public bool Layout_UseActivities { get; set; }
         public bool Layout_UseLocations { get; set; }
@@ -52,7 +52,10 @@ namespace Timekeeper.Classes
         public int View_HiddenActivitiesSince { get; set; }
         public int View_HiddenLocationsSince { get; set; }
         public int View_HiddenCategoriesSince { get; set; }
-        public bool View_Other_MemoEditorToolbar { get; set; }
+        public bool View_MemoEditor_ShowToolbar { get; set; }
+        public bool View_MemoEditor_ShowGutter { get; set; }
+        public int View_MemoEditor_RightMargin { get; set; }
+        public string View_MemoEditor_Font { get; set; }
 
         public string Behavior_TitleBar_Template { get; set; }
         public int Behavior_TitleBar_Time { get; set; }
@@ -271,6 +274,7 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Layout");
 
+            Layout_InterfacePreset = (int)Key.GetValue("InterfacePreset", 0);
             Layout_UseProjects = ((int)Key.GetValue("UseProjects", 1) == 1);
             Layout_UseActivities = ((int)Key.GetValue("UseActivities", 0) == 1);
             Layout_UseLocations = ((int)Key.GetValue("UseLocations", 0) == 1);
@@ -299,7 +303,10 @@ namespace Timekeeper.Classes
             View_HiddenLocationsSince = (int)Key.GetValue("HiddenLocationsSince", 4);
             View_HiddenCategoriesSince = (int)Key.GetValue("HiddenCategoriesSince", 4);
 
-            View_Other_MemoEditorToolbar = ((int)Key.GetValue("Other_MemoEditorToolbar", 0) == 1);
+            View_MemoEditor_ShowToolbar = ((int)Key.GetValue("MemoEditor_ShowToolbar", 0) == 1);
+            View_MemoEditor_ShowGutter = ((int)Key.GetValue("MemoEditor_ShowGutter", 1) == 1);
+            View_MemoEditor_RightMargin = (int)Key.GetValue("MemoEditor_RightMargin", 400);
+            View_MemoEditor_Font = (string)Key.GetValue("MemoEditor_Font", "Microsoft Sans Serif, 8.25pt");
 
             //----------------------------------------------------------------------
 
@@ -375,7 +382,6 @@ namespace Timekeeper.Classes
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options");
 
             LastOptionTab = (int)Key.GetValue("LastOptionTab", 0);
-            InterfacePreset = (int)Key.GetValue("InterfacePreset", 0);
 
             //----------------------------------------------------------------------
 
@@ -571,6 +577,7 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Layout");
 
+            Key.SetValue("InterfacePreset", Layout_InterfacePreset, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("UseProjects", Layout_UseProjects, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("UseActivities", Layout_UseActivities, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("UseLocations", Layout_UseLocations, Microsoft.Win32.RegistryValueKind.DWord);
@@ -599,7 +606,10 @@ namespace Timekeeper.Classes
             Key.SetValue("HiddenLocationsSince", View_HiddenLocationsSince, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("HiddenCategoriesSince", View_HiddenCategoriesSince, Microsoft.Win32.RegistryValueKind.DWord);
 
-            Key.SetValue("Other_MemoEditorToolbar", View_Other_MemoEditorToolbar, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MemoEditor_ShowToolbar", View_MemoEditor_ShowToolbar, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MemoEditor_ShowGutter", View_MemoEditor_ShowGutter, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MemoEditor_RightMargin", View_MemoEditor_RightMargin, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MemoEditor_Font", View_MemoEditor_Font, Microsoft.Win32.RegistryValueKind.String);
 
             //----------------------------------------------------------------------
 
@@ -663,7 +673,6 @@ namespace Timekeeper.Classes
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options");
 
             Key.SetValue("LastOptionTab", LastOptionTab, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("InterfacePreset", InterfacePreset, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 

@@ -235,6 +235,24 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
+        // Benchmarking
+        //---------------------------------------------------------------------
+
+        public static void Bench(Stopwatch t)
+        {
+            t.Start();
+        }
+
+        //---------------------------------------------------------------------
+
+        public static void Bench(Stopwatch t, string message)
+        {
+            t.Stop();
+            Timekeeper.Debug(message + ": " + t.ElapsedMilliseconds.ToString() + "ms");
+            t.Reset();
+        }
+
+        //---------------------------------------------------------------------
         // Standard Exception Handling
         //---------------------------------------------------------------------
 

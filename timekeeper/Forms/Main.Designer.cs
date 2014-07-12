@@ -49,6 +49,8 @@ namespace Timekeeper.Forms
             this.MenuActionStartTimer = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionStopTimer = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuActionFind = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuActionSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuActionManageProjects = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionManageActivities = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionManageLocations = new System.Windows.Forms.ToolStripMenuItem();
@@ -129,7 +131,7 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedActivityToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarElapsedAllToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarFileName = new System.Windows.Forms.ToolStripStatusLabel();
-            this.StatusBarDebug1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBarDebugGeneric1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ShortTimer = new System.Windows.Forms.Timer(this.components);
@@ -222,8 +224,7 @@ namespace Timekeeper.Forms
             this.PopupMenuMemoCutSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.MenuActionFind = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuActionSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.StatusBarDebugBenchmark = new System.Windows.Forms.ToolStripStatusLabel();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -403,6 +404,19 @@ namespace Timekeeper.Forms
             // 
             this.MenuActionSep1.Name = "MenuActionSep1";
             this.MenuActionSep1.Size = new System.Drawing.Size(176, 6);
+            // 
+            // MenuActionFind
+            // 
+            this.MenuActionFind.Name = "MenuActionFind";
+            this.MenuActionFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.MenuActionFind.Size = new System.Drawing.Size(179, 22);
+            this.MenuActionFind.Text = "&Find...";
+            this.MenuActionFind.Click += new System.EventHandler(this.MenuActionFind_Click);
+            // 
+            // MenuActionSep2
+            // 
+            this.MenuActionSep2.Name = "MenuActionSep2";
+            this.MenuActionSep2.Size = new System.Drawing.Size(176, 6);
             // 
             // MenuActionManageProjects
             // 
@@ -1004,7 +1018,8 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedActivityToday,
             this.StatusBarElapsedAllToday,
             this.StatusBarFileName,
-            this.StatusBarDebug1});
+            this.StatusBarDebugGeneric1,
+            this.StatusBarDebugBenchmark});
             this.StatusBar.Location = new System.Drawing.Point(0, 297);
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.ShowItemToolTips = true;
@@ -1101,11 +1116,11 @@ namespace Timekeeper.Forms
             this.StatusBarFileName.ToolTipText = "No Timekeeper file has been opened. Use File|New or File|Open to begin.";
             this.StatusBarFileName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.statusFile_MouseDown);
             // 
-            // StatusBarDebug1
+            // StatusBarDebugGeneric1
             // 
-            this.StatusBarDebug1.Name = "StatusBarDebug1";
-            this.StatusBarDebug1.Size = new System.Drawing.Size(47, 17);
-            this.StatusBarDebug1.Text = "Debug 1";
+            this.StatusBarDebugGeneric1.Name = "StatusBarDebugGeneric1";
+            this.StatusBarDebugGeneric1.Size = new System.Drawing.Size(38, 17);
+            this.StatusBarDebugGeneric1.Text = "Debug";
             // 
             // TreeImageList
             // 
@@ -1962,18 +1977,11 @@ namespace Timekeeper.Forms
             this.MainPanel.Size = new System.Drawing.Size(562, 273);
             this.MainPanel.TabIndex = 13;
             // 
-            // MenuActionFind
+            // StatusBarDebugBenchmark
             // 
-            this.MenuActionFind.Name = "MenuActionFind";
-            this.MenuActionFind.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.MenuActionFind.Size = new System.Drawing.Size(179, 22);
-            this.MenuActionFind.Text = "&Find...";
-            this.MenuActionFind.Click += new System.EventHandler(this.MenuActionFind_Click);
-            // 
-            // MenuActionSep2
-            // 
-            this.MenuActionSep2.Name = "MenuActionSep2";
-            this.MenuActionSep2.Size = new System.Drawing.Size(176, 6);
+            this.StatusBarDebugBenchmark.Name = "StatusBarDebugBenchmark";
+            this.StatusBarDebugBenchmark.Size = new System.Drawing.Size(59, 17);
+            this.StatusBarDebugBenchmark.Text = "Benchmark";
             // 
             // Main
             // 
@@ -2144,7 +2152,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTrayCountdown;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTrayStopwatch;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTrayExit;
-        private System.Windows.Forms.ToolStripStatusLabel StatusBarDebug1;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarDebugGeneric1;
         private System.Windows.Forms.ToolStripMenuItem MenuReportTodo;
         private System.Windows.Forms.ToolStripMenuItem MenuReportEvents;
         private System.Windows.Forms.ToolStripMenuItem MenuReportNotebook;
@@ -2213,5 +2221,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseByYear;
         private System.Windows.Forms.ToolStripMenuItem MenuActionFind;
         private System.Windows.Forms.ToolStripSeparator MenuActionSep2;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarDebugBenchmark;
     }
 }

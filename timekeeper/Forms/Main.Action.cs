@@ -590,7 +590,7 @@ namespace Timekeeper.Forms
             int DateTimeWidth = DateSize.Width;
             int DropDownButtonWidth = 33;
 
-            StatusBarDebug1.Text = "Width: " + DateTimeWidth.ToString();
+            StatusBarDebugGeneric1.Text = "Width: " + DateTimeWidth.ToString();
 
             StartTimeSelector.Width = DateTimeWidth + DropDownButtonWidth;
             StopTimeSelector.Width = DateTimeWidth + DropDownButtonWidth;

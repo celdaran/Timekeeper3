@@ -275,8 +275,11 @@ namespace Timekeeper.Forms
             View_HiddenActivitiesSince.SelectedIndex = Values.View_HiddenActivitiesSince;
             View_HiddenLocationsSince.SelectedIndex = Values.View_HiddenLocationsSince;
             View_HiddenCategoriesSince.SelectedIndex = Values.View_HiddenCategoriesSince;
-            
-            View_Other_MemoEditorToolbar.Checked = Values.View_Other_MemoEditorToolbar;
+
+            View_MemoEditor_ShowToolbar.Checked = Values.View_MemoEditor_ShowToolbar;
+            View_MemoEditor_RightMargin.Value = Values.View_MemoEditor_RightMargin;
+            View_MemoEditor_ShowGutter.Checked = Values.View_MemoEditor_ShowGutter;
+            View_MemoEditor_Font.Text = Values.View_MemoEditor_Font;
 
             //----------------------------------------------------------------------
 
@@ -359,7 +362,10 @@ namespace Timekeeper.Forms
             Values.View_HiddenLocationsSince = View_HiddenLocationsSince.SelectedIndex;
             Values.View_HiddenCategoriesSince = View_HiddenCategoriesSince.SelectedIndex;
 
-            Values.View_Other_MemoEditorToolbar = View_Other_MemoEditorToolbar.Checked;
+            Values.View_MemoEditor_ShowToolbar = View_MemoEditor_ShowToolbar.Checked;
+            Values.View_MemoEditor_RightMargin = (int)View_MemoEditor_RightMargin.Value;
+            Values.View_MemoEditor_ShowGutter = View_MemoEditor_ShowGutter.Checked;
+            Values.View_MemoEditor_Font = View_MemoEditor_Font.Text;
 
             //----------------------------------------------------------------------
 
@@ -515,6 +521,15 @@ namespace Timekeeper.Forms
             }
         }
 
+        private void View_MemoEditor_ShowToolbar_CheckedChanged(object sender, EventArgs e)
+        {
+            View_MemoEditor_RightMarginLabel.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            View_MemoEditor_RightMargin.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            View_MemoEditor_ShowGutter.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            View_MemoEditor_FontButton.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            View_MemoEditor_Font.Enabled = View_MemoEditor_ShowToolbar.Checked;
+        }
+
         //----------------------------------------------------------------------
 
         private void OptionsPanelCollection_DrawItem(Object sender, System.Windows.Forms.DrawItemEventArgs e)
@@ -668,7 +683,7 @@ namespace Timekeeper.Forms
 
             // One-off Adjustments
             HiddenGroup.Top = StatusBarGroup.Height + 23;
-            OtherViewGroup.Top = HiddenGroup.Bottom + 7;
+            MemoEditorGroup.Top = HiddenGroup.Bottom + 7;
             SortingGroup.Top = AnnoyGroup.Bottom + 7;
         }
 
@@ -745,12 +760,12 @@ namespace Timekeeper.Forms
             View_HiddenLocations.Checked = false;
             View_HiddenCategories.Checked = false;
 
-            View_Other_MemoEditorToolbar.Checked = false;
+            View_MemoEditor_ShowToolbar.Checked = false;
 
             Behavior_TitleBar_Template.Text = "%time - %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
-            Values.InterfacePreset = 0;
+            Values.Layout_InterfacePreset = 0;
             InterfaceChanged = true;
         }
 
@@ -775,12 +790,12 @@ namespace Timekeeper.Forms
             View_HiddenLocations.Checked = false;
             View_HiddenCategories.Checked = false;
 
-            View_Other_MemoEditorToolbar.Checked = false;
+            View_MemoEditor_ShowToolbar.Checked = false;
 
             Behavior_TitleBar_Template.Text = "%time - %activity for %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
-            Values.InterfacePreset = 1;
+            Values.Layout_InterfacePreset = 1;
             InterfaceChanged = true;
         }
 
@@ -805,13 +820,22 @@ namespace Timekeeper.Forms
             View_HiddenLocations.Checked = true;
             View_HiddenCategories.Checked = true;
 
-            View_Other_MemoEditorToolbar.Checked = true;
+            View_MemoEditor_ShowToolbar.Checked = true;
 
             Behavior_TitleBar_Template.Text = "%time - %activity for %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
-            Values.InterfacePreset = 2;
+            Values.Layout_InterfacePreset = 2;
             InterfaceChanged = true;
+        }
+
+        private void View_MemoEditor_FontButton_Click(object sender, EventArgs e)
+        {
+            FontConverter fc = new FontConverter();
+            FontDialog.Font = (Font)fc.ConvertFromString(View_MemoEditor_Font.Text);
+            if (FontDialog.ShowDialog(this) == DialogResult.OK) {
+                View_MemoEditor_Font.Text = (string)fc.ConvertToString(FontDialog.Font);
+            }
         }
 
         //----------------------------------------------------------------------

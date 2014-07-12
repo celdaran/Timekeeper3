@@ -30,19 +30,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MemoEditor));
             this.MemoEntry = new System.Windows.Forms.RichTextBox();
-            this.MemoToolbar = new System.Windows.Forms.ToolStrip();
-            this.FormatBoldButton = new System.Windows.Forms.ToolStripButton();
-            this.FormatItalicButton = new System.Windows.Forms.ToolStripButton();
-            this.FormatUnderlineButton = new System.Windows.Forms.ToolStripButton();
-            this.FormatStrikethroughButton = new System.Windows.Forms.ToolStripButton();
-            this.FormatSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.FormatBulletedListButton = new System.Windows.Forms.ToolStripButton();
-            this.FormatNumberedListButton = new System.Windows.Forms.ToolStripButton();
-            this.FormatSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.FormatCodeButton = new System.Windows.Forms.ToolStripButton();
-            this.FormatBlockquoteButton = new System.Windows.Forms.ToolStripButton();
-            this.FormatHorizontalRuleButton = new System.Windows.Forms.ToolStripButton();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.PopupMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuCut = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuCopy = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,13 +41,35 @@
             this.PopupMenuMarkupLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuHTML = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuMarkdown = new System.Windows.Forms.ToolStripMenuItem();
+            this.MemoToolbar = new System.Windows.Forms.ToolStrip();
+            this.FormatBoldButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatItalicButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatUnderlineButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatStrikethroughButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.FormatBulletedListButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatNumberedListButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.FormatHeading1Button = new System.Windows.Forms.ToolStripButton();
             this.FormatHeading2Button = new System.Windows.Forms.ToolStripButton();
             this.FormatHeading3Button = new System.Windows.Forms.ToolStripButton();
-            this.FormatSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.FormatSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.FormatCodeButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatBlockquoteButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatHorizontalRuleButton = new System.Windows.Forms.ToolStripButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.RulerPanel = new System.Windows.Forms.Panel();
+            this.ShowLeftMargin = new System.Windows.Forms.PictureBox();
+            this.RightMarginMarker = new System.Windows.Forms.PictureBox();
+            this.FormatFontButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.FontDialog = new System.Windows.Forms.FontDialog();
+            this.PopupMenu.SuspendLayout();
             this.MemoToolbar.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.PopupMenu.SuspendLayout();
+            this.RulerPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ShowLeftMargin)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RightMarginMarker)).BeginInit();
             this.SuspendLayout();
             // 
             // MemoEntry
@@ -68,162 +77,13 @@
             this.MemoEntry.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.MemoEntry.ContextMenuStrip = this.PopupMenu;
             this.MemoEntry.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MemoEntry.Location = new System.Drawing.Point(0, 25);
+            this.MemoEntry.Location = new System.Drawing.Point(0, 41);
             this.MemoEntry.Name = "MemoEntry";
-            this.MemoEntry.Size = new System.Drawing.Size(515, 203);
+            this.MemoEntry.RightMargin = 200;
+            this.MemoEntry.ShowSelectionMargin = true;
+            this.MemoEntry.Size = new System.Drawing.Size(515, 187);
             this.MemoEntry.TabIndex = 0;
             this.MemoEntry.Text = "";
-            // 
-            // MemoToolbar
-            // 
-            this.MemoToolbar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.MemoToolbar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.MemoToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FormatBoldButton,
-            this.FormatItalicButton,
-            this.FormatUnderlineButton,
-            this.FormatStrikethroughButton,
-            this.FormatSeparator1,
-            this.FormatBulletedListButton,
-            this.FormatNumberedListButton,
-            this.FormatSeparator2,
-            this.FormatHeading1Button,
-            this.FormatHeading2Button,
-            this.FormatHeading3Button,
-            this.FormatSeparator3,
-            this.FormatCodeButton,
-            this.FormatBlockquoteButton,
-            this.FormatHorizontalRuleButton});
-            this.MemoToolbar.Location = new System.Drawing.Point(0, 0);
-            this.MemoToolbar.Name = "MemoToolbar";
-            this.MemoToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.MemoToolbar.Size = new System.Drawing.Size(515, 25);
-            this.MemoToolbar.TabIndex = 1;
-            this.MemoToolbar.Text = "toolStrip1";
-            // 
-            // FormatBoldButton
-            // 
-            this.FormatBoldButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatBoldButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormatBoldButton.Image = global::Timekeeper.Properties.Resources.ImageButtonBold;
-            this.FormatBoldButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatBoldButton.Name = "FormatBoldButton";
-            this.FormatBoldButton.Size = new System.Drawing.Size(23, 22);
-            this.FormatBoldButton.Text = "B";
-            this.FormatBoldButton.ToolTipText = "Bold";
-            this.FormatBoldButton.Click += new System.EventHandler(this.FormatBoldButton_Click);
-            // 
-            // FormatItalicButton
-            // 
-            this.FormatItalicButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatItalicButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormatItalicButton.Image = global::Timekeeper.Properties.Resources.ImageButtonItalics;
-            this.FormatItalicButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatItalicButton.Name = "FormatItalicButton";
-            this.FormatItalicButton.Size = new System.Drawing.Size(23, 22);
-            this.FormatItalicButton.Text = "I";
-            this.FormatItalicButton.ToolTipText = "Italics";
-            this.FormatItalicButton.Click += new System.EventHandler(this.FormatItalicButton_Click);
-            // 
-            // FormatUnderlineButton
-            // 
-            this.FormatUnderlineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatUnderlineButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormatUnderlineButton.Image = global::Timekeeper.Properties.Resources.ImageButtonUnderlined;
-            this.FormatUnderlineButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatUnderlineButton.Name = "FormatUnderlineButton";
-            this.FormatUnderlineButton.Size = new System.Drawing.Size(23, 22);
-            this.FormatUnderlineButton.Text = "U";
-            this.FormatUnderlineButton.ToolTipText = "Underline";
-            this.FormatUnderlineButton.Click += new System.EventHandler(this.FormatUnderlineButton_Click);
-            // 
-            // FormatStrikethroughButton
-            // 
-            this.FormatStrikethroughButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatStrikethroughButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormatStrikethroughButton.Image = global::Timekeeper.Properties.Resources.ImageButtonStrikethrough;
-            this.FormatStrikethroughButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatStrikethroughButton.Name = "FormatStrikethroughButton";
-            this.FormatStrikethroughButton.Size = new System.Drawing.Size(28, 22);
-            this.FormatStrikethroughButton.Text = "abc";
-            this.FormatStrikethroughButton.ToolTipText = "Strikethrough";
-            this.FormatStrikethroughButton.Click += new System.EventHandler(this.FormatStrikethroughButton_Click);
-            // 
-            // FormatSeparator1
-            // 
-            this.FormatSeparator1.Name = "FormatSeparator1";
-            this.FormatSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // FormatBulletedListButton
-            // 
-            this.FormatBulletedListButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.FormatBulletedListButton.Image = global::Timekeeper.Properties.Resources.ImageButtonListBulleted;
-            this.FormatBulletedListButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatBulletedListButton.Name = "FormatBulletedListButton";
-            this.FormatBulletedListButton.Size = new System.Drawing.Size(23, 22);
-            this.FormatBulletedListButton.Text = "toolStripButton5";
-            this.FormatBulletedListButton.ToolTipText = "Bulleted List";
-            this.FormatBulletedListButton.Click += new System.EventHandler(this.FormatBulletedListButton_Click);
-            // 
-            // FormatNumberedListButton
-            // 
-            this.FormatNumberedListButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.FormatNumberedListButton.Image = global::Timekeeper.Properties.Resources.ImageButtonListNumbered;
-            this.FormatNumberedListButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatNumberedListButton.Name = "FormatNumberedListButton";
-            this.FormatNumberedListButton.Size = new System.Drawing.Size(23, 22);
-            this.FormatNumberedListButton.Text = "toolStripButton1";
-            this.FormatNumberedListButton.ToolTipText = "Numbered List";
-            this.FormatNumberedListButton.Click += new System.EventHandler(this.FormatNumberedListButton_Click);
-            // 
-            // FormatSeparator2
-            // 
-            this.FormatSeparator2.Name = "FormatSeparator2";
-            this.FormatSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // FormatCodeButton
-            // 
-            this.FormatCodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatCodeButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatCodeButton.Image")));
-            this.FormatCodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatCodeButton.Name = "FormatCodeButton";
-            this.FormatCodeButton.Size = new System.Drawing.Size(27, 22);
-            this.FormatCodeButton.Text = "<>";
-            this.FormatCodeButton.ToolTipText = "Code or Preformatted Text";
-            this.FormatCodeButton.Click += new System.EventHandler(this.FormatCodeButton_Click);
-            // 
-            // FormatBlockquoteButton
-            // 
-            this.FormatBlockquoteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatBlockquoteButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatBlockquoteButton.Image")));
-            this.FormatBlockquoteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatBlockquoteButton.Name = "FormatBlockquoteButton";
-            this.FormatBlockquoteButton.Size = new System.Drawing.Size(23, 22);
-            this.FormatBlockquoteButton.Text = "\" \"";
-            this.FormatBlockquoteButton.ToolTipText = "Blockquote";
-            this.FormatBlockquoteButton.Click += new System.EventHandler(this.FormatBlockquoteButton_Click);
-            // 
-            // FormatHorizontalRuleButton
-            // 
-            this.FormatHorizontalRuleButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatHorizontalRuleButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatHorizontalRuleButton.Image")));
-            this.FormatHorizontalRuleButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatHorizontalRuleButton.Name = "FormatHorizontalRuleButton";
-            this.FormatHorizontalRuleButton.Size = new System.Drawing.Size(23, 22);
-            this.FormatHorizontalRuleButton.Text = "—";
-            this.FormatHorizontalRuleButton.ToolTipText = "Separator";
-            this.FormatHorizontalRuleButton.Click += new System.EventHandler(this.FormatHorizontalRuleButton_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.MemoEntry);
-            this.panel1.Controls.Add(this.MemoToolbar);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(519, 232);
-            this.panel1.TabIndex = 2;
             // 
             // PopupMenu
             // 
@@ -301,16 +161,125 @@
             // PopupMenuHTML
             // 
             this.PopupMenuHTML.Name = "PopupMenuHTML";
-            this.PopupMenuHTML.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuHTML.Size = new System.Drawing.Size(123, 22);
             this.PopupMenuHTML.Text = "HTML";
             this.PopupMenuHTML.Click += new System.EventHandler(this.PopupMenuHTML_Click);
             // 
             // PopupMenuMarkdown
             // 
             this.PopupMenuMarkdown.Name = "PopupMenuMarkdown";
-            this.PopupMenuMarkdown.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuMarkdown.Size = new System.Drawing.Size(123, 22);
             this.PopupMenuMarkdown.Text = "Markdown";
             this.PopupMenuMarkdown.Click += new System.EventHandler(this.PopupMenuMarkdown_Click);
+            // 
+            // MemoToolbar
+            // 
+            this.MemoToolbar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.MemoToolbar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.MemoToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FormatFontButton,
+            this.FormatSeparator1,
+            this.FormatBoldButton,
+            this.FormatItalicButton,
+            this.FormatUnderlineButton,
+            this.FormatStrikethroughButton,
+            this.FormatSeparator2,
+            this.FormatBulletedListButton,
+            this.FormatNumberedListButton,
+            this.FormatSeparator3,
+            this.FormatHeading1Button,
+            this.FormatHeading2Button,
+            this.FormatHeading3Button,
+            this.FormatSeparator4,
+            this.FormatCodeButton,
+            this.FormatBlockquoteButton,
+            this.FormatHorizontalRuleButton});
+            this.MemoToolbar.Location = new System.Drawing.Point(0, 0);
+            this.MemoToolbar.Name = "MemoToolbar";
+            this.MemoToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.MemoToolbar.Size = new System.Drawing.Size(515, 25);
+            this.MemoToolbar.TabIndex = 1;
+            this.MemoToolbar.Text = "toolStrip1";
+            // 
+            // FormatBoldButton
+            // 
+            this.FormatBoldButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatBoldButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormatBoldButton.Image = global::Timekeeper.Properties.Resources.ImageButtonBold;
+            this.FormatBoldButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatBoldButton.Name = "FormatBoldButton";
+            this.FormatBoldButton.Size = new System.Drawing.Size(23, 22);
+            this.FormatBoldButton.Text = "B";
+            this.FormatBoldButton.ToolTipText = "Bold";
+            this.FormatBoldButton.Click += new System.EventHandler(this.FormatBoldButton_Click);
+            // 
+            // FormatItalicButton
+            // 
+            this.FormatItalicButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatItalicButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormatItalicButton.Image = global::Timekeeper.Properties.Resources.ImageButtonItalics;
+            this.FormatItalicButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatItalicButton.Name = "FormatItalicButton";
+            this.FormatItalicButton.Size = new System.Drawing.Size(23, 22);
+            this.FormatItalicButton.Text = "I";
+            this.FormatItalicButton.ToolTipText = "Italics";
+            this.FormatItalicButton.Click += new System.EventHandler(this.FormatItalicButton_Click);
+            // 
+            // FormatUnderlineButton
+            // 
+            this.FormatUnderlineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatUnderlineButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormatUnderlineButton.Image = global::Timekeeper.Properties.Resources.ImageButtonUnderlined;
+            this.FormatUnderlineButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatUnderlineButton.Name = "FormatUnderlineButton";
+            this.FormatUnderlineButton.Size = new System.Drawing.Size(23, 22);
+            this.FormatUnderlineButton.Text = "U";
+            this.FormatUnderlineButton.ToolTipText = "Underline";
+            this.FormatUnderlineButton.Click += new System.EventHandler(this.FormatUnderlineButton_Click);
+            // 
+            // FormatStrikethroughButton
+            // 
+            this.FormatStrikethroughButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatStrikethroughButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormatStrikethroughButton.Image = global::Timekeeper.Properties.Resources.ImageButtonStrikethrough;
+            this.FormatStrikethroughButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatStrikethroughButton.Name = "FormatStrikethroughButton";
+            this.FormatStrikethroughButton.Size = new System.Drawing.Size(28, 22);
+            this.FormatStrikethroughButton.Text = "abc";
+            this.FormatStrikethroughButton.ToolTipText = "Strikethrough";
+            this.FormatStrikethroughButton.Click += new System.EventHandler(this.FormatStrikethroughButton_Click);
+            // 
+            // FormatSeparator2
+            // 
+            this.FormatSeparator2.Name = "FormatSeparator2";
+            this.FormatSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // FormatBulletedListButton
+            // 
+            this.FormatBulletedListButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.FormatBulletedListButton.Image = global::Timekeeper.Properties.Resources.ImageButtonListBulleted;
+            this.FormatBulletedListButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatBulletedListButton.Name = "FormatBulletedListButton";
+            this.FormatBulletedListButton.Size = new System.Drawing.Size(23, 22);
+            this.FormatBulletedListButton.Text = "toolStripButton5";
+            this.FormatBulletedListButton.ToolTipText = "Bulleted List";
+            this.FormatBulletedListButton.Click += new System.EventHandler(this.FormatBulletedListButton_Click);
+            // 
+            // FormatNumberedListButton
+            // 
+            this.FormatNumberedListButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.FormatNumberedListButton.Image = global::Timekeeper.Properties.Resources.ImageButtonListNumbered;
+            this.FormatNumberedListButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatNumberedListButton.Name = "FormatNumberedListButton";
+            this.FormatNumberedListButton.Size = new System.Drawing.Size(23, 22);
+            this.FormatNumberedListButton.Text = "toolStripButton1";
+            this.FormatNumberedListButton.ToolTipText = "Numbered List";
+            this.FormatNumberedListButton.Click += new System.EventHandler(this.FormatNumberedListButton_Click);
+            // 
+            // FormatSeparator3
+            // 
+            this.FormatSeparator3.Name = "FormatSeparator3";
+            this.FormatSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // FormatHeading1Button
             // 
@@ -345,10 +314,106 @@
             this.FormatHeading3Button.ToolTipText = "Heading 3";
             this.FormatHeading3Button.Click += new System.EventHandler(this.FormatHeading3Button_Click);
             // 
-            // FormatSeparator3
+            // FormatSeparator4
             // 
-            this.FormatSeparator3.Name = "FormatSeparator3";
-            this.FormatSeparator3.Size = new System.Drawing.Size(6, 25);
+            this.FormatSeparator4.Name = "FormatSeparator4";
+            this.FormatSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // FormatCodeButton
+            // 
+            this.FormatCodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatCodeButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatCodeButton.Image")));
+            this.FormatCodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatCodeButton.Name = "FormatCodeButton";
+            this.FormatCodeButton.Size = new System.Drawing.Size(27, 22);
+            this.FormatCodeButton.Text = "<>";
+            this.FormatCodeButton.ToolTipText = "Code or Preformatted Text";
+            this.FormatCodeButton.Click += new System.EventHandler(this.FormatCodeButton_Click);
+            // 
+            // FormatBlockquoteButton
+            // 
+            this.FormatBlockquoteButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatBlockquoteButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatBlockquoteButton.Image")));
+            this.FormatBlockquoteButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatBlockquoteButton.Name = "FormatBlockquoteButton";
+            this.FormatBlockquoteButton.Size = new System.Drawing.Size(23, 22);
+            this.FormatBlockquoteButton.Text = "\" \"";
+            this.FormatBlockquoteButton.ToolTipText = "Blockquote";
+            this.FormatBlockquoteButton.Click += new System.EventHandler(this.FormatBlockquoteButton_Click);
+            // 
+            // FormatHorizontalRuleButton
+            // 
+            this.FormatHorizontalRuleButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatHorizontalRuleButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatHorizontalRuleButton.Image")));
+            this.FormatHorizontalRuleButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatHorizontalRuleButton.Name = "FormatHorizontalRuleButton";
+            this.FormatHorizontalRuleButton.Size = new System.Drawing.Size(23, 22);
+            this.FormatHorizontalRuleButton.Text = "—";
+            this.FormatHorizontalRuleButton.ToolTipText = "Separator";
+            this.FormatHorizontalRuleButton.Click += new System.EventHandler(this.FormatHorizontalRuleButton_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.MemoEntry);
+            this.panel1.Controls.Add(this.RulerPanel);
+            this.panel1.Controls.Add(this.MemoToolbar);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(519, 232);
+            this.panel1.TabIndex = 2;
+            // 
+            // RulerPanel
+            // 
+            this.RulerPanel.BackgroundImage = global::Timekeeper.Properties.Resources.ImageIconRuler;
+            this.RulerPanel.Controls.Add(this.ShowLeftMargin);
+            this.RulerPanel.Controls.Add(this.RightMarginMarker);
+            this.RulerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.RulerPanel.Location = new System.Drawing.Point(0, 25);
+            this.RulerPanel.Name = "RulerPanel";
+            this.RulerPanel.Size = new System.Drawing.Size(515, 16);
+            this.RulerPanel.TabIndex = 2;
+            this.RulerPanel.DoubleClick += new System.EventHandler(this.RulerPanel_DoubleClick);
+            // 
+            // ShowLeftMargin
+            // 
+            this.ShowLeftMargin.BackgroundImage = global::Timekeeper.Properties.Resources.ImageIconSquareDot;
+            this.ShowLeftMargin.Location = new System.Drawing.Point(0, 0);
+            this.ShowLeftMargin.Name = "ShowLeftMargin";
+            this.ShowLeftMargin.Size = new System.Drawing.Size(8, 15);
+            this.ShowLeftMargin.TabIndex = 2;
+            this.ShowLeftMargin.TabStop = false;
+            this.ShowLeftMargin.Click += new System.EventHandler(this.ShowLeftMargin_Click);
+            // 
+            // RightMarginMarker
+            // 
+            this.RightMarginMarker.BackColor = System.Drawing.Color.Transparent;
+            this.RightMarginMarker.BackgroundImage = global::Timekeeper.Properties.Resources.ImageButtonDown;
+            this.RightMarginMarker.Location = new System.Drawing.Point(278, 0);
+            this.RightMarginMarker.Name = "RightMarginMarker";
+            this.RightMarginMarker.Size = new System.Drawing.Size(18, 15);
+            this.RightMarginMarker.TabIndex = 1;
+            this.RightMarginMarker.TabStop = false;
+            this.RightMarginMarker.DoubleClick += new System.EventHandler(this.RightMarginMarker_DoubleClick);
+            this.RightMarginMarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RightMarginMarker_MouseDown);
+            this.RightMarginMarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RightMarginMarker_MouseMove);
+            this.RightMarginMarker.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RightMarginMarker_MouseUp);
+            // 
+            // FormatFontButton
+            // 
+            this.FormatFontButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatFontButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatFontButton.Image")));
+            this.FormatFontButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatFontButton.Name = "FormatFontButton";
+            this.FormatFontButton.Size = new System.Drawing.Size(45, 22);
+            this.FormatFontButton.Text = "Font...";
+            this.FormatFontButton.Click += new System.EventHandler(this.FormatFontButton_Click);
+            // 
+            // FormatSeparator1
+            // 
+            this.FormatSeparator1.Name = "FormatSeparator1";
+            this.FormatSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // MemoEditor
             // 
@@ -358,11 +423,14 @@
             this.Name = "MemoEditor";
             this.Size = new System.Drawing.Size(519, 232);
             this.Load += new System.EventHandler(this.MemoEditor_Load);
+            this.PopupMenu.ResumeLayout(false);
             this.MemoToolbar.ResumeLayout(false);
             this.MemoToolbar.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.PopupMenu.ResumeLayout(false);
+            this.RulerPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ShowLeftMargin)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RightMarginMarker)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -374,10 +442,10 @@
         private System.Windows.Forms.ToolStripButton FormatItalicButton;
         private System.Windows.Forms.ToolStripButton FormatUnderlineButton;
         private System.Windows.Forms.ToolStripButton FormatStrikethroughButton;
-        private System.Windows.Forms.ToolStripSeparator FormatSeparator1;
+        private System.Windows.Forms.ToolStripSeparator FormatSeparator2;
         private System.Windows.Forms.ToolStripButton FormatBulletedListButton;
         private System.Windows.Forms.ToolStripButton FormatNumberedListButton;
-        private System.Windows.Forms.ToolStripSeparator FormatSeparator2;
+        private System.Windows.Forms.ToolStripSeparator FormatSeparator3;
         private System.Windows.Forms.ToolStripButton FormatCodeButton;
         private System.Windows.Forms.ToolStripButton FormatBlockquoteButton;
         private System.Windows.Forms.ToolStripButton FormatHorizontalRuleButton;
@@ -397,6 +465,12 @@
         private System.Windows.Forms.ToolStripButton FormatHeading1Button;
         private System.Windows.Forms.ToolStripButton FormatHeading2Button;
         private System.Windows.Forms.ToolStripButton FormatHeading3Button;
-        private System.Windows.Forms.ToolStripSeparator FormatSeparator3;
+        private System.Windows.Forms.ToolStripSeparator FormatSeparator4;
+        private System.Windows.Forms.Panel RulerPanel;
+        private System.Windows.Forms.PictureBox RightMarginMarker;
+        private System.Windows.Forms.PictureBox ShowLeftMargin;
+        private System.Windows.Forms.ToolStripButton FormatFontButton;
+        private System.Windows.Forms.ToolStripSeparator FormatSeparator1;
+        private System.Windows.Forms.FontDialog FontDialog;
     }
 }

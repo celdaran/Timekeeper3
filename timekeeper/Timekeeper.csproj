@@ -592,6 +592,9 @@
     <None Include="Resources\Images\Icons\SmallCategory.png" />
     <None Include="Resources\Images\Icons\SmallLocation.png" />
     <None Include="Resources\SQL\3.0\Schedule.Insert.sql" />
+    <None Include="Resources\Images\Icons\Ruler.png" />
+    <None Include="Resources\Images\Icons\SquareDot.png" />
+    <None Include="Resources\Images\Icons\Blank.png" />
     <Content Include="tk3.icon.ico" />
     <None Include="Resources\Images\Icons\Speaker.png" />
     <None Include="Resources\Images\Icons\Warning.png" />

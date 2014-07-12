@@ -13,6 +13,20 @@ INSERT INTO Options
 ) VALUES (
     '{0}',
     '{0}',
+    'LastProjectId',
+    null
+);
+
+INSERT INTO Options
+(
+    CreateTime,
+    ModifyTime,
+    Key,
+    Value
+
+) VALUES (
+    '{0}',
+    '{0}',
     'LastActivityId',
     null
 );
@@ -27,7 +41,21 @@ INSERT INTO Options
 ) VALUES (
     '{0}',
     '{0}',
-    'LastProjectId',
+    'LastLocationId',
+    null
+);
+
+INSERT INTO Options
+(
+    CreateTime,
+    ModifyTime,
+    Key,
+    Value
+
+) VALUES (
+    '{0}',
+    '{0}',
+    'LastCategoryId',
     null
 );
 

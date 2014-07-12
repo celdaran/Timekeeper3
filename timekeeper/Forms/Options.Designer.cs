@@ -45,8 +45,13 @@
             this.Layout_UseActivities = new System.Windows.Forms.CheckBox();
             this.Layout_UseProjects = new System.Windows.Forms.CheckBox();
             this.ViewPage = new System.Windows.Forms.TabPage();
-            this.OtherViewGroup = new System.Windows.Forms.GroupBox();
-            this.View_Other_MemoEditorToolbar = new System.Windows.Forms.CheckBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.MemoEditorGroup = new System.Windows.Forms.GroupBox();
+            this.View_MemoEditor_FontButton = new System.Windows.Forms.Button();
+            this.View_MemoEditor_ShowGutter = new System.Windows.Forms.CheckBox();
+            this.View_MemoEditor_RightMarginLabel = new System.Windows.Forms.Label();
+            this.View_MemoEditor_RightMargin = new System.Windows.Forms.NumericUpDown();
+            this.View_MemoEditor_ShowToolbar = new System.Windows.Forms.CheckBox();
             this.StatusBarGroup = new System.Windows.Forms.GroupBox();
             this.StatusBarGroup_BottomPanel = new System.Windows.Forms.Panel();
             this.View_StatusBar_ElapsedAllToday = new System.Windows.Forms.CheckBox();
@@ -78,6 +83,12 @@
             this.View_HiddenProjects = new System.Windows.Forms.CheckBox();
             this.View_HiddenProjectsSince = new System.Windows.Forms.ComboBox();
             this.BehaviorPage = new System.Windows.Forms.TabPage();
+            this.BrowsingGroup = new System.Windows.Forms.GroupBox();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.Behavior_BrowseNextBy = new System.Windows.Forms.ComboBox();
+            this.Behavior_BrowsePrevBy = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.SortingGroup = new System.Windows.Forms.GroupBox();
             this.SortingGroup_BottomPanel = new System.Windows.Forms.Panel();
             this.Behavior_SortItemsBy = new System.Windows.Forms.ComboBox();
@@ -168,19 +179,17 @@
             this.LoggingDatabaseLabel = new System.Windows.Forms.Label();
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
-            this.BrowsingGroup = new System.Windows.Forms.GroupBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.Behavior_BrowsePrevBy = new System.Windows.Forms.ComboBox();
-            this.Behavior_BrowseNextBy = new System.Windows.Forms.ComboBox();
             this.Behavior_BottomSpacerLabel = new System.Windows.Forms.Label();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.FontDialog = new System.Windows.Forms.FontDialog();
+            this.View_MemoEditor_Font = new System.Windows.Forms.TextBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
             this.DimensionGroup.SuspendLayout();
             this.ViewPage.SuspendLayout();
-            this.OtherViewGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.MemoEditorGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.View_MemoEditor_RightMargin)).BeginInit();
             this.StatusBarGroup.SuspendLayout();
             this.StatusBarGroup_BottomPanel.SuspendLayout();
             this.StatusBarGroup_ActivityElapsedPanel.SuspendLayout();
@@ -195,6 +204,7 @@
             this.HiddenGroup_ActivityPanel.SuspendLayout();
             this.HiddenGroup_ProjectPanel.SuspendLayout();
             this.BehaviorPage.SuspendLayout();
+            this.BrowsingGroup.SuspendLayout();
             this.SortingGroup.SuspendLayout();
             this.SortingGroup_BottomPanel.SuspendLayout();
             this.SortingGroup_ProjectPanel.SuspendLayout();
@@ -217,7 +227,6 @@
             this.OtherAdvancedGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.LoggingGroup.SuspendLayout();
-            this.BrowsingGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -408,7 +417,8 @@
             // ViewPage
             // 
             this.ViewPage.AutoScroll = true;
-            this.ViewPage.Controls.Add(this.OtherViewGroup);
+            this.ViewPage.Controls.Add(this.pictureBox1);
+            this.ViewPage.Controls.Add(this.MemoEditorGroup);
             this.ViewPage.Controls.Add(this.StatusBarGroup);
             this.ViewPage.Controls.Add(this.HiddenGroup);
             this.ViewPage.Location = new System.Drawing.Point(98, 4);
@@ -419,25 +429,87 @@
             this.ViewPage.Text = "View";
             this.ViewPage.UseVisualStyleBackColor = true;
             // 
-            // OtherViewGroup
+            // pictureBox1
             // 
-            this.OtherViewGroup.Controls.Add(this.View_Other_MemoEditorToolbar);
-            this.OtherViewGroup.Location = new System.Drawing.Point(17, 367);
-            this.OtherViewGroup.Name = "OtherViewGroup";
-            this.OtherViewGroup.Size = new System.Drawing.Size(345, 48);
-            this.OtherViewGroup.TabIndex = 21;
-            this.OtherViewGroup.TabStop = false;
-            this.OtherViewGroup.Text = "Other";
+            this.pictureBox1.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
+            this.pictureBox1.Location = new System.Drawing.Point(17, 495);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.TabIndex = 22;
+            this.pictureBox1.TabStop = false;
             // 
-            // View_Other_MemoEditorToolbar
+            // MemoEditorGroup
             // 
-            this.View_Other_MemoEditorToolbar.AutoSize = true;
-            this.View_Other_MemoEditorToolbar.Location = new System.Drawing.Point(17, 19);
-            this.View_Other_MemoEditorToolbar.Name = "View_Other_MemoEditorToolbar";
-            this.View_Other_MemoEditorToolbar.Size = new System.Drawing.Size(114, 17);
-            this.View_Other_MemoEditorToolbar.TabIndex = 0;
-            this.View_Other_MemoEditorToolbar.Text = "Formatting Toolbar";
-            this.View_Other_MemoEditorToolbar.UseVisualStyleBackColor = true;
+            this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_Font);
+            this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_FontButton);
+            this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_ShowGutter);
+            this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_RightMarginLabel);
+            this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_RightMargin);
+            this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_ShowToolbar);
+            this.MemoEditorGroup.Location = new System.Drawing.Point(17, 367);
+            this.MemoEditorGroup.Name = "MemoEditorGroup";
+            this.MemoEditorGroup.Size = new System.Drawing.Size(345, 127);
+            this.MemoEditorGroup.TabIndex = 21;
+            this.MemoEditorGroup.TabStop = false;
+            this.MemoEditorGroup.Text = "Memo Editor";
+            // 
+            // View_MemoEditor_FontButton
+            // 
+            this.View_MemoEditor_FontButton.Location = new System.Drawing.Point(36, 91);
+            this.View_MemoEditor_FontButton.Name = "View_MemoEditor_FontButton";
+            this.View_MemoEditor_FontButton.Size = new System.Drawing.Size(56, 23);
+            this.View_MemoEditor_FontButton.TabIndex = 4;
+            this.View_MemoEditor_FontButton.Text = "Font...";
+            this.View_MemoEditor_FontButton.UseVisualStyleBackColor = true;
+            this.View_MemoEditor_FontButton.Click += new System.EventHandler(this.View_MemoEditor_FontButton_Click);
+            // 
+            // View_MemoEditor_ShowGutter
+            // 
+            this.View_MemoEditor_ShowGutter.AutoSize = true;
+            this.View_MemoEditor_ShowGutter.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.View_MemoEditor_ShowGutter.Location = new System.Drawing.Point(32, 42);
+            this.View_MemoEditor_ShowGutter.Name = "View_MemoEditor_ShowGutter";
+            this.View_MemoEditor_ShowGutter.Size = new System.Drawing.Size(100, 17);
+            this.View_MemoEditor_ShowGutter.TabIndex = 3;
+            this.View_MemoEditor_ShowGutter.Text = "Show left gutter";
+            this.View_MemoEditor_ShowGutter.UseVisualStyleBackColor = true;
+            // 
+            // View_MemoEditor_RightMarginLabel
+            // 
+            this.View_MemoEditor_RightMarginLabel.AutoSize = true;
+            this.View_MemoEditor_RightMarginLabel.Location = new System.Drawing.Point(34, 67);
+            this.View_MemoEditor_RightMarginLabel.Name = "View_MemoEditor_RightMarginLabel";
+            this.View_MemoEditor_RightMarginLabel.Size = new System.Drawing.Size(69, 13);
+            this.View_MemoEditor_RightMarginLabel.TabIndex = 2;
+            this.View_MemoEditor_RightMarginLabel.Text = "Right margin:";
+            // 
+            // View_MemoEditor_RightMargin
+            // 
+            this.View_MemoEditor_RightMargin.Location = new System.Drawing.Point(116, 65);
+            this.View_MemoEditor_RightMargin.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.View_MemoEditor_RightMargin.Name = "View_MemoEditor_RightMargin";
+            this.View_MemoEditor_RightMargin.Size = new System.Drawing.Size(56, 20);
+            this.View_MemoEditor_RightMargin.TabIndex = 1;
+            this.View_MemoEditor_RightMargin.Value = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            // 
+            // View_MemoEditor_ShowToolbar
+            // 
+            this.View_MemoEditor_ShowToolbar.AutoSize = true;
+            this.View_MemoEditor_ShowToolbar.Location = new System.Drawing.Point(17, 19);
+            this.View_MemoEditor_ShowToolbar.Name = "View_MemoEditor_ShowToolbar";
+            this.View_MemoEditor_ShowToolbar.Size = new System.Drawing.Size(137, 17);
+            this.View_MemoEditor_ShowToolbar.TabIndex = 0;
+            this.View_MemoEditor_ShowToolbar.Text = "Show formatting toolbar";
+            this.View_MemoEditor_ShowToolbar.UseVisualStyleBackColor = true;
+            this.View_MemoEditor_ShowToolbar.CheckedChanged += new System.EventHandler(this.View_MemoEditor_ShowToolbar_CheckedChanged);
             // 
             // StatusBarGroup
             // 
@@ -780,6 +852,79 @@
             this.BehaviorPage.TabIndex = 3;
             this.BehaviorPage.Text = "Behavior";
             this.BehaviorPage.UseVisualStyleBackColor = true;
+            // 
+            // BrowsingGroup
+            // 
+            this.BrowsingGroup.Controls.Add(this.checkBox7);
+            this.BrowsingGroup.Controls.Add(this.Behavior_BrowseNextBy);
+            this.BrowsingGroup.Controls.Add(this.Behavior_BrowsePrevBy);
+            this.BrowsingGroup.Controls.Add(this.label14);
+            this.BrowsingGroup.Controls.Add(this.label13);
+            this.BrowsingGroup.Location = new System.Drawing.Point(17, 436);
+            this.BrowsingGroup.Name = "BrowsingGroup";
+            this.BrowsingGroup.Size = new System.Drawing.Size(345, 102);
+            this.BrowsingGroup.TabIndex = 5;
+            this.BrowsingGroup.TabStop = false;
+            this.BrowsingGroup.Text = "Browsing";
+            // 
+            // checkBox7
+            // 
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Enabled = false;
+            this.checkBox7.Location = new System.Drawing.Point(17, 79);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(225, 17);
+            this.checkBox7.TabIndex = 4;
+            this.checkBox7.Text = "Lock Previous and Next browsing options.";
+            this.checkBox7.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_BrowseNextBy
+            // 
+            this.Behavior_BrowseNextBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Behavior_BrowseNextBy.FormattingEnabled = true;
+            this.Behavior_BrowseNextBy.Items.AddRange(new object[] {
+            "Entry",
+            "Day",
+            "Week",
+            "Month",
+            "Year"});
+            this.Behavior_BrowseNextBy.Location = new System.Drawing.Point(158, 53);
+            this.Behavior_BrowseNextBy.Name = "Behavior_BrowseNextBy";
+            this.Behavior_BrowseNextBy.Size = new System.Drawing.Size(121, 21);
+            this.Behavior_BrowseNextBy.TabIndex = 3;
+            // 
+            // Behavior_BrowsePrevBy
+            // 
+            this.Behavior_BrowsePrevBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Behavior_BrowsePrevBy.FormattingEnabled = true;
+            this.Behavior_BrowsePrevBy.Items.AddRange(new object[] {
+            "Entry",
+            "Day",
+            "Week",
+            "Month",
+            "Year"});
+            this.Behavior_BrowsePrevBy.Location = new System.Drawing.Point(158, 26);
+            this.Behavior_BrowsePrevBy.Name = "Behavior_BrowsePrevBy";
+            this.Behavior_BrowsePrevBy.Size = new System.Drawing.Size(121, 21);
+            this.Behavior_BrowsePrevBy.TabIndex = 2;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(14, 56);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(119, 13);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Browse Next Entries by:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(14, 29);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(138, 13);
+            this.label13.TabIndex = 0;
+            this.label13.Text = "Browse Previous Entries by:";
             // 
             // SortingGroup
             // 
@@ -1820,68 +1965,6 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
-            // BrowsingGroup
-            // 
-            this.BrowsingGroup.Controls.Add(this.checkBox7);
-            this.BrowsingGroup.Controls.Add(this.Behavior_BrowseNextBy);
-            this.BrowsingGroup.Controls.Add(this.Behavior_BrowsePrevBy);
-            this.BrowsingGroup.Controls.Add(this.label14);
-            this.BrowsingGroup.Controls.Add(this.label13);
-            this.BrowsingGroup.Location = new System.Drawing.Point(17, 436);
-            this.BrowsingGroup.Name = "BrowsingGroup";
-            this.BrowsingGroup.Size = new System.Drawing.Size(345, 102);
-            this.BrowsingGroup.TabIndex = 5;
-            this.BrowsingGroup.TabStop = false;
-            this.BrowsingGroup.Text = "Browsing";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(14, 29);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(138, 13);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "Browse Previous Entries by:";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(14, 56);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(119, 13);
-            this.label14.TabIndex = 1;
-            this.label14.Text = "Browse Next Entries by:";
-            // 
-            // Behavior_BrowsePrevBy
-            // 
-            this.Behavior_BrowsePrevBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Behavior_BrowsePrevBy.FormattingEnabled = true;
-            this.Behavior_BrowsePrevBy.Items.AddRange(new object[] {
-            "Entry",
-            "Day",
-            "Week",
-            "Month",
-            "Year"});
-            this.Behavior_BrowsePrevBy.Location = new System.Drawing.Point(158, 26);
-            this.Behavior_BrowsePrevBy.Name = "Behavior_BrowsePrevBy";
-            this.Behavior_BrowsePrevBy.Size = new System.Drawing.Size(121, 21);
-            this.Behavior_BrowsePrevBy.TabIndex = 2;
-            // 
-            // Behavior_BrowseNextBy
-            // 
-            this.Behavior_BrowseNextBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Behavior_BrowseNextBy.FormattingEnabled = true;
-            this.Behavior_BrowseNextBy.Items.AddRange(new object[] {
-            "Entry",
-            "Day",
-            "Week",
-            "Month",
-            "Year"});
-            this.Behavior_BrowseNextBy.Location = new System.Drawing.Point(158, 53);
-            this.Behavior_BrowseNextBy.Name = "Behavior_BrowseNextBy";
-            this.Behavior_BrowseNextBy.Size = new System.Drawing.Size(121, 21);
-            this.Behavior_BrowseNextBy.TabIndex = 3;
-            // 
             // Behavior_BottomSpacerLabel
             // 
             this.Behavior_BottomSpacerLabel.AutoSize = true;
@@ -1890,16 +1973,13 @@
             this.Behavior_BottomSpacerLabel.Size = new System.Drawing.Size(0, 13);
             this.Behavior_BottomSpacerLabel.TabIndex = 6;
             // 
-            // checkBox7
+            // View_MemoEditor_Font
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Enabled = false;
-            this.checkBox7.Location = new System.Drawing.Point(17, 79);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(225, 17);
-            this.checkBox7.TabIndex = 4;
-            this.checkBox7.Text = "Lock Previous and Next browsing options.";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.View_MemoEditor_Font.Location = new System.Drawing.Point(116, 93);
+            this.View_MemoEditor_Font.Name = "View_MemoEditor_Font";
+            this.View_MemoEditor_Font.ReadOnly = true;
+            this.View_MemoEditor_Font.Size = new System.Drawing.Size(213, 20);
+            this.View_MemoEditor_Font.TabIndex = 5;
             // 
             // Options
             // 
@@ -1930,8 +2010,10 @@
             this.DimensionGroup.ResumeLayout(false);
             this.DimensionGroup.PerformLayout();
             this.ViewPage.ResumeLayout(false);
-            this.OtherViewGroup.ResumeLayout(false);
-            this.OtherViewGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.MemoEditorGroup.ResumeLayout(false);
+            this.MemoEditorGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.View_MemoEditor_RightMargin)).EndInit();
             this.StatusBarGroup.ResumeLayout(false);
             this.StatusBarGroup_BottomPanel.ResumeLayout(false);
             this.StatusBarGroup_BottomPanel.PerformLayout();
@@ -1957,6 +2039,8 @@
             this.HiddenGroup_ProjectPanel.ResumeLayout(false);
             this.HiddenGroup_ProjectPanel.PerformLayout();
             this.BehaviorPage.ResumeLayout(false);
+            this.BrowsingGroup.ResumeLayout(false);
+            this.BrowsingGroup.PerformLayout();
             this.SortingGroup.ResumeLayout(false);
             this.SortingGroup_BottomPanel.ResumeLayout(false);
             this.SortingGroup_BottomPanel.PerformLayout();
@@ -1991,8 +2075,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
-            this.BrowsingGroup.ResumeLayout(false);
-            this.BrowsingGroup.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2130,8 +2212,8 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox Mail_SmtpServerPassword;
         private System.Windows.Forms.TextBox Mail_SmtpServerUsername;
-        private System.Windows.Forms.GroupBox OtherViewGroup;
-        private System.Windows.Forms.CheckBox View_Other_MemoEditorToolbar;
+        private System.Windows.Forms.GroupBox MemoEditorGroup;
+        private System.Windows.Forms.CheckBox View_MemoEditor_ShowToolbar;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown Mail_SmtpTimeout;
@@ -2147,6 +2229,13 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label Behavior_BottomSpacerLabel;
         private System.Windows.Forms.CheckBox checkBox7;
+        private System.Windows.Forms.Label View_MemoEditor_RightMarginLabel;
+        private System.Windows.Forms.NumericUpDown View_MemoEditor_RightMargin;
+        private System.Windows.Forms.CheckBox View_MemoEditor_ShowGutter;
+        private System.Windows.Forms.Button View_MemoEditor_FontButton;
+        private System.Windows.Forms.FontDialog FontDialog;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox View_MemoEditor_Font;
 
     }
 }
