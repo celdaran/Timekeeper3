@@ -42,6 +42,8 @@
             this.PopupMenuHTML = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuMarkdown = new System.Windows.Forms.ToolStripMenuItem();
             this.MemoToolbar = new System.Windows.Forms.ToolStrip();
+            this.FormatFontButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.FormatBoldButton = new System.Windows.Forms.ToolStripButton();
             this.FormatItalicButton = new System.Windows.Forms.ToolStripButton();
             this.FormatUnderlineButton = new System.Windows.Forms.ToolStripButton();
@@ -61,8 +63,6 @@
             this.RulerPanel = new System.Windows.Forms.Panel();
             this.ShowLeftMargin = new System.Windows.Forms.PictureBox();
             this.RightMarginMarker = new System.Windows.Forms.PictureBox();
-            this.FormatFontButton = new System.Windows.Forms.ToolStripButton();
-            this.FormatSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.FontDialog = new System.Windows.Forms.FontDialog();
             this.PopupMenu.SuspendLayout();
             this.MemoToolbar.SuspendLayout();
@@ -80,6 +80,7 @@
             this.MemoEntry.Location = new System.Drawing.Point(0, 41);
             this.MemoEntry.Name = "MemoEntry";
             this.MemoEntry.RightMargin = 200;
+            this.MemoEntry.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
             this.MemoEntry.ShowSelectionMargin = true;
             this.MemoEntry.Size = new System.Drawing.Size(515, 187);
             this.MemoEntry.TabIndex = 0;
@@ -200,6 +201,21 @@
             this.MemoToolbar.Size = new System.Drawing.Size(515, 25);
             this.MemoToolbar.TabIndex = 1;
             this.MemoToolbar.Text = "toolStrip1";
+            // 
+            // FormatFontButton
+            // 
+            this.FormatFontButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatFontButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatFontButton.Image")));
+            this.FormatFontButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatFontButton.Name = "FormatFontButton";
+            this.FormatFontButton.Size = new System.Drawing.Size(45, 22);
+            this.FormatFontButton.Text = "Font...";
+            this.FormatFontButton.Click += new System.EventHandler(this.FormatFontButton_Click);
+            // 
+            // FormatSeparator1
+            // 
+            this.FormatSeparator1.Name = "FormatSeparator1";
+            this.FormatSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // FormatBoldButton
             // 
@@ -399,21 +415,6 @@
             this.RightMarginMarker.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RightMarginMarker_MouseDown);
             this.RightMarginMarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RightMarginMarker_MouseMove);
             this.RightMarginMarker.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RightMarginMarker_MouseUp);
-            // 
-            // FormatFontButton
-            // 
-            this.FormatFontButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatFontButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatFontButton.Image")));
-            this.FormatFontButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatFontButton.Name = "FormatFontButton";
-            this.FormatFontButton.Size = new System.Drawing.Size(45, 22);
-            this.FormatFontButton.Text = "Font...";
-            this.FormatFontButton.Click += new System.EventHandler(this.FormatFontButton_Click);
-            // 
-            // FormatSeparator1
-            // 
-            this.FormatSeparator1.Name = "FormatSeparator1";
-            this.FormatSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // MemoEditor
             // 

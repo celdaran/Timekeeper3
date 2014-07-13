@@ -49,14 +49,15 @@ namespace Timekeeper.Forms
             PopulateForm();
             OptionsToForm();
 
-            // FIXME: Find a better place for this
-            View_MemoEditor_ShowToolbar_CheckedChanged(sender, e);
-
             // Last pass: dynamic interface changes
             Layout_UseProjects_CheckedChanged(sender, e);
             Layout_UseActivities_CheckedChanged(sender, e);
             Layout_UseLocations_CheckedChanged(sender, e);
             Layout_UseCategories_CheckedChanged(sender, e);
+
+            View_MemoEditor_CheckedChanged(sender, e);
+            View_StatusBar_CheckedChanged(sender, e);
+            View_MemoEditor_ShowToolbar_CheckedChanged(sender, e);
         }
 
         //----------------------------------------------------------------------
@@ -298,7 +299,8 @@ namespace Timekeeper.Forms
             Behavior_Window_MinimizeOnUse.Checked = Values.Behavior_Window_MinimizeOnUse;
 
             Behavior_Annoy_ActivityFollowsProject.Checked = Values.Behavior_Annoy_ActivityFollowsProject;
-            Behavior_Annoy_ProjectFollowsActivity.Checked = Values.Behavior_Annoy_ProjectFollowsActivity;
+            Behavior_Annoy_LocationFollowsProject.Checked = Values.Behavior_Annoy_LocationFollowsProject;
+            Behavior_Annoy_CategoryFollowsProject.Checked = Values.Behavior_Annoy_CategoryFollowsProject;
             Behavior_Annoy_PromptBeforeHiding.Checked = Values.Behavior_Annoy_PromptBeforeHiding;
             Behavior_Annoy_NoRunningPrompt.Checked = Values.Behavior_Annoy_NoRunningPrompt;
             Behavior_Annoy_NoRunningPromptAmount.Value = Values.Behavior_Annoy_NoRunningPromptAmount;
@@ -333,6 +335,7 @@ namespace Timekeeper.Forms
             Advanced_Logging_Application.SelectedIndex = Values.Advanced_Logging_Application;
             Advanced_Logging_Database.SelectedIndex = Values.Advanced_Logging_Database;
             Advanced_Other_MarkupLanguage.SelectedIndex = Values.Advanced_Other_MarkupLanguage;
+            Advanced_Other_DimensionWidth.Value = Values.Advanced_Other_DimensionWidth;
         }
 
         //----------------------------------------------------------------------
@@ -388,7 +391,8 @@ namespace Timekeeper.Forms
             Values.Behavior_Window_MinimizeOnUse = Behavior_Window_MinimizeOnUse.Checked;
 
             Values.Behavior_Annoy_ActivityFollowsProject = Behavior_Annoy_ActivityFollowsProject.Checked;
-            Values.Behavior_Annoy_ProjectFollowsActivity = Behavior_Annoy_ProjectFollowsActivity.Checked;
+            Values.Behavior_Annoy_LocationFollowsProject = Behavior_Annoy_LocationFollowsProject.Checked;
+            Values.Behavior_Annoy_CategoryFollowsProject = Behavior_Annoy_CategoryFollowsProject.Checked;
             Values.Behavior_Annoy_PromptBeforeHiding = Behavior_Annoy_PromptBeforeHiding.Checked;
             Values.Behavior_Annoy_NoRunningPrompt = Behavior_Annoy_NoRunningPrompt.Checked;
             Values.Behavior_Annoy_NoRunningPromptAmount = (int)Behavior_Annoy_NoRunningPromptAmount.Value;
@@ -421,6 +425,7 @@ namespace Timekeeper.Forms
             Values.Advanced_Logging_Application = Advanced_Logging_Application.SelectedIndex;
             Values.Advanced_Logging_Database = Advanced_Logging_Database.SelectedIndex;
             Values.Advanced_Other_MarkupLanguage = Advanced_Other_MarkupLanguage.SelectedIndex;
+            Values.Advanced_Other_DimensionWidth = (int)Advanced_Other_DimensionWidth.Value;
         }
 
         //----------------------------------------------------------------------
@@ -623,7 +628,7 @@ namespace Timekeeper.Forms
             int TallHeight = Layout_UseLocations.Checked ? 27 : 0;
             HiddenGroup_LocationPanel.Height = TallHeight;
             _DisableSortOther();
-            _Pizza();
+            _SetLocationVisibility();
         }
 
         private void Layout_UseCategories_CheckedChanged(object sender, EventArgs e)
@@ -631,7 +636,7 @@ namespace Timekeeper.Forms
             int TallHeight = Layout_UseCategories.Checked ? 27 : 0;
             HiddenGroup_CategoryPanel.Height = TallHeight;
             _DisableSortOther();
-            _Pizza();
+            _SetCategoryVisibility();
         }
 
         private void _DisableSortOther()
@@ -648,20 +653,20 @@ namespace Timekeeper.Forms
             // Define Standard Heights
             int TallHeight = Layout_UseProjects.Checked ? 27 : 0;
             int ShortHeight = Layout_UseProjects.Checked ? 23 : 0;
+            int SpecialHeight = (Layout_UseActivities.Checked && Layout_UseProjects.Checked) ? 23 : 0;
 
             // Set Heights
             SortingGroup_ProjectPanel.Height = TallHeight;
             StatusBarGroup_ProjectNamePanel.Height = ShortHeight;
             StatusBarGroup_ProjectElapsedPanel.Height = ShortHeight;
             HiddenGroup_ProjectPanel.Height = TallHeight;
+            AnnoyGroup_ActivityFollowPanel.Height = SpecialHeight;
 
             if (Layout_UseProjects.Checked) {
                 PopulateTitleBarTimeList();
             } else {
                 Behavior_TitleBar_Time.Items.RemoveAt(1);
             }
-
-            AnnoyGroup_BottomPanel.Height = Layout_UseProjects.Checked ? 46 : 0;
 
             _Pizza();
         }
@@ -670,10 +675,12 @@ namespace Timekeeper.Forms
         {
             int TallHeight = Layout_UseActivities.Checked ? 27 : 0;
             int ShortHeight = Layout_UseActivities.Checked ? 23 : 0;
+            int SpecialHeight = (Layout_UseActivities.Checked && Layout_UseProjects.Checked) ? 23 : 0;
 
             StatusBarGroup_ActivityNamePanel.Height = ShortHeight;
             StatusBarGroup_ActivityElapsedPanel.Height = ShortHeight;
             HiddenGroup_ActivityPanel.Height = TallHeight;
+            AnnoyGroup_ActivityFollowPanel.Height = SpecialHeight;
 
             if (Layout_UseActivities.Checked) {
                 PopulateTitleBarTimeList();
@@ -681,8 +688,21 @@ namespace Timekeeper.Forms
                 Behavior_TitleBar_Time.Items.RemoveAt(2);
             }
 
-            AnnoyGroup_BottomPanel.Height = Layout_UseActivities.Checked ? 46 : 0;
 
+            _Pizza();
+        }
+
+        private void _SetLocationVisibility()
+        {
+            int ShortHeight = Layout_UseLocations.Checked ? 23 : 0;
+            AnnoyGroup_LocationFollowPanel.Height = ShortHeight;
+            _Pizza();
+        }
+
+        private void _SetCategoryVisibility()
+        {
+            int ShortHeight = Layout_UseCategories.Checked ? 23 : 0;
+            AnnoyGroup_CategoryFollowPanel.Height = ShortHeight;
             _Pizza();
         }
 
@@ -694,12 +714,22 @@ namespace Timekeeper.Forms
             HiddenGroup.Height = GetGroupHeight(HiddenGroup);
             AnnoyGroup.Height = GetGroupHeight(AnnoyGroup);
 
+            // This one's a bit of a bitch
+            /*
+            AnnoyGroup.Height = 90 +
+                (AnnoyGroup_ActivityFollowPanel.Visible ? AnnoyGroup_ActivityFollowPanel.Height : 0) +
+                (AnnoyGroup_LocationFollowPanel.Visible ? AnnoyGroup_LocationFollowPanel.Height : 0) +
+                (AnnoyGroup_CategoryFollowPanel.Visible ? AnnoyGroup_CategoryFollowPanel.Height : 0);
+            */
+
             // One-off Adjustments
             //HiddenGroup.Top = StatusBarGroup.Height + 23;
             HiddenGroup.Top = StatusBarGroup.Bottom + 7;
             //MemoEditorGroup.Top = HiddenGroup.Bottom + 7;
             SortingGroup.Top = AnnoyGroup.Bottom + 7;
             BrowsingGroup.Top = SortingGroup.Bottom + 7;
+            ViewSpacerBox.Top = HiddenGroup.Bottom + 7;
+            BehaviorSpacingBox.Top = BrowsingGroup.Bottom + 7;
         }
 
         private int GetGroupHeight(GroupBox box)
@@ -713,6 +743,8 @@ namespace Timekeeper.Forms
 
         private void View_StatusBar_CheckedChanged(object sender, EventArgs e)
         {
+            StatusBarGroup.Enabled = View_StatusBar.Checked;
+            /*
             View_StatusBar_ProjectName.Enabled = View_StatusBar.Checked;
             View_StatusBar_ActivityName.Enabled = View_StatusBar.Checked;
             View_StatusBar_ElapsedSinceStart.Enabled = View_StatusBar.Checked;
@@ -721,6 +753,7 @@ namespace Timekeeper.Forms
             View_StatusBar_ElapsedAllToday.Enabled = View_StatusBar.Checked;
             View_StatusBar_FileName.Enabled = View_StatusBar.Checked;
             //View_StatusBar_AddLabels.Enabled = View_StatusBar.Checked;
+            */
         }
 
         private void View_HiddenProjects_CheckedChanged(object sender, EventArgs e)
@@ -765,6 +798,8 @@ namespace Timekeeper.Forms
             View_MemoEditor.Checked = true;
             View_ControlPanel.Checked = false;
             View_StatusBar.Checked = false;
+            View_MemoEditor_RightMargin.Value = 250;
+            // FIXME: System.Windows.Forms.SystemInformation.VerticalScrollBarWidth <--- USE THIS
 
             View_StatusBar_ProjectName.Checked = false;
             View_StatusBar_ActivityName.Checked = false;
@@ -784,6 +819,8 @@ namespace Timekeeper.Forms
             Behavior_TitleBar_Template.Text = "%time - %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
+            Advanced_Other_DimensionWidth.Value = 150;
+
             Values.Layout_InterfacePreset = 0;
             InterfaceChanged = true;
         }
@@ -799,6 +836,7 @@ namespace Timekeeper.Forms
             View_MemoEditor.Checked = true;
             View_ControlPanel.Checked = true;
             View_StatusBar.Checked = true;
+            View_MemoEditor_RightMargin.Value = 420;
 
             View_StatusBar_ProjectName.Checked = true;
             View_StatusBar_ActivityName.Checked = false;
@@ -818,6 +856,8 @@ namespace Timekeeper.Forms
             Behavior_TitleBar_Template.Text = "%time - %activity for %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
+            Advanced_Other_DimensionWidth.Value = 150;
+
             Values.Layout_InterfacePreset = 1;
             InterfaceChanged = true;
         }
@@ -833,6 +873,7 @@ namespace Timekeeper.Forms
             View_MemoEditor.Checked = true;
             View_ControlPanel.Checked = true;
             View_StatusBar.Checked = true;
+            View_MemoEditor_RightMargin.Value = 520;
 
             View_StatusBar_ProjectName.Checked = true;
             View_StatusBar_ActivityName.Checked = true;
@@ -852,6 +893,8 @@ namespace Timekeeper.Forms
             Behavior_TitleBar_Template.Text = "%time - %activity for %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
+            Advanced_Other_DimensionWidth.Value = 250;
+
             Values.Layout_InterfacePreset = 2;
             InterfaceChanged = true;
         }
@@ -863,6 +906,11 @@ namespace Timekeeper.Forms
             if (FontDialog.ShowDialog(this) == DialogResult.OK) {
                 View_MemoEditor_Font.Text = (string)fc.ConvertToString(FontDialog.Font);
             }
+        }
+
+        private void View_MemoEditor_CheckedChanged(object sender, EventArgs e)
+        {
+            MemoEditorGroup.Enabled = View_MemoEditor.Checked;
         }
 
         //----------------------------------------------------------------------

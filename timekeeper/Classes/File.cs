@@ -38,7 +38,7 @@ namespace Timekeeper
         // (nor were the DDL statements stored as resources or under version 
         // control).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.8.0";
+        public const string SCHEMA_VERSION = "3.0.8.1";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
@@ -328,6 +328,7 @@ namespace Timekeeper
             Location["IsDeleted"] = 0;
             Location["HiddenTime"] = null;
             Location["DeletedTime"] = null;
+            Location["LastCategoryId"] = 0;
             Location["RefTimeZoneId"] = options.LocationTimeZoneId;
 
             this.InsertedRowId = Database.Insert("Location", Location);

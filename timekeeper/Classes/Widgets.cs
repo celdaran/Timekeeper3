@@ -147,8 +147,8 @@ namespace Timekeeper.Classes
                 Dialog.wExternalProjectNoLabel.Visible = true;
                 Dialog.wExternalProjectNo.Visible = true;
             } else {
-                if (item.LastProjectId > 0) {
-                    Classes.Project Project = new Classes.Project(item.LastProjectId);
+                if (item.LastLocationId > 0) {
+                    Classes.Project Project = new Classes.Project(item.LastLocationId);
                     Dialog.wLastItemLabel.Text = "Last Project:";
                     Dialog.wLastItemName.Enabled = true;
                     Dialog.wLastItemName.Text = Project.Name;

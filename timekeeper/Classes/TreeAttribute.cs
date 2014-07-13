@@ -31,7 +31,8 @@ namespace Timekeeper.Classes
         // Table-specific properties
         public long LastActivityId { get; set; }        // used by Project
         public string ExternalProjectNo { get; set; }   // used by Project
-        public long LastProjectId { get; set; }         // used by Activity
+        public long LastLocationId { get; set; }        // used by Activity
+        public long LastCategoryId { get; set; }        // used by Location
         public long RefTimeZoneId { get; set; }         // used by Location
 
         public Timekeeper.Dimension Dimension { get; set; }
@@ -262,7 +263,7 @@ namespace Timekeeper.Classes
             this.DeletedTime = source.DeletedTime;
 
             this.LastActivityId = source.LastActivityId;
-            this.LastProjectId = source.LastProjectId;
+            this.LastLocationId = source.LastLocationId;
             this.ExternalProjectNo = source.ExternalProjectNo;
             this.RefTimeZoneId = source.RefTimeZoneId;
         }
@@ -298,10 +299,11 @@ namespace Timekeeper.Classes
             }
 
             if (this.Dimension == Timekeeper.Dimension.Activity) {
-                Row["LastProjectId"] = this.LastProjectId;
+                Row["LastLocationId"] = this.LastLocationId;
             }
 
             if (this.Dimension == Timekeeper.Dimension.Location) {
+                Row["LastCategoryId"] = this.LastCategoryId;
                 Row["RefTimeZoneId"] = this.RefTimeZoneId;
             }
 
@@ -439,10 +441,11 @@ namespace Timekeeper.Classes
             }
 
             if (this.Dimension == Timekeeper.Dimension.Activity) {
-                this.LastActivityId = row["LastProjectId"];
+                this.LastActivityId = row["LastLocationId"];
             }
 
             if (this.Dimension == Timekeeper.Dimension.Location) {
+                this.LastCategoryId = row["LastCategoryId"];
                 this.RefTimeZoneId = row["RefTimeZoneId"];
             }
 

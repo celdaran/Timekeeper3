@@ -676,7 +676,7 @@ namespace Timekeeper.Forms
 
         private void ActivityTreeDropdown_SelectedNodeChanged(object sender, EventArgs e)
         {
-            //Action_ChangedActivity();
+            Action_ChangedActivity();
         }
 
         //---------------------------------------------------------------------

@@ -69,7 +69,8 @@ namespace Timekeeper.Classes
         public bool Behavior_Window_MinimizeOnUse { get; set; }
 
         public bool Behavior_Annoy_ActivityFollowsProject { get; set; }
-        public bool Behavior_Annoy_ProjectFollowsActivity { get; set; }
+        public bool Behavior_Annoy_LocationFollowsProject { get; set; }
+        public bool Behavior_Annoy_CategoryFollowsProject { get; set; }
         public bool Behavior_Annoy_PromptBeforeHiding { get; set; }
         public bool Behavior_Annoy_NoRunningPrompt { get; set; }
         public int Behavior_Annoy_NoRunningPromptAmount { get; set; }
@@ -103,6 +104,7 @@ namespace Timekeeper.Classes
         public int Advanced_Other_MarkupLanguage { get; set; }
         public bool Advanced_Other_DisableScheduler { get; set; }
         public bool Advanced_Other_EnableStackTracing { get; set; }
+        public int Advanced_Other_DimensionWidth { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Metrics)
@@ -196,6 +198,8 @@ namespace Timekeeper.Classes
 
         public long State_LastProjectId { get; set; }
         public long State_LastActivityId { get; set; }
+        public long State_LastLocationId { get; set; }
+        public long State_LastCategoryId { get; set; }
         public long State_LastFindViewId { get; set; }
         public long State_LastGridViewId { get; set; }
         public long State_LastReportViewId { get; set; }
@@ -328,7 +332,8 @@ namespace Timekeeper.Classes
             Behavior_Window_MinimizeOnUse = ((int)Key.GetValue("Window_MinimizeOnUse", 0) == 1);
 
             Behavior_Annoy_ActivityFollowsProject = ((int)Key.GetValue("Annoy_ActivityFollowsProject", 1) == 1);
-            Behavior_Annoy_ProjectFollowsActivity = ((int)Key.GetValue("Annoy_ProjectFollowsActivity", 0) == 1);
+            Behavior_Annoy_LocationFollowsProject = ((int)Key.GetValue("Annoy_LocationFollowsProject", 1) == 1);
+            Behavior_Annoy_CategoryFollowsProject = ((int)Key.GetValue("Annoy_CategoryFollowsProject", 0) == 1);
             Behavior_Annoy_PromptBeforeHiding = ((int)Key.GetValue("Annoy_PromptBeforeHiding", 1) == 1);
             Behavior_Annoy_NoRunningPrompt = ((int)Key.GetValue("Annoy_NoRunningPrompt", 1) == 1);
             Behavior_Annoy_NoRunningPromptAmount = (int)Key.GetValue("Annoy_NoRunningPromptAmount", 10);
@@ -384,6 +389,7 @@ namespace Timekeeper.Classes
             Advanced_Other_MarkupLanguage = (int)Key.GetValue("Other_MarkupLanguage", 1);
             Advanced_Other_DisableScheduler = ((int)Key.GetValue("Other_DisableScheduler", 0)) == 1;
             Advanced_Other_EnableStackTracing = ((int)Key.GetValue("Other_EnableStackTracing", 0)) == 1;
+            Advanced_Other_DimensionWidth = (int)Key.GetValue("Other_DimensionWidth", 250);
 
             //----------------------------------------------------------------------
 
@@ -548,6 +554,18 @@ namespace Timekeeper.Classes
                     State_LastActivityId = Convert.ToInt64(Option["Value"]);
                 }
 
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastLocationId");
+                Option = this.Database.SelectRow(Query);
+                if (Option.Count > 0) {
+                    State_LastLocationId = Convert.ToInt64(Option["Value"]);
+                }
+
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastCategoryId");
+                Option = this.Database.SelectRow(Query);
+                if (Option.Count > 0) {
+                    State_LastCategoryId = Convert.ToInt64(Option["Value"]);
+                }
+
                 Query = String.Format(@"select Value from Options where Key = '{0}'", "LastFindViewId");
                 Option = this.Database.SelectRow(Query);
                 if (Option.Count > 0) {
@@ -635,7 +653,8 @@ namespace Timekeeper.Classes
             Key.SetValue("Window_MinimizeOnUse", Behavior_Window_MinimizeOnUse, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.SetValue("Annoy_ActivityFollowsProject", Behavior_Annoy_ActivityFollowsProject, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Annoy_ProjectFollowsActivity", Behavior_Annoy_ProjectFollowsActivity, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Annoy_LocationFollowsProject", Behavior_Annoy_LocationFollowsProject, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Annoy_CategoryFollowsProject", Behavior_Annoy_CategoryFollowsProject, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_PromptBeforeHiding", Behavior_Annoy_PromptBeforeHiding, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_NoRunningPrompt", Behavior_Annoy_NoRunningPrompt, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_NoRunningPromptAmount", Behavior_Annoy_NoRunningPromptAmount, Microsoft.Win32.RegistryValueKind.DWord);
@@ -679,6 +698,7 @@ namespace Timekeeper.Classes
             Key.SetValue("Other_MarkupLanguage", Advanced_Other_MarkupLanguage, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_DisableScheduler", Advanced_Other_DisableScheduler, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_EnableStackTracing", Advanced_Other_EnableStackTracing, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Other_DimensionWidth", Advanced_Other_DimensionWidth, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 
@@ -823,6 +843,8 @@ namespace Timekeeper.Classes
                 Timekeeper.Debug("Saving Options to Database");
                 SaveRow("LastProjectId", State_LastProjectId.ToString());
                 SaveRow("LastActivityId", State_LastActivityId.ToString());
+                SaveRow("LastLocationId", State_LastLocationId.ToString());
+                SaveRow("LastCategoryId", State_LastCategoryId.ToString());
                 SaveRow("LastFindViewId", State_LastFindViewId.ToString());
                 SaveRow("LastGridViewId", State_LastGridViewId.ToString());
                 SaveRow("LastReportViewId", State_LastReportViewId.ToString());

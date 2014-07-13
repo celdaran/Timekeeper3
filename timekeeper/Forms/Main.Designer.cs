@@ -384,7 +384,6 @@ namespace Timekeeper.Forms
             // 
             // MenuActionStartTimer
             // 
-            this.MenuActionStartTimer.Image = global::Timekeeper.Properties.Resources.ImageButtonGo;
             this.MenuActionStartTimer.Name = "MenuActionStartTimer";
             this.MenuActionStartTimer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
             this.MenuActionStartTimer.Size = new System.Drawing.Size(179, 22);
@@ -393,7 +392,6 @@ namespace Timekeeper.Forms
             // 
             // MenuActionStopTimer
             // 
-            this.MenuActionStopTimer.Image = global::Timekeeper.Properties.Resources.ImageButtonStop;
             this.MenuActionStopTimer.Name = "MenuActionStopTimer";
             this.MenuActionStopTimer.Size = new System.Drawing.Size(179, 22);
             this.MenuActionStopTimer.Text = "&Stop Timer";
@@ -1280,9 +1278,10 @@ namespace Timekeeper.Forms
             this.PanelControls.Controls.Add(this.DurationBox);
             this.PanelControls.Controls.Add(this.DurationLabel);
             this.PanelControls.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PanelControls.Location = new System.Drawing.Point(0, 156);
+            this.PanelControls.Enabled = false;
+            this.PanelControls.Location = new System.Drawing.Point(0, 151);
             this.PanelControls.Name = "PanelControls";
-            this.PanelControls.Size = new System.Drawing.Size(562, 117);
+            this.PanelControls.Size = new System.Drawing.Size(562, 122);
             this.PanelControls.TabIndex = 0;
             this.PanelControls.Visible = false;
             this.PanelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
@@ -1341,7 +1340,7 @@ namespace Timekeeper.Forms
             this.CategoryTreeDropdown.Location = new System.Drawing.Point(57, 2);
             this.CategoryTreeDropdown.Name = "CategoryTreeDropdown";
             this.CategoryTreeDropdown.SelectedNode = null;
-            this.CategoryTreeDropdown.Size = new System.Drawing.Size(251, 21);
+            this.CategoryTreeDropdown.Size = new System.Drawing.Size(250, 21);
             this.CategoryTreeDropdown.TabIndex = 22;
             this.CategoryTreeDropdown.Tag = "3";
             // 
@@ -1456,7 +1455,7 @@ namespace Timekeeper.Forms
             this.LocationTreeDropdown.Location = new System.Drawing.Point(57, 2);
             this.LocationTreeDropdown.Name = "LocationTreeDropdown";
             this.LocationTreeDropdown.SelectedNode = null;
-            this.LocationTreeDropdown.Size = new System.Drawing.Size(251, 21);
+            this.LocationTreeDropdown.Size = new System.Drawing.Size(250, 21);
             this.LocationTreeDropdown.TabIndex = 21;
             this.LocationTreeDropdown.Tag = "2";
             // 
@@ -1487,7 +1486,7 @@ namespace Timekeeper.Forms
             this.ActivityTreeDropdown.Location = new System.Drawing.Point(57, 2);
             this.ActivityTreeDropdown.Name = "ActivityTreeDropdown";
             this.ActivityTreeDropdown.SelectedNode = null;
-            this.ActivityTreeDropdown.Size = new System.Drawing.Size(251, 21);
+            this.ActivityTreeDropdown.Size = new System.Drawing.Size(250, 21);
             this.ActivityTreeDropdown.TabIndex = 9;
             this.ActivityTreeDropdown.Tag = "1";
             // 
@@ -1528,7 +1527,7 @@ namespace Timekeeper.Forms
             this.ProjectTreeDropdown.Location = new System.Drawing.Point(57, 2);
             this.ProjectTreeDropdown.Name = "ProjectTreeDropdown";
             this.ProjectTreeDropdown.SelectedNode = null;
-            this.ProjectTreeDropdown.Size = new System.Drawing.Size(251, 21);
+            this.ProjectTreeDropdown.Size = new System.Drawing.Size(250, 21);
             this.ProjectTreeDropdown.TabIndex = 7;
             this.ProjectTreeDropdown.Tag = "0";
             this.ProjectTreeDropdown.SelectedNodeChanged += new System.EventHandler(this.ProjectTreeDropdown_SelectedNodeChanged);
@@ -1618,6 +1617,7 @@ namespace Timekeeper.Forms
             this.DurationBox.Name = "DurationBox";
             this.DurationBox.Size = new System.Drawing.Size(69, 20);
             this.DurationBox.TabIndex = 5;
+            this.DurationBox.Text = "0:00:00";
             this.DurationBox.Leave += new System.EventHandler(this.wDuration_Leave);
             // 
             // DurationLabel
@@ -1659,6 +1659,7 @@ namespace Timekeeper.Forms
             // ToolbarStartButton
             // 
             this.ToolbarStartButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarStartButton.Enabled = false;
             this.ToolbarStartButton.Image = global::Timekeeper.Properties.Resources.ImageButtonGo;
             this.ToolbarStartButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolbarStartButton.Name = "ToolbarStartButton";
@@ -1670,6 +1671,7 @@ namespace Timekeeper.Forms
             // ToolbarStopButton
             // 
             this.ToolbarStopButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarStopButton.Enabled = false;
             this.ToolbarStopButton.Image = global::Timekeeper.Properties.Resources.ImageButtonStop;
             this.ToolbarStopButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolbarStopButton.Name = "ToolbarStopButton";
@@ -1687,6 +1689,7 @@ namespace Timekeeper.Forms
             // ToolbarFirstEntry
             // 
             this.ToolbarFirstEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarFirstEntry.Enabled = false;
             this.ToolbarFirstEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonFirst;
             this.ToolbarFirstEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolbarFirstEntry.Name = "ToolbarFirstEntry";
@@ -1704,6 +1707,7 @@ namespace Timekeeper.Forms
             this.ToolbarPrevEntryBrowseByWeek,
             this.ToolbarPrevEntryBrowseByMonth,
             this.ToolbarPrevEntryBrowseByYear});
+            this.ToolbarPrevEntry.Enabled = false;
             this.ToolbarPrevEntry.Image = global::Timekeeper.Properties.Resources.ImageButtonPrev;
             this.ToolbarPrevEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolbarPrevEntry.Name = "ToolbarPrevEntry";
@@ -1842,8 +1846,8 @@ namespace Timekeeper.Forms
             // 
             this.ToolbarJournalId.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.ToolbarJournalId.Name = "ToolbarJournalId";
-            this.ToolbarJournalId.Size = new System.Drawing.Size(43, 22);
-            this.ToolbarJournalId.Text = "523455";
+            this.ToolbarJournalId.Size = new System.Drawing.Size(13, 22);
+            this.ToolbarJournalId.Text = "0";
             this.ToolbarJournalId.ToolTipText = "Timekeeper Entry Number";
             // 
             // ToolbarSep2
@@ -1858,6 +1862,7 @@ namespace Timekeeper.Forms
             this.ToolbarSplitEntry2,
             this.ToolbarSplitEntry3,
             this.ToolbarSplitEntry4});
+            this.ToolbarSplitEntry.Enabled = false;
             this.ToolbarSplitEntry.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarSplitEntry.Image")));
             this.ToolbarSplitEntry.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ToolbarSplitEntry.Name = "ToolbarSplitEntry";

@@ -22,109 +22,143 @@ namespace Timekeeper.Forms
 {
     partial class Main
     {
-        // These prevent potentially infinite following
-        private bool DontChangeProject = false;
-        private bool DontChangeActivity = false;
-
         // Deferred keyboard shortcut setting
         private bool DeferShortcutAssignment = false;
+        private bool DatabaseClosing = false;
 
         //---------------------------------------------------------------------
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
 
-        private void Action_ChangedProject()
+        private void AutoFollow(long lastId, ComboTreeBox dropdown, bool allowed)
         {
-            // Get current project
-            Classes.Project Project = (Classes.Project)ProjectTreeDropdown.SelectedNode.Tag;
-            Options.State_LastProjectId = Project.ItemId;
-
-            // Update status bar
-            if (timerRunning == false) {
-                Classes.Activity Activity;
-                if (ActivityTreeDropdown.SelectedNode != null) {
-                    Activity = (Classes.Activity)ActivityTreeDropdown.SelectedNode.Tag;
-                } else {
-                    Activity = new Classes.Activity();
-                }
-                StatusBar_Update(Project, Activity);
-            }
-
-            // Auto-follow
-            if (!isBrowsing) {
-                if (Options.Behavior_Annoy_ActivityFollowsProject) {
-                    if (Project.LastActivityId > 0) {
-                        ComboTreeNode Node = Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, Project.LastActivityId);
-                        if ((Node != null) && (!DontChangeProject)) {
-                            DontChangeActivity = true;
-                            ActivityTreeDropdown.SelectedNode = Node;
-                            DontChangeActivity = false;
+            if (allowed) {
+                if (!isBrowsing) {
+                    if (lastId > 0) {
+                        ComboTreeNode Node = Widgets.FindTreeNode(dropdown.Nodes, lastId);
+                        if (Node != null) {
+                            dropdown.SelectedNode = Node;
                         }
                     }
                 }
             }
+        }
 
-            // TODO: Implement auto-follow the other direction
+        private void EnsureSelections()
+        {
+            SetDefaultNode(ProjectTreeDropdown);
+            SetDefaultNode(ActivityTreeDropdown);
+            SetDefaultNode(LocationTreeDropdown);
+            SetDefaultNode(CategoryTreeDropdown);
+        }
 
-            // Set hide mode based on projects's IsHidden property
-            MenuBar_ShowHideProject(!Project.IsHidden);
-            MenuBar_ShowMergeProject(Project.IsFolder);
-            MenuBar_ShowDeleteProject(Project.IsDeleted);
+        private void UpdateStatusBar()
+        {
+            if (timerRunning == false) {
+                Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+                Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
+                Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+                Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
 
-            // Update calendar to reflect change
-            //Action_UpdateCalendar(ProjectTreeDropdown);
+                // FIXME: are all four dimensions supported in the status bar?
+                // Any reason they wouldn't be?
+                StatusBar_Update(Project, Activity);
+            }
+        }
 
-            // Set our dirty bit
-            if ((isBrowsing) && (Project.ItemId != browserEntry.ProjectId)) {
+        private void SetDefaultNode(ComboTreeBox dropdown)
+        {
+            /*
+            If something in the dropdown has been selected, then
+            this method won't do anything: the selected item *is*
+            the selected item. However, if nothing is selected,
+            this method will dive into the list and pick an 
+            appropriate default. In short, the tree dropdowns
+            can *never* be null. An item will always be available.
+            */
+            if (dropdown.SelectedNode == null) {
+                if (dropdown.Nodes.Count == 1) {
+                    dropdown.SelectedNode = dropdown.Nodes[0];
+                } else {
+                    dropdown.SelectedNode = GetFirstNonFolder(dropdown.Nodes);
+                }
+            }
+        }
+
+        private void SetDirtyBit(Classes.TreeAttribute item, long browserItemId)
+        {
+            if ((isBrowsing) && (item.ItemId != browserItemId)) {
+                ToolbarSave.Enabled = true;
                 ToolbarRevert.Enabled = true;
             }
         }
 
+        private void Action_ChangedProject()
+        {
+            if (DatabaseClosing)
+                return;
+
+            EnsureSelections();
+
+            Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+            Options.State_LastProjectId = Project.ItemId;
+            AutoFollow(Project.LastActivityId, ActivityTreeDropdown, Options.Behavior_Annoy_ActivityFollowsProject);
+
+            Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
+            Options.State_LastActivityId = Activity.ItemId;
+            AutoFollow(Activity.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
+
+            Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+            Options.State_LastLocationId = Activity.ItemId;
+            AutoFollow(Location.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
+
+            Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
+            Options.State_LastCategoryId = Category.ItemId;
+
+            UpdateStatusBar();
+
+            Action_UpdateCalendar(ProjectTreeDropdown);
+
+            MenuBar_ShowHideProject(!Project.IsHidden);
+            MenuBar_ShowMergeProject(Project.IsFolder);
+            MenuBar_ShowDeleteProject(Project.IsDeleted);
+
+            SetDirtyBit(Project, browserEntry.ProjectId);
+        }
+
         //---------------------------------------------------------------------
 
-        /*
         private void Action_ChangedActivity()
         {
-            // Get current items
-            Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
+            if (DatabaseClosing)
+                return;
+
+            EnsureSelections();
+
+            Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
             Options.State_LastActivityId = Activity.ItemId;
+            AutoFollow(Activity.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
 
-            // Update status bar
-            if (timerRunning == false) {
-                Classes.Project Project;
-                if (ProjectTree.SelectedNode != null) {
-                    Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-                } else {
-                    Project = new Classes.Project();
-                }
-                StatusBar_Update(Project, Activity);
-            }
+            Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+            Options.State_LastLocationId = Activity.ItemId;
+            AutoFollow(Location.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
 
-            if (!isBrowsing) {
-                if (Options.Behavior_Annoy_ProjectFollowsActivity) {
-                    if (Activity.FollowedItemId > 0) {
-                        TreeNode node = Widgets.FindTreeNode(ProjectTree.Nodes, Activity.FollowedItemId);
-                        if ((node != null) && (!DontChangeActivity)) {
-                            DontChangeProject = true;
-                            ProjectTree.SelectedNode = node;
-                            DontChangeProject = false;
-                        }
-                    }
-                }
-            }
+            Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
+            Options.State_LastCategoryId = Category.ItemId;
 
-            // Set hide mode based on Activity's IsHidden property
+            UpdateStatusBar();
+
+            Action_UpdateCalendar(ActivityTreeDropdown);
+
             MenuBar_ShowHideActivity(!Activity.IsHidden);
+            // FIXME: Activity equiv? What about our other two dimensions?
+            /*
+            MenuBar_ShowMergeProject(Project.IsFolder);
+            MenuBar_ShowDeleteProject(Project.IsDeleted);
+            */
 
-            // Update calendar to reflect change
-            Action_UpdateCalendar(ActivityTree);
-
-            // Set our dirty bit
-            if ((isBrowsing) && (Activity.ItemId != browserEntry.ActivityId)) {
-                toolControlRevert.Enabled = true;
-            }
+            SetDirtyBit(Activity, browserEntry.ActivityId);
         }
-        */
 
         //---------------------------------------------------------------------
 
@@ -378,6 +412,8 @@ namespace Timekeeper.Forms
 
         private void Action_FormClose()
         {
+            this.DatabaseClosing = true;
+
             Browser_SaveRow(false);
 
             Action_GetMetrics();
@@ -518,9 +554,9 @@ namespace Timekeeper.Forms
             if (Options.Layout_UseCategories) Count++;
 
             if (Count < 4)
-                PanelControls.Height = 117 - 27;
+                PanelControls.Height = 122 - 27;
             else
-                PanelControls.Height = 117;
+                PanelControls.Height = 122;
         }
 
         private void Action_InitializeUI()
@@ -537,6 +573,7 @@ namespace Timekeeper.Forms
             this.MemoEditor.BringToFront();
             this.MemoEditor.Dock = DockStyle.Fill;
             this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
+            this.MemoEditor.Enabled = false;
 
             // Set viewability of primary components
             // FIXME: this code is repeated twice. See Main.Dialog.cs
@@ -550,6 +587,13 @@ namespace Timekeeper.Forms
             Top = Options.Main_Top;
             Width = Options.Main_Width;
             Height = Options.Main_Height;
+
+            // Set dimension widget width
+            DimensionPanel.Width = Options.Advanced_Other_DimensionWidth + 60;
+            ProjectTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
+            ActivityTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
+            LocationTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
+            CategoryTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
 
             // Until a file is opened, treat it as closed
             MenuBar_FileClosed();
@@ -591,8 +635,10 @@ namespace Timekeeper.Forms
             StopTimeSelector.CustomFormat = Options.Advanced_DateTimeFormat;
 
             // Adjust Start/Stop time widths and LocationAndCategoryPanel location
-            StartTimeSelector.Value = DateTime.Parse("1970-01-01T00:00:00.00-00:00");
-            Size DateSize = TextRenderer.MeasureText(StartTimeSelector.Text, StartTimeSelector.Font);
+            StartTimeSelector.Value = DateTime.Now;
+            Size DateSize = TextRenderer.MeasureText(
+                StartTimeSelector.Value.ToString(Options.Advanced_DateTimeFormat), 
+                StartTimeSelector.Font);
             int DateTimeWidth = DateSize.Width;
             int DropDownButtonWidth = 33;
 
@@ -624,11 +670,11 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_OpenFile(string fileName)
+        private bool Action_OpenFile(string fileName)
         {
             Action_CloseFile();
             DatabaseFileName = fileName;
-            Action_LoadFile();
+            return Action_LoadFile();
         }
 
         //----------------------------------------------------------------------
@@ -687,6 +733,14 @@ namespace Timekeeper.Forms
                 Browser_Load();
                 Browser_SetupForStarting();
                 Browser_Enable();
+
+                //------------------------------------------
+                // Enable UI elements
+                //------------------------------------------
+
+                this.MemoEditor.Enabled = true;
+                this.PanelControls.Enabled = true;
+                this.BrowserToolbar.Enabled = true;
 
                 //------------------------------------------
                 // Restore Prior State
@@ -1215,7 +1269,7 @@ namespace Timekeeper.Forms
             // Now start timing
             DateTime StartTime = StartTimeSelector.Value;
             TimedActivity.StartTiming(StartTime);
-            TimedActivity.LastProjectId = TimedProject.ItemId;
+            TimedActivity.LastLocationId = TimedProject.ItemId;
 
             TimedProject.StartTiming(StartTime);
             TimedProject.LastActivityId = TimedActivity.ItemId;
@@ -1447,7 +1501,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_UpdateCalendar(TreeView tree)
+        private void Action_UpdateCalendar(ComboTreeBox tree)
         {
             // unified
             if (calendar != null) {

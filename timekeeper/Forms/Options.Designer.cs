@@ -45,7 +45,12 @@
             this.Layout_UseActivities = new System.Windows.Forms.CheckBox();
             this.Layout_UseProjects = new System.Windows.Forms.CheckBox();
             this.ViewPage = new System.Windows.Forms.TabPage();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.MainViewGroup = new System.Windows.Forms.GroupBox();
+            this.View_MemoEditor = new System.Windows.Forms.CheckBox();
+            this.View_StatusBar = new System.Windows.Forms.CheckBox();
+            this.View_ControlPanel = new System.Windows.Forms.CheckBox();
+            this.View_BrowserToolbar = new System.Windows.Forms.CheckBox();
+            this.ViewSpacerBox = new System.Windows.Forms.PictureBox();
             this.MemoEditorGroup = new System.Windows.Forms.GroupBox();
             this.View_MemoEditor_Font = new System.Windows.Forms.TextBox();
             this.View_MemoEditor_FontButton = new System.Windows.Forms.Button();
@@ -67,7 +72,6 @@
             this.View_StatusBar_ActivityName = new System.Windows.Forms.CheckBox();
             this.StatusBarGroup_ProjectNamePanel = new System.Windows.Forms.Panel();
             this.View_StatusBar_ProjectName = new System.Windows.Forms.CheckBox();
-            this.View_StatusBar = new System.Windows.Forms.CheckBox();
             this.HiddenGroup = new System.Windows.Forms.GroupBox();
             this.HiddenGroup_CategoryPanel = new System.Windows.Forms.Panel();
             this.View_HiddenCategories = new System.Windows.Forms.CheckBox();
@@ -82,6 +86,17 @@
             this.View_HiddenProjects = new System.Windows.Forms.CheckBox();
             this.View_HiddenProjectsSince = new System.Windows.Forms.ComboBox();
             this.BehaviorPage = new System.Windows.Forms.TabPage();
+            this.AnnoyGroup = new System.Windows.Forms.GroupBox();
+            this.Behavior_Annoy_ActivityFollowsProject = new System.Windows.Forms.CheckBox();
+            this.Behavior_Annoy_CategoryFollowsProject = new System.Windows.Forms.CheckBox();
+            this.Behavior_Annoy_LocationFollowsProject = new System.Windows.Forms.CheckBox();
+            this.AnnoyGroup_TopPanel = new System.Windows.Forms.Panel();
+            this.Behavior_Annoy_PromptBeforeHiding = new System.Windows.Forms.CheckBox();
+            this.Behavior_Annoy_UseNewDatabaseWizard = new System.Windows.Forms.CheckBox();
+            this.Behavior_Annoy_NoRunningPrompt = new System.Windows.Forms.CheckBox();
+            this.Behavior_Annoy_NoRunningPromptAmount = new System.Windows.Forms.NumericUpDown();
+            this.MinutesLabel = new System.Windows.Forms.Label();
+            this.BehaviorSpacingBox = new System.Windows.Forms.PictureBox();
             this.BrowsingGroup = new System.Windows.Forms.GroupBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.Behavior_BrowseNextBy = new System.Windows.Forms.ComboBox();
@@ -97,16 +112,6 @@
             this.Behavior_SortProjectsByDirection = new System.Windows.Forms.ComboBox();
             this.Behavior_SortProjectsBy = new System.Windows.Forms.ComboBox();
             this.SortProjectsLabel = new System.Windows.Forms.Label();
-            this.AnnoyGroup = new System.Windows.Forms.GroupBox();
-            this.AnnoyGroup_BottomPanel = new System.Windows.Forms.Panel();
-            this.Behavior_Annoy_ProjectFollowsActivity = new System.Windows.Forms.RadioButton();
-            this.Behavior_Annoy_ActivityFollowsProject = new System.Windows.Forms.RadioButton();
-            this.AnnoyGroup_TopPanel = new System.Windows.Forms.Panel();
-            this.Behavior_Annoy_UseNewDatabaseWizard = new System.Windows.Forms.CheckBox();
-            this.MinutesLabel = new System.Windows.Forms.Label();
-            this.Behavior_Annoy_PromptBeforeHiding = new System.Windows.Forms.CheckBox();
-            this.Behavior_Annoy_NoRunningPrompt = new System.Windows.Forms.CheckBox();
-            this.Behavior_Annoy_NoRunningPromptAmount = new System.Windows.Forms.NumericUpDown();
             this.WindowControlGroup = new System.Windows.Forms.GroupBox();
             this.Behavior_Window_MinimizeOnUse = new System.Windows.Forms.CheckBox();
             this.Behavior_Window_MinimizeToTray = new System.Windows.Forms.CheckBox();
@@ -159,6 +164,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.AdvancedPage = new System.Windows.Forms.TabPage();
             this.OtherAdvancedGroup = new System.Windows.Forms.GroupBox();
+            this.Advanced_Other_DimensionWidth = new System.Windows.Forms.NumericUpDown();
+            this.Advanced_Other_DimensionWidthLabel = new System.Windows.Forms.Label();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
@@ -179,17 +186,16 @@
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.MainViewGroup = new System.Windows.Forms.GroupBox();
-            this.View_BrowserToolbar = new System.Windows.Forms.CheckBox();
-            this.View_ControlPanel = new System.Windows.Forms.CheckBox();
-            this.View_MemoEditor = new System.Windows.Forms.CheckBox();
+            this.AnnoyGroup_ActivityFollowPanel = new System.Windows.Forms.Panel();
+            this.AnnoyGroup_LocationFollowPanel = new System.Windows.Forms.Panel();
+            this.AnnoyGroup_CategoryFollowPanel = new System.Windows.Forms.Panel();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
             this.DimensionGroup.SuspendLayout();
             this.ViewPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.MainViewGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ViewSpacerBox)).BeginInit();
             this.MemoEditorGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.View_MemoEditor_RightMargin)).BeginInit();
             this.StatusBarGroup.SuspendLayout();
@@ -205,14 +211,14 @@
             this.HiddenGroup_ActivityPanel.SuspendLayout();
             this.HiddenGroup_ProjectPanel.SuspendLayout();
             this.BehaviorPage.SuspendLayout();
+            this.AnnoyGroup.SuspendLayout();
+            this.AnnoyGroup_TopPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Behavior_Annoy_NoRunningPromptAmount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BehaviorSpacingBox)).BeginInit();
             this.BrowsingGroup.SuspendLayout();
             this.SortingGroup.SuspendLayout();
             this.SortingGroup_BottomPanel.SuspendLayout();
             this.SortingGroup_ProjectPanel.SuspendLayout();
-            this.AnnoyGroup.SuspendLayout();
-            this.AnnoyGroup_BottomPanel.SuspendLayout();
-            this.AnnoyGroup_TopPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Behavior_Annoy_NoRunningPromptAmount)).BeginInit();
             this.WindowControlGroup.SuspendLayout();
             this.TitleBarGroup.SuspendLayout();
             this.ReportPage.SuspendLayout();
@@ -226,10 +232,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).BeginInit();
             this.AdvancedPage.SuspendLayout();
             this.OtherAdvancedGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Advanced_Other_DimensionWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.LoggingGroup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.MainViewGroup.SuspendLayout();
+            this.AnnoyGroup_ActivityFollowPanel.SuspendLayout();
+            this.AnnoyGroup_LocationFollowPanel.SuspendLayout();
+            this.AnnoyGroup_CategoryFollowPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -300,9 +308,10 @@
             // PresetInstructionsLabel
             // 
             this.PresetInstructionsLabel.AutoSize = true;
-            this.PresetInstructionsLabel.Location = new System.Drawing.Point(127, 33);
+            this.PresetInstructionsLabel.Location = new System.Drawing.Point(127, 29);
+            this.PresetInstructionsLabel.MaximumSize = new System.Drawing.Size(210, 95);
             this.PresetInstructionsLabel.Name = "PresetInstructionsLabel";
-            this.PresetInstructionsLabel.Size = new System.Drawing.Size(215, 65);
+            this.PresetInstructionsLabel.Size = new System.Drawing.Size(210, 78);
             this.PresetInstructionsLabel.TabIndex = 3;
             this.PresetInstructionsLabel.Text = resources.GetString("PresetInstructionsLabel.Text");
             // 
@@ -421,7 +430,7 @@
             // 
             this.ViewPage.AutoScroll = true;
             this.ViewPage.Controls.Add(this.MainViewGroup);
-            this.ViewPage.Controls.Add(this.pictureBox1);
+            this.ViewPage.Controls.Add(this.ViewSpacerBox);
             this.ViewPage.Controls.Add(this.MemoEditorGroup);
             this.ViewPage.Controls.Add(this.StatusBarGroup);
             this.ViewPage.Controls.Add(this.HiddenGroup);
@@ -433,14 +442,77 @@
             this.ViewPage.Text = "View";
             this.ViewPage.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // MainViewGroup
             // 
-            this.pictureBox1.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
-            this.pictureBox1.Location = new System.Drawing.Point(17, 547);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.TabIndex = 22;
-            this.pictureBox1.TabStop = false;
+            this.MainViewGroup.Controls.Add(this.View_MemoEditor);
+            this.MainViewGroup.Controls.Add(this.View_StatusBar);
+            this.MainViewGroup.Controls.Add(this.View_ControlPanel);
+            this.MainViewGroup.Controls.Add(this.View_BrowserToolbar);
+            this.MainViewGroup.Location = new System.Drawing.Point(17, 16);
+            this.MainViewGroup.Name = "MainViewGroup";
+            this.MainViewGroup.Size = new System.Drawing.Size(345, 67);
+            this.MainViewGroup.TabIndex = 23;
+            this.MainViewGroup.TabStop = false;
+            this.MainViewGroup.Text = "Main Window";
+            // 
+            // View_MemoEditor
+            // 
+            this.View_MemoEditor.AutoSize = true;
+            this.View_MemoEditor.Checked = true;
+            this.View_MemoEditor.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.View_MemoEditor.Location = new System.Drawing.Point(17, 42);
+            this.View_MemoEditor.Name = "View_MemoEditor";
+            this.View_MemoEditor.Size = new System.Drawing.Size(115, 17);
+            this.View_MemoEditor.TabIndex = 2;
+            this.View_MemoEditor.Text = "Show Memo Editor";
+            this.View_MemoEditor.UseVisualStyleBackColor = true;
+            this.View_MemoEditor.CheckedChanged += new System.EventHandler(this.View_MemoEditor_CheckedChanged);
+            // 
+            // View_StatusBar
+            // 
+            this.View_StatusBar.AutoSize = true;
+            this.View_StatusBar.Checked = true;
+            this.View_StatusBar.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.View_StatusBar.Location = new System.Drawing.Point(186, 42);
+            this.View_StatusBar.Name = "View_StatusBar";
+            this.View_StatusBar.Size = new System.Drawing.Size(105, 17);
+            this.View_StatusBar.TabIndex = 4;
+            this.View_StatusBar.Text = "Show Status Bar";
+            this.View_StatusBar.UseVisualStyleBackColor = true;
+            this.View_StatusBar.CheckedChanged += new System.EventHandler(this.View_StatusBar_CheckedChanged);
+            // 
+            // View_ControlPanel
+            // 
+            this.View_ControlPanel.AutoSize = true;
+            this.View_ControlPanel.Checked = true;
+            this.View_ControlPanel.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.View_ControlPanel.Location = new System.Drawing.Point(186, 19);
+            this.View_ControlPanel.Name = "View_ControlPanel";
+            this.View_ControlPanel.Size = new System.Drawing.Size(145, 17);
+            this.View_ControlPanel.TabIndex = 3;
+            this.View_ControlPanel.Text = "Show Entry Details Panel";
+            this.View_ControlPanel.UseVisualStyleBackColor = true;
+            // 
+            // View_BrowserToolbar
+            // 
+            this.View_BrowserToolbar.AutoSize = true;
+            this.View_BrowserToolbar.Checked = true;
+            this.View_BrowserToolbar.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.View_BrowserToolbar.Location = new System.Drawing.Point(17, 19);
+            this.View_BrowserToolbar.Name = "View_BrowserToolbar";
+            this.View_BrowserToolbar.Size = new System.Drawing.Size(133, 17);
+            this.View_BrowserToolbar.TabIndex = 1;
+            this.View_BrowserToolbar.Text = "Show Browser Toolbar";
+            this.View_BrowserToolbar.UseVisualStyleBackColor = true;
+            // 
+            // ViewSpacerBox
+            // 
+            this.ViewSpacerBox.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
+            this.ViewSpacerBox.Location = new System.Drawing.Point(17, 547);
+            this.ViewSpacerBox.Name = "ViewSpacerBox";
+            this.ViewSpacerBox.Size = new System.Drawing.Size(16, 16);
+            this.ViewSpacerBox.TabIndex = 22;
+            this.ViewSpacerBox.TabStop = false;
             // 
             // MemoEditorGroup
             // 
@@ -551,8 +623,7 @@
             // View_StatusBar_ElapsedAllToday
             // 
             this.View_StatusBar_ElapsedAllToday.AutoSize = true;
-            this.View_StatusBar_ElapsedAllToday.Enabled = false;
-            this.View_StatusBar_ElapsedAllToday.Location = new System.Drawing.Point(33, 4);
+            this.View_StatusBar_ElapsedAllToday.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ElapsedAllToday.Name = "View_StatusBar_ElapsedAllToday";
             this.View_StatusBar_ElapsedAllToday.Size = new System.Drawing.Size(141, 17);
             this.View_StatusBar_ElapsedAllToday.TabIndex = 6;
@@ -562,8 +633,7 @@
             // View_StatusBar_FileName
             // 
             this.View_StatusBar_FileName.AutoSize = true;
-            this.View_StatusBar_FileName.Enabled = false;
-            this.View_StatusBar_FileName.Location = new System.Drawing.Point(33, 27);
+            this.View_StatusBar_FileName.Location = new System.Drawing.Point(14, 27);
             this.View_StatusBar_FileName.Name = "View_StatusBar_FileName";
             this.View_StatusBar_FileName.Size = new System.Drawing.Size(115, 17);
             this.View_StatusBar_FileName.TabIndex = 10;
@@ -582,8 +652,7 @@
             // View_StatusBar_ElapsedActivityToday
             // 
             this.View_StatusBar_ElapsedActivityToday.AutoSize = true;
-            this.View_StatusBar_ElapsedActivityToday.Enabled = false;
-            this.View_StatusBar_ElapsedActivityToday.Location = new System.Drawing.Point(33, 4);
+            this.View_StatusBar_ElapsedActivityToday.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ElapsedActivityToday.Name = "View_StatusBar_ElapsedActivityToday";
             this.View_StatusBar_ElapsedActivityToday.Size = new System.Drawing.Size(181, 17);
             this.View_StatusBar_ElapsedActivityToday.TabIndex = 5;
@@ -602,8 +671,7 @@
             // View_StatusBar_ElapsedProjectToday
             // 
             this.View_StatusBar_ElapsedProjectToday.AutoSize = true;
-            this.View_StatusBar_ElapsedProjectToday.Enabled = false;
-            this.View_StatusBar_ElapsedProjectToday.Location = new System.Drawing.Point(33, 4);
+            this.View_StatusBar_ElapsedProjectToday.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ElapsedProjectToday.Name = "View_StatusBar_ElapsedProjectToday";
             this.View_StatusBar_ElapsedProjectToday.Size = new System.Drawing.Size(180, 17);
             this.View_StatusBar_ElapsedProjectToday.TabIndex = 4;
@@ -622,8 +690,7 @@
             // View_StatusBar_ElapsedSinceStart
             // 
             this.View_StatusBar_ElapsedSinceStart.AutoSize = true;
-            this.View_StatusBar_ElapsedSinceStart.Enabled = false;
-            this.View_StatusBar_ElapsedSinceStart.Location = new System.Drawing.Point(33, 4);
+            this.View_StatusBar_ElapsedSinceStart.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ElapsedSinceStart.Name = "View_StatusBar_ElapsedSinceStart";
             this.View_StatusBar_ElapsedSinceStart.Size = new System.Drawing.Size(152, 17);
             this.View_StatusBar_ElapsedSinceStart.TabIndex = 3;
@@ -642,8 +709,7 @@
             // View_StatusBar_ActivityName
             // 
             this.View_StatusBar_ActivityName.AutoSize = true;
-            this.View_StatusBar_ActivityName.Enabled = false;
-            this.View_StatusBar_ActivityName.Location = new System.Drawing.Point(33, 4);
+            this.View_StatusBar_ActivityName.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ActivityName.Name = "View_StatusBar_ActivityName";
             this.View_StatusBar_ActivityName.Size = new System.Drawing.Size(126, 17);
             this.View_StatusBar_ActivityName.TabIndex = 2;
@@ -662,26 +728,12 @@
             // View_StatusBar_ProjectName
             // 
             this.View_StatusBar_ProjectName.AutoSize = true;
-            this.View_StatusBar_ProjectName.Enabled = false;
-            this.View_StatusBar_ProjectName.Location = new System.Drawing.Point(33, 4);
+            this.View_StatusBar_ProjectName.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ProjectName.Name = "View_StatusBar_ProjectName";
             this.View_StatusBar_ProjectName.Size = new System.Drawing.Size(125, 17);
             this.View_StatusBar_ProjectName.TabIndex = 1;
             this.View_StatusBar_ProjectName.Text = "Current Project name";
             this.View_StatusBar_ProjectName.UseVisualStyleBackColor = true;
-            // 
-            // View_StatusBar
-            // 
-            this.View_StatusBar.AutoSize = true;
-            this.View_StatusBar.Checked = true;
-            this.View_StatusBar.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.View_StatusBar.Location = new System.Drawing.Point(186, 42);
-            this.View_StatusBar.Name = "View_StatusBar";
-            this.View_StatusBar.Size = new System.Drawing.Size(105, 17);
-            this.View_StatusBar.TabIndex = 4;
-            this.View_StatusBar.Text = "Show Status Bar";
-            this.View_StatusBar.UseVisualStyleBackColor = true;
-            this.View_StatusBar.CheckedChanged += new System.EventHandler(this.View_StatusBar_CheckedChanged);
             // 
             // HiddenGroup
             // 
@@ -831,10 +883,10 @@
             // BehaviorPage
             // 
             this.BehaviorPage.AutoScroll = true;
-            this.BehaviorPage.Controls.Add(this.pictureBox2);
+            this.BehaviorPage.Controls.Add(this.AnnoyGroup);
+            this.BehaviorPage.Controls.Add(this.BehaviorSpacingBox);
             this.BehaviorPage.Controls.Add(this.BrowsingGroup);
             this.BehaviorPage.Controls.Add(this.SortingGroup);
-            this.BehaviorPage.Controls.Add(this.AnnoyGroup);
             this.BehaviorPage.Controls.Add(this.WindowControlGroup);
             this.BehaviorPage.Controls.Add(this.TitleBarGroup);
             this.BehaviorPage.Location = new System.Drawing.Point(98, 4);
@@ -845,6 +897,118 @@
             this.BehaviorPage.Text = "Behavior";
             this.BehaviorPage.UseVisualStyleBackColor = true;
             // 
+            // AnnoyGroup
+            // 
+            this.AnnoyGroup.Controls.Add(this.AnnoyGroup_CategoryFollowPanel);
+            this.AnnoyGroup.Controls.Add(this.AnnoyGroup_LocationFollowPanel);
+            this.AnnoyGroup.Controls.Add(this.AnnoyGroup_ActivityFollowPanel);
+            this.AnnoyGroup.Controls.Add(this.AnnoyGroup_TopPanel);
+            this.AnnoyGroup.Location = new System.Drawing.Point(17, 201);
+            this.AnnoyGroup.Name = "AnnoyGroup";
+            this.AnnoyGroup.Size = new System.Drawing.Size(345, 158);
+            this.AnnoyGroup.TabIndex = 2;
+            this.AnnoyGroup.TabStop = false;
+            this.AnnoyGroup.Text = "Annoyances";
+            // 
+            // Behavior_Annoy_ActivityFollowsProject
+            // 
+            this.Behavior_Annoy_ActivityFollowsProject.AutoSize = true;
+            this.Behavior_Annoy_ActivityFollowsProject.Location = new System.Drawing.Point(14, 4);
+            this.Behavior_Annoy_ActivityFollowsProject.Name = "Behavior_Annoy_ActivityFollowsProject";
+            this.Behavior_Annoy_ActivityFollowsProject.Size = new System.Drawing.Size(116, 17);
+            this.Behavior_Annoy_ActivityFollowsProject.TabIndex = 7;
+            this.Behavior_Annoy_ActivityFollowsProject.Text = "Auto-select Activity";
+            this.Behavior_Annoy_ActivityFollowsProject.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_Annoy_CategoryFollowsProject
+            // 
+            this.Behavior_Annoy_CategoryFollowsProject.AutoSize = true;
+            this.Behavior_Annoy_CategoryFollowsProject.Location = new System.Drawing.Point(14, 4);
+            this.Behavior_Annoy_CategoryFollowsProject.Name = "Behavior_Annoy_CategoryFollowsProject";
+            this.Behavior_Annoy_CategoryFollowsProject.Size = new System.Drawing.Size(124, 17);
+            this.Behavior_Annoy_CategoryFollowsProject.TabIndex = 10;
+            this.Behavior_Annoy_CategoryFollowsProject.Text = "Auto-select Category";
+            this.Behavior_Annoy_CategoryFollowsProject.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_Annoy_LocationFollowsProject
+            // 
+            this.Behavior_Annoy_LocationFollowsProject.AutoSize = true;
+            this.Behavior_Annoy_LocationFollowsProject.Location = new System.Drawing.Point(14, 4);
+            this.Behavior_Annoy_LocationFollowsProject.Name = "Behavior_Annoy_LocationFollowsProject";
+            this.Behavior_Annoy_LocationFollowsProject.Size = new System.Drawing.Size(123, 17);
+            this.Behavior_Annoy_LocationFollowsProject.TabIndex = 0;
+            this.Behavior_Annoy_LocationFollowsProject.Text = "Auto-select Location";
+            this.Behavior_Annoy_LocationFollowsProject.UseVisualStyleBackColor = true;
+            // 
+            // AnnoyGroup_TopPanel
+            // 
+            this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_PromptBeforeHiding);
+            this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_UseNewDatabaseWizard);
+            this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_NoRunningPrompt);
+            this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_NoRunningPromptAmount);
+            this.AnnoyGroup_TopPanel.Controls.Add(this.MinutesLabel);
+            this.AnnoyGroup_TopPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AnnoyGroup_TopPanel.Location = new System.Drawing.Point(3, 16);
+            this.AnnoyGroup_TopPanel.Name = "AnnoyGroup_TopPanel";
+            this.AnnoyGroup_TopPanel.Size = new System.Drawing.Size(339, 66);
+            this.AnnoyGroup_TopPanel.TabIndex = 11;
+            // 
+            // Behavior_Annoy_PromptBeforeHiding
+            // 
+            this.Behavior_Annoy_PromptBeforeHiding.AutoSize = true;
+            this.Behavior_Annoy_PromptBeforeHiding.Location = new System.Drawing.Point(14, 3);
+            this.Behavior_Annoy_PromptBeforeHiding.Name = "Behavior_Annoy_PromptBeforeHiding";
+            this.Behavior_Annoy_PromptBeforeHiding.Size = new System.Drawing.Size(150, 17);
+            this.Behavior_Annoy_PromptBeforeHiding.TabIndex = 8;
+            this.Behavior_Annoy_PromptBeforeHiding.Text = "Prompt before hiding items";
+            this.Behavior_Annoy_PromptBeforeHiding.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_Annoy_UseNewDatabaseWizard
+            // 
+            this.Behavior_Annoy_UseNewDatabaseWizard.AutoSize = true;
+            this.Behavior_Annoy_UseNewDatabaseWizard.Location = new System.Drawing.Point(14, 49);
+            this.Behavior_Annoy_UseNewDatabaseWizard.Name = "Behavior_Annoy_UseNewDatabaseWizard";
+            this.Behavior_Annoy_UseNewDatabaseWizard.Size = new System.Drawing.Size(152, 17);
+            this.Behavior_Annoy_UseNewDatabaseWizard.TabIndex = 9;
+            this.Behavior_Annoy_UseNewDatabaseWizard.Text = "Use New Database wizard";
+            this.Behavior_Annoy_UseNewDatabaseWizard.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_Annoy_NoRunningPrompt
+            // 
+            this.Behavior_Annoy_NoRunningPrompt.AutoSize = true;
+            this.Behavior_Annoy_NoRunningPrompt.Location = new System.Drawing.Point(14, 26);
+            this.Behavior_Annoy_NoRunningPrompt.Name = "Behavior_Annoy_NoRunningPrompt";
+            this.Behavior_Annoy_NoRunningPrompt.Size = new System.Drawing.Size(169, 17);
+            this.Behavior_Annoy_NoRunningPrompt.TabIndex = 5;
+            this.Behavior_Annoy_NoRunningPrompt.Text = "Prompt if no timer running after";
+            this.Behavior_Annoy_NoRunningPrompt.UseVisualStyleBackColor = true;
+            this.Behavior_Annoy_NoRunningPrompt.CheckedChanged += new System.EventHandler(this.Behavior_Annoy_NoRunningPrompt_CheckedChanged);
+            // 
+            // Behavior_Annoy_NoRunningPromptAmount
+            // 
+            this.Behavior_Annoy_NoRunningPromptAmount.Location = new System.Drawing.Point(189, 25);
+            this.Behavior_Annoy_NoRunningPromptAmount.Name = "Behavior_Annoy_NoRunningPromptAmount";
+            this.Behavior_Annoy_NoRunningPromptAmount.Size = new System.Drawing.Size(53, 20);
+            this.Behavior_Annoy_NoRunningPromptAmount.TabIndex = 6;
+            // 
+            // MinutesLabel
+            // 
+            this.MinutesLabel.AutoSize = true;
+            this.MinutesLabel.Location = new System.Drawing.Point(248, 27);
+            this.MinutesLabel.Name = "MinutesLabel";
+            this.MinutesLabel.Size = new System.Drawing.Size(43, 13);
+            this.MinutesLabel.TabIndex = 7;
+            this.MinutesLabel.Text = "minutes";
+            // 
+            // BehaviorSpacingBox
+            // 
+            this.BehaviorSpacingBox.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
+            this.BehaviorSpacingBox.Location = new System.Drawing.Point(17, 554);
+            this.BehaviorSpacingBox.Name = "BehaviorSpacingBox";
+            this.BehaviorSpacingBox.Size = new System.Drawing.Size(16, 16);
+            this.BehaviorSpacingBox.TabIndex = 23;
+            this.BehaviorSpacingBox.TabStop = false;
+            // 
             // BrowsingGroup
             // 
             this.BrowsingGroup.Controls.Add(this.checkBox7);
@@ -852,7 +1016,7 @@
             this.BrowsingGroup.Controls.Add(this.Behavior_BrowsePrevBy);
             this.BrowsingGroup.Controls.Add(this.label14);
             this.BrowsingGroup.Controls.Add(this.label13);
-            this.BrowsingGroup.Location = new System.Drawing.Point(17, 436);
+            this.BrowsingGroup.Location = new System.Drawing.Point(17, 452);
             this.BrowsingGroup.Name = "BrowsingGroup";
             this.BrowsingGroup.Size = new System.Drawing.Size(345, 102);
             this.BrowsingGroup.TabIndex = 5;
@@ -867,7 +1031,7 @@
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(225, 17);
             this.checkBox7.TabIndex = 4;
-            this.checkBox7.Text = "Lock Previous and Next browsing options.";
+            this.checkBox7.Text = "Sync Previous and Next browsing options.";
             this.checkBox7.UseVisualStyleBackColor = true;
             // 
             // Behavior_BrowseNextBy
@@ -905,24 +1069,24 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(14, 56);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(119, 13);
+            this.label14.Size = new System.Drawing.Size(116, 13);
             this.label14.TabIndex = 1;
-            this.label14.Text = "Browse Next Entries by:";
+            this.label14.Text = "Browse next entries by:";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(14, 29);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(138, 13);
+            this.label13.Size = new System.Drawing.Size(136, 13);
             this.label13.TabIndex = 0;
-            this.label13.Text = "Browse Previous Entries by:";
+            this.label13.Text = "Browse previous entries by:";
             // 
             // SortingGroup
             // 
             this.SortingGroup.Controls.Add(this.SortingGroup_BottomPanel);
             this.SortingGroup.Controls.Add(this.SortingGroup_ProjectPanel);
-            this.SortingGroup.Location = new System.Drawing.Point(17, 349);
+            this.SortingGroup.Location = new System.Drawing.Point(17, 365);
             this.SortingGroup.Name = "SortingGroup";
             this.SortingGroup.Size = new System.Drawing.Size(345, 81);
             this.SortingGroup.TabIndex = 4;
@@ -1018,109 +1182,6 @@
             this.SortProjectsLabel.Size = new System.Drawing.Size(70, 13);
             this.SortProjectsLabel.TabIndex = 17;
             this.SortProjectsLabel.Text = "Sort Projects:";
-            // 
-            // AnnoyGroup
-            // 
-            this.AnnoyGroup.Controls.Add(this.AnnoyGroup_BottomPanel);
-            this.AnnoyGroup.Controls.Add(this.AnnoyGroup_TopPanel);
-            this.AnnoyGroup.Location = new System.Drawing.Point(17, 201);
-            this.AnnoyGroup.Name = "AnnoyGroup";
-            this.AnnoyGroup.Size = new System.Drawing.Size(345, 142);
-            this.AnnoyGroup.TabIndex = 2;
-            this.AnnoyGroup.TabStop = false;
-            this.AnnoyGroup.Text = "Annoyances";
-            // 
-            // AnnoyGroup_BottomPanel
-            // 
-            this.AnnoyGroup_BottomPanel.Controls.Add(this.Behavior_Annoy_ProjectFollowsActivity);
-            this.AnnoyGroup_BottomPanel.Controls.Add(this.Behavior_Annoy_ActivityFollowsProject);
-            this.AnnoyGroup_BottomPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnnoyGroup_BottomPanel.Location = new System.Drawing.Point(3, 86);
-            this.AnnoyGroup_BottomPanel.Name = "AnnoyGroup_BottomPanel";
-            this.AnnoyGroup_BottomPanel.Size = new System.Drawing.Size(339, 46);
-            this.AnnoyGroup_BottomPanel.TabIndex = 1;
-            // 
-            // Behavior_Annoy_ProjectFollowsActivity
-            // 
-            this.Behavior_Annoy_ProjectFollowsActivity.AutoSize = true;
-            this.Behavior_Annoy_ProjectFollowsActivity.Location = new System.Drawing.Point(14, 27);
-            this.Behavior_Annoy_ProjectFollowsActivity.Name = "Behavior_Annoy_ProjectFollowsActivity";
-            this.Behavior_Annoy_ProjectFollowsActivity.Size = new System.Drawing.Size(173, 17);
-            this.Behavior_Annoy_ProjectFollowsActivity.TabIndex = 6;
-            this.Behavior_Annoy_ProjectFollowsActivity.TabStop = true;
-            this.Behavior_Annoy_ProjectFollowsActivity.Text = "Project follows selected Activity";
-            this.Behavior_Annoy_ProjectFollowsActivity.UseVisualStyleBackColor = true;
-            // 
-            // Behavior_Annoy_ActivityFollowsProject
-            // 
-            this.Behavior_Annoy_ActivityFollowsProject.AutoSize = true;
-            this.Behavior_Annoy_ActivityFollowsProject.Location = new System.Drawing.Point(14, 4);
-            this.Behavior_Annoy_ActivityFollowsProject.Name = "Behavior_Annoy_ActivityFollowsProject";
-            this.Behavior_Annoy_ActivityFollowsProject.Size = new System.Drawing.Size(173, 17);
-            this.Behavior_Annoy_ActivityFollowsProject.TabIndex = 5;
-            this.Behavior_Annoy_ActivityFollowsProject.TabStop = true;
-            this.Behavior_Annoy_ActivityFollowsProject.Text = "Activity follows selected Project";
-            this.Behavior_Annoy_ActivityFollowsProject.UseVisualStyleBackColor = true;
-            // 
-            // AnnoyGroup_TopPanel
-            // 
-            this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_UseNewDatabaseWizard);
-            this.AnnoyGroup_TopPanel.Controls.Add(this.MinutesLabel);
-            this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_PromptBeforeHiding);
-            this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_NoRunningPrompt);
-            this.AnnoyGroup_TopPanel.Controls.Add(this.Behavior_Annoy_NoRunningPromptAmount);
-            this.AnnoyGroup_TopPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnnoyGroup_TopPanel.Location = new System.Drawing.Point(3, 16);
-            this.AnnoyGroup_TopPanel.Name = "AnnoyGroup_TopPanel";
-            this.AnnoyGroup_TopPanel.Size = new System.Drawing.Size(339, 70);
-            this.AnnoyGroup_TopPanel.TabIndex = 0;
-            // 
-            // Behavior_Annoy_UseNewDatabaseWizard
-            // 
-            this.Behavior_Annoy_UseNewDatabaseWizard.AutoSize = true;
-            this.Behavior_Annoy_UseNewDatabaseWizard.Location = new System.Drawing.Point(14, 50);
-            this.Behavior_Annoy_UseNewDatabaseWizard.Name = "Behavior_Annoy_UseNewDatabaseWizard";
-            this.Behavior_Annoy_UseNewDatabaseWizard.Size = new System.Drawing.Size(152, 17);
-            this.Behavior_Annoy_UseNewDatabaseWizard.TabIndex = 9;
-            this.Behavior_Annoy_UseNewDatabaseWizard.Text = "Use New Database wizard";
-            this.Behavior_Annoy_UseNewDatabaseWizard.UseVisualStyleBackColor = true;
-            // 
-            // MinutesLabel
-            // 
-            this.MinutesLabel.AutoSize = true;
-            this.MinutesLabel.Location = new System.Drawing.Point(248, 28);
-            this.MinutesLabel.Name = "MinutesLabel";
-            this.MinutesLabel.Size = new System.Drawing.Size(43, 13);
-            this.MinutesLabel.TabIndex = 7;
-            this.MinutesLabel.Text = "minutes";
-            // 
-            // Behavior_Annoy_PromptBeforeHiding
-            // 
-            this.Behavior_Annoy_PromptBeforeHiding.AutoSize = true;
-            this.Behavior_Annoy_PromptBeforeHiding.Location = new System.Drawing.Point(14, 4);
-            this.Behavior_Annoy_PromptBeforeHiding.Name = "Behavior_Annoy_PromptBeforeHiding";
-            this.Behavior_Annoy_PromptBeforeHiding.Size = new System.Drawing.Size(150, 17);
-            this.Behavior_Annoy_PromptBeforeHiding.TabIndex = 8;
-            this.Behavior_Annoy_PromptBeforeHiding.Text = "Prompt before hiding items";
-            this.Behavior_Annoy_PromptBeforeHiding.UseVisualStyleBackColor = true;
-            // 
-            // Behavior_Annoy_NoRunningPrompt
-            // 
-            this.Behavior_Annoy_NoRunningPrompt.AutoSize = true;
-            this.Behavior_Annoy_NoRunningPrompt.Location = new System.Drawing.Point(14, 27);
-            this.Behavior_Annoy_NoRunningPrompt.Name = "Behavior_Annoy_NoRunningPrompt";
-            this.Behavior_Annoy_NoRunningPrompt.Size = new System.Drawing.Size(169, 17);
-            this.Behavior_Annoy_NoRunningPrompt.TabIndex = 5;
-            this.Behavior_Annoy_NoRunningPrompt.Text = "Prompt if no timer running after";
-            this.Behavior_Annoy_NoRunningPrompt.UseVisualStyleBackColor = true;
-            this.Behavior_Annoy_NoRunningPrompt.CheckedChanged += new System.EventHandler(this.Behavior_Annoy_NoRunningPrompt_CheckedChanged);
-            // 
-            // Behavior_Annoy_NoRunningPromptAmount
-            // 
-            this.Behavior_Annoy_NoRunningPromptAmount.Location = new System.Drawing.Point(189, 26);
-            this.Behavior_Annoy_NoRunningPromptAmount.Name = "Behavior_Annoy_NoRunningPromptAmount";
-            this.Behavior_Annoy_NoRunningPromptAmount.Size = new System.Drawing.Size(53, 20);
-            this.Behavior_Annoy_NoRunningPromptAmount.TabIndex = 6;
             // 
             // WindowControlGroup
             // 
@@ -1726,6 +1787,8 @@
             // 
             // OtherAdvancedGroup
             // 
+            this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_DimensionWidth);
+            this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_DimensionWidthLabel);
             this.OtherAdvancedGroup.Controls.Add(this.checkBox6);
             this.OtherAdvancedGroup.Controls.Add(this.checkBox5);
             this.OtherAdvancedGroup.Controls.Add(this.checkBox4);
@@ -1745,6 +1808,37 @@
             this.OtherAdvancedGroup.TabIndex = 3;
             this.OtherAdvancedGroup.TabStop = false;
             this.OtherAdvancedGroup.Text = "Other";
+            // 
+            // Advanced_Other_DimensionWidth
+            // 
+            this.Advanced_Other_DimensionWidth.Location = new System.Drawing.Point(197, 245);
+            this.Advanced_Other_DimensionWidth.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.Advanced_Other_DimensionWidth.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.Advanced_Other_DimensionWidth.Name = "Advanced_Other_DimensionWidth";
+            this.Advanced_Other_DimensionWidth.Size = new System.Drawing.Size(53, 20);
+            this.Advanced_Other_DimensionWidth.TabIndex = 14;
+            this.Advanced_Other_DimensionWidth.Value = new decimal(new int[] {
+            250,
+            0,
+            0,
+            0});
+            // 
+            // Advanced_Other_DimensionWidthLabel
+            // 
+            this.Advanced_Other_DimensionWidthLabel.AutoSize = true;
+            this.Advanced_Other_DimensionWidthLabel.Location = new System.Drawing.Point(32, 247);
+            this.Advanced_Other_DimensionWidthLabel.Name = "Advanced_Other_DimensionWidthLabel";
+            this.Advanced_Other_DimensionWidthLabel.Size = new System.Drawing.Size(121, 13);
+            this.Advanced_Other_DimensionWidthLabel.TabIndex = 13;
+            this.Advanced_Other_DimensionWidthLabel.Text = "Dimension widget width:";
             // 
             // checkBox6
             // 
@@ -1957,63 +2051,32 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
-            // pictureBox2
+            // AnnoyGroup_ActivityFollowPanel
             // 
-            this.pictureBox2.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
-            this.pictureBox2.Location = new System.Drawing.Point(17, 538);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox2.TabIndex = 23;
-            this.pictureBox2.TabStop = false;
+            this.AnnoyGroup_ActivityFollowPanel.Controls.Add(this.Behavior_Annoy_ActivityFollowsProject);
+            this.AnnoyGroup_ActivityFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AnnoyGroup_ActivityFollowPanel.Location = new System.Drawing.Point(3, 82);
+            this.AnnoyGroup_ActivityFollowPanel.Name = "AnnoyGroup_ActivityFollowPanel";
+            this.AnnoyGroup_ActivityFollowPanel.Size = new System.Drawing.Size(339, 23);
+            this.AnnoyGroup_ActivityFollowPanel.TabIndex = 12;
             // 
-            // MainViewGroup
+            // AnnoyGroup_LocationFollowPanel
             // 
-            this.MainViewGroup.Controls.Add(this.View_MemoEditor);
-            this.MainViewGroup.Controls.Add(this.View_StatusBar);
-            this.MainViewGroup.Controls.Add(this.View_ControlPanel);
-            this.MainViewGroup.Controls.Add(this.View_BrowserToolbar);
-            this.MainViewGroup.Location = new System.Drawing.Point(17, 16);
-            this.MainViewGroup.Name = "MainViewGroup";
-            this.MainViewGroup.Size = new System.Drawing.Size(345, 67);
-            this.MainViewGroup.TabIndex = 23;
-            this.MainViewGroup.TabStop = false;
-            this.MainViewGroup.Text = "Main Window";
+            this.AnnoyGroup_LocationFollowPanel.Controls.Add(this.Behavior_Annoy_LocationFollowsProject);
+            this.AnnoyGroup_LocationFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AnnoyGroup_LocationFollowPanel.Location = new System.Drawing.Point(3, 105);
+            this.AnnoyGroup_LocationFollowPanel.Name = "AnnoyGroup_LocationFollowPanel";
+            this.AnnoyGroup_LocationFollowPanel.Size = new System.Drawing.Size(339, 23);
+            this.AnnoyGroup_LocationFollowPanel.TabIndex = 13;
             // 
-            // View_BrowserToolbar
+            // AnnoyGroup_CategoryFollowPanel
             // 
-            this.View_BrowserToolbar.AutoSize = true;
-            this.View_BrowserToolbar.Checked = true;
-            this.View_BrowserToolbar.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.View_BrowserToolbar.Location = new System.Drawing.Point(17, 19);
-            this.View_BrowserToolbar.Name = "View_BrowserToolbar";
-            this.View_BrowserToolbar.Size = new System.Drawing.Size(133, 17);
-            this.View_BrowserToolbar.TabIndex = 1;
-            this.View_BrowserToolbar.Text = "Show Browser Toolbar";
-            this.View_BrowserToolbar.UseVisualStyleBackColor = true;
-            // 
-            // View_ControlPanel
-            // 
-            this.View_ControlPanel.AutoSize = true;
-            this.View_ControlPanel.Checked = true;
-            this.View_ControlPanel.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.View_ControlPanel.Location = new System.Drawing.Point(186, 19);
-            this.View_ControlPanel.Name = "View_ControlPanel";
-            this.View_ControlPanel.Size = new System.Drawing.Size(145, 17);
-            this.View_ControlPanel.TabIndex = 3;
-            this.View_ControlPanel.Text = "Show Entry Details Panel";
-            this.View_ControlPanel.UseVisualStyleBackColor = true;
-            // 
-            // View_MemoEditor
-            // 
-            this.View_MemoEditor.AutoSize = true;
-            this.View_MemoEditor.Checked = true;
-            this.View_MemoEditor.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.View_MemoEditor.Location = new System.Drawing.Point(17, 42);
-            this.View_MemoEditor.Name = "View_MemoEditor";
-            this.View_MemoEditor.Size = new System.Drawing.Size(115, 17);
-            this.View_MemoEditor.TabIndex = 2;
-            this.View_MemoEditor.Text = "Show Memo Editor";
-            this.View_MemoEditor.UseVisualStyleBackColor = true;
+            this.AnnoyGroup_CategoryFollowPanel.Controls.Add(this.Behavior_Annoy_CategoryFollowsProject);
+            this.AnnoyGroup_CategoryFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AnnoyGroup_CategoryFollowPanel.Location = new System.Drawing.Point(3, 128);
+            this.AnnoyGroup_CategoryFollowPanel.Name = "AnnoyGroup_CategoryFollowPanel";
+            this.AnnoyGroup_CategoryFollowPanel.Size = new System.Drawing.Size(339, 23);
+            this.AnnoyGroup_CategoryFollowPanel.TabIndex = 14;
             // 
             // Options
             // 
@@ -2043,7 +2106,9 @@
             this.DimensionGroup.ResumeLayout(false);
             this.DimensionGroup.PerformLayout();
             this.ViewPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.MainViewGroup.ResumeLayout(false);
+            this.MainViewGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ViewSpacerBox)).EndInit();
             this.MemoEditorGroup.ResumeLayout(false);
             this.MemoEditorGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.View_MemoEditor_RightMargin)).EndInit();
@@ -2070,6 +2135,11 @@
             this.HiddenGroup_ProjectPanel.ResumeLayout(false);
             this.HiddenGroup_ProjectPanel.PerformLayout();
             this.BehaviorPage.ResumeLayout(false);
+            this.AnnoyGroup.ResumeLayout(false);
+            this.AnnoyGroup_TopPanel.ResumeLayout(false);
+            this.AnnoyGroup_TopPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Behavior_Annoy_NoRunningPromptAmount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BehaviorSpacingBox)).EndInit();
             this.BrowsingGroup.ResumeLayout(false);
             this.BrowsingGroup.PerformLayout();
             this.SortingGroup.ResumeLayout(false);
@@ -2077,12 +2147,6 @@
             this.SortingGroup_BottomPanel.PerformLayout();
             this.SortingGroup_ProjectPanel.ResumeLayout(false);
             this.SortingGroup_ProjectPanel.PerformLayout();
-            this.AnnoyGroup.ResumeLayout(false);
-            this.AnnoyGroup_BottomPanel.ResumeLayout(false);
-            this.AnnoyGroup_BottomPanel.PerformLayout();
-            this.AnnoyGroup_TopPanel.ResumeLayout(false);
-            this.AnnoyGroup_TopPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Behavior_Annoy_NoRunningPromptAmount)).EndInit();
             this.WindowControlGroup.ResumeLayout(false);
             this.WindowControlGroup.PerformLayout();
             this.TitleBarGroup.ResumeLayout(false);
@@ -2103,12 +2167,16 @@
             this.AdvancedPage.ResumeLayout(false);
             this.OtherAdvancedGroup.ResumeLayout(false);
             this.OtherAdvancedGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Advanced_Other_DimensionWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.MainViewGroup.ResumeLayout(false);
-            this.MainViewGroup.PerformLayout();
+            this.AnnoyGroup_ActivityFollowPanel.ResumeLayout(false);
+            this.AnnoyGroup_ActivityFollowPanel.PerformLayout();
+            this.AnnoyGroup_LocationFollowPanel.ResumeLayout(false);
+            this.AnnoyGroup_LocationFollowPanel.PerformLayout();
+            this.AnnoyGroup_CategoryFollowPanel.ResumeLayout(false);
+            this.AnnoyGroup_CategoryFollowPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2212,13 +2280,9 @@
         private System.Windows.Forms.Panel StatusBarGroup_ActivityElapsedPanel;
         private System.Windows.Forms.Panel SortingGroup_BottomPanel;
         private System.Windows.Forms.Panel SortingGroup_ProjectPanel;
-        private System.Windows.Forms.Panel AnnoyGroup_BottomPanel;
-        private System.Windows.Forms.Panel AnnoyGroup_TopPanel;
         private System.Windows.Forms.Label DisplayLabel;
         private System.Windows.Forms.ComboBox Behavior_TitleBar_Time;
         private System.Windows.Forms.Label DimensionsInstructionsLabel;
-        private System.Windows.Forms.RadioButton Behavior_Annoy_ProjectFollowsActivity;
-        private System.Windows.Forms.RadioButton Behavior_Annoy_ActivityFollowsProject;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label3;
@@ -2264,13 +2328,22 @@
         private System.Windows.Forms.CheckBox View_MemoEditor_ShowGutter;
         private System.Windows.Forms.Button View_MemoEditor_FontButton;
         private System.Windows.Forms.FontDialog FontDialog;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox ViewSpacerBox;
         private System.Windows.Forms.TextBox View_MemoEditor_Font;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox BehaviorSpacingBox;
         private System.Windows.Forms.GroupBox MainViewGroup;
         private System.Windows.Forms.CheckBox View_ControlPanel;
         private System.Windows.Forms.CheckBox View_BrowserToolbar;
         private System.Windows.Forms.CheckBox View_MemoEditor;
+        private System.Windows.Forms.CheckBox Behavior_Annoy_CategoryFollowsProject;
+        private System.Windows.Forms.CheckBox Behavior_Annoy_LocationFollowsProject;
+        private System.Windows.Forms.CheckBox Behavior_Annoy_ActivityFollowsProject;
+        private System.Windows.Forms.Panel AnnoyGroup_TopPanel;
+        private System.Windows.Forms.NumericUpDown Advanced_Other_DimensionWidth;
+        private System.Windows.Forms.Label Advanced_Other_DimensionWidthLabel;
+        private System.Windows.Forms.Panel AnnoyGroup_CategoryFollowPanel;
+        private System.Windows.Forms.Panel AnnoyGroup_LocationFollowPanel;
+        private System.Windows.Forms.Panel AnnoyGroup_ActivityFollowPanel;
 
     }
 }

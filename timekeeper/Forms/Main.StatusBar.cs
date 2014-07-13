@@ -121,7 +121,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void StatusBar_Update(Classes.Project project, Classes.Activity activity)
+        private void StatusBar_Update(Classes.TreeAttribute project, Classes.TreeAttribute activity)
         {
             // Called when the timer isn't running
             StatusBarElapsedSinceStart.Text = "0:00:00";

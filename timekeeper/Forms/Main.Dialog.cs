@@ -57,15 +57,19 @@ namespace Timekeeper.Forms
 
             Action_CloseFile();
             if (Action_CreateFile(FileName, CreateOptions)) {
-                Action_OpenFile(FileName);
 
-                // Override any earlier registry-based options
-                // Fixes Ticket #1291 but see also Ticket #1301
-                Options.Layout_UseProjects = CreateOptions.UseProjects;
-                Options.Layout_UseActivities = CreateOptions.UseActivities;
+                if (Action_OpenFile(FileName)) {
+                    // Override any earlier registry-based options
+                    // Fixes Ticket #1291 but see also Ticket #1301
+                    Options.Layout_UseProjects = CreateOptions.UseProjects;
+                    Options.Layout_UseActivities = CreateOptions.UseActivities;
 
-                Action_UseProjects(Options.Layout_UseProjects);
-                Action_UseActivities(Options.Layout_UseActivities);
+                    Action_UseProjects(Options.Layout_UseProjects);
+                    Action_UseActivities(Options.Layout_UseActivities);
+                } else {
+                    Common.Warn("The database was successfully created but could not be opened.");
+                }
+
             } else {
                 Common.Warn("An error occurred creating the database");
             }
@@ -78,7 +82,10 @@ namespace Timekeeper.Forms
         private void Dialog_OpenFile()
         {
             if (OpenFileDialog.ShowDialog(this) == DialogResult.OK) {
-                Action_OpenFile(OpenFileDialog.FileName);
+                if (!Action_OpenFile(OpenFileDialog.FileName)) {
+                    Action_CloseFile();
+                    Common.Warn("The database could not be opened.");
+                }
             }
         }
 
@@ -137,6 +144,14 @@ namespace Timekeeper.Forms
             Action_UseCategories(Options.Layout_UseCategories);
             Action_AdjustControlPanel();
 
+            // Set dimension widget width
+
+            DimensionPanel.Width = Options.Advanced_Other_DimensionWidth + 60;
+            ProjectTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
+            ActivityTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
+            LocationTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
+            CategoryTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
+
             TrayIcon.Visible = Options.Behavior_Window_ShowInTray;
 
             Action_SetBrowserOptions();
@@ -155,7 +170,7 @@ namespace Timekeeper.Forms
                         break;
                     case 1:
                         Height = 310;
-                        Width = 570;
+                        Width = 470;
                         break;
                     case 2:
                         Height = 460;
