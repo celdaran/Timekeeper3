@@ -535,6 +535,9 @@ namespace Timekeeper.Forms
                 // Not until TK 3.1. Sorry...
                 //Action_LoadPlugins();
 
+                // Will this work here?
+                MemoEditor.Focus();
+
                 // SHORTCUTS
                 /*
                 Forms.Shared.Schedule DialogBox = new Forms.Shared.Schedule();
@@ -634,6 +637,7 @@ namespace Timekeeper.Forms
             this.MemoEditor.BringToFront();
             this.MemoEditor.Dock = DockStyle.Fill;
             this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
+            this.MemoEditor.TabIndex = 2; // grasping at straws here
             this.MemoEditor.Enabled = false;
 
             // Set viewability of primary components
@@ -788,20 +792,20 @@ namespace Timekeeper.Forms
                 Action_AdjustControlPanel();
 
                 //------------------------------------------
-                // Prepare Browser
-                //------------------------------------------
-
-                Browser_Load();
-                Browser_SetupForStarting();
-                Browser_Enable();
-
-                //------------------------------------------
                 // Enable UI elements
                 //------------------------------------------
 
                 this.MemoEditor.Enabled = true;
                 this.PanelControls.Enabled = true;
                 this.BrowserToolbar.Enabled = true;
+
+                //------------------------------------------
+                // Prepare Browser
+                //------------------------------------------
+
+                Browser_Load();
+                Browser_SetupForStarting();
+                Browser_Enable();
 
                 //------------------------------------------
                 // Restore Prior State
@@ -1257,17 +1261,9 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Action_StartTimer()
+        private void GetDimensions()
+            // experimental helper
         {
-            // Cannot start timer while browsing
-            if (isBrowsing) {
-                // Should be unreachable code due to the start function being
-                // disabled in the UI itself. Setting this here for safety
-                // purposes anyway.
-                Common.Warn("You cannot start the timer while browsing entries.");
-                return;
-            }
-
             // Ensure we have items selected
             EnsureSelections();
 
@@ -1282,31 +1278,45 @@ namespace Timekeeper.Forms
             Options.State_LastActivityId = TimedActivity.ItemId;
             Options.State_LastLocationId = TimedLocation.ItemId;
             Options.State_LastCategoryId = TimedCategory.ItemId;
+        }
+
+        private void Action_StartTimer()
+        {
+            // Cannot start timer while browsing
+            if (isBrowsing) {
+                // Should be unreachable code due to the start function being
+                // disabled in the UI itself. Setting this here for safety
+                // purposes anyway.
+                Common.Warn("You cannot start the timer while browsing entries.");
+                return;
+            }
+
+            // Get current dimension selections
+            GetDimensions();
 
             // Now start timing
             DateTime StartTime = StartTimeSelector.Value;
-            TimedActivity.StartTiming(StartTime);
-            TimedActivity.LastLocationId = TimedProject.ItemId;
 
             TimedProject.StartTiming(StartTime);
-            TimedProject.LastActivityId = TimedActivity.ItemId;
+            TimedActivity.StartTiming(StartTime);
+            TimedLocation.StartTiming(StartTime);
+            TimedCategory.StartTiming(StartTime);
 
             TimedEntry = new Classes.JournalEntry(); // reinstantiate this entry upon timer start
-            TimedEntry.ProjectId = TimedProject.ItemId;
-            TimedEntry.ActivityId = TimedActivity.ItemId;
             TimedEntry.StartTime = StartTime;
             TimedEntry.StopTime = StartTime;
             TimedEntry.Seconds = 0;
             TimedEntry.Memo = MemoEditor.Text;
-            TimedEntry.IsLocked = true;
+            TimedEntry.ProjectId = TimedProject.ItemId;
+            TimedEntry.ActivityId = TimedActivity.ItemId;
             TimedEntry.LocationId = TimedLocation.ItemId;
             TimedEntry.CategoryId = TimedCategory.ItemId;
+            TimedEntry.IsLocked = true;
             if (!TimedEntry.Create()) {
                 Common.Warn("There was an error starting the timer.");
                 return;
             }
 
-            //ShortTimer.Enabled = true; // Are this line and the next line the same thing?
             timerRunning = true;
             timerLastRun = DateTime.Now;
 
@@ -1318,10 +1328,7 @@ namespace Timekeeper.Forms
 
             // Make any UI changes based on the timer starting
             MenuActionStartTimer.Visible = false;
-            //menuActionStartAdvanced.Visible = false;
             MenuActionStopTimer.Visible = true;
-            //menuActionStopAdvanced.Visible = true;
-            //Browser_EnableRevert(false);
 
             // swap start/stop keystrokes
             // FIXME: this is a mess
@@ -1336,10 +1343,6 @@ namespace Timekeeper.Forms
             Browser_SetShortcuts();
 
             StatusBar_TimerStarted(TimedProject.Name, TimedActivity.Name);
-
-            Text = TimedActivity.Name;
-
-            TrayIcon.Text = Common.Abbreviate(Text, 63);
 
             Action_SetMenuAvailability(MenuFile, false);
 
@@ -1360,37 +1363,39 @@ namespace Timekeeper.Forms
         private void Action_StopTimer()
         {
             // Close off the timer for both objects
-            long Seconds = TimedActivity.StopTiming(StopTimeSelector.Value);
-                           TimedProject.StopTiming(StopTimeSelector.Value);
+            long Seconds = TimedProject.StopTiming(StopTimeSelector.Value);
+                           TimedActivity.StopTiming(StopTimeSelector.Value);
+                           TimedLocation.StopTiming(StopTimeSelector.Value);
+                           TimedCategory.StopTiming(StopTimeSelector.Value);
+
+            // Get current dimension selections
+            // Note: they may have changed while the timer was running
+            GetDimensions();
 
             // Close off timer
-            TimedEntry.ProjectId = TimedProject.ItemId;
-            TimedEntry.ActivityId = TimedActivity.ItemId;
             TimedEntry.StartTime = StartTimeSelector.Value;
             TimedEntry.StopTime = StopTimeSelector.Value;
             TimedEntry.Seconds = Seconds;
-            //Entry.Memo = wMemo.Text;
             TimedEntry.Memo = MemoEditor.Text;
+            TimedEntry.ProjectId = TimedProject.ItemId;
+            TimedEntry.ActivityId = TimedActivity.ItemId;
+            TimedEntry.LocationId = TimedLocation.ItemId;
+            TimedEntry.CategoryId = TimedCategory.ItemId;
             TimedEntry.IsLocked = false;
-//            Entry.LocationId = currentLocation.Id;
-//            Entry.CategoryId = currentCategory.Id;
             TimedEntry.Save();
             timerRunning = false;
-            //ShortTimer.Enabled = false;
-            //timerLastRunNotified = false;
 
             // Clear instances of current object
             TimedProject = null;
             TimedActivity = null;
-            //currentEntry = null;
+            TimedLocation = null;
+            TimedCategory = null;
 
             // Make any UI changes 
             Text = Timekeeper.TITLE;
 
             MenuActionStartTimer.Visible = true;
-            //menuActionStartAdvanced.Visible = true;
             MenuActionStopTimer.Visible = false;
-            //menuActionStopAdvanced.Visible = false;
 
             StatusBar_TimerStopped();
 
@@ -1400,18 +1405,6 @@ namespace Timekeeper.Forms
             saveKeys = MenuActionStopTimer.ShortcutKeys;
             MenuActionStopTimer.ShortcutKeys = Keys.None;
             MenuActionStartTimer.ShortcutKeys = saveKeys;
-            /*
-            saveKeys = menuToolControlStop.ShortcutKeys;
-            menuToolControlStop.ShortcutKeys = Keys.None;
-            menuToolControlStart.ShortcutKeys = saveKeys;
-            */
-            /*
-            // Restore after animating
-            currentProjectNode.ImageIndex = Timekeeper.IMG_PROJECT;
-            currentProjectNode.SelectedImageIndex = Timekeeper.IMG_PROJECT;
-            currentActivityNode.ImageIndex = Timekeeper.IMG_ACTIVITY;
-            currentActivityNode.SelectedImageIndex = Timekeeper.IMG_ACTIVITY;
-            */
 
             Action_SetMenuAvailability(MenuFile, true);
 
@@ -1428,7 +1421,6 @@ namespace Timekeeper.Forms
                 Browser_SetShortcuts();
                 DeferShortcutAssignment = false;
             }
-
         }
 
         //----------------------------------------------------------------------

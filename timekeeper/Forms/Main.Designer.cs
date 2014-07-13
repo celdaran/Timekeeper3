@@ -1022,7 +1022,7 @@ namespace Timekeeper.Forms
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.ShowItemToolTips = true;
             this.StatusBar.Size = new System.Drawing.Size(562, 22);
-            this.StatusBar.TabIndex = 12;
+            this.StatusBar.TabIndex = 13;
             // 
             // StatusBarCurrentProject
             // 
@@ -1282,7 +1282,7 @@ namespace Timekeeper.Forms
             this.PanelControls.Location = new System.Drawing.Point(0, 151);
             this.PanelControls.Name = "PanelControls";
             this.PanelControls.Size = new System.Drawing.Size(562, 122);
-            this.PanelControls.TabIndex = 0;
+            this.PanelControls.TabIndex = 2;
             this.PanelControls.Visible = false;
             this.PanelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
@@ -1293,7 +1293,7 @@ namespace Timekeeper.Forms
             this.CloseStartGapButton.Location = new System.Drawing.Point(204, 10);
             this.CloseStartGapButton.Name = "CloseStartGapButton";
             this.CloseStartGapButton.Size = new System.Drawing.Size(27, 20);
-            this.CloseStartGapButton.TabIndex = 2;
+            this.CloseStartGapButton.TabIndex = 4;
             this.CloseStartGapButton.Text = "Å";
             this.CloseStartGapButton.UseVisualStyleBackColor = true;
             this.CloseStartGapButton.Click += new System.EventHandler(this.MenuToolbarBrowserCloseStartGap_Click);
@@ -1305,7 +1305,7 @@ namespace Timekeeper.Forms
             this.CloseStopGapButton.Location = new System.Drawing.Point(204, 35);
             this.CloseStopGapButton.Name = "CloseStopGapButton";
             this.CloseStopGapButton.Size = new System.Drawing.Size(27, 20);
-            this.CloseStopGapButton.TabIndex = 4;
+            this.CloseStopGapButton.TabIndex = 6;
             this.CloseStopGapButton.Text = "Æ";
             this.CloseStopGapButton.UseVisualStyleBackColor = true;
             this.CloseStopGapButton.Click += new System.EventHandler(this.MenuToolbarBrowserCloseEndGap_Click);
@@ -1319,7 +1319,7 @@ namespace Timekeeper.Forms
             this.DimensionPanel.Location = new System.Drawing.Point(237, 8);
             this.DimensionPanel.Name = "DimensionPanel";
             this.DimensionPanel.Size = new System.Drawing.Size(311, 122);
-            this.DimensionPanel.TabIndex = 16;
+            this.DimensionPanel.TabIndex = 8;
             // 
             // CategoryPanel
             // 
@@ -1341,7 +1341,7 @@ namespace Timekeeper.Forms
             this.CategoryTreeDropdown.Name = "CategoryTreeDropdown";
             this.CategoryTreeDropdown.SelectedNode = null;
             this.CategoryTreeDropdown.Size = new System.Drawing.Size(250, 21);
-            this.CategoryTreeDropdown.TabIndex = 22;
+            this.CategoryTreeDropdown.TabIndex = 12;
             this.CategoryTreeDropdown.Tag = "3";
             this.CategoryTreeDropdown.SelectedNodeChanged += new System.EventHandler(this.CategoryTreeDropdown_SelectedNodeChanged);
             // 
@@ -1457,7 +1457,7 @@ namespace Timekeeper.Forms
             this.LocationTreeDropdown.Name = "LocationTreeDropdown";
             this.LocationTreeDropdown.SelectedNode = null;
             this.LocationTreeDropdown.Size = new System.Drawing.Size(250, 21);
-            this.LocationTreeDropdown.TabIndex = 21;
+            this.LocationTreeDropdown.TabIndex = 11;
             this.LocationTreeDropdown.Tag = "2";
             this.LocationTreeDropdown.SelectedNodeChanged += new System.EventHandler(this.LocationTreeDropdown_SelectedNodeChanged);
             // 
@@ -1489,7 +1489,7 @@ namespace Timekeeper.Forms
             this.ActivityTreeDropdown.Name = "ActivityTreeDropdown";
             this.ActivityTreeDropdown.SelectedNode = null;
             this.ActivityTreeDropdown.Size = new System.Drawing.Size(250, 21);
-            this.ActivityTreeDropdown.TabIndex = 9;
+            this.ActivityTreeDropdown.TabIndex = 10;
             this.ActivityTreeDropdown.Tag = "1";
             this.ActivityTreeDropdown.SelectedNodeChanged += new System.EventHandler(this.ActivityTreeDropdown_SelectedNodeChanged);
             // 
@@ -1531,7 +1531,7 @@ namespace Timekeeper.Forms
             this.ProjectTreeDropdown.Name = "ProjectTreeDropdown";
             this.ProjectTreeDropdown.SelectedNode = null;
             this.ProjectTreeDropdown.Size = new System.Drawing.Size(250, 21);
-            this.ProjectTreeDropdown.TabIndex = 7;
+            this.ProjectTreeDropdown.TabIndex = 9;
             this.ProjectTreeDropdown.Tag = "0";
             this.ProjectTreeDropdown.SelectedNodeChanged += new System.EventHandler(this.ProjectTreeDropdown_SelectedNodeChanged);
             // 
@@ -1543,7 +1543,7 @@ namespace Timekeeper.Forms
             this.StopTimeSelector.Location = new System.Drawing.Point(67, 36);
             this.StopTimeSelector.Name = "StopTimeSelector";
             this.StopTimeSelector.Size = new System.Drawing.Size(130, 20);
-            this.StopTimeSelector.TabIndex = 3;
+            this.StopTimeSelector.TabIndex = 5;
             this.StopTimeSelector.ValueChanged += new System.EventHandler(this.wStopTime_ValueChanged);
             this.StopTimeSelector.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wStopTime_KeyDown);
             this.StopTimeSelector.Leave += new System.EventHandler(this.wStopTime_Leave);
@@ -1592,7 +1592,7 @@ namespace Timekeeper.Forms
             this.StartTimeSelector.Location = new System.Drawing.Point(67, 10);
             this.StartTimeSelector.Name = "StartTimeSelector";
             this.StartTimeSelector.Size = new System.Drawing.Size(130, 20);
-            this.StartTimeSelector.TabIndex = 1;
+            this.StartTimeSelector.TabIndex = 3;
             this.StartTimeSelector.Enter += new System.EventHandler(this.wStartTime_Enter);
             this.StartTimeSelector.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wStartTime_KeyDown);
             this.StartTimeSelector.Leave += new System.EventHandler(this.wStartTime_Leave);
@@ -1619,7 +1619,7 @@ namespace Timekeeper.Forms
             this.DurationBox.Location = new System.Drawing.Point(67, 62);
             this.DurationBox.Name = "DurationBox";
             this.DurationBox.Size = new System.Drawing.Size(69, 20);
-            this.DurationBox.TabIndex = 5;
+            this.DurationBox.TabIndex = 7;
             this.DurationBox.Text = "0:00:00";
             this.DurationBox.Leave += new System.EventHandler(this.wDuration_Leave);
             // 
@@ -1990,7 +1990,7 @@ namespace Timekeeper.Forms
             this.MainPanel.Location = new System.Drawing.Point(0, 24);
             this.MainPanel.Name = "MainPanel";
             this.MainPanel.Size = new System.Drawing.Size(562, 273);
-            this.MainPanel.TabIndex = 13;
+            this.MainPanel.TabIndex = 1;
             // 
             // Main
             // 

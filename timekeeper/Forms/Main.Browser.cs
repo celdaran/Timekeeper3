@@ -288,12 +288,14 @@ namespace Timekeeper.Forms
         {
             StartTimeSelector.Enabled = enabled;
             StartLabel.Enabled = enabled;
+            CloseStartGapButton.Enabled = enabled;
         }
 
         private void Browser_EnableStopEntry(bool enabled)
         {
             StopTimeSelector.Enabled = enabled;
             StopLabel.Enabled = enabled;
+            CloseStopGapButton.Enabled = enabled;
         }
 
         private void Browser_EnableDurationEntry(bool enabled)
@@ -793,8 +795,11 @@ namespace Timekeeper.Forms
             Browser_EnableStartEntry(false);
             Browser_EnableStopEntry(false);
             Browser_EnableDurationEntry(false);
+            /*
+            Let's just see what happens...
             Browser_EnableLocationEntry(false);
             Browser_EnableCategoryEntry(false);
+            */
         }
 
         //---------------------------------------------------------------------
