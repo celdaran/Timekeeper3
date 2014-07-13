@@ -110,6 +110,18 @@ namespace Timekeeper.Forms
 
         private void Dialog_ApplyOptions(bool interfaceChanged)
         {
+            // FIXME: Everything in here (except for the main form
+            // window dimensions) is set twice: at start up and then
+            // after updating the Options dialog. Meaning, everything
+            // in here should be part of a "set it up" method that I
+            // can call from two different places. The differentiating
+            // factor between this and the other is this: "is it a 
+            // user-definable option?" If so, throw it in the single
+            // helper method.
+
+            BrowserToolbar.Visible = Options.View_BrowserToolbar;
+            PanelControls.Visible = Options.View_ControlPanel;
+            MemoEditor.Visible = Options.View_MemoEditor;
             StatusBar_SetVisibility();
 
             if (timerRunning) {
@@ -138,16 +150,16 @@ namespace Timekeeper.Forms
             if (interfaceChanged) {
                 switch (Options.Layout_InterfacePreset) {
                     case 0:
-                        Height = 200;
-                        Width = 364;
+                        Height = 175;
+                        Width = 300;
                         break;
                     case 1:
-                        Height = 460;
-                        Width = 572;
+                        Height = 310;
+                        Width = 570;
                         break;
                     case 2:
                         Height = 460;
-                        Width = 572;
+                        Width = 570;
                         break;
                 }
             }

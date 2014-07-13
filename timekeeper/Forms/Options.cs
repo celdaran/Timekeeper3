@@ -49,6 +49,9 @@ namespace Timekeeper.Forms
             PopulateForm();
             OptionsToForm();
 
+            // FIXME: Find a better place for this
+            View_MemoEditor_ShowToolbar_CheckedChanged(sender, e);
+
             // Last pass: dynamic interface changes
             Layout_UseProjects_CheckedChanged(sender, e);
             Layout_UseActivities_CheckedChanged(sender, e);
@@ -257,7 +260,11 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
+            View_BrowserToolbar.Checked = Values.View_BrowserToolbar;
+            View_MemoEditor.Checked = Values.View_MemoEditor;
+            View_ControlPanel.Checked = Values.View_ControlPanel;
             View_StatusBar.Checked = Values.View_StatusBar;
+
             View_StatusBar_ProjectName.Checked = Values.View_StatusBar_ProjectName;
             View_StatusBar_ActivityName.Checked = Values.View_StatusBar_ActivityName;
             View_StatusBar_ElapsedSinceStart.Checked = Values.View_StatusBar_ElapsedSinceStart;
@@ -343,7 +350,11 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
+            Values.View_BrowserToolbar = View_BrowserToolbar.Checked;
+            Values.View_MemoEditor = View_MemoEditor.Checked;
+            Values.View_ControlPanel = View_ControlPanel.Checked;
             Values.View_StatusBar = View_StatusBar.Checked;
+
             Values.View_StatusBar_ProjectName = View_StatusBar_ProjectName.Checked;
             Values.View_StatusBar_ActivityName = View_StatusBar_ActivityName.Checked;
             Values.View_StatusBar_ElapsedSinceStart = View_StatusBar_ElapsedSinceStart.Checked;
@@ -526,8 +537,10 @@ namespace Timekeeper.Forms
             View_MemoEditor_RightMarginLabel.Enabled = View_MemoEditor_ShowToolbar.Checked;
             View_MemoEditor_RightMargin.Enabled = View_MemoEditor_ShowToolbar.Checked;
             View_MemoEditor_ShowGutter.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            /*
             View_MemoEditor_FontButton.Enabled = View_MemoEditor_ShowToolbar.Checked;
             View_MemoEditor_Font.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            */
         }
 
         //----------------------------------------------------------------------
@@ -682,9 +695,11 @@ namespace Timekeeper.Forms
             AnnoyGroup.Height = GetGroupHeight(AnnoyGroup);
 
             // One-off Adjustments
-            HiddenGroup.Top = StatusBarGroup.Height + 23;
-            MemoEditorGroup.Top = HiddenGroup.Bottom + 7;
+            //HiddenGroup.Top = StatusBarGroup.Height + 23;
+            HiddenGroup.Top = StatusBarGroup.Bottom + 7;
+            //MemoEditorGroup.Top = HiddenGroup.Bottom + 7;
             SortingGroup.Top = AnnoyGroup.Bottom + 7;
+            BrowsingGroup.Top = SortingGroup.Bottom + 7;
         }
 
         private int GetGroupHeight(GroupBox box)
@@ -705,7 +720,7 @@ namespace Timekeeper.Forms
             View_StatusBar_ElapsedActivityToday.Enabled = View_StatusBar.Checked;
             View_StatusBar_ElapsedAllToday.Enabled = View_StatusBar.Checked;
             View_StatusBar_FileName.Enabled = View_StatusBar.Checked;
-            View_StatusBar_AddLabels.Enabled = View_StatusBar.Checked;
+            //View_StatusBar_AddLabels.Enabled = View_StatusBar.Checked;
         }
 
         private void View_HiddenProjects_CheckedChanged(object sender, EventArgs e)
@@ -746,7 +761,11 @@ namespace Timekeeper.Forms
             Layout_UseLocations.Checked = false;
             Layout_UseCategories.Checked = false;
 
+            View_BrowserToolbar.Checked = true;
+            View_MemoEditor.Checked = true;
+            View_ControlPanel.Checked = false;
             View_StatusBar.Checked = false;
+
             View_StatusBar_ProjectName.Checked = false;
             View_StatusBar_ActivityName.Checked = false;
             View_StatusBar_ElapsedSinceStart.Checked = false;
@@ -776,7 +795,11 @@ namespace Timekeeper.Forms
             Layout_UseLocations.Checked = false;
             Layout_UseCategories.Checked = false;
 
+            View_BrowserToolbar.Checked = true;
+            View_MemoEditor.Checked = true;
+            View_ControlPanel.Checked = true;
             View_StatusBar.Checked = true;
+
             View_StatusBar_ProjectName.Checked = true;
             View_StatusBar_ActivityName.Checked = false;
             View_StatusBar_ElapsedSinceStart.Checked = true;
@@ -806,7 +829,11 @@ namespace Timekeeper.Forms
             Layout_UseLocations.Checked = true;
             Layout_UseCategories.Checked = true;
 
+            View_BrowserToolbar.Checked = true;
+            View_MemoEditor.Checked = true;
+            View_ControlPanel.Checked = true;
             View_StatusBar.Checked = true;
+
             View_StatusBar_ProjectName.Checked = true;
             View_StatusBar_ActivityName.Checked = true;
             View_StatusBar_ElapsedSinceStart.Checked = true;

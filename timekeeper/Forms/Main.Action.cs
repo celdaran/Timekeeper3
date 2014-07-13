@@ -399,13 +399,6 @@ namespace Timekeeper.Forms
                 // Load options from the Registry & TKDB
                 Action_LoadOptions();
 
-                // Next, instantiate any run-time only controls
-                this.MemoEditor = new Forms.Shared.MemoEditor();
-                this.MemoEditor.Parent = MainPanel;
-                this.MemoEditor.BringToFront();
-                this.MemoEditor.Dock = DockStyle.Fill;
-                this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
-
                 // Initialize timer
                 timerLastRun = DateTime.Now;
 
@@ -538,6 +531,20 @@ namespace Timekeeper.Forms
             // initiated action and that "XYZ" is the other. I don't
             // have a name for it yet, obviously.
 
+            // Instantiate any run-time only controls
+            this.MemoEditor = new Forms.Shared.MemoEditor();
+            this.MemoEditor.Parent = MainPanel;
+            this.MemoEditor.BringToFront();
+            this.MemoEditor.Dock = DockStyle.Fill;
+            this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
+
+            // Set viewability of primary components
+            // FIXME: this code is repeated twice. See Main.Dialog.cs
+            BrowserToolbar.Visible = Options.View_BrowserToolbar;
+            PanelControls.Visible = Options.View_ControlPanel;
+            MemoEditor.Visible = Options.View_MemoEditor;
+            StatusBar_SetVisibility();
+
             // Set Main window metrics
             Left = Options.Main_Left;
             Top = Options.Main_Top;
@@ -547,7 +554,6 @@ namespace Timekeeper.Forms
             // Until a file is opened, treat it as closed
             MenuBar_FileClosed();
             StatusBar_FileClosed();
-            StatusBar_SetVisibility();
 
             // Using Projects and/or Activities?
             Action_UseProjects(Options.Layout_UseProjects);

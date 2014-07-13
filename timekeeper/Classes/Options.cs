@@ -35,7 +35,11 @@ namespace Timekeeper.Classes
         public bool Layout_UseLocations { get; set; }
         public bool Layout_UseCategories { get; set; }
 
+        public bool View_BrowserToolbar { get; set; }
+        public bool View_MemoEditor { get; set; }
+        public bool View_ControlPanel { get; set; }
         public bool View_StatusBar { get; set; }
+
         public bool View_StatusBar_ProjectName { get; set; }
         public bool View_StatusBar_ActivityName { get; set; }
         public bool View_StatusBar_ElapsedSinceStart { get; set; }
@@ -284,7 +288,11 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\View");
 
+            View_BrowserToolbar = ((int)Key.GetValue("BrowserToolbar", 1) == 1);
+            View_MemoEditor = ((int)Key.GetValue("MemoEditor", 1) == 1);
+            View_ControlPanel = ((int)Key.GetValue("ControlPanel", 0) == 1);
             View_StatusBar = ((int)Key.GetValue("StatusBar", 0) == 1);
+
             View_StatusBar_ProjectName = ((int)Key.GetValue("StatusBar_ProjectName", 0) == 1);
             View_StatusBar_ActivityName = ((int)Key.GetValue("StatusBar_ActivityName", 0) == 1);
             View_StatusBar_ElapsedSinceStart = ((int)Key.GetValue("StatusBar_ElapsedSinceStart", 0) == 1);
@@ -305,7 +313,7 @@ namespace Timekeeper.Classes
 
             View_MemoEditor_ShowToolbar = ((int)Key.GetValue("MemoEditor_ShowToolbar", 0) == 1);
             View_MemoEditor_ShowGutter = ((int)Key.GetValue("MemoEditor_ShowGutter", 1) == 1);
-            View_MemoEditor_RightMargin = (int)Key.GetValue("MemoEditor_RightMargin", 400);
+            View_MemoEditor_RightMargin = (int)Key.GetValue("MemoEditor_RightMargin", 550);
             View_MemoEditor_Font = (string)Key.GetValue("MemoEditor_Font", "Microsoft Sans Serif, 8.25pt");
 
             //----------------------------------------------------------------------
@@ -587,7 +595,11 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\View");
 
+            Key.SetValue("BrowserToolbar", View_BrowserToolbar, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MemoEditor", View_MemoEditor, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ControlPanel", View_ControlPanel, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("StatusBar", View_StatusBar, Microsoft.Win32.RegistryValueKind.DWord);
+
             Key.SetValue("StatusBar_ProjectName", View_StatusBar_ProjectName, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("StatusBar_ActivityName", View_StatusBar_ActivityName, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("StatusBar_ElapsedSinceStart", View_StatusBar_ElapsedSinceStart, Microsoft.Win32.RegistryValueKind.DWord);

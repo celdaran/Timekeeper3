@@ -132,6 +132,7 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedAllToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarFileName = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarDebugGeneric1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBarDebugBenchmark = new System.Windows.Forms.ToolStripStatusLabel();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ShortTimer = new System.Windows.Forms.Timer(this.components);
@@ -224,7 +225,6 @@ namespace Timekeeper.Forms
             this.PopupMenuMemoCutSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.StatusBarDebugBenchmark = new System.Windows.Forms.ToolStripStatusLabel();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -1122,6 +1122,12 @@ namespace Timekeeper.Forms
             this.StatusBarDebugGeneric1.Size = new System.Drawing.Size(38, 17);
             this.StatusBarDebugGeneric1.Text = "Debug";
             // 
+            // StatusBarDebugBenchmark
+            // 
+            this.StatusBarDebugBenchmark.Name = "StatusBarDebugBenchmark";
+            this.StatusBarDebugBenchmark.Size = new System.Drawing.Size(59, 17);
+            this.StatusBarDebugBenchmark.Text = "Benchmark";
+            // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
@@ -1273,11 +1279,12 @@ namespace Timekeeper.Forms
             this.PanelControls.Controls.Add(this.StopLabel);
             this.PanelControls.Controls.Add(this.DurationBox);
             this.PanelControls.Controls.Add(this.DurationLabel);
-            this.PanelControls.Dock = System.Windows.Forms.DockStyle.Top;
-            this.PanelControls.Location = new System.Drawing.Point(0, 25);
+            this.PanelControls.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.PanelControls.Location = new System.Drawing.Point(0, 156);
             this.PanelControls.Name = "PanelControls";
             this.PanelControls.Size = new System.Drawing.Size(562, 117);
             this.PanelControls.TabIndex = 0;
+            this.PanelControls.Visible = false;
             this.PanelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
             // CloseStartGapButton
@@ -1976,12 +1983,6 @@ namespace Timekeeper.Forms
             this.MainPanel.Name = "MainPanel";
             this.MainPanel.Size = new System.Drawing.Size(562, 273);
             this.MainPanel.TabIndex = 13;
-            // 
-            // StatusBarDebugBenchmark
-            // 
-            this.StatusBarDebugBenchmark.Name = "StatusBarDebugBenchmark";
-            this.StatusBarDebugBenchmark.Size = new System.Drawing.Size(59, 17);
-            this.StatusBarDebugBenchmark.Text = "Benchmark";
             // 
             // Main
             // 
