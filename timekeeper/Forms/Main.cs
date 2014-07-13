@@ -49,10 +49,6 @@ namespace Timekeeper.Forms
         // MemoEditor control
         private Forms.Shared.MemoEditor MemoEditor;
 
-        // FIXME: class-wide values?
-        private ComboTreeNode currentProjectNode;
-        private ComboTreeNode currentActivityNode;
-
         // Timer properties
         private bool timerRunning = false;
         private DateTime timerLastRun;
@@ -681,14 +677,14 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void wLocation_SelectedIndexChanged(object sender, EventArgs e)
+        private void LocationTreeDropdown_SelectedNodeChanged(object sender, EventArgs e)
         {
             Action_ChangedLocation();
         }
 
         //---------------------------------------------------------------------
 
-        private void wCategory_SelectedIndexChanged(object sender, EventArgs e)
+        private void CategoryTreeDropdown_SelectedNodeChanged(object sender, EventArgs e)
         {
             Action_ChangedCategory();
         }

@@ -441,7 +441,7 @@ namespace Timekeeper.Classes
             }
 
             if (this.Dimension == Timekeeper.Dimension.Activity) {
-                this.LastActivityId = row["LastLocationId"];
+                this.LastLocationId = row["LastLocationId"];
             }
 
             if (this.Dimension == Timekeeper.Dimension.Location) {

@@ -79,10 +79,34 @@ namespace Timekeeper.Forms
             if (dropdown.SelectedNode == null) {
                 if (dropdown.Nodes.Count == 1) {
                     dropdown.SelectedNode = dropdown.Nodes[0];
+                    Classes.TreeAttribute Item = (Classes.TreeAttribute)dropdown.SelectedNode.Tag;
+                    if (Item.IsFolder) {
+                        Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
+                    } else {
+                        // Do nothing, we're okay
+                    }
                 } else {
                     dropdown.SelectedNode = GetFirstNonFolder(dropdown.Nodes);
                 }
             }
+        }
+
+        private ComboTreeNode GetFirstNonFolder(ComboTreeNodeCollection nodes)
+        {
+            ComboTreeNode ReturnValue = null;
+
+            foreach (ComboTreeNode Node in nodes) {
+                Classes.TreeAttribute Temp = (Classes.TreeAttribute)Node.Tag;
+                if (Temp.IsFolder) {
+                    ReturnValue = GetFirstNonFolder(Node.Nodes);
+                    break;
+                } else {
+                    ReturnValue = Node;
+                    break;
+                }
+            }
+
+            return ReturnValue;
         }
 
         private void SetDirtyBit(Classes.TreeAttribute item, long browserItemId)
@@ -101,19 +125,13 @@ namespace Timekeeper.Forms
             EnsureSelections();
 
             Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
-            Options.State_LastProjectId = Project.ItemId;
             AutoFollow(Project.LastActivityId, ActivityTreeDropdown, Options.Behavior_Annoy_ActivityFollowsProject);
 
             Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
-            Options.State_LastActivityId = Activity.ItemId;
             AutoFollow(Activity.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
 
             Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
-            Options.State_LastLocationId = Activity.ItemId;
             AutoFollow(Location.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
-
-            Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
-            Options.State_LastCategoryId = Category.ItemId;
 
             UpdateStatusBar();
 
@@ -136,15 +154,10 @@ namespace Timekeeper.Forms
             EnsureSelections();
 
             Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
-            Options.State_LastActivityId = Activity.ItemId;
             AutoFollow(Activity.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
 
             Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
-            Options.State_LastLocationId = Activity.ItemId;
             AutoFollow(Location.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
-
-            Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
-            Options.State_LastCategoryId = Category.ItemId;
 
             UpdateStatusBar();
 
@@ -164,38 +177,38 @@ namespace Timekeeper.Forms
 
         private void Action_ChangedLocation()
         {
-            // First make sure an item has been selected
-            /*
-            if (Action_ItemSelected(wLocation)) {
-                IdObjectPair CurrentItem = Dialog_LocationManager();
-                Action_SelectItem(wLocation, CurrentItem);
-            }
-            */
+            if (DatabaseClosing)
+                return;
+
+            EnsureSelections();
+
+            Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+            AutoFollow(Location.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
+
+            UpdateStatusBar();
+
+            Action_UpdateCalendar(LocationTreeDropdown);
+
+            SetDirtyBit(Location, browserEntry.LocationId);
         }
 
         //---------------------------------------------------------------------
 
         private void Action_ChangedCategory()
         {
-            // First make sure an item has been selected
-            /*
-            if (Action_ItemSelected(wCategory)) {
+            if (DatabaseClosing)
+                return;
 
-                // Display the Category Manager dialog box
-                Forms.CategoryManager Dialog = new Forms.CategoryManager();
-                Dialog.ShowDialog(this);
+            EnsureSelections();
 
-                // Rebuild the list
-                wCategory.Items.Clear();
-                Widgets.PopulateCategoryComboBox(wCategory);
+            Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
+            Options.State_LastCategoryId = Category.ItemId;
 
-                // Select whatever item was selected on the dialog box
-                Action_SelectItem(wCategory, Dialog.CurrentItem);
+            UpdateStatusBar();
 
-                // All done
-                Dialog.Dispose();
-            }
-            */
+            Action_UpdateCalendar(CategoryTreeDropdown);
+
+            SetDirtyBit(Category, browserEntry.CategoryId);
         }
 
         //----------------------------------------------------------------------
@@ -366,33 +379,80 @@ namespace Timekeeper.Forms
 
         private void Action_CloseFile()
         {
+            this.MemoEditor.Text = "";
+            this.MemoEditor.Enabled = false;
+            this.PanelControls.Enabled = false;
+            this.BrowserToolbar.Enabled = false;
+
             if (Timekeeper.Database != null) {
 
+                this.DatabaseClosing = true;
+
+                Timekeeper.Database.BeginWork();
+
+                Stopwatch OverallTimer = new Stopwatch();
+                Timekeeper.Bench(OverallTimer);
+
+                Stopwatch StepTimer = new Stopwatch();
+
+                Timekeeper.Bench(StepTimer);
                 ProjectTreeDropdown.Nodes.Clear();
+                Timekeeper.Bench(StepTimer, "ProjectTreeDropdown.Nodes.Clear()");
+
+                Timekeeper.Bench(StepTimer);
                 ActivityTreeDropdown.Nodes.Clear();
+                Timekeeper.Bench(StepTimer, "ActivityTreeDropdown.Nodes.Clear()");
+
+                Timekeeper.Bench(StepTimer);
                 LocationTreeDropdown.Nodes.Clear();
+                Timekeeper.Bench(StepTimer, "LocationTreeDropdown.Nodes.Clear()");
+
+                Timekeeper.Bench(StepTimer);
                 CategoryTreeDropdown.Nodes.Clear();
+                Timekeeper.Bench(StepTimer, "CategoryTreeDropdown.Nodes.Clear()");
 
+
+                Timekeeper.Bench(StepTimer);
                 StatusBar_FileClosed();
-                MenuBar_FileClosed();
-                Browser_Disable();
+                Timekeeper.Bench(StepTimer, "StatusBar_FileClosed()");
 
+                Timekeeper.Bench(StepTimer);
+                MenuBar_FileClosed();
+                Timekeeper.Bench(StepTimer, "MenuBar_FileClosed()");
+
+                Timekeeper.Bench(StepTimer);
+                Browser_Disable();
+                Timekeeper.Bench(StepTimer, "Browser_Disable()");
+
+                Timekeeper.Bench(StepTimer);
                 Options.SaveLocal();
+                Timekeeper.Bench(StepTimer, "Options.SaveLocal()");
 
                 if (Meta != null) {
                     if (Process.GetCurrentProcess().Id == Meta.ProcessId) {
                         // Free up the file if this is the current process
                         // attempting to do the freeing.
+                        Timekeeper.Bench(StepTimer);
                         Meta.MarkFree();
+                        Timekeeper.Bench(StepTimer, "Meta.MarkFree()");
                     }
                 }
 
                 Timekeeper.Info("Closing Database: " + DatabaseFileName);
+                Timekeeper.Bench(StepTimer);
+                Timekeeper.Database.EndWork();
                 Timekeeper.CloseDatabase();
+                Timekeeper.Bench(StepTimer, "CloseDatabase");
 
                 foreach (Form Form in OpenForms) {
+                    Timekeeper.Bench(StepTimer);
                     Form.Close();
+                    Timekeeper.Bench(StepTimer, "Form.Close() [Form Name: " + Form.Name + "]");
                 }
+
+                Timekeeper.Bench(OverallTimer, "Close Complete");
+
+                this.DatabaseClosing = false;
             }
         }
 
@@ -472,7 +532,8 @@ namespace Timekeeper.Forms
                     MenuToolEvents.Visible = true;
                 }
 
-                Action_LoadPlugins();
+                // Not until TK 3.1. Sorry...
+                //Action_LoadPlugins();
 
                 // SHORTCUTS
                 /*
@@ -759,13 +820,13 @@ namespace Timekeeper.Forms
                 }
 
                 // Re-select last used location
-                LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(LocationTreeDropdown.Nodes, 1); // FIXME: NEED TO KNOW LAST-USED ITEM
+                LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(LocationTreeDropdown.Nodes, Options.State_LastLocationId);
                 if (LastComboTreeNode != null) {
                     LocationTreeDropdown.SelectedNode = LastComboTreeNode;
                 }
 
                 // Re-select last used category
-                LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(CategoryTreeDropdown.Nodes, 1); // FIXME: NEED TO KNOW LAST-USED ITEM
+                LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(CategoryTreeDropdown.Nodes, Options.State_LastCategoryId);
                 if (LastComboTreeNode != null) {
                     CategoryTreeDropdown.SelectedNode = LastComboTreeNode;
                 }
@@ -1131,7 +1192,7 @@ namespace Timekeeper.Forms
                 tmp = tmp.Replace("%activity", "{0}");
                 tmp = tmp.Replace("%project", "{1}");
                 tmp = tmp.Replace("%time", "{2}");
-                Text = String.Format(tmp, currentActivityNode.Text, currentProjectNode.Text, timeToShow);
+                Text = String.Format(tmp, TimedActivity.Name, TimedProject.Name, timeToShow);
                 //wNotifyIcon.Text = Text;
                 TrayIcon.Text = Common.Abbreviate(Text, 63);
             }
@@ -1207,64 +1268,20 @@ namespace Timekeeper.Forms
                 return;
             }
 
-            // Find the currently selected project
-            if (ProjectTreeDropdown.SelectedNode == null) {
-                if (ProjectTreeDropdown.Nodes.Count == 1) {
-                    ProjectTreeDropdown.SelectedNode = ProjectTreeDropdown.Nodes[0];
-                } else {
-                    if (Options.Layout_UseProjects) {
-                        Common.Warn("No Project selected.");
-                        return;
-                    } else {
-                        ProjectTreeDropdown.SelectedNode = GetFirstNonFolder(ProjectTreeDropdown.Nodes);
-                    }
-                }
-            }
-
-            // Check for a currently selected activity
-            if (ActivityTreeDropdown.SelectedNode == null) {
-                if (ActivityTreeDropdown.Nodes.Count == 1) {
-                    // If there's only one, just select it. If it turns
-                    // out this is a folder, then the user can fix this
-                    // manually. But it's highly likely we're here 
-                    // because they're not using Activities and only
-                    // the default activity is present.
-                    ActivityTreeDropdown.SelectedNode = ActivityTreeDropdown.Nodes[0];
-                } else {
-                    if (Options.Layout_UseActivities) {
-                        // If there's more than one, and we're supposed
-                        // to be using activities at this point, then 
-                        // this is an error. Make them select one.
-                        Common.Warn("No Activity selected.");
-                        return;
-                    } else {
-                        // If activities aren't in use, just find the
-                        // first activity that isn't a folder and
-                        // select it.
-                        ActivityTreeDropdown.SelectedNode = GetFirstNonFolder(ActivityTreeDropdown.Nodes);
-                    }
-                }
-            }
+            // Ensure we have items selected
+            EnsureSelections();
 
             // Grab instances of currently selected objects
-            currentProjectNode = ProjectTreeDropdown.SelectedNode;
-            currentActivityNode = ActivityTreeDropdown.SelectedNode;
-            TimedProject = (Classes.TreeAttribute)currentProjectNode.Tag;
-            TimedActivity = (Classes.TreeAttribute)currentActivityNode.Tag;
+            TimedProject = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+            TimedActivity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
             TimedLocation = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
             TimedCategory = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
 
-            /*
-            if (wLocation.SelectedItem != null)
-                TimedLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
-            if (wCategory.SelectedItem != null)
-                TimedCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
-            */
-
-            if ((TimedProject.IsFolder == true) || (TimedActivity.IsFolder)) {
-                Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
-                return;
-            }
+            // Set the "Last" versions of each
+            Options.State_LastProjectId = TimedProject.ItemId;
+            Options.State_LastActivityId = TimedActivity.ItemId;
+            Options.State_LastLocationId = TimedLocation.ItemId;
+            Options.State_LastCategoryId = TimedCategory.ItemId;
 
             // Now start timing
             DateTime StartTime = StartTimeSelector.Value;
@@ -1279,8 +1296,7 @@ namespace Timekeeper.Forms
             TimedEntry.ActivityId = TimedActivity.ItemId;
             TimedEntry.StartTime = StartTime;
             TimedEntry.StopTime = StartTime;
-            TimedEntry.Seconds = 0; // default to zero
-            //Entry.Memo = wMemo.Text;
+            TimedEntry.Seconds = 0;
             TimedEntry.Memo = MemoEditor.Text;
             TimedEntry.IsLocked = true;
             TimedEntry.LocationId = TimedLocation.ItemId;
@@ -1319,13 +1335,7 @@ namespace Timekeeper.Forms
             //MenuActionCloseBrowser.ShortcutKeys = saveKeysAdvanced;
             Browser_SetShortcuts();
 
-            /*
-            saveKeys = menuToolControlStart.ShortcutKeys;
-            menuToolControlStart.ShortcutKeys = Keys.None;
-            menuToolControlStop.ShortcutKeys = saveKeys;
-            */
-
-            StatusBar_TimerStarted(currentProjectNode.Text, currentActivityNode.Text);
+            StatusBar_TimerStarted(TimedProject.Name, TimedActivity.Name);
 
             Text = TimedActivity.Name;
 
@@ -1341,29 +1351,8 @@ namespace Timekeeper.Forms
                 }
             }
 
-            // Don't display while the timer is running (FIXME: make this an option)
-            //CloseBrowser();
-
             // As soon as the timer has started, we have to paint "stop" mode.
             Browser_SetupForStopping();
-        }
-
-        private ComboTreeNode GetFirstNonFolder(ComboTreeNodeCollection nodes)
-        {
-            ComboTreeNode ReturnValue = null;
-
-            foreach (ComboTreeNode Node in nodes) {
-                Classes.TreeAttribute Temp = (Classes.TreeAttribute)Node.Tag;
-                if (Temp.IsFolder) {
-                    ReturnValue = GetFirstNonFolder(Node.Nodes);
-                    break;
-                } else {
-                    ReturnValue = Node;
-                    break;
-                }
-            }
-
-            return ReturnValue;
         }
 
         //---------------------------------------------------------------------

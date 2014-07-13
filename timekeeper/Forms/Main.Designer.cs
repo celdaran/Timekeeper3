@@ -1343,6 +1343,7 @@ namespace Timekeeper.Forms
             this.CategoryTreeDropdown.Size = new System.Drawing.Size(250, 21);
             this.CategoryTreeDropdown.TabIndex = 22;
             this.CategoryTreeDropdown.Tag = "3";
+            this.CategoryTreeDropdown.SelectedNodeChanged += new System.EventHandler(this.CategoryTreeDropdown_SelectedNodeChanged);
             // 
             // PopupMenuDimension
             // 
@@ -1458,6 +1459,7 @@ namespace Timekeeper.Forms
             this.LocationTreeDropdown.Size = new System.Drawing.Size(250, 21);
             this.LocationTreeDropdown.TabIndex = 21;
             this.LocationTreeDropdown.Tag = "2";
+            this.LocationTreeDropdown.SelectedNodeChanged += new System.EventHandler(this.LocationTreeDropdown_SelectedNodeChanged);
             // 
             // LocationLabel
             // 
@@ -1489,6 +1491,7 @@ namespace Timekeeper.Forms
             this.ActivityTreeDropdown.Size = new System.Drawing.Size(250, 21);
             this.ActivityTreeDropdown.TabIndex = 9;
             this.ActivityTreeDropdown.Tag = "1";
+            this.ActivityTreeDropdown.SelectedNodeChanged += new System.EventHandler(this.ActivityTreeDropdown_SelectedNodeChanged);
             // 
             // ActivityLabel
             // 

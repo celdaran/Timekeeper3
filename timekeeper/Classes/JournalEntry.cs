@@ -73,14 +73,19 @@ namespace Timekeeper.Classes
                     throw new Exception("Could not create journal entry.");
                 }
 
-                // Update bidirectional tracking
-                Row JournalEntry = new Row();
-                JournalEntry["LastProjectId"] = this.ProjectId;
-                Database.Update("Activity", JournalEntry, "ActivityId", this.ActivityId);
+                // Update "last" values
 
-                JournalEntry = new Row();
-                JournalEntry["LastActivityId"] = this.ActivityId;
-                Database.Update("Project", JournalEntry, "ProjectId", this.ProjectId);
+                Row ProjectRow = new Row();
+                ProjectRow["LastActivityId"] = this.ActivityId;
+                Database.Update("Project", ProjectRow, "ProjectId", this.ProjectId);
+
+                Row ActivityRow = new Row();
+                ActivityRow["LastLocationId"] = this.LocationId;
+                Database.Update("Activity", ActivityRow, "ActivityId", this.ActivityId);
+
+                Row LocationRow = new Row();
+                LocationRow["LastCategoryId"] = this.CategoryId;
+                Database.Update("Location", LocationRow, "LocationId", this.LocationId);
 
                 return true;
             }
