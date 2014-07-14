@@ -1358,35 +1358,35 @@ namespace Timekeeper.Forms
             this.PopupMenuDimensionSep2,
             this.PopupMenuDimensionProperties});
             this.PopupMenuDimension.Name = "menuTask";
-            this.PopupMenuDimension.Size = new System.Drawing.Size(171, 170);
+            this.PopupMenuDimension.Size = new System.Drawing.Size(155, 192);
             this.PopupMenuDimension.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenuDimension_Opening);
             // 
             // PopupMenuDimensionNewItem
             // 
             this.PopupMenuDimensionNewItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.PopupMenuDimensionNewItem.Name = "PopupMenuDimensionNewItem";
-            this.PopupMenuDimensionNewItem.Size = new System.Drawing.Size(170, 22);
-            this.PopupMenuDimensionNewItem.Text = "&New Activity...";
+            this.PopupMenuDimensionNewItem.Size = new System.Drawing.Size(154, 22);
+            this.PopupMenuDimensionNewItem.Text = "&New Item...";
             this.PopupMenuDimensionNewItem.Click += new System.EventHandler(this.PopupMenuDimensionNewItem_Click);
             // 
             // PopupMenuDimensionManageItems
             // 
             this.PopupMenuDimensionManageItems.Name = "PopupMenuDimensionManageItems";
-            this.PopupMenuDimensionManageItems.Size = new System.Drawing.Size(170, 22);
-            this.PopupMenuDimensionManageItems.Text = "Manage Activities...";
+            this.PopupMenuDimensionManageItems.Size = new System.Drawing.Size(154, 22);
+            this.PopupMenuDimensionManageItems.Text = "Manage Items...";
             this.PopupMenuDimensionManageItems.Click += new System.EventHandler(this.PopupMenuDimensionManageItems_Click);
             // 
             // PopupMenuDimensionSep1
             // 
             this.PopupMenuDimensionSep1.Name = "PopupMenuDimensionSep1";
-            this.PopupMenuDimensionSep1.Size = new System.Drawing.Size(167, 6);
+            this.PopupMenuDimensionSep1.Size = new System.Drawing.Size(151, 6);
             // 
             // PopupMenuDimensionUseProjects
             // 
             this.PopupMenuDimensionUseProjects.Checked = true;
             this.PopupMenuDimensionUseProjects.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuDimensionUseProjects.Name = "PopupMenuDimensionUseProjects";
-            this.PopupMenuDimensionUseProjects.Size = new System.Drawing.Size(170, 22);
+            this.PopupMenuDimensionUseProjects.Size = new System.Drawing.Size(154, 22);
             this.PopupMenuDimensionUseProjects.Text = "Use Projects";
             this.PopupMenuDimensionUseProjects.Click += new System.EventHandler(this.PopupMenuDimensionUseProjects_Click);
             // 
@@ -1395,7 +1395,7 @@ namespace Timekeeper.Forms
             this.PopupMenuDimensionUseActivities.Checked = true;
             this.PopupMenuDimensionUseActivities.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuDimensionUseActivities.Name = "PopupMenuDimensionUseActivities";
-            this.PopupMenuDimensionUseActivities.Size = new System.Drawing.Size(170, 22);
+            this.PopupMenuDimensionUseActivities.Size = new System.Drawing.Size(154, 22);
             this.PopupMenuDimensionUseActivities.Text = "Use Activities";
             this.PopupMenuDimensionUseActivities.Click += new System.EventHandler(this.PopupMenuDimensionUseActivities_Click);
             // 
@@ -1404,7 +1404,7 @@ namespace Timekeeper.Forms
             this.PopupMenuDimensionUseLocations.Checked = true;
             this.PopupMenuDimensionUseLocations.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuDimensionUseLocations.Name = "PopupMenuDimensionUseLocations";
-            this.PopupMenuDimensionUseLocations.Size = new System.Drawing.Size(170, 22);
+            this.PopupMenuDimensionUseLocations.Size = new System.Drawing.Size(154, 22);
             this.PopupMenuDimensionUseLocations.Text = "Use Locations";
             this.PopupMenuDimensionUseLocations.Click += new System.EventHandler(this.PopupMenuDimensionUseLocations_Click);
             // 
@@ -1413,19 +1413,19 @@ namespace Timekeeper.Forms
             this.PopupMenuDimensionUseCategories.Checked = true;
             this.PopupMenuDimensionUseCategories.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuDimensionUseCategories.Name = "PopupMenuDimensionUseCategories";
-            this.PopupMenuDimensionUseCategories.Size = new System.Drawing.Size(170, 22);
+            this.PopupMenuDimensionUseCategories.Size = new System.Drawing.Size(154, 22);
             this.PopupMenuDimensionUseCategories.Text = "Use Categories";
             this.PopupMenuDimensionUseCategories.Click += new System.EventHandler(this.PopupMenuDimensionUseCategories_Click);
             // 
             // PopupMenuDimensionSep2
             // 
             this.PopupMenuDimensionSep2.Name = "PopupMenuDimensionSep2";
-            this.PopupMenuDimensionSep2.Size = new System.Drawing.Size(167, 6);
+            this.PopupMenuDimensionSep2.Size = new System.Drawing.Size(151, 6);
             // 
             // PopupMenuDimensionProperties
             // 
             this.PopupMenuDimensionProperties.Name = "PopupMenuDimensionProperties";
-            this.PopupMenuDimensionProperties.Size = new System.Drawing.Size(170, 22);
+            this.PopupMenuDimensionProperties.Size = new System.Drawing.Size(154, 22);
             this.PopupMenuDimensionProperties.Text = "&Properties...";
             this.PopupMenuDimensionProperties.Click += new System.EventHandler(this.PopupMenuDimensionProperties_Click);
             // 

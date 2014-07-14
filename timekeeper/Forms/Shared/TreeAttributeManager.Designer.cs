@@ -32,7 +32,6 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.MenuNew = new System.Windows.Forms.ToolStripButton();
             this.MenuNewFolder = new System.Windows.Forms.ToolStripButton();
-            this.MenuEdit = new System.Windows.Forms.ToolStripButton();
             this.MenuOther = new System.Windows.Forms.ToolStripDropDownButton();
             this.MenuRename = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHide = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,6 +53,7 @@
             this.PopupMenuProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.Tree = new System.Windows.Forms.TreeView();
+            this.MenuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.PopupMenu.SuspendLayout();
             this.SuspendLayout();
@@ -64,7 +64,6 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuNew,
             this.MenuNewFolder,
-            this.MenuEdit,
             this.MenuOther});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -90,19 +89,11 @@
             this.MenuNewFolder.Text = "New Folder";
             this.MenuNewFolder.Click += new System.EventHandler(this.MenuNewFolder_Click);
             // 
-            // MenuEdit
-            // 
-            this.MenuEdit.Image = global::Timekeeper.Properties.Resources.ImageIconSmallProject;
-            this.MenuEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.MenuEdit.Name = "MenuEdit";
-            this.MenuEdit.Size = new System.Drawing.Size(45, 22);
-            this.MenuEdit.Text = "Edit";
-            this.MenuEdit.Click += new System.EventHandler(this.MenuEdit_Click);
-            // 
             // MenuOther
             // 
             this.MenuOther.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.MenuOther.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuEdit,
             this.MenuRename,
             this.MenuHide,
             this.MenuUnhide,
@@ -141,14 +132,14 @@
             // 
             this.MenuMerge.Name = "MenuMerge";
             this.MenuMerge.Size = new System.Drawing.Size(152, 22);
-            this.MenuMerge.Text = "Merge";
+            this.MenuMerge.Text = "Merge...";
             this.MenuMerge.Click += new System.EventHandler(this.MenuMerge_Click);
             // 
             // MenuDelete
             // 
             this.MenuDelete.Name = "MenuDelete";
             this.MenuDelete.Size = new System.Drawing.Size(152, 22);
-            this.MenuDelete.Text = "Delete";
+            this.MenuDelete.Text = "Delete...";
             this.MenuDelete.Click += new System.EventHandler(this.MenuDelete_Click);
             // 
             // MenuSep1
@@ -282,7 +273,15 @@
             this.Tree.Tag = "Project";
             this.Tree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.Tree_AfterLabelEdit);
             this.Tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterSelect);
+            this.Tree.DoubleClick += new System.EventHandler(this.Tree_DoubleClick);
             this.Tree.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Tree_KeyDown);
+            // 
+            // MenuEdit
+            // 
+            this.MenuEdit.Name = "MenuEdit";
+            this.MenuEdit.Size = new System.Drawing.Size(152, 22);
+            this.MenuEdit.Text = "Edit...";
+            this.MenuEdit.Click += new System.EventHandler(this.MenuEdit_Click);
             // 
             // TreeAttributeManager
             // 
@@ -313,7 +312,6 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton MenuNew;
         private System.Windows.Forms.ToolStripButton MenuNewFolder;
-        private System.Windows.Forms.ToolStripButton MenuEdit;
         private System.Windows.Forms.ToolStripDropDownButton MenuOther;
         private System.Windows.Forms.ToolStripMenuItem MenuMerge;
         private System.Windows.Forms.ToolStripMenuItem MenuHide;
@@ -335,5 +333,6 @@
         private System.Windows.Forms.ToolStripMenuItem MenuRename;
         private System.Windows.Forms.ToolStripSeparator MenuSep1;
         private System.Windows.Forms.ToolStripMenuItem MenuProperties;
+        private System.Windows.Forms.ToolStripMenuItem MenuEdit;
     }
 }

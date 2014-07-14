@@ -21,6 +21,7 @@ namespace Timekeeper
         private bool ClickedCancel = true;
         private string PreviousItemName = "";
         private string PreviousExternalProjectNo = null;
+        private Classes.TreeAttribute Item;
 
         //----------------------------------------------------------------------
         // Constructor
@@ -58,6 +59,16 @@ namespace Timekeeper
                     }
                     break;
             }
+        }
+
+        //---------------------------------------------------------------------
+        // Public Property
+        //---------------------------------------------------------------------
+
+        public Classes.TreeAttribute CreatedItem
+        {
+            get { return this.Item; }
+            set { this.Item = value; }
         }
 
         //---------------------------------------------------------------------

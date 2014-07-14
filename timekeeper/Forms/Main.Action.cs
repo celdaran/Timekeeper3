@@ -24,7 +24,7 @@ namespace Timekeeper.Forms
     {
         // Deferred keyboard shortcut setting
         private bool DeferShortcutAssignment = false;
-        private bool DatabaseClosing = false;
+        private bool IgnoreDimensionChanges = false;
 
         //---------------------------------------------------------------------
         // Helper class to break up fMain.cs into manageable pieces
@@ -119,7 +119,7 @@ namespace Timekeeper.Forms
 
         private void Action_ChangedProject()
         {
-            if (DatabaseClosing)
+            if (IgnoreDimensionChanges)
                 return;
 
             EnsureSelections();
@@ -148,7 +148,7 @@ namespace Timekeeper.Forms
 
         private void Action_ChangedActivity()
         {
-            if (DatabaseClosing)
+            if (IgnoreDimensionChanges)
                 return;
 
             EnsureSelections();
@@ -177,7 +177,7 @@ namespace Timekeeper.Forms
 
         private void Action_ChangedLocation()
         {
-            if (DatabaseClosing)
+            if (IgnoreDimensionChanges)
                 return;
 
             EnsureSelections();
@@ -196,7 +196,7 @@ namespace Timekeeper.Forms
 
         private void Action_ChangedCategory()
         {
-            if (DatabaseClosing)
+            if (IgnoreDimensionChanges)
                 return;
 
             EnsureSelections();
@@ -386,7 +386,7 @@ namespace Timekeeper.Forms
 
             if (Timekeeper.Database != null) {
 
-                this.DatabaseClosing = true;
+                this.IgnoreDimensionChanges = true;
 
                 Timekeeper.Database.BeginWork();
 
@@ -452,7 +452,7 @@ namespace Timekeeper.Forms
 
                 Timekeeper.Bench(OverallTimer, "Close Complete");
 
-                this.DatabaseClosing = false;
+                this.IgnoreDimensionChanges = false;
             }
         }
 
@@ -472,7 +472,7 @@ namespace Timekeeper.Forms
 
         private void Action_FormClose()
         {
-            this.DatabaseClosing = true;
+            this.IgnoreDimensionChanges = true;
 
             Browser_SaveRow(false);
 
@@ -731,6 +731,64 @@ namespace Timekeeper.Forms
             Options.LoadMRU();
 
             Timekeeper.Info("Timekeeper Version " + Timekeeper.VERSION + " Started");
+        }
+
+        //---------------------------------------------------------------------
+
+        /*
+        private bool Action_ManageTree(Timekeeper.Dimension dimension)
+        {
+            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(dimension);
+            Form.StartPosition = FormStartPosition.CenterParent;
+            Form.ShowDialog(this);
+            return true; // FIXME: can we make this conditional?
+        }
+        */
+
+        //---------------------------------------------------------------------
+
+        private void Action_ManageTree(Timekeeper.Dimension dimension, ComboTreeBox tree)
+        {
+            // Display the dialog box
+            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(dimension, tree.SelectedNode);
+            Form.StartPosition = FormStartPosition.CenterParent;
+            Form.ShowDialog(this);
+
+            // Set things up
+            IgnoreDimensionChanges = true;
+
+            /*
+            ComboTreeNode SavedNode = tree.SelectedNode;
+            Classes.TreeAttribute Item = (Classes.TreeAttribute)SavedNode.Tag;
+            */
+
+            // Build tree
+            Widgets.BuildTree(dimension, tree);
+
+            /*
+               Nope, this is wrong. Don't try to re-select the node we had
+               before heading in. Instead, select the node that we were
+               last working with on the dialog box itself...
+
+            // Try to find the old node in the new tree and select it
+            ComboTreeNode RestoredNode = Widgets.FindTreeNode(tree, Item.ItemId);
+            if (RestoredNode == null)
+                SetDefaultNode(ProjectTreeDropdown);
+            else
+                ProjectTreeDropdown.SelectedNode = RestoredNode;
+            */
+
+            TreeNode DialogSelectedNode = Form.SelectedNode;
+
+            Classes.TreeAttribute Item = (Classes.TreeAttribute)DialogSelectedNode.Tag;
+            ComboTreeNode NodeToSelect = Widgets.FindTreeNode(tree.Nodes, Item.ItemId);
+            if (NodeToSelect == null)
+                SetDefaultNode(tree);
+            else
+                tree.SelectedNode = NodeToSelect;
+
+            // Tear down
+            IgnoreDimensionChanges = false;
         }
 
         //---------------------------------------------------------------------

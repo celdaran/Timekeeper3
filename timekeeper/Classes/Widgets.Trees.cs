@@ -42,6 +42,32 @@ namespace Timekeeper.Classes
         // rampant copy/paste across all these key builder methods. 2014-05-17.
         //----------------------------------------------------------------------
 
+        public void BuildTree(Timekeeper.Dimension dimension, dynamic tree)
+        {
+            // Helper function when you need to build a tree but you
+            // only have the dimension at your disposal. Calls the
+            // appropriate underlying Builder.
+
+            tree.Nodes.Clear();
+
+            switch (dimension) {
+                case Timekeeper.Dimension.Project:
+                    this.BuildProjectTree(tree.Nodes);
+                    break;
+                case Timekeeper.Dimension.Activity:
+                    this.BuildActivityTree(tree.Nodes);
+                    break;
+                case Timekeeper.Dimension.Location:
+                    this.BuildLocationTree(tree.Nodes);
+                    break;
+                case Timekeeper.Dimension.Category:
+                    this.BuildCategoryTree(tree.Nodes);
+                    break;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
         public void BuildProjectTree(dynamic tree)
         {
             this.CurrentDimension = Timekeeper.Dimension.Project;
@@ -273,7 +299,7 @@ namespace Timekeeper.Classes
         // Dialog to Create an Item or a Folder
         //----------------------------------------------------------------------
 
-        public void CreateTreeItemDialog(dynamic tree, Timekeeper.Dimension dim, bool isFolder)
+        public Classes.TreeAttribute CreateTreeItemDialog(dynamic tree, Timekeeper.Dimension dim, bool isFolder)
         {
             string DialogTitle =
                 "New " +
@@ -331,10 +357,11 @@ namespace Timekeeper.Classes
                 IdValuePair Pair = (IdValuePair)Dialog.ItemParent.SelectedItem;
                 int ParentItemId = Pair.Id;
 
+                Dialog.CreatedItem = null;
                 int CreateResult = this.CreateTreeItem(tree.Nodes, Item, ParentItemId, Icon);
                 switch (CreateResult) {
                     case Classes.Widgets.TREES_ITEM_CREATED:
-                        //Action_TreeView_ShowRootLines();
+                        Dialog.CreatedItem = Item;
                         break;
                     case Classes.Widgets.TREES_ERROR_CREATING_ITEM:
                         Common.Warn("There was an error creating the item.");
@@ -347,6 +374,8 @@ namespace Timekeeper.Classes
                         break;
                 }
             }
+
+            return Dialog.CreatedItem;
         }
 
         //----------------------------------------------------------------------

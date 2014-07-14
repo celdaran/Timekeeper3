@@ -18,12 +18,13 @@ namespace Timekeeper.Forms.Shared
         private Classes.Widgets Widgets;
         private Classes.Project Project;
         private string EditDialogTitle;
+        private ComboTreeNode PreSelectedNode;
 
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
 
-        public TreeAttributeManager(Timekeeper.Dimension dimension)
+        public TreeAttributeManager(Timekeeper.Dimension dimension, ComboTreeNode selectedNode)
         {
             InitializeComponent();
 
@@ -59,6 +60,24 @@ namespace Timekeeper.Forms.Shared
 
             // Ensure right-clicking a tree item selects it.
             Tree.NodeMouseClick += (sender, args) => Tree.SelectedNode = args.Node;
+
+            // Save for later
+            this.PreSelectedNode = selectedNode;
+        }
+
+        //----------------------------------------------------------------------
+        // Public propertie
+        //----------------------------------------------------------------------
+
+        public TreeNode SelectedNode
+        {
+            get {
+                return Tree.SelectedNode;
+            }
+
+            set {
+                Tree.SelectedNode = value;
+            }
         }
 
         //----------------------------------------------------------------------
@@ -67,7 +86,16 @@ namespace Timekeeper.Forms.Shared
 
         private void TreeAttributeManager_Load(object sender, EventArgs e)
         {
-            this.BuildTree();
+            this.Widgets.BuildTree(this.Dimension, Tree);
+
+            Classes.TreeAttribute Item = (Classes.TreeAttribute)this.PreSelectedNode.Tag;
+            try {
+                TreeNode FoundNode = this.Widgets.FindTreeNode(Tree.Nodes, Item.ItemId);
+                Tree.SelectedNode = FoundNode;
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
         }
 
         //----------------------------------------------------------------------
@@ -232,27 +260,6 @@ namespace Timekeeper.Forms.Shared
         // Helpers
         //----------------------------------------------------------------------
 
-        private void BuildTree()
-        {
-            Tree.Nodes.Clear();
-            switch (this.Dimension) {
-                case Timekeeper.Dimension.Project:
-                    Widgets.BuildProjectTree(Tree.Nodes);
-                    break;
-                case Timekeeper.Dimension.Activity:
-                    Widgets.BuildActivityTree(Tree.Nodes);
-                    break;
-                case Timekeeper.Dimension.Location:
-                    Widgets.BuildLocationTree(Tree.Nodes);
-                    break;
-                case Timekeeper.Dimension.Category:
-                    Widgets.BuildCategoryTree(Tree.Nodes);
-                    break;
-            }
-        }
-
-        //----------------------------------------------------------------------
-
         private void EditItemDialog(TreeView tree, string title, Classes.TreeAttribute item)
         {
             // Instantiate Dialog
@@ -267,10 +274,13 @@ namespace Timekeeper.Forms.Shared
                 this.Project = new Classes.Project(item.Name);
             }
 
+            // Nickname
+            Classes.TreeAttribute ItemParent = item.Parent();
+
             // Previous values
             string PreviousName = item.Name;
             string PreviousDescription = item.Description;
-            string PreviousFolder = "";
+            string PreviousFolder = ItemParent.Exists() ? ItemParent.Name : "(Top Level)"; //FIXME: some sort of keyword?!
             string PreviousExternalProjectNo = null;
 
             // Fill in defaults on the dialog box
@@ -308,7 +318,7 @@ namespace Timekeeper.Forms.Shared
                     Action_RedescribeItem(tree.SelectedNode, item, Dialog.ItemDescription.Text);
                 }
 
-                if (Dialog.ItemParent.Text != PreviousFolder) {
+                if ((Dialog.ItemParent.Text != PreviousFolder)) {
                     IdValuePair Pair = (IdValuePair)Dialog.ItemParent.SelectedItem;
                     Action_ReparentItem(tree, item, (long)Pair.Id);
                 }
@@ -323,7 +333,8 @@ namespace Timekeeper.Forms.Shared
                     item = Project;
                 }
 
-                tree.SelectedNode.Tag = item;
+                // Not sure about this just yet
+                //tree.SelectedNode.Tag = item;
             }
         }
 
@@ -500,10 +511,16 @@ namespace Timekeeper.Forms.Shared
 
         private void Action_ReparentItem(TreeView tree, Classes.TreeAttribute item, long parentId)
         {
+            // Remove existing item from tree
+            TreeNode ItemNode = Widgets.FindTreeNode(tree.Nodes, item.ItemId);
+            ItemNode.Remove();
+
+            // Now put it in its new place
             TreeNode ParentNode = Widgets.FindTreeNode(tree.Nodes, parentId);
 
             if (ParentNode == null) {
                 item.Reparent(0);
+                tree.Nodes.Add(ItemNode);
             } else {
                 Classes.TreeAttribute parentItem = (Classes.TreeAttribute)ParentNode.Tag;
                 if (item.IsDescendentOf(parentItem.ItemId)) {
@@ -511,10 +528,9 @@ namespace Timekeeper.Forms.Shared
                     return;
                 }
                 item.Reparent((Classes.TreeAttribute)ParentNode.Tag);
+                ParentNode.Nodes.Add(ItemNode);
             }
 
-            // FIXME: Find a less brute-force way to do this
-            this.BuildTree();
         }
 
         //----------------------------------------------------------------------
@@ -854,6 +870,11 @@ namespace Timekeeper.Forms.Shared
                     return false;
                 }
             }
+        }
+
+        private void Tree_DoubleClick(object sender, EventArgs e)
+        {
+            MenuEdit_Click(sender, e);
         }
 
         //----------------------------------------------------------------------

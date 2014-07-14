@@ -160,33 +160,41 @@ namespace Timekeeper.Forms
         // Action | Manage Projects
         private void MenuActionManageProjects_Click(object sender, EventArgs e)
         {
-            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Project);
-            Form.StartPosition = FormStartPosition.CenterParent;
-            Form.ShowDialog(this);
+            Action_ManageTree(Timekeeper.Dimension.Project, ProjectTreeDropdown);
+
+            /*
+            if (Action_ManageTree(Timekeeper.Dimension.Project)) {
+                IgnoreDimensionChanges = true;
+                ComboTreeNode SavedNode = ProjectTreeDropdown.SelectedNode;
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)SavedNode.Tag;
+                ProjectTreeDropdown.Nodes.Clear();
+                Widgets.BuildProjectTree(ProjectTreeDropdown.Nodes);
+                ComboTreeNode RestoredNode = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, Item.ItemId);
+                if (RestoredNode == null)
+                    SetDefaultNode(ProjectTreeDropdown);
+                else
+                    ProjectTreeDropdown.SelectedNode = RestoredNode;
+                IgnoreDimensionChanges = false;
+            }
+            */
         }
 
         // Action | Manage Activities
         private void MenuActionManageActivities_Click(object sender, EventArgs e)
         {
-            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Activity);
-            Form.StartPosition = FormStartPosition.CenterParent;
-            Form.ShowDialog(this);
+            Action_ManageTree(Timekeeper.Dimension.Activity, ActivityTreeDropdown);
         }
 
         // Action | Manage Locations
         private void MenuActionManageLocations_Click(object sender, EventArgs e)
         {
-            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Location);
-            Form.StartPosition = FormStartPosition.CenterParent;
-            Form.ShowDialog(this);
+            Action_ManageTree(Timekeeper.Dimension.Location, LocationTreeDropdown);
         }
 
         // Action | Manage Categories
         private void MenuActionManageCategories_Click(object sender, EventArgs e)
         {
-            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Timekeeper.Dimension.Category);
-            Form.StartPosition = FormStartPosition.CenterParent;
-            Form.ShowDialog(this);
+            Action_ManageTree(Timekeeper.Dimension.Category, CategoryTreeDropdown);
         }
 
         //---------------------------------------------------------------------
@@ -540,13 +548,22 @@ namespace Timekeeper.Forms
         {
             ComboTreeBox Box = (ComboTreeBox)PopupMenuDimension.SourceControl;
             Timekeeper.Dimension Dim = GetPopupDimension();
-            this.Widgets.CreateTreeItemDialog(Box, Dim, false);
+            Classes.TreeAttribute Item = this.Widgets.CreateTreeItemDialog(Box, Dim, false);
+
+            ComboTreeNode NodeToSelect = Widgets.FindTreeNode(Box.Nodes, Item.ItemId);
+            if (NodeToSelect == null)
+                SetDefaultNode(Box);
+            else
+                Box.SelectedNode = NodeToSelect;
         }
 
         private void PopupMenuDimensionManageItems_Click(object sender, EventArgs e)
         {
             Timekeeper.Dimension Dim = GetPopupDimension();
-            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(Dim);
+
+            ToolStripDropDownItem PopupItem = (ToolStripDropDownItem)sender;
+            ComboTreeBox Tree = (ComboTreeBox)((ContextMenuStrip)PopupItem.Owner).SourceControl;
+            Action_ManageTree(Dim, Tree);
 
             // This isn't working. I'd like it to work.
             /*
@@ -556,9 +573,6 @@ namespace Timekeeper.Forms
             Form.StartPosition = FormStartPosition.Manual;
             Form.Location = StartPoint;
             */
-            Form.StartPosition = FormStartPosition.CenterParent;
-
-            Form.ShowDialog(this);
         }
 
         private void PopupMenuDimensionUseProjects_Click(object sender, EventArgs e)
