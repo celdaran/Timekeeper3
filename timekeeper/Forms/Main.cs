@@ -927,6 +927,118 @@ namespace Timekeeper.Forms
             */
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string LocalTime = Common.LocalNow();
+            string UtcTime = Common.Now();
+            //string UtcTime2 = DateTime.Now.ToString(Common.UTC_DATETIME_FORMAT);
+            string UtcTime2 = DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK");
+            string UtcTime3 = DateTime.UtcNow.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssK");
+
+            string Message = String.Format("TBX LocalTime = {0}\nTBX UtcTime = {1}\nUtcTime2 = {2}\nUtcTime3 = {3}",
+                LocalTime,
+                UtcTime,
+                UtcTime2,
+                UtcTime3);
+
+            string UtcTimeDST    = DateTime.Parse("2014-11-01T12:00:00-05:00").ToUniversalTime().ToString(Common.UTC_DATETIME_FORMAT);
+            string UtcTimeNotDST = DateTime.Parse("2014-11-03T12:00:00-06:00").ToUniversalTime().ToString(Common.UTC_DATETIME_FORMAT);
+
+            string Message2 = String.Format("UtcTimeDST = {0}\nUtcTimeNotDST = {1}",
+                UtcTimeDST,
+                UtcTimeNotDST);
+
+            this.MemoEditor.Text += Message2;
+
+            string LocalTimeDST = DateTime.Parse(UtcTimeDST).ToLocalTime().ToString(Common.LOCAL_DATETIME_FORMAT);
+            string LocalTimeNotDST = DateTime.Parse(UtcTimeNotDST).ToLocalTime().ToString(Common.LOCAL_DATETIME_FORMAT);
+
+            string Message3 = String.Format("LocalTimeDST = {0}\nLocalTimeNotDST = {1}",
+                LocalTimeDST,
+                LocalTimeNotDST);
+
+            this.MemoEditor.Text += "\n\n" + Message3;
+
+            /*
+
+            This seems to be working...
+
+            UtcTimeDST      = 2014-11-01T17:00:00Z
+            UtcTimeNotDST   = 2014-11-03T18:00:00Z
+
+            LocalTimeDST    = 2014-11-01T12:00:00
+            LocalTimeNotDST = 2014-11-03T12:00:00
+
+            */
+
+            // Now trying out a standard way of going back and forth between the
+            // C# DateTimeOffset datatypes and the strings required by SQLite
+
+            string Message4;
+
+            string Convert1 = Timekeeper.DateForDatabase();
+            string Convert2 = Timekeeper.DateForDatabase(DateTime.Now.AddMonths(2));
+            string Convert3 = Timekeeper.DateForDatabase(DateTime.Now.AddMonths(5));
+
+            Message4 = String.Format("Timekeeper.DateForDatabase()    = {0}", Convert1);
+            this.MemoEditor.Text += "\n\n" + Message4;
+            Message4 = String.Format("Timekeeper.DateForDatabase(+2M) = {0}", Convert2);
+            this.MemoEditor.Text += "\n" + Message4;
+            Message4 = String.Format("Timekeeper.DateForDatabase(+5M) = {0}", Convert3);
+            this.MemoEditor.Text += "\n" + Message4;
+
+            DateTime Revert1 = Timekeeper.StringToDate(Convert1);
+            DateTime Revert2 = Timekeeper.StringToDate(Convert2);
+            DateTime Revert3 = Timekeeper.StringToDate(Convert3);
+
+            Message4 = String.Format("Timekeeper.StringToDate(Convert1) = {0}", Timekeeper.DateForDisplay(Revert1));
+            this.MemoEditor.Text += "\n\n" + Message4;
+            Message4 = String.Format("Timekeeper.StringToDate(Convert2) = {0}", Timekeeper.DateForDisplay(Revert2));
+            this.MemoEditor.Text += "\n" + Message4;
+            Message4 = String.Format("Timekeeper.StringToDate(Convert3) = {0}", Timekeeper.DateForDisplay(Revert3));
+            this.MemoEditor.Text += "\n" + Message4;
+
+            Convert1 = Timekeeper.DateForDisplay();
+            Convert2 = Timekeeper.DateForDisplay(DateTime.Now.AddMonths(2));
+            Convert3 = Timekeeper.DateForDisplay(DateTime.Now.AddMonths(5));
+
+            Message4 = String.Format("Timekeeper.DateForDisplay()    = {0}", Convert1);
+            this.MemoEditor.Text += "\n\n" + Message4;
+            Message4 = String.Format("Timekeeper.DateForDisplay(+2M) = {0}", Convert2);
+            this.MemoEditor.Text += "\n" + Message4;
+            Message4 = String.Format("Timekeeper.DateForDisplay(+5M) = {0}", Convert3);
+            this.MemoEditor.Text += "\n" + Message4;
+
+            Revert1 = Timekeeper.StringToDate(Convert1);
+            Revert2 = Timekeeper.StringToDate(Convert2);
+            Revert3 = Timekeeper.StringToDate(Convert3);
+
+            Message4 = String.Format("Timekeeper.StringToDate(Convert1) = {0}", Timekeeper.DateForDisplay(Revert1));
+            this.MemoEditor.Text += "\n\n" + Message4;
+            Message4 = String.Format("Timekeeper.StringToDate(Convert2) = {0}", Timekeeper.DateForDisplay(Revert2));
+            this.MemoEditor.Text += "\n" + Message4;
+            Message4 = String.Format("Timekeeper.StringToDate(Convert3) = {0}", Timekeeper.DateForDisplay(Revert3));
+            this.MemoEditor.Text += "\n" + Message4;
+
+            DateTime SpringDstTest = Timekeeper.StringToDate("2014-03-08 17:00:00");
+            this.MemoEditor.Text += "\n";
+            for (int i = 0; i < 24; i++) {
+                Message4 = String.Format("Timekeeper.DateForDatabase() = {0}", Timekeeper.DateForDatabase(SpringDstTest));
+                this.MemoEditor.Text += "\n" + Message4;
+                SpringDstTest = SpringDstTest.AddHours(1);
+            }
+
+            DateTime FallDstTest = Timekeeper.StringToDate("2014-11-02 17:00:00");
+            this.MemoEditor.Text += "\n";
+            for (int i = 0; i < 24; i++) {
+                Message4 = String.Format("Timekeeper.DateForDatabase() = {0}", Timekeeper.DateForDatabase(FallDstTest));
+                this.MemoEditor.Text += "\n" + Message4;
+                FallDstTest = FallDstTest.AddHours(1);
+            }
+
+            this.MemoEditor.Text += "\n";
+        }
+
         //---------------------------------------------------------------------
         // FIXME - EXPERIMENTAL - NOT READY FOR PRIME TIME
         //---------------------------------------------------------------------

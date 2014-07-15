@@ -225,6 +225,7 @@ namespace Timekeeper.Forms
             this.PopupMenuMemoCutSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -1268,6 +1269,7 @@ namespace Timekeeper.Forms
             // PanelControls
             // 
             this.PanelControls.BackColor = System.Drawing.SystemColors.Control;
+            this.PanelControls.Controls.Add(this.button1);
             this.PanelControls.Controls.Add(this.CloseStartGapButton);
             this.PanelControls.Controls.Add(this.CloseStopGapButton);
             this.PanelControls.Controls.Add(this.DimensionPanel);
@@ -1358,7 +1360,7 @@ namespace Timekeeper.Forms
             this.PopupMenuDimensionSep2,
             this.PopupMenuDimensionProperties});
             this.PopupMenuDimension.Name = "menuTask";
-            this.PopupMenuDimension.Size = new System.Drawing.Size(155, 192);
+            this.PopupMenuDimension.Size = new System.Drawing.Size(155, 170);
             this.PopupMenuDimension.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenuDimension_Opening);
             // 
             // PopupMenuDimensionNewItem
@@ -1992,6 +1994,16 @@ namespace Timekeeper.Forms
             this.MainPanel.Size = new System.Drawing.Size(562, 273);
             this.MainPanel.TabIndex = 1;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(67, 91);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2231,5 +2243,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuActionFind;
         private System.Windows.Forms.ToolStripSeparator MenuActionSep2;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarDebugBenchmark;
+        private System.Windows.Forms.Button button1;
     }
 }

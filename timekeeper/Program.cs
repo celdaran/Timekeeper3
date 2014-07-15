@@ -31,7 +31,7 @@ namespace Timekeeper
             try {
                 // TODO: For TBX, support Semantic Versioning (http://semver.org/)
                 // This would mean only checking the major version at this point.
-                CheckAssembly("Technitivity.Toolbox", new Version(3, 0, 16));
+                CheckAssembly("Technitivity.Toolbox", new Version(3, 0, 17));
                 CheckAssembly("System.Data.SQLite", new Version(1, 0, 92));
             }
             catch {

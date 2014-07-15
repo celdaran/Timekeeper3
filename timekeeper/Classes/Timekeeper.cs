@@ -48,6 +48,9 @@ namespace Timekeeper
 
         public enum Dimension { Project, Activity, Location, Category };
 
+        public const string LOCAL_DATETIME_FORMAT = "yyyy'-'MM'-'dd' 'HH':'mm':'ss";
+        public const string UTC_DATETIME_FORMAT = "yyyy'-'MM'-'dd'T'HH':'mm':'ssK";
+
         //---------------------------------------------------------------------
         // Properties
         //---------------------------------------------------------------------
@@ -233,6 +236,84 @@ namespace Timekeeper
 
             return null;
         }
+
+        //---------------------------------------------------------------------
+        // DateTime Helpers
+        //---------------------------------------------------------------------
+        // IMPORTANT NOTE: Timekeeper very purposefully only uses local time
+        // values. There are no UTC dates and (more importantly) no unspecified
+        // DateTime values. This was not a light decision.
+        //---------------------------------------------------------------------
+        // I'm officially abandoning TBX's datetime helper methods in favor of
+        // what you see below. While these are very thin and simple one-liners,
+        // the point is I now have an abstraction layer which: 1) is under 
+        // completely control of the Timekeeper database (i.e., no external
+        // dependency upon TBX, and 2) can easily be modified later should I
+        // choose to convert from LocalTime to UTC in the future.
+        //---------------------------------------------------------------------
+
+        public static string DateForDatabase()
+        {
+            return DatabaseDateTimeString(DateTime.Now);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string DateForDatabase(DateTime datetime)
+        {
+            return DatabaseDateTimeString(datetime);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string DateForDisplay()
+        {
+            return UserDateTimeString(DateTime.Now);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string DateForDisplay(DateTime datetime)
+        {
+            return UserDateTimeString(datetime);
+        }
+
+        //---------------------------------------------------------------------
+
+        private static string DatabaseDateTimeString(DateTime datetime)
+        {
+            datetime = DateTime.SpecifyKind(datetime, DateTimeKind.Local);
+            return datetime.ToLocalTime().ToString(Timekeeper.LOCAL_DATETIME_FORMAT);
+        }
+
+        //---------------------------------------------------------------------
+
+        private static string UserDateTimeString(DateTime datetime)
+        {
+            datetime = DateTime.SpecifyKind(datetime, DateTimeKind.Local);
+            return datetime.ToLocalTime().ToString(Options.Advanced_DateTimeFormat);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static DateTime StringToDate(string datetime)
+        {
+            return DateTime.SpecifyKind(DateTime.Parse(datetime), DateTimeKind.Local);
+        }
+
+        //---------------------------------------------------------------------
+        // DateTime Converters
+        //---------------------------------------------------------------------
+        // 2014-07-14 update: I'm officially ditching the UTC internal datetime
+        // storage idea. It's too much work for too little benefit. I'll take
+        // it on later when this thing goes a bit more global. For now, it's
+        // sucking up too much time. I'm leaving these methods below for later
+        // because I would like a standard set of DateTime<-->String methods
+        // designed just for TK that take Location.TimeZone into account.
+        //---------------------------------------------------------------------
+
+        // If you're wondering where these all went, I backedpeddled from my
+        // statements, moved the methods above, and made some modifications.
 
         //---------------------------------------------------------------------
         // Benchmarking
