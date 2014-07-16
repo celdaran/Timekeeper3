@@ -496,7 +496,7 @@ namespace Timekeeper.Forms
                 Action_LoadOptions();
 
                 // Initialize timer
-                timerLastRun = DateTime.Now;
+                timerLastRun = Timekeeper.LocalNow;
 
                 // Any system-wide (i.e., not file-based) UI options
                 Action_InitializeUI();
@@ -552,7 +552,7 @@ namespace Timekeeper.Forms
                 */
 
                 /*
-                Forms.Shared.Schedule ScheduleDialog = new Forms.Shared.Schedule(9, DateTime.Now);
+                Forms.Shared.Schedule ScheduleDialog = new Forms.Shared.Schedule(9, Timekeeper.LocalNow);
                 ScheduleDialog.ShowDialog(this);
                 Application.Exit();
                 */
@@ -700,7 +700,7 @@ namespace Timekeeper.Forms
             StopTimeSelector.CustomFormat = Options.Advanced_DateTimeFormat;
 
             // Adjust Start/Stop time widths and LocationAndCategoryPanel location
-            StartTimeSelector.Value = DateTime.Now;
+            StartTimeSelector.Value = Timekeeper.LocalNow.DateTime;
             Size DateSize = TextRenderer.MeasureText(
                 StartTimeSelector.Value.ToString(Options.Advanced_DateTimeFormat), 
                 StartTimeSelector.Font);
@@ -1236,7 +1236,7 @@ namespace Timekeeper.Forms
 
                 if (!isBrowsing) {
                     DurationBox.Text = StatusBarElapsedSinceStart.Text;
-                    StopTimeSelector.Value = DateTime.Now;
+                    StopTimeSelector.Value = Timekeeper.LocalNow.DateTime;
                 }
 
                 // FIXME: More Options Overhaul
@@ -1278,10 +1278,10 @@ namespace Timekeeper.Forms
             if (timerRunning == false) {
                 if (!isBrowsing && (browserEntry != null)) {
                     if (!StartTimeManuallySet) {
-                        StartTimeSelector.Value = DateTime.Now;
-                        StopTimeSelector.Value = DateTime.Now;
+                        StartTimeSelector.Value = Timekeeper.LocalNow.DateTime;
+                        StopTimeSelector.Value = Timekeeper.LocalNow.DateTime;
                     } else {
-                        StopTimeSelector.Value = DateTime.Now;
+                        StopTimeSelector.Value = Timekeeper.LocalNow.DateTime;
                     }
                     DurationBox.Text = Browser_CalculateDuration();
                 }
@@ -1301,7 +1301,7 @@ namespace Timekeeper.Forms
             }
 
             // Annoyance support: if so desired, bug the user that the timer isn't running
-            DateTime now = DateTime.Now;
+            DateTimeOffset now = Timekeeper.LocalNow;
             TimeSpan ts = new TimeSpan(now.Ticks - timerLastRun.Ticks);
             if (Options.Behavior_Annoy_NoRunningPrompt) {
                 if (ts.TotalMinutes > (double)Options.Behavior_Annoy_NoRunningPromptAmount) {
@@ -1376,7 +1376,7 @@ namespace Timekeeper.Forms
             }
 
             timerRunning = true;
-            timerLastRun = DateTime.Now;
+            timerLastRun = Timekeeper.LocalNow;
 
             // Grab times (this is a database hit)
             ElapsedSinceStart = (long)TimedActivity.Elapsed().TotalSeconds;
@@ -1421,18 +1421,21 @@ namespace Timekeeper.Forms
         private void Action_StopTimer()
         {
             // Close off the timer for both objects
-            long Seconds = TimedProject.StopTiming(StopTimeSelector.Value);
-                           TimedActivity.StopTiming(StopTimeSelector.Value);
-                           TimedLocation.StopTiming(StopTimeSelector.Value);
-                           TimedCategory.StopTiming(StopTimeSelector.Value);
+            DateTime StartTime = StartTimeSelector.Value;
+            DateTime StopTime = StopTimeSelector.Value;
+
+            long Seconds = TimedProject.StopTiming(StopTime);
+            TimedActivity.StopTiming(StopTime);
+            TimedLocation.StopTiming(StopTime);
+            TimedCategory.StopTiming(StopTime);
 
             // Get current dimension selections
             // Note: they may have changed while the timer was running
             GetDimensions();
 
             // Close off timer
-            TimedEntry.StartTime = StartTimeSelector.Value;
-            TimedEntry.StopTime = StopTimeSelector.Value;
+            TimedEntry.StartTime = StartTime;
+            TimedEntry.StopTime = StopTime;
             TimedEntry.Seconds = Seconds;
             TimedEntry.Memo = MemoEditor.Text;
             TimedEntry.ProjectId = TimedProject.ItemId;
@@ -1543,21 +1546,23 @@ namespace Timekeeper.Forms
         private void Action_UpdateCalendar(ComboTreeBox tree)
         {
             // unified
+            /* THIS FEATURE NEEDS SOME RETHINKING NOW THAT THE MAIN WINDOW TREEVIEW CONTROLS ARE GONE
             if (calendar != null) {
                 Classes.TreeAttribute CurrentItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-                DateTime LastUsed = CurrentItem.DateLastUsed();
+                DateTimeOffset LastUsed = CurrentItem.DateLastUsed();
 
-                calendar.wCalendar.TodayDate = LastUsed;
+                calendar.wCalendar.TodayDate = LastUsed.DateTime;
 
                 // Bold all dates where item has been used
                 int Count = CurrentItem.NumberOfDaysUsed();
                 DateTime[] Array = new DateTime[Count];
 
-                List<DateTime> DaysUsed = CurrentItem.DaysUsed();
+                List<DateTimeOffset> DaysUsed = CurrentItem.DaysUsed();
                 Array = DaysUsed.ToArray();
 
                 calendar.wCalendar.BoldedDates = Array;
             }
+            */
         }
 
         //---------------------------------------------------------------------

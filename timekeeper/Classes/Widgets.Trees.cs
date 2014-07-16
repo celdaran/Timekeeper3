@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
@@ -111,7 +111,7 @@ namespace Timekeeper.Classes
         private void BuildTree(dynamic tree, dynamic parentNode, long parentId)
         {
             bool showHidden = GetViewHidden();
-            DateTime showHiddenSince = GetViewHiddenSinceTime();
+            DateTimeOffset showHiddenSince = GetViewHiddenSinceTime();
             string orderByClause = GetOrderBy(Options.Behavior_SortItemsBy, Options.Behavior_SortItemsByDirection);
 
             // Instantiate Items
@@ -413,9 +413,9 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        private DateTime GetViewHiddenSinceTime()
+        private DateTimeOffset GetViewHiddenSinceTime()
         {
-            DateTime showHiddenSince = DateTime.Now;
+            DateTimeOffset showHiddenSince = Timekeeper.LocalNow;
             TimeSpan Offset;
             int HiddenSinceSetting = -1;
 

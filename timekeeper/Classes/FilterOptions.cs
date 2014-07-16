@@ -314,8 +314,8 @@ namespace Timekeeper.Classes
 
                 Options["FilterOptionsType"] = DbFilterOptionsType;
                 Options["RefDatePresetId"] = DateRangePreset;
-                Options["FromTime"] = FromTime.ToString(Common.UTC_DATETIME_FORMAT);
-                Options["ToTime"] = ToTime.ToString(Common.UTC_DATETIME_FORMAT);
+                Options["FromTime"] = Timekeeper.DateForDatabase(FromTime);
+                Options["ToTime"] = Timekeeper.DateForDatabase(ToTime);
                 Options["MemoOperator"] = MemoOperator;
                 Options["MemoValue"] = MemoValue;
                 Options["ProjectList"] = List(Projects);
@@ -335,20 +335,20 @@ namespace Timekeeper.Classes
                     where FilterOptionsId = " + FilterOptionsId);
 
                 if (Count["Count"] == 0) {
-                    Options["CreateTime"] = Common.Now();
-                    Options["ModifyTime"] = Common.Now();
+                    Options["CreateTime"] = Timekeeper.DateForDatabase();
+                    Options["ModifyTime"] = Timekeeper.DateForDatabase();
 
                     FilterOptionsId = this.Database.Insert("FilterOptions", Options);
                     if (FilterOptionsId > 0) {
-                        CreateTime = DateTimeOffset.Parse(Options["CreateTime"]);
-                        ModifyTime = DateTimeOffset.Parse(Options["ModifyTime"]);
+                        CreateTime = Timekeeper.StringToDate(Options["CreateTime"]);
+                        ModifyTime = Timekeeper.StringToDate(Options["ModifyTime"]);
                     } else {
                         throw new Exception("Error inserting into FilterOptions");
                     }
                 } else {
-                    Options["ModifyTime"] = Common.Now();
+                    Options["ModifyTime"] = Timekeeper.DateForDatabase();
                     this.Database.Update("FilterOptions", Options, "FilterOptionsId", FilterOptionsId);
-                    ModifyTime = DateTimeOffset.Parse(Options["ModifyTime"]);
+                    ModifyTime = Timekeeper.StringToDate(Options["ModifyTime"]);
                 }
             }
             catch (Exception x) {
@@ -365,8 +365,8 @@ namespace Timekeeper.Classes
             FilterOptionsId = -1;
             FilterOptionsType = 0;
             DateRangePreset = DATE_PRESET_ALL;
-            FromTime = DateTimeOffset.Now;
-            ToTime = DateTimeOffset.Now;
+            FromTime = Timekeeper.LocalNow;
+            ToTime = Timekeeper.LocalNow;
             MemoOperator = -1;
             MemoValue = "";
             Projects = new List<long>();
@@ -461,18 +461,18 @@ namespace Timekeeper.Classes
             if ((this.FilterOptionsType == Classes.FilterOptions.OptionsType.Journal) ||
                 (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Merge))
             {
-                WhereClause += String.Format("datetime({0}StartTime, 'localtime') >= datetime('{1}')",
+                WhereClause += String.Format("{0}StartTime >= '{1}'",
                     TableAlias, this.FromTimeToString()) + System.Environment.NewLine;
 
-                WhereClause += String.Format("and datetime({0}StopTime, 'localtime') <= datetime('{1}')",
+                WhereClause += String.Format("and {0}StopTime <= '{1}'",
                     TableAlias, this.ToTimeToString()) + System.Environment.NewLine;
             }
 
             if (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook) {
-                WhereClause += String.Format("datetime({0}EntryTime, 'localtime') >= datetime('{1}')",
+                WhereClause += String.Format("{0}EntryTime >= '{1}'",
                     TableAlias, this.FromTimeToString()) + System.Environment.NewLine;
 
-                WhereClause += String.Format("and datetime({0}EntryTime, 'localtime') <= datetime('{1}')",
+                WhereClause += String.Format("and {0}EntryTime <= '{1}'",
                     TableAlias, this.ToTimeToString()) + System.Environment.NewLine;
             }
 
@@ -542,7 +542,7 @@ namespace Timekeeper.Classes
 
         public void SetDateRange()
         {
-            DateTime Today = DateTime.UtcNow.Date;
+            DateTimeOffset Today = Timekeeper.LocalNow;
             Classes.JournalEntryCollection Entries;
 
             switch (this.DateRangePreset) {
@@ -572,8 +572,8 @@ namespace Timekeeper.Classes
                     break;
 
                 case DATE_PRESET_THIS_MONTH:
-                    this.FromTime = DateTime.Parse(Today.Year.ToString() + "/" + Today.Month.ToString() + "/1");
-                    this.ToTime = DateTime.Parse(Today.Year.ToString() + "/" + Today.Month.ToString() + "/" + DateTime.DaysInMonth(Today.Year, Today.Month).ToString());
+                    this.FromTime = Timekeeper.StringToDate(Today.Year.ToString() + "/" + Today.Month.ToString() + "/1");
+                    this.ToTime = Timekeeper.StringToDate(Today.Year.ToString() + "/" + Today.Month.ToString() + "/" + DateTime.DaysInMonth(Today.Year, Today.Month).ToString());
                     break;
 
                 case DATE_PRESET_LAST_MONTH:
@@ -585,20 +585,20 @@ namespace Timekeeper.Classes
                     } else {
                         month--;
                     }
-                    this.FromTime = DateTime.Parse(year.ToString() + "/" + month.ToString() + "/1");
-                    this.ToTime = DateTime.Parse(year.ToString() + "/" + month.ToString() + "/" + DateTime.DaysInMonth(year, month).ToString());
+                    this.FromTime = Timekeeper.StringToDate(year.ToString() + "/" + month.ToString() + "/1");
+                    this.ToTime = Timekeeper.StringToDate(year.ToString() + "/" + month.ToString() + "/" + DateTime.DaysInMonth(year, month).ToString());
                     break;
 
                 case DATE_PRESET_THIS_YEAR:
-                    this.FromTime = DateTime.Parse(Today.Year.ToString() + "/01/01");
-                    this.ToTime = DateTime.Parse(Today.Year.ToString() + "/12/31");
+                    this.FromTime = Timekeeper.StringToDate(Today.Year.ToString() + "/01/01");
+                    this.ToTime = Timekeeper.StringToDate(Today.Year.ToString() + "/12/31");
                     break;
 
                 case DATE_PRESET_LAST_YEAR:
                     year = Today.Year;
                     year--;
-                    this.FromTime = DateTime.Parse(year.ToString() + "/01/01");
-                    this.ToTime = DateTime.Parse(year.ToString() + "/12/31");
+                    this.FromTime = Timekeeper.StringToDate(year.ToString() + "/01/01");
+                    this.ToTime = Timekeeper.StringToDate(year.ToString() + "/12/31");
                     break;
 
                 case DATE_PRESET_ALL:

@@ -66,7 +66,7 @@ namespace Timekeeper.Classes
                         // date that reflects the time this project
                         // was actually created.
                         Row Row = new Row();
-                        Row["CreateTime"] = Task.CreateTime.ToString(Common.UTC_DATETIME_FORMAT);
+                        Row["CreateTime"] = Timekeeper.DateForDatabase(Task.CreateTime);
                         Database.Update("Project", Row, "ProjectId", ProjectId);
                     }
                 }
@@ -184,7 +184,7 @@ namespace Timekeeper.Classes
                 var TotalLines = System.IO.File.ReadLines(this.ImportFileName).Count();
                 ImportProgress.Maximum = TotalLines;
 
-                Message = String.Format("Import started at {0}.\n\n", Common.Now());
+                Message = String.Format("Import started at {0}.\n\n", Timekeeper.DateForDisplay());
                 Console.AppendText(Message);
 
                 using (TextFieldParser parser = new TextFieldParser(this.ImportFileName)) {
@@ -242,7 +242,7 @@ namespace Timekeeper.Classes
                             Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
 
                             // StartTime is our key
-                            DateTimeOffset StartTime = DateTimeOffset.Parse(Fields[StartTimePos]);
+                            DateTimeOffset StartTime = Timekeeper.StringToDate(Fields[StartTimePos]);
 
                             if (CsvRowExists(StartTime)) {
                                 Message = String.Format("Row {0}. Journal entry already exists: {1}\n",
@@ -253,7 +253,7 @@ namespace Timekeeper.Classes
                             else {
                                 // If StartTime is okay, continue
 
-                                DateTimeOffset StopTime = DateTimeOffset.Parse(Fields[StopTimePos]);
+                                DateTimeOffset StopTime = Timekeeper.StringToDate(Fields[StopTimePos]);
                                 TimeSpan ts = StopTime.Subtract(StartTime);
 
                                 // Keep track of this value for reindexing purposes.
@@ -337,7 +337,7 @@ namespace Timekeeper.Classes
             Console.AppendText("Categories created..: " + CategoriesCreated.ToString() + "\n\n");
             Console.AppendText("Rows imported.......: " + ImportedRows.ToString() + "\n");
 
-            Message = String.Format("\nImport completed at {0}.\n", Common.Now());
+            Message = String.Format("\nImport completed at {0}.\n", Timekeeper.DateForDisplay());
             Console.AppendText(Message);
 
             return Imported;
@@ -521,8 +521,8 @@ namespace Timekeeper.Classes
             Line.TaskId = BitConverter.ToInt64(TaskId, 0);
 
             double RawTotalTime = BitConverter.ToDouble(TotalTime, 0);
-            DateTime ConvertedTotalTime = DateTime.FromOADate(RawTotalTime);
-            DateTime ZeroDate = DateTime.Parse("1899-12-30 00:00:00");
+            DateTimeOffset ConvertedTotalTime = DateTime.FromOADate(RawTotalTime);
+            DateTimeOffset ZeroDate = Timekeeper.StringToDate("1899-12-30 00:00:00");
             Line.TotalTime = ConvertedTotalTime.Subtract(ZeroDate);
 
             return Line;
@@ -567,17 +567,17 @@ namespace Timekeeper.Classes
                 //------------------------------------------
 
                 //DateTime Entry
-                DateTime BaseDate = DateTime.Parse(EntryDate);
-                Entry.StartTime = DateTime.Parse(EntryDate + " " + EntryStartTime);
+                DateTimeOffset BaseDate = Timekeeper.StringToDate(EntryDate);
+                Entry.StartTime = Timekeeper.StringToDate(EntryDate + " " + EntryStartTime);
                 if (EntryEndTime != "") {
                     if (EntryEndTime.CompareTo(EntryStartTime) < 0) {
                         // Our end time went into the next day, 
                         // so bump the base date by one, then
                         // calculate end time from there...
                         BaseDate.AddDays(1);
-                        Entry.EndTime = DateTime.Parse(BaseDate.ToShortDateString() + " " + EntryEndTime);
+                        Entry.EndTime = Timekeeper.StringToDate(BaseDate.DateTime.ToShortDateString() + " " + EntryEndTime);
                     } else {
-                        Entry.EndTime = DateTime.Parse(EntryDate + " " + EntryEndTime);
+                        Entry.EndTime = Timekeeper.StringToDate(EntryDate + " " + EntryEndTime);
                     }
                 } else {
                     Entry.EndTime = Entry.StartTime;
@@ -630,14 +630,14 @@ namespace Timekeeper.Classes
         public string TaskName;
         public bool IsOfficial;
         public bool isActive;
-        public DateTime CreateTime;
+        public DateTimeOffset CreateTime;
     }
 
     //----------------------------------------------------------------------
 
     public struct Timekeeper1Bucket
     {
-        public DateTime TaskDate;
+        public DateTimeOffset TaskDate;
         public long TaskId;
         public TimeSpan TotalTime;
     }
@@ -646,8 +646,8 @@ namespace Timekeeper.Classes
 
     public struct Timekeeper1Entry
     {
-        public DateTime StartTime;
-        public DateTime EndTime;
+        public DateTimeOffset StartTime;
+        public DateTimeOffset EndTime;
         public string TaskName;
         public string Memo;
         public bool Succeeded;

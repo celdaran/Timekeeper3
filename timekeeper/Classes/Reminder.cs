@@ -104,7 +104,7 @@ namespace Timekeeper.Classes
         public bool Save()
         {
             bool Saved = false;
-            string DbTimeStamp = Common.Now();
+            string DbTimeStamp = Timekeeper.DateForDatabase();
 
             try {
                 Row Reminder = new Row();
@@ -132,14 +132,14 @@ namespace Timekeeper.Classes
                     this.ReminderId = this.Database.Insert("Reminder", Reminder);
                     if (this.ReminderId > 0) {
                         Saved = true;
-                        this.CreateTime = DateTimeOffset.Parse(DbTimeStamp);
+                        this.CreateTime = Timekeeper.StringToDate(DbTimeStamp);
                         this.ModifyTime = this.CreateTime;
                     }
                 } else {
                     // existing row
                     if (this.Database.Update("Reminder", Reminder, "ReminderId", this.ReminderId) == 1) {
                         Saved = true;
-                        this.ModifyTime = DateTimeOffset.Parse(DbTimeStamp);
+                        this.ModifyTime = Timekeeper.StringToDate(DbTimeStamp);
                     }
                 }
 

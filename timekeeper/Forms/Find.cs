@@ -457,8 +457,8 @@ namespace Timekeeper.Forms
                     JournalEntry["ProjectName"],
                     JournalEntry["ActivityId"],
                     JournalEntry["ActivityName"],
-                    JournalEntry["StartTime"].ToString(Options.Advanced_DateTimeFormat),
-                    JournalEntry["StopTime"].ToString(Options.Advanced_DateTimeFormat),
+                    Timekeeper.DateForDisplay(JournalEntry["StartTime"]),
+                    Timekeeper.DateForDisplay(JournalEntry["StopTime"]),
                     Timekeeper.FormatSeconds(JournalEntry["Seconds"]),
                     JournalEntry["Memo"],
                     JournalEntry["LocationId"],
@@ -505,7 +505,7 @@ namespace Timekeeper.Forms
 
                 NotebookResultsGrid.Rows.Add(
                     NotebookEntry["NotebookId"],
-                    NotebookEntry["NotebookEntryTime"].ToString(Options.Advanced_DateTimeFormat),
+                    Timekeeper.DateForDisplay(NotebookEntry["NotebookEntryTime"]),
                     NotebookEntry["NotebookMemo"],
                     NotebookEntry["NotebookLocationId"],
                     NotebookEntry["NotebookLocationName"],

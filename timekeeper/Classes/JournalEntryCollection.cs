@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,8 +87,7 @@ namespace Timekeeper.Classes
             string query = String.Format(@"
                 select count(*) as Count
                 from Journal
-                where datetime(StartTime, 'utc') = datetime('{0}', 'utc')",
-            dateTime.DateTime.ToString(Common.UTC_DATETIME_FORMAT));
+                where StartTime = '{0}'", Timekeeper.DateForDatabase(dateTime));
             Row Row = this.Database.SelectRow(query);
             return Row["Count"] > 0;
         }
@@ -98,7 +97,7 @@ namespace Timekeeper.Classes
         private long TodaySeconds()
         {
             string Today = DateTime.Today.ToString(Common.DATE_FORMAT);
-            string Midnight = "00:00:00"; // TKT #1255 here?
+            string Midnight = "00:00:00"; // FIXME: #1255 ISSUE HERE
 
             string query = String.Format(@"
                 select sum(Seconds) as TodaySeconds
@@ -153,20 +152,20 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public DateTime PreviousDay()
+        public DateTimeOffset PreviousDay()
         {
-            DateTime PreviousDay;
+            DateTimeOffset PreviousDay;
 
             string Query = @"
-                select distinct strftime('%Y-%m-%d', datetime(StartTime, 'localtime')) as Date 
+                select distinct strftime('%Y-%m-%d', StartTime) as Date 
                 from Journal 
                 order by Date desc";
             Table Rows = Timekeeper.Database.Select(Query);
 
             if (Rows.Count > 1) {
-                PreviousDay = DateTime.Parse(Rows[1]["Date"]);
+                PreviousDay = DateTimeOffset.Parse(Rows[1]["Date"]);
             } else {
-                PreviousDay = DateTime.Now;
+                PreviousDay = Timekeeper.LocalNow;
             }
 
             return PreviousDay;
@@ -174,18 +173,18 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public DateTime FirstDay()
+        public DateTimeOffset FirstDay()
         {
-            DateTime FirstDay;
+            DateTimeOffset FirstDay;
 
             string Query = @"
-                select min(datetime(StartTime, 'localtime')) as FirstDate 
+                select min(StartTime) as FirstDate 
                 from Journal";
             Row Row = Timekeeper.Database.SelectRow(Query);
             if (Row["FirstDate"] == null) {
-                FirstDay = DateTime.Now;
+                FirstDay = Timekeeper.LocalNow;
             } else {
-                FirstDay = DateTime.Parse(Row["FirstDate"]);
+                FirstDay = DateTimeOffset.Parse(Row["FirstDate"]);
             }
 
             return FirstDay;
@@ -193,18 +192,18 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public DateTime LastDay()
+        public DateTimeOffset LastDay()
         {
-            DateTime LastDay;
+            DateTimeOffset LastDay;
 
             string Query = @"
-                select max(datetime(StartTime, 'localtime')) as LastDate 
+                select max(StartTime) as LastDate 
                 from Journal";
             Row Row = Timekeeper.Database.SelectRow(Query);
             if (Row["LastDate"] == null) {
-                LastDay = DateTime.Now;
+                LastDay = Timekeeper.LocalNow;
             } else {
-                LastDay = DateTime.Parse(Row["LastDate"]);
+                LastDay = DateTimeOffset.Parse(Row["LastDate"]);
             }
 
             return LastDay;

@@ -24,7 +24,7 @@ namespace Timekeeper.Classes
         // Public Methods
         //----------------------------------------------------------------------
 
-        new public List<Classes.Project> Fetch(long parentId, bool showHidden, DateTime showHiddenSince)
+        new public List<Classes.Project> Fetch(long parentId, bool showHidden, DateTimeOffset showHiddenSince)
         {
             Table Table = base.GetItems(parentId, showHidden, showHiddenSince);
 

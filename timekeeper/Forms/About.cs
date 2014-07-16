@@ -39,7 +39,7 @@ namespace Timekeeper
 
                 if (Info["FileOpened"]) {
                     string Upgraded;
-                    DateTimeOffset t = Info["Upgraded"];
+                    DateTime t = Info["Upgraded"];
                     if (t.Year == 1) {
                         Upgraded = "Never";
                     } else {

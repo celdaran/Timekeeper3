@@ -51,7 +51,7 @@ namespace Timekeeper.Forms
 
         // Timer properties
         private bool timerRunning = false;
-        private DateTime timerLastRun;
+        private DateTimeOffset timerLastRun;
         private long ElapsedSinceStart;
         private long ElapsedProjectToday;
         private long ElapsedActivityToday;
@@ -987,9 +987,9 @@ namespace Timekeeper.Forms
             Message4 = String.Format("Timekeeper.DateForDatabase(+5M) = {0}", Convert3);
             this.MemoEditor.Text += "\n" + Message4;
 
-            DateTime Revert1 = Timekeeper.StringToDate(Convert1);
-            DateTime Revert2 = Timekeeper.StringToDate(Convert2);
-            DateTime Revert3 = Timekeeper.StringToDate(Convert3);
+            DateTimeOffset Revert1 = Timekeeper.StringToDate(Convert1);
+            DateTimeOffset Revert2 = Timekeeper.StringToDate(Convert2);
+            DateTimeOffset Revert3 = Timekeeper.StringToDate(Convert3);
 
             Message4 = String.Format("Timekeeper.StringToDate(Convert1) = {0}", Timekeeper.DateForDisplay(Revert1));
             this.MemoEditor.Text += "\n\n" + Message4;
@@ -1020,7 +1020,7 @@ namespace Timekeeper.Forms
             Message4 = String.Format("Timekeeper.StringToDate(Convert3) = {0}", Timekeeper.DateForDisplay(Revert3));
             this.MemoEditor.Text += "\n" + Message4;
 
-            DateTime SpringDstTest = Timekeeper.StringToDate("2014-03-08 17:00:00");
+            DateTimeOffset SpringDstTest = Timekeeper.StringToDate("2014-03-08 17:00:00");
             this.MemoEditor.Text += "\n";
             for (int i = 0; i < 24; i++) {
                 Message4 = String.Format("Timekeeper.DateForDatabase() = {0}", Timekeeper.DateForDatabase(SpringDstTest));
@@ -1028,7 +1028,7 @@ namespace Timekeeper.Forms
                 SpringDstTest = SpringDstTest.AddHours(1);
             }
 
-            DateTime FallDstTest = Timekeeper.StringToDate("2014-11-02 17:00:00");
+            DateTimeOffset FallDstTest = Timekeeper.StringToDate("2014-11-02 17:00:00");
             this.MemoEditor.Text += "\n";
             for (int i = 0; i < 24; i++) {
                 Message4 = String.Format("Timekeeper.DateForDatabase() = {0}", Timekeeper.DateForDatabase(FallDstTest));

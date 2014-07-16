@@ -116,7 +116,7 @@ namespace Timekeeper.Classes
                         }
                     }
 
-                    View["ModifyTime"] = Common.Now();
+                    View["ModifyTime"] = Timekeeper.DateForDatabase();
                     Timekeeper.Debug("About to update " + this.TableName + "Id: " + this.Id.ToString());
                     if (this.Database.Update(this.TableName, View, this.TableName + "Id", this.Id) == 1) {
                         ModifyTime = Convert.ToDateTime(View["ModifyTime"]);

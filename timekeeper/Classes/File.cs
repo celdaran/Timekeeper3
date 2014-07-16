@@ -38,7 +38,7 @@ namespace Timekeeper
         // (nor were the DDL statements stored as resources or under version 
         // control).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.8.1";
+        public const string SCHEMA_VERSION = "3.0.9.0";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
@@ -276,7 +276,7 @@ namespace Timekeeper
             if (Query != null) {
                 // FIXME: Consider removing positional arguments with named arguments
                 // The below implementation gets us by, but doesn't feel right at all.
-                Query = String.Format(Query, Common.Now(), UUID.Get(), UUID.Get(), SCHEMA_VERSION);
+                Query = String.Format(Query, Timekeeper.DateForDatabase(), UUID.Get(), UUID.Get(), SCHEMA_VERSION);
                 long status = Database.Exec(Query);
                 Timekeeper.Debug(ResourceName + " status was " + status.ToString());
             } else {
@@ -315,8 +315,8 @@ namespace Timekeeper
         {
             Row Location = new Row();
 
-            Location["CreateTime"] = Common.Now();
-            Location["ModifyTime"] = Common.Now();
+            Location["CreateTime"] = Timekeeper.DateForDatabase();
+            Location["ModifyTime"] = Timekeeper.DateForDatabase();
             Location["LocationGuid"] = UUID.Get();
             Location["Name"] = options.LocationName;
             Location["Description"] = options.LocationDescription;

@@ -170,8 +170,8 @@ namespace Timekeeper.Classes
                     string Query = @"
                         select
                             j.JournalId,
-                            datetime(j.StartTime, 'localtime') as StartTime,
-                            datetime(j.StopTime, 'localtime') as StopTime,
+                            j.StartTime,
+                            j.StopTime,
                             j.Seconds,
                             j.Memo,
                             j.ProjectId, p.Name as ProjectName,
@@ -205,8 +205,8 @@ namespace Timekeeper.Classes
                 string Query = @"
                     select
                         j.JournalId,
-                        datetime(j.StartTime, 'localtime') as StartTime,
-                        datetime(j.StopTime, 'localtime') as StopTime,
+                        j.StartTime,
+                        j.StopTime,
                         j.Seconds,
                         j.Memo,
                         j.ProjectId, 'No Project' as ProjectName,
@@ -290,36 +290,37 @@ namespace Timekeeper.Classes
         {
             // select JournalId from Journal where StartTime < '2015-07-07T08:48:28-05:00' order by StartTime desc limit 1;
 
-            string StartSearchAt = Common.Now();
+            string StartSearchAt = Timekeeper.DateForDatabase();
+
             switch (mode) {
                 case BrowseByMode.Entry:
-                    StartSearchAt = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
+                    StartSearchAt = Timekeeper.DateForDatabase(this.StartTime);
                     break;
 
                 case BrowseByMode.Day:
                     DateTimeOffset Yesterday = this.StartTime.AddDays(-1);
                     // FIXME: need to figure out how to handle time zones
-                    StartSearchAt = Yesterday.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
+                    StartSearchAt = Yesterday.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
                     break;
 
                 case BrowseByMode.Week:
                     /*
                     int Delta = DayOfWeek.Monday - this.StartTime.DayOfWeek;
                     Delta = 7 - Math.Abs(Delta);
-                    DateTimeOffset LastWeek = this.StartTime.AddDays(-Delta);
+                    DateTime LastWeek = this.StartTime.AddDays(-Delta);
                     */
                     DateTimeOffset LastWeek = this.StartTime.AddDays(-7);
-                    StartSearchAt = LastWeek.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
+                    StartSearchAt = LastWeek.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
                     break;
 
                 case BrowseByMode.Month:
                     DateTimeOffset LastMonth = this.StartTime.AddMonths(-1);
-                    StartSearchAt = LastMonth.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
+                    StartSearchAt = LastMonth.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
                     break;
 
                 case BrowseByMode.Year:
                     DateTimeOffset LastYear = this.StartTime.AddYears(-1);
-                    StartSearchAt = LastYear.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
+                    StartSearchAt = LastYear.ToString(Common.DATE_FORMAT) + "T23:59:59-05:00";
                     break;
             }
 
@@ -364,17 +365,18 @@ namespace Timekeeper.Classes
             // FIXME: This is another area where a user-definable midnight will need to be considered.
             */
 
-            string StartSearchAt = Common.Now();
+            string StartSearchAt = Timekeeper.DateForDatabase();
+
             switch (mode) {
                 case BrowseByMode.Entry:
-                    StartSearchAt = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
+                    StartSearchAt = Timekeeper.DateForDatabase(this.StartTime);
                     break;
 
                 case BrowseByMode.Day:
                     DateTimeOffset Tomorrow = this.StartTime.AddDays(1);
                     // FIXME: need to figure out how to handle time zones
                     //StartSearchAt = tmp.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:53-05:00";
-                    StartSearchAt = Tomorrow.DateTime.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    StartSearchAt = Tomorrow.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
                     break;
 
                 case BrowseByMode.Week:
@@ -384,21 +386,21 @@ namespace Timekeeper.Classes
                     // versus jump to the start of the next day/week/month/year
                     int Delta = DayOfWeek.Monday - this.StartTime.DayOfWeek;
                     Delta = 7 - Math.Abs(Delta);
-                    DateTimeOffset NextWeek = this.StartTime.AddDays(Delta);
+                    DateTime NextWeek = this.StartTime.AddDays(Delta);
                     */
                     DateTimeOffset NextWeek = this.StartTime.AddDays(7);
-                    StartSearchAt = NextWeek.DateTime.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    StartSearchAt = NextWeek.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
                     break;
 
                 case BrowseByMode.Month:
                     DateTimeOffset NextMonth = this.StartTime.AddMonths(1);
                     //StartSearchAt = NextMonth.DateTime.ToString("yyyy-MM-01") + "T00:00:00-05:00";
-                    StartSearchAt = NextMonth.DateTime.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    StartSearchAt = NextMonth.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
                     break;
 
                 case BrowseByMode.Year:
                     DateTimeOffset NextYear = this.StartTime.AddYears(1);
-                    StartSearchAt = NextYear.DateTime.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    StartSearchAt = NextYear.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
                     break;
             }
 
@@ -532,7 +534,7 @@ namespace Timekeeper.Classes
             Row Journal = new Row();
 
             try {
-                string Now = Common.Now();
+                string Now = Timekeeper.DateForDatabase();
 
                 if (mode == Mode.Insert) {
                     Journal["CreateTime"] = Now;
@@ -540,12 +542,12 @@ namespace Timekeeper.Classes
                 }
                 Journal["ModifyTime"] = Now;
 
-                Journal["ProjectId"] = ProjectId;
-                Journal["ActivityId"] = ActivityId;
-                Journal["StartTime"] = StartTime.ToString(Common.UTC_DATETIME_FORMAT);
-                Journal["StopTime"] = StopTime.ToString(Common.UTC_DATETIME_FORMAT);
+                Journal["StartTime"] = Timekeeper.DateForDatabase(StartTime);
+                Journal["StopTime"] = Timekeeper.DateForDatabase(StopTime);
                 Journal["Seconds"] = Seconds;
                 Journal["Memo"] = Memo;
+                Journal["ProjectId"] = ProjectId;
+                Journal["ActivityId"] = ActivityId;
                 Journal["LocationId"] = LocationId;
                 Journal["CategoryId"] = CategoryId;
 
@@ -571,8 +573,8 @@ namespace Timekeeper.Classes
                 Journal["JournalId"] = 0;
                 Journal["ProjectId"] = 0;
                 Journal["ActivityId"] = 0;
-                Journal["StartTime"] = DateTimeOffset.Now;
-                Journal["StopTime"] = DateTimeOffset.Now;
+                Journal["StartTime"] = Timekeeper.LocalNow;
+                Journal["StopTime"] = Timekeeper.LocalNow;
                 Journal["Seconds"] = 0;
                 Journal["Memo"] = "";
                 Journal["LocationId"] = 0;
@@ -584,8 +586,8 @@ namespace Timekeeper.Classes
                 Journal["LocationName"] = "";
                 Journal["CategoryName"] = "";
 
-                Journal["CreateTime"] = DateTimeOffset.Now;
-                Journal["ModifyTime"] = DateTimeOffset.Now;
+                Journal["CreateTime"] = Timekeeper.LocalNow;
+                Journal["ModifyTime"] = Timekeeper.LocalNow;
                 Journal["JournalGuid"] = UUID.Get();
 
                 SetAttributes(Journal);
@@ -604,11 +606,13 @@ namespace Timekeeper.Classes
                 Type t = Journal["StartTime"].GetType();
 
                 if (t.FullName == "System.String") {
-                    Journal["StartTime"] = DateTimeOffset.Parse(Journal["StartTime"]);
-                    Journal["StopTime"] = DateTimeOffset.Parse(Journal["StopTime"]);
+                    Journal["StartTime"] = Timekeeper.StringToDate(Journal["StartTime"]);
+                    Journal["StopTime"] = Timekeeper.StringToDate(Journal["StopTime"]);
+                } else {
+                    // Crap, and now I'm back to this
                     /*
-                    Journal["StartTime"] = DateTimeOffset.SpecifyKind(Journal["StartTime"], DateTimeKind.Local);
-                    Journal["StopTime"] = DateTimeOffset.SpecifyKind(Journal["StopTime"], DateTimeKind.Local);
+                    Journal["StartTime"] = Timekeeper.LocalTime(Journal["StartTime"]);
+                    Journal["StopTime"] = Timekeeper.LocalTime(Journal["StopTime"]);
                     */
                 }
 

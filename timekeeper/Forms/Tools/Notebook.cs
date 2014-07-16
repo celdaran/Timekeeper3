@@ -272,7 +272,8 @@ namespace Timekeeper.Forms.Tools
 
             try {
                 this.MemoEditor.Text = entry.Memo;
-                this.EntryDateTime.Value = entry.EntryTime.DateTime == DateTime.MinValue ? DateTime.Now : entry.EntryTime.DateTime;
+                this.EntryDateTime.Value = entry.EntryTime ==
+                    DateTimeOffset.MinValue ? Timekeeper.LocalNow.DateTime : entry.EntryTime.DateTime;
                 this.ToolbarNotebookEntryId.Text = entry.NotebookId.ToString();
 
                 // FIXME: Serious copy/paste problems here.

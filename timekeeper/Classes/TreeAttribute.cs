@@ -119,7 +119,7 @@ namespace Timekeeper.Classes
         // Property-Like Methods
         //---------------------------------------------------------------------
 
-        public DateTime DateLastUsed()
+        public DateTimeOffset DateLastUsed()
         {
             string Query = String.Format(@"
                 select max(StopTime) as DateLastUsed
@@ -128,9 +128,9 @@ namespace Timekeeper.Classes
                 this.IdColumnName, this.ItemId);
             Row Row = Database.SelectRow(Query);
             if (Row["DateLastUsed"] != null) {
-                return DateTime.Parse(Row["DateLastUsed"]);
+                return Timekeeper.StringToDate(Row["DateLastUsed"]);
             } else {
-                return DateTime.Now;
+                return Timekeeper.LocalNow;
             }
         }
 
@@ -166,13 +166,13 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public List<DateTime> DaysUsed()
+        public List<DateTimeOffset> DaysUsed()
         {
             Table Rows = FetchDatesUsed();
 
-            List<DateTime> Days = new List<DateTime>();
+            List<DateTimeOffset> Days = new List<DateTimeOffset>();
             foreach (Row Row in Rows) {
-                Days.Add(DateTime.Parse(Row["StartDate"]));
+                Days.Add(DateTimeOffset.Parse(Row["StartDate"]));
             }
 
             return Days;
@@ -278,8 +278,8 @@ namespace Timekeeper.Classes
 
             Row Row = new Row();
 
-            Row["CreateTime"] = Common.Now();
-            Row["ModifyTime"] = Common.Now();
+            Row["CreateTime"] = Timekeeper.DateForDatabase();
+            Row["ModifyTime"] = Timekeeper.DateForDatabase();
             Row[this.TableName + "Guid"] = UUID.Get();
 
             Row["Name"] = this.Name;
@@ -329,7 +329,7 @@ namespace Timekeeper.Classes
 
         public TimeSpan Elapsed()
         {
-            DateTime Now = DateTime.Now;
+            DateTimeOffset Now = Timekeeper.LocalNow;
             return new TimeSpan(Now.Ticks - StartTime.Ticks);
         }
 
@@ -337,7 +337,7 @@ namespace Timekeeper.Classes
 
         public TimeSpan ElapsedToday()
         {
-            DateTime Now = DateTime.Now;
+            DateTimeOffset Now = Timekeeper.LocalNow;
             Now = Now.AddSeconds(this.SecondsElapsedToday);
             return new TimeSpan(Now.Ticks - StartTime.Ticks);
         }
@@ -346,7 +346,7 @@ namespace Timekeeper.Classes
 
         public string ElapsedTodayFormatted()
         {
-            DateTime midnight = DateTime.Parse("00:00:00");
+            DateTimeOffset midnight = DateTimeOffset.Parse("00:00:00"); // FIXME: MIDNIGHT ISSUE AGAIN
             midnight = midnight.AddSeconds(this.SecondsElapsedToday);
             TimeSpan ts = new TimeSpan(midnight.Ticks - 0);
             return Timekeeper.FormatTimeSpan(ts);
@@ -466,7 +466,7 @@ namespace Timekeeper.Classes
         {
             Row Row = new Row();
             Row["Description"] = newDescription;
-            Row["ModifyTime"] = Common.Now();
+            Row["ModifyTime"] = Timekeeper.DateForDatabase();
             long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
@@ -476,7 +476,7 @@ namespace Timekeeper.Classes
                 // more than bothering me. This is likely a Timekeeper 4.0
                 // type project, but I'd really like to figure out a better
                 // ORM for Timekeeper. This method is fraught with issues.
-                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 return Timekeeper.FAILURE;
@@ -510,12 +510,12 @@ namespace Timekeeper.Classes
 
             Row Row = new Row();
             Row["Name"] = newName;
-            Row["ModifyTime"] = Common.Now();
+            Row["ModifyTime"] = Timekeeper.DateForDatabase();
             long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 this.Name = newName;
-                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 return Timekeeper.FAILURE;
@@ -529,13 +529,13 @@ namespace Timekeeper.Classes
             // Update database
             Row Row = new Row();
             Row["SortOrderNo"] = sortOrderNo;
-            Row["ModifyTime"] = Common.Now();
+            Row["ModifyTime"] = Timekeeper.DateForDatabase();
             long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 // Update instance
                 this.SortOrderNo = sortOrderNo;
-                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 // Otherwise, failure
@@ -550,14 +550,14 @@ namespace Timekeeper.Classes
             // Update database
             Row Row = new Row();
             Row["ParentId"] = itemId;
-            Row["ModifyTime"] = Common.Now();
+            Row["ModifyTime"] = Timekeeper.DateForDatabase();
             Row["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName, itemId);
             long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 // Update instance
                 this.ParentId = itemId;
-                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                 this.SortOrderNo = Row["SortOrderNo"];
                 return Timekeeper.SUCCESS;
             } else {
@@ -640,7 +640,7 @@ namespace Timekeeper.Classes
 
                 // fetch seconds from the db for this node
                 string today = DateTime.Today.ToString(Common.DATE_FORMAT);
-                string midnight = "00:00:00";
+                string midnight = "00:00:00";  // FIXME: more midnight issues
 
                 string query = String.Format(@"
                     select sum(Seconds) as Seconds
@@ -674,11 +674,12 @@ namespace Timekeeper.Classes
             if (this.IsFolder) {
                 Row Row = new Row();
                 Row["IsFolderOpened"] = opened ? 1 : 0;
-                Row["ModifyTime"] = Common.Now();
+                Row["ModifyTime"] = Timekeeper.DateForDatabase();
                 long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
                 if (Count == 1) {
                     this.IsFolderOpened = opened;
+                     this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                 }
             }
         }
@@ -728,7 +729,7 @@ namespace Timekeeper.Classes
             Row Row = new Row();
             Row[BooleanColumnName] = isSet ? 1 : 0;
             if (isSet) {
-                Row[TimeColumnName] = Common.Now();
+                Row[TimeColumnName] = Timekeeper.DateForDatabase();
             } else {
                 Row[TimeColumnName] = null;
             }

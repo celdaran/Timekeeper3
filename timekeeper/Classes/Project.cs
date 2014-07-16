@@ -38,7 +38,7 @@ namespace Timekeeper.Classes
             } else {
                 Row Project = new Row();
                 Project["ExternalProjectNo"] = externalProjectNo;
-                Project["ModifyTime"] = Common.Now();
+                Project["ModifyTime"] = Timekeeper.DateForDatabase();
                 long Count = Database.Update(this.TableName, Project, this.IdColumnName, this.ItemId);
 
                 if (Count == 1) {

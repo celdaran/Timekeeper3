@@ -170,7 +170,7 @@ namespace Timekeeper.Classes
             }
 
             if (scheduledEvent.Schedule.DurationTypeId == 3) {
-                if (DateTimeOffset.Now >= scheduledEvent.Schedule.StopAfterTime) {
+                if (Timekeeper.LocalNow >= scheduledEvent.Schedule.StopAfterTime) {
                     Timekeeper.Scheduler.UnscheduleJob(context.Trigger.Key);
                     Timekeeper.Debug("End date/time passed. Job " + scheduledEvent.Event.Id.ToString() + " cancelled.");
                 }

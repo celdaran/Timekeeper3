@@ -859,7 +859,7 @@ namespace Timekeeper.Classes
                 Row Options = new Row();
 
                 Options["Value"] = columnValue;
-                Options["ModifyTime"] = Common.Now();
+                Options["ModifyTime"] = Timekeeper.DateForDatabase();
 
                 this.Database.Update("Options", Options, "Key", columnName);
             }

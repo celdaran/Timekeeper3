@@ -294,7 +294,7 @@ namespace Timekeeper.Forms.Shared
                         break;
                     case 3:
                         StopAfterTimeRadioButton.Checked = true;
-                        StopAfterTimeValue.Value = CurrentSchedule.StopAfterTime.LocalDateTime;
+                        StopAfterTimeValue.Value = CurrentSchedule.StopAfterTime.DateTime;
                         break;
                 }
 
@@ -768,7 +768,6 @@ namespace Timekeeper.Forms.Shared
 
                 SchedulePreview.Text += NextEvent.Value.LocalDateTime.ToString(DateTimeFormat) + "\n";
                 CurrentEvent = (DateTimeOffset)NextEvent;
-
             }
         }
 

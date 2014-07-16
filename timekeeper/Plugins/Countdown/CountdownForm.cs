@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -78,7 +78,7 @@ namespace Timekeeper.Plugins
 
         private void SecondTimer_Tick(object sender, EventArgs e)
         {
-            DateTime Now = DateTime.Now;
+            DateTime Now = Timekeeper.LocalNow;
             TimeSpan Delta;
 
             if (TargetTime.CompareTo(Now) > 0) {
@@ -182,7 +182,7 @@ namespace Timekeeper.Plugins
                 Delta = new TimeSpan(Hours, Minutes, Seconds);
             }
 
-            TargetTime = DateTime.Now.Add(Delta);
+            TargetTime = Timekeeper.LocalNow.Add(Delta);
 
             Display.BackColor = SystemColors.Control;
             ToolStrip.Focus();

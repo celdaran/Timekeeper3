@@ -67,8 +67,8 @@ namespace Timekeeper.Forms.Reports
                 ProgressBar.Visible = true;
 
                 Classes.JournalEntry PriorEntry = new Classes.JournalEntry();
-                PriorEntry.StartTime = DateTimeOffset.MinValue;
-                PriorEntry.StopTime = DateTimeOffset.MinValue;
+                PriorEntry.StartTime = DateTime.MinValue;
+                PriorEntry.StopTime = DateTime.MinValue;
 
                 IssueCounter = 0;
                 DatabaseCheckResultsGrid.Rows.Clear();

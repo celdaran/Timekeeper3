@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -103,12 +103,12 @@ namespace Timekeeper.Forms.Tools
 
                 if (CurrentEvent.Id == 0) {
                     EventGroupList.SelectedIndex = 0;
-                    EventNextOccurrence.Value = DateTime.Now;
+                    EventNextOccurrence.Value = Timekeeper.LocalNow.DateTime;
                 } else {
                     EventName.Text = CurrentEvent.Name;
                     EventDescription.Text = CurrentEvent.Description;
                     EventGroupList.SelectedIndex = EventGroupList.FindStringExact(CurrentEvent.Group.Name);
-                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime.LocalDateTime;
+                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime.DateTime;
                 }
             }
             catch (Exception x) {
@@ -162,7 +162,7 @@ namespace Timekeeper.Forms.Tools
                     CurrentEvent.ScheduleId = ScheduleForm.CurrentSchedule.ScheduleId;
                     CurrentEvent.Schedule = new Classes.Schedule(CurrentEvent.ScheduleId);
                     CurrentEvent.NextOccurrenceTime = ScheduleForm.ExternalEventNextOccurrence;
-                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime.LocalDateTime;
+                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime.DateTime;
                     break;
                 case DialogResult.Cancel:
                     // Ingore this

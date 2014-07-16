@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -66,7 +66,7 @@ namespace Timekeeper.Classes
         {
             Row ListAttribute = new Row();
 
-            string Now = Common.Now();
+            string Now = Timekeeper.DateForDatabase();
 
             ListAttribute["ModifyTime"] = Now;
             ListAttribute["DeletedTime"] = Now;
@@ -74,8 +74,8 @@ namespace Timekeeper.Classes
 
             if (Database.Update(this.TableName, ListAttribute, this.IdColumnName, this.Id) > 0) {
 
-                this.ModifyTime = DateTimeOffset.Parse(Now);
-                this.DeletedTime = DateTimeOffset.Parse(Now);
+                this.ModifyTime = Timekeeper.StringToDate(Now);
+                this.DeletedTime = Timekeeper.StringToDate(Now);
                 this.IsDeleted = true;
 
                 return true;
@@ -164,7 +164,7 @@ namespace Timekeeper.Classes
                 // System-generated Values
                 //--------------------------------
 
-                string Now = Common.Now();
+                string Now = Timekeeper.DateForDatabase();
 
                 ListAttribute["ModifyTime"] = Now;
 
@@ -202,7 +202,7 @@ namespace Timekeeper.Classes
                     }
 
                     // Backfill instance with system-generated values
-                    this.CreateTime = DateTimeOffset.Parse(ListAttribute["CreateTime"]);
+                    this.CreateTime = Timekeeper.StringToDate(ListAttribute["CreateTime"]);
                     this.Guid = ListAttribute[this.TableName + "Guid"];
 
                 } else {
@@ -214,12 +214,12 @@ namespace Timekeeper.Classes
                 }
 
                 // More backfilling
-                this.ModifyTime = DateTimeOffset.Parse(ListAttribute["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(ListAttribute["ModifyTime"]);
 
                 if (ListAttribute["HiddenTime"] != null)
-                    this.HiddenTime = DateTimeOffset.Parse(ListAttribute["HiddenTime"]);
+                    this.HiddenTime = Timekeeper.StringToDate(ListAttribute["HiddenTime"]);
                 if (ListAttribute["DeletedTime"] != null)
-                    this.DeletedTime = DateTimeOffset.Parse(ListAttribute["DeletedTime"]);
+                    this.DeletedTime = Timekeeper.StringToDate(ListAttribute["DeletedTime"]);
 
                 return true;
             }

@@ -29,7 +29,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public List<Classes.TreeAttribute> Fetch(long parentId, bool showHidden, DateTime showHiddenSince)
+        public List<Classes.TreeAttribute> Fetch(long parentId, bool showHidden, DateTimeOffset showHiddenSince)
         {
             Table Table = this.GetItems(parentId, showHidden, showHiddenSince);
 
@@ -91,7 +91,7 @@ namespace Timekeeper.Classes
         // Protected Methods
         //---------------------------------------------------------------------
 
-        protected Table GetItems(long parentId, bool showHidden, DateTime showHiddenSince)
+        protected Table GetItems(long parentId, bool showHidden, DateTimeOffset showHiddenSince)
         {
             if (OrderByClause == "") {
                 OrderByClause = "CreateTime";
@@ -100,7 +100,7 @@ namespace Timekeeper.Classes
             string HiddenQualifier = "";
             if (showHidden) {
                 string HiddenSince = showHiddenSince.ToString(Common.UTC_DATETIME_FORMAT);
-                HiddenQualifier = "and ((IsHidden = 0) or (IsHidden = 1 and HiddenTime > datetime('" + HiddenSince + "')))";
+                HiddenQualifier = "and ((IsHidden = 0) or (IsHidden = 1 and HiddenTime > '" + HiddenSince + "'))";
             } else {
                 HiddenQualifier = "and IsHidden = 0";
             }

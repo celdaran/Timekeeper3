@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,7 +26,7 @@ namespace Timekeeper.Forms.Tools
         private void btnStart_Click(object sender, EventArgs e)
         {
             if (timer.Enabled) {
-                endTime = DateTime.Now;
+                endTime = Timekeeper.LocalNow.DateTime;
                 accumulated += endTime.Subtract(startTime);
                 btnStart.Text = "&Start";
                 timer.Enabled = false;
@@ -35,7 +35,7 @@ namespace Timekeeper.Forms.Tools
             }
             else
             {
-                startTime = DateTime.Now;
+                startTime = Timekeeper.LocalNow.DateTime;
                 btnStart.Text = "&Stop";
                 timer.Enabled = true;
                 btnReset.Enabled = false;
@@ -53,13 +53,13 @@ namespace Timekeeper.Forms.Tools
 
         private void btnSplit_Click(object sender, EventArgs e)
         {
-            string[] row = {wDisplay.Text, Common.Now()};
+            string[] row = {wDisplay.Text, Timekeeper.DateForDisplay()};
             wSplits.Rows.Add(row);
         }
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            now = DateTime.Now;
+            now = Timekeeper.LocalNow.DateTime;
             ts = now.Subtract(startTime);
             ts = ts.Add(accumulated);
             wDisplay.Text = string.Format(

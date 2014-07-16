@@ -188,8 +188,8 @@ namespace Timekeeper.Classes
         {
             Row item = this.InitRow();
 
-            item["CreateTime"] = Common.Now();
-            item["ModifyTime"] = Common.Now();
+            item["CreateTime"] = Timekeeper.DateForDatabase();
+            item["ModifyTime"] = Timekeeper.DateForDatabase();
 
             // On insert, override any previously set SortOrderNo
             item["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName);
@@ -197,8 +197,8 @@ namespace Timekeeper.Classes
             this.Id = this.Database.Insert(this.TableName, item);
             if (this.Id > 0) {
                 Timekeeper.Debug("Just inserted " + this.TableName + "Id: " + this.Id.ToString());
-                CreateTime = DateTimeOffset.Parse(item["CreateTime"]);
-                ModifyTime = DateTimeOffset.Parse(item["ModifyTime"]);
+                CreateTime = Timekeeper.StringToDate(item["CreateTime"]);
+                ModifyTime = Timekeeper.StringToDate(item["ModifyTime"]);
                 SortOrderNo = (int)item["SortOrderNo"];
             } else {
                 throw new Exception("Error inserting into " + this.TableName);
@@ -211,11 +211,11 @@ namespace Timekeeper.Classes
         {
             Row item = this.InitRow();
 
-            item["ModifyTime"] = Common.Now();
+            item["ModifyTime"] = Timekeeper.DateForDatabase();
 
             if (this.Database.Update(this.TableName, item, this.TableName + "Id", this.Id) == 1) {
                 Timekeeper.Debug("Just updated " + this.TableName + "Id: " + this.Id.ToString());
-                ModifyTime = DateTimeOffset.Parse(item["ModifyTime"]);
+                ModifyTime = Timekeeper.StringToDate(item["ModifyTime"]);
             } else {
                 throw new Exception("Error updating " + this.TableName);
             }

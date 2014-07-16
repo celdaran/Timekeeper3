@@ -49,7 +49,7 @@ namespace Timekeeper
         public enum Dimension { Project, Activity, Location, Category };
 
         public const string LOCAL_DATETIME_FORMAT = "yyyy'-'MM'-'dd' 'HH':'mm':'ss";
-        public const string UTC_DATETIME_FORMAT = "yyyy'-'MM'-'dd'T'HH':'mm':'ssK";
+        public const string UTC_DATETIME_FORMAT = "yyyy-MM-ddTHH:mm:sszzz";
 
         //---------------------------------------------------------------------
         // Properties
@@ -146,8 +146,8 @@ namespace Timekeeper
             Job.JobDataMap.Add("MainForm", mainForm);
 
             // Determine reminder time
-            DateTime ReminderTime = scheduledEvent.Schedule.ReminderTime(
-                scheduledEvent.Event.NextOccurrenceTime.LocalDateTime,
+            DateTimeOffset ReminderTime = scheduledEvent.Schedule.ReminderTime(
+                scheduledEvent.Event.NextOccurrenceTime,
                 (int)scheduledEvent.Reminder.TimeUnit,
                 (int)scheduledEvent.Reminder.TimeAmount);
 
@@ -163,7 +163,7 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public static ITrigger CreateTrigger(Classes.ScheduledEvent scheduledEvent, DateTime reminderTime, IJobDetail job)
+        public static ITrigger CreateTrigger(Classes.ScheduledEvent scheduledEvent, DateTimeOffset reminderTime, IJobDetail job)
         {
             if (Options.Advanced_Other_DisableScheduler) {
                 return null;
@@ -254,12 +254,12 @@ namespace Timekeeper
 
         public static string DateForDatabase()
         {
-            return DatabaseDateTimeString(DateTime.Now);
+            return DatabaseDateTimeString(Timekeeper.LocalNow);
         }
 
         //---------------------------------------------------------------------
 
-        public static string DateForDatabase(DateTime datetime)
+        public static string DateForDatabase(DateTimeOffset datetime)
         {
             return DatabaseDateTimeString(datetime);
         }
@@ -268,37 +268,64 @@ namespace Timekeeper
 
         public static string DateForDisplay()
         {
-            return UserDateTimeString(DateTime.Now);
+            return UserDateTimeString(Timekeeper.LocalNow);
         }
 
         //---------------------------------------------------------------------
 
-        public static string DateForDisplay(DateTime datetime)
+        public static string DateForDisplay(DateTimeOffset datetime)
         {
             return UserDateTimeString(datetime);
         }
 
         //---------------------------------------------------------------------
 
-        private static string DatabaseDateTimeString(DateTime datetime)
+        private static string DatabaseDateTimeString(DateTimeOffset datetime)
         {
-            datetime = DateTime.SpecifyKind(datetime, DateTimeKind.Local);
             return datetime.ToLocalTime().ToString(Timekeeper.LOCAL_DATETIME_FORMAT);
         }
 
         //---------------------------------------------------------------------
 
-        private static string UserDateTimeString(DateTime datetime)
+        private static string UserDateTimeString(DateTimeOffset datetime)
         {
-            datetime = DateTime.SpecifyKind(datetime, DateTimeKind.Local);
             return datetime.ToLocalTime().ToString(Options.Advanced_DateTimeFormat);
         }
 
         //---------------------------------------------------------------------
 
-        public static DateTime StringToDate(string datetime)
+        public static DateTimeOffset StringToDate(string datetime)
         {
-            return DateTime.SpecifyKind(DateTime.Parse(datetime), DateTimeKind.Local);
+            return DateTimeOffset.Parse(datetime).ToLocalTime();
+            //return DateTime.SpecifyKind(DateTime.Parse(datetime), DateTimeKind.Local);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static DateTimeOffset LocalNow
+        {
+            get {
+                return DateTimeOffset.Now;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        public static DateTime MaxDateTime()
+        {
+            // Why not just use DateTime.MaxValue? Well, I'll tell you. For
+            // some reason when I do, and I store it in the database, it
+            // ends up being '9999-12-31T23:59:59.99-06:00', which is fine
+            // except that this value represents a UTC value in the year
+            // 10000, which is suddenly an invalid date/time. I'm making up
+            // my own MaxDateTime value, because I simply don't have time
+            // to figure out this peculiarity.
+
+            //  UTC version:
+            //return DateTimeOffset.Parse("2999-12-31T23:59:59.99-00:00");
+
+            // Local version:
+            return DateTime.MaxValue;
         }
 
         //---------------------------------------------------------------------
@@ -546,20 +573,6 @@ namespace Timekeeper
             }
         }
 
-        //----------------------------------------------------------------------
-
-        public static DateTimeOffset MaxDateTime()
-        {
-            // Why not just use DateTime.MaxValue? Well, I'll tell you. For
-            // some reason when I do, and I store it in the database, it
-            // ends up being '9999-12-31T23:59:59.99-06:00', which is fine
-            // except that this value represents a UTC value in the year
-            // 10000, which is suddenly an invalid date/time. I'm making up
-            // my own MaxDateTime value, because I simply don't have time
-            // to figure out this peculiarity.
-            return DateTimeOffset.Parse("2999-12-31T23:59:59.99-00:00");
-        }
-
         //---------------------------------------------------------------------
         // Private helpers
         //---------------------------------------------------------------------
@@ -567,7 +580,7 @@ namespace Timekeeper
         private static Log GetLog()
         {
             if (Log == null) {
-                Log = new Technitivity.Toolbox.Log(GetLogPath());
+                Log = new Technitivity.Toolbox.Log(GetLogPath(), Timekeeper.UTC_DATETIME_FORMAT);
                 Log.Level = GetLogLevel(Options.Advanced_Logging_Application);
                 Log.Debug("Log File Opened");
             }

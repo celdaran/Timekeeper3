@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,8 +43,8 @@ namespace Timekeeper.Classes
                 string Query = String.Format(@"select * from {0} order by MetaId", Timekeeper.MetaTableName());
                 Rows = this.Database.Select(Query);
 
-                this.Created = DateTimeOffset.Parse(Rows[0]["Value"]);
-                this.Upgraded = DateTimeOffset.Parse(Rows[1]["Value"]);
+                this.Created = Timekeeper.StringToDate(Rows[0]["Value"]);
+                this.Upgraded = Timekeeper.StringToDate(Rows[1]["Value"]);
                 this.Version = new Version(Rows[2]["Value"]);
                 this.Id = Rows[3]["Value"];
                 this.ProcessId = Convert.ToInt32(Rows[4]["Value"]);

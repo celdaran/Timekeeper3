@@ -36,11 +36,11 @@ namespace Timekeeper.Forms
         {
             try {
                 // Update the control with previous end time
-                DateTime PreviousEndTime = Browser_GetPreviousEndTime();
+                DateTimeOffset PreviousEndTime = Browser_GetPreviousEndTime();
                 if (PreviousEndTime == DateTime.MinValue) {
                     // something went wrong, do nothing
                 } else {
-                    StartTimeSelector.Value = PreviousEndTime;
+                    StartTimeSelector.Value = PreviousEndTime.DateTime;
                 }
 
                 // Recalculate duration
@@ -70,11 +70,11 @@ namespace Timekeeper.Forms
         {
             try {
                 // Set next start date
-                DateTime NextStartTime = Browser_GetNextStartTime();
+                DateTimeOffset NextStartTime = Browser_GetNextStartTime();
                 if (NextStartTime == DateTime.MaxValue) {
-                    StopTimeSelector.Value = DateTime.Now;
+                    StopTimeSelector.Value = Timekeeper.LocalNow.DateTime;
                 } else {
-                    StopTimeSelector.Value = NextStartTime;
+                    StopTimeSelector.Value = NextStartTime.DateTime;
                 }
 
                 // And recalculate duration
@@ -170,7 +170,7 @@ namespace Timekeeper.Forms
                 if (browserEntry.AtBeginning()) {
                     Browser_EnableCloseStartGap(false);
                 } else {
-                    DateTime PreviousEndTime = Browser_GetPreviousEndTime();
+                    DateTimeOffset PreviousEndTime = Browser_GetPreviousEndTime();
                     if (PreviousEndTime == StartTimeSelector.Value) {
                         Browser_EnableCloseStartGap(false);
                     } else {
@@ -182,7 +182,7 @@ namespace Timekeeper.Forms
                 if (browserEntry.AtEnd()) {
                     Browser_EnableCloseEndGap(true);
                 } else {
-                    DateTime NextStartTime = Browser_GetNextStartTime();
+                    DateTimeOffset NextStartTime = Browser_GetNextStartTime();
                     if (NextStartTime == StopTimeSelector.Value) {
                         Browser_EnableCloseEndGap(false);
                     } else {
@@ -386,8 +386,8 @@ namespace Timekeeper.Forms
             Foo(CategoryTreeDropdown, entry.CategoryId, entry.CategoryName, "Category");
 
             // Display entry
-            StartTimeSelector.Value = entry.StartTime.LocalDateTime;
-            StopTimeSelector.Value = entry.StopTime.LocalDateTime;
+            StartTimeSelector.Value = entry.StartTime.DateTime;
+            StopTimeSelector.Value = entry.StopTime.DateTime;
             DurationBox.Text = Timekeeper.FormatSeconds(entry.Seconds);
             DurationBox.ForeColor = entry.Seconds == 0 ? Color.Red : SystemColors.ControlText;
             //DurationBox.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
@@ -905,13 +905,13 @@ namespace Timekeeper.Forms
                         // either set the start time backwards
                         browserEntry.Seconds = -seconds;
                         browserEntry.StartTime = browserEntry.StopTime.AddSeconds(Convert.ToDouble(seconds));
-                        StartTimeSelector.Value = browserEntry.StartTime.LocalDateTime;
+                        StartTimeSelector.Value = browserEntry.StartTime.DateTime;
                         Browser_EnableRevert(true);
                     } else if (seconds > 0) {
                         // or the end time forward
                         browserEntry.Seconds = seconds;
                         browserEntry.StopTime = browserEntry.StartTime.AddSeconds(Convert.ToDouble(seconds));
-                        StopTimeSelector.Value = browserEntry.StopTime.LocalDateTime;
+                        StopTimeSelector.Value = browserEntry.StopTime.DateTime;
                         Browser_EnableRevert(true);
                     } else {
                         // duration is zero, do nothing
@@ -1008,7 +1008,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private DateTime Browser_GetPreviousEndTime()
+        private DateTimeOffset Browser_GetPreviousEndTime()
         {
             try {
                 if (browserEntry.AtBeginning()) {
@@ -1016,7 +1016,7 @@ namespace Timekeeper.Forms
                 } else {
                     Classes.JournalEntry copy = browserEntry.Copy();
                     copy.LoadPrevious();
-                    return copy.StopTime.LocalDateTime;
+                    return copy.StopTime;
                 }
             }
             catch {
@@ -1026,7 +1026,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private DateTime Browser_GetNextStartTime()
+        private DateTimeOffset Browser_GetNextStartTime()
         {
             try {
                 if (browserEntry.AtEnd()) {
@@ -1034,7 +1034,7 @@ namespace Timekeeper.Forms
                 } else {
                     Classes.JournalEntry copy = browserEntry.Copy();
                     copy.LoadNext();
-                    return copy.StartTime.LocalDateTime;
+                    return copy.StartTime;
                 }
             }
             catch {

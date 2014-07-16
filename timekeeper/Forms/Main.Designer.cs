@@ -152,6 +152,7 @@ namespace Timekeeper.Forms
             this.PopupMenuTrayAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuTrayExit = new System.Windows.Forms.ToolStripMenuItem();
             this.PanelControls = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.CloseStartGapButton = new System.Windows.Forms.Button();
             this.CloseStopGapButton = new System.Windows.Forms.Button();
             this.DimensionPanel = new System.Windows.Forms.Panel();
@@ -225,7 +226,6 @@ namespace Timekeeper.Forms
             this.PopupMenuMemoCutSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -1288,6 +1288,16 @@ namespace Timekeeper.Forms
             this.PanelControls.Visible = false;
             this.PanelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(67, 91);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // CloseStartGapButton
             // 
             this.CloseStartGapButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -1993,16 +2003,6 @@ namespace Timekeeper.Forms
             this.MainPanel.Name = "MainPanel";
             this.MainPanel.Size = new System.Drawing.Size(562, 273);
             this.MainPanel.TabIndex = 1;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(67, 91);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Main
             // 

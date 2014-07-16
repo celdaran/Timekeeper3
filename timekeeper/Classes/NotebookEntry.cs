@@ -99,12 +99,12 @@ namespace Timekeeper.Classes
             try {
                 if (this.NotebookId == 0) {
                     // Create
-                    Row["CreateTime"] = Common.Now();
+                    Row["CreateTime"] = Timekeeper.DateForDatabase();
                     Row["NotebookGuid"] = UUID.Get();
                 } else {
                     // Update
                 }
-                Row["ModifyTime"] = Common.Now();
+                Row["ModifyTime"] = Timekeeper.DateForDatabase();
 
                 // FIXME: sweep the codebase for this stuff
                 // Seems to be any time we take a string, but
@@ -121,7 +121,11 @@ namespace Timekeeper.Classes
                 // everything in UTC. Still experimenting, but it feels like this is
                 // the direction things are heading...
 
-                Row["EntryTime"] = this.EntryTime.ToString(Common.UTC_DATETIME_FORMAT);
+                // FOLLOWUP EPIPHANY: It's 2014-07-14 and I'm ditching UTC and changing
+                // everything back to DateTime *BUT* with a standard set of handling,
+                // formatting, and conversion routines built into Timekeeper.cs.
+
+                Row["EntryTime"] = Timekeeper.DateForDatabase(this.EntryTime);
                 Row["Memo"] = this.Memo;
                 Row["LocationId"] = this.LocationId;
                 Row["CategoryId"] = this.CategoryId;
@@ -129,15 +133,15 @@ namespace Timekeeper.Classes
                 if (this.NotebookId == 0) {
                     this.NotebookId = Database.Insert("Notebook", Row);
                     if (this.NotebookId > 0) {
-                        this.CreateTime = DateTimeOffset.Parse(Row["CreateTime"]);
-                        this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                        this.CreateTime = Timekeeper.StringToDate(Row["CreateTime"]);
+                        this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                         this.NotebookGuid = Row["NotebookGuid"];
                     } else {
                         throw new Exception("Could not create Notebook entry");
                     }
                 } else {
                     if (Database.Update("Notebook", Row, "NotebookId", this.NotebookId) > 0) {
-                        this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                        this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                     } else {
                         throw new Exception("Could not update Notebook entry: " + this.NotebookId.ToString());
                     }

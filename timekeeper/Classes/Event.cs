@@ -136,30 +136,17 @@ namespace Timekeeper.Classes
                 Event["Name"] = Name;
                 Event["Description"] = Description;
 
-                // Make sure everything's always localtime
-                // TODO: Something's not quite right here, I need to figure
-                // out where things are going wrong. This is nothing more
-                // than a band-aid. (See Journal Entry class)
-                // FIXME (GENERAL FIXME): Sweep all date/time instances for UTC vs LocalTime issues  :^(
-
-                /*
-                Commenting out during the Ticket #1310 / DateTimeOffset sweep
-                this.NextOccurrenceTime = DateTime.SpecifyKind(this.NextOccurrenceTime, DateTimeKind.Local);
-                this.HiddenTime = DateTime.SpecifyKind(this.HiddenTime, DateTimeKind.Local);
-                this.DeletedTime = DateTime.SpecifyKind(this.DeletedTime, DateTimeKind.Local);
-                */
-
                 Event["EventGroupId"] = this.EventGroupId;
-                Event["NextOccurrenceTime"] = this.NextOccurrenceTime.ToString(Common.UTC_DATETIME_FORMAT);
+                Event["NextOccurrenceTime"] = Timekeeper.DateForDatabase(this.NextOccurrenceTime);
                 Event["ReminderId"] = this.ReminderId;
                 Event["ScheduleId"] = this.ScheduleId;
                 Event["IsHidden"] = this.IsHidden ? 1 : 0;
                 Event["IsDeleted"] = this.IsDeleted ? 1 : 0;
 
                 if (this.IsHidden)
-                    Event["HiddenTime"] = this.HiddenTime.ToString(Common.UTC_DATETIME_FORMAT);
+                    Event["HiddenTime"] = Timekeeper.DateForDatabase(this.HiddenTime);
                 if (this.IsDeleted)
-                    Event["DeletedTime"] = this.DeletedTime.ToString(Common.UTC_DATETIME_FORMAT);
+                    Event["DeletedTime"] = Timekeeper.DateForDatabase(this.DeletedTime);
 
                 string Query = String.Format(@"
                     SELECT count(*) as Count 
@@ -169,24 +156,24 @@ namespace Timekeeper.Classes
 
                 if (Count["Count"] == 0) {
 
-                    Event["CreateTime"] = Common.Now();
-                    Event["ModifyTime"] = Common.Now();
+                    Event["CreateTime"] = Timekeeper.DateForDatabase();
+                    Event["ModifyTime"] = Timekeeper.DateForDatabase();
 
                     this.Id = this.Database.Insert("Event", Event);
                     if (this.Id > 0) {
                         Timekeeper.Debug("Just inserted EventId: " + this.Id.ToString());
-                        CreateTime = Convert.ToDateTime(Event["CreateTime"]);
-                        ModifyTime = Convert.ToDateTime(Event["ModifyTime"]);
+                        CreateTime = Timekeeper.StringToDate(Event["CreateTime"]);
+                        ModifyTime = Timekeeper.StringToDate(Event["ModifyTime"]);
                     } else {
                         throw new Exception("Error inserting into Event");
                     }
                 } else {
 
-                    Event["ModifyTime"] = Common.Now();
+                    Event["ModifyTime"] = Timekeeper.DateForDatabase();
 
                     Timekeeper.Debug("About to update EventId: " + this.Id.ToString());
                     if (this.Database.Update("Event", Event, "EventId", this.Id) == 1) {
-                        ModifyTime = Convert.ToDateTime(Event["ModifyTime"]);
+                        ModifyTime = Timekeeper.StringToDate(Event["ModifyTime"]);
                     } else {
                         throw new Exception("Error updating Event");
                     }

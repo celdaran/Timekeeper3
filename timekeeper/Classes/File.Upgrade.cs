@@ -250,7 +250,7 @@ namespace Timekeeper
             RowId++;
             Row = new Row() {
                     {"Key", "Upgraded"},
-                    {"Value", Common.Now()}
+                    {"Value", Timekeeper.DateForDatabase()}
                 };
             InsertedRowId = Database.Insert(Timekeeper.MetaTableName(), Row);
             if (InsertedRowId == 0) throw new Exception("Insert failed");
@@ -620,8 +620,8 @@ namespace Timekeeper
                 // exact delta between timestamp_s and timestamp_e. For that reason, the file
                 // upgrade path recalculates seconds, thus ensuring this value matches the
                 // visible start/end times of the journal entry.
-                DateTime StartTime = OldRow["timestamp_s"];
-                DateTime StopTime = OldRow["timestamp_e"];
+                DateTimeOffset StartTime = OldRow["timestamp_s"];
+                DateTimeOffset StopTime = OldRow["timestamp_e"];
                 TimeSpan Delta = StopTime.Subtract(StartTime);
                 int DeltaSeconds = Convert.ToInt32(Delta.TotalSeconds);
 
@@ -748,8 +748,8 @@ namespace Timekeeper
 
                 // FIXME: we're still missing the "end date type' concept (previously known as grid_views.end_date_type)
                 Row NewFilterOptionsRow = new Row() {
-                    {"CreateTime", Common.Now()},
-                    {"ModifyTime", Common.Now()},
+                    {"CreateTime", Timekeeper.DateForDatabase()},
+                    {"ModifyTime", Timekeeper.DateForDatabase()},
                     {"ActivityList", OldRow["task_list"]},
                     {"ProjectList", OldRow["project_list"]},
                     {"RefDatePresetId", OldRow["date_preset"]},
@@ -791,7 +791,16 @@ namespace Timekeeper
         // General Helpers
         //---------------------------------------------------------------------
 
-        private string ConvertTime(DateTime time)
+        private string ConvertTime(DateTimeOffset time)
+        {
+            return Timekeeper.DateForDatabase(time);
+        }
+
+        // The following was a bit of work. Leaving it around for the time (if
+        // ever) that I come back to the UTC thing. For now, it's all staying
+        // local time so the above replacement will work.
+
+        private string ConvertTime_FOR_UTC_CURRENTLY_NOT_USED(DateTimeOffset time)
         {
             /*
             Given a current time zone of US Central Time:

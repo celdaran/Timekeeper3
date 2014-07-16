@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -94,8 +94,8 @@ namespace Timekeeper.Classes
             Forms.Properties Dialog = new Forms.Properties();
 
             // Set date range for time calculations
-            string From = DateTime.Now.ToString(Common.DATE_FORMAT + " 00:00:00");
-            string To = DateTime.Now.ToString(Common.DATE_FORMAT + " 23:59:59");
+            string From = Timekeeper.LocalNow.ToString(Common.DATE_FORMAT + " 00:00:00");
+            string To = Timekeeper.LocalNow.ToString(Common.DATE_FORMAT + " 23:59:59");
 
             // Determine the item type
             string ItemType = item.Dimension.ToString();

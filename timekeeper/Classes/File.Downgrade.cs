@@ -53,8 +53,8 @@ namespace Timekeeper
                     {"is_hidden", Row["IsHidden"] ? 1 : 0},
                     {"is_deleted", Row["IsDeleted"] ? 1 : 0},
                     {"project_id__last", Row["LastProjectId"]},
-                    {"timestamp_c", Row["CreateTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"timestamp_m", Row["ModifyTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_c", Timekeeper.DateForDatabase(Row["CreateTime"])},
+                    {"timestamp_m", Timekeeper.DateForDatabase(Row["ModifyTime"])},
                 };
 
                 newFile.Database.Insert("tasks", NewRow);
@@ -72,8 +72,8 @@ namespace Timekeeper
                     {"is_folder", Row["IsFolder"] ? 1 : 0},
                     {"is_hidden", Row["IsHidden"] ? 1 : 0},
                     {"is_deleted", Row["IsDeleted"] ? 1 : 0},
-                    {"timestamp_c", Row["CreateTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"timestamp_m", Row["ModifyTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_c", Timekeeper.DateForDatabase(Row["CreateTime"])},
+                    {"timestamp_m", Timekeeper.DateForDatabase(Row["ModifyTime"])},
                 };
 
                 newFile.Database.Insert("projects", NewRow);
@@ -87,8 +87,8 @@ namespace Timekeeper
                     {"id", Row["JournalId"]},
                     {"task_id", Row["ActivityId"]},
                     {"project_id", Row["ProjectId"]},
-                    {"timestamp_s", Row["StartTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"timestamp_e", Row["StopTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_s", Timekeeper.DateForDatabase(Row["StartTime"])},
+                    {"timestamp_e", Timekeeper.DateForDatabase(Row["StopTime"])},
                     {"seconds", Row["Seconds"]},
                     {"pre_log", ""},
                     {"post_log", Row["Memo"]},
@@ -104,10 +104,10 @@ namespace Timekeeper
 
                 Row NewRow = new Row() {
                     {"id", Row["NotebookId"]},
-                    {"timestamp_entry", Row["EntryTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_entry", Timekeeper.DateForDatabase(Row["EntryTime"])},
                     {"description", Row["Memo"]},
-                    {"timestamp_c", Row["CreateTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"timestamp_m", Row["ModifyTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_c", Timekeeper.DateForDatabase(Row["CreateTime"])},
+                    {"timestamp_m", Timekeeper.DateForDatabase(Row["ModifyTime"])},
                 };
 
                 newFile.Database.Insert("journal", NewRow);
@@ -131,8 +131,8 @@ namespace Timekeeper
                     {"group_by", Row["SystemGridGroupById"]},
                     {"data_from", Row["SystemGridTimeDisplayId"]},
                     {"hide_empty_rows", Row[""]},
-                    {"timestamp_c", Row["StartTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"timestamp_m", Row["StopTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_c", Timekeeper.DateForDatabase(Row["StartTime"])},
+                    {"timestamp_m", Timekeeper.DateForDatabase(Row["StopTime"])},
                 };
 
                 newFile.Database.Insert("grid_views", NewRow);
@@ -172,8 +172,8 @@ namespace Timekeeper
                     {"is_folder", Row["IsFolder"] ? 1 : 0},
                     {"is_deleted", Row["IsDeleted"] ? 1 : 0},
                     {"project_id__last", Row["LastProjectId"]},
-                    {"timestamp_c", Row["CreateTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"timestamp_m", Row["ModifyTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_c", Timekeeper.DateForDatabase(Row["CreateTime"])},
+                    {"timestamp_m", Timekeeper.DateForDatabase(Row["ModifyTime"])},
                 };
 
                 newFile.Database.Insert("tasks", NewRow);
@@ -190,8 +190,8 @@ namespace Timekeeper
                     {"parent_id", Row["ParentId"]},
                     {"is_folder", Row["IsFolder"] ? 1 : 0},
                     {"is_deleted", Row["IsDeleted"] ? 1 : 0},
-                    {"timestamp_c", Row["CreateTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"timestamp_m", Row["ModifyTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_c", Timekeeper.DateForDatabase(Row["CreateTime"])},
+                    {"timestamp_m", Timekeeper.DateForDatabase(Row["ModifyTime"])},
                 };
 
                 newFile.Database.Insert("projects", NewRow);
@@ -205,8 +205,8 @@ namespace Timekeeper
                     {"id", Row["JournalId"]},
                     {"task_id", Row["ActivityId"]},
                     {"project_id", Row["ProjectId"]},
-                    {"timestamp_s", Row["StartTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"timestamp_e", Row["StopTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_s", Timekeeper.DateForDatabase(Row["StartTime"])},
+                    {"timestamp_e", Timekeeper.DateForDatabase(Row["StopTime"])},
                     {"seconds", Row["Seconds"]},
                     {"pre_log", ""},
                     {"post_log", Row["Memo"]},
@@ -222,10 +222,10 @@ namespace Timekeeper
 
                 Row NewRow = new Row() {
                     {"id", Row["NotebookId"]},
-                    {"timestamp_entry", Row["EntryTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_entry", Timekeeper.DateForDatabase(Row["EntryTime"])},
                     {"description", Row["Memo"]},
-                    {"timestamp_c", Row["CreateTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"timestamp_m", Row["ModifyTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_c", Timekeeper.DateForDatabase(Row["CreateTime"])},
+                    {"timestamp_m", Timekeeper.DateForDatabase(Row["ModifyTime"])},
                 };
 
                 newFile.Database.Insert("journal", NewRow);
@@ -249,8 +249,8 @@ namespace Timekeeper
                     {"group_by", Row["SystemGridGroupById"]},
                     {"data_from", Row["SystemGridTimeDisplayId"]},
                     {"hide_empty_rows", Row[""]},
-                    {"timestamp_c", Row["StartTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"timestamp_m", Row["StopTime"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"timestamp_c", Timekeeper.DateForDatabase(Row["StartTime"])},
+                    {"timestamp_m", Timekeeper.DateForDatabase(Row["StopTime"])},
                 };
 
                 newFile.Database.Insert("grid_views", NewRow);

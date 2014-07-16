@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -65,9 +65,9 @@ namespace Timekeeper.Forms.Tools
                     this.RefTodoStatus.SelectedIndex = (int)TodoItem.RefTodoStatusId - 1;
 
                     if ((TodoItem.StartTime != null) && (TodoItem.StartTime != DateTime.MinValue))
-                        this.StartTime.Value = TodoItem.StartTime.LocalDateTime;
+                        this.StartTime.Value = TodoItem.StartTime.DateTime;
                     if ((TodoItem.DueTime != null) && (TodoItem.DueTime != DateTime.MinValue))
-                        this.DueTime.Value = TodoItem.DueTime.LocalDateTime;
+                        this.DueTime.Value = TodoItem.DueTime.DateTime;
                     if (TodoItem.Memo != null)
                         this.Memo.Text = TodoItem.Memo;
                 } else {
@@ -81,8 +81,8 @@ namespace Timekeeper.Forms.Tools
 
                     this.TodoItem = new Classes.TodoItem();
                     this.RefTodoStatus.SelectedIndex = 0;
-                    this.StartTime.Value = DateTime.Now;
-                    this.DueTime.Value = DateTime.Now;
+                    this.StartTime.Value = Timekeeper.LocalNow.DateTime;
+                    this.DueTime.Value = Timekeeper.LocalNow.DateTime;
                     this.Memo.Text = "";
                 }
             }
