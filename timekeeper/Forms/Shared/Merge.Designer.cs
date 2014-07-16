@@ -33,19 +33,20 @@
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.CloseButton = new System.Windows.Forms.Button();
             this.BottomPanel = new System.Windows.Forms.Panel();
-            this.OkayButton = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.MergeButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.FilterButton = new System.Windows.Forms.ToolStripButton();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.BottomPanel.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ItemTree
             // 
             this.ItemTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ItemTree.HideSelection = false;
             this.ItemTree.ImageIndex = 0;
             this.ItemTree.ImageList = this.TreeImageList;
             this.ItemTree.Location = new System.Drawing.Point(0, 25);
@@ -53,21 +54,21 @@
             this.ItemTree.SelectedImageIndex = 0;
             this.ItemTree.Size = new System.Drawing.Size(510, 200);
             this.ItemTree.TabIndex = 1;
+            this.ItemTree.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.ItemTree_BeforeSelect);
+            this.ItemTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ItemTree_AfterSelect);
+            this.ItemTree.DoubleClick += new System.EventHandler(this.ItemTree_DoubleClick);
             // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
-            this.TreeImageList.TransparentColor = System.Drawing.Color.Magenta;
-            this.TreeImageList.Images.SetKeyName(0, "OpenFolder");
-            this.TreeImageList.Images.SetKeyName(1, "ClosedFolder");
-            this.TreeImageList.Images.SetKeyName(2, "Project");
-            this.TreeImageList.Images.SetKeyName(3, "Activity");
-            this.TreeImageList.Images.SetKeyName(4, "task-clock1.bmp");
-            this.TreeImageList.Images.SetKeyName(5, "task-clock2.bmp");
-            this.TreeImageList.Images.SetKeyName(6, "task-clock3.bmp");
-            this.TreeImageList.Images.SetKeyName(7, "task-clock4.bmp");
-            this.TreeImageList.Images.SetKeyName(8, "HiddenItem");
-            this.TreeImageList.Images.SetKeyName(9, "HiddenFolder");
+            this.TreeImageList.TransparentColor = System.Drawing.Color.White;
+            this.TreeImageList.Images.SetKeyName(0, "Folder");
+            this.TreeImageList.Images.SetKeyName(1, "Project");
+            this.TreeImageList.Images.SetKeyName(2, "Activity");
+            this.TreeImageList.Images.SetKeyName(3, "Location");
+            this.TreeImageList.Images.SetKeyName(4, "Category");
+            this.TreeImageList.Images.SetKeyName(5, "HiddenItem");
+            this.TreeImageList.Images.SetKeyName(6, "HiddenFolder");
             // 
             // CloseButton
             // 
@@ -90,15 +91,34 @@
             this.BottomPanel.Size = new System.Drawing.Size(510, 36);
             this.BottomPanel.TabIndex = 4;
             // 
-            // OkayButton
+            // panel1
             // 
-            this.OkayButton.Location = new System.Drawing.Point(3, 6);
-            this.OkayButton.Name = "OkayButton";
-            this.OkayButton.Size = new System.Drawing.Size(75, 23);
-            this.OkayButton.TabIndex = 3;
-            this.OkayButton.Text = "OK";
-            this.OkayButton.UseVisualStyleBackColor = true;
-            this.OkayButton.Click += new System.EventHandler(this.OkayButton_Click);
+            this.panel1.Controls.Add(this.CloseButton);
+            this.panel1.Controls.Add(this.MergeButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel1.Location = new System.Drawing.Point(345, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(165, 36);
+            this.panel1.TabIndex = 4;
+            // 
+            // MergeButton
+            // 
+            this.MergeButton.Location = new System.Drawing.Point(3, 6);
+            this.MergeButton.Name = "MergeButton";
+            this.MergeButton.Size = new System.Drawing.Size(75, 23);
+            this.MergeButton.TabIndex = 3;
+            this.MergeButton.Text = "Merge...";
+            this.MergeButton.UseVisualStyleBackColor = true;
+            this.MergeButton.Click += new System.EventHandler(this.MergeButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 11);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(171, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Select an item as the merge target.";
             // 
             // toolStrip1
             // 
@@ -118,26 +138,8 @@
             this.FilterButton.Name = "FilterButton";
             this.FilterButton.Size = new System.Drawing.Size(51, 22);
             this.FilterButton.Text = "Filter";
+            this.FilterButton.ToolTipText = "Use a filter to limit the number of Journal Entries merged.";
             this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.CloseButton);
-            this.panel1.Controls.Add(this.OkayButton);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(345, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(165, 36);
-            this.panel1.TabIndex = 4;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(260, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Select an item from the list above as the merge target.";
             // 
             // Merge
             // 
@@ -152,13 +154,15 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Merge";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Merge_FormClosing);
             this.Load += new System.EventHandler(this.Merge_Load);
             this.BottomPanel.ResumeLayout(false);
             this.BottomPanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -168,12 +172,12 @@
 
         private System.Windows.Forms.TreeView ItemTree;
         private System.Windows.Forms.Button CloseButton;
-        public System.Windows.Forms.ImageList TreeImageList;
         private System.Windows.Forms.Panel BottomPanel;
-        private System.Windows.Forms.Button OkayButton;
+        private System.Windows.Forms.Button MergeButton;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton FilterButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.ImageList TreeImageList;
     }
 }

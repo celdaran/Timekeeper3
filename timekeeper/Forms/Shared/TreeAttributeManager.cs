@@ -468,9 +468,6 @@ namespace Timekeeper.Forms.Shared
             if (DialogBox.ShowDialog(this) == DialogResult.Cancel) {
                 return false;
             } else {
-                Classes.TreeAttribute TargetItem = DialogBox.TargetItem;
-                string Message = String.Format("You just merged all of the entries for {0} into {1}", item.Name, TargetItem.Name);
-                Common.Info(Message);
                 return true;
             }
         }

@@ -186,6 +186,11 @@ namespace Timekeeper.Classes
         public int Notebook_Top { get; set; }
         public int Notebook_Left { get; set; }
 
+        public int Merge_Height { get; set; }
+        public int Merge_Width { get; set; }
+        public int Merge_Top { get; set; }
+        public int Merge_Left { get; set; }
+
         //----------------------------------------------------------------------
         // Public Properties (Registry/MRU)
         //----------------------------------------------------------------------
@@ -503,6 +508,14 @@ namespace Timekeeper.Classes
             Notebook_Top = (int)Key.GetValue("Top", 100);
             Notebook_Left = (int)Key.GetValue("Left", 100);
 
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Merge");
+
+            // Defaulting to zero to allow a default "center parent" starter position
+            Merge_Height = (int)Key.GetValue("Height", 0);
+            Merge_Width = (int)Key.GetValue("Width", 0);
+            Merge_Top = (int)Key.GetValue("Top", 0);
+            Merge_Left = (int)Key.GetValue("Left", 0);
+
             Key.Close();
 
             //----------------------------------------------------------------------
@@ -803,6 +816,13 @@ namespace Timekeeper.Classes
             Key.SetValue("ScheduleDisplayIndex", Event_ScheduleDisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Notebook");
+
+            Key.SetValue("Height", Notebook_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", Notebook_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", Notebook_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", Notebook_Left, Microsoft.Win32.RegistryValueKind.DWord);
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Merge");
 
             Key.SetValue("Height", Notebook_Height, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Width", Notebook_Width, Microsoft.Win32.RegistryValueKind.DWord);

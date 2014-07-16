@@ -41,24 +41,17 @@ namespace Timekeeper.Classes
         public int Count(Timekeeper.Dimension dimension, long id)
         {
             string ColumnName = dimension.ToString() + "Id";
-            /*
-            switch (dimension) {
-                case Timekeeper.Dimension.Project:
-                    ColumnName = "ProjectId";
-                    break;
-                case Timekeeper.Dimension.Activity:
-                    ColumnName = "ActivityId";
-                    break;
-                case Timekeeper.Dimension.Location:
-                    ColumnName = "LocationId";
-                    break;
-                case Timekeeper.Dimension.Category:
-                    ColumnName = "CategoryId";
-                    break;
-            }
-            */
             string Query = String.Format("SELECT count(*) AS Count FROM Journal WHERE {0} = {1}",
                 ColumnName, id);
+            Row Row = Database.SelectRow(Query);
+            return (int)Row["Count"];
+        }
+
+        //---------------------------------------------------------------------
+
+        public int Count(string whereClause)
+        {
+            string Query = "SELECT count(*) AS Count FROM Journal J WHERE " + whereClause;
             Row Row = Database.SelectRow(Query);
             return (int)Row["Count"];
         }
@@ -132,7 +125,7 @@ namespace Timekeeper.Classes
         {
             Row Row = new Row();
             Row[columnName] = columnValue;
-            long UpdateCount = Database.Update("Journal j", Row, whereClause);
+            long UpdateCount = Database.Update("Journal", Row, whereClause);
             return (UpdateCount > 0);
         }
 

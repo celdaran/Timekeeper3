@@ -87,9 +87,12 @@
             this.View_HiddenProjectsSince = new System.Windows.Forms.ComboBox();
             this.BehaviorPage = new System.Windows.Forms.TabPage();
             this.AnnoyGroup = new System.Windows.Forms.GroupBox();
-            this.Behavior_Annoy_ActivityFollowsProject = new System.Windows.Forms.CheckBox();
+            this.AnnoyGroup_CategoryFollowPanel = new System.Windows.Forms.Panel();
             this.Behavior_Annoy_CategoryFollowsProject = new System.Windows.Forms.CheckBox();
+            this.AnnoyGroup_LocationFollowPanel = new System.Windows.Forms.Panel();
             this.Behavior_Annoy_LocationFollowsProject = new System.Windows.Forms.CheckBox();
+            this.AnnoyGroup_ActivityFollowPanel = new System.Windows.Forms.Panel();
+            this.Behavior_Annoy_ActivityFollowsProject = new System.Windows.Forms.CheckBox();
             this.AnnoyGroup_TopPanel = new System.Windows.Forms.Panel();
             this.Behavior_Annoy_PromptBeforeHiding = new System.Windows.Forms.CheckBox();
             this.Behavior_Annoy_UseNewDatabaseWizard = new System.Windows.Forms.CheckBox();
@@ -186,9 +189,6 @@
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
-            this.AnnoyGroup_ActivityFollowPanel = new System.Windows.Forms.Panel();
-            this.AnnoyGroup_LocationFollowPanel = new System.Windows.Forms.Panel();
-            this.AnnoyGroup_CategoryFollowPanel = new System.Windows.Forms.Panel();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -212,6 +212,9 @@
             this.HiddenGroup_ProjectPanel.SuspendLayout();
             this.BehaviorPage.SuspendLayout();
             this.AnnoyGroup.SuspendLayout();
+            this.AnnoyGroup_CategoryFollowPanel.SuspendLayout();
+            this.AnnoyGroup_LocationFollowPanel.SuspendLayout();
+            this.AnnoyGroup_ActivityFollowPanel.SuspendLayout();
             this.AnnoyGroup_TopPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Behavior_Annoy_NoRunningPromptAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BehaviorSpacingBox)).BeginInit();
@@ -235,9 +238,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Advanced_Other_DimensionWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.LoggingGroup.SuspendLayout();
-            this.AnnoyGroup_ActivityFollowPanel.SuspendLayout();
-            this.AnnoyGroup_LocationFollowPanel.SuspendLayout();
-            this.AnnoyGroup_CategoryFollowPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -358,7 +358,7 @@
             this.DimensionGroup.Controls.Add(this.Layout_UseLocations);
             this.DimensionGroup.Controls.Add(this.Layout_UseActivities);
             this.DimensionGroup.Controls.Add(this.Layout_UseProjects);
-            this.DimensionGroup.Location = new System.Drawing.Point(17, 159);
+            this.DimensionGroup.Location = new System.Drawing.Point(17, 147);
             this.DimensionGroup.Name = "DimensionGroup";
             this.DimensionGroup.Size = new System.Drawing.Size(345, 151);
             this.DimensionGroup.TabIndex = 0;
@@ -910,15 +910,14 @@
             this.AnnoyGroup.TabStop = false;
             this.AnnoyGroup.Text = "Annoyances";
             // 
-            // Behavior_Annoy_ActivityFollowsProject
+            // AnnoyGroup_CategoryFollowPanel
             // 
-            this.Behavior_Annoy_ActivityFollowsProject.AutoSize = true;
-            this.Behavior_Annoy_ActivityFollowsProject.Location = new System.Drawing.Point(14, 4);
-            this.Behavior_Annoy_ActivityFollowsProject.Name = "Behavior_Annoy_ActivityFollowsProject";
-            this.Behavior_Annoy_ActivityFollowsProject.Size = new System.Drawing.Size(116, 17);
-            this.Behavior_Annoy_ActivityFollowsProject.TabIndex = 7;
-            this.Behavior_Annoy_ActivityFollowsProject.Text = "Auto-select Activity";
-            this.Behavior_Annoy_ActivityFollowsProject.UseVisualStyleBackColor = true;
+            this.AnnoyGroup_CategoryFollowPanel.Controls.Add(this.Behavior_Annoy_CategoryFollowsProject);
+            this.AnnoyGroup_CategoryFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AnnoyGroup_CategoryFollowPanel.Location = new System.Drawing.Point(3, 128);
+            this.AnnoyGroup_CategoryFollowPanel.Name = "AnnoyGroup_CategoryFollowPanel";
+            this.AnnoyGroup_CategoryFollowPanel.Size = new System.Drawing.Size(339, 23);
+            this.AnnoyGroup_CategoryFollowPanel.TabIndex = 14;
             // 
             // Behavior_Annoy_CategoryFollowsProject
             // 
@@ -930,6 +929,15 @@
             this.Behavior_Annoy_CategoryFollowsProject.Text = "Auto-select Category";
             this.Behavior_Annoy_CategoryFollowsProject.UseVisualStyleBackColor = true;
             // 
+            // AnnoyGroup_LocationFollowPanel
+            // 
+            this.AnnoyGroup_LocationFollowPanel.Controls.Add(this.Behavior_Annoy_LocationFollowsProject);
+            this.AnnoyGroup_LocationFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AnnoyGroup_LocationFollowPanel.Location = new System.Drawing.Point(3, 105);
+            this.AnnoyGroup_LocationFollowPanel.Name = "AnnoyGroup_LocationFollowPanel";
+            this.AnnoyGroup_LocationFollowPanel.Size = new System.Drawing.Size(339, 23);
+            this.AnnoyGroup_LocationFollowPanel.TabIndex = 13;
+            // 
             // Behavior_Annoy_LocationFollowsProject
             // 
             this.Behavior_Annoy_LocationFollowsProject.AutoSize = true;
@@ -939,6 +947,25 @@
             this.Behavior_Annoy_LocationFollowsProject.TabIndex = 0;
             this.Behavior_Annoy_LocationFollowsProject.Text = "Auto-select Location";
             this.Behavior_Annoy_LocationFollowsProject.UseVisualStyleBackColor = true;
+            // 
+            // AnnoyGroup_ActivityFollowPanel
+            // 
+            this.AnnoyGroup_ActivityFollowPanel.Controls.Add(this.Behavior_Annoy_ActivityFollowsProject);
+            this.AnnoyGroup_ActivityFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AnnoyGroup_ActivityFollowPanel.Location = new System.Drawing.Point(3, 82);
+            this.AnnoyGroup_ActivityFollowPanel.Name = "AnnoyGroup_ActivityFollowPanel";
+            this.AnnoyGroup_ActivityFollowPanel.Size = new System.Drawing.Size(339, 23);
+            this.AnnoyGroup_ActivityFollowPanel.TabIndex = 12;
+            // 
+            // Behavior_Annoy_ActivityFollowsProject
+            // 
+            this.Behavior_Annoy_ActivityFollowsProject.AutoSize = true;
+            this.Behavior_Annoy_ActivityFollowsProject.Location = new System.Drawing.Point(14, 4);
+            this.Behavior_Annoy_ActivityFollowsProject.Name = "Behavior_Annoy_ActivityFollowsProject";
+            this.Behavior_Annoy_ActivityFollowsProject.Size = new System.Drawing.Size(116, 17);
+            this.Behavior_Annoy_ActivityFollowsProject.TabIndex = 7;
+            this.Behavior_Annoy_ActivityFollowsProject.Text = "Auto-select Activity";
+            this.Behavior_Annoy_ActivityFollowsProject.UseVisualStyleBackColor = true;
             // 
             // AnnoyGroup_TopPanel
             // 
@@ -2051,33 +2078,6 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
-            // AnnoyGroup_ActivityFollowPanel
-            // 
-            this.AnnoyGroup_ActivityFollowPanel.Controls.Add(this.Behavior_Annoy_ActivityFollowsProject);
-            this.AnnoyGroup_ActivityFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnnoyGroup_ActivityFollowPanel.Location = new System.Drawing.Point(3, 82);
-            this.AnnoyGroup_ActivityFollowPanel.Name = "AnnoyGroup_ActivityFollowPanel";
-            this.AnnoyGroup_ActivityFollowPanel.Size = new System.Drawing.Size(339, 23);
-            this.AnnoyGroup_ActivityFollowPanel.TabIndex = 12;
-            // 
-            // AnnoyGroup_LocationFollowPanel
-            // 
-            this.AnnoyGroup_LocationFollowPanel.Controls.Add(this.Behavior_Annoy_LocationFollowsProject);
-            this.AnnoyGroup_LocationFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnnoyGroup_LocationFollowPanel.Location = new System.Drawing.Point(3, 105);
-            this.AnnoyGroup_LocationFollowPanel.Name = "AnnoyGroup_LocationFollowPanel";
-            this.AnnoyGroup_LocationFollowPanel.Size = new System.Drawing.Size(339, 23);
-            this.AnnoyGroup_LocationFollowPanel.TabIndex = 13;
-            // 
-            // AnnoyGroup_CategoryFollowPanel
-            // 
-            this.AnnoyGroup_CategoryFollowPanel.Controls.Add(this.Behavior_Annoy_CategoryFollowsProject);
-            this.AnnoyGroup_CategoryFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnnoyGroup_CategoryFollowPanel.Location = new System.Drawing.Point(3, 128);
-            this.AnnoyGroup_CategoryFollowPanel.Name = "AnnoyGroup_CategoryFollowPanel";
-            this.AnnoyGroup_CategoryFollowPanel.Size = new System.Drawing.Size(339, 23);
-            this.AnnoyGroup_CategoryFollowPanel.TabIndex = 14;
-            // 
             // Options
             // 
             this.AcceptButton = this.AcceptDialogButton;
@@ -2136,6 +2136,12 @@
             this.HiddenGroup_ProjectPanel.PerformLayout();
             this.BehaviorPage.ResumeLayout(false);
             this.AnnoyGroup.ResumeLayout(false);
+            this.AnnoyGroup_CategoryFollowPanel.ResumeLayout(false);
+            this.AnnoyGroup_CategoryFollowPanel.PerformLayout();
+            this.AnnoyGroup_LocationFollowPanel.ResumeLayout(false);
+            this.AnnoyGroup_LocationFollowPanel.PerformLayout();
+            this.AnnoyGroup_ActivityFollowPanel.ResumeLayout(false);
+            this.AnnoyGroup_ActivityFollowPanel.PerformLayout();
             this.AnnoyGroup_TopPanel.ResumeLayout(false);
             this.AnnoyGroup_TopPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Behavior_Annoy_NoRunningPromptAmount)).EndInit();
@@ -2171,12 +2177,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
-            this.AnnoyGroup_ActivityFollowPanel.ResumeLayout(false);
-            this.AnnoyGroup_ActivityFollowPanel.PerformLayout();
-            this.AnnoyGroup_LocationFollowPanel.ResumeLayout(false);
-            this.AnnoyGroup_LocationFollowPanel.PerformLayout();
-            this.AnnoyGroup_CategoryFollowPanel.ResumeLayout(false);
-            this.AnnoyGroup_CategoryFollowPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }

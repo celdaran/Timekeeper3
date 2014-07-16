@@ -1067,6 +1067,7 @@ namespace Timekeeper.Forms
             Options.Layout_UseProjects = show;
             ProjectPanel.Visible = show;
             ProjectTreeDropdown.Enabled = show;
+            MenuActionManageProjects.Visible = show;
         }
 
         //----------------------------------------------------------------------
@@ -1081,6 +1082,7 @@ namespace Timekeeper.Forms
             Options.Layout_UseActivities = show;
             ActivityPanel.Visible = show;
             ActivityTreeDropdown.Enabled = show;
+            MenuActionManageActivities.Visible = show;
         }
 
         //----------------------------------------------------------------------
@@ -1090,6 +1092,7 @@ namespace Timekeeper.Forms
             Options.Layout_UseLocations = show;
             LocationPanel.Visible = show;
             LocationTreeDropdown.Enabled = show;
+            MenuActionManageLocations.Visible = show;
         }
 
         //----------------------------------------------------------------------
@@ -1099,6 +1102,7 @@ namespace Timekeeper.Forms
             Options.Layout_UseCategories = show;
             CategoryPanel.Visible = show;
             CategoryTreeDropdown.Enabled = show;
+            MenuActionManageCategories.Visible = show;
         }
 
         //---------------------------------------------------------------------
