@@ -46,10 +46,10 @@ namespace Timekeeper.Forms
 
         private void EnsureSelections()
         {
-            SetDefaultNode(ProjectTreeDropdown);
-            SetDefaultNode(ActivityTreeDropdown);
-            SetDefaultNode(LocationTreeDropdown);
-            SetDefaultNode(CategoryTreeDropdown);
+            this.Widgets.SetDefaultNode(ProjectTreeDropdown);
+            this.Widgets.SetDefaultNode(ActivityTreeDropdown);
+            this.Widgets.SetDefaultNode(LocationTreeDropdown);
+            this.Widgets.SetDefaultNode(CategoryTreeDropdown);
         }
 
         private void UpdateStatusBar()
@@ -64,49 +64,6 @@ namespace Timekeeper.Forms
                 // Any reason they wouldn't be?
                 StatusBar_Update(Project, Activity);
             }
-        }
-
-        private void SetDefaultNode(ComboTreeBox dropdown)
-        {
-            /*
-            If something in the dropdown has been selected, then
-            this method won't do anything: the selected item *is*
-            the selected item. However, if nothing is selected,
-            this method will dive into the list and pick an 
-            appropriate default. In short, the tree dropdowns
-            can *never* be null. An item will always be available.
-            */
-            if (dropdown.SelectedNode == null) {
-                if (dropdown.Nodes.Count == 1) {
-                    dropdown.SelectedNode = dropdown.Nodes[0];
-                    Classes.TreeAttribute Item = (Classes.TreeAttribute)dropdown.SelectedNode.Tag;
-                    if (Item.IsFolder) {
-                        Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
-                    } else {
-                        // Do nothing, we're okay
-                    }
-                } else {
-                    dropdown.SelectedNode = GetFirstNonFolder(dropdown.Nodes);
-                }
-            }
-        }
-
-        private ComboTreeNode GetFirstNonFolder(ComboTreeNodeCollection nodes)
-        {
-            ComboTreeNode ReturnValue = null;
-
-            foreach (ComboTreeNode Node in nodes) {
-                Classes.TreeAttribute Temp = (Classes.TreeAttribute)Node.Tag;
-                if (Temp.IsFolder) {
-                    ReturnValue = GetFirstNonFolder(Node.Nodes);
-                    break;
-                } else {
-                    ReturnValue = Node;
-                    break;
-                }
-            }
-
-            return ReturnValue;
         }
 
         private void SetDirtyBit(Classes.TreeAttribute item, long browserItemId)
@@ -509,6 +466,7 @@ namespace Timekeeper.Forms
                     }
                 }
 
+                // Now load a file
                 if (DatabaseFileName != null) {
                     Action_LoadFile();
                 }
@@ -537,6 +495,9 @@ namespace Timekeeper.Forms
 
                 // Will this work here?
                 MemoEditor.Focus();
+
+                // Subscribe to the message event. This will allow the form to be notified whenever there's a new message.
+                Timekeeper.Mailbox.HandleMessage += new EventHandler(OnHandleMessage);
 
                 // SHORTCUTS
 
@@ -757,45 +718,8 @@ namespace Timekeeper.Forms
 
         private void Action_ManageTree(Timekeeper.Dimension dimension, ComboTreeBox tree)
         {
-            // Display the dialog box
-            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(dimension, tree.SelectedNode);
-            Form.StartPosition = FormStartPosition.CenterParent;
-            Form.ShowDialog(this);
-
-            // Set things up
             IgnoreDimensionChanges = true;
-
-            /*
-            ComboTreeNode SavedNode = tree.SelectedNode;
-            Classes.TreeAttribute Item = (Classes.TreeAttribute)SavedNode.Tag;
-            */
-
-            // Build tree
-            Widgets.BuildTree(dimension, tree);
-
-            /*
-               Nope, this is wrong. Don't try to re-select the node we had
-               before heading in. Instead, select the node that we were
-               last working with on the dialog box itself...
-
-            // Try to find the old node in the new tree and select it
-            ComboTreeNode RestoredNode = Widgets.FindTreeNode(tree, Item.ItemId);
-            if (RestoredNode == null)
-                SetDefaultNode(ProjectTreeDropdown);
-            else
-                ProjectTreeDropdown.SelectedNode = RestoredNode;
-            */
-
-            TreeNode DialogSelectedNode = Form.SelectedNode;
-
-            Classes.TreeAttribute Item = (Classes.TreeAttribute)DialogSelectedNode.Tag;
-            ComboTreeNode NodeToSelect = Widgets.FindTreeNode(tree.Nodes, Item.ItemId);
-            if (NodeToSelect == null)
-                SetDefaultNode(tree);
-            else
-                tree.SelectedNode = NodeToSelect;
-
-            // Tear down
+            this.Widgets.ManageTreeDialog(dimension, tree, this);
             IgnoreDimensionChanges = false;
         }
 

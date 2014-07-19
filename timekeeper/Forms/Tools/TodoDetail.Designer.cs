@@ -189,11 +189,13 @@
             // 
             resources.ApplyResources(this.PopupMenuDimensionNewItem, "PopupMenuDimensionNewItem");
             this.PopupMenuDimensionNewItem.Name = "PopupMenuDimensionNewItem";
+            this.PopupMenuDimensionNewItem.Click += new System.EventHandler(this.PopupMenuDimensionNewItem_Click);
             // 
             // PopupMenuDimensionManageItems
             // 
             this.PopupMenuDimensionManageItems.Name = "PopupMenuDimensionManageItems";
             resources.ApplyResources(this.PopupMenuDimensionManageItems, "PopupMenuDimensionManageItems");
+            this.PopupMenuDimensionManageItems.Click += new System.EventHandler(this.PopupMenuDimensionManageItems_Click);
             // 
             // PopupMenuDimensionSep1
             // 

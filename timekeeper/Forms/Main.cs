@@ -550,11 +550,13 @@ namespace Timekeeper.Forms
             Timekeeper.Dimension Dim = GetPopupDimension();
             Classes.TreeAttribute Item = this.Widgets.CreateTreeItemDialog(Box, Dim, false);
 
-            ComboTreeNode NodeToSelect = Widgets.FindTreeNode(Box.Nodes, Item.ItemId);
-            if (NodeToSelect == null)
-                SetDefaultNode(Box);
-            else
-                Box.SelectedNode = NodeToSelect;
+            if (Item != null) {
+                ComboTreeNode NodeToSelect = Widgets.FindTreeNode(Box.Nodes, Item.ItemId);
+                if (NodeToSelect == null)
+                    this.Widgets.SetDefaultNode(Box);
+                else
+                    Box.SelectedNode = NodeToSelect;
+            }
         }
 
         private void PopupMenuDimensionManageItems_Click(object sender, EventArgs e)
@@ -763,6 +765,40 @@ namespace Timekeeper.Forms
             } else {
                 e.Cancel = false;
             }
+        }
+
+        //---------------------------------------------------------------------
+        // Message Handler
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Called when [handle message].
+        /// This is called whenever a new message has been added to the "central" list.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        public void OnHandleMessage(object sender, EventArgs args)
+        {
+            var MailboxEvent = args as Classes.MessageEventArgs;
+
+            if (MailboxEvent != null) {
+                string Message = MailboxEvent.Message;
+
+                Timekeeper.Debug("Received MailboxEvent.Message: " + Message);
+
+                if (Message == "ReloadProjectTreeDropdown") {
+                    this.IgnoreDimensionChanges = true;
+                    ComboTreeNode SelectedNode = ProjectTreeDropdown.SelectedNode;
+                    Classes.TreeAttribute Project = (Classes.TreeAttribute)SelectedNode.Tag;
+                    this.Widgets.BuildTree(Timekeeper.Dimension.Project, ProjectTreeDropdown);
+                    this.Widgets.ReselectNode(ProjectTreeDropdown, Project);
+                    this.IgnoreDimensionChanges = false;
+                } else {
+                    Timekeeper.Warn("Unsupported MailboxEvent.Message received: " + Message);
+                }
+
+            }
+
         }
 
         //---------------------------------------------------------------------

@@ -49,6 +49,8 @@ namespace Timekeeper
         public static DBI Database;
         public static Classes.Options Options;
         public static IScheduler Scheduler;
+        public static Classes.Messages Mailbox = Classes.Messages.Instance;
+
         private static Log Log;
 
         //---------------------------------------------------------------------

@@ -92,13 +92,15 @@ namespace Timekeeper.Forms.Tools
 
         private string GetTodoItemText(string text, int id)
         {
-            int Length = Math.Min(text.IndexOf("\n"), 72);
-            string Display = id.ToString() + ". ";
+            int NewlineLocation = text.IndexOf("\n");
+            bool NewlineExistsWithinReason = (NewlineLocation > -1) && (NewlineLocation < 50);
 
-            if (Length < 0) {
-                Display += text;
+            string Display = ""; // id.ToString() + ". ";
+
+            if (NewlineExistsWithinReason) {
+                Display += text.Substring(0, NewlineLocation);
             } else {
-                Display += text.Substring(0, Length);
+                Display += Common.Abbreviate(text, 50);
             }
 
             return Display;
@@ -241,7 +243,7 @@ namespace Timekeeper.Forms.Tools
                     return;
                 }
 
-                ListViewItem NewItem = new ListViewItem(GetTodoItemText(todoItem.Memo, (int)todoItem.TodoId), group);
+                ListViewItem NewItem = new ListViewItem(displayName, group);
                 TodoList.Items.Add(NewItem);
 
                 NewItem.Tag = todoItem;
@@ -263,7 +265,7 @@ namespace Timekeeper.Forms.Tools
                     }
                 }
 
-                NewItem.SubItems.Add(displayName);
+                NewItem.SubItems.Add(GetTodoItemText(todoItem.Memo, (int)todoItem.TodoId));
                 NewItem.SubItems.Add(todoItem.ProjectFolderName ?? "None");
                 NewItem.SubItems.Add(StartDate);
                 NewItem.SubItems.Add(DueDate);
@@ -502,8 +504,8 @@ namespace Timekeeper.Forms.Tools
                 Classes.TodoItem TodoItem = DialogBox.TodoItem;
                 TodoItem.Save();
 
-                SelectedItem.SubItems[0].Text = GetTodoItemText(TodoItem.Memo, (int)TodoItem.TodoId);
-                SelectedItem.SubItems[1].Text = TodoItem.ProjectName;
+                SelectedItem.SubItems[0].Text = TodoItem.ProjectName;
+                SelectedItem.SubItems[1].Text = GetTodoItemText(TodoItem.Memo, (int)TodoItem.TodoId);
                 SelectedItem.SubItems[2].Text = TodoItem.ProjectFolderName ?? "None";
                 SelectedItem.SubItems[3].Text = Timekeeper.NullableDateForDisplay(TodoItem.StartTime);
                 SelectedItem.SubItems[4].Text = Timekeeper.NullableDateForDisplay(TodoItem.DueTime);
@@ -628,6 +630,8 @@ namespace Timekeeper.Forms.Tools
 
         private void TodoList_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            // Translate date columns for proper date/time sorting
+
             // Determine if clicked column is already the column that is being sorted.
             if (e.Column == ColumnSorter.SortColumn) {
                 // Reverse the current sort direction for this column.

@@ -167,6 +167,7 @@
     <Compile Include="Classes\Location.cs" />
     <Compile Include="Classes\LocationCollection.cs" />
     <Compile Include="Classes\Mail.cs" />
+    <Compile Include="Classes\Messages.cs" />
     <Compile Include="Classes\Meta.cs" />
     <Compile Include="Classes\Model.cs" />
     <Compile Include="Classes\NotebookEntry.cs" />

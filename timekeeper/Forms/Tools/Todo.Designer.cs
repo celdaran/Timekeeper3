@@ -36,6 +36,7 @@
             this.TodoList = new System.Windows.Forms.ListView();
             this.Memo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ProjectName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ProjectFolderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.StartDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DueDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -97,7 +98,6 @@
             this.MenuTodoViewDetails = new System.Windows.Forms.ToolStripButton();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.StatusBarItemCount = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ProjectFolderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PopupMenuTodo.SuspendLayout();
             this.TodoToolbar.SuspendLayout();
             this.StatusBar.SuspendLayout();
@@ -108,8 +108,8 @@
             this.TodoList.AllowColumnReorder = true;
             this.TodoList.AllowDrop = true;
             this.TodoList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Memo,
             this.ProjectName,
+            this.Memo,
             this.ProjectFolderName,
             this.StartDate,
             this.DueDate,
@@ -148,6 +148,11 @@
             // 
             this.ProjectName.Text = "Project";
             this.ProjectName.Width = 100;
+            // 
+            // ProjectFolderName
+            // 
+            this.ProjectFolderName.Text = "Project Folder";
+            this.ProjectFolderName.Width = 100;
             // 
             // StartDate
             // 
@@ -362,21 +367,21 @@
             this.PopupMenuTodoGroupByStatus.Checked = true;
             this.PopupMenuTodoGroupByStatus.CheckState = System.Windows.Forms.CheckState.Checked;
             this.PopupMenuTodoGroupByStatus.Name = "PopupMenuTodoGroupByStatus";
-            this.PopupMenuTodoGroupByStatus.Size = new System.Drawing.Size(119, 22);
+            this.PopupMenuTodoGroupByStatus.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuTodoGroupByStatus.Text = "Status";
             this.PopupMenuTodoGroupByStatus.Click += new System.EventHandler(this.MenuTodoGroupByStatus_Click);
             // 
             // PopupMenuTodoGroupByProject
             // 
             this.PopupMenuTodoGroupByProject.Name = "PopupMenuTodoGroupByProject";
-            this.PopupMenuTodoGroupByProject.Size = new System.Drawing.Size(119, 22);
-            this.PopupMenuTodoGroupByProject.Text = "Project";
+            this.PopupMenuTodoGroupByProject.Size = new System.Drawing.Size(152, 22);
+            this.PopupMenuTodoGroupByProject.Text = "Project Folder";
             this.PopupMenuTodoGroupByProject.Click += new System.EventHandler(this.MenuTodoGroupByProject_Click);
             // 
             // PopupMenuTodoGroupByDueDate
             // 
             this.PopupMenuTodoGroupByDueDate.Name = "PopupMenuTodoGroupByDueDate";
-            this.PopupMenuTodoGroupByDueDate.Size = new System.Drawing.Size(119, 22);
+            this.PopupMenuTodoGroupByDueDate.Size = new System.Drawing.Size(152, 22);
             this.PopupMenuTodoGroupByDueDate.Text = "Due Date";
             this.PopupMenuTodoGroupByDueDate.Click += new System.EventHandler(this.MenuTodoGroupByDueDate_Click);
             // 
@@ -486,32 +491,37 @@
             // MenuTodoMarkAsNotStarted
             // 
             this.MenuTodoMarkAsNotStarted.Name = "MenuTodoMarkAsNotStarted";
-            this.MenuTodoMarkAsNotStarted.Size = new System.Drawing.Size(130, 22);
+            this.MenuTodoMarkAsNotStarted.Size = new System.Drawing.Size(152, 22);
             this.MenuTodoMarkAsNotStarted.Text = "Not Started";
+            this.MenuTodoMarkAsNotStarted.Click += new System.EventHandler(this.MenuTodoMarkAsNotStarted_Click);
             // 
             // MenuTodoMarkAsInProgress
             // 
             this.MenuTodoMarkAsInProgress.Name = "MenuTodoMarkAsInProgress";
-            this.MenuTodoMarkAsInProgress.Size = new System.Drawing.Size(130, 22);
+            this.MenuTodoMarkAsInProgress.Size = new System.Drawing.Size(152, 22);
             this.MenuTodoMarkAsInProgress.Text = "In Progress";
+            this.MenuTodoMarkAsInProgress.Click += new System.EventHandler(this.MenuTodoMarkAsInProgress_Click);
             // 
             // MenuTodoMarkAsOnHold
             // 
             this.MenuTodoMarkAsOnHold.Name = "MenuTodoMarkAsOnHold";
-            this.MenuTodoMarkAsOnHold.Size = new System.Drawing.Size(130, 22);
+            this.MenuTodoMarkAsOnHold.Size = new System.Drawing.Size(152, 22);
             this.MenuTodoMarkAsOnHold.Text = "On Hold";
+            this.MenuTodoMarkAsOnHold.Click += new System.EventHandler(this.MenuTodoMarkAsOnHold_Click);
             // 
             // MenuTodoMarkAsBlocked
             // 
             this.MenuTodoMarkAsBlocked.Name = "MenuTodoMarkAsBlocked";
-            this.MenuTodoMarkAsBlocked.Size = new System.Drawing.Size(130, 22);
+            this.MenuTodoMarkAsBlocked.Size = new System.Drawing.Size(152, 22);
             this.MenuTodoMarkAsBlocked.Text = "Blocked";
+            this.MenuTodoMarkAsBlocked.Click += new System.EventHandler(this.MenuTodoMarkAsBlocked_Click);
             // 
             // MenuTodoMarkAsComplete
             // 
             this.MenuTodoMarkAsComplete.Name = "MenuTodoMarkAsComplete";
-            this.MenuTodoMarkAsComplete.Size = new System.Drawing.Size(130, 22);
+            this.MenuTodoMarkAsComplete.Size = new System.Drawing.Size(152, 22);
             this.MenuTodoMarkAsComplete.Text = "Complete";
+            this.MenuTodoMarkAsComplete.Click += new System.EventHandler(this.MenuTodoMarkAsComplete_Click);
             // 
             // MenuTodoShow
             // 
@@ -534,42 +544,42 @@
             this.MenuTodoShowGroups.Checked = true;
             this.MenuTodoShowGroups.CheckState = System.Windows.Forms.CheckState.Checked;
             this.MenuTodoShowGroups.Name = "MenuTodoShowGroups";
-            this.MenuTodoShowGroups.Size = new System.Drawing.Size(166, 22);
+            this.MenuTodoShowGroups.Size = new System.Drawing.Size(188, 22);
             this.MenuTodoShowGroups.Text = "Groups";
             this.MenuTodoShowGroups.Click += new System.EventHandler(this.MenuTodoViewShowGroups_Click);
             // 
             // MenuTodoShowCompletedItems
             // 
             this.MenuTodoShowCompletedItems.Name = "MenuTodoShowCompletedItems";
-            this.MenuTodoShowCompletedItems.Size = new System.Drawing.Size(166, 22);
+            this.MenuTodoShowCompletedItems.Size = new System.Drawing.Size(188, 22);
             this.MenuTodoShowCompletedItems.Text = "Completed Items";
             this.MenuTodoShowCompletedItems.Click += new System.EventHandler(this.MenuTodoShowCompletedItems_Click);
             // 
             // MenuTodoSep1
             // 
             this.MenuTodoSep1.Name = "MenuTodoSep1";
-            this.MenuTodoSep1.Size = new System.Drawing.Size(163, 6);
+            this.MenuTodoSep1.Size = new System.Drawing.Size(185, 6);
             // 
             // MenuTodoGroupByStatus
             // 
             this.MenuTodoGroupByStatus.Checked = true;
             this.MenuTodoGroupByStatus.CheckState = System.Windows.Forms.CheckState.Checked;
             this.MenuTodoGroupByStatus.Name = "MenuTodoGroupByStatus";
-            this.MenuTodoGroupByStatus.Size = new System.Drawing.Size(166, 22);
+            this.MenuTodoGroupByStatus.Size = new System.Drawing.Size(188, 22);
             this.MenuTodoGroupByStatus.Text = "Group by Status";
             this.MenuTodoGroupByStatus.Click += new System.EventHandler(this.MenuTodoGroupByStatus_Click);
             // 
             // MenuTodoGroupByProject
             // 
             this.MenuTodoGroupByProject.Name = "MenuTodoGroupByProject";
-            this.MenuTodoGroupByProject.Size = new System.Drawing.Size(166, 22);
-            this.MenuTodoGroupByProject.Text = "Group by Project";
+            this.MenuTodoGroupByProject.Size = new System.Drawing.Size(188, 22);
+            this.MenuTodoGroupByProject.Text = "Group by Project Folder";
             this.MenuTodoGroupByProject.Click += new System.EventHandler(this.MenuTodoGroupByProject_Click);
             // 
             // MenuTodoGroupByDueDate
             // 
             this.MenuTodoGroupByDueDate.Name = "MenuTodoGroupByDueDate";
-            this.MenuTodoGroupByDueDate.Size = new System.Drawing.Size(166, 22);
+            this.MenuTodoGroupByDueDate.Size = new System.Drawing.Size(188, 22);
             this.MenuTodoGroupByDueDate.Text = "Group by Due Date";
             this.MenuTodoGroupByDueDate.Click += new System.EventHandler(this.MenuTodoGroupByDueDate_Click);
             // 
@@ -655,11 +665,6 @@
             this.StatusBarItemCount.Name = "StatusBarItemCount";
             this.StatusBarItemCount.Size = new System.Drawing.Size(13, 17);
             this.StatusBarItemCount.Text = "0";
-            // 
-            // ProjectFolderName
-            // 
-            this.ProjectFolderName.Text = "Project Folder";
-            this.ProjectFolderName.Width = 100;
             // 
             // Todo
             // 

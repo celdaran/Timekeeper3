@@ -156,6 +156,53 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
+        public void SetDefaultNode(ComboTreeBox dropdown)
+        {
+            /*
+            If something in the dropdown has been selected, then
+            this method won't do anything: the selected item *is*
+            the selected item. However, if nothing is selected,
+            this method will dive into the list and pick an 
+            appropriate default. In short, the tree dropdowns
+            can *never* be null. An item will always be available.
+            */
+            if (dropdown.SelectedNode == null) {
+                if (dropdown.Nodes.Count == 1) {
+                    dropdown.SelectedNode = dropdown.Nodes[0];
+                    Classes.TreeAttribute Item = (Classes.TreeAttribute)dropdown.SelectedNode.Tag;
+                    if (Item.IsFolder) {
+                        Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
+                    } else {
+                        // Do nothing, we're okay
+                    }
+                } else {
+                    dropdown.SelectedNode = GetFirstNonFolder(dropdown.Nodes);
+                }
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        public ComboTreeNode GetFirstNonFolder(ComboTreeNodeCollection nodes)
+        {
+            ComboTreeNode ReturnValue = null;
+
+            foreach (ComboTreeNode Node in nodes) {
+                Classes.TreeAttribute Temp = (Classes.TreeAttribute)Node.Tag;
+                if (Temp.IsFolder) {
+                    ReturnValue = GetFirstNonFolder(Node.Nodes);
+                    break;
+                } else {
+                    ReturnValue = Node;
+                    break;
+                }
+            }
+
+            return ReturnValue;
+        }
+
+        //----------------------------------------------------------------------
+
         private dynamic GetNewNode(dynamic tree)
         {
             dynamic Node = null;
@@ -376,6 +423,34 @@ namespace Timekeeper.Classes
             }
 
             return Dialog.CreatedItem;
+        }
+
+        //----------------------------------------------------------------------
+
+        public void ManageTreeDialog(Timekeeper.Dimension dimension, ComboTreeBox tree, System.Windows.Forms.Form owner)
+        {
+            // Display the dialog box
+            Forms.Shared.TreeAttributeManager Form = new Forms.Shared.TreeAttributeManager(dimension, tree.SelectedNode);
+            Form.StartPosition = FormStartPosition.CenterParent;
+            Form.ShowDialog(owner);
+
+            // (Re)build tree upon return
+            this.BuildTree(dimension, tree);
+
+            // Select whatever node was selected on the manage form
+            TreeNode DialogSelectedNode = Form.SelectedNode;
+            this.ReselectNode(tree, (Classes.TreeAttribute)DialogSelectedNode.Tag);
+        }
+
+        //----------------------------------------------------------------------
+
+        public void ReselectNode(ComboTreeBox tree, Classes.TreeAttribute Item)
+        {
+            ComboTreeNode NodeToSelect = this.FindTreeNode(tree.Nodes, Item.ItemId);
+            if (NodeToSelect == null)
+                this.SetDefaultNode(tree);
+            else
+                tree.SelectedNode = NodeToSelect;
         }
 
         //----------------------------------------------------------------------

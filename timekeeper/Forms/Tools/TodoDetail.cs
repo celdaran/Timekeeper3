@@ -222,6 +222,32 @@ namespace Timekeeper.Forms.Tools
             this.EstimateBox.Text = Timekeeper.ReformatSeconds(this.EstimateBox.Text);
         }
 
+        private void PopupMenuDimensionNewItem_Click(object sender, EventArgs e)
+        {
+            // FIXME: most of this lifted as-is from Main.Action.cs
+            // Sorry...
+
+            Classes.Widgets Widgets = new Classes.Widgets();
+
+            Classes.TreeAttribute Item = Widgets.CreateTreeItemDialog(
+                ProjectTreeDropdown, Timekeeper.Dimension.Project, false);
+
+            ComboTreeNode NodeToSelect = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, Item.ItemId);
+            if (NodeToSelect == null)
+                Widgets.SetDefaultNode(ProjectTreeDropdown);
+            else
+                ProjectTreeDropdown.SelectedNode = NodeToSelect;
+
+            Timekeeper.Mailbox.AddMessage("ReloadProjectTreeDropdown");
+        }
+
+        private void PopupMenuDimensionManageItems_Click(object sender, EventArgs e)
+        {
+            Classes.Widgets Widgets = new Classes.Widgets();
+            Widgets.ManageTreeDialog(Timekeeper.Dimension.Project, ProjectTreeDropdown, this);
+            Timekeeper.Mailbox.AddMessage("ReloadProjectTreeDropdown");
+        }
+
         //----------------------------------------------------------------------
 
     }

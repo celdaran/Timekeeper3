@@ -513,8 +513,32 @@
   <metadata name="PopupMenuDimension.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>140, 17</value>
   </metadata>
+  <data name="PopupMenuDimensionNewItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="PopupMenuDimensionNewItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>166, 22</value>
+  </data>
+  <data name="PopupMenuDimensionNewItem.Text" xml:space="preserve">
+    <value>&amp;New Project...</value>
+  </data>
+  <data name="PopupMenuDimensionManageItems.Size" type="System.Drawing.Size, System.Drawing">
+    <value>166, 22</value>
+  </data>
+  <data name="PopupMenuDimensionManageItems.Text" xml:space="preserve">
+    <value>Manage Projects...</value>
+  </data>
+  <data name="PopupMenuDimensionSep1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 6</value>
+  </data>
+  <data name="PopupMenuDimensionProperties.Size" type="System.Drawing.Size, System.Drawing">
+    <value>166, 22</value>
+  </data>
+  <data name="PopupMenuDimensionProperties.Text" xml:space="preserve">
+    <value>&amp;Properties...</value>
+  </data>
   <data name="PopupMenuDimension.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 76</value>
+    <value>167, 98</value>
   </data>
   <data name="&gt;&gt;PopupMenuDimension.Name" xml:space="preserve">
     <value>PopupMenuDimension</value>
@@ -530,7 +554,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAAy
-        GQAAAk1TRnQBSQFMAgEBBwEAAUABBAFAAQQBEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        GQAAAk1TRnQBSQFMAgEBBwEAAUgBBAFIAQQBEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABIAMAAQEBAAEYBgABGP8AMwADwAO8A7MDrAOkA5sDlBuMMAABeAE0AWIBeAE0AWIBeAE0AWIBeAE0
         AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0
         AWIBeAE0AWIBeAE0AWIwpQPAA9EDzwPNA8sDyQPHA8UDwwPBA78DvQO7A7oDuAOMMAABzgGSAbsB2wGv
@@ -684,30 +708,6 @@
   </data>
   <data name="&gt;&gt;FixedDetailPanel.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="PopupMenuDimensionNewItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="PopupMenuDimensionNewItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 22</value>
-  </data>
-  <data name="PopupMenuDimensionNewItem.Text" xml:space="preserve">
-    <value>&amp;New Project...</value>
-  </data>
-  <data name="PopupMenuDimensionManageItems.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 22</value>
-  </data>
-  <data name="PopupMenuDimensionManageItems.Text" xml:space="preserve">
-    <value>Manage Projects...</value>
-  </data>
-  <data name="PopupMenuDimensionSep1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>163, 6</value>
-  </data>
-  <data name="PopupMenuDimensionProperties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 22</value>
-  </data>
-  <data name="PopupMenuDimensionProperties.Text" xml:space="preserve">
-    <value>&amp;Properties...</value>
   </data>
   <data name="MemoPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
