@@ -431,7 +431,7 @@ namespace Timekeeper.Forms
         {
             this.IgnoreDimensionChanges = true;
 
-            Browser_SaveRow(false);
+            Browser_SaveRow();
 
             Action_GetMetrics();
             Action_SaveOptions();
@@ -794,7 +794,7 @@ namespace Timekeeper.Forms
                 //------------------------------------------
 
                 Browser_Load();
-                Browser_SetupForStarting();
+                Browser_SetupForStarting(false);
                 Browser_Enable();
 
                 //------------------------------------------
@@ -1409,7 +1409,7 @@ namespace Timekeeper.Forms
             newBrowserEntry = null;
 
             // FIXME: stopping the timer != opening the browser
-            Browser_SetupForStarting();
+            Browser_SetupForStarting(false);
 
             // In case any keyboard shortcuts were set while the timer
             // was running, take care of those now.
@@ -1506,8 +1506,8 @@ namespace Timekeeper.Forms
         private void Action_UpdateDuration(DateTimeOffset currentTime, DateTimeOffset previousTime)
         {
             if (isBrowsing) {
-                if (currentTime != previousTime) {
-                    DurationBox.Text = Browser_CalculateDuration();
+                if ((currentTime != previousTime) || (ToolbarRevert.Enabled)) {
+                    Browser_UpdateDurationBox();
                     Browser_EnableRevert(true);
                 }
             }

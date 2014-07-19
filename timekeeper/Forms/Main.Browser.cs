@@ -36,15 +36,15 @@ namespace Timekeeper.Forms
         {
             try {
                 // Update the control with previous end time
-                DateTimeOffset PreviousEndTime = Browser_GetPreviousEndTime();
-                if (PreviousEndTime == DateTime.MinValue) {
+                DateTimeOffset? PreviousEndTime = Browser_GetPreviousEndTime();
+                if (PreviousEndTime == null) {
                     // something went wrong, do nothing
                 } else {
-                    StartTimeSelector.Value = PreviousEndTime.DateTime;
+                    StartTimeSelector.Value = PreviousEndTime.Value.DateTime;
                 }
 
                 // Recalculate duration
-                DurationBox.Text = Browser_CalculateDuration();
+                Browser_UpdateDurationBox();
 
                 // Disable button (already done)
                 Browser_EnableCloseStartGap(false);
@@ -70,15 +70,15 @@ namespace Timekeeper.Forms
         {
             try {
                 // Set next start date
-                DateTimeOffset NextStartTime = Browser_GetNextStartTime();
-                if (NextStartTime == DateTime.MaxValue) {
+                DateTimeOffset? NextStartTime = Browser_GetNextStartTime();
+                if (NextStartTime == null) {
                     StopTimeSelector.Value = Timekeeper.LocalNow.DateTime;
                 } else {
-                    StopTimeSelector.Value = NextStartTime.DateTime;
+                    StopTimeSelector.Value = NextStartTime.Value.DateTime;
                 }
 
                 // And recalculate duration
-                DurationBox.Text = Browser_CalculateDuration();
+                Browser_UpdateDurationBox();
 
                 // Enable revert
                 Browser_EnableRevert(true);
@@ -170,7 +170,7 @@ namespace Timekeeper.Forms
                 if (browserEntry.AtBeginning()) {
                     Browser_EnableCloseStartGap(false);
                 } else {
-                    DateTimeOffset PreviousEndTime = Browser_GetPreviousEndTime();
+                    DateTimeOffset? PreviousEndTime = Browser_GetPreviousEndTime();
                     if (PreviousEndTime == StartTimeSelector.Value) {
                         Browser_EnableCloseStartGap(false);
                     } else {
@@ -182,7 +182,7 @@ namespace Timekeeper.Forms
                 if (browserEntry.AtEnd()) {
                     Browser_EnableCloseEndGap(true);
                 } else {
-                    DateTimeOffset NextStartTime = Browser_GetNextStartTime();
+                    DateTimeOffset? NextStartTime = Browser_GetNextStartTime();
                     if (NextStartTime == StopTimeSelector.Value) {
                         Browser_EnableCloseEndGap(false);
                     } else {
@@ -388,10 +388,7 @@ namespace Timekeeper.Forms
             // Display entry
             StartTimeSelector.Value = entry.StartTime.DateTime;
             StopTimeSelector.Value = entry.StopTime.DateTime;
-            DurationBox.Text = Timekeeper.FormatSeconds(entry.Seconds);
-            DurationBox.ForeColor = entry.Seconds == 0 ? Color.Red : SystemColors.ControlText;
-            //DurationBox.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
-            //wMemo.Text = entry.Memo;
+            Browser_UpdateDurationBox(Timekeeper.FormatSeconds(entry.Seconds));
             MemoEditor.Text = entry.Memo;
 
             // And any other relevant values
@@ -412,10 +409,7 @@ namespace Timekeeper.Forms
                 if (!isBrowsing)
                     Browser_FormToEntry(ref newBrowserEntry, 0);
 
-                Browser_SaveRow(false);
-                browserEntry.LoadByNewIndex(journalId);
-                long LastJournalId = priorLoadedBrowserEntry.JournalId;
-                priorLoadedBrowserEntry = browserEntry.Copy();
+                Browser_LockAndLoad(journalId);
 
                 if (browserEntry.JournalId > 0) {
 
@@ -471,16 +465,14 @@ namespace Timekeeper.Forms
 
         private void Browser_GotoFirstEntry()
         {
-            browserEntry.SetFirstId();
-            Browser_GotoEntry(browserEntry.JournalId);
+            Browser_GotoEntry(browserEntry.GetFirstId());
         }
 
         //---------------------------------------------------------------------
 
         private void Browser_GotoLastEntry()
         {
-            browserEntry.SetLastId();
-            Browser_GotoEntry(browserEntry.JournalId);
+            Browser_GotoEntry(browserEntry.GetLastId());
         }
 
         //---------------------------------------------------------------------
@@ -488,8 +480,7 @@ namespace Timekeeper.Forms
         private void Browser_GotoNextEntry()
         {
             Application.DoEvents();
-            browserEntry.SetNextId(this.NextBrowseBy);
-            Browser_GotoEntry(browserEntry.JournalId);
+            Browser_GotoEntry(browserEntry.GetNextId(this.NextBrowseBy));
         }
 
         //---------------------------------------------------------------------
@@ -497,8 +488,7 @@ namespace Timekeeper.Forms
         private void Browser_GotoPreviousEntry()
         {
             Application.DoEvents();
-            browserEntry.SetPreviousId(this.PrevBrowseBy);
-            Browser_GotoEntry(browserEntry.JournalId);
+            Browser_GotoEntry(browserEntry.GetPreviousId(this.PrevBrowseBy));
         }
 
         //---------------------------------------------------------------------
@@ -511,6 +501,16 @@ namespace Timekeeper.Forms
             catch (Exception x) {
                 Common.Info("Error loading Browser.\n\n" + x.ToString());
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        public void Browser_LockAndLoad(long journalId)
+        {
+            Browser_SaveRow();
+            browserEntry.Load(journalId);
+            long LastJournalId = priorLoadedBrowserEntry.JournalId;
+            priorLoadedBrowserEntry = browserEntry.Copy();
         }
 
         //---------------------------------------------------------------------
@@ -554,7 +554,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        public void Browser_SaveRow(bool forceSave)
+        public void Browser_SaveRow()
         {
             // Bail if we have no entry
             if ((browserEntry == null) || (browserEntry.JournalId == 0)) {
@@ -564,56 +564,23 @@ namespace Timekeeper.Forms
             // Copy form values to browser entry
             Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
 
-            // Now bail if nothing's changed
-            if (!forceSave) {
-                /*
-                if (browserEntry.Equals(priorLoadedBrowserEntry)) {
+            // Bail if nothing changed
+            if (ToolbarRevert.Enabled == false) {
+
+                if (timerRunning) {
+                    if (browserEntry.Memo == priorLoadedBrowserEntry.Memo) {
+                        return;
+                    } else {
+                        // The timer is running and the memo has changed, so
+                        // please proceed to the save code below
+                    }
+                } else {
                     return;
                 }
-                */
 
-                if (ToolbarRevert.Enabled == false) {
-                    // Instead of comparing the current to previous browser
-                    // entry, let's just check the revert button, which
-                    // is a user-facing visual indication that something
-                    // has changed. This should prevent the problem where
-                    // setting a hidden Project or Activity automatically
-                    // resets the value. (Still not sure what to do about
-                    // that in general: it's still an issue.)
-                    //return;
-
-                    // wait, one more test: special handling for the memo
-                    // block while the timer is running.
-                    if (timerRunning) {
-                        if (browserEntry.Memo == priorLoadedBrowserEntry.Memo) {
-                            return;
-                        } else {
-                            // The timer is running and the memo has changed, so
-                            // please proceed to the save code below
-                        }
-                    } else {
-                        return;
-                    }
-                }
             }
 
-            // FIXME: is this still needed?
-            /*
-            if ((wStartTime.Text == "") && (wStopTime.Text == "")) {
-                // Bail if there's obviously no work to do
-                return;
-            }
-            */
-
-            // If we've made it this far, save the row
-            /*
-            string Message = String.Format("Entry.Save(). Id = {0}, Memo = \"{1}\", Prior Memo = \"{2}\"",
-                browserEntry.JournalId, 
-                Common.Abbreviate(browserEntry.Memo, 30), 
-                Common.Abbreviate(priorLoadedBrowserEntry.Memo, 30)
-                );
-            Timekeeper.Warn(Message);
-            */
+            // If we made it this far, save
             browserEntry.Save();
 
             // And disable reverting, just in case
@@ -804,11 +771,12 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private void Browser_SetupForStarting()
+        private void Browser_SetupForStarting(bool saveRow)
         {
             try {
                 // Just in case
-                Browser_SaveRow(false);
+                if (saveRow)
+                    Browser_SaveRow();
 
                 // Set UI accordingly
                 Browser_SetCreateState();
@@ -820,9 +788,6 @@ namespace Timekeeper.Forms
                 }
 
                 // Create browser objects
-                //browserEntry = new Classes.Journal(Database);
-                //browserEntry = new Classes.JournalEntry();
-                //browserEntry = TimedEntry;
                 browserEntry = TimedEntry.Copy();
 
                 priorLoadedBrowserEntry = new Classes.JournalEntry();
@@ -895,6 +860,23 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Browser_UpdateDurationBox()
+        {
+            string DurationText = Browser_CalculateDuration();
+            Browser_UpdateDurationBox(DurationText);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_UpdateDurationBox(string value)
+        {
+            DurationBox.Text = value;
+            DurationBox.ForeColor = 
+                browserEntry.Seconds == 0 ? Color.Red : SystemColors.ControlText;
+        }
+
+        //---------------------------------------------------------------------
+
         private void Browser_UpdateTimes()
         {
             if (isBrowsing) {
@@ -907,18 +889,16 @@ namespace Timekeeper.Forms
                         browserEntry.StartTime = browserEntry.StopTime.AddSeconds(Convert.ToDouble(seconds));
                         StartTimeSelector.Value = browserEntry.StartTime.DateTime;
                         Browser_EnableRevert(true);
-                    } else if (seconds > 0) {
-                        // or the end time forward
+                    } else {
+                        // or the end time forward (or not at all: zero is fine)
                         browserEntry.Seconds = seconds;
                         browserEntry.StopTime = browserEntry.StartTime.AddSeconds(Convert.ToDouble(seconds));
                         StopTimeSelector.Value = browserEntry.StopTime.DateTime;
                         Browser_EnableRevert(true);
-                    } else {
-                        // duration is zero, do nothing
                     }
 
                     // reformat duration before leaving
-                    DurationBox.Text = Timekeeper.FormatSeconds(browserEntry.Seconds);
+                    Browser_UpdateDurationBox();
                 }
             }
         }
@@ -932,8 +912,6 @@ namespace Timekeeper.Forms
             try {
                 browserEntry.StartTime = StartTimeSelector.Value;
                 browserEntry.StopTime = StopTimeSelector.Value;
-                //timestamp_s = Convert.ToDateTime(wStartTime.Text);
-                //timestamp_e = Convert.ToDateTime(wStopTime.Text);
                 TimeSpan ts = browserEntry.StopTime.Subtract(browserEntry.StartTime);
                 browserEntry.Seconds = (long)ts.TotalSeconds;
                 return Timekeeper.FormatSeconds(browserEntry.Seconds);
@@ -948,13 +926,11 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        // FIXME: consider returning DateTimeOffset? instead
-        // and use a null value instead of DateTime.MinValue
-        private DateTimeOffset Browser_GetPreviousEndTime()
+        private DateTimeOffset? Browser_GetPreviousEndTime()
         {
             try {
                 if (browserEntry.AtBeginning()) {
-                    return DateTime.MinValue;
+                    return null;
                 } else {
                     Classes.JournalEntry copy = browserEntry.Copy();
                     copy.LoadPrevious();
@@ -962,17 +938,17 @@ namespace Timekeeper.Forms
                 }
             }
             catch {
-                return DateTime.MinValue;
+                return null;
             }
         }
 
         //---------------------------------------------------------------------
 
-        private DateTimeOffset Browser_GetNextStartTime()
+        private DateTimeOffset? Browser_GetNextStartTime()
         {
             try {
                 if (browserEntry.AtEnd()) {
-                    return DateTime.MaxValue;
+                    return null;
                 } else {
                     Classes.JournalEntry copy = browserEntry.Copy();
                     copy.LoadNext();
@@ -980,7 +956,7 @@ namespace Timekeeper.Forms
                 }
             }
             catch {
-                return DateTime.MinValue;
+                return null;
             }
         }
 

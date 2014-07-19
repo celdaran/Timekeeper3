@@ -380,7 +380,7 @@ namespace Timekeeper.Forms
         // Toolbar Functions | Browser | New Entry
         private void MenuToolbarBrowserNew_Click(object sender, EventArgs e)
         {
-            Browser_SetupForStarting();
+            Browser_SetupForStarting(true);
         }
 
         // Toolbar Functions | Browser | Close Start Gap
@@ -416,7 +416,7 @@ namespace Timekeeper.Forms
         // Toolbar Functions | Browser | Revert
         private void MenuToolbarBrowserSave_Click(object sender, EventArgs e)
         {
-            Browser_SaveRow(true);
+            Browser_LockAndLoad(browserEntry.JournalId);
         }
 
         // Toolbar Functions | Browser | Revert

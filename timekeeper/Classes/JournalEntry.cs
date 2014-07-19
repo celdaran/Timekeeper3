@@ -154,13 +154,6 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void Load()
-        {
-            Load(this.JournalId);
-        }
-
-        //---------------------------------------------------------------------
-
         public void Load(long journalId)
         {
             try {
@@ -255,38 +248,38 @@ namespace Timekeeper.Classes
         // Navigational Getters
         //---------------------------------------------------------------------
 
-        private long GetFirstId()
+        public long GetFirstId()
         {
             string Query = String.Format(@"
                 SELECT JournalId
                 FROM Journal
                 ORDER BY StartTime ASC
                 LIMIT 1");
-            return GetJournalId(Query);
+            return FetchJournalId(Query);
         }
 
         //---------------------------------------------------------------------
 
-        private long GetLastId()
+        public long GetLastId()
         {
             string Query = String.Format(@"
                 SELECT JournalId
                 FROM Journal
                 ORDER BY StartTime DESC
                 LIMIT 1");
-            return GetJournalId(Query);
+            return FetchJournalId(Query);
         }
 
         //---------------------------------------------------------------------
 
-        private long GetPrevId()
+        public long GetPreviousId()
         {
-            return GetPrevId(BrowseByMode.Entry);
+            return GetPreviousId(BrowseByMode.Entry);
         }
 
         //---------------------------------------------------------------------
 
-        private long GetPrevId(BrowseByMode mode)
+        public long GetPreviousId(BrowseByMode mode)
         {
             // select JournalId from Journal where StartTime < '2015-07-07T08:48:28-05:00' order by StartTime desc limit 1;
 
@@ -330,7 +323,7 @@ namespace Timekeeper.Classes
                     WHERE StartTime < '{0}'
                     ORDER BY StartTime DESC
                     LIMIT 1", StartSearchAt);
-            long JournalId = GetJournalId(Query);
+            long JournalId = FetchJournalId(Query);
 
             if (JournalId == 0) {
                 // If we got a zero, we ran past the end of the dataset
@@ -343,14 +336,14 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        private long GetNextId()
+        public long GetNextId()
         {
             return GetNextId(BrowseByMode.Entry);
         }
 
         //---------------------------------------------------------------------
 
-        private long GetNextId(BrowseByMode mode)
+        public long GetNextId(BrowseByMode mode)
         {
             /*
 
@@ -411,7 +404,7 @@ namespace Timekeeper.Classes
                 ORDER BY StartTime ASC
                 LIMIT 1", StartSearchAt);
 
-            long JournalId = GetJournalId(Query);
+            long JournalId = FetchJournalId(Query);
 
             if (JournalId == 0) {
                 // If we got a zero, we ran past the end of the dataset
@@ -424,7 +417,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        private long GetJournalId(string query)
+        private long FetchJournalId(string query)
         {
             long JournalId = 0;
 
@@ -440,89 +433,33 @@ namespace Timekeeper.Classes
         }
 
         //---------------------------------------------------------------------
-        // Navigational Setters
-        //---------------------------------------------------------------------
-
-        public void SetFirstId()
-        {
-            this.JournalId = GetFirstId();
-        }
-
-        //---------------------------------------------------------------------
-
-        public void SetLastId()
-        {
-            this.JournalId = GetLastId();
-        }
-
-        //---------------------------------------------------------------------
-
-        public void SetPreviousId()
-        {
-            SetPreviousId(BrowseByMode.Entry);
-        }
-
-        //---------------------------------------------------------------------
-
-        public void SetPreviousId(BrowseByMode mode)
-        {
-            this.JournalId = GetPrevId(mode);
-        }
-
-        //---------------------------------------------------------------------
-
-        public void SetNextId()
-        {
-            SetNextId(BrowseByMode.Entry);
-        }
-
-        //---------------------------------------------------------------------
-
-        public void SetNextId(BrowseByMode mode)
-        {
-            this.JournalId = GetNextId(mode);
-        }
-
-        //---------------------------------------------------------------------
-        // Loaders
-        //---------------------------------------------------------------------
-
-        public void LoadByNewIndex(long journalId)
-        {
-            this.JournalId = journalId;
-            this.Load();
-        }
-
+        // Loader Helpers
         //---------------------------------------------------------------------
 
         public void LoadFirst()
         {
-            this.SetFirstId();
-            this.Load();
+            this.Load(this.GetFirstId());
         }
 
         //---------------------------------------------------------------------
 
         public void LoadPrevious()
         {
-            this.SetPreviousId();
-            this.Load();
+            this.Load(this.GetPreviousId());
         }
 
         //---------------------------------------------------------------------
 
         public void LoadNext()
         {
-            this.SetNextId();
-            this.Load();
+            this.Load(this.GetNextId());
         }
 
         //---------------------------------------------------------------------
 
         public void LoadLast()
         {
-            this.SetLastId();
-            this.Load();
+            this.Load(this.GetLastId());
         }
 
         //---------------------------------------------------------------------
