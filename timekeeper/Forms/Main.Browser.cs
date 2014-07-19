@@ -80,6 +80,10 @@ namespace Timekeeper.Forms
                 // And recalculate duration
                 Browser_UpdateDurationBox();
 
+                // But don't disable the button.
+                // Time continues to move forward and the CloseStopGap
+                // button can be clicked multiple times.
+
                 // Enable revert
                 Browser_EnableRevert(true);
             }
@@ -108,7 +112,7 @@ namespace Timekeeper.Forms
             Browser_EnableLast(false);
             Browser_EnableNext(false);
             Browser_EnableCloseStartGap(false);
-            Browser_EnableCloseEndGap(false);
+            Browser_EnableCloseStopGap(false);
             Browser_EnableSplit(false);
         }
 
@@ -130,13 +134,9 @@ namespace Timekeeper.Forms
                 Browser_EntryToForm(browserEntry);
 
                 if (browserEntry.IsLocked) {
-                    Browser_EnableCloseStartGap(false);
-                    Browser_EnableCloseEndGap(false);
                     Browser_EnableStartEntry(false);
                     Browser_EnableStopEntry(false);
                     Browser_EnableDurationEntry(false);
-                    Browser_EnableLocationEntry(false);
-                    Browser_EnableCategoryEntry(false);
                     if (timerRunning) {
                         Browser_EnableMemoEntry(true);
                         Browser_ShowUnlock(false);
@@ -154,13 +154,9 @@ namespace Timekeeper.Forms
                     ActivityTreeDropdown.Enabled = true;
                     LocationTreeDropdown.Enabled = true;
                     CategoryTreeDropdown.Enabled = true;
-                    Browser_EnableCloseStartGap(true);
-                    Browser_EnableCloseEndGap(true);
                     Browser_EnableStartEntry(true);
                     Browser_EnableStopEntry(true);
                     Browser_EnableDurationEntry(true);
-                    Browser_EnableLocationEntry(true);
-                    Browser_EnableCategoryEntry(true);
                     Browser_EnableMemoEntry(true);
                     Browser_ShowUnlock(false);
                     Browser_EnableSplit(true);
@@ -171,22 +167,30 @@ namespace Timekeeper.Forms
                     Browser_EnableCloseStartGap(false);
                 } else {
                     DateTimeOffset? PreviousEndTime = Browser_GetPreviousEndTime();
-                    if (PreviousEndTime == StartTimeSelector.Value) {
+                    if (PreviousEndTime == null) {
                         Browser_EnableCloseStartGap(false);
                     } else {
-                        Browser_EnableCloseStartGap(true);
+                        if (PreviousEndTime.Value.DateTime.CompareTo(StartTimeSelector.Value) == 0) {
+                            Browser_EnableCloseStartGap(false);
+                        } else {
+                            Browser_EnableCloseStartGap(true);
+                        }
                     }
                 }
 
                 // Enable/disable stop gap button
                 if (browserEntry.AtEnd()) {
-                    Browser_EnableCloseEndGap(true);
+                    Browser_EnableCloseStopGap(true);
                 } else {
                     DateTimeOffset? NextStartTime = Browser_GetNextStartTime();
-                    if (NextStartTime == StopTimeSelector.Value) {
-                        Browser_EnableCloseEndGap(false);
+                    if (NextStartTime == null) {
+                        Browser_EnableCloseStopGap(true);
                     } else {
-                        Browser_EnableCloseEndGap(true);
+                        if (NextStartTime.Value.DateTime.CompareTo(StopTimeSelector.Value) == 0) {
+                            Browser_EnableCloseStopGap(false);
+                        } else {
+                            Browser_EnableCloseStopGap(true);
+                        }
                     }
                 }
 
@@ -263,11 +267,13 @@ namespace Timekeeper.Forms
         private void Browser_EnableCloseStartGap(bool enabled)
         {
             MenuToolbarBrowserCloseStartGap.Enabled = enabled;
+            CloseStartGapButton.Enabled = enabled;
         }
 
-        private void Browser_EnableCloseEndGap(bool enabled)
+        private void Browser_EnableCloseStopGap(bool enabled)
         {
             MenuToolbarBrowserCloseEndGap.Enabled = enabled;
+            CloseStopGapButton.Enabled = enabled;
         }
 
         private void Browser_EnableRevert(bool enabled)
@@ -288,14 +294,14 @@ namespace Timekeeper.Forms
         {
             StartTimeSelector.Enabled = enabled;
             StartLabel.Enabled = enabled;
-            CloseStartGapButton.Enabled = enabled;
+            //CloseStartGapButton.Enabled = enabled;
         }
 
         private void Browser_EnableStopEntry(bool enabled)
         {
             StopTimeSelector.Enabled = enabled;
             StopLabel.Enabled = enabled;
-            CloseStopGapButton.Enabled = enabled;
+            //CloseStopGapButton.Enabled = enabled;
         }
 
         private void Browser_EnableDurationEntry(bool enabled)
@@ -304,25 +310,10 @@ namespace Timekeeper.Forms
             DurationLabel.Enabled = enabled;
         }
 
-        private void Browser_EnableLocationEntry(bool enabled)
-        {
-            LocationTreeDropdown.Enabled = enabled;
-            LocationLabel.Enabled = enabled;
-        }
-
-        private void Browser_EnableCategoryEntry(bool enabled)
-        {
-            CategoryTreeDropdown.Enabled = enabled;
-            CategoryLabel.Enabled = enabled;
-        }
-
         private void Browser_EnableMemoEntry(bool enabled)
         {
-            // FIXME: Make "MemoEntry" private again then add
-            // appropriate methods for all this direct access
-            // that we're doing.
             if (enabled) {
-            	MemoEditor.Enable();
+                MemoEditor.Enable();
             } else {
                 MemoEditor.Disable();
             }
@@ -692,14 +683,12 @@ namespace Timekeeper.Forms
             Browser_EnableNew(false);
 
             Browser_EnableCloseStartGap(true);
-            Browser_EnableCloseEndGap(false);
+            Browser_EnableCloseStopGap(false);
             Browser_EnableSplit(false);
 
             Browser_EnableStartEntry(true);
             Browser_EnableStopEntry(false);
             Browser_EnableDurationEntry(false);
-            Browser_EnableLocationEntry(true);
-            Browser_EnableCategoryEntry(true);
         }
 
         private void Browser_SetBrowseState()
@@ -714,14 +703,9 @@ namespace Timekeeper.Forms
 
                 Browser_EnableNew(false);
 
-                Browser_EnableCloseStartGap(true);
-                Browser_EnableCloseEndGap(true);
-
                 Browser_EnableStartEntry(true);
                 Browser_EnableStopEntry(true);
                 Browser_EnableDurationEntry(true);
-                Browser_EnableLocationEntry(true);
-                Browser_EnableCategoryEntry(true);
             } else {
                 Browser_ShowStart(true);
                 Browser_ShowStop(false);
@@ -731,14 +715,9 @@ namespace Timekeeper.Forms
 
                 Browser_EnableNew(true);
 
-                Browser_EnableCloseStartGap(true);
-                Browser_EnableCloseEndGap(true);
-
                 Browser_EnableStartEntry(true);
                 Browser_EnableStopEntry(true);
                 Browser_EnableDurationEntry(true);
-                Browser_EnableLocationEntry(true);
-                Browser_EnableCategoryEntry(true);
             }
         }
 
@@ -757,16 +736,11 @@ namespace Timekeeper.Forms
             Browser_EnableNew(false);
 
             Browser_EnableCloseStartGap(false);
-            Browser_EnableCloseEndGap(false);
+            Browser_EnableCloseStopGap(false);
 
             Browser_EnableStartEntry(false);
             Browser_EnableStopEntry(false);
             Browser_EnableDurationEntry(false);
-            /*
-            Let's just see what happens...
-            Browser_EnableLocationEntry(false);
-            Browser_EnableCategoryEntry(false);
-            */
         }
 
         //---------------------------------------------------------------------
