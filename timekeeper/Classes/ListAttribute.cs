@@ -30,8 +30,8 @@ namespace Timekeeper.Classes
         public long SortOrderNo { get; set; }
         public bool IsHidden { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTimeOffset HiddenTime { get; set; }
-        public DateTimeOffset DeletedTime { get; set; }
+        public DateTimeOffset? HiddenTime { get; set; }
+        public DateTimeOffset? DeletedTime { get; set; }
 
         private enum Mode { Insert, Update };
 
@@ -122,11 +122,8 @@ namespace Timekeeper.Classes
                 this.SortOrderNo = ListAttribute["SortOrderNo"];
                 this.IsHidden = ListAttribute["IsHidden"];
                 this.IsDeleted = ListAttribute["IsDeleted"];
-
-                if (ListAttribute["HiddenTime"] != null)
-                    this.HiddenTime = ListAttribute["HiddenTime"];
-                if (ListAttribute["DeletedTime"] != null)
-                    this.DeletedTime = ListAttribute["DeletedTime"];
+                this.HiddenTime = ListAttribute["HiddenTime"];
+                this.DeletedTime = ListAttribute["DeletedTime"];
             }
         }
 
@@ -215,11 +212,8 @@ namespace Timekeeper.Classes
 
                 // More backfilling
                 this.ModifyTime = Timekeeper.StringToDate(ListAttribute["ModifyTime"]);
-
-                if (ListAttribute["HiddenTime"] != null)
-                    this.HiddenTime = Timekeeper.StringToDate(ListAttribute["HiddenTime"]);
-                if (ListAttribute["DeletedTime"] != null)
-                    this.DeletedTime = Timekeeper.StringToDate(ListAttribute["DeletedTime"]);
+                this.HiddenTime = Timekeeper.StringToNullableDate(ListAttribute["HiddenTime"]);
+                this.DeletedTime = Timekeeper.StringToNullableDate(ListAttribute["DeletedTime"]);
 
                 return true;
             }

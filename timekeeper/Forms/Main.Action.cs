@@ -30,12 +30,12 @@ namespace Timekeeper.Forms
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
 
-        private void AutoFollow(long lastId, ComboTreeBox dropdown, bool allowed)
+        private void AutoFollow(long? lastId, ComboTreeBox dropdown, bool allowed)
         {
             if (allowed) {
                 if (!isBrowsing) {
-                    if (lastId > 0) {
-                        ComboTreeNode Node = Widgets.FindTreeNode(dropdown.Nodes, lastId);
+                    if ((lastId != null) && (lastId.Value > 0)) {
+                        ComboTreeNode Node = Widgets.FindTreeNode(dropdown.Nodes, lastId.Value);
                         if (Node != null) {
                             dropdown.SelectedNode = Node;
                         }
@@ -335,7 +335,7 @@ namespace Timekeeper.Forms
                     }
 
                     Message = String.Format(
-                            "This database appears to be in use by another program (Name=\"{0}\", PID={1}). Continue opening?",
+                            "This database appears to be in use by another program (PID={1}, Name=\"{0}\"). Continue opening?",
                             ProcessName, Meta.ProcessId);
 
                     if (Common.WarnPrompt(Message) == DialogResult.Yes) {
@@ -539,6 +539,13 @@ namespace Timekeeper.Forms
                 MemoEditor.Focus();
 
                 // SHORTCUTS
+
+                /*
+                Forms.Tools.Todo DialogBox = new Forms.Tools.Todo();
+                DialogBox.ShowDialog(this);
+                Application.Exit();
+                */
+
                 /*
                 Forms.Shared.Schedule DialogBox = new Forms.Shared.Schedule();
                 DialogBox.ShowDialog(this);
@@ -632,6 +639,7 @@ namespace Timekeeper.Forms
             // have a name for it yet, obviously.
 
             // Instantiate any run-time only controls
+            // FIXME (OR TODO): Move this (or most of this) to Classes.Widgets
             this.MemoEditor = new Forms.Shared.MemoEditor();
             this.MemoEditor.Parent = MainPanel;
             this.MemoEditor.BringToFront();

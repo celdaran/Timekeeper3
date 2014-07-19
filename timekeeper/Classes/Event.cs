@@ -53,8 +53,8 @@ namespace Timekeeper.Classes
 
         public bool IsHidden { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTimeOffset HiddenTime { get; set; }
-        public DateTimeOffset DeletedTime { get; set; }
+        public DateTimeOffset? HiddenTime { get; set; }
+        public DateTimeOffset? DeletedTime { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -113,8 +113,8 @@ namespace Timekeeper.Classes
 
                     this.IsHidden = (bool)Timekeeper.GetValue(Event["IsHidden"], false);
                     this.IsDeleted = (bool)Timekeeper.GetValue(Event["IsDeleted"], false);
-                    this.HiddenTime = (DateTimeOffset)Timekeeper.GetValue(Event["HiddenTime"], Timekeeper.MaxDateTime());
-                    this.DeletedTime = (DateTimeOffset)Timekeeper.GetValue(Event["DeletedTime"], Timekeeper.MaxDateTime());
+                    this.HiddenTime = (DateTimeOffset?)Timekeeper.GetValue(Event["HiddenTime"], null);
+                    this.DeletedTime = (DateTimeOffset?)Timekeeper.GetValue(Event["DeletedTime"], null);
                 }
             }
             catch (Exception x) {
@@ -143,10 +143,8 @@ namespace Timekeeper.Classes
                 Event["IsHidden"] = this.IsHidden ? 1 : 0;
                 Event["IsDeleted"] = this.IsDeleted ? 1 : 0;
 
-                if (this.IsHidden)
-                    Event["HiddenTime"] = Timekeeper.DateForDatabase(this.HiddenTime);
-                if (this.IsDeleted)
-                    Event["DeletedTime"] = Timekeeper.DateForDatabase(this.DeletedTime);
+                Event["HiddenTime"] = Timekeeper.NullableDateForDatabase(this.HiddenTime);
+                Event["DeletedTime"] = Timekeeper.NullableDateForDatabase(this.DeletedTime);
 
                 string Query = String.Format(@"
                     SELECT count(*) as Count 

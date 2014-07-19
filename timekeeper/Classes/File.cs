@@ -38,7 +38,7 @@ namespace Timekeeper
         // (nor were the DDL statements stored as resources or under version 
         // control).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.9.0";
+        public const string SCHEMA_VERSION = "3.0.9.1";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
@@ -320,7 +320,7 @@ namespace Timekeeper
             Location["LocationGuid"] = UUID.Get();
             Location["Name"] = options.LocationName;
             Location["Description"] = options.LocationDescription;
-            Location["ParentId"] = 0;
+            Location["ParentId"] = null;
             Location["SortOrderNo"] = 0;
             Location["IsFolder"] = false;
             Location["IsFolderOpened"] = false;

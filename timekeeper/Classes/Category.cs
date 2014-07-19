@@ -21,6 +21,11 @@ namespace Timekeeper.Classes
             : base(categoryId, CategoryTableName, CategoryIdColumnName)
         { }
 
+        // constructor, by nullable id
+        public Category(long? categoryId)
+            : base(categoryId, CategoryTableName, CategoryIdColumnName)
+        { }
+
         // constructor, by name
         public Category(string categoryName)
             : base(categoryName, CategoryTableName, CategoryIdColumnName)

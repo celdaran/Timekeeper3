@@ -21,6 +21,11 @@ namespace Timekeeper.Classes
             : base(activityId, ActivityTableName, ActivityIdColumnName)
         {}
 
+        // constructor, by nullable id
+        public Activity(long? activityId)
+            : base(activityId, ActivityTableName, ActivityIdColumnName)
+        { }
+
         // constructor, by name
         public Activity(string activityName)
             : base(activityName, ActivityTableName, ActivityIdColumnName)

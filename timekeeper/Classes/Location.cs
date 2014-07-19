@@ -21,6 +21,11 @@ namespace Timekeeper.Classes
             : base(locationId, LocationTableName, LocationIdColumnName)
         { }
 
+        // constructor, by nullable id
+        public Location(long? locationId)
+            : base(locationId, LocationTableName, LocationIdColumnName)
+        { }
+
         // constructor, by name
         public Location(string locationName)
             : base(locationName, LocationTableName, LocationIdColumnName)

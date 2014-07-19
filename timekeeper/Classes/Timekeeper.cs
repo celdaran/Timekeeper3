@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Reflection;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 using Technitivity.Toolbox;
 using Quartz;
@@ -27,17 +28,6 @@ namespace Timekeeper
         public const int SUCCESS = 1;
         public const int FAILURE = 0;
 
-        /*
-        public const int IMG_FOLDER_OPEN = 0;
-        public const int IMG_FOLDER_CLOSED = 1;
-        public const int IMG_PROJECT = 2;
-        public const int IMG_ACTIVITY = 3;
-        public const int IMG_TIMER_START = 4;
-        public const int IMG_TIMER_END = 7;
-        public const int IMG_ITEM_HIDDEN = 8;
-        public const int IMG_FOLDER_HIDDEN = 9;
-        */
-
         public const int IMG_FOLDER = 0;
         public const int IMG_PROJECT = 1;
         public const int IMG_ACTIVITY = 2;
@@ -48,7 +38,8 @@ namespace Timekeeper
 
         public enum Dimension { Project, Activity, Location, Category };
 
-        public const string LOCAL_DATETIME_FORMAT = "yyyy'-'MM'-'dd' 'HH':'mm':'ss";
+        public const string DATE_FORMAT = "yyyy-MM-dd";
+        public const string LOCAL_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
         public const string UTC_DATETIME_FORMAT = "yyyy-MM-ddTHH:mm:sszzz";
 
         //---------------------------------------------------------------------
@@ -154,7 +145,7 @@ namespace Timekeeper
             string Debug =
                 "Created Job \"" + Job.Key.ToString() + "\"" +
                 " for Event \"" + scheduledEvent.Event.Name + "\"" + 
-                " to be Reminded at \"" + ReminderTime.ToString(Common.LOCAL_DATETIME_FORMAT) + "\"";
+                " to be Reminded at \"" + Timekeeper.DateForDisplay(ReminderTime) + "\"";
             Timekeeper.Debug(Debug);
 
             // Create trigger
@@ -266,6 +257,13 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
+        public static string NullableDateForDatabase(DateTimeOffset? datetime)
+        {
+            return NullableDatabaseDateTimeString(datetime);
+        }
+
+        //---------------------------------------------------------------------
+
         public static string DateForDisplay()
         {
             return UserDateTimeString(Timekeeper.LocalNow);
@@ -280,9 +278,28 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
+        public static string NullableDateForDisplay(DateTimeOffset? datetime)
+        {
+            return NullableUserDateTimeString(datetime);
+        }
+
+        //---------------------------------------------------------------------
+
         private static string DatabaseDateTimeString(DateTimeOffset datetime)
         {
             return datetime.ToLocalTime().ToString(Timekeeper.LOCAL_DATETIME_FORMAT);
+        }
+
+        //---------------------------------------------------------------------
+
+        private static string NullableDatabaseDateTimeString(DateTimeOffset? datetime)
+        {
+            if ((datetime == null) || (datetime == DateTimeOffset.MinValue)) {
+                return null;
+            } else {
+                DateTimeOffset Converted = (DateTimeOffset)datetime;
+                return Converted.ToLocalTime().ToString(Timekeeper.LOCAL_DATETIME_FORMAT);
+            }
         }
 
         //---------------------------------------------------------------------
@@ -294,10 +311,32 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
+        private static string NullableUserDateTimeString(DateTimeOffset? datetime)
+        {
+            if ((datetime == null) || (datetime == DateTimeOffset.MinValue)) {
+                return "None";
+            } else {
+                DateTimeOffset Converted = (DateTimeOffset)datetime;
+                return Converted.ToLocalTime().ToString(Options.Advanced_DateTimeFormat);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         public static DateTimeOffset StringToDate(string datetime)
         {
             return DateTimeOffset.Parse(datetime).ToLocalTime();
             //return DateTime.SpecifyKind(DateTime.Parse(datetime), DateTimeKind.Local);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static DateTimeOffset? StringToNullableDate(string datetime)
+        {
+            if (datetime == null)
+                return null;
+            else
+                return DateTimeOffset.Parse(datetime).ToLocalTime();
         }
 
         //---------------------------------------------------------------------
@@ -343,6 +382,137 @@ namespace Timekeeper
         // statements, moved the methods above, and made some modifications.
 
         //---------------------------------------------------------------------
+        // Format Helpers
+        //---------------------------------------------------------------------
+
+        public static string ReformatSeconds(string time)
+        {
+            long Seconds = Timekeeper.UnformatSeconds(time);
+            return Timekeeper.FormatSeconds(Seconds);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static long UnformatSeconds(string time)
+        {
+            long seconds = 0;
+            long h = 0;
+            long m = 0;
+            long s = 0;
+            bool negative = false;
+            char[] units = new char[] {'h', 'H', 'm', 'M', 's', 'S'};
+
+            try {
+                if (time.Substring(0, 1) == "-") {
+                    // user going back in time
+                    negative = true;
+                    // strip minus sign from text
+                    time = time.Substring(1);
+                }
+
+                string[] parts = time.Split(':');
+
+                switch (parts.Length) {
+                    case 1:
+                        // one part => either minutes or a number with a unit
+                        char PossibleUnit = parts[0][parts[0].Length - 1];
+                        if (units.Contains(PossibleUnit)) {
+                            long value = Convert.ToInt64(parts[0].Substring(0, parts[0].Length - 1));
+                            switch (PossibleUnit) {
+                                case 'h':
+                                case 'H':
+                                    h = value * 60 * 60;
+                                    break;
+                                case 'm':
+                                case 'M':
+                                    m = value * 60;
+                                    break;
+                                default:
+                                    s = value;
+                                    break;
+                            }
+                        } else {
+                            bool AppearsNumeric = long.TryParse(PossibleUnit.ToString(), out m);
+                            if (AppearsNumeric) {
+                                h = 0;
+                                m = Convert.ToInt64(parts[0]) * 60;
+                                s = 0;
+                            } else {
+                                throw new System.ApplicationException("invalid time unit specifier");
+                            }
+                        }
+                        break;
+                    case 2:
+                        // two parts => hours minutes
+                        h = Convert.ToInt64(parts[0]) * 3600;
+                        m = Convert.ToInt64(parts[1]) * 60;
+                        s = 0;
+                        if ((m < 0) || (m > 3599)) {
+                            throw new System.ApplicationException("invalid minutes");
+                        }
+                        break;
+                    case 3:
+                        // three parts => hours minutes seconds
+                        h = Convert.ToInt64(parts[0]) * 3600;
+                        m = Convert.ToInt64(parts[1]) * 60;
+                        s = Convert.ToInt64(parts[2]);
+                        if ((m < 0) || (m > 3599)) {
+                            throw new System.ApplicationException("invalid minutes");
+                        }
+                        if ((s < 0) || (s > 59)) {
+                            throw new System.ApplicationException("invalid seconds");
+                        }
+                        break;
+                    default:
+                        // if it's not 1, 2, or three, do nothing
+                        break;
+                }
+
+                seconds = h + m + s;
+            }
+            catch {
+                // do anything? -- probably not, just ignore it and 
+                // return the default value of 0
+            }
+
+            return negative ? -seconds : seconds;
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string FormatSeconds(long seconds)
+        {
+            if (seconds > (9999*60*60 + 59*60 + 59)) {
+                Common.Info("Duration greater than 10,000 hours detected.");
+            }
+            TimeSpan t = TimeSpan.FromSeconds(seconds);
+            return string.Format("{0:D2}:{1:D2}:{2:D2}",
+                                    (t.Days * 24) + t.Hours,
+                                    t.Minutes,
+                                    t.Seconds);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string FormatTimeSpan(TimeSpan t)
+        {
+            int days = t.Days;
+            if (days > 7) {
+                // This is a right royal hack because I apparently
+                // don't understand something fundamental about TimeSpan.
+                // For some reason my Days value is 733915, which seems
+                // to be the number of days from year 1. I'll look into
+                // this later. For now, if the number is "too big" then
+                // it gets reset to zero here. Sorry.
+                days = 0;
+            }
+            return string.Format("{0:D2}:{1:D2}:{2:D2}",
+                                    (days * 24) + t.Hours,
+                                    t.Minutes,
+                                    t.Seconds);
+        }
+
+        //---------------------------------------------------------------------
         // Benchmarking
         //---------------------------------------------------------------------
 
@@ -379,39 +549,6 @@ namespace Timekeeper
         public static string MetaTableName()
         {
             return "[" + IDENTIFIER + "]";
-        }
-
-        //---------------------------------------------------------------------
-        // Format Helpers
-        //---------------------------------------------------------------------
-
-        public static string FormatSeconds(long seconds)
-        {
-            TimeSpan t = TimeSpan.FromSeconds(seconds);
-            return string.Format("{0:D2}:{1:D2}:{2:D2}",
-                                    (t.Days * 24) + t.Hours,
-                                    t.Minutes,
-                                    t.Seconds);
-        }
-
-        //---------------------------------------------------------------------
-
-        public static string FormatTimeSpan(TimeSpan t)
-        {
-            int days = t.Days;
-            if (days > 7) {
-                // This is a right royal hack because I apparently
-                // don't understand something fundamental about TimeSpan.
-                // For some reason my Days value is 733915, which seems
-                // to be the number of days from year 1. I'll look into
-                // this later. For now, if the number is "too big" then
-                // it gets reset to zero here. Sorry.
-                days = 0;
-            }
-            return string.Format("{0:D2}:{1:D2}:{2:D2}",
-                                    (days * 24) + t.Hours,
-                                    t.Minutes,
-                                    t.Seconds);
         }
 
         //---------------------------------------------------------------------
@@ -545,14 +682,14 @@ namespace Timekeeper
 
         public static long GetNextSortOrderNo(string tableName)
         {
-            return GetNextSortOrderNo(tableName, -1);
+            return GetNextSortOrderNo(tableName, null);
         }
 
         //----------------------------------------------------------------------
 
-        public static long GetNextSortOrderNo(string tableName, long parentId)
+        public static long GetNextSortOrderNo(string tableName, long? parentId)
         {
-            string WhereClause = parentId > -1 ? "WHERE ParentId = " + parentId : "";
+            string WhereClause = parentId.HasValue ? "WHERE ParentId = " + parentId.Value : "";
 
             string Query = String.Format(@"
                 SELECT max(SortOrderNo) as HighestSortOrderNo

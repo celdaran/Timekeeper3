@@ -584,8 +584,8 @@ namespace Timekeeper.Forms.Shared
                 FilterOptions.SetDateRange();
             }
             if (ChangeDateRange) {
-                FromDate.Value = FilterOptions.FromTime.Date;
-                ToDate.Value = FilterOptions.ToTime.Date;
+                FromDate.Value = FilterOptions.FromTime.Value.Date;
+                ToDate.Value = FilterOptions.ToTime.Value.Date;
             }
         }
 

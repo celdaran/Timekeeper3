@@ -898,7 +898,7 @@ namespace Timekeeper.Forms
         private void Browser_UpdateTimes()
         {
             if (isBrowsing) {
-                long seconds = ConvertToSeconds(DurationBox.Text);
+                long seconds = Timekeeper.UnformatSeconds(DurationBox.Text);
 
                 if (seconds != priorLoadedBrowserEntry.Seconds) {
                     if (seconds < 0) {
@@ -944,70 +944,12 @@ namespace Timekeeper.Forms
             }
         }
 
-        // FIXME: where should this live?
-        private long ConvertToSeconds(string time)
-        {
-            long seconds = 0;
-            long h = 0;
-            long m = 0;
-            long s = 0;
-            bool negative = false;
 
-            try {
-                if (time.Substring(0, 1) == "-") {
-                    // user going back in time
-                    negative = true;
-                    // strip minus sign from text
-                    time = time.Substring(1);
-                }
-
-                string[] parts = time.Split(':');
-
-                switch (parts.Length) {
-                    case 1:
-                        // one part => minutes
-                        h = 0;
-                        m = Convert.ToInt32(parts[0]) * 60;
-                        s = 0;
-                        break;
-                    case 2:
-                        // two parts => hours minutes
-                        h = Convert.ToInt32(parts[0]) * 3600;
-                        m = Convert.ToInt32(parts[1]) * 60;
-                        s = 0;
-                        if ((m < 0) || (m > 3599)) {
-                            throw new System.ApplicationException("invalid minutes");
-                        }
-                        break;
-                    case 3:
-                        // three parts => hours minutes seconds
-                        h = Convert.ToInt32(parts[0]) * 3600;
-                        m = Convert.ToInt32(parts[1]) * 60;
-                        s = Convert.ToInt32(parts[2]);
-                        if ((m < 0) || (m > 3599)) {
-                            throw new System.ApplicationException("invalid minutes");
-                        }
-                        if ((s < 0) || (s > 59)) {
-                            throw new System.ApplicationException("invalid seconds");
-                        }
-                        break;
-                    default:
-                        // if it's not 1, 2, or three, do nothing
-                        break;
-                }
-
-                seconds = h + m + s;
-            }
-            catch {
-                // do anything? -- probably not, just ignore it and 
-                // return the default value of 0
-            }
-
-            return negative ? -seconds : seconds;
-        }
 
         //---------------------------------------------------------------------
 
+        // FIXME: consider returning DateTimeOffset? instead
+        // and use a null value instead of DateTime.MinValue
         private DateTimeOffset Browser_GetPreviousEndTime()
         {
             try {

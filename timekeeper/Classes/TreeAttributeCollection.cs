@@ -29,7 +29,7 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public List<Classes.TreeAttribute> Fetch(long parentId, bool showHidden, DateTimeOffset showHiddenSince)
+        public List<Classes.TreeAttribute> Fetch(long? parentId, bool showHidden, DateTimeOffset showHiddenSince)
         {
             Table Table = this.GetItems(parentId, showHidden, showHiddenSince);
 
@@ -91,7 +91,7 @@ namespace Timekeeper.Classes
         // Protected Methods
         //---------------------------------------------------------------------
 
-        protected Table GetItems(long parentId, bool showHidden, DateTimeOffset showHiddenSince)
+        protected Table GetItems(long? parentId, bool showHidden, DateTimeOffset showHiddenSince)
         {
             if (OrderByClause == "") {
                 OrderByClause = "CreateTime";
@@ -109,9 +109,12 @@ namespace Timekeeper.Classes
                 select * from {0}
                 where IsDeleted = 0
                   {1}
-                  and ParentId = {2}
+                  and ParentId {2}
                 order by {3}",
-                this.TableName, HiddenQualifier, parentId, OrderByClause);
+            this.TableName, 
+            HiddenQualifier, 
+            parentId.HasValue ? ("= " + parentId.Value.ToString()) : "is null", 
+            OrderByClause);
 
             Table Rows = Database.Select(Query);
 

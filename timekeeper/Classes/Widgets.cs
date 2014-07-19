@@ -121,17 +121,17 @@ namespace Timekeeper.Classes
             Dialog.wID.Text = item.ItemId.ToString();
             Dialog.wGUID.Text = item.ItemGuid;
 
-            Dialog.wCreated.Text = item.CreateTime.ToString(Common.LOCAL_DATETIME_FORMAT);
-            Dialog.wModified.Text = item.ModifyTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+            Dialog.wCreated.Text = Timekeeper.DateForDisplay(item.CreateTime);
+            Dialog.wModified.Text = Timekeeper.DateForDisplay(item.ModifyTime);
             Dialog.wTotalTime.Text = Timekeeper.FormatSeconds(item.RecursiveSecondsElapsed(item.ItemId, "1900-01-01", "2999-01-01"));
             Dialog.wTimeToday.Text = Timekeeper.FormatSeconds(item.RecursiveSecondsElapsed(item.ItemId, From, To));
 
             Dialog.wIsHidden.Checked = item.IsHidden;
             Dialog.wIsDeleted.Checked = item.IsDeleted;
             if (item.IsHidden)
-                Dialog.wHiddenTime.Text = item.HiddenTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+                Dialog.wHiddenTime.Text = Timekeeper.NullableDateForDisplay(item.HiddenTime);
             if (item.IsDeleted)
-                Dialog.wDeletedTime.Text = item.DeletedTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+                Dialog.wDeletedTime.Text = Timekeeper.NullableDateForDisplay(item.DeletedTime);
 
             if (item.Dimension == Timekeeper.Dimension.Project) {
                 if (item.LastActivityId > 0) {

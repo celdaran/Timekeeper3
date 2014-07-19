@@ -442,7 +442,7 @@ namespace Timekeeper.Classes
                 Item.Description = "Item created automatically during Import process.";
                 Item.Dimension = dimension;
                 Item.IsFolder = false;
-                Item.ParentId = 0;
+                Item.ParentId = null;
                 Item.Create();
                 if (Item.ItemId > 0) {
                     string Message = String.Format("  Created {0} \"{1}\"\n", dimension, Item.Name);

@@ -21,6 +21,11 @@ namespace Timekeeper.Classes
             : base(projectId, ProjectTableName, ProjectIdColumnName)
         {}
 
+        // constructor, by nullable id
+        public Project(long? projectId)
+            : base(projectId, ProjectTableName, ProjectIdColumnName)
+        { }
+
         // constructor, by name
         public Project(string projectName)
             : base(projectName, ProjectTableName, ProjectIdColumnName)

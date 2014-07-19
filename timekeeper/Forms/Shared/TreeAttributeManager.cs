@@ -275,7 +275,7 @@ namespace Timekeeper.Forms.Shared
             }
 
             // Nickname
-            Classes.TreeAttribute ItemParent = item.Parent();
+            Classes.TreeAttribute ItemParent = item.Parent;
 
             // Previous values
             string PreviousName = item.Name;

@@ -1630,6 +1630,7 @@ namespace Timekeeper.Forms
             // DurationBox
             // 
             this.DurationBox.Location = new System.Drawing.Point(67, 62);
+            this.DurationBox.MaxLength = 10;
             this.DurationBox.Name = "DurationBox";
             this.DurationBox.Size = new System.Drawing.Size(69, 20);
             this.DurationBox.TabIndex = 7;

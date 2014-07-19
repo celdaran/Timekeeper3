@@ -654,8 +654,8 @@ namespace Timekeeper
                     {"CategoryId", null},
                     {"IsLocked", OldRow["is_locked"] ? 1 : 0},
                     // FIXME: Don't forget to get rid of these
-                    {"OriginalStartTime", OldRow["timestamp_s"].ToString(Common.LOCAL_DATETIME_FORMAT)},
-                    {"OriginalStopTime", OldRow["timestamp_e"].ToString(Common.LOCAL_DATETIME_FORMAT)},
+                    {"OriginalStartTime", Timekeeper.DateForDatabase(OldRow["timestamp_s"])},
+                    {"OriginalStopTime", Timekeeper.DateForDatabase(OldRow["timestamp_e"])},
                 };
 
                 switch (UpgradeOptions.MemoMergeTypeId) {
@@ -817,7 +817,7 @@ namespace Timekeeper
             */
 
             // Get time into standard string format
-            string ConvertedTime = time.ToString(Common.LOCAL_DATETIME_FORMAT);
+            string ConvertedTime = Timekeeper.DateForDatabase(time);
 
             // Calculate the timezone & dst (if any) offset
             TimeSpan Offset = UpgradeOptions.LocationTimeZoneInfo.BaseUtcOffset;

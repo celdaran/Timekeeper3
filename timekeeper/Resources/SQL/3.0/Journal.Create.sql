@@ -17,7 +17,7 @@ CREATE TABLE Journal
     JournalGuid             TEXT        NOT NULL,
 
     StartTime               DATETIME    NOT NULL,
-    StopTime                DATETIME        NULL,
+    StopTime                DATETIME    NOT NULL,
     Seconds                 INTEGER     NOT NULL,
     Memo                    TEXT            NULL,
     ProjectId               INTEGER     NOT NULL,

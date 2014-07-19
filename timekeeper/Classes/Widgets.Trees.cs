@@ -72,7 +72,7 @@ namespace Timekeeper.Classes
         {
             this.CurrentDimension = Timekeeper.Dimension.Project;
             this.CurrentIcon = Timekeeper.IMG_PROJECT;
-            BuildTree(tree, null, 0);
+            BuildTree(tree, null, null);
             ExpandTree(tree);
         }
 
@@ -82,7 +82,7 @@ namespace Timekeeper.Classes
         {
             this.CurrentDimension = Timekeeper.Dimension.Activity;
             this.CurrentIcon = Timekeeper.IMG_ACTIVITY;
-            BuildTree(tree, null, 0);
+            BuildTree(tree, null, null);
             ExpandTree(tree);
         }
 
@@ -92,7 +92,7 @@ namespace Timekeeper.Classes
         {
             this.CurrentDimension = Timekeeper.Dimension.Location;
             this.CurrentIcon = Timekeeper.IMG_LOCATION;
-            BuildTree(tree, null, 0);
+            BuildTree(tree, null, null);
             ExpandTree(tree);
         }
 
@@ -102,13 +102,13 @@ namespace Timekeeper.Classes
         {
             this.CurrentDimension = Timekeeper.Dimension.Category;
             this.CurrentIcon = Timekeeper.IMG_CATEGORY;
-            BuildTree(tree, null, 0);
+            BuildTree(tree, null, null);
             ExpandTree(tree);
         }
 
         //----------------------------------------------------------------------
 
-        private void BuildTree(dynamic tree, dynamic parentNode, long parentId)
+        private void BuildTree(dynamic tree, dynamic parentNode, long? parentId)
         {
             bool showHidden = GetViewHidden();
             DateTimeOffset showHiddenSince = GetViewHiddenSinceTime();
@@ -244,7 +244,7 @@ namespace Timekeeper.Classes
         public int CreateTreeItem(dynamic tree, TreeAttribute item, long parentId, int imageIndex)
         {
             dynamic ParentNode = null;
-            item.ParentId = 0;
+            item.ParentId = null;
 
             if (parentId != -1) {
                 ParentNode = FindTreeNode(tree, parentId);
@@ -341,7 +341,7 @@ namespace Timekeeper.Classes
                 if (SelectedItem.IsFolder) {
                     ParentIndex = Dialog.ItemParent.FindString(SelectedItem.Name);
                 } else if (tree.SelectedNode.Parent != null) {
-                    ParentIndex = Dialog.ItemParent.FindString(SelectedItem.Parent().Name);
+                    ParentIndex = Dialog.ItemParent.FindString(SelectedItem.Parent.Name);
                 } else {
                     // Do nothing?
                 }

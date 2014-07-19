@@ -64,8 +64,8 @@ namespace Timekeeper.Classes
         public OptionsType FilterOptionsType { get; set; }
 
         public int DateRangePreset { get; set; }
-        public DateTimeOffset FromTime { get; set; }
-        public DateTimeOffset ToTime { get; set; }
+        public DateTimeOffset? FromTime { get; set; }
+        public DateTimeOffset? ToTime { get; set; }
         public int MemoOperator { get; set; }
         public string MemoValue { get; set; }
         public List<long> Projects { get; set; }
@@ -157,8 +157,8 @@ namespace Timekeeper.Classes
                 }
 
                 DateRangePreset = (int)Timekeeper.GetValue(Options["RefDatePresetId"], DATE_PRESET_ALL);
-                FromTime = (DateTimeOffset)Timekeeper.GetValue(Options["FromTime"], DateTimeOffset.MinValue);
-                ToTime = (DateTimeOffset)Timekeeper.GetValue(Options["ToTime"], Timekeeper.MaxDateTime());
+                FromTime = (DateTimeOffset)Timekeeper.GetValue(Options["FromTime"], null);
+                ToTime = (DateTimeOffset)Timekeeper.GetValue(Options["ToTime"], null);
                 MemoOperator = (int)Timekeeper.GetValue(Options["MemoOperator"], 0);
                 MemoValue = (string)Timekeeper.GetValue(Options["MemoValue"], "");
                 Projects = List((string)Timekeeper.GetValue(Options["ProjectList"], ""));
@@ -240,8 +240,8 @@ namespace Timekeeper.Classes
             if (
                 (this.FilterOptionsType == that.FilterOptionsType) &&
                 (this.DateRangePreset == that.DateRangePreset) &&
-                (this.FromTime.CompareTo(that.FromTime) == 0) &&
-                (this.ToTime.CompareTo(that.ToTime) == 0) &&
+                (this.NullableDateTimesEqual(this.FromTime, that.FromTime)) &&
+                (this.NullableDateTimesEqual(this.ToTime, that.ToTime)) &&
                 (this.MemoOperator == that.MemoOperator) &&
                 (this.MemoValue == that.MemoValue) &&
                 (this.SetsEqual(this.Projects, that.Projects)) &&
@@ -293,6 +293,23 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        private bool NullableDateTimesEqual(DateTimeOffset? left, DateTimeOffset? right)
+        {
+            if ((left == null) && (right == null)) {
+                return true;
+            } else if ((left == null) && (right != null)) {
+                return false;
+            } else if ((left != null) && (right == null)) {
+                return false;
+            } else {
+                DateTimeOffset ConvertedLeft = (DateTimeOffset)left;
+                DateTimeOffset ConvertedRight = (DateTimeOffset)right;
+                return (ConvertedLeft.CompareTo(ConvertedRight) == 0);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         public void Save()
         {
             this.Upsert();
@@ -314,8 +331,8 @@ namespace Timekeeper.Classes
 
                 Options["FilterOptionsType"] = DbFilterOptionsType;
                 Options["RefDatePresetId"] = DateRangePreset;
-                Options["FromTime"] = Timekeeper.DateForDatabase(FromTime);
-                Options["ToTime"] = Timekeeper.DateForDatabase(ToTime);
+                Options["FromTime"] = Timekeeper.NullableDateForDatabase(FromTime);
+                Options["ToTime"] = Timekeeper.NullableDateForDatabase(ToTime);
                 Options["MemoOperator"] = MemoOperator;
                 Options["MemoValue"] = MemoValue;
                 Options["ProjectList"] = List(Projects);
@@ -365,8 +382,8 @@ namespace Timekeeper.Classes
             FilterOptionsId = -1;
             FilterOptionsType = 0;
             DateRangePreset = DATE_PRESET_ALL;
-            FromTime = Timekeeper.LocalNow;
-            ToTime = Timekeeper.LocalNow;
+            FromTime = null;
+            ToTime = null;
             MemoOperator = -1;
             MemoValue = "";
             Projects = new List<long>();
@@ -385,7 +402,12 @@ namespace Timekeeper.Classes
         private string FromTimeToString()
         {
             // FIXME: does this handle UTC/localtime? does it support user-defined midnight values?
-            return FromTime.ToString(Common.DATE_FORMAT) + " 00:00:00";
+            //return Timekeeper.NullableDateForDisplay(FromTime) + " 00:00:00";
+            // FIXME: this should return a DATE and not a date time.
+            // Or, more precisely, it should return a DATE with a time of "midnight"
+            // Leaving in a broken state on 2014-07-17 for now...
+            // same thing below
+            return Timekeeper.NullableDateForDisplay(FromTime);
         }
 
         //---------------------------------------------------------------------
@@ -393,7 +415,8 @@ namespace Timekeeper.Classes
         private string ToTimeToString()
         {
             // FIXME: does this handle UTC/localtime? does it support user-defined midnight values?
-            return ToTime.ToString(Common.DATE_FORMAT) + " 23:59:59";
+            //return ToTime.ToString(Common.DATE_FORMAT) + " 23:59:59";
+            return Timekeeper.NullableDateForDisplay(ToTime);
         }
 
         //---------------------------------------------------------------------

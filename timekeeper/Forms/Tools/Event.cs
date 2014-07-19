@@ -306,7 +306,7 @@ namespace Timekeeper.Forms.Tools
                 ListViewItem.ListViewSubItem i;
                 i = item.SubItems[0]; i.Text = currentEvent.Name;
                 i = item.SubItems[1]; i.Text = currentEvent.Description;
-                i = item.SubItems[2]; i.Text = currentEvent.NextOccurrenceTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+                i = item.SubItems[2]; i.Text = Timekeeper.NullableDateForDisplay(currentEvent.NextOccurrenceTime);
 
                 // yeah, copy/pasted from above
                 string TriggerCountText = currentEvent.Schedule == null ? "" : currentEvent.Schedule.TriggerCount.ToString();

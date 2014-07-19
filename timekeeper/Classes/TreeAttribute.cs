@@ -19,21 +19,21 @@ namespace Timekeeper.Classes
         public string ItemGuid { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public long ParentId { get; set; }
+        public long? ParentId { get; set; }
         public long SortOrderNo { get; set; }
         public bool IsFolder { get; set; }
         public bool IsFolderOpened { get; set; }
         public bool IsHidden { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTimeOffset HiddenTime { get; set; }
-        public DateTimeOffset DeletedTime { get; set; }
+        public DateTimeOffset? HiddenTime { get; set; }
+        public DateTimeOffset? DeletedTime { get; set; }
 
         // Table-specific properties
-        public long LastActivityId { get; set; }        // used by Project
+        public long? LastActivityId { get; set; }        // used by Project
         public string ExternalProjectNo { get; set; }   // used by Project
-        public long LastLocationId { get; set; }        // used by Activity
-        public long LastCategoryId { get; set; }        // used by Location
-        public long RefTimeZoneId { get; set; }         // used by Location
+        public long? LastLocationId { get; set; }        // used by Activity
+        public long? LastCategoryId { get; set; }        // used by Location
+        public long? RefTimeZoneId { get; set; }         // used by Location
 
         public Timekeeper.Dimension Dimension { get; set; }
 
@@ -74,6 +74,16 @@ namespace Timekeeper.Classes
             : this(tableName, idColumnName)
         {
             Load(itemId);
+        }
+
+        //---------------------------------------------------------------------
+
+        public TreeAttribute(long? itemId, string tableName, string idColumnName)
+            : this(tableName, idColumnName)
+        {
+            // Convert nulls to 0.
+            long ItemId = itemId.HasValue ? itemId.Value : 0;
+            Load(ItemId);
         }
 
         //---------------------------------------------------------------------
@@ -187,10 +197,10 @@ namespace Timekeeper.Classes
                 this.TableName, this.IdColumnName, itemId);
             Row row = Database.SelectRow(Query);
 
-            if (row["ParentId"] == 0) {
+            if (row["ParentId"] == null) {
                 return false;
             } else {
-                long ParentId = row["ParentId"];
+                long ParentId = row["ParentId"].Value;
                 if (this.ItemId == ParentId) {
                     return true;
                 } else {
@@ -232,9 +242,11 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public Classes.TreeAttribute Parent()
+        public Classes.TreeAttribute Parent
         {
-            return new Classes.TreeAttribute(this.ParentId, this.TableName, this.IdColumnName);
+            get {
+                return new Classes.TreeAttribute(this.ParentId, this.TableName, this.IdColumnName);
+            }
         }
 
         //---------------------------------------------------------------------
@@ -270,6 +282,18 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        // convert a null to 0 in a nullable value
+        private long? FixMe(long? value)
+        {
+            if (value.HasValue)
+                if (value.Value != 0)
+                    return value.Value;
+                else
+                    return null;
+            else
+                return null;
+        }
+
         public long Create()
         {
             if (Exists(this.Name) == true) {
@@ -284,7 +308,7 @@ namespace Timekeeper.Classes
 
             Row["Name"] = this.Name;
             Row["Description"] = this.Description;
-            Row["ParentId"] = this.ParentId;
+            Row["ParentId"] = FixMe(this.ParentId);
             Row["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName, this.ParentId);
             Row["IsFolder"] = this.IsFolder ? 1 : 0;
             Row["IsFolderOpened"] = this.IsFolder ? 1 : 0;
@@ -429,11 +453,8 @@ namespace Timekeeper.Classes
             this.IsFolderOpened = row["IsFolderOpened"];
             this.IsHidden = row["IsHidden"];
             this.IsDeleted = row["IsDeleted"];
-
-            if (row["HiddenTime"] != null)
-                this.HiddenTime = row["HiddenTime"];
-            if (row["DeletedTime"] != null)
-                this.DeletedTime = row["DeletedTime"];
+            this.HiddenTime = row["HiddenTime"];
+            this.DeletedTime = row["DeletedTime"];
 
             if (this.Dimension == Timekeeper.Dimension.Project) {
                 this.LastActivityId = row["LastActivityId"];

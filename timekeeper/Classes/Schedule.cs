@@ -74,7 +74,7 @@ namespace Timekeeper.Classes
 
         public long DurationTypeId { get; set; }
         public long StopAfterCount { get; set; }
-        public DateTimeOffset StopAfterTime { get; set; }
+        public DateTimeOffset? StopAfterTime { get; set; }
 
         // Event Metadata
         public long TriggerCount { get; set; }
@@ -160,7 +160,7 @@ namespace Timekeeper.Classes
             // Duration
             this.DurationTypeId = row["DurationTypeId"];
             this.StopAfterCount = (long)Timekeeper.GetValue(row["StopAfterCount"], 10);
-            this.StopAfterTime = (DateTimeOffset)Timekeeper.GetValue(row["StopAfterTime"], Timekeeper.MaxDateTime());
+            this.StopAfterTime = (DateTimeOffset)Timekeeper.GetValue(row["StopAfterTime"], null);
 
             // Event Metadata
             this.TriggerCount = row["TriggerCount"];
@@ -213,7 +213,7 @@ namespace Timekeeper.Classes
                 // Duration
                 Schedule["DurationTypeId"] = this.DurationTypeId;
                 Schedule["StopAfterCount"] = this.StopAfterCount;
-                Schedule["StopAfterTime"] = Timekeeper.DateForDatabase(this.StopAfterTime);
+                Schedule["StopAfterTime"] = Timekeeper.NullableDateForDatabase(this.StopAfterTime);
 
                 // Event Metadata
                 Schedule["TriggerCount"] = this.TriggerCount;

@@ -19,7 +19,7 @@ CREATE TABLE Category
     Description         TEXT            NULL,
 
     ParentId            INTEGER         NULL,
-    SortOrderNo         INTEGER         NULL,
+    SortOrderNo         INTEGER     NOT NULL,
     IsFolder            BOOLEAN     NOT NULL,
     IsFolderOpened      BOOLEAN     NOT NULL,
     IsHidden            BOOLEAN     NOT NULL,
