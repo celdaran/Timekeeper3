@@ -587,6 +587,8 @@ namespace Timekeeper.Forms
 
         private void Action_InitializeUI()
         {
+            Widgets = new Classes.Widgets();
+
             // NOTE/TODO: Some of my "Actions" are user-initiated and
             // some are system-initiated. Consider splitting these
             // into two parts so that Action always implies a user-
@@ -663,26 +665,7 @@ namespace Timekeeper.Forms
             }
 
             // Set date/time formats
-            StartTimeSelector.CustomFormat = Options.Advanced_DateTimeFormat;
-            StopTimeSelector.CustomFormat = Options.Advanced_DateTimeFormat;
-
-            // Adjust Start/Stop time widths and LocationAndCategoryPanel location
-            StartTimeSelector.Value = Timekeeper.LocalNow.DateTime;
-            Size DateSize = TextRenderer.MeasureText(
-                StartTimeSelector.Value.ToString(Options.Advanced_DateTimeFormat), 
-                StartTimeSelector.Font);
-            int DateTimeWidth = DateSize.Width;
-            int DropDownButtonWidth = 33;
-
-            StatusBarDebugGeneric1.Text = "Width: " + DateTimeWidth.ToString();
-
-            StartTimeSelector.Width = DateTimeWidth + DropDownButtonWidth;
-            StopTimeSelector.Width = DateTimeWidth + DropDownButtonWidth;
-
-            CloseStartGapButton.Left = Math.Max(StartTimeSelector.Width + 73, 142);
-            CloseStopGapButton.Left = Math.Max(StartTimeSelector.Width + 73, 142);
-
-            DimensionPanel.Left = CloseStartGapButton.Left + DropDownButtonWidth;
+            this.Widgets.SetTimeInputWidths(this);
         }
 
         //---------------------------------------------------------------------
@@ -761,8 +744,6 @@ namespace Timekeeper.Forms
                 //------------------------------------------
                 // Prepare UI elements
                 //------------------------------------------
-
-                Widgets = new Classes.Widgets();
 
                 Widgets.BuildProjectTree(ProjectTreeDropdown.Nodes);
                 Widgets.BuildActivityTree(ActivityTreeDropdown.Nodes);

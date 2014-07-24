@@ -175,6 +175,9 @@ namespace Timekeeper.Forms
             StatusBar_Update(TimedProject, TimedActivity, TimedLocation, TimedCategory);
             ReleaseDimensions();
 
+            // Set date/time formats
+            this.Widgets.SetTimeInputWidths(this);
+
             // Set form dimensions
             if (interfaceChanged) {
                 switch (Options.Layout_InterfacePreset) {

@@ -384,32 +384,10 @@ namespace Timekeeper.Forms
 
             Advanced_Logging_Application.SelectedIndex = Values.Advanced_Logging_Application;
             Advanced_Logging_Database.SelectedIndex = Values.Advanced_Logging_Database;
+            Advanced_DateTimeFormat.Text = Values.Advanced_DateTimeFormat;
             Advanced_Other_MarkupLanguage.SelectedIndex = Values.Advanced_Other_MarkupLanguage;
             Advanced_Other_DimensionWidth.Value = Values.Advanced_Other_DimensionWidth;
             Advanced_Other_MidnightOffset.SelectedIndex = Values.Advanced_Other_MidnightOffset + 12;
-        }
-
-        private int TranslateMidnightIndex(int offset)
-        {
-            /*
-            index 0, value noon, offset -12
-            index 1, value 1pm, offset -11
-            index 2, value 2pm, offset -10
-            index 3, value 3pm, offset -9
-            index 4, value 4pm, offset -8
-            index 5, value 5pm, offset -7
-            index 6, value 6pm, offset -6
-            index 7, value 7pm, offset -5
-            index 8, value 8pm, offset -4
-            index 9, value 9pm, offset -3
-            index 10, value 10pm, offset -2
-            index 11, value 11pm, offset -1
-            index 12, value midnight, offset 0
-            index 13, value 1am, offset 1
-            index 14, value 2am, offset 2
-            index 23, value 11am, offset 11
-            */
-            return offset + 12;
         }
 
         //----------------------------------------------------------------------
@@ -506,6 +484,7 @@ namespace Timekeeper.Forms
 
             Values.Advanced_Logging_Application = Advanced_Logging_Application.SelectedIndex;
             Values.Advanced_Logging_Database = Advanced_Logging_Database.SelectedIndex;
+            Values.Advanced_DateTimeFormat = Advanced_DateTimeFormat.Text;
             Values.Advanced_Other_MarkupLanguage = Advanced_Other_MarkupLanguage.SelectedIndex;
             Values.Advanced_Other_DimensionWidth = (int)Advanced_Other_DimensionWidth.Value;
             Values.Advanced_Other_MidnightOffset = Advanced_Other_MidnightOffset.SelectedIndex - 12;

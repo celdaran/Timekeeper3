@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using System.Globalization;
 
 using Technitivity.Toolbox;
 
@@ -407,7 +408,9 @@ namespace Timekeeper.Classes
 
             Advanced_Logging_Application = (int)Key.GetValue("Logging_Application", 2);
             Advanced_Logging_Database = (int)Key.GetValue("Logging_Database", 2);
-            Advanced_DateTimeFormat = (string)Key.GetValue("DateTimeFormat", "yyyy-MM-dd HH:mm:ss");
+            Advanced_DateTimeFormat = (string)Key.GetValue("DateTimeFormat", 
+                CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " +
+                CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern);
             Advanced_Other_MarkupLanguage = (int)Key.GetValue("Other_MarkupLanguage", 1);
             Advanced_Other_DisableScheduler = ((int)Key.GetValue("Other_DisableScheduler", 0)) == 1;
             Advanced_Other_EnableStackTracing = ((int)Key.GetValue("Other_EnableStackTracing", 0)) == 1;

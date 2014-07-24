@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -163,6 +164,30 @@ namespace Timekeeper.Classes
             }
 
             return Dialog;
+        }
+
+        //----------------------------------------------------------------------
+
+        public void SetTimeInputWidths(Forms.Main mainForm)
+        {
+            mainForm.StartTimeSelector.CustomFormat = Options.Advanced_DateTimeFormat;
+            mainForm.StopTimeSelector.CustomFormat = Options.Advanced_DateTimeFormat;
+
+            // Adjust Start/Stop time widths and LocationAndCategoryPanel location
+            mainForm.StartTimeSelector.Value = Timekeeper.LocalNow.DateTime;
+            Size DateSize = TextRenderer.MeasureText(
+                mainForm.StartTimeSelector.Value.ToString(Options.Advanced_DateTimeFormat),
+                mainForm.StartTimeSelector.Font);
+            int DateTimeWidth = DateSize.Width;
+            int DropDownButtonWidth = 33;
+
+            mainForm.StartTimeSelector.Width = DateTimeWidth + DropDownButtonWidth;
+            mainForm.StopTimeSelector.Width = DateTimeWidth + DropDownButtonWidth;
+
+            mainForm.CloseStartGapButton.Left = Math.Max(mainForm.StartTimeSelector.Width + 73, 142);
+            mainForm.CloseStopGapButton.Left = Math.Max(mainForm.StartTimeSelector.Width + 73, 142);
+
+            mainForm.DimensionPanel.Left = mainForm.CloseStartGapButton.Left + DropDownButtonWidth;
         }
 
         //----------------------------------------------------------------------
