@@ -107,17 +107,22 @@ namespace Timekeeper.Classes
 
         public Table Results(string sGroupBy, string tableName)
         {
+            string Offset = "";
+            if (this.Options.Advanced_Other_MidnightOffset != 0) {
+                Offset = String.Format(", '-{0} hours'", this.Options.Advanced_Other_MidnightOffset);
+            }
+
             string Query = String.Format(@"
                 select
                     i.Name as Name, 
-                    strftime('{0}', j.StartTime) as Grouping, 
+                    strftime('{0}', j.StartTime{3}) as Grouping, 
                     sum(j.Seconds) as Seconds
                 from Journal j
                 join {1} i on i.{1}Id = j.{1}Id
                 where {2}
                 group by i.Name, Grouping
                 order by i.Name, Grouping",
-                sGroupBy, tableName, this.FilterOptions.WhereClause);
+                sGroupBy, tableName, this.FilterOptions.WhereClause, Offset);
 
             Table FindResults = Database.Select(Query);
 

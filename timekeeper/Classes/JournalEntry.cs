@@ -74,18 +74,11 @@ namespace Timekeeper.Classes
                 }
 
                 // Update "last" values
-
                 Row ProjectRow = new Row();
                 ProjectRow["LastActivityId"] = this.ActivityId;
+                ProjectRow["LastLocationId"] = this.LocationId;
+                ProjectRow["LastCategoryId"] = this.CategoryId;
                 Database.Update("Project", ProjectRow, "ProjectId", this.ProjectId);
-
-                Row ActivityRow = new Row();
-                ActivityRow["LastLocationId"] = this.LocationId;
-                Database.Update("Activity", ActivityRow, "ActivityId", this.ActivityId);
-
-                Row LocationRow = new Row();
-                LocationRow["LastCategoryId"] = this.CategoryId;
-                Database.Update("Location", LocationRow, "LocationId", this.LocationId);
 
                 return true;
             }
@@ -345,19 +338,6 @@ namespace Timekeeper.Classes
 
         public long GetNextId(BrowseByMode mode)
         {
-            /*
-
-            // select JournalId from Journal where StartTime >  '2014-07-07T08:48:28-05:00' order by StartTime asc limit 1;
-
-            --> browse by week (find the first item after the previous day's last tick: hey, same thing. These *all* start at the first entry of a day, so the only real trick is finding out what the day is supposed to be)
-            
-            select JournalId from Journal 
-            where StartTime > '2015-06-22T23:59:59.99-05:00' 
-            order by StartTime asc limit 1;
-
-            // FIXME: This is another area where a user-definable midnight will need to be considered.
-            */
-
             string StartSearchAt = Timekeeper.DateForDatabase();
 
             switch (mode) {
@@ -367,9 +347,7 @@ namespace Timekeeper.Classes
 
                 case BrowseByMode.Day:
                     DateTimeOffset Tomorrow = this.StartTime.AddDays(1);
-                    // FIXME: need to figure out how to handle time zones
-                    //StartSearchAt = tmp.DateTime.ToString(Common.DATE_FORMAT) + "T23:59:53-05:00";
-                    StartSearchAt = Tomorrow.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    StartSearchAt = Tomorrow.ToString(Common.DATE_FORMAT) + " 00:00:00";
                     break;
 
                 case BrowseByMode.Week:
@@ -382,18 +360,17 @@ namespace Timekeeper.Classes
                     DateTime NextWeek = this.StartTime.AddDays(Delta);
                     */
                     DateTimeOffset NextWeek = this.StartTime.AddDays(7);
-                    StartSearchAt = NextWeek.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    StartSearchAt = NextWeek.ToString(Common.DATE_FORMAT) + " 00:00:00";
                     break;
 
                 case BrowseByMode.Month:
                     DateTimeOffset NextMonth = this.StartTime.AddMonths(1);
-                    //StartSearchAt = NextMonth.DateTime.ToString("yyyy-MM-01") + "T00:00:00-05:00";
-                    StartSearchAt = NextMonth.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    StartSearchAt = NextMonth.ToString(Common.DATE_FORMAT) + " 00:00:00";
                     break;
 
                 case BrowseByMode.Year:
                     DateTimeOffset NextYear = this.StartTime.AddYears(1);
-                    StartSearchAt = NextYear.ToString(Common.DATE_FORMAT) + "T00:00:00-05:00";
+                    StartSearchAt = NextYear.ToString(Common.DATE_FORMAT) + " 00:00:00";
                     break;
             }
 

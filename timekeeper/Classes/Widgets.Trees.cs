@@ -401,6 +401,11 @@ namespace Timekeeper.Classes
                 Item.IsFolder = isFolder;
                 Item.ExternalProjectNo = Dialog.ItemExternalProjectNo.Text == "" ? null : Dialog.ItemExternalProjectNo.Text;
 
+                if (Dialog.ItemRefTimeZone.SelectedIndex < 0)
+                    Item.RefTimeZoneId = null;
+                else
+                    Item.RefTimeZoneId = Dialog.ItemRefTimeZone.SelectedIndex;
+
                 IdValuePair Pair = (IdValuePair)Dialog.ItemParent.SelectedItem;
                 int ParentItemId = Pair.Id;
 

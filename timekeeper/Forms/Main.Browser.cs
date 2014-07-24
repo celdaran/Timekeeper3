@@ -576,6 +576,15 @@ namespace Timekeeper.Forms
 
             // And disable reverting, just in case
             Browser_EnableRevert(false);
+
+            // Lastly, update the status bar with any potential time changes
+            GetDimensions();
+            TimedProject.ChangedTime();
+            TimedActivity.ChangedTime();
+            TimedLocation.ChangedTime();
+            TimedCategory.ChangedTime();
+            StatusBar_Update(TimedProject, TimedActivity, TimedLocation, TimedCategory);
+            ReleaseDimensions();
         }
 
         //---------------------------------------------------------------------

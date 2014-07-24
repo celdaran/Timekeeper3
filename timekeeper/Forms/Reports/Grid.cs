@@ -314,6 +314,17 @@ namespace Timekeeper.Forms.Reports
                 // This is the first time; so seed the new view
                 AutoSavedGridView.Name = "Unsaved View";
                 AutoSavedGridView.Description = "Unnamed, last-applied view";
+
+                // PICK IT UP HERE: I ALREADY KNOW THIS IS WORKING
+                // BUT I DON'T KNOW HOW, BECAUSE THIS IS THE SAME LOGIC
+                // IN JournalEntry.AutoSaveView AND IT'S BROKEN OVER
+                // THERE. HERE'S THE DEAL: The very first time we come
+                // in, we don't have a view and (more importantly) we
+                // don't have a FilterOptions object (its id is -1).
+                // What I want to do is in this section of code, create
+                // one and attach it to the new view. Somehow this is
+                // automagically happening here at some point in the flow
+                // but it's not on the Journal side.
                 NewView = true;
             }
 

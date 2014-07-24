@@ -30,10 +30,15 @@ CREATE TABLE Project
     DeletedTime         DATETIME        NULL,
 
     LastActivityId      INTEGER         NULL,
+    LastLocationId      INTEGER         NULL,
+    LastCategoryId      INTEGER         NULL,
+
     ExternalProjectNo   TEXT            NULL,
 
     FOREIGN KEY(ParentId)           REFERENCES Project(ProjectId)
     FOREIGN KEY(LastActivityId)     REFERENCES Activity(ActivityId)
+    FOREIGN KEY(LastLocationId)     REFERENCES Location(LocationId)
+    FOREIGN KEY(LastCategoryId)     REFERENCES Category(CategoryId)
 );
 
 CREATE UNIQUE INDEX idx_Project_ProjectId ON Project(ProjectId);

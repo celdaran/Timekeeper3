@@ -95,7 +95,7 @@ namespace Timekeeper.Classes
 
             // Set date range for time calculations
             string From = Timekeeper.LocalNow.ToString(Common.DATE_FORMAT + " 00:00:00");
-            string To = Timekeeper.LocalNow.ToString(Common.DATE_FORMAT + " 23:59:59");
+            string To = Timekeeper.LocalNow.AddDays(1).ToString(Common.DATE_FORMAT + " 00:00:00");
 
             // Determine the item type
             string ItemType = item.Dimension.ToString();
@@ -132,6 +132,8 @@ namespace Timekeeper.Classes
                 Dialog.wHiddenTime.Text = Timekeeper.NullableDateForDisplay(item.HiddenTime);
             if (item.IsDeleted)
                 Dialog.wDeletedTime.Text = Timekeeper.NullableDateForDisplay(item.DeletedTime);
+
+            Timekeeper.Warn("FIXME: Last Dimension Id issue in Properties dialog not properly handled");
 
             if (item.Dimension == Timekeeper.Dimension.Project) {
                 if (item.LastActivityId > 0) {

@@ -345,8 +345,8 @@ namespace Timekeeper.Forms.Reports
 
             foreach (Row row in FindResults) {
                 long seconds = row["Seconds"];
-                DateTime start = row["StartTime"];
-                DateTime end = row["StopTime"];
+                DateTime start = DateTime.Parse(row["StartTime"]);
+                DateTime end = DateTime.Parse(row["StopTime"]);
 
                 // Markup support
                 /*
@@ -398,7 +398,8 @@ namespace Timekeeper.Forms.Reports
                     {5}
                     <p>{0} - {1} (<b>{2}</b>): {3}</p>
                     <p>{4}</p>",
-                    start.ToString("HH:mm:ss"), end.ToString("HH:mm:ss"),
+                    start.AddHours(Options.Advanced_Other_MidnightOffset).ToString("HH:mm:ss"),
+                    end.AddHours(Options.Advanced_Other_MidnightOffset).ToString("HH:mm:ss"),
                     Timekeeper.FormatSeconds(seconds), row["ActivityName"] + " / " + row["ProjectName"],
                     MemoArea, hr);
                 Body += rpt;

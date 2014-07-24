@@ -102,10 +102,18 @@ namespace Timekeeper.Classes
 
         public bool Add()
         {
+            Row ExtraColumns = new Row();
+            return Add(ExtraColumns);
+        }
+
+        //----------------------------------------------------------------------
+
+        public bool Add(Row extraColumns)
+        {
             bool Added = false;
 
             try {
-                this.Insert();
+                this.Insert(extraColumns);
                 Added = true;
             }
             catch (Exception x) {
@@ -119,6 +127,14 @@ namespace Timekeeper.Classes
 
         public bool Save()
         {
+            Row ExtraColumns = new Row();
+            return Save(ExtraColumns);
+        }
+
+        //----------------------------------------------------------------------
+
+        public bool Save(Row extraColumns)
+        {
             bool Saved = false;
 
             try {
@@ -130,9 +146,9 @@ namespace Timekeeper.Classes
                 Row Count = this.Database.SelectRow(Query);
 
                 if (Count["Count"] == 0) {
-                    this.Insert();
+                    this.Insert(extraColumns);
                 } else {
-                    this.Update();
+                    this.Update(extraColumns);
                 }
 
                 Saved = true;
@@ -184,22 +200,27 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        private void Insert()
+        private void Insert(Row extraColumns)
         {
-            Row item = this.InitRow();
+            Row Item = this.InitRow();
 
-            item["CreateTime"] = Timekeeper.DateForDatabase();
-            item["ModifyTime"] = Timekeeper.DateForDatabase();
+            Item["CreateTime"] = Timekeeper.DateForDatabase();
+            Item["ModifyTime"] = Timekeeper.DateForDatabase();
 
             // On insert, override any previously set SortOrderNo
-            item["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName);
+            Item["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName);
 
-            this.Id = this.Database.Insert(this.TableName, item);
+            // Loop through extra columns and copy to base class
+            foreach (string key in extraColumns.Keys) {
+                Item[key] = extraColumns[key];
+            }
+
+            this.Id = this.Database.Insert(this.TableName, Item);
             if (this.Id > 0) {
                 Timekeeper.Debug("Just inserted " + this.TableName + "Id: " + this.Id.ToString());
-                CreateTime = Timekeeper.StringToDate(item["CreateTime"]);
-                ModifyTime = Timekeeper.StringToDate(item["ModifyTime"]);
-                SortOrderNo = (int)item["SortOrderNo"];
+                CreateTime = Timekeeper.StringToDate(Item["CreateTime"]);
+                ModifyTime = Timekeeper.StringToDate(Item["ModifyTime"]);
+                SortOrderNo = (int)Item["SortOrderNo"];
             } else {
                 throw new Exception("Error inserting into " + this.TableName);
             }
@@ -207,15 +228,20 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        private void Update()
+        private void Update(Row extraColumns)
         {
-            Row item = this.InitRow();
+            Row Item = this.InitRow();
 
-            item["ModifyTime"] = Timekeeper.DateForDatabase();
+            Item["ModifyTime"] = Timekeeper.DateForDatabase();
 
-            if (this.Database.Update(this.TableName, item, this.TableName + "Id", this.Id) == 1) {
+            // Loop through extra columns and copy to base class
+            foreach (string key in extraColumns.Keys) {
+                Item[key] = extraColumns[key];
+            }
+
+            if (this.Database.Update(this.TableName, Item, this.TableName + "Id", this.Id) == 1) {
                 Timekeeper.Debug("Just updated " + this.TableName + "Id: " + this.Id.ToString());
-                ModifyTime = Timekeeper.StringToDate(item["ModifyTime"]);
+                ModifyTime = Timekeeper.StringToDate(Item["ModifyTime"]);
             } else {
                 throw new Exception("Error updating " + this.TableName);
             }

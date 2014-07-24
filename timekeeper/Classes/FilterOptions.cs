@@ -379,11 +379,13 @@ namespace Timekeeper.Classes
 
         public void Clear()
         {
+            Classes.JournalEntryCollection Entries = new JournalEntryCollection();
+
             FilterOptionsId = -1;
             FilterOptionsType = 0;
             DateRangePreset = DATE_PRESET_ALL;
-            FromTime = null;
-            ToTime = null;
+            FromTime = Entries.FirstDay();
+            ToTime = Entries.LastDay();
             MemoOperator = -1;
             MemoValue = "";
             Projects = new List<long>();
@@ -395,28 +397,6 @@ namespace Timekeeper.Classes
             DurationUnit = 0;
             ImpliedProjects = new List<long>();
             ImpliedActivities = new List<long>();
-        }
-
-        //---------------------------------------------------------------------
-
-        private string FromTimeToString()
-        {
-            // FIXME: does this handle UTC/localtime? does it support user-defined midnight values?
-            //return Timekeeper.NullableDateForDisplay(FromTime) + " 00:00:00";
-            // FIXME: this should return a DATE and not a date time.
-            // Or, more precisely, it should return a DATE with a time of "midnight"
-            // Leaving in a broken state on 2014-07-17 for now...
-            // same thing below
-            return Timekeeper.NullableDateForDisplay(FromTime);
-        }
-
-        //---------------------------------------------------------------------
-
-        private string ToTimeToString()
-        {
-            // FIXME: does this handle UTC/localtime? does it support user-defined midnight values?
-            //return ToTime.ToString(Common.DATE_FORMAT) + " 23:59:59";
-            return Timekeeper.NullableDateForDisplay(ToTime);
         }
 
         //---------------------------------------------------------------------
@@ -484,19 +464,19 @@ namespace Timekeeper.Classes
             if ((this.FilterOptionsType == Classes.FilterOptions.OptionsType.Journal) ||
                 (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Merge))
             {
-                WhereClause += String.Format("{0}StartTime >= '{1}'",
-                    TableAlias, this.FromTimeToString()) + System.Environment.NewLine;
+                WhereClause += String.Format("{0}StartTime >= {1}",
+                    TableAlias, this.FormatFromTime()) + System.Environment.NewLine;
 
-                WhereClause += String.Format("and {0}StopTime <= '{1}'",
-                    TableAlias, this.ToTimeToString()) + System.Environment.NewLine;
+                WhereClause += String.Format("and {0}StartTime <= {1}",
+                    TableAlias, this.FormatToTime()) + System.Environment.NewLine;
             }
 
             if (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook) {
-                WhereClause += String.Format("{0}EntryTime >= '{1}'",
-                    TableAlias, this.FromTimeToString()) + System.Environment.NewLine;
+                WhereClause += String.Format("{0}EntryTime >= {1}",
+                    TableAlias, this.FormatFromTime()) + System.Environment.NewLine;
 
-                WhereClause += String.Format("and {0}EntryTime <= '{1}'",
-                    TableAlias, this.ToTimeToString()) + System.Environment.NewLine;
+                WhereClause += String.Format("and {0}EntryTime <= {1}",
+                    TableAlias, this.FormatToTime()) + System.Environment.NewLine;
             }
 
             if (this.FilterOptionsType != Classes.FilterOptions.OptionsType.Notebook)
@@ -559,6 +539,38 @@ namespace Timekeeper.Classes
             }
 
             return WhereClause;
+        }
+
+        //----------------------------------------------------------------------
+
+        private string FormatFromTime()
+        {
+            return FormatTimeRange(this.FromTime, "00:00:00");
+        }
+
+        //----------------------------------------------------------------------
+
+        private string FormatToTime()
+        {
+            return FormatTimeRange(this.ToTime, "23:59:59");
+        }
+
+        //----------------------------------------------------------------------
+
+        private string FormatTimeRange(DateTimeOffset? date, string time)
+        {
+            string FormattedTime;
+            if (this.Options.Advanced_Other_MidnightOffset != 0) {
+                FormattedTime = String.Format(@"datetime('{0} {1}', '{2} hours')",
+                    date.Value.Date.ToString(Timekeeper.DATE_FORMAT),
+                    time,
+                    this.Options.Advanced_Other_MidnightOffset);
+            } else {
+                FormattedTime = String.Format(@"'{0} {1}'",
+                    date.Value.Date.ToString(Timekeeper.DATE_FORMAT),
+                    time);
+            }
+            return FormattedTime;
         }
 
         //----------------------------------------------------------------------

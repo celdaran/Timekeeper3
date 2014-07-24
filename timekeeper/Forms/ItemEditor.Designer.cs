@@ -32,6 +32,9 @@ namespace Timekeeper
             this.CancelDialog = new System.Windows.Forms.Button();
             this.ButtonPanel = new System.Windows.Forms.Panel();
             this.FunctionalPanel = new System.Windows.Forms.Panel();
+            this.ItemDescription = new System.Windows.Forms.RichTextBox();
+            this.TimeZoneLabel = new System.Windows.Forms.Label();
+            this.ItemRefTimeZone = new System.Windows.Forms.ComboBox();
             this.ItemExternalProjectNo = new System.Windows.Forms.TextBox();
             this.ExternalProjectNoLabel = new System.Windows.Forms.Label();
             this.ItemParent = new System.Windows.Forms.ListBox();
@@ -39,9 +42,6 @@ namespace Timekeeper
             this.ItemName = new System.Windows.Forms.TextBox();
             this.DescriptionLabel = new System.Windows.Forms.Label();
             this.NameLabel = new System.Windows.Forms.Label();
-            this.ItemRefTimeZone = new System.Windows.Forms.ComboBox();
-            this.TimeZoneLabel = new System.Windows.Forms.Label();
-            this.ItemDescription = new System.Windows.Forms.RichTextBox();
             this.ButtonPanel.SuspendLayout();
             this.FunctionalPanel.SuspendLayout();
             this.SuspendLayout();
@@ -97,6 +97,33 @@ namespace Timekeeper
             this.FunctionalPanel.Name = "FunctionalPanel";
             this.FunctionalPanel.Size = new System.Drawing.Size(406, 208);
             this.FunctionalPanel.TabIndex = 1;
+            // 
+            // ItemDescription
+            // 
+            this.ItemDescription.Location = new System.Drawing.Point(78, 40);
+            this.ItemDescription.Name = "ItemDescription";
+            this.ItemDescription.Size = new System.Drawing.Size(310, 57);
+            this.ItemDescription.TabIndex = 4;
+            this.ItemDescription.Text = "";
+            // 
+            // TimeZoneLabel
+            // 
+            this.TimeZoneLabel.AutoSize = true;
+            this.TimeZoneLabel.Location = new System.Drawing.Point(10, 238);
+            this.TimeZoneLabel.Name = "TimeZoneLabel";
+            this.TimeZoneLabel.Size = new System.Drawing.Size(58, 13);
+            this.TimeZoneLabel.TabIndex = 9;
+            this.TimeZoneLabel.Text = "Time &Zone";
+            this.TimeZoneLabel.Visible = false;
+            // 
+            // ItemRefTimeZone
+            // 
+            this.ItemRefTimeZone.FormattingEnabled = true;
+            this.ItemRefTimeZone.Location = new System.Drawing.Point(78, 235);
+            this.ItemRefTimeZone.Name = "ItemRefTimeZone";
+            this.ItemRefTimeZone.Size = new System.Drawing.Size(310, 21);
+            this.ItemRefTimeZone.TabIndex = 10;
+            this.ItemRefTimeZone.Visible = false;
             // 
             // ItemExternalProjectNo
             // 
@@ -161,33 +188,6 @@ namespace Timekeeper
             this.NameLabel.TabIndex = 1;
             this.NameLabel.Text = "&Name";
             // 
-            // ItemRefTimeZone
-            // 
-            this.ItemRefTimeZone.FormattingEnabled = true;
-            this.ItemRefTimeZone.Location = new System.Drawing.Point(78, 235);
-            this.ItemRefTimeZone.Name = "ItemRefTimeZone";
-            this.ItemRefTimeZone.Size = new System.Drawing.Size(310, 21);
-            this.ItemRefTimeZone.TabIndex = 10;
-            this.ItemRefTimeZone.Visible = false;
-            // 
-            // TimeZoneLabel
-            // 
-            this.TimeZoneLabel.AutoSize = true;
-            this.TimeZoneLabel.Location = new System.Drawing.Point(10, 238);
-            this.TimeZoneLabel.Name = "TimeZoneLabel";
-            this.TimeZoneLabel.Size = new System.Drawing.Size(58, 13);
-            this.TimeZoneLabel.TabIndex = 9;
-            this.TimeZoneLabel.Text = "Time &Zone";
-            this.TimeZoneLabel.Visible = false;
-            // 
-            // ItemDescription
-            // 
-            this.ItemDescription.Location = new System.Drawing.Point(78, 40);
-            this.ItemDescription.Name = "ItemDescription";
-            this.ItemDescription.Size = new System.Drawing.Size(310, 57);
-            this.ItemDescription.TabIndex = 4;
-            this.ItemDescription.Text = "";
-            // 
             // ItemEditor
             // 
             this.AcceptButton = this.AcceptDialog;
@@ -229,7 +229,7 @@ namespace Timekeeper
         private System.Windows.Forms.Label DescriptionLabel;
         private System.Windows.Forms.Label NameLabel;
         private System.Windows.Forms.Label TimeZoneLabel;
-        private System.Windows.Forms.ComboBox ItemRefTimeZone;
         internal System.Windows.Forms.RichTextBox ItemDescription;
+        internal System.Windows.Forms.ComboBox ItemRefTimeZone;
     }
 }

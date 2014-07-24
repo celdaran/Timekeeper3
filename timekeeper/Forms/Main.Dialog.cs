@@ -129,6 +129,10 @@ namespace Timekeeper.Forms
             BrowserToolbar.Visible = Options.View_BrowserToolbar;
             PanelControls.Visible = Options.View_ControlPanel;
             MemoEditor.Visible = Options.View_MemoEditor;
+            if (!MemoEditor.Visible)
+                PanelControls.Dock = DockStyle.Fill;
+            else
+                PanelControls.Dock = DockStyle.Bottom;
             StatusBar_SetVisibility();
 
             if (timerRunning) {
@@ -162,6 +166,16 @@ namespace Timekeeper.Forms
             MemoEditor.ShowGutter = Options.View_MemoEditor_ShowGutter;
             MemoEditor.EditorFont = Options.View_MemoEditor_Font;
 
+            // Update status bar, in case midnight offset changed
+            GetDimensions();
+            TimedProject.ChangedTime();
+            TimedActivity.ChangedTime();
+            TimedLocation.ChangedTime();
+            TimedCategory.ChangedTime();
+            StatusBar_Update(TimedProject, TimedActivity, TimedLocation, TimedCategory);
+            ReleaseDimensions();
+
+            // Set form dimensions
             if (interfaceChanged) {
                 switch (Options.Layout_InterfacePreset) {
                     case 0:

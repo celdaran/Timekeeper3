@@ -71,14 +71,16 @@ namespace Timekeeper.Classes
         public bool Save(bool filterOptionsChanged, long filterOptionsId)
         {
             bool Saved = false;
+            Row ExtraColumns = new Row();
+            ExtraColumns["FilterOptionsId"] = filterOptionsId;
 
             if (filterOptionsChanged) {
-                Saved = base.Save();
+                Saved = base.Save(ExtraColumns);
             } else {
                 if (filterOptionsId == this.FilterOptions.FilterOptionsId) {
-                    Saved = base.Save();
+                    Saved = base.Save(ExtraColumns);
                 } else {
-                    Saved = base.Add();
+                    Saved = base.Add(ExtraColumns);
                 }
             }
 

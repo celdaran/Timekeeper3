@@ -28,11 +28,10 @@ CREATE TABLE Location
     HiddenTime          DATETIME        NULL,
     DeletedTime         DATETIME        NULL,
 
-    LastCategoryId      INTEGER         NULL,
     RefTimeZoneId       INTEGER     NOT NULL,
 
+    FOREIGN KEY(ParentId)           REFERENCES Location(LocationId)
     FOREIGN KEY(RefTimeZoneId)      REFERENCES RefTimeZone(RefTimeZoneId)
-    FOREIGN KEY(LastCategoryId)     REFERENCES Category(CategoryId)
 );
 
 CREATE UNIQUE INDEX idx_Location_LocationId ON Location(LocationId);

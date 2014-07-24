@@ -226,6 +226,10 @@ namespace Timekeeper.Forms
             this.PopupMenuMemoCutSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.StatusBarCurrentLocation = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBarCurrentCategory = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBarElapsedLocationToday = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusBarElapsedCategoryToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -254,7 +258,7 @@ namespace Timekeeper.Forms
             this.MenuToolbar});
             this.MenuMain.Location = new System.Drawing.Point(0, 0);
             this.MenuMain.Name = "MenuMain";
-            this.MenuMain.Size = new System.Drawing.Size(562, 24);
+            this.MenuMain.Size = new System.Drawing.Size(684, 24);
             this.MenuMain.TabIndex = 0;
             // 
             // MenuFile
@@ -1012,9 +1016,13 @@ namespace Timekeeper.Forms
             this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusBarCurrentProject,
             this.StatusBarCurrentActivity,
+            this.StatusBarCurrentLocation,
+            this.StatusBarCurrentCategory,
             this.StatusBarElapsedSinceStart,
             this.StatusBarElapsedProjectToday,
             this.StatusBarElapsedActivityToday,
+            this.StatusBarElapsedLocationToday,
+            this.StatusBarElapsedCategoryToday,
             this.StatusBarElapsedAllToday,
             this.StatusBarFileName,
             this.StatusBarDebugGeneric1,
@@ -1022,7 +1030,7 @@ namespace Timekeeper.Forms
             this.StatusBar.Location = new System.Drawing.Point(0, 297);
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.ShowItemToolTips = true;
-            this.StatusBar.Size = new System.Drawing.Size(562, 22);
+            this.StatusBar.Size = new System.Drawing.Size(684, 22);
             this.StatusBar.TabIndex = 13;
             // 
             // StatusBarCurrentProject
@@ -1075,7 +1083,7 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedProjectToday.Name = "StatusBarElapsedProjectToday";
             this.StatusBarElapsedProjectToday.Size = new System.Drawing.Size(49, 17);
             this.StatusBarElapsedProjectToday.Text = "0:00:00";
-            this.StatusBarElapsedProjectToday.ToolTipText = "Time elapsed today for current project";
+            this.StatusBarElapsedProjectToday.ToolTipText = "Time elapsed today for current Project";
             // 
             // StatusBarElapsedActivityToday
             // 
@@ -1087,7 +1095,7 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedActivityToday.Name = "StatusBarElapsedActivityToday";
             this.StatusBarElapsedActivityToday.Size = new System.Drawing.Size(49, 17);
             this.StatusBarElapsedActivityToday.Text = "0:00:00";
-            this.StatusBarElapsedActivityToday.ToolTipText = "Time elapsed today for current activity";
+            this.StatusBarElapsedActivityToday.ToolTipText = "Time elapsed today for current Activity";
             // 
             // StatusBarElapsedAllToday
             // 
@@ -1283,7 +1291,7 @@ namespace Timekeeper.Forms
             this.PanelControls.Enabled = false;
             this.PanelControls.Location = new System.Drawing.Point(0, 151);
             this.PanelControls.Name = "PanelControls";
-            this.PanelControls.Size = new System.Drawing.Size(562, 122);
+            this.PanelControls.Size = new System.Drawing.Size(684, 122);
             this.PanelControls.TabIndex = 2;
             this.PanelControls.Visible = false;
             this.PanelControls.HelpRequested += new System.Windows.Forms.HelpEventHandler(this.widget_HelpRequested);
@@ -1669,7 +1677,7 @@ namespace Timekeeper.Forms
             this.BrowserToolbar.Location = new System.Drawing.Point(0, 0);
             this.BrowserToolbar.Name = "BrowserToolbar";
             this.BrowserToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.BrowserToolbar.Size = new System.Drawing.Size(562, 25);
+            this.BrowserToolbar.Size = new System.Drawing.Size(684, 25);
             this.BrowserToolbar.TabIndex = 0;
             this.BrowserToolbar.Text = "toolStrip2";
             // 
@@ -2003,14 +2011,66 @@ namespace Timekeeper.Forms
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 24);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(562, 273);
+            this.MainPanel.Size = new System.Drawing.Size(684, 273);
             this.MainPanel.TabIndex = 1;
+            // 
+            // StatusBarCurrentLocation
+            // 
+            this.StatusBarCurrentLocation.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.StatusBarCurrentLocation.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.StatusBarCurrentLocation.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.StatusBarCurrentLocation.Name = "StatusBarCurrentLocation";
+            this.StatusBarCurrentLocation.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.StatusBarCurrentLocation.Size = new System.Drawing.Size(51, 17);
+            this.StatusBarCurrentLocation.Text = "Location";
+            this.StatusBarCurrentLocation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.StatusBarCurrentLocation.ToolTipText = "Location currently being timed";
+            // 
+            // StatusBarCurrentCategory
+            // 
+            this.StatusBarCurrentCategory.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.StatusBarCurrentCategory.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.StatusBarCurrentCategory.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.StatusBarCurrentCategory.Name = "StatusBarCurrentCategory";
+            this.StatusBarCurrentCategory.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.StatusBarCurrentCategory.Size = new System.Drawing.Size(56, 17);
+            this.StatusBarCurrentCategory.Text = "Category";
+            this.StatusBarCurrentCategory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.StatusBarCurrentCategory.ToolTipText = "Category currently being timed";
+            // 
+            // StatusBarElapsedLocationToday
+            // 
+            this.StatusBarElapsedLocationToday.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.StatusBarElapsedLocationToday.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.StatusBarElapsedLocationToday.ForeColor = System.Drawing.Color.Gray;
+            this.StatusBarElapsedLocationToday.Name = "StatusBarElapsedLocationToday";
+            this.StatusBarElapsedLocationToday.Size = new System.Drawing.Size(49, 17);
+            this.StatusBarElapsedLocationToday.Text = "0:00:00";
+            this.StatusBarElapsedLocationToday.ToolTipText = "Time elapsed today for current Location";
+            // 
+            // StatusBarElapsedCategoryToday
+            // 
+            this.StatusBarElapsedCategoryToday.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.StatusBarElapsedCategoryToday.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.StatusBarElapsedCategoryToday.ForeColor = System.Drawing.Color.Gray;
+            this.StatusBarElapsedCategoryToday.Name = "StatusBarElapsedCategoryToday";
+            this.StatusBarElapsedCategoryToday.Size = new System.Drawing.Size(49, 17);
+            this.StatusBarElapsedCategoryToday.Text = "0:00:00";
+            this.StatusBarElapsedCategoryToday.ToolTipText = "Time elapsed today for current Category";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(562, 319);
+            this.ClientSize = new System.Drawing.Size(684, 319);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.MenuMain);
@@ -2246,5 +2306,9 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripSeparator MenuActionSep2;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarDebugBenchmark;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarCurrentLocation;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarCurrentCategory;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarElapsedLocationToday;
+        private System.Windows.Forms.ToolStripStatusLabel StatusBarElapsedCategoryToday;
     }
 }

@@ -350,23 +350,17 @@ namespace Timekeeper
             }
         }
 
-        //----------------------------------------------------------------------
+        //---------------------------------------------------------------------
 
-        public static DateTime MaxDateTime()
+        public static DateTime AdjustedToday
         {
-            // Why not just use DateTime.MaxValue? Well, I'll tell you. For
-            // some reason when I do, and I store it in the database, it
-            // ends up being '9999-12-31T23:59:59.99-06:00', which is fine
-            // except that this value represents a UTC value in the year
-            // 10000, which is suddenly an invalid date/time. I'm making up
-            // my own MaxDateTime value, because I simply don't have time
-            // to figure out this peculiarity.
-
-            //  UTC version:
-            //return DateTimeOffset.Parse("2999-12-31T23:59:59.99-00:00");
-
-            // Local version:
-            return DateTime.MaxValue;
+            get {
+                // 2014-07-22 23:29 + (-3) ==> 7/22
+                // 2014-07-23 12:29 + (-3) ==> 7/22
+                // 2014-07-23 04:29 + (-3) ==> 7/23
+                DateTime AdjustedNow = DateTime.Now.AddHours(-Timekeeper.Options.Advanced_Other_MidnightOffset);
+                return AdjustedNow.Date;
+            }
         }
 
         //---------------------------------------------------------------------

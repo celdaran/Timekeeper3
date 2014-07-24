@@ -59,10 +59,7 @@ namespace Timekeeper.Forms
                 Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
                 Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
                 Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
-
-                // FIXME: are all four dimensions supported in the status bar?
-                // Any reason they wouldn't be?
-                StatusBar_Update(Project, Activity);
+                StatusBar_Update(Project, Activity, Location, Category);
             }
         }
 
@@ -85,10 +82,10 @@ namespace Timekeeper.Forms
             AutoFollow(Project.LastActivityId, ActivityTreeDropdown, Options.Behavior_Annoy_ActivityFollowsProject);
 
             Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
-            AutoFollow(Activity.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
+            AutoFollow(Project.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
 
             Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
-            AutoFollow(Location.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
+            AutoFollow(Project.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
 
             UpdateStatusBar();
 
@@ -111,10 +108,6 @@ namespace Timekeeper.Forms
             EnsureSelections();
 
             Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
-            AutoFollow(Activity.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
-
-            Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
-            AutoFollow(Location.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
 
             UpdateStatusBar();
 
@@ -122,6 +115,9 @@ namespace Timekeeper.Forms
 
             MenuBar_ShowHideActivity(!Activity.IsHidden);
             // FIXME: Activity equiv? What about our other two dimensions?
+            // FIXME: Update 2014-07-23 something's definitely incomplete here...
+            // It appears (at first glance) that only Projects can be merged or deleted or something.
+            // Look into this.
             /*
             MenuBar_ShowMergeProject(Project.IsFolder);
             MenuBar_ShowDeleteProject(Project.IsDeleted);
@@ -140,7 +136,6 @@ namespace Timekeeper.Forms
             EnsureSelections();
 
             Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
-            AutoFollow(Location.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
 
             UpdateStatusBar();
 
@@ -159,7 +154,6 @@ namespace Timekeeper.Forms
             EnsureSelections();
 
             Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
-            Options.State_LastCategoryId = Category.ItemId;
 
             UpdateStatusBar();
 
@@ -614,6 +608,10 @@ namespace Timekeeper.Forms
             BrowserToolbar.Visible = Options.View_BrowserToolbar;
             PanelControls.Visible = Options.View_ControlPanel;
             MemoEditor.Visible = Options.View_MemoEditor;
+            if (!MemoEditor.Visible)
+                PanelControls.Dock = DockStyle.Fill;
+            else
+                PanelControls.Dock = DockStyle.Bottom;
             StatusBar_SetVisibility();
 
             // Set Main window metrics
@@ -991,30 +989,22 @@ namespace Timekeeper.Forms
 
         private void Action_UseProjects(bool show)
         {
-            if (show == false) {
-                if (Options.Layout_UseActivities == false) {
-                    return;
-                }
-            }
             Options.Layout_UseProjects = show;
             ProjectPanel.Visible = show;
             ProjectTreeDropdown.Enabled = show;
             MenuActionManageProjects.Visible = show;
+            StatusBar_SetVisibility();
         }
 
         //----------------------------------------------------------------------
 
         private void Action_UseActivities(bool show)
         {
-            if (show == false) {
-                if (Options.Layout_UseProjects == false) {
-                    return;
-                }
-            }
             Options.Layout_UseActivities = show;
             ActivityPanel.Visible = show;
             ActivityTreeDropdown.Enabled = show;
             MenuActionManageActivities.Visible = show;
+            StatusBar_SetVisibility();
         }
 
         //----------------------------------------------------------------------
@@ -1025,6 +1015,7 @@ namespace Timekeeper.Forms
             LocationPanel.Visible = show;
             LocationTreeDropdown.Enabled = show;
             MenuActionManageLocations.Visible = show;
+            StatusBar_SetVisibility();
         }
 
         //----------------------------------------------------------------------
@@ -1035,6 +1026,7 @@ namespace Timekeeper.Forms
             CategoryPanel.Visible = show;
             CategoryTreeDropdown.Enabled = show;
             MenuActionManageCategories.Visible = show;
+            StatusBar_SetVisibility();
         }
 
         //---------------------------------------------------------------------
@@ -1166,6 +1158,8 @@ namespace Timekeeper.Forms
                 ElapsedSinceStart++;
                 ElapsedProjectToday++;
                 ElapsedActivityToday++;
+                ElapsedLocationToday++;
+                ElapsedCategoryToday++;
                 ElapsedAllToday++;
 
                 StatusBar_Update();
@@ -1181,17 +1175,20 @@ namespace Timekeeper.Forms
                     case 0: timeToShow = StatusBarElapsedSinceStart.Text; break;
                     case 1: timeToShow = StatusBarElapsedProjectToday.Text; break;
                     case 2: timeToShow = StatusBarElapsedActivityToday.Text; break;
-                    case 3: timeToShow = StatusBarElapsedAllToday.Text; break;
+                    case 3: timeToShow = StatusBarElapsedLocationToday.Text; break;
+                    case 4: timeToShow = StatusBarElapsedCategoryToday.Text; break;
+                    case 5: timeToShow = StatusBarElapsedAllToday.Text; break;
                 }
 
                 // FIXME: add this to Widgets?
                 // FIXME: I liked this updating-in-real-time feature (when it was directly accessing: options.wTitleBarTemplate.Text)
                 string tmp = Options.Behavior_TitleBar_Template;
-                tmp = tmp.Replace("%activity", "{0}");
-                tmp = tmp.Replace("%project", "{1}");
-                tmp = tmp.Replace("%time", "{2}");
-                Text = String.Format(tmp, TimedActivity.Name, TimedProject.Name, timeToShow);
-                //wNotifyIcon.Text = Text;
+                tmp = tmp.Replace("%project", "{0}");
+                tmp = tmp.Replace("%activity", "{1}");
+                tmp = tmp.Replace("%location", "{2}");
+                tmp = tmp.Replace("%category", "{3}");
+                tmp = tmp.Replace("%time", "{4}");
+                Text = String.Format(tmp, TimedProject.Name, TimedActivity.Name, TimedLocation.Name, TimedCategory.Name, timeToShow);
                 TrayIcon.Text = Common.Abbreviate(Text, 63);
             }
 
@@ -1233,6 +1230,8 @@ namespace Timekeeper.Forms
                 ElapsedSinceStart = Convert.ToInt32(TimedActivity.Elapsed().TotalSeconds); // FIXME: CURRENT ACTIVITY?
                 ElapsedProjectToday = Convert.ToInt32(TimedProject.ElapsedToday().TotalSeconds);
                 ElapsedActivityToday = Convert.ToInt32(TimedActivity.ElapsedToday().TotalSeconds);
+                ElapsedLocationToday = Convert.ToInt32(TimedLocation.ElapsedToday().TotalSeconds);
+                ElapsedCategoryToday = Convert.ToInt32(TimedCategory.ElapsedToday().TotalSeconds);
                 ElapsedAllToday = Convert.ToInt32(Entries.ElapsedToday());
             }
 
@@ -1273,6 +1272,18 @@ namespace Timekeeper.Forms
             Options.State_LastLocationId = TimedLocation.ItemId;
             Options.State_LastCategoryId = TimedCategory.ItemId;
         }
+
+        //---------------------------------------------------------------------
+
+        private void ReleaseDimensions()
+        {
+            TimedProject = null;
+            TimedActivity = null;
+            TimedLocation = null;
+            TimedCategory = null;
+        }
+
+        //---------------------------------------------------------------------
 
         private void Action_StartTimer()
         {
@@ -1315,9 +1326,11 @@ namespace Timekeeper.Forms
             timerLastRun = Timekeeper.LocalNow;
 
             // Grab times (this is a database hit)
-            ElapsedSinceStart = (long)TimedActivity.Elapsed().TotalSeconds;
+            ElapsedSinceStart = (long)TimedActivity.Elapsed().TotalSeconds; // WTF? FIXME: TimedActivity???
             ElapsedProjectToday = (long)TimedProject.ElapsedToday().TotalSeconds;
             ElapsedActivityToday = (long)TimedActivity.ElapsedToday().TotalSeconds;
+            ElapsedLocationToday = (long)TimedLocation.ElapsedToday().TotalSeconds;
+            ElapsedCategoryToday = (long)TimedCategory.ElapsedToday().TotalSeconds;
             ElapsedAllToday = (long)Entries.ElapsedToday() + ElapsedSinceStart;
 
             // Make any UI changes based on the timer starting
@@ -1336,7 +1349,9 @@ namespace Timekeeper.Forms
             //MenuActionCloseBrowser.ShortcutKeys = saveKeysAdvanced;
             Browser_SetShortcuts();
 
-            StatusBar_TimerStarted(TimedProject.Name, TimedActivity.Name);
+            StatusBar_TimerStarted(
+                TimedProject.Name, TimedActivity.Name,
+                TimedLocation.Name, TimedCategory.Name);
 
             Action_SetMenuAvailability(MenuFile, false);
 
@@ -1360,10 +1375,11 @@ namespace Timekeeper.Forms
             DateTime StartTime = StartTimeSelector.Value;
             DateTime StopTime = StopTimeSelector.Value;
 
-            long Seconds = TimedProject.StopTiming(StopTime);
-            TimedActivity.StopTiming(StopTime);
-            TimedLocation.StopTiming(StopTime);
-            TimedCategory.StopTiming(StopTime);
+            long Seconds =
+                TimedProject.StopTiming(StopTime);
+                TimedActivity.StopTiming(StopTime);
+                TimedLocation.StopTiming(StopTime);
+                TimedCategory.StopTiming(StopTime);
 
             // Get current dimension selections
             // Note: they may have changed while the timer was running
@@ -1383,10 +1399,7 @@ namespace Timekeeper.Forms
             timerRunning = false;
 
             // Clear instances of current object
-            TimedProject = null;
-            TimedActivity = null;
-            TimedLocation = null;
-            TimedCategory = null;
+            ReleaseDimensions();
 
             // Make any UI changes 
             Text = Timekeeper.TITLE;

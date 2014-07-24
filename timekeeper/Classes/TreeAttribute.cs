@@ -30,9 +30,9 @@ namespace Timekeeper.Classes
 
         // Table-specific properties
         public long? LastActivityId { get; set; }        // used by Project
-        public string ExternalProjectNo { get; set; }   // used by Project
-        public long? LastLocationId { get; set; }        // used by Activity
-        public long? LastCategoryId { get; set; }        // used by Location
+        public long? LastLocationId { get; set; }        // used by Project
+        public long? LastCategoryId { get; set; }        // used by Project
+        public string ExternalProjectNo { get; set; }    // used by Project
         public long? RefTimeZoneId { get; set; }         // used by Location
 
         public Timekeeper.Dimension Dimension { get; set; }
@@ -217,10 +217,11 @@ namespace Timekeeper.Classes
             string Query = String.Format(@"
                 select sum(Seconds) as Seconds
                 from Journal
-                where StartTime >= '{0}'
-                  and StopTime < '{1}'
+                where StartTime >= datetime('{0}', '{4} hours')
+                  and StartTime < datetime('{1}', '{4} hours')
                   and {2} = {3}",
-                fromDate, toDate, this.IdColumnName, itemId);
+                fromDate, toDate, this.IdColumnName, itemId,
+                Timekeeper.Options.Advanced_Other_MidnightOffset);
             Row Row = this.Database.SelectRow(Query);
 
             long Seconds = Row["Seconds"] == null ? 0 : Row["Seconds"];
@@ -276,6 +277,7 @@ namespace Timekeeper.Classes
 
             this.LastActivityId = source.LastActivityId;
             this.LastLocationId = source.LastLocationId;
+            this.LastCategoryId = source.LastCategoryId;
             this.ExternalProjectNo = source.ExternalProjectNo;
             this.RefTimeZoneId = source.RefTimeZoneId;
         }
@@ -319,15 +321,16 @@ namespace Timekeeper.Classes
 
             if (this.Dimension == Timekeeper.Dimension.Project) {
                 Row["LastActivityId"] = this.LastActivityId;
+                Row["LastLocationId"] = this.LastLocationId;
+                Row["LastCategoryId"] = this.LastCategoryId;
                 Row["ExternalProjectNo"] = this.ExternalProjectNo;
             }
 
             if (this.Dimension == Timekeeper.Dimension.Activity) {
-                Row["LastLocationId"] = this.LastLocationId;
+                // None at the moment
             }
 
             if (this.Dimension == Timekeeper.Dimension.Location) {
-                Row["LastCategoryId"] = this.LastCategoryId;
                 Row["RefTimeZoneId"] = this.RefTimeZoneId;
             }
 
@@ -370,10 +373,13 @@ namespace Timekeeper.Classes
 
         public string ElapsedTodayFormatted()
         {
+            /*
             DateTimeOffset midnight = DateTimeOffset.Parse("00:00:00"); // FIXME: MIDNIGHT ISSUE AGAIN
             midnight = midnight.AddSeconds(this.SecondsElapsedToday);
             TimeSpan ts = new TimeSpan(midnight.Ticks - 0);
             return Timekeeper.FormatTimeSpan(ts);
+            */
+            return Timekeeper.FormatSeconds(this.SecondsElapsedToday);
         }
 
         //---------------------------------------------------------------------
@@ -458,15 +464,16 @@ namespace Timekeeper.Classes
 
             if (this.Dimension == Timekeeper.Dimension.Project) {
                 this.LastActivityId = row["LastActivityId"];
+                this.LastLocationId = row["LastLocationId"];
+                this.LastCategoryId = row["LastCategoryId"];
                 this.ExternalProjectNo = row["ExternalProjectNo"];
             }
 
             if (this.Dimension == Timekeeper.Dimension.Activity) {
-                this.LastLocationId = row["LastLocationId"];
+                // None at the moment
             }
 
             if (this.Dimension == Timekeeper.Dimension.Location) {
-                this.LastCategoryId = row["LastCategoryId"];
                 this.RefTimeZoneId = row["RefTimeZoneId"];
             }
 
@@ -629,6 +636,13 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        public void ChangedTime()
+        {
+            this.SetSecondsElapsedToday();
+        }
+
+        //---------------------------------------------------------------------
+
         public long Unhide()
         {
             this.IsHidden = false;
@@ -660,15 +674,18 @@ namespace Timekeeper.Classes
                 }
 
                 // fetch seconds from the db for this node
-                string today = DateTime.Today.ToString(Common.DATE_FORMAT);
-                string midnight = "00:00:00";  // FIXME: more midnight issues
+                DateTime Today = Timekeeper.AdjustedToday;
 
                 string query = String.Format(@"
                     select sum(Seconds) as Seconds
                     from Journal
-                    where StartTime > '{0} {1}'
-                      and {2} = {3}",
-                    today, midnight, this.IdColumnName, this.ItemId);
+                    where StartTime >= datetime('{0}', '{3} hours')
+                      and StartTime < datetime('{0}', '{4} hours')
+                      and {1} = {2}",
+                    Today.ToString(Timekeeper.LOCAL_DATETIME_FORMAT), 
+                    this.IdColumnName, this.ItemId,
+                    Timekeeper.Options.Advanced_Other_MidnightOffset,
+                    (24 - Timekeeper.Options.Advanced_Other_MidnightOffset));
                 Row row = this.Database.SelectRow(query);
 
                 if (row["Seconds"] > 0) {

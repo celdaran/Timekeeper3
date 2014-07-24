@@ -15,7 +15,7 @@ CREATE TABLE ReportView
 
     Name                TEXT        NOT NULL,
     Description         TEXT            NULL,
-    SortOrderNo         INTEGER         NULL,
+    SortOrderNo         INTEGER     NOT NULL,
 
     FilterOptionsId     INTEGER     NOT NULL,
 

@@ -58,9 +58,16 @@ namespace Timekeeper.Classes
 
         public Table Results(string orderBy)
         {
+            string Offset = "";
+            if (this.Options.Advanced_Other_MidnightOffset != 0) {
+                Offset = String.Format(", '-{0} hours'", this.Options.Advanced_Other_MidnightOffset);
+            }
+
             string Query = String.Format(@"
                 select
-                    j.StartTime, j.StopTime, j.Seconds, 
+                    datetime(j.StartTime{2}) as StartTime,
+                    datetime(j.StopTime{2}) as StopTime,
+                    j.Seconds, 
                     p.Name as ProjectName, a.Name as ActivityName,
                     j.Memo
                 from Journal j
@@ -70,7 +77,7 @@ namespace Timekeeper.Classes
                 left join Category t on t.CategoryId = j.CategoryId
                 where {0}
                 order by {1}",
-                this.FilterOptions.WhereClause, orderBy);
+                this.FilterOptions.WhereClause, orderBy, Offset);
 
             Table FindResults = Database.Select(Query);
 

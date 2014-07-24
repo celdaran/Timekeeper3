@@ -38,7 +38,7 @@ namespace Timekeeper
         // (nor were the DDL statements stored as resources or under version 
         // control).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.9.1";
+        public const string SCHEMA_VERSION = "3.0.9.2";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
@@ -136,42 +136,14 @@ namespace Timekeeper
         // Database Creation & Population
         //---------------------------------------------------------------------
 
-        /*
-        public bool Create(Version version)
-        {
-            return Create(VersionToString(version), true);
-        }
-
-        //---------------------------------------------------------------------
-
-        public bool Create(Version version, bool populate)
-        {
-            return Create(VersionToString(version), populate);
-        }
-        */
-
-        //---------------------------------------------------------------------
-
-        // TRANSITIONAL
-
-        /*
-        public bool Create(Version desiredVersion, bool populate)
-        {
-            FileCreateOptions Options = new FileCreateOptions();
-            return Create(desiredVersion, Options, populate);
-        }
-        */
-
-        //---------------------------------------------------------------------
-
-        public bool Create(Version desiredVersion) //string version)
+        public bool Create(Version desiredVersion)
         {
             return Create(desiredVersion, true);
         }
 
         //---------------------------------------------------------------------
 
-        public bool Create(Version desiredVersion, bool populate) //string version, bool populate)
+        public bool Create(Version desiredVersion, bool populate)
         {
             try {
                 string version = VersionToString(desiredVersion);
@@ -328,7 +300,6 @@ namespace Timekeeper
             Location["IsDeleted"] = 0;
             Location["HiddenTime"] = null;
             Location["DeletedTime"] = null;
-            Location["LastCategoryId"] = 0;
             Location["RefTimeZoneId"] = options.LocationTimeZoneId;
 
             this.InsertedRowId = Database.Insert("Location", Location);

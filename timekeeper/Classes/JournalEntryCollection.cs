@@ -67,10 +67,13 @@ namespace Timekeeper.Classes
 
         public string ElapsedTodayFormatted()
         {
+            /*
             DateTimeOffset Midnight = DateTimeOffset.Parse("00:00:00");
             Midnight = Midnight.AddSeconds(this.TodaySeconds());
             TimeSpan TimeSpan = new TimeSpan(Midnight.Ticks - 0);
             return Timekeeper.FormatTimeSpan(TimeSpan);
+            */
+            return Timekeeper.FormatSeconds(this.TodaySeconds());
         }
 
         //---------------------------------------------------------------------
@@ -89,14 +92,17 @@ namespace Timekeeper.Classes
 
         private long TodaySeconds()
         {
-            string Today = DateTime.Today.ToString(Common.DATE_FORMAT);
-            string Midnight = "00:00:00"; // FIXME: #1255 ISSUE HERE
+            DateTime Today = Timekeeper.AdjustedToday;
 
             string query = String.Format(@"
                 select sum(Seconds) as TodaySeconds
                 from Journal
-                where StartTime > '{0} {1}'",
-                Today, Midnight);
+                where StartTime >= datetime('{0}', '{1} hours')
+                  and StartTime < datetime('{0}', '{2} hours')",
+                Today.ToString(Timekeeper.LOCAL_DATETIME_FORMAT),
+                Timekeeper.Options.Advanced_Other_MidnightOffset,
+                (24 - Timekeeper.Options.Advanced_Other_MidnightOffset));
+
             Row Row = this.Database.SelectRow(query);
             return Row["TodaySeconds"] == null ? 0 : Row["TodaySeconds"];
         }

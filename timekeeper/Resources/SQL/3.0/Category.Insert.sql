@@ -30,7 +30,7 @@ INSERT INTO Category
     'Default Category',
     'This is the default category. Rename this or create your own.',
     
-    0,
+    null,
     0,
     0,
     0,

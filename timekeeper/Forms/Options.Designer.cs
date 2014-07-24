@@ -126,8 +126,8 @@
             this.TitleBarTemplateLabel = new System.Windows.Forms.Label();
             this.ReportPage = new System.Windows.Forms.TabPage();
             this.ReportGroup = new System.Windows.Forms.GroupBox();
+            this.Report_StyleSheet = new System.Windows.Forms.TextBox();
             this.LabelBaseFont = new System.Windows.Forms.Label();
-            this.Report_StyleSheet = new System.Windows.Forms.RichTextBox();
             this.Report_FontList = new System.Windows.Forms.ListBox();
             this.LabelStyleSheet = new System.Windows.Forms.Label();
             this.LabelBaseFontSize = new System.Windows.Forms.Label();
@@ -189,6 +189,22 @@
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
+            this.StatusBarGroup_LocationElapsedPanel = new System.Windows.Forms.Panel();
+            this.View_StatusBar_ElapsedLocationToday = new System.Windows.Forms.CheckBox();
+            this.StatusBarGroup_CategoryElapsedPanel = new System.Windows.Forms.Panel();
+            this.View_StatusBar_ElapsedCategoryToday = new System.Windows.Forms.CheckBox();
+            this.StatusBarGroup_LocationNamePanel = new System.Windows.Forms.Panel();
+            this.View_StatusBar_LocationName = new System.Windows.Forms.CheckBox();
+            this.StatusBarGroup_CategoryNamePanel = new System.Windows.Forms.Panel();
+            this.View_StatusBar_CategoryName = new System.Windows.Forms.CheckBox();
+            this.Advanced_Other_MidnightOffset = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.HiddenGroup_TodoPanel = new System.Windows.Forms.Panel();
+            this.View_HiddenTodoItems = new System.Windows.Forms.CheckBox();
+            this.View_HiddenTodoItemsSince = new System.Windows.Forms.ComboBox();
+            this.HiddenGroup_EventPanel = new System.Windows.Forms.Panel();
+            this.View_HiddenEvents = new System.Windows.Forms.CheckBox();
+            this.View_HiddenEventsSince = new System.Windows.Forms.ComboBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -238,6 +254,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.Advanced_Other_DimensionWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.LoggingGroup.SuspendLayout();
+            this.StatusBarGroup_LocationElapsedPanel.SuspendLayout();
+            this.StatusBarGroup_CategoryElapsedPanel.SuspendLayout();
+            this.StatusBarGroup_LocationNamePanel.SuspendLayout();
+            this.StatusBarGroup_CategoryNamePanel.SuspendLayout();
+            this.HiddenGroup_TodoPanel.SuspendLayout();
+            this.HiddenGroup_EventPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -508,7 +530,7 @@
             // ViewSpacerBox
             // 
             this.ViewSpacerBox.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
-            this.ViewSpacerBox.Location = new System.Drawing.Point(17, 547);
+            this.ViewSpacerBox.Location = new System.Drawing.Point(17, 692);
             this.ViewSpacerBox.Name = "ViewSpacerBox";
             this.ViewSpacerBox.Size = new System.Drawing.Size(16, 16);
             this.ViewSpacerBox.TabIndex = 22;
@@ -598,14 +620,18 @@
             // StatusBarGroup
             // 
             this.StatusBarGroup.Controls.Add(this.StatusBarGroup_BottomPanel);
+            this.StatusBarGroup.Controls.Add(this.StatusBarGroup_CategoryElapsedPanel);
+            this.StatusBarGroup.Controls.Add(this.StatusBarGroup_LocationElapsedPanel);
             this.StatusBarGroup.Controls.Add(this.StatusBarGroup_ActivityElapsedPanel);
             this.StatusBarGroup.Controls.Add(this.StatusBarGroup_ProjectElapsedPanel);
             this.StatusBarGroup.Controls.Add(this.StatusBarGroup_ElapsedPanel);
+            this.StatusBarGroup.Controls.Add(this.StatusBarGroup_CategoryNamePanel);
+            this.StatusBarGroup.Controls.Add(this.StatusBarGroup_LocationNamePanel);
             this.StatusBarGroup.Controls.Add(this.StatusBarGroup_ActivityNamePanel);
             this.StatusBarGroup.Controls.Add(this.StatusBarGroup_ProjectNamePanel);
             this.StatusBarGroup.Location = new System.Drawing.Point(17, 222);
             this.StatusBarGroup.Name = "StatusBarGroup";
-            this.StatusBarGroup.Size = new System.Drawing.Size(345, 182);
+            this.StatusBarGroup.Size = new System.Drawing.Size(345, 275);
             this.StatusBarGroup.TabIndex = 20;
             this.StatusBarGroup.TabStop = false;
             this.StatusBarGroup.Text = "Status Bar";
@@ -615,7 +641,7 @@
             this.StatusBarGroup_BottomPanel.Controls.Add(this.View_StatusBar_ElapsedAllToday);
             this.StatusBarGroup_BottomPanel.Controls.Add(this.View_StatusBar_FileName);
             this.StatusBarGroup_BottomPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.StatusBarGroup_BottomPanel.Location = new System.Drawing.Point(3, 131);
+            this.StatusBarGroup_BottomPanel.Location = new System.Drawing.Point(3, 223);
             this.StatusBarGroup_BottomPanel.Name = "StatusBarGroup_BottomPanel";
             this.StatusBarGroup_BottomPanel.Size = new System.Drawing.Size(339, 46);
             this.StatusBarGroup_BottomPanel.TabIndex = 6;
@@ -644,7 +670,7 @@
             // 
             this.StatusBarGroup_ActivityElapsedPanel.Controls.Add(this.View_StatusBar_ElapsedActivityToday);
             this.StatusBarGroup_ActivityElapsedPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.StatusBarGroup_ActivityElapsedPanel.Location = new System.Drawing.Point(3, 108);
+            this.StatusBarGroup_ActivityElapsedPanel.Location = new System.Drawing.Point(3, 154);
             this.StatusBarGroup_ActivityElapsedPanel.Name = "StatusBarGroup_ActivityElapsedPanel";
             this.StatusBarGroup_ActivityElapsedPanel.Size = new System.Drawing.Size(339, 23);
             this.StatusBarGroup_ActivityElapsedPanel.TabIndex = 5;
@@ -654,16 +680,16 @@
             this.View_StatusBar_ElapsedActivityToday.AutoSize = true;
             this.View_StatusBar_ElapsedActivityToday.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ElapsedActivityToday.Name = "View_StatusBar_ElapsedActivityToday";
-            this.View_StatusBar_ElapsedActivityToday.Size = new System.Drawing.Size(181, 17);
+            this.View_StatusBar_ElapsedActivityToday.Size = new System.Drawing.Size(203, 17);
             this.View_StatusBar_ElapsedActivityToday.TabIndex = 5;
-            this.View_StatusBar_ElapsedActivityToday.Text = "Elapsed today for current Activity";
+            this.View_StatusBar_ElapsedActivityToday.Text = "Elapsed time today for current Activity";
             this.View_StatusBar_ElapsedActivityToday.UseVisualStyleBackColor = true;
             // 
             // StatusBarGroup_ProjectElapsedPanel
             // 
             this.StatusBarGroup_ProjectElapsedPanel.Controls.Add(this.View_StatusBar_ElapsedProjectToday);
             this.StatusBarGroup_ProjectElapsedPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.StatusBarGroup_ProjectElapsedPanel.Location = new System.Drawing.Point(3, 85);
+            this.StatusBarGroup_ProjectElapsedPanel.Location = new System.Drawing.Point(3, 131);
             this.StatusBarGroup_ProjectElapsedPanel.Name = "StatusBarGroup_ProjectElapsedPanel";
             this.StatusBarGroup_ProjectElapsedPanel.Size = new System.Drawing.Size(339, 23);
             this.StatusBarGroup_ProjectElapsedPanel.TabIndex = 4;
@@ -673,16 +699,16 @@
             this.View_StatusBar_ElapsedProjectToday.AutoSize = true;
             this.View_StatusBar_ElapsedProjectToday.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ElapsedProjectToday.Name = "View_StatusBar_ElapsedProjectToday";
-            this.View_StatusBar_ElapsedProjectToday.Size = new System.Drawing.Size(180, 17);
+            this.View_StatusBar_ElapsedProjectToday.Size = new System.Drawing.Size(202, 17);
             this.View_StatusBar_ElapsedProjectToday.TabIndex = 4;
-            this.View_StatusBar_ElapsedProjectToday.Text = "Elapsed today for current Project";
+            this.View_StatusBar_ElapsedProjectToday.Text = "Elapsed time today for current Project";
             this.View_StatusBar_ElapsedProjectToday.UseVisualStyleBackColor = true;
             // 
             // StatusBarGroup_ElapsedPanel
             // 
             this.StatusBarGroup_ElapsedPanel.Controls.Add(this.View_StatusBar_ElapsedSinceStart);
             this.StatusBarGroup_ElapsedPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.StatusBarGroup_ElapsedPanel.Location = new System.Drawing.Point(3, 62);
+            this.StatusBarGroup_ElapsedPanel.Location = new System.Drawing.Point(3, 108);
             this.StatusBarGroup_ElapsedPanel.Name = "StatusBarGroup_ElapsedPanel";
             this.StatusBarGroup_ElapsedPanel.Size = new System.Drawing.Size(339, 23);
             this.StatusBarGroup_ElapsedPanel.TabIndex = 3;
@@ -692,9 +718,9 @@
             this.View_StatusBar_ElapsedSinceStart.AutoSize = true;
             this.View_StatusBar_ElapsedSinceStart.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ElapsedSinceStart.Name = "View_StatusBar_ElapsedSinceStart";
-            this.View_StatusBar_ElapsedSinceStart.Size = new System.Drawing.Size(152, 17);
+            this.View_StatusBar_ElapsedSinceStart.Size = new System.Drawing.Size(174, 17);
             this.View_StatusBar_ElapsedSinceStart.TabIndex = 3;
-            this.View_StatusBar_ElapsedSinceStart.Text = "Elapsed since timer started";
+            this.View_StatusBar_ElapsedSinceStart.Text = "Elapsed time since timer started";
             this.View_StatusBar_ElapsedSinceStart.UseVisualStyleBackColor = true;
             // 
             // StatusBarGroup_ActivityNamePanel
@@ -711,9 +737,9 @@
             this.View_StatusBar_ActivityName.AutoSize = true;
             this.View_StatusBar_ActivityName.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ActivityName.Name = "View_StatusBar_ActivityName";
-            this.View_StatusBar_ActivityName.Size = new System.Drawing.Size(126, 17);
+            this.View_StatusBar_ActivityName.Size = new System.Drawing.Size(139, 17);
             this.View_StatusBar_ActivityName.TabIndex = 2;
-            this.View_StatusBar_ActivityName.Text = "Current Activity name";
+            this.View_StatusBar_ActivityName.Text = "Name of current Activity";
             this.View_StatusBar_ActivityName.UseVisualStyleBackColor = true;
             // 
             // StatusBarGroup_ProjectNamePanel
@@ -730,20 +756,22 @@
             this.View_StatusBar_ProjectName.AutoSize = true;
             this.View_StatusBar_ProjectName.Location = new System.Drawing.Point(14, 4);
             this.View_StatusBar_ProjectName.Name = "View_StatusBar_ProjectName";
-            this.View_StatusBar_ProjectName.Size = new System.Drawing.Size(125, 17);
+            this.View_StatusBar_ProjectName.Size = new System.Drawing.Size(138, 17);
             this.View_StatusBar_ProjectName.TabIndex = 1;
-            this.View_StatusBar_ProjectName.Text = "Current Project name";
+            this.View_StatusBar_ProjectName.Text = "Name of current Project";
             this.View_StatusBar_ProjectName.UseVisualStyleBackColor = true;
             // 
             // HiddenGroup
             // 
+            this.HiddenGroup.Controls.Add(this.HiddenGroup_EventPanel);
+            this.HiddenGroup.Controls.Add(this.HiddenGroup_TodoPanel);
             this.HiddenGroup.Controls.Add(this.HiddenGroup_CategoryPanel);
             this.HiddenGroup.Controls.Add(this.HiddenGroup_LocationPanel);
             this.HiddenGroup.Controls.Add(this.HiddenGroup_ActivityPanel);
             this.HiddenGroup.Controls.Add(this.HiddenGroup_ProjectPanel);
-            this.HiddenGroup.Location = new System.Drawing.Point(17, 410);
+            this.HiddenGroup.Location = new System.Drawing.Point(17, 503);
             this.HiddenGroup.Name = "HiddenGroup";
-            this.HiddenGroup.Size = new System.Drawing.Size(345, 131);
+            this.HiddenGroup.Size = new System.Drawing.Size(345, 183);
             this.HiddenGroup.TabIndex = 19;
             this.HiddenGroup.TabStop = false;
             this.HiddenGroup.Text = "Hidden Items";
@@ -924,9 +952,9 @@
             this.Behavior_Annoy_CategoryFollowsProject.AutoSize = true;
             this.Behavior_Annoy_CategoryFollowsProject.Location = new System.Drawing.Point(14, 4);
             this.Behavior_Annoy_CategoryFollowsProject.Name = "Behavior_Annoy_CategoryFollowsProject";
-            this.Behavior_Annoy_CategoryFollowsProject.Size = new System.Drawing.Size(124, 17);
+            this.Behavior_Annoy_CategoryFollowsProject.Size = new System.Drawing.Size(139, 17);
             this.Behavior_Annoy_CategoryFollowsProject.TabIndex = 10;
-            this.Behavior_Annoy_CategoryFollowsProject.Text = "Auto-select Category";
+            this.Behavior_Annoy_CategoryFollowsProject.Text = "Category follows Project";
             this.Behavior_Annoy_CategoryFollowsProject.UseVisualStyleBackColor = true;
             // 
             // AnnoyGroup_LocationFollowPanel
@@ -943,9 +971,9 @@
             this.Behavior_Annoy_LocationFollowsProject.AutoSize = true;
             this.Behavior_Annoy_LocationFollowsProject.Location = new System.Drawing.Point(14, 4);
             this.Behavior_Annoy_LocationFollowsProject.Name = "Behavior_Annoy_LocationFollowsProject";
-            this.Behavior_Annoy_LocationFollowsProject.Size = new System.Drawing.Size(123, 17);
+            this.Behavior_Annoy_LocationFollowsProject.Size = new System.Drawing.Size(138, 17);
             this.Behavior_Annoy_LocationFollowsProject.TabIndex = 0;
-            this.Behavior_Annoy_LocationFollowsProject.Text = "Auto-select Location";
+            this.Behavior_Annoy_LocationFollowsProject.Text = "Location follows Project";
             this.Behavior_Annoy_LocationFollowsProject.UseVisualStyleBackColor = true;
             // 
             // AnnoyGroup_ActivityFollowPanel
@@ -962,9 +990,9 @@
             this.Behavior_Annoy_ActivityFollowsProject.AutoSize = true;
             this.Behavior_Annoy_ActivityFollowsProject.Location = new System.Drawing.Point(14, 4);
             this.Behavior_Annoy_ActivityFollowsProject.Name = "Behavior_Annoy_ActivityFollowsProject";
-            this.Behavior_Annoy_ActivityFollowsProject.Size = new System.Drawing.Size(116, 17);
+            this.Behavior_Annoy_ActivityFollowsProject.Size = new System.Drawing.Size(131, 17);
             this.Behavior_Annoy_ActivityFollowsProject.TabIndex = 7;
-            this.Behavior_Annoy_ActivityFollowsProject.Text = "Auto-select Activity";
+            this.Behavior_Annoy_ActivityFollowsProject.Text = "Activity follows Project";
             this.Behavior_Annoy_ActivityFollowsProject.UseVisualStyleBackColor = true;
             // 
             // AnnoyGroup_TopPanel
@@ -1314,8 +1342,8 @@
             // 
             // ReportGroup
             // 
-            this.ReportGroup.Controls.Add(this.LabelBaseFont);
             this.ReportGroup.Controls.Add(this.Report_StyleSheet);
+            this.ReportGroup.Controls.Add(this.LabelBaseFont);
             this.ReportGroup.Controls.Add(this.Report_FontList);
             this.ReportGroup.Controls.Add(this.LabelStyleSheet);
             this.ReportGroup.Controls.Add(this.LabelBaseFontSize);
@@ -1328,6 +1356,14 @@
             this.ReportGroup.TabStop = false;
             this.ReportGroup.Text = "Styling";
             // 
+            // Report_StyleSheet
+            // 
+            this.Report_StyleSheet.Location = new System.Drawing.Point(111, 153);
+            this.Report_StyleSheet.Name = "Report_StyleSheet";
+            this.Report_StyleSheet.Size = new System.Drawing.Size(238, 20);
+            this.Report_StyleSheet.TabIndex = 9;
+            this.Report_StyleSheet.Text = "Link to a CSS file on your file system (or http?)";
+            // 
             // LabelBaseFont
             // 
             this.LabelBaseFont.AutoSize = true;
@@ -1336,17 +1372,6 @@
             this.LabelBaseFont.Size = new System.Drawing.Size(58, 13);
             this.LabelBaseFont.TabIndex = 0;
             this.LabelBaseFont.Text = "Base Font:";
-            // 
-            // Report_StyleSheet
-            // 
-            this.Report_StyleSheet.ForeColor = System.Drawing.SystemColors.InactiveCaption;
-            this.Report_StyleSheet.Location = new System.Drawing.Point(111, 175);
-            this.Report_StyleSheet.Name = "Report_StyleSheet";
-            this.Report_StyleSheet.ReadOnly = true;
-            this.Report_StyleSheet.Size = new System.Drawing.Size(238, 182);
-            this.Report_StyleSheet.TabIndex = 6;
-            this.Report_StyleSheet.Text = "Paste custom CSS style sheet here for more control over report appearance. See th" +
-    "e help file for more details and samples.";
             // 
             // Report_FontList
             // 
@@ -1359,7 +1384,7 @@
             // LabelStyleSheet
             // 
             this.LabelStyleSheet.AutoSize = true;
-            this.LabelStyleSheet.Location = new System.Drawing.Point(14, 175);
+            this.LabelStyleSheet.Location = new System.Drawing.Point(14, 156);
             this.LabelStyleSheet.Name = "LabelStyleSheet";
             this.LabelStyleSheet.Size = new System.Drawing.Size(61, 13);
             this.LabelStyleSheet.TabIndex = 5;
@@ -1368,7 +1393,7 @@
             // LabelBaseFontSize
             // 
             this.LabelBaseFontSize.AutoSize = true;
-            this.LabelBaseFontSize.Location = new System.Drawing.Point(14, 139);
+            this.LabelBaseFontSize.Location = new System.Drawing.Point(14, 129);
             this.LabelBaseFontSize.Name = "LabelBaseFontSize";
             this.LabelBaseFontSize.Size = new System.Drawing.Size(81, 13);
             this.LabelBaseFontSize.TabIndex = 2;
@@ -1385,7 +1410,7 @@
             // 
             // Report_FontSize
             // 
-            this.Report_FontSize.Location = new System.Drawing.Point(111, 137);
+            this.Report_FontSize.Location = new System.Drawing.Point(111, 127);
             this.Report_FontSize.Maximum = new decimal(new int[] {
             24,
             0,
@@ -1814,6 +1839,8 @@
             // 
             // OtherAdvancedGroup
             // 
+            this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_MidnightOffset);
+            this.OtherAdvancedGroup.Controls.Add(this.label15);
             this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_DimensionWidth);
             this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_DimensionWidthLabel);
             this.OtherAdvancedGroup.Controls.Add(this.checkBox6);
@@ -1831,7 +1858,7 @@
             this.OtherAdvancedGroup.Controls.Add(this.DateTimeFormatTemplate);
             this.OtherAdvancedGroup.Location = new System.Drawing.Point(17, 117);
             this.OtherAdvancedGroup.Name = "OtherAdvancedGroup";
-            this.OtherAdvancedGroup.Size = new System.Drawing.Size(345, 278);
+            this.OtherAdvancedGroup.Size = new System.Drawing.Size(345, 317);
             this.OtherAdvancedGroup.TabIndex = 3;
             this.OtherAdvancedGroup.TabStop = false;
             this.OtherAdvancedGroup.Text = "Other";
@@ -2078,6 +2105,191 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
+            // StatusBarGroup_LocationElapsedPanel
+            // 
+            this.StatusBarGroup_LocationElapsedPanel.Controls.Add(this.View_StatusBar_ElapsedLocationToday);
+            this.StatusBarGroup_LocationElapsedPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.StatusBarGroup_LocationElapsedPanel.Location = new System.Drawing.Point(3, 177);
+            this.StatusBarGroup_LocationElapsedPanel.Name = "StatusBarGroup_LocationElapsedPanel";
+            this.StatusBarGroup_LocationElapsedPanel.Size = new System.Drawing.Size(339, 23);
+            this.StatusBarGroup_LocationElapsedPanel.TabIndex = 6;
+            // 
+            // View_StatusBar_ElapsedLocationToday
+            // 
+            this.View_StatusBar_ElapsedLocationToday.AutoSize = true;
+            this.View_StatusBar_ElapsedLocationToday.Location = new System.Drawing.Point(14, 4);
+            this.View_StatusBar_ElapsedLocationToday.Name = "View_StatusBar_ElapsedLocationToday";
+            this.View_StatusBar_ElapsedLocationToday.Size = new System.Drawing.Size(210, 17);
+            this.View_StatusBar_ElapsedLocationToday.TabIndex = 5;
+            this.View_StatusBar_ElapsedLocationToday.Text = "Elapsed time today for current Location";
+            this.View_StatusBar_ElapsedLocationToday.UseVisualStyleBackColor = true;
+            // 
+            // StatusBarGroup_CategoryElapsedPanel
+            // 
+            this.StatusBarGroup_CategoryElapsedPanel.Controls.Add(this.View_StatusBar_ElapsedCategoryToday);
+            this.StatusBarGroup_CategoryElapsedPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.StatusBarGroup_CategoryElapsedPanel.Location = new System.Drawing.Point(3, 200);
+            this.StatusBarGroup_CategoryElapsedPanel.Name = "StatusBarGroup_CategoryElapsedPanel";
+            this.StatusBarGroup_CategoryElapsedPanel.Size = new System.Drawing.Size(339, 23);
+            this.StatusBarGroup_CategoryElapsedPanel.TabIndex = 7;
+            // 
+            // View_StatusBar_ElapsedCategoryToday
+            // 
+            this.View_StatusBar_ElapsedCategoryToday.AutoSize = true;
+            this.View_StatusBar_ElapsedCategoryToday.Location = new System.Drawing.Point(14, 4);
+            this.View_StatusBar_ElapsedCategoryToday.Name = "View_StatusBar_ElapsedCategoryToday";
+            this.View_StatusBar_ElapsedCategoryToday.Size = new System.Drawing.Size(211, 17);
+            this.View_StatusBar_ElapsedCategoryToday.TabIndex = 5;
+            this.View_StatusBar_ElapsedCategoryToday.Text = "Elapsed time today for current Category";
+            this.View_StatusBar_ElapsedCategoryToday.UseVisualStyleBackColor = true;
+            // 
+            // StatusBarGroup_LocationNamePanel
+            // 
+            this.StatusBarGroup_LocationNamePanel.Controls.Add(this.View_StatusBar_LocationName);
+            this.StatusBarGroup_LocationNamePanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.StatusBarGroup_LocationNamePanel.Location = new System.Drawing.Point(3, 62);
+            this.StatusBarGroup_LocationNamePanel.Name = "StatusBarGroup_LocationNamePanel";
+            this.StatusBarGroup_LocationNamePanel.Size = new System.Drawing.Size(339, 23);
+            this.StatusBarGroup_LocationNamePanel.TabIndex = 2;
+            // 
+            // View_StatusBar_LocationName
+            // 
+            this.View_StatusBar_LocationName.AutoSize = true;
+            this.View_StatusBar_LocationName.Location = new System.Drawing.Point(14, 4);
+            this.View_StatusBar_LocationName.Name = "View_StatusBar_LocationName";
+            this.View_StatusBar_LocationName.Size = new System.Drawing.Size(146, 17);
+            this.View_StatusBar_LocationName.TabIndex = 1;
+            this.View_StatusBar_LocationName.Text = "Name of current Location";
+            this.View_StatusBar_LocationName.UseVisualStyleBackColor = true;
+            // 
+            // StatusBarGroup_CategoryNamePanel
+            // 
+            this.StatusBarGroup_CategoryNamePanel.Controls.Add(this.View_StatusBar_CategoryName);
+            this.StatusBarGroup_CategoryNamePanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.StatusBarGroup_CategoryNamePanel.Location = new System.Drawing.Point(3, 85);
+            this.StatusBarGroup_CategoryNamePanel.Name = "StatusBarGroup_CategoryNamePanel";
+            this.StatusBarGroup_CategoryNamePanel.Size = new System.Drawing.Size(339, 23);
+            this.StatusBarGroup_CategoryNamePanel.TabIndex = 3;
+            // 
+            // View_StatusBar_CategoryName
+            // 
+            this.View_StatusBar_CategoryName.AutoSize = true;
+            this.View_StatusBar_CategoryName.Location = new System.Drawing.Point(14, 4);
+            this.View_StatusBar_CategoryName.Name = "View_StatusBar_CategoryName";
+            this.View_StatusBar_CategoryName.Size = new System.Drawing.Size(147, 17);
+            this.View_StatusBar_CategoryName.TabIndex = 1;
+            this.View_StatusBar_CategoryName.Text = "Name of current Category";
+            this.View_StatusBar_CategoryName.UseVisualStyleBackColor = true;
+            // 
+            // Advanced_Other_MidnightOffset
+            // 
+            this.Advanced_Other_MidnightOffset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Advanced_Other_MidnightOffset.FormattingEnabled = true;
+            this.Advanced_Other_MidnightOffset.Items.AddRange(new object[] {
+            "Noon",
+            "01:00 PM",
+            "02:00 PM",
+            "03:00 PM",
+            "04:00 PM",
+            "05:00 PM",
+            "06:00 PM",
+            "07:00 PM",
+            "08:00 PM",
+            "09:00 PM",
+            "10:00 PM",
+            "11:00 PM",
+            "Midnight",
+            "01:00 AM",
+            "02:00 AM",
+            "03:00 AM",
+            "04:00 AM",
+            "05:00 AM",
+            "06:00 AM",
+            "07:00 AM",
+            "08:00 AM",
+            "09:00 AM",
+            "10:00 AM",
+            "11:00 AM"});
+            this.Advanced_Other_MidnightOffset.Location = new System.Drawing.Point(197, 271);
+            this.Advanced_Other_MidnightOffset.Name = "Advanced_Other_MidnightOffset";
+            this.Advanced_Other_MidnightOffset.Size = new System.Drawing.Size(121, 21);
+            this.Advanced_Other_MidnightOffset.TabIndex = 16;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(32, 274);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(94, 13);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "Work day ends at:";
+            // 
+            // HiddenGroup_TodoPanel
+            // 
+            this.HiddenGroup_TodoPanel.Controls.Add(this.View_HiddenTodoItems);
+            this.HiddenGroup_TodoPanel.Controls.Add(this.View_HiddenTodoItemsSince);
+            this.HiddenGroup_TodoPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.HiddenGroup_TodoPanel.Location = new System.Drawing.Point(3, 124);
+            this.HiddenGroup_TodoPanel.Name = "HiddenGroup_TodoPanel";
+            this.HiddenGroup_TodoPanel.Size = new System.Drawing.Size(339, 27);
+            this.HiddenGroup_TodoPanel.TabIndex = 23;
+            // 
+            // View_HiddenTodoItems
+            // 
+            this.View_HiddenTodoItems.AutoSize = true;
+            this.View_HiddenTodoItems.Location = new System.Drawing.Point(14, 4);
+            this.View_HiddenTodoItems.Name = "View_HiddenTodoItems";
+            this.View_HiddenTodoItems.Size = new System.Drawing.Size(171, 17);
+            this.View_HiddenTodoItems.TabIndex = 14;
+            this.View_HiddenTodoItems.Text = "Show hidden Todo items since";
+            this.View_HiddenTodoItems.UseVisualStyleBackColor = true;
+            this.View_HiddenTodoItems.CheckedChanged += new System.EventHandler(this.View_HiddenTodoItems_CheckedChanged);
+            // 
+            // View_HiddenTodoItemsSince
+            // 
+            this.View_HiddenTodoItemsSince.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.View_HiddenTodoItemsSince.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.View_HiddenTodoItemsSince.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.View_HiddenTodoItemsSince.Enabled = false;
+            this.View_HiddenTodoItemsSince.FormattingEnabled = true;
+            this.View_HiddenTodoItemsSince.Location = new System.Drawing.Point(205, 2);
+            this.View_HiddenTodoItemsSince.Name = "View_HiddenTodoItemsSince";
+            this.View_HiddenTodoItemsSince.Size = new System.Drawing.Size(121, 21);
+            this.View_HiddenTodoItemsSince.TabIndex = 18;
+            // 
+            // HiddenGroup_EventPanel
+            // 
+            this.HiddenGroup_EventPanel.Controls.Add(this.View_HiddenEvents);
+            this.HiddenGroup_EventPanel.Controls.Add(this.View_HiddenEventsSince);
+            this.HiddenGroup_EventPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.HiddenGroup_EventPanel.Location = new System.Drawing.Point(3, 151);
+            this.HiddenGroup_EventPanel.Name = "HiddenGroup_EventPanel";
+            this.HiddenGroup_EventPanel.Size = new System.Drawing.Size(339, 27);
+            this.HiddenGroup_EventPanel.TabIndex = 24;
+            // 
+            // View_HiddenEvents
+            // 
+            this.View_HiddenEvents.AutoSize = true;
+            this.View_HiddenEvents.Location = new System.Drawing.Point(14, 4);
+            this.View_HiddenEvents.Name = "View_HiddenEvents";
+            this.View_HiddenEvents.Size = new System.Drawing.Size(152, 17);
+            this.View_HiddenEvents.TabIndex = 14;
+            this.View_HiddenEvents.Text = "Show hidden Events since";
+            this.View_HiddenEvents.UseVisualStyleBackColor = true;
+            this.View_HiddenEvents.CheckedChanged += new System.EventHandler(this.View_HiddenEvents_CheckedChanged);
+            // 
+            // View_HiddenEventsSince
+            // 
+            this.View_HiddenEventsSince.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.View_HiddenEventsSince.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.View_HiddenEventsSince.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.View_HiddenEventsSince.Enabled = false;
+            this.View_HiddenEventsSince.FormattingEnabled = true;
+            this.View_HiddenEventsSince.Location = new System.Drawing.Point(205, 2);
+            this.View_HiddenEventsSince.Name = "View_HiddenEventsSince";
+            this.View_HiddenEventsSince.Size = new System.Drawing.Size(121, 21);
+            this.View_HiddenEventsSince.TabIndex = 18;
+            // 
             // Options
             // 
             this.AcceptButton = this.AcceptDialogButton;
@@ -2177,6 +2389,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
+            this.StatusBarGroup_LocationElapsedPanel.ResumeLayout(false);
+            this.StatusBarGroup_LocationElapsedPanel.PerformLayout();
+            this.StatusBarGroup_CategoryElapsedPanel.ResumeLayout(false);
+            this.StatusBarGroup_CategoryElapsedPanel.PerformLayout();
+            this.StatusBarGroup_LocationNamePanel.ResumeLayout(false);
+            this.StatusBarGroup_LocationNamePanel.PerformLayout();
+            this.StatusBarGroup_CategoryNamePanel.ResumeLayout(false);
+            this.StatusBarGroup_CategoryNamePanel.PerformLayout();
+            this.HiddenGroup_TodoPanel.ResumeLayout(false);
+            this.HiddenGroup_TodoPanel.PerformLayout();
+            this.HiddenGroup_EventPanel.ResumeLayout(false);
+            this.HiddenGroup_EventPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2228,7 +2452,6 @@
         private System.Windows.Forms.GroupBox TitleBarGroup;
         private System.Windows.Forms.TextBox Behavior_TitleBar_Template;
         private System.Windows.Forms.Label TitleBarTemplateLabel;
-        private System.Windows.Forms.RichTextBox Report_StyleSheet;
         private System.Windows.Forms.Label LabelStyleSheet;
         private System.Windows.Forms.Label PointSizeLabel;
         private System.Windows.Forms.NumericUpDown Report_FontSize;
@@ -2344,6 +2567,23 @@
         private System.Windows.Forms.Panel AnnoyGroup_CategoryFollowPanel;
         private System.Windows.Forms.Panel AnnoyGroup_LocationFollowPanel;
         private System.Windows.Forms.Panel AnnoyGroup_ActivityFollowPanel;
+        private System.Windows.Forms.TextBox Report_StyleSheet;
+        private System.Windows.Forms.Panel StatusBarGroup_CategoryElapsedPanel;
+        private System.Windows.Forms.CheckBox View_StatusBar_ElapsedCategoryToday;
+        private System.Windows.Forms.Panel StatusBarGroup_LocationElapsedPanel;
+        private System.Windows.Forms.CheckBox View_StatusBar_ElapsedLocationToday;
+        private System.Windows.Forms.Panel StatusBarGroup_CategoryNamePanel;
+        private System.Windows.Forms.CheckBox View_StatusBar_CategoryName;
+        private System.Windows.Forms.Panel StatusBarGroup_LocationNamePanel;
+        private System.Windows.Forms.CheckBox View_StatusBar_LocationName;
+        private System.Windows.Forms.ComboBox Advanced_Other_MidnightOffset;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Panel HiddenGroup_EventPanel;
+        private System.Windows.Forms.CheckBox View_HiddenEvents;
+        private System.Windows.Forms.ComboBox View_HiddenEventsSince;
+        private System.Windows.Forms.Panel HiddenGroup_TodoPanel;
+        private System.Windows.Forms.CheckBox View_HiddenTodoItems;
+        private System.Windows.Forms.ComboBox View_HiddenTodoItemsSince;
 
     }
 }

@@ -55,6 +55,8 @@ namespace Timekeeper.Forms
         private long ElapsedSinceStart;
         private long ElapsedProjectToday;
         private long ElapsedActivityToday;
+        private long ElapsedLocationToday;
+        private long ElapsedCategoryToday;
         private long ElapsedAllToday;
 
         // Open form tracking

@@ -29,10 +29,7 @@ CREATE TABLE Activity
     HiddenTime          DATETIME        NULL,
     DeletedTime         DATETIME        NULL,
 
-    LastLocationId      INTEGER         NULL,
-
     FOREIGN KEY(ParentId)           REFERENCES Activity(ActivityId)
-    FOREIGN KEY(LastLocationId)     REFERENCES Location(LocationId)
 );
 
 CREATE UNIQUE INDEX idx_Activity_ActivityId ON Activity(ActivityId);

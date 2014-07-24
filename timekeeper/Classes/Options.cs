@@ -42,9 +42,13 @@ namespace Timekeeper.Classes
 
         public bool View_StatusBar_ProjectName { get; set; }
         public bool View_StatusBar_ActivityName { get; set; }
+        public bool View_StatusBar_LocationName { get; set; }
+        public bool View_StatusBar_CategoryName { get; set; }
         public bool View_StatusBar_ElapsedSinceStart { get; set; }
         public bool View_StatusBar_ElapsedProjectToday { get; set; }
         public bool View_StatusBar_ElapsedActivityToday { get; set; }
+        public bool View_StatusBar_ElapsedLocationToday { get; set; }
+        public bool View_StatusBar_ElapsedCategoryToday { get; set; }
         public bool View_StatusBar_ElapsedAllToday { get; set; }
         public bool View_StatusBar_FileName { get; set; }
 
@@ -52,10 +56,14 @@ namespace Timekeeper.Classes
         public bool View_HiddenActivities { get; set; }
         public bool View_HiddenLocations { get; set; }
         public bool View_HiddenCategories { get; set; }
+        public bool View_HiddenTodoItems { get; set; }
+        public bool View_HiddenEvents { get; set; }
         public int View_HiddenProjectsSince { get; set; }
         public int View_HiddenActivitiesSince { get; set; }
         public int View_HiddenLocationsSince { get; set; }
         public int View_HiddenCategoriesSince { get; set; }
+        public int View_HiddenTodoItemsSince { get; set; }
+        public int View_HiddenEventsSince { get; set; }
         public bool View_MemoEditor_ShowToolbar { get; set; }
         public bool View_MemoEditor_ShowGutter { get; set; }
         public int View_MemoEditor_RightMargin { get; set; }
@@ -105,6 +113,7 @@ namespace Timekeeper.Classes
         public bool Advanced_Other_DisableScheduler { get; set; }
         public bool Advanced_Other_EnableStackTracing { get; set; }
         public int Advanced_Other_DimensionWidth { get; set; }
+        public int Advanced_Other_MidnightOffset { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Metrics)
@@ -304,9 +313,13 @@ namespace Timekeeper.Classes
 
             View_StatusBar_ProjectName = ((int)Key.GetValue("StatusBar_ProjectName", 0) == 1);
             View_StatusBar_ActivityName = ((int)Key.GetValue("StatusBar_ActivityName", 0) == 1);
+            View_StatusBar_LocationName = ((int)Key.GetValue("StatusBar_LocationName", 0) == 1);
+            View_StatusBar_CategoryName = ((int)Key.GetValue("StatusBar_CategoryName", 0) == 1);
             View_StatusBar_ElapsedSinceStart = ((int)Key.GetValue("StatusBar_ElapsedSinceStart", 0) == 1);
             View_StatusBar_ElapsedProjectToday = ((int)Key.GetValue("StatusBar_ElapsedProjectToday", 0) == 1);
             View_StatusBar_ElapsedActivityToday = ((int)Key.GetValue("StatusBar_ElapsedActivityToday", 0) == 1);
+            View_StatusBar_ElapsedLocationToday = ((int)Key.GetValue("StatusBar_ElapsedLocationToday", 0) == 1);
+            View_StatusBar_ElapsedCategoryToday = ((int)Key.GetValue("StatusBar_ElapsedCategoryToday", 0) == 1);
             View_StatusBar_ElapsedAllToday = ((int)Key.GetValue("StatusBar_ElapsedAllToday", 0) == 1);
             View_StatusBar_FileName = ((int)Key.GetValue("StatusBar_FileName", 1) == 1);
 
@@ -314,11 +327,15 @@ namespace Timekeeper.Classes
             View_HiddenActivities = ((int)Key.GetValue("HiddenActivities", 0) == 1);
             View_HiddenLocations = ((int)Key.GetValue("HiddenLocations", 0) == 1);
             View_HiddenCategories = ((int)Key.GetValue("HiddenCategories", 0) == 1);
+            View_HiddenTodoItems = ((int)Key.GetValue("HiddenTodoItems", 0) == 1);
+            View_HiddenEvents = ((int)Key.GetValue("HiddenEvents", 0) == 1);
 
             View_HiddenProjectsSince = (int)Key.GetValue("HiddenProjectsSince", 4);
             View_HiddenActivitiesSince = (int)Key.GetValue("HiddenActivitiesSince", 4);
             View_HiddenLocationsSince = (int)Key.GetValue("HiddenLocationsSince", 4);
             View_HiddenCategoriesSince = (int)Key.GetValue("HiddenCategoriesSince", 4);
+            View_HiddenTodoItemsSince = (int)Key.GetValue("HiddenTodoItemsSince", 4);
+            View_HiddenEventsSince = (int)Key.GetValue("HiddenEventsSince", 4);
 
             View_MemoEditor_ShowToolbar = ((int)Key.GetValue("MemoEditor_ShowToolbar", 0) == 1);
             View_MemoEditor_ShowGutter = ((int)Key.GetValue("MemoEditor_ShowGutter", 1) == 1);
@@ -395,6 +412,7 @@ namespace Timekeeper.Classes
             Advanced_Other_DisableScheduler = ((int)Key.GetValue("Other_DisableScheduler", 0)) == 1;
             Advanced_Other_EnableStackTracing = ((int)Key.GetValue("Other_EnableStackTracing", 0)) == 1;
             Advanced_Other_DimensionWidth = (int)Key.GetValue("Other_DimensionWidth", 250);
+            Advanced_Other_MidnightOffset = (int)Key.GetValue("Other_MidnightOffset", 0);
 
             //----------------------------------------------------------------------
 
@@ -633,9 +651,13 @@ namespace Timekeeper.Classes
 
             Key.SetValue("StatusBar_ProjectName", View_StatusBar_ProjectName, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("StatusBar_ActivityName", View_StatusBar_ActivityName, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("StatusBar_LocationName", View_StatusBar_LocationName, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("StatusBar_CategoryName", View_StatusBar_CategoryName, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("StatusBar_ElapsedSinceStart", View_StatusBar_ElapsedSinceStart, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("StatusBar_ElapsedProjectToday", View_StatusBar_ElapsedProjectToday, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("StatusBar_ElapsedActivityToday", View_StatusBar_ElapsedActivityToday, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("StatusBar_ElapsedLocationToday", View_StatusBar_ElapsedLocationToday, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("StatusBar_ElapsedCategoryToday", View_StatusBar_ElapsedCategoryToday, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("StatusBar_ElapsedAllToday", View_StatusBar_ElapsedAllToday, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("StatusBar_FileName", View_StatusBar_FileName, Microsoft.Win32.RegistryValueKind.DWord);
 
@@ -643,11 +665,15 @@ namespace Timekeeper.Classes
             Key.SetValue("HiddenActivities", View_HiddenActivities, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("HiddenLocations", View_HiddenLocations, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("HiddenCategories", View_HiddenCategories, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("HiddenTodoItems", View_HiddenTodoItems, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("HiddenEvents", View_HiddenEvents, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.SetValue("HiddenProjectsSince", View_HiddenProjectsSince, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("HiddenActivitiesSince", View_HiddenActivitiesSince, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("HiddenLocationsSince", View_HiddenLocationsSince, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("HiddenCategoriesSince", View_HiddenCategoriesSince, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("HiddenTodoItemsSince", View_HiddenTodoItemsSince, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("HiddenEventsSince", View_HiddenEventsSince, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.SetValue("MemoEditor_ShowToolbar", View_MemoEditor_ShowToolbar, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("MemoEditor_ShowGutter", View_MemoEditor_ShowGutter, Microsoft.Win32.RegistryValueKind.DWord);
@@ -712,6 +738,7 @@ namespace Timekeeper.Classes
             Key.SetValue("Other_DisableScheduler", Advanced_Other_DisableScheduler, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_EnableStackTracing", Advanced_Other_EnableStackTracing, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_DimensionWidth", Advanced_Other_DimensionWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Other_MidnightOffset", unchecked((int)Advanced_Other_MidnightOffset), Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 
