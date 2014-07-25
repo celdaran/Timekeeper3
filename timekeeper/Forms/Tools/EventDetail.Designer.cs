@@ -150,7 +150,7 @@
             this.SchedulerButton.UseVisualStyleBackColor = true;
             this.SchedulerButton.Click += new System.EventHandler(this.SchedulerButton_Click);
             // 
-            // Reminder
+            // EventDetail
             // 
             this.AcceptButton = this.AcceptDialogButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -170,10 +170,9 @@
             this.Controls.Add(this.EventDescription);
             this.Controls.Add(this.EventNextOccurrence);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Reminder";
+            this.Name = "EventDetail";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

@@ -30,19 +30,19 @@
         {
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnCalcDifference = new System.Windows.Forms.Button();
+            this.wResultDiff2 = new System.Windows.Forms.TextBox();
+            this.wResultDiff1 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.wEndDate = new System.Windows.Forms.DateTimePicker();
+            this.label2 = new System.Windows.Forms.Label();
+            this.wStartDate = new System.Windows.Forms.DateTimePicker();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.btnClose = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.wStartDate = new System.Windows.Forms.DateTimePicker();
-            this.wEndDate = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.wResultDiff1 = new System.Windows.Forms.TextBox();
-            this.wResultDiff2 = new System.Windows.Forms.TextBox();
-            this.btnCalcDifference = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -77,6 +77,83 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Date Difference";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(211, 55);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "label4";
+            // 
+            // btnCalcDifference
+            // 
+            this.btnCalcDifference.Location = new System.Drawing.Point(117, 79);
+            this.btnCalcDifference.Name = "btnCalcDifference";
+            this.btnCalcDifference.Size = new System.Drawing.Size(75, 23);
+            this.btnCalcDifference.TabIndex = 7;
+            this.btnCalcDifference.Text = "Calculate";
+            this.btnCalcDifference.UseVisualStyleBackColor = true;
+            // 
+            // wResultDiff2
+            // 
+            this.wResultDiff2.Location = new System.Drawing.Point(262, 52);
+            this.wResultDiff2.Name = "wResultDiff2";
+            this.wResultDiff2.ReadOnly = true;
+            this.wResultDiff2.Size = new System.Drawing.Size(175, 20);
+            this.wResultDiff2.TabIndex = 6;
+            // 
+            // wResultDiff1
+            // 
+            this.wResultDiff1.Location = new System.Drawing.Point(262, 20);
+            this.wResultDiff1.Name = "wResultDiff1";
+            this.wResultDiff1.ReadOnly = true;
+            this.wResultDiff1.Size = new System.Drawing.Size(175, 20);
+            this.wResultDiff1.TabIndex = 5;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(211, 23);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "label3";
+            // 
+            // wEndDate
+            // 
+            this.wEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.wEndDate.Location = new System.Drawing.Point(95, 49);
+            this.wEndDate.Name = "wEndDate";
+            this.wEndDate.Size = new System.Drawing.Size(97, 20);
+            this.wEndDate.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(21, 55);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Second date:";
+            // 
+            // wStartDate
+            // 
+            this.wStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.wStartDate.Location = new System.Drawing.Point(95, 17);
+            this.wStartDate.Name = "wStartDate";
+            this.wStartDate.Size = new System.Drawing.Size(97, 20);
+            this.wStartDate.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(21, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "First date:";
             // 
             // tabPage2
             // 
@@ -115,84 +192,7 @@
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "First date:";
-            // 
-            // wStartDate
-            // 
-            this.wStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.wStartDate.Location = new System.Drawing.Point(95, 17);
-            this.wStartDate.Name = "wStartDate";
-            this.wStartDate.Size = new System.Drawing.Size(97, 20);
-            this.wStartDate.TabIndex = 1;
-            // 
-            // wEndDate
-            // 
-            this.wEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.wEndDate.Location = new System.Drawing.Point(95, 49);
-            this.wEndDate.Name = "wEndDate";
-            this.wEndDate.Size = new System.Drawing.Size(97, 20);
-            this.wEndDate.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(21, 55);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Second date:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(211, 23);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "label3";
-            // 
-            // wResultDiff1
-            // 
-            this.wResultDiff1.Location = new System.Drawing.Point(262, 20);
-            this.wResultDiff1.Name = "wResultDiff1";
-            this.wResultDiff1.ReadOnly = true;
-            this.wResultDiff1.Size = new System.Drawing.Size(175, 20);
-            this.wResultDiff1.TabIndex = 5;
-            // 
-            // wResultDiff2
-            // 
-            this.wResultDiff2.Location = new System.Drawing.Point(262, 52);
-            this.wResultDiff2.Name = "wResultDiff2";
-            this.wResultDiff2.ReadOnly = true;
-            this.wResultDiff2.Size = new System.Drawing.Size(175, 20);
-            this.wResultDiff2.TabIndex = 6;
-            // 
-            // btnCalcDifference
-            // 
-            this.btnCalcDifference.Location = new System.Drawing.Point(117, 79);
-            this.btnCalcDifference.Name = "btnCalcDifference";
-            this.btnCalcDifference.Size = new System.Drawing.Size(75, 23);
-            this.btnCalcDifference.TabIndex = 7;
-            this.btnCalcDifference.Text = "Calculate";
-            this.btnCalcDifference.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(211, 55);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "label4";
-            // 
-            // fToolDatecalc
+            // DateCalculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -200,10 +200,9 @@
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "fToolDatecalc";
+            this.Name = "DateCalculator";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

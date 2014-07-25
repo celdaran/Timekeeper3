@@ -35,12 +35,6 @@ namespace Timekeeper.Forms.Shared
             this.PresetLabel = new System.Windows.Forms.Label();
             this.ToDate = new System.Windows.Forms.DateTimePicker();
             this.FromDate = new System.Windows.Forms.DateTimePicker();
-            this.LocationFilter = new System.Windows.Forms.CheckedListBox();
-            this.CheckedListBoxMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.CheckedListBoxMenuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.CheckedListBoxMenuSelectNone = new System.Windows.Forms.ToolStripMenuItem();
-            this.CheckedListBoxMenuInvertSelection = new System.Windows.Forms.ToolStripMenuItem();
-            this.CheckedListBoxMenuShowHidden = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseButton = new System.Windows.Forms.Button();
             this.OkayButton = new System.Windows.Forms.Button();
             this.ActivityTree = new System.Windows.Forms.TreeView();
@@ -49,7 +43,7 @@ namespace Timekeeper.Forms.Shared
             this.TreeViewMenuSelectNone = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeViewMenuInvertSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeViewMenuShowHiddenItems = new System.Windows.Forms.ToolStripMenuItem();
-            this.imgSmall = new System.Windows.Forms.ImageList(this.components);
+            this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.ProjectTree = new System.Windows.Forms.TreeView();
             this.FilterOptionsTabControl = new System.Windows.Forms.TabControl();
             this.CommonTab = new System.Windows.Forms.TabPage();
@@ -65,8 +59,9 @@ namespace Timekeeper.Forms.Shared
             this.ProjectTab = new System.Windows.Forms.TabPage();
             this.ActivityTab = new System.Windows.Forms.TabPage();
             this.LocationTab = new System.Windows.Forms.TabPage();
+            this.LocationTree = new System.Windows.Forms.TreeView();
             this.CategoryTab = new System.Windows.Forms.TabPage();
-            this.CategoryFilter = new System.Windows.Forms.CheckedListBox();
+            this.CategoryTree = new System.Windows.Forms.TreeView();
             this.AdvancedTab = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.IsLocked = new System.Windows.Forms.CheckBox();
@@ -79,7 +74,6 @@ namespace Timekeeper.Forms.Shared
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.ClearButton = new System.Windows.Forms.Button();
             this.ButtonPanel = new System.Windows.Forms.Panel();
-            this.CheckedListBoxMenu.SuspendLayout();
             this.TreeViewMenu.SuspendLayout();
             this.FilterOptionsTabControl.SuspendLayout();
             this.CommonTab.SuspendLayout();
@@ -156,53 +150,6 @@ namespace Timekeeper.Forms.Shared
             this.FromDate.Enter += new System.EventHandler(this.FromDate_Enter);
             this.FromDate.Leave += new System.EventHandler(this.FromDate_Leave);
             // 
-            // LocationFilter
-            // 
-            this.LocationFilter.ContextMenuStrip = this.CheckedListBoxMenu;
-            this.LocationFilter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LocationFilter.FormattingEnabled = true;
-            this.LocationFilter.Location = new System.Drawing.Point(3, 3);
-            this.LocationFilter.Name = "LocationFilter";
-            this.LocationFilter.Size = new System.Drawing.Size(387, 221);
-            this.LocationFilter.TabIndex = 5;
-            // 
-            // CheckedListBoxMenu
-            // 
-            this.CheckedListBoxMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CheckedListBoxMenuSelectAll,
-            this.CheckedListBoxMenuSelectNone,
-            this.CheckedListBoxMenuInvertSelection,
-            this.CheckedListBoxMenuShowHidden});
-            this.CheckedListBoxMenu.Name = "CheckedListBoxMenu";
-            this.CheckedListBoxMenu.Size = new System.Drawing.Size(151, 92);
-            // 
-            // CheckedListBoxMenuSelectAll
-            // 
-            this.CheckedListBoxMenuSelectAll.Name = "CheckedListBoxMenuSelectAll";
-            this.CheckedListBoxMenuSelectAll.Size = new System.Drawing.Size(150, 22);
-            this.CheckedListBoxMenuSelectAll.Text = "Select All";
-            this.CheckedListBoxMenuSelectAll.Click += new System.EventHandler(this.CheckedListBoxMenuSelectAll_Click);
-            // 
-            // CheckedListBoxMenuSelectNone
-            // 
-            this.CheckedListBoxMenuSelectNone.Name = "CheckedListBoxMenuSelectNone";
-            this.CheckedListBoxMenuSelectNone.Size = new System.Drawing.Size(150, 22);
-            this.CheckedListBoxMenuSelectNone.Text = "Select None";
-            this.CheckedListBoxMenuSelectNone.Click += new System.EventHandler(this.CheckedListBoxMenuSelectNone_Click);
-            // 
-            // CheckedListBoxMenuInvertSelection
-            // 
-            this.CheckedListBoxMenuInvertSelection.Name = "CheckedListBoxMenuInvertSelection";
-            this.CheckedListBoxMenuInvertSelection.Size = new System.Drawing.Size(150, 22);
-            this.CheckedListBoxMenuInvertSelection.Text = "Invert Selection";
-            this.CheckedListBoxMenuInvertSelection.Click += new System.EventHandler(this.CheckedListBoxMenuInvertSelection_Click);
-            // 
-            // CheckedListBoxMenuShowHidden
-            // 
-            this.CheckedListBoxMenuShowHidden.Name = "CheckedListBoxMenuShowHidden";
-            this.CheckedListBoxMenuShowHidden.Size = new System.Drawing.Size(150, 22);
-            this.CheckedListBoxMenuShowHidden.Text = "Show Hidden";
-            // 
             // CloseButton
             // 
             this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -230,7 +177,7 @@ namespace Timekeeper.Forms.Shared
             this.ActivityTree.ContextMenuStrip = this.TreeViewMenu;
             this.ActivityTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ActivityTree.ImageIndex = 0;
-            this.ActivityTree.ImageList = this.imgSmall;
+            this.ActivityTree.ImageList = this.TreeImageList;
             this.ActivityTree.Location = new System.Drawing.Point(3, 3);
             this.ActivityTree.Name = "ActivityTree";
             this.ActivityTree.SelectedImageIndex = 0;
@@ -274,19 +221,17 @@ namespace Timekeeper.Forms.Shared
             this.TreeViewMenuShowHiddenItems.Size = new System.Drawing.Size(166, 22);
             this.TreeViewMenuShowHiddenItems.Text = "Show Hidden Items";
             // 
-            // imgSmall
+            // TreeImageList
             // 
-            this.imgSmall.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgSmall.ImageStream")));
-            this.imgSmall.TransparentColor = System.Drawing.Color.Magenta;
-            this.imgSmall.Images.SetKeyName(0, "OpenFolder");
-            this.imgSmall.Images.SetKeyName(1, "ClosedFolder");
-            this.imgSmall.Images.SetKeyName(2, "Project");
-            this.imgSmall.Images.SetKeyName(3, "Activity");
-            this.imgSmall.Images.SetKeyName(4, "task-clock1.bmp");
-            this.imgSmall.Images.SetKeyName(5, "task-clock2.bmp");
-            this.imgSmall.Images.SetKeyName(6, "task-clock3.bmp");
-            this.imgSmall.Images.SetKeyName(7, "task-clock4.bmp");
-            this.imgSmall.Images.SetKeyName(8, "HiddenItem");
+            this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
+            this.TreeImageList.TransparentColor = System.Drawing.Color.White;
+            this.TreeImageList.Images.SetKeyName(0, "Folder");
+            this.TreeImageList.Images.SetKeyName(1, "Project");
+            this.TreeImageList.Images.SetKeyName(2, "Activity");
+            this.TreeImageList.Images.SetKeyName(3, "Location");
+            this.TreeImageList.Images.SetKeyName(4, "Category");
+            this.TreeImageList.Images.SetKeyName(5, "HiddenItem");
+            this.TreeImageList.Images.SetKeyName(6, "HiddenFolder");
             // 
             // ProjectTree
             // 
@@ -294,7 +239,7 @@ namespace Timekeeper.Forms.Shared
             this.ProjectTree.ContextMenuStrip = this.TreeViewMenu;
             this.ProjectTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ProjectTree.ImageIndex = 0;
-            this.ProjectTree.ImageList = this.imgSmall;
+            this.ProjectTree.ImageList = this.TreeImageList;
             this.ProjectTree.Location = new System.Drawing.Point(3, 3);
             this.ProjectTree.Name = "ProjectTree";
             this.ProjectTree.SelectedImageIndex = 0;
@@ -467,7 +412,7 @@ namespace Timekeeper.Forms.Shared
             // 
             // LocationTab
             // 
-            this.LocationTab.Controls.Add(this.LocationFilter);
+            this.LocationTab.Controls.Add(this.LocationTree);
             this.LocationTab.Location = new System.Drawing.Point(4, 22);
             this.LocationTab.Name = "LocationTab";
             this.LocationTab.Padding = new System.Windows.Forms.Padding(3);
@@ -476,9 +421,22 @@ namespace Timekeeper.Forms.Shared
             this.LocationTab.Text = "Locations";
             this.LocationTab.UseVisualStyleBackColor = true;
             // 
+            // LocationTree
+            // 
+            this.LocationTree.CheckBoxes = true;
+            this.LocationTree.ContextMenuStrip = this.TreeViewMenu;
+            this.LocationTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LocationTree.ImageIndex = 0;
+            this.LocationTree.ImageList = this.TreeImageList;
+            this.LocationTree.Location = new System.Drawing.Point(3, 3);
+            this.LocationTree.Name = "LocationTree";
+            this.LocationTree.SelectedImageIndex = 0;
+            this.LocationTree.Size = new System.Drawing.Size(387, 221);
+            this.LocationTree.TabIndex = 1;
+            // 
             // CategoryTab
             // 
-            this.CategoryTab.Controls.Add(this.CategoryFilter);
+            this.CategoryTab.Controls.Add(this.CategoryTree);
             this.CategoryTab.Location = new System.Drawing.Point(4, 22);
             this.CategoryTab.Name = "CategoryTab";
             this.CategoryTab.Padding = new System.Windows.Forms.Padding(3);
@@ -487,15 +445,18 @@ namespace Timekeeper.Forms.Shared
             this.CategoryTab.Text = "Categories";
             this.CategoryTab.UseVisualStyleBackColor = true;
             // 
-            // CategoryFilter
+            // CategoryTree
             // 
-            this.CategoryFilter.ContextMenuStrip = this.CheckedListBoxMenu;
-            this.CategoryFilter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CategoryFilter.FormattingEnabled = true;
-            this.CategoryFilter.Location = new System.Drawing.Point(3, 3);
-            this.CategoryFilter.Name = "CategoryFilter";
-            this.CategoryFilter.Size = new System.Drawing.Size(387, 221);
-            this.CategoryFilter.TabIndex = 7;
+            this.CategoryTree.CheckBoxes = true;
+            this.CategoryTree.ContextMenuStrip = this.TreeViewMenu;
+            this.CategoryTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CategoryTree.ImageIndex = 0;
+            this.CategoryTree.ImageList = this.TreeImageList;
+            this.CategoryTree.Location = new System.Drawing.Point(3, 3);
+            this.CategoryTree.Name = "CategoryTree";
+            this.CategoryTree.SelectedImageIndex = 0;
+            this.CategoryTree.Size = new System.Drawing.Size(387, 221);
+            this.CategoryTree.TabIndex = 1;
             // 
             // AdvancedTab
             // 
@@ -639,7 +600,6 @@ namespace Timekeeper.Forms.Shared
             this.Text = "Filtering";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Filtering_FormClosing);
             this.Load += new System.EventHandler(this.Filtering_Load);
-            this.CheckedListBoxMenu.ResumeLayout(false);
             this.TreeViewMenu.ResumeLayout(false);
             this.FilterOptionsTabControl.ResumeLayout(false);
             this.CommonTab.ResumeLayout(false);
@@ -665,22 +625,15 @@ namespace Timekeeper.Forms.Shared
 
         #endregion
 
-        private System.Windows.Forms.CheckedListBox LocationFilter;
         private System.Windows.Forms.Button OkayButton;
         private System.Windows.Forms.Button CloseButton;
         private System.Windows.Forms.TreeView ActivityTree;
         private System.Windows.Forms.TreeView ProjectTree;
-        private System.Windows.Forms.ImageList imgSmall;
         private System.Windows.Forms.ContextMenuStrip TreeViewMenu;
         private System.Windows.Forms.ToolStripMenuItem TreeViewMenuSelectAll;
         private System.Windows.Forms.ToolStripMenuItem TreeViewMenuSelectNone;
         private System.Windows.Forms.ToolStripMenuItem TreeViewMenuInvertSelection;
         private System.Windows.Forms.ToolStripMenuItem TreeViewMenuShowHiddenItems;
-        private System.Windows.Forms.ContextMenuStrip CheckedListBoxMenu;
-        private System.Windows.Forms.ToolStripMenuItem CheckedListBoxMenuSelectAll;
-        private System.Windows.Forms.ToolStripMenuItem CheckedListBoxMenuSelectNone;
-        private System.Windows.Forms.ToolStripMenuItem CheckedListBoxMenuInvertSelection;
-        private System.Windows.Forms.ToolStripMenuItem CheckedListBoxMenuShowHidden;
         private System.Windows.Forms.Label ToDateLabel;
         public System.Windows.Forms.ComboBox Presets;
         private System.Windows.Forms.Label FromDateLabel;
@@ -700,7 +653,6 @@ namespace Timekeeper.Forms.Shared
         private System.Windows.Forms.Panel BottomPanel;
         private System.Windows.Forms.Panel ButtonPanel;
         private System.Windows.Forms.TabPage CategoryTab;
-        private System.Windows.Forms.CheckedListBox CategoryFilter;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.ComboBox ModifyTimePresets;
@@ -715,5 +667,8 @@ namespace Timekeeper.Forms.Shared
         private System.Windows.Forms.NumericUpDown DurationAmount;
         private System.Windows.Forms.ComboBox DurationOperator;
         private System.Windows.Forms.ComboBox MemoOperator;
+        public System.Windows.Forms.ImageList TreeImageList;
+        private System.Windows.Forms.TreeView LocationTree;
+        private System.Windows.Forms.TreeView CategoryTree;
     }
 }

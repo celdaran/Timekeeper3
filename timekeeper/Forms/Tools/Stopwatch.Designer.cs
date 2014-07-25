@@ -29,15 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Stopwatch));
             this.wDisplay = new System.Windows.Forms.TextBox();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnSplit = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.wSplits = new System.Windows.Forms.DataGridView();
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.btnReset = new System.Windows.Forms.Button();
             this.split = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clock = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.btnReset = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.wSplits)).BeginInit();
             this.SuspendLayout();
             // 
@@ -101,22 +102,6 @@
             this.wSplits.Size = new System.Drawing.Size(243, 126);
             this.wSplits.TabIndex = 5;
             // 
-            // timer
-            // 
-            this.timer.Interval = 10;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // btnReset
-            // 
-            this.btnReset.Enabled = false;
-            this.btnReset.Location = new System.Drawing.Point(264, 131);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(75, 23);
-            this.btnReset.TabIndex = 3;
-            this.btnReset.Text = "&Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            // 
             // split
             // 
             this.split.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -135,7 +120,23 @@
             this.clock.ReadOnly = true;
             this.clock.Width = 120;
             // 
-            // fToolStopwatch
+            // timer
+            // 
+            this.timer.Interval = 10;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // btnReset
+            // 
+            this.btnReset.Enabled = false;
+            this.btnReset.Location = new System.Drawing.Point(264, 131);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(75, 23);
+            this.btnReset.TabIndex = 3;
+            this.btnReset.Text = "&Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // Stopwatch
             // 
             this.AcceptButton = this.btnStart;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -149,10 +150,10 @@
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.wDisplay);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "fToolStopwatch";
+            this.Name = "Stopwatch";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

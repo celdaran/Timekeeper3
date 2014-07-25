@@ -33,6 +33,12 @@ namespace Timekeeper.Forms
             this.label3 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.wGroupProperties = new System.Windows.Forms.GroupBox();
+            this.wGUID = new System.Windows.Forms.TextBox();
+            this.wID = new System.Windows.Forms.TextBox();
+            this.wType = new System.Windows.Forms.TextBox();
+            this.wDescription = new System.Windows.Forms.TextBox();
+            this.wName = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.NameLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.CancelDialog = new System.Windows.Forms.Button();
@@ -40,24 +46,18 @@ namespace Timekeeper.Forms
             this.wIsHidden = new System.Windows.Forms.CheckBox();
             this.wIsDeleted = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.wLastItemLabel = new System.Windows.Forms.Label();
             this.wExternalProjectNoLabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.wName = new System.Windows.Forms.TextBox();
-            this.wDescription = new System.Windows.Forms.TextBox();
-            this.wType = new System.Windows.Forms.TextBox();
-            this.wID = new System.Windows.Forms.TextBox();
-            this.wGUID = new System.Windows.Forms.TextBox();
-            this.wCreated = new System.Windows.Forms.TextBox();
-            this.wModified = new System.Windows.Forms.TextBox();
-            this.wTotalTime = new System.Windows.Forms.TextBox();
             this.wTimeToday = new System.Windows.Forms.TextBox();
-            this.wHiddenTime = new System.Windows.Forms.TextBox();
-            this.wDeletedTime = new System.Windows.Forms.TextBox();
-            this.wLastItemName = new System.Windows.Forms.TextBox();
+            this.wTotalTime = new System.Windows.Forms.TextBox();
+            this.wModified = new System.Windows.Forms.TextBox();
+            this.wCreated = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.wExternalProjectNo = new System.Windows.Forms.TextBox();
+            this.wLastItemName = new System.Windows.Forms.TextBox();
+            this.wDeletedTime = new System.Windows.Forms.TextBox();
+            this.wHiddenTime = new System.Windows.Forms.TextBox();
             this.wGroupProperties.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -125,6 +125,70 @@ namespace Timekeeper.Forms
             this.wGroupProperties.Size = new System.Drawing.Size(330, 149);
             this.wGroupProperties.TabIndex = 12;
             this.wGroupProperties.TabStop = false;
+            // 
+            // wGUID
+            // 
+            this.wGUID.BackColor = System.Drawing.SystemColors.Control;
+            this.wGUID.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wGUID.Location = new System.Drawing.Point(97, 120);
+            this.wGUID.Name = "wGUID";
+            this.wGUID.ReadOnly = true;
+            this.wGUID.Size = new System.Drawing.Size(227, 13);
+            this.wGUID.TabIndex = 28;
+            this.wGUID.TabStop = false;
+            // 
+            // wID
+            // 
+            this.wID.BackColor = System.Drawing.SystemColors.Control;
+            this.wID.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wID.Location = new System.Drawing.Point(97, 94);
+            this.wID.Name = "wID";
+            this.wID.ReadOnly = true;
+            this.wID.Size = new System.Drawing.Size(227, 13);
+            this.wID.TabIndex = 27;
+            this.wID.TabStop = false;
+            // 
+            // wType
+            // 
+            this.wType.BackColor = System.Drawing.SystemColors.Control;
+            this.wType.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wType.Location = new System.Drawing.Point(97, 68);
+            this.wType.Name = "wType";
+            this.wType.ReadOnly = true;
+            this.wType.Size = new System.Drawing.Size(227, 13);
+            this.wType.TabIndex = 26;
+            this.wType.TabStop = false;
+            // 
+            // wDescription
+            // 
+            this.wDescription.BackColor = System.Drawing.SystemColors.Control;
+            this.wDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wDescription.Location = new System.Drawing.Point(97, 42);
+            this.wDescription.Name = "wDescription";
+            this.wDescription.ReadOnly = true;
+            this.wDescription.Size = new System.Drawing.Size(227, 13);
+            this.wDescription.TabIndex = 25;
+            this.wDescription.TabStop = false;
+            // 
+            // wName
+            // 
+            this.wName.BackColor = System.Drawing.SystemColors.Control;
+            this.wName.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wName.Location = new System.Drawing.Point(97, 16);
+            this.wName.Name = "wName";
+            this.wName.ReadOnly = true;
+            this.wName.Size = new System.Drawing.Size(227, 13);
+            this.wName.TabIndex = 24;
+            this.wName.TabStop = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 120);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(37, 13);
+            this.label9.TabIndex = 20;
+            this.label9.Text = "GUID:";
             // 
             // NameLabel
             // 
@@ -197,15 +261,6 @@ namespace Timekeeper.Forms
             this.label7.TabIndex = 19;
             this.label7.Text = "Modified:";
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(12, 120);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(37, 13);
-            this.label9.TabIndex = 20;
-            this.label9.Text = "GUID:";
-            // 
             // wLastItemLabel
             // 
             this.wLastItemLabel.AutoSize = true;
@@ -240,6 +295,50 @@ namespace Timekeeper.Forms
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             // 
+            // wTimeToday
+            // 
+            this.wTimeToday.BackColor = System.Drawing.SystemColors.Control;
+            this.wTimeToday.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wTimeToday.Location = new System.Drawing.Point(97, 94);
+            this.wTimeToday.Name = "wTimeToday";
+            this.wTimeToday.ReadOnly = true;
+            this.wTimeToday.Size = new System.Drawing.Size(227, 13);
+            this.wTimeToday.TabIndex = 31;
+            this.wTimeToday.TabStop = false;
+            // 
+            // wTotalTime
+            // 
+            this.wTotalTime.BackColor = System.Drawing.SystemColors.Control;
+            this.wTotalTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wTotalTime.Location = new System.Drawing.Point(97, 68);
+            this.wTotalTime.Name = "wTotalTime";
+            this.wTotalTime.ReadOnly = true;
+            this.wTotalTime.Size = new System.Drawing.Size(227, 13);
+            this.wTotalTime.TabIndex = 31;
+            this.wTotalTime.TabStop = false;
+            // 
+            // wModified
+            // 
+            this.wModified.BackColor = System.Drawing.SystemColors.Control;
+            this.wModified.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wModified.Location = new System.Drawing.Point(97, 42);
+            this.wModified.Name = "wModified";
+            this.wModified.ReadOnly = true;
+            this.wModified.Size = new System.Drawing.Size(227, 13);
+            this.wModified.TabIndex = 30;
+            this.wModified.TabStop = false;
+            // 
+            // wCreated
+            // 
+            this.wCreated.BackColor = System.Drawing.SystemColors.Control;
+            this.wCreated.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wCreated.Location = new System.Drawing.Point(97, 16);
+            this.wCreated.Name = "wCreated";
+            this.wCreated.ReadOnly = true;
+            this.wCreated.Size = new System.Drawing.Size(227, 13);
+            this.wCreated.TabIndex = 29;
+            this.wCreated.TabStop = false;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.wExternalProjectNo);
@@ -257,126 +356,16 @@ namespace Timekeeper.Forms
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             // 
-            // wName
+            // wExternalProjectNo
             // 
-            this.wName.BackColor = System.Drawing.SystemColors.Control;
-            this.wName.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wName.Location = new System.Drawing.Point(97, 16);
-            this.wName.Name = "wName";
-            this.wName.ReadOnly = true;
-            this.wName.Size = new System.Drawing.Size(227, 13);
-            this.wName.TabIndex = 24;
-            this.wName.TabStop = false;
-            // 
-            // wDescription
-            // 
-            this.wDescription.BackColor = System.Drawing.SystemColors.Control;
-            this.wDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wDescription.Location = new System.Drawing.Point(97, 42);
-            this.wDescription.Name = "wDescription";
-            this.wDescription.ReadOnly = true;
-            this.wDescription.Size = new System.Drawing.Size(227, 13);
-            this.wDescription.TabIndex = 25;
-            this.wDescription.TabStop = false;
-            // 
-            // wType
-            // 
-            this.wType.BackColor = System.Drawing.SystemColors.Control;
-            this.wType.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wType.Location = new System.Drawing.Point(97, 68);
-            this.wType.Name = "wType";
-            this.wType.ReadOnly = true;
-            this.wType.Size = new System.Drawing.Size(227, 13);
-            this.wType.TabIndex = 26;
-            this.wType.TabStop = false;
-            // 
-            // wID
-            // 
-            this.wID.BackColor = System.Drawing.SystemColors.Control;
-            this.wID.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wID.Location = new System.Drawing.Point(97, 94);
-            this.wID.Name = "wID";
-            this.wID.ReadOnly = true;
-            this.wID.Size = new System.Drawing.Size(227, 13);
-            this.wID.TabIndex = 27;
-            this.wID.TabStop = false;
-            // 
-            // wGUID
-            // 
-            this.wGUID.BackColor = System.Drawing.SystemColors.Control;
-            this.wGUID.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wGUID.Location = new System.Drawing.Point(97, 120);
-            this.wGUID.Name = "wGUID";
-            this.wGUID.ReadOnly = true;
-            this.wGUID.Size = new System.Drawing.Size(227, 13);
-            this.wGUID.TabIndex = 28;
-            this.wGUID.TabStop = false;
-            // 
-            // wCreated
-            // 
-            this.wCreated.BackColor = System.Drawing.SystemColors.Control;
-            this.wCreated.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wCreated.Location = new System.Drawing.Point(97, 16);
-            this.wCreated.Name = "wCreated";
-            this.wCreated.ReadOnly = true;
-            this.wCreated.Size = new System.Drawing.Size(227, 13);
-            this.wCreated.TabIndex = 29;
-            this.wCreated.TabStop = false;
-            // 
-            // wModified
-            // 
-            this.wModified.BackColor = System.Drawing.SystemColors.Control;
-            this.wModified.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wModified.Location = new System.Drawing.Point(97, 42);
-            this.wModified.Name = "wModified";
-            this.wModified.ReadOnly = true;
-            this.wModified.Size = new System.Drawing.Size(227, 13);
-            this.wModified.TabIndex = 30;
-            this.wModified.TabStop = false;
-            // 
-            // wTotalTime
-            // 
-            this.wTotalTime.BackColor = System.Drawing.SystemColors.Control;
-            this.wTotalTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wTotalTime.Location = new System.Drawing.Point(97, 68);
-            this.wTotalTime.Name = "wTotalTime";
-            this.wTotalTime.ReadOnly = true;
-            this.wTotalTime.Size = new System.Drawing.Size(227, 13);
-            this.wTotalTime.TabIndex = 31;
-            this.wTotalTime.TabStop = false;
-            // 
-            // wTimeToday
-            // 
-            this.wTimeToday.BackColor = System.Drawing.SystemColors.Control;
-            this.wTimeToday.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wTimeToday.Location = new System.Drawing.Point(97, 94);
-            this.wTimeToday.Name = "wTimeToday";
-            this.wTimeToday.ReadOnly = true;
-            this.wTimeToday.Size = new System.Drawing.Size(227, 13);
-            this.wTimeToday.TabIndex = 31;
-            this.wTimeToday.TabStop = false;
-            // 
-            // wHiddenTime
-            // 
-            this.wHiddenTime.BackColor = System.Drawing.SystemColors.Control;
-            this.wHiddenTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wHiddenTime.Location = new System.Drawing.Point(190, 16);
-            this.wHiddenTime.Name = "wHiddenTime";
-            this.wHiddenTime.ReadOnly = true;
-            this.wHiddenTime.Size = new System.Drawing.Size(123, 13);
-            this.wHiddenTime.TabIndex = 32;
-            this.wHiddenTime.TabStop = false;
-            // 
-            // wDeletedTime
-            // 
-            this.wDeletedTime.BackColor = System.Drawing.SystemColors.Control;
-            this.wDeletedTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wDeletedTime.Location = new System.Drawing.Point(190, 39);
-            this.wDeletedTime.Name = "wDeletedTime";
-            this.wDeletedTime.ReadOnly = true;
-            this.wDeletedTime.Size = new System.Drawing.Size(123, 13);
-            this.wDeletedTime.TabIndex = 33;
-            this.wDeletedTime.TabStop = false;
+            this.wExternalProjectNo.BackColor = System.Drawing.SystemColors.Control;
+            this.wExternalProjectNo.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wExternalProjectNo.Location = new System.Drawing.Point(97, 94);
+            this.wExternalProjectNo.Name = "wExternalProjectNo";
+            this.wExternalProjectNo.ReadOnly = true;
+            this.wExternalProjectNo.Size = new System.Drawing.Size(227, 13);
+            this.wExternalProjectNo.TabIndex = 34;
+            this.wExternalProjectNo.TabStop = false;
             // 
             // wLastItemName
             // 
@@ -389,16 +378,27 @@ namespace Timekeeper.Forms
             this.wLastItemName.TabIndex = 32;
             this.wLastItemName.TabStop = false;
             // 
-            // wExternalProjectNo
+            // wDeletedTime
             // 
-            this.wExternalProjectNo.BackColor = System.Drawing.SystemColors.Control;
-            this.wExternalProjectNo.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wExternalProjectNo.Location = new System.Drawing.Point(97, 94);
-            this.wExternalProjectNo.Name = "wExternalProjectNo";
-            this.wExternalProjectNo.ReadOnly = true;
-            this.wExternalProjectNo.Size = new System.Drawing.Size(227, 13);
-            this.wExternalProjectNo.TabIndex = 34;
-            this.wExternalProjectNo.TabStop = false;
+            this.wDeletedTime.BackColor = System.Drawing.SystemColors.Control;
+            this.wDeletedTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wDeletedTime.Location = new System.Drawing.Point(190, 39);
+            this.wDeletedTime.Name = "wDeletedTime";
+            this.wDeletedTime.ReadOnly = true;
+            this.wDeletedTime.Size = new System.Drawing.Size(123, 13);
+            this.wDeletedTime.TabIndex = 33;
+            this.wDeletedTime.TabStop = false;
+            // 
+            // wHiddenTime
+            // 
+            this.wHiddenTime.BackColor = System.Drawing.SystemColors.Control;
+            this.wHiddenTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wHiddenTime.Location = new System.Drawing.Point(190, 16);
+            this.wHiddenTime.Name = "wHiddenTime";
+            this.wHiddenTime.ReadOnly = true;
+            this.wHiddenTime.Size = new System.Drawing.Size(123, 13);
+            this.wHiddenTime.TabIndex = 32;
+            this.wHiddenTime.TabStop = false;
             // 
             // Properties
             // 
@@ -412,7 +412,6 @@ namespace Timekeeper.Forms
             this.Controls.Add(this.CancelDialog);
             this.Controls.Add(this.wGroupProperties);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Properties";

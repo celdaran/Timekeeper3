@@ -253,7 +253,7 @@
             this.total.ReadOnly = true;
             this.total.Width = 56;
             // 
-            // fPunch
+            // PunchCard
             // 
             this.AcceptButton = this.btnRefresh;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -262,10 +262,9 @@
             this.ClientSize = new System.Drawing.Size(356, 353);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "fPunch";
+            this.Name = "PunchCard";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

@@ -152,7 +152,6 @@
             this.Controls.Add(this.GroupByLabel);
             this.Controls.Add(this.GroupDataBy);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GridOptions";

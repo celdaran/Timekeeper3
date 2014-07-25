@@ -2300,7 +2300,6 @@
             this.Controls.Add(this.CancelDialogButton);
             this.Controls.Add(this.OptionsPanelCollection);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Options";

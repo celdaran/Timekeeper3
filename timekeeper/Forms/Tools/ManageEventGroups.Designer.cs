@@ -127,7 +127,6 @@
             this.Controls.Add(this.CloseDialogButton);
             this.Controls.Add(this.EventGroupList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ManageEventGroups";

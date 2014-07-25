@@ -33,6 +33,7 @@
             this.MenuNew = new System.Windows.Forms.ToolStripButton();
             this.MenuNewFolder = new System.Windows.Forms.ToolStripButton();
             this.MenuOther = new System.Windows.Forms.ToolStripDropDownButton();
+            this.MenuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuRename = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHide = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuUnhide = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +54,6 @@
             this.PopupMenuProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.Tree = new System.Windows.Forms.TreeView();
-            this.MenuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.PopupMenu.SuspendLayout();
             this.SuspendLayout();
@@ -107,50 +107,57 @@
             this.MenuOther.Size = new System.Drawing.Size(48, 22);
             this.MenuOther.Text = "Other";
             // 
+            // MenuEdit
+            // 
+            this.MenuEdit.Name = "MenuEdit";
+            this.MenuEdit.Size = new System.Drawing.Size(123, 22);
+            this.MenuEdit.Text = "Edit...";
+            this.MenuEdit.Click += new System.EventHandler(this.MenuEdit_Click);
+            // 
             // MenuRename
             // 
             this.MenuRename.Name = "MenuRename";
-            this.MenuRename.Size = new System.Drawing.Size(152, 22);
+            this.MenuRename.Size = new System.Drawing.Size(123, 22);
             this.MenuRename.Text = "Rename";
             this.MenuRename.Click += new System.EventHandler(this.MenuRename_Click);
             // 
             // MenuHide
             // 
             this.MenuHide.Name = "MenuHide";
-            this.MenuHide.Size = new System.Drawing.Size(152, 22);
+            this.MenuHide.Size = new System.Drawing.Size(123, 22);
             this.MenuHide.Text = "Hide";
             this.MenuHide.Click += new System.EventHandler(this.MenuHide_Click);
             // 
             // MenuUnhide
             // 
             this.MenuUnhide.Name = "MenuUnhide";
-            this.MenuUnhide.Size = new System.Drawing.Size(152, 22);
+            this.MenuUnhide.Size = new System.Drawing.Size(123, 22);
             this.MenuUnhide.Text = "Unhide";
             this.MenuUnhide.Click += new System.EventHandler(this.MenuUnhide_Click);
             // 
             // MenuMerge
             // 
             this.MenuMerge.Name = "MenuMerge";
-            this.MenuMerge.Size = new System.Drawing.Size(152, 22);
+            this.MenuMerge.Size = new System.Drawing.Size(123, 22);
             this.MenuMerge.Text = "Merge...";
             this.MenuMerge.Click += new System.EventHandler(this.MenuMerge_Click);
             // 
             // MenuDelete
             // 
             this.MenuDelete.Name = "MenuDelete";
-            this.MenuDelete.Size = new System.Drawing.Size(152, 22);
+            this.MenuDelete.Size = new System.Drawing.Size(123, 22);
             this.MenuDelete.Text = "Delete...";
             this.MenuDelete.Click += new System.EventHandler(this.MenuDelete_Click);
             // 
             // MenuSep1
             // 
             this.MenuSep1.Name = "MenuSep1";
-            this.MenuSep1.Size = new System.Drawing.Size(149, 6);
+            this.MenuSep1.Size = new System.Drawing.Size(120, 6);
             // 
             // MenuProperties
             // 
             this.MenuProperties.Name = "MenuProperties";
-            this.MenuProperties.Size = new System.Drawing.Size(152, 22);
+            this.MenuProperties.Size = new System.Drawing.Size(123, 22);
             this.MenuProperties.Text = "Properties";
             this.MenuProperties.Click += new System.EventHandler(this.MenuProperties_Click);
             // 
@@ -276,13 +283,6 @@
             this.Tree.DoubleClick += new System.EventHandler(this.Tree_DoubleClick);
             this.Tree.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Tree_KeyDown);
             // 
-            // MenuEdit
-            // 
-            this.MenuEdit.Name = "MenuEdit";
-            this.MenuEdit.Size = new System.Drawing.Size(152, 22);
-            this.MenuEdit.Text = "Edit...";
-            this.MenuEdit.Click += new System.EventHandler(this.MenuEdit_Click);
-            // 
             // TreeAttributeManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -290,7 +290,6 @@
             this.ClientSize = new System.Drawing.Size(350, 242);
             this.Controls.Add(this.Tree);
             this.Controls.Add(this.toolStrip1);
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "TreeAttributeManager";

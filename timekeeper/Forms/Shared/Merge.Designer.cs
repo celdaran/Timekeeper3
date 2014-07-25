@@ -150,6 +150,8 @@
             this.Controls.Add(this.ItemTree);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.BottomPanel);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Merge";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

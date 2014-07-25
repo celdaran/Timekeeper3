@@ -234,90 +234,6 @@
   <data name="&gt;&gt;RefTodoStatus.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;RightButtonPanel.Name" xml:space="preserve">
-    <value>RightButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.Parent" xml:space="preserve">
-    <value>ButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="ButtonPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Bottom</value>
-  </data>
-  <data name="ButtonPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 280</value>
-  </data>
-  <data name="ButtonPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>362, 40</value>
-  </data>
-  <data name="ButtonPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;ButtonPanel.Name" xml:space="preserve">
-    <value>ButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;ButtonPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ButtonPanel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ButtonPanel.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;CancelDialogButton.Name" xml:space="preserve">
-    <value>CancelDialogButton</value>
-  </data>
-  <data name="&gt;&gt;CancelDialogButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;CancelDialogButton.Parent" xml:space="preserve">
-    <value>RightButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;CancelDialogButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;AcceptDialogButton.Name" xml:space="preserve">
-    <value>AcceptDialogButton</value>
-  </data>
-  <data name="&gt;&gt;AcceptDialogButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;AcceptDialogButton.Parent" xml:space="preserve">
-    <value>RightButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;AcceptDialogButton.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="RightButtonPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Right</value>
-  </data>
-  <data name="RightButtonPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>162, 0</value>
-  </data>
-  <data name="RightButtonPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 40</value>
-  </data>
-  <data name="RightButtonPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.Name" xml:space="preserve">
-    <value>RightButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.Parent" xml:space="preserve">
-    <value>ButtonPanel</value>
-  </data>
-  <data name="&gt;&gt;RightButtonPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="CancelDialogButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -368,6 +284,54 @@
   </data>
   <data name="&gt;&gt;AcceptDialogButton.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="RightButtonPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="RightButtonPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 0</value>
+  </data>
+  <data name="RightButtonPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 40</value>
+  </data>
+  <data name="RightButtonPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;RightButtonPanel.Name" xml:space="preserve">
+    <value>RightButtonPanel</value>
+  </data>
+  <data name="&gt;&gt;RightButtonPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RightButtonPanel.Parent" xml:space="preserve">
+    <value>ButtonPanel</value>
+  </data>
+  <data name="&gt;&gt;RightButtonPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ButtonPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="ButtonPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 280</value>
+  </data>
+  <data name="ButtonPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>362, 40</value>
+  </data>
+  <data name="ButtonPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;ButtonPanel.Name" xml:space="preserve">
+    <value>ButtonPanel</value>
+  </data>
+  <data name="&gt;&gt;ButtonPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ButtonPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ButtonPanel.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="EstimateBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>100, 117</value>
@@ -538,7 +502,7 @@
     <value>&amp;Properties...</value>
   </data>
   <data name="PopupMenuDimension.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 98</value>
+    <value>167, 76</value>
   </data>
   <data name="&gt;&gt;PopupMenuDimension.Name" xml:space="preserve">
     <value>PopupMenuDimension</value>
@@ -554,7 +518,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAAy
-        GQAAAk1TRnQBSQFMAgEBBwEAAUgBBAFIAQQBEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        GQAAAk1TRnQBSQFMAgEBBwEAAVABBAFQAQQBEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABIAMAAQEBAAEYBgABGP8AMwADwAO8A7MDrAOkA5sDlBuMMAABeAE0AWIBeAE0AWIBeAE0AWIBeAE0
         AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0AWIBeAE0
         AWIBeAE0AWIBeAE0AWIwpQPAA9EDzwPNA8sDyQPHA8UDwwPBA78DvQO7A7oDuAOMMAABzgGSAbsB2wGv

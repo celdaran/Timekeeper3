@@ -232,7 +232,6 @@
             this.Controls.Add(this.MemoPanel);
             this.Controls.Add(this.FixedDetailPanel);
             this.Controls.Add(this.ButtonPanel);
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "TodoDetail";

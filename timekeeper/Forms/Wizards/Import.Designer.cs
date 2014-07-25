@@ -27,6 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Import));
             this.ImportFileName = new System.Windows.Forms.TextBox();
             this.ImportButton = new System.Windows.Forms.Button();
             this.Console = new System.Windows.Forms.RichTextBox();
@@ -341,7 +342,7 @@
             this.Controls.Add(this.WizardPicture);
             this.Controls.Add(this.ButtonPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Location = new System.Drawing.Point(1000, 400);
             this.MaximizeBox = false;
             this.MinimizeBox = false;

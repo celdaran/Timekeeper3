@@ -198,7 +198,6 @@ namespace Timekeeper
             this.Controls.Add(this.FunctionalPanel);
             this.Controls.Add(this.ButtonPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ItemEditor";

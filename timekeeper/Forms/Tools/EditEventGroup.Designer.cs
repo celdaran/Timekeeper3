@@ -103,7 +103,6 @@
             this.Controls.Add(this.AcceptDialogButton);
             this.Controls.Add(this.NameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EditEventGroup";
