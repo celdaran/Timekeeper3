@@ -70,67 +70,34 @@ namespace Timekeeper.Classes
 
         public bool Save(bool filterOptionsChanged, long filterOptionsId)
         {
-            bool Saved = false;
-            Row ExtraColumns = new Row();
-            ExtraColumns["FilterOptionsId"] = filterOptionsId;
-
-            if (filterOptionsChanged) {
-                Saved = base.Save(ExtraColumns);
-            } else {
-                if (filterOptionsId == this.FilterOptions.FilterOptionsId) {
-                    Saved = base.Save(ExtraColumns);
-                } else {
-                    Saved = base.Add(ExtraColumns);
-                }
-            }
+            // 2014-07-25 update: now that I'm enforcing FK constraints, I can
+            // no longer save the base row first and *then* the FilterOptions.
+            // The FOID is required to save the base view, so it's time to
+            // switch things around quite a bit here.
 
             try {
-                if (Saved) {
-                    // If the base saved, now handle View-specific columns
-                    Row View = new Row();
+                //--------------------------------------------------------------
+                // Save filter options first (due to FK constraints)
+                //--------------------------------------------------------------
 
-                    // Default value: may get overridden
-                    View["FilterOptionsId"] = this.FilterOptions.FilterOptionsId;
+                if (SaveFilterOptions(filterOptionsChanged, filterOptionsId))
+                {
+                    //--------------------------------------------------------------
+                    // Then save the base view
+                    //--------------------------------------------------------------
 
-                    // FilterOptions are not saved/created with the view itself.
-                    // e.g., the "Last Saved" view may be updated with a brand-new
-                    // set of FilterOptions. The management thereof now becomes
-                    // tricky, because the code below doesn't work the way I'd hoped.
-                    if (filterOptionsChanged) {
-                        if (filterOptionsId > 0) {
-                            // If we passed in an id, update the existing id.
-                            // This should only be used for AutoSaved values
-                            // to prevent hundreds of rows from being created
-                            // while simply hitting "OK" on the Filtering dialog
-                            // box (before explicitly saving the view).
-                            this.FilterOptions.Save();
-                            Timekeeper.Debug("Just updated FilterOptionsId: " + filterOptionsId.ToString());
-                        } else {
-                            // Otherwise, create a new row
-                            this.FilterOptions.Create();
-                            Timekeeper.Debug("Just created FilterOptionsId: " + this.FilterOptions.FilterOptionsId.ToString());
-                        }
+                    Row ExtraColumns = new Row();
+                    ExtraColumns["Name"] = this.Name;
+                    ExtraColumns["FilterOptionsId"] = this.FilterOptions.FilterOptionsId;
 
-                        if (this.FilterOptions.FilterOptionsId < 1) {
-                            throw new Exception("Error upserting FilterOptions row");
-                        } else {
-                            View["FilterOptionsId"] = this.FilterOptions.FilterOptionsId;
-                        }
-                    }
-
-                    View["ModifyTime"] = Timekeeper.DateForDatabase();
-                    Timekeeper.Debug("About to update " + this.TableName + "Id: " + this.Id.ToString());
-                    if (this.Database.Update(this.TableName, View, this.TableName + "Id", this.Id) == 1) {
-                        ModifyTime = Convert.ToDateTime(View["ModifyTime"]);
-                        FilterOptionsId = View["FilterOptionsId"];
+                    if (filterOptionsId == this.FilterOptions.FilterOptionsId) {
+                        this.Saved = base.Save(ExtraColumns);
                     } else {
-                        throw new Exception("Error updating " + this.TableName);
+                        this.Saved = base.Add(ExtraColumns);
                     }
 
-                    this.Saved = true;
                     this.Changed = false;
                     this.IsAutoSaved = (this.Name == "Unsaved View");
-
                 }
 
             }
@@ -143,6 +110,46 @@ namespace Timekeeper.Classes
         }
 
         //----------------------------------------------------------------------
+
+        private bool SaveFilterOptions(bool filterOptionsChanged, long filterOptionsId)
+        {
+            try {
+                // FilterOptions are not saved/created with the view itself.
+                // e.g., the "Last Saved" view may be updated with a brand-new
+                // set of FilterOptions.
+                if (filterOptionsChanged) {
+                    if (filterOptionsId > 0) {
+                        // If we passed in an id, update the existing id.
+                        // This should only be used for AutoSaved values
+                        // to prevent hundreds of rows from being created
+                        // while simply hitting "OK" on the Filtering dialog
+                        // box (before explicitly saving the view).
+
+                        this.FilterOptions.Save();
+                        Timekeeper.Debug("Just updated FilterOptionsId: " + filterOptionsId.ToString());
+                        // TO-CHECK: make sure FilterOptions.FilterOptionsId 
+                        // has the right value after coming out of Save()
+                    } else {
+                        // Otherwise, create a new row
+                        this.FilterOptions.Create();
+                        Timekeeper.Debug("Just created FilterOptionsId: " + this.FilterOptions.FilterOptionsId.ToString());
+                    }
+
+                    if (this.FilterOptions.FilterOptionsId < 1) {
+                        throw new Exception("Error upserting FilterOptions row");
+                    }
+                } else {
+                    // will we have to set/pass through filterOptionsId somehow?
+                    // come back to this
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                return false;
+            }
+
+            return true;
+        }
 
     }
 }

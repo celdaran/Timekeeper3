@@ -292,6 +292,7 @@
             this.Name = "JournalEntry";
             this.Text = "Timekeeper Report";
             this.Activated += new System.EventHandler(this.Report_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Report_FormClosing);
             this.Load += new System.EventHandler(this.Report_Load);
             this.ToolStrip.ResumeLayout(false);
             this.ToolStrip.PerformLayout();

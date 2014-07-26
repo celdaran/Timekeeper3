@@ -76,6 +76,12 @@ namespace Timekeeper.Forms.Reports
 
         private void Report_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (ReportView.Changed) {
+                if (Common.WarnPrompt("View has not been saved. Continue closing?") == DialogResult.No) {
+                    e.Cancel = true;
+                    return;
+                }
+            }
             // Save window metrics
             Options.Report_Height = Height;
             Options.Report_Width = Width;
@@ -521,6 +527,7 @@ namespace Timekeeper.Forms.Reports
 
             return OrderBy;
         }
+
 
         //---------------------------------------------------------------------
 

@@ -223,6 +223,7 @@ namespace Timekeeper.Classes
         public bool Equals(Classes.FilterOptions that)
         {
             /*
+            Timekeeper.Debug(String.Format("this.FilterOptionsType={0}, that.FilterOptionsType={1})", this.FilterOptionsType, that.FilterOptionsType));
             Timekeeper.Debug(String.Format("this.DateRangePreset={0}, that.DateRangePreset={1}", this.DateRangePreset, that.DateRangePreset));
             Timekeeper.Debug(String.Format("this.FromTime={0}, that.FromTime={1}", this.FromTime, that.FromTime));
             Timekeeper.Debug(String.Format("this.ToTime={0}, that.ToTime={1}", this.ToTime, that.ToTime));
@@ -238,24 +239,23 @@ namespace Timekeeper.Classes
             */
 
             if (
-                (this.FilterOptionsType == that.FilterOptionsType) &&
-                (this.DateRangePreset == that.DateRangePreset) &&
-                (this.NullableDateTimesEqual(this.FromTime, that.FromTime)) &&
-                (this.NullableDateTimesEqual(this.ToTime, that.ToTime)) &&
-                (this.MemoOperator == that.MemoOperator) &&
-                (this.MemoValue == that.MemoValue) &&
-                (this.SetsEqual(this.Projects, that.Projects)) &&
-                (this.SetsEqual(this.Activities, that.Activities)) &&
-                (this.SetsEqual(this.Locations, that.Locations)) &&
-                (this.SetsEqual(this.Categories, that.Categories)) &&
-                (this.DurationOperator == that.DurationOperator) &&
-                (this.DurationAmount == that.DurationAmount) &&
-                (this.DurationUnit == that.DurationUnit))
-            {
+                    (this.FilterOptionsType == that.FilterOptionsType) &&
+                    (this.DateRangePreset == that.DateRangePreset) &&
+                    (this.NullableDateTimesEqual(this.FromTime, that.FromTime)) &&
+                    (this.NullableDateTimesEqual(this.ToTime, that.ToTime)) &&
+                    (this.MemoOperator == that.MemoOperator) &&
+                    (this.MemoValue == that.MemoValue) &&
+                    (this.SetsEqual(this.Projects, that.Projects)) &&
+                    (this.SetsEqual(this.Activities, that.Activities)) &&
+                    (this.SetsEqual(this.Locations, that.Locations)) &&
+                    (this.SetsEqual(this.Categories, that.Categories)) &&
+                    (this.DurationOperator == that.DurationOperator) &&
+                    (this.DurationAmount == that.DurationAmount) &&
+                    (this.DurationUnit == that.DurationUnit)
+                )
                 return true;
-            } else {
+            else
                 return false;
-            }
         }
 
         //---------------------------------------------------------------------
@@ -577,7 +577,7 @@ namespace Timekeeper.Classes
 
         public void SetDateRange()
         {
-            DateTimeOffset Today = Timekeeper.LocalNow;
+            DateTimeOffset Today = Timekeeper.LocalNow.Date;
             Classes.JournalEntryCollection Entries;
 
             switch (this.DateRangePreset) {

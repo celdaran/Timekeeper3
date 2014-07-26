@@ -113,6 +113,13 @@ namespace Timekeeper.Forms.Reports
 
         private void Grid_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (GridView.Changed) {
+                if (Common.WarnPrompt("View has not been saved. Continue closing?") == DialogResult.No) {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
             Options.Grid_Height = Height;
             Options.Grid_Width = Width;
             Options.Grid_Top = Top;

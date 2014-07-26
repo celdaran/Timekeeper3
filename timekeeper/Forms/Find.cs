@@ -119,6 +119,13 @@ namespace Timekeeper.Forms
 
         private void Find_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (FindView.Changed) {
+                if (Common.WarnPrompt("View has not been saved. Continue closing?") == DialogResult.No) {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
             // Save window metrics
             Options.Find_Height = Height;
             Options.Find_Width = Width;

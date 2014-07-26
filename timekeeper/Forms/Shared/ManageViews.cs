@@ -35,7 +35,15 @@ namespace Timekeeper.Forms.Shared
 
         private void ManageViews_Load(object sender, EventArgs e)
         {
-            SavedViewList.SelectedIndex = 0;
+            if (SavedViewList.Items.Count > 0) {
+                // Select first item, if we have items.
+                SavedViewList.SelectedIndex = 0;
+            } else {
+                RenameButton.Enabled = false;
+                DeleteButton.Enabled = false;
+                MoveUpButton.Enabled = false;
+                MoveDownButton.Enabled = false;
+            }
         }
 
         //----------------------------------------------------------------------

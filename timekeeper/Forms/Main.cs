@@ -155,7 +155,7 @@ namespace Timekeeper.Forms
         private void MenuActionFind_Click(object sender, EventArgs e)
         {
             Forms.Find FindDialog = new Forms.Find(Browser_GotoEntry, Find.FindDataSources.Journal);
-            FindDialog.Show(this); // FIXME: why does this get flaky when "this" isn't specified?
+            FindDialog.Show();
             OpenForms.Add(FindDialog);
         }
 
