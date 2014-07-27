@@ -1086,9 +1086,11 @@ namespace Timekeeper.Forms
             File CurrentFile = new File();
             File NewFile = new File(NewDatabase);
 
+            Cursor.Current = Cursors.WaitCursor;
             CurrentFile.SaveAs22(NewFile);
+            Cursor.Current = Cursors.Default;
 
-            //Common.Info("You selected Save As Type: " + fileType.ToString());
+            Common.Info("You selected Save As Type: " + fileType.ToString());
         }
 
         //---------------------------------------------------------------------

@@ -50,7 +50,7 @@ namespace Timekeeper
 
                     // Create new 3.0 dimensions
                     CreateNewTable("Location", CurrentSchemaVersion, false);
-                    PopulateLocation((FileBaseOptions)this.UpgradeOptions);
+                    PopulateLocation(CurrentSchemaVersion, (FileBaseOptions)this.UpgradeOptions);
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
 
                     // Upgrade 2.0 tables
@@ -93,7 +93,7 @@ namespace Timekeeper
 
                     // Create new 3.0 dimensions
                     CreateNewTable("Location", CurrentSchemaVersion, false);
-                    PopulateLocation((FileBaseOptions)this.UpgradeOptions);
+                    PopulateLocation(CurrentSchemaVersion, (FileBaseOptions)this.UpgradeOptions);
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
 
                     // Upgrade 2.1 tables
@@ -135,7 +135,7 @@ namespace Timekeeper
 
                     // Create new 3.0 dimensions
                     CreateNewTable("Location", CurrentSchemaVersion, false);
-                    PopulateLocation((FileBaseOptions)this.UpgradeOptions);
+                    PopulateLocation(CurrentSchemaVersion, (FileBaseOptions)this.UpgradeOptions);
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
 
                     // Upgrade 2.2 tables
@@ -189,7 +189,7 @@ namespace Timekeeper
             CreateNewTable("RefTimeDisplay", version, true);
             CreateNewTable("RefTimeZone", version, false);
             CreateNewTable("RefTodoStatus", version, true);
-            PopulateRefTimeZone();
+            PopulateRefTimeZone(version);
         }
 
         //---------------------------------------------------------------------
