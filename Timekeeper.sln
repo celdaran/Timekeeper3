@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timekeeper", "timekeeper\Timekeeper.csproj", "{C55F6F8B-81BF-44A9-AA0A-859C0A66116E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timekeeper", "timekeeper\Timekeeper3.csproj", "{C55F6F8B-81BF-44A9-AA0A-859C0A66116E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timekeeper.Countdown", "timekeeper\Plugins\Countdown\Timekeeper.Countdown.csproj", "{8220B6E4-2505-420D-9789-49213D38A03E}"
 EndProject
