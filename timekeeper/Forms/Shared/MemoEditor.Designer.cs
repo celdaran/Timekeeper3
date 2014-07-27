@@ -59,6 +59,8 @@
             this.FormatCodeButton = new System.Windows.Forms.ToolStripButton();
             this.FormatBlockquoteButton = new System.Windows.Forms.ToolStripButton();
             this.FormatHorizontalRuleButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.FormatInsertSplitButton = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.RulerPanel = new System.Windows.Forms.Panel();
             this.ShowLeftMargin = new System.Windows.Forms.PictureBox();
@@ -194,7 +196,9 @@
             this.FormatSeparator4,
             this.FormatCodeButton,
             this.FormatBlockquoteButton,
-            this.FormatHorizontalRuleButton});
+            this.FormatHorizontalRuleButton,
+            this.FormatSeparator5,
+            this.FormatInsertSplitButton});
             this.MemoToolbar.Location = new System.Drawing.Point(0, 0);
             this.MemoToolbar.Name = "MemoToolbar";
             this.MemoToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -368,6 +372,21 @@
             this.FormatHorizontalRuleButton.ToolTipText = "Separator";
             this.FormatHorizontalRuleButton.Click += new System.EventHandler(this.FormatHorizontalRuleButton_Click);
             // 
+            // FormatSeparator5
+            // 
+            this.FormatSeparator5.Name = "FormatSeparator5";
+            this.FormatSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // FormatInsertSplitButton
+            // 
+            this.FormatInsertSplitButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatInsertSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatInsertSplitButton.Name = "FormatInsertSplitButton";
+            this.FormatInsertSplitButton.Size = new System.Drawing.Size(38, 22);
+            this.FormatInsertSplitButton.Text = "Break";
+            this.FormatInsertSplitButton.ToolTipText = "Insert separator text into memo";
+            this.FormatInsertSplitButton.Click += new System.EventHandler(this.FormatInsertSplitButton_Click);
+            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -473,5 +492,7 @@
         private System.Windows.Forms.ToolStripButton FormatFontButton;
         private System.Windows.Forms.ToolStripSeparator FormatSeparator1;
         private System.Windows.Forms.FontDialog FontDialog;
+        private System.Windows.Forms.ToolStripSeparator FormatSeparator5;
+        private System.Windows.Forms.ToolStripButton FormatInsertSplitButton;
     }
 }

@@ -92,9 +92,9 @@ namespace Timekeeper.Classes
         public int Behavior_BrowsePrevBy { get; set; }
         public int Behavior_BrowseNextBy { get; set; }
 
-        public string Report_FontName { get; set; }
-        public int Report_FontSize { get; set; }
-        public string Report_StyleSheet { get; set; }
+        public string Report_Font { get; set; }
+        public string Report_StyleSheetFile { get; set; }
+        public string Report_LayoutFile { get; set; }
 
         public List<NameObjectPair> Keyboard_FunctionList { get; set; }
 
@@ -110,6 +110,7 @@ namespace Timekeeper.Classes
         public int Advanced_Logging_Application { get; set; }
         public int Advanced_Logging_Database { get; set; }
         public string Advanced_DateTimeFormat { get; set; }
+        public string Advanced_BreakTemplate { get; set; }
         public int Advanced_Other_MarkupLanguage { get; set; }
         public bool Advanced_Other_DisableScheduler { get; set; }
         public bool Advanced_Other_EnableStackTracing { get; set; }
@@ -373,9 +374,9 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Report");
 
-            Report_FontName = (string)Key.GetValue("FontName", "Verdana");
-            Report_FontSize = (int)Key.GetValue("FontSize", 10);
-            Report_StyleSheet = (string)Key.GetValue("StyleSheet", "not implemented");
+            Report_Font = (string)Key.GetValue("Font", "Tahoma, 10pt");
+            Report_StyleSheetFile = (string)Key.GetValue("StyleSheetFile", @"Files\JournalEntryReport.css");
+            Report_LayoutFile = (string)Key.GetValue("LayoutFile", @"Files\JournalEntryReport.html");
 
             //----------------------------------------------------------------------
 
@@ -411,6 +412,7 @@ namespace Timekeeper.Classes
             Advanced_DateTimeFormat = (string)Key.GetValue("DateTimeFormat", 
                 CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " +
                 CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern);
+            Advanced_BreakTemplate = (string)Key.GetValue("BreakTemplate", "\\n<hr class=\"memo-break-manual\" title=\"%timestamp\" />\\n");
             Advanced_Other_MarkupLanguage = (int)Key.GetValue("Other_MarkupLanguage", 1);
             Advanced_Other_DisableScheduler = ((int)Key.GetValue("Other_DisableScheduler", 0)) == 1;
             Advanced_Other_EnableStackTracing = ((int)Key.GetValue("Other_EnableStackTracing", 0)) == 1;
@@ -711,6 +713,14 @@ namespace Timekeeper.Classes
 
             //----------------------------------------------------------------------
 
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Report");
+
+            Key.SetValue("Font", Report_Font, Microsoft.Win32.RegistryValueKind.String);
+            Key.SetValue("StyleSheetFile", Report_StyleSheetFile, Microsoft.Win32.RegistryValueKind.String);
+            Key.SetValue("LayoutFile", Report_LayoutFile, Microsoft.Win32.RegistryValueKind.String);
+
+            //----------------------------------------------------------------------
+
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Options\Keyboard");
 
             foreach (NameObjectPair Pair in Keyboard_FunctionList) {
@@ -737,6 +747,7 @@ namespace Timekeeper.Classes
             Key.SetValue("Logging_Application", Advanced_Logging_Application, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Logging_Database", Advanced_Logging_Database, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("DateTimeFormat", Advanced_DateTimeFormat, Microsoft.Win32.RegistryValueKind.String);
+            Key.SetValue("BreakTemplate", Advanced_BreakTemplate, Microsoft.Win32.RegistryValueKind.String);
             Key.SetValue("Other_MarkupLanguage", Advanced_Other_MarkupLanguage, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_DisableScheduler", Advanced_Other_DisableScheduler, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_EnableStackTracing", Advanced_Other_EnableStackTracing, Microsoft.Win32.RegistryValueKind.DWord);

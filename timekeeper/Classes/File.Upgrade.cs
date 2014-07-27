@@ -659,8 +659,8 @@ namespace Timekeeper
                 };
 
                 switch (UpgradeOptions.MemoMergeTypeId) {
-                    case 1: NewRow["Memo"] = OldRow["pre_log"] + "\n\n<!--SEPARATOR-->\n\n" + OldRow["post_log"]; break;
-                    case 2: NewRow["Memo"] = OldRow["pre_log"] + "\n\n<!--CUSTOM SEP-->\n\n" + OldRow["post_log"]; break;
+                    case 1: NewRow["Memo"] = OldRow["pre_log"] + "\n\n<hr class=\"memo-break-upgrade\" />\n\n" + OldRow["post_log"]; break;
+                    case 2: NewRow["Memo"] = OldRow["pre_log"] + "\n\n" + OldRow["post_log"]; break;
                     case 3: NewRow["Memo"] = OldRow["post_log"]; break;
                     case 4: NewRow["Memo"] = OldRow["pre_log"]; break;
                     default: throw new Exception("Invalid MemoMergeTypeId Found: " + UpgradeOptions.MemoMergeTypeId.ToString());

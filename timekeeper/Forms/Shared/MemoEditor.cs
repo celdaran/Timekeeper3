@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Resources;
 
 using Technitivity.Toolbox;
 
@@ -43,6 +44,8 @@ namespace Timekeeper.Forms.Shared
             set { MemoEntry.Text = value; }
         }
 
+        //---------------------------------------------------------------------
+
         public int RightMargin
         {
             get { return MemoEntry.RightMargin; }
@@ -53,6 +56,8 @@ namespace Timekeeper.Forms.Shared
             }
         }
 
+        //---------------------------------------------------------------------
+
         public bool ShowGutter
         {
             get { return MemoEntry.ShowSelectionMargin; }
@@ -61,6 +66,8 @@ namespace Timekeeper.Forms.Shared
                 Options.View_MemoEditor_ShowGutter = value;
             }
         }
+
+        //---------------------------------------------------------------------
 
         public string EditorFont
         {
@@ -343,6 +350,48 @@ namespace Timekeeper.Forms.Shared
 
         //---------------------------------------------------------------------
 
+        private void FormatInsertSplitButton_Click(object sender, EventArgs e)
+        {
+            /* 
+
+            Saving this hacked up image-insertion code for later
+
+            object SaveClipboard = Clipboard.GetDataObject();
+
+            ResourceManager Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(File).Assembly);
+            Image TestImage = (Image)Resources.GetObject("ImageIconToolbar");
+
+            Clipboard.SetImage(TestImage);
+            MemoEntry.Paste();
+
+            Clipboard.SetDataObject(SaveClipboard);
+            */
+
+
+            // Get our template and current timestamp
+            string Template = Options.Advanced_BreakTemplate;
+            string Timestamp = Timekeeper.DateForDisplay();
+
+            // Substitute timestamp, if present
+            Template = Template.Replace("%timestamp", "{0}");
+            Template = Template.Replace("\\n", "\n");
+            string SplitText = String.Format(Template, Timestamp);
+
+            // Send output to the memo box
+            FormatSimpleTextInsert(SplitText);
+        }
+
+        //---------------------------------------------------------------------
+        // Formatting helpers
+        //---------------------------------------------------------------------
+
+        private void FormatSimpleTextInsert(string value)
+        {
+            MemoEntry.SelectedText = value;
+        }
+
+        //---------------------------------------------------------------------
+
         private void FormatBasicHTML(ToolStripButton button, string tag)
         {
             string OpenTag = "<" + tag + ">";
@@ -500,7 +549,9 @@ namespace Timekeeper.Forms.Shared
 
         private void RightMarginMarker_DoubleClick(object sender, EventArgs e)
         {
-            this.RightMargin = MemoEntry.Size.Width - (RightMarginMarker.Width / 2);
+            this.RightMargin = 
+                (MemoEntry.Size.Width - System.Windows.Forms.SystemInformation.VerticalScrollBarWidth) - 
+                (RightMarginMarker.Width / 2);
         }
 
         //---------------------------------------------------------------------

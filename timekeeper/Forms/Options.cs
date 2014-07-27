@@ -7,6 +7,7 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 using Technitivity.Toolbox;
 
@@ -157,7 +158,7 @@ namespace Timekeeper.Forms
             AddItems(View_HiddenEventsSince, Entries);
 
             try {
-                PopulateFontList();
+                //PopulateFontList();
                 PopulateFunctionList(MainMenu.Items, "");
             }
             catch (Exception x) {
@@ -166,6 +167,7 @@ namespace Timekeeper.Forms
 
         }
 
+        /*
         private void PopulateFontList()
         {
             InstalledFontCollection fonts = new InstalledFontCollection();
@@ -175,6 +177,7 @@ namespace Timekeeper.Forms
                 Report_FontList.Items.Add(font.Name);
             }
         }
+        */
 
         private void PopulateFunctionList(ToolStripItemCollection items, string parentText)
         {
@@ -365,9 +368,9 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
-            Report_FontList.SelectedIndex = Report_FontList.FindString(Values.Report_FontName);
-            Report_FontSize.Value = Values.Report_FontSize;
-            // TODO: Report_StyleSheet.Text = // probably read from a file, unless it's small enough for the registry?
+            Report_Font.Text = Values.Report_Font;
+            Report_StyleSheetFile.Text = Values.Report_StyleSheetFile;
+            Report_LayoutFile.Text = Values.Report_LayoutFile;
 
             //----------------------------------------------------------------------
 
@@ -385,6 +388,7 @@ namespace Timekeeper.Forms
             Advanced_Logging_Application.SelectedIndex = Values.Advanced_Logging_Application;
             Advanced_Logging_Database.SelectedIndex = Values.Advanced_Logging_Database;
             Advanced_DateTimeFormat.Text = Values.Advanced_DateTimeFormat;
+            Advanced_BreakTemplate.Text = Values.Advanced_BreakTemplate;
             Advanced_Other_MarkupLanguage.SelectedIndex = Values.Advanced_Other_MarkupLanguage;
             Advanced_Other_DimensionWidth.Value = Values.Advanced_Other_DimensionWidth;
             Advanced_Other_MidnightOffset.SelectedIndex = Values.Advanced_Other_MidnightOffset + 12;
@@ -467,6 +471,12 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
+            Values.Report_Font = Report_Font.Text;
+            Values.Report_StyleSheetFile = Report_StyleSheetFile.Text;
+            Values.Report_LayoutFile = Report_LayoutFile.Text;
+
+            //----------------------------------------------------------------------
+
             Values.Keyboard_FunctionList = GetKeyboardMappings();
 
             //----------------------------------------------------------------------
@@ -485,6 +495,7 @@ namespace Timekeeper.Forms
             Values.Advanced_Logging_Application = Advanced_Logging_Application.SelectedIndex;
             Values.Advanced_Logging_Database = Advanced_Logging_Database.SelectedIndex;
             Values.Advanced_DateTimeFormat = Advanced_DateTimeFormat.Text;
+            Values.Advanced_BreakTemplate = Advanced_BreakTemplate.Text;
             Values.Advanced_Other_MarkupLanguage = Advanced_Other_MarkupLanguage.SelectedIndex;
             Values.Advanced_Other_DimensionWidth = (int)Advanced_Other_DimensionWidth.Value;
             Values.Advanced_Other_MidnightOffset = Advanced_Other_MidnightOffset.SelectedIndex - 12;
@@ -981,6 +992,21 @@ namespace Timekeeper.Forms
         {
             MemoEditorGroup.Enabled = View_MemoEditor.Checked;
         }
+
+        private void ViewLog_Click(object sender, EventArgs e)
+        {
+            Process.Start("notepad.exe", Timekeeper.GetLogPath());
+        }
+
+        private void Report_FontButton_Click(object sender, EventArgs e)
+        {
+            FontConverter fc = new FontConverter();
+            FontDialog.Font = (Font)fc.ConvertFromString(Report_Font.Text);
+            if (FontDialog.ShowDialog(this) == DialogResult.OK) {
+                Report_Font.Text = (string)fc.ConvertToString(FontDialog.Font);
+            }
+        }
+
 
         //----------------------------------------------------------------------
 

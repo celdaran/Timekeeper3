@@ -140,13 +140,11 @@
             this.TitleBarTemplateLabel = new System.Windows.Forms.Label();
             this.ReportPage = new System.Windows.Forms.TabPage();
             this.ReportGroup = new System.Windows.Forms.GroupBox();
-            this.Report_StyleSheet = new System.Windows.Forms.TextBox();
-            this.LabelBaseFont = new System.Windows.Forms.Label();
-            this.Report_FontList = new System.Windows.Forms.ListBox();
-            this.LabelStyleSheet = new System.Windows.Forms.Label();
-            this.LabelBaseFontSize = new System.Windows.Forms.Label();
-            this.PointSizeLabel = new System.Windows.Forms.Label();
-            this.Report_FontSize = new System.Windows.Forms.NumericUpDown();
+            this.label18 = new System.Windows.Forms.Label();
+            this.Report_Font = new System.Windows.Forms.TextBox();
+            this.Report_FontButton = new System.Windows.Forms.Button();
+            this.Report_StyleSheetFile = new System.Windows.Forms.TextBox();
+            this.Report_StyleSheetFileLabel = new System.Windows.Forms.Label();
             this.KeyboardPage = new System.Windows.Forms.TabPage();
             this.ShortcutGroup = new System.Windows.Forms.GroupBox();
             this.AssignKey = new System.Windows.Forms.Button();
@@ -180,31 +178,38 @@
             this.Mail_SmtpServer = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.AdvancedPage = new System.Windows.Forms.TabPage();
+            this.AdvancedSpacerBox = new System.Windows.Forms.PictureBox();
+            this.AdvancedFormattingGroup = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.Advanced_BreakTemplate = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Advanced_DateTimeFormat = new System.Windows.Forms.TextBox();
             this.OtherAdvancedGroup = new System.Windows.Forms.GroupBox();
             this.Advanced_Other_MidnightOffset = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.Advanced_Other_DimensionWidth = new System.Windows.Forms.NumericUpDown();
             this.Advanced_Other_DimensionWidthLabel = new System.Windows.Forms.Label();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.Advanced_Other_MarkupLanguage = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.Advanced_DateTimeFormat = new System.Windows.Forms.TextBox();
             this.LoggingGroup = new System.Windows.Forms.GroupBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.ViewLog = new System.Windows.Forms.Button();
             this.Advanced_Logging_Database = new System.Windows.Forms.ComboBox();
             this.LoggingDatabaseLabel = new System.Windows.Forms.Label();
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
+            this.label19 = new System.Windows.Forms.Label();
+            this.Report_StyleSheetFileChooser = new System.Windows.Forms.Button();
+            this.Report_LayoutFileChooser = new System.Windows.Forms.Button();
+            this.Report_LayoutFile = new System.Windows.Forms.TextBox();
+            this.Report_LayoutFileLabel = new System.Windows.Forms.Label();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -248,7 +253,6 @@
             this.TitleBarGroup.SuspendLayout();
             this.ReportPage.SuspendLayout();
             this.ReportGroup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Report_FontSize)).BeginInit();
             this.KeyboardPage.SuspendLayout();
             this.ShortcutGroup.SuspendLayout();
             this.MailSettingsPage.SuspendLayout();
@@ -256,6 +260,8 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).BeginInit();
             this.AdvancedPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AdvancedSpacerBox)).BeginInit();
+            this.AdvancedFormattingGroup.SuspendLayout();
             this.OtherAdvancedGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Advanced_Other_DimensionWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -1484,13 +1490,16 @@
             // 
             // ReportGroup
             // 
-            this.ReportGroup.Controls.Add(this.Report_StyleSheet);
-            this.ReportGroup.Controls.Add(this.LabelBaseFont);
-            this.ReportGroup.Controls.Add(this.Report_FontList);
-            this.ReportGroup.Controls.Add(this.LabelStyleSheet);
-            this.ReportGroup.Controls.Add(this.LabelBaseFontSize);
-            this.ReportGroup.Controls.Add(this.PointSizeLabel);
-            this.ReportGroup.Controls.Add(this.Report_FontSize);
+            this.ReportGroup.Controls.Add(this.Report_LayoutFileChooser);
+            this.ReportGroup.Controls.Add(this.Report_LayoutFile);
+            this.ReportGroup.Controls.Add(this.Report_LayoutFileLabel);
+            this.ReportGroup.Controls.Add(this.Report_StyleSheetFileChooser);
+            this.ReportGroup.Controls.Add(this.label19);
+            this.ReportGroup.Controls.Add(this.label18);
+            this.ReportGroup.Controls.Add(this.Report_Font);
+            this.ReportGroup.Controls.Add(this.Report_FontButton);
+            this.ReportGroup.Controls.Add(this.Report_StyleSheetFile);
+            this.ReportGroup.Controls.Add(this.Report_StyleSheetFileLabel);
             this.ReportGroup.Location = new System.Drawing.Point(17, 16);
             this.ReportGroup.Name = "ReportGroup";
             this.ReportGroup.Size = new System.Drawing.Size(363, 374);
@@ -1498,79 +1507,52 @@
             this.ReportGroup.TabStop = false;
             this.ReportGroup.Text = "Styling";
             // 
-            // Report_StyleSheet
+            // label18
             // 
-            this.Report_StyleSheet.Location = new System.Drawing.Point(111, 153);
-            this.Report_StyleSheet.Name = "Report_StyleSheet";
-            this.Report_StyleSheet.Size = new System.Drawing.Size(238, 20);
-            this.Report_StyleSheet.TabIndex = 9;
-            this.Report_StyleSheet.Text = "Link to a CSS file on your file system (or http?)";
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(17, 27);
+            this.label18.MaximumSize = new System.Drawing.Size(340, 95);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(333, 39);
+            this.label18.TabIndex = 12;
+            this.label18.Text = "If you\'re comfortable with the basic report layout but would simply like to use a" +
+    " different font, click the Choose Font button to select a new font to be applied" +
+    " to reports.";
             // 
-            // LabelBaseFont
+            // Report_Font
             // 
-            this.LabelBaseFont.AutoSize = true;
-            this.LabelBaseFont.Location = new System.Drawing.Point(14, 28);
-            this.LabelBaseFont.Name = "LabelBaseFont";
-            this.LabelBaseFont.Size = new System.Drawing.Size(58, 13);
-            this.LabelBaseFont.TabIndex = 0;
-            this.LabelBaseFont.Text = "Base Font:";
+            this.Report_Font.Location = new System.Drawing.Point(111, 95);
+            this.Report_Font.Name = "Report_Font";
+            this.Report_Font.ReadOnly = true;
+            this.Report_Font.Size = new System.Drawing.Size(236, 20);
+            this.Report_Font.TabIndex = 11;
             // 
-            // Report_FontList
+            // Report_FontButton
             // 
-            this.Report_FontList.FormattingEnabled = true;
-            this.Report_FontList.Location = new System.Drawing.Point(111, 25);
-            this.Report_FontList.Name = "Report_FontList";
-            this.Report_FontList.Size = new System.Drawing.Size(238, 95);
-            this.Report_FontList.TabIndex = 1;
+            this.Report_FontButton.Location = new System.Drawing.Point(17, 93);
+            this.Report_FontButton.Name = "Report_FontButton";
+            this.Report_FontButton.Size = new System.Drawing.Size(86, 23);
+            this.Report_FontButton.TabIndex = 10;
+            this.Report_FontButton.Text = "Choose Font...";
+            this.Report_FontButton.UseVisualStyleBackColor = true;
+            this.Report_FontButton.Click += new System.EventHandler(this.Report_FontButton_Click);
             // 
-            // LabelStyleSheet
+            // Report_StyleSheetFile
             // 
-            this.LabelStyleSheet.AutoSize = true;
-            this.LabelStyleSheet.Location = new System.Drawing.Point(14, 156);
-            this.LabelStyleSheet.Name = "LabelStyleSheet";
-            this.LabelStyleSheet.Size = new System.Drawing.Size(61, 13);
-            this.LabelStyleSheet.TabIndex = 5;
-            this.LabelStyleSheet.Text = "Style Sheet";
+            this.Report_StyleSheetFile.Location = new System.Drawing.Point(109, 195);
+            this.Report_StyleSheetFile.Name = "Report_StyleSheetFile";
+            this.Report_StyleSheetFile.Size = new System.Drawing.Size(204, 20);
+            this.Report_StyleSheetFile.TabIndex = 9;
+            this.Report_StyleSheetFile.Text = "Files\\JournalEntryReport.css";
             // 
-            // LabelBaseFontSize
+            // Report_StyleSheetFileLabel
             // 
-            this.LabelBaseFontSize.AutoSize = true;
-            this.LabelBaseFontSize.Location = new System.Drawing.Point(14, 129);
-            this.LabelBaseFontSize.Name = "LabelBaseFontSize";
-            this.LabelBaseFontSize.Size = new System.Drawing.Size(81, 13);
-            this.LabelBaseFontSize.TabIndex = 2;
-            this.LabelBaseFontSize.Text = "Base Font Size:";
-            // 
-            // PointSizeLabel
-            // 
-            this.PointSizeLabel.AutoSize = true;
-            this.PointSizeLabel.Location = new System.Drawing.Point(181, 139);
-            this.PointSizeLabel.Name = "PointSizeLabel";
-            this.PointSizeLabel.Size = new System.Drawing.Size(36, 13);
-            this.PointSizeLabel.TabIndex = 4;
-            this.PointSizeLabel.Text = "Points";
-            // 
-            // Report_FontSize
-            // 
-            this.Report_FontSize.Location = new System.Drawing.Point(111, 127);
-            this.Report_FontSize.Maximum = new decimal(new int[] {
-            24,
-            0,
-            0,
-            0});
-            this.Report_FontSize.Minimum = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.Report_FontSize.Name = "Report_FontSize";
-            this.Report_FontSize.Size = new System.Drawing.Size(69, 20);
-            this.Report_FontSize.TabIndex = 3;
-            this.Report_FontSize.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
+            this.Report_StyleSheetFileLabel.AutoSize = true;
+            this.Report_StyleSheetFileLabel.Location = new System.Drawing.Point(14, 198);
+            this.Report_StyleSheetFileLabel.Name = "Report_StyleSheetFileLabel";
+            this.Report_StyleSheetFileLabel.Size = new System.Drawing.Size(64, 13);
+            this.Report_StyleSheetFileLabel.TabIndex = 5;
+            this.Report_StyleSheetFileLabel.Text = "Style Sheet:";
             // 
             // KeyboardPage
             // 
@@ -1969,6 +1951,9 @@
             // 
             // AdvancedPage
             // 
+            this.AdvancedPage.AutoScroll = true;
+            this.AdvancedPage.Controls.Add(this.AdvancedSpacerBox);
+            this.AdvancedPage.Controls.Add(this.AdvancedFormattingGroup);
             this.AdvancedPage.Controls.Add(this.OtherAdvancedGroup);
             this.AdvancedPage.Controls.Add(this.LoggingGroup);
             this.AdvancedPage.Location = new System.Drawing.Point(98, 4);
@@ -1979,28 +1964,78 @@
             this.AdvancedPage.Text = "Advanced";
             this.AdvancedPage.UseVisualStyleBackColor = true;
             // 
+            // AdvancedSpacerBox
+            // 
+            this.AdvancedSpacerBox.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
+            this.AdvancedSpacerBox.Location = new System.Drawing.Point(17, 475);
+            this.AdvancedSpacerBox.Name = "AdvancedSpacerBox";
+            this.AdvancedSpacerBox.Size = new System.Drawing.Size(16, 16);
+            this.AdvancedSpacerBox.TabIndex = 23;
+            this.AdvancedSpacerBox.TabStop = false;
+            // 
+            // AdvancedFormattingGroup
+            // 
+            this.AdvancedFormattingGroup.Controls.Add(this.label16);
+            this.AdvancedFormattingGroup.Controls.Add(this.Advanced_BreakTemplate);
+            this.AdvancedFormattingGroup.Controls.Add(this.label1);
+            this.AdvancedFormattingGroup.Controls.Add(this.Advanced_DateTimeFormat);
+            this.AdvancedFormattingGroup.Location = new System.Drawing.Point(17, 131);
+            this.AdvancedFormattingGroup.Name = "AdvancedFormattingGroup";
+            this.AdvancedFormattingGroup.Size = new System.Drawing.Size(345, 88);
+            this.AdvancedFormattingGroup.TabIndex = 4;
+            this.AdvancedFormattingGroup.TabStop = false;
+            this.AdvancedFormattingGroup.Text = "Formatting";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(16, 56);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(85, 13);
+            this.label16.TabIndex = 22;
+            this.label16.Text = "Break Template:";
+            // 
+            // Advanced_BreakTemplate
+            // 
+            this.Advanced_BreakTemplate.Location = new System.Drawing.Point(127, 53);
+            this.Advanced_BreakTemplate.Name = "Advanced_BreakTemplate";
+            this.Advanced_BreakTemplate.Size = new System.Drawing.Size(202, 20);
+            this.Advanced_BreakTemplate.TabIndex = 21;
+            this.Advanced_BreakTemplate.Text = "\\n<hr data-timestamp=\\\"%timestamp\\\" class=\\\"memo-split\\\" />\\n";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 30);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(96, 13);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "Date/Time Format:";
+            // 
+            // Advanced_DateTimeFormat
+            // 
+            this.Advanced_DateTimeFormat.Location = new System.Drawing.Point(127, 27);
+            this.Advanced_DateTimeFormat.Name = "Advanced_DateTimeFormat";
+            this.Advanced_DateTimeFormat.Size = new System.Drawing.Size(202, 20);
+            this.Advanced_DateTimeFormat.TabIndex = 19;
+            // 
             // OtherAdvancedGroup
             // 
             this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_MidnightOffset);
             this.OtherAdvancedGroup.Controls.Add(this.label15);
             this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_DimensionWidth);
             this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_DimensionWidthLabel);
-            this.OtherAdvancedGroup.Controls.Add(this.checkBox6);
             this.OtherAdvancedGroup.Controls.Add(this.checkBox5);
             this.OtherAdvancedGroup.Controls.Add(this.checkBox4);
             this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_MarkupLanguage);
             this.OtherAdvancedGroup.Controls.Add(this.label12);
-            this.OtherAdvancedGroup.Controls.Add(this.checkBox3);
-            this.OtherAdvancedGroup.Controls.Add(this.checkBox2);
             this.OtherAdvancedGroup.Controls.Add(this.label3);
             this.OtherAdvancedGroup.Controls.Add(this.numericUpDown1);
             this.OtherAdvancedGroup.Controls.Add(this.label2);
             this.OtherAdvancedGroup.Controls.Add(this.checkBox1);
-            this.OtherAdvancedGroup.Controls.Add(this.label1);
-            this.OtherAdvancedGroup.Controls.Add(this.Advanced_DateTimeFormat);
-            this.OtherAdvancedGroup.Location = new System.Drawing.Point(17, 117);
+            this.OtherAdvancedGroup.Location = new System.Drawing.Point(17, 231);
             this.OtherAdvancedGroup.Name = "OtherAdvancedGroup";
-            this.OtherAdvancedGroup.Size = new System.Drawing.Size(345, 317);
+            this.OtherAdvancedGroup.Size = new System.Drawing.Size(345, 236);
             this.OtherAdvancedGroup.TabIndex = 3;
             this.OtherAdvancedGroup.TabStop = false;
             this.OtherAdvancedGroup.Text = "Other";
@@ -2034,7 +2069,7 @@
             "09:00 AM",
             "10:00 AM",
             "11:00 AM"});
-            this.Advanced_Other_MidnightOffset.Location = new System.Drawing.Point(197, 271);
+            this.Advanced_Other_MidnightOffset.Location = new System.Drawing.Point(198, 201);
             this.Advanced_Other_MidnightOffset.Name = "Advanced_Other_MidnightOffset";
             this.Advanced_Other_MidnightOffset.Size = new System.Drawing.Size(121, 21);
             this.Advanced_Other_MidnightOffset.TabIndex = 16;
@@ -2042,7 +2077,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(32, 274);
+            this.label15.Location = new System.Drawing.Point(33, 204);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(94, 13);
             this.label15.TabIndex = 15;
@@ -2050,7 +2085,7 @@
             // 
             // Advanced_Other_DimensionWidth
             // 
-            this.Advanced_Other_DimensionWidth.Location = new System.Drawing.Point(197, 245);
+            this.Advanced_Other_DimensionWidth.Location = new System.Drawing.Point(198, 175);
             this.Advanced_Other_DimensionWidth.Maximum = new decimal(new int[] {
             500,
             0,
@@ -2073,27 +2108,17 @@
             // Advanced_Other_DimensionWidthLabel
             // 
             this.Advanced_Other_DimensionWidthLabel.AutoSize = true;
-            this.Advanced_Other_DimensionWidthLabel.Location = new System.Drawing.Point(32, 247);
+            this.Advanced_Other_DimensionWidthLabel.Location = new System.Drawing.Point(33, 177);
             this.Advanced_Other_DimensionWidthLabel.Name = "Advanced_Other_DimensionWidthLabel";
             this.Advanced_Other_DimensionWidthLabel.Size = new System.Drawing.Size(121, 13);
             this.Advanced_Other_DimensionWidthLabel.TabIndex = 13;
             this.Advanced_Other_DimensionWidthLabel.Text = "Dimension widget width:";
             // 
-            // checkBox6
-            // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(17, 120);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(243, 17);
-            this.checkBox6.TabIndex = 12;
-            this.checkBox6.Text = "Display Journal Entry Index on browser toolbar";
-            this.checkBox6.UseVisualStyleBackColor = true;
-            // 
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
             this.checkBox5.Enabled = false;
-            this.checkBox5.Location = new System.Drawing.Point(16, 166);
+            this.checkBox5.Location = new System.Drawing.Point(17, 73);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(122, 17);
             this.checkBox5.TabIndex = 11;
@@ -2103,12 +2128,14 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
+            this.checkBox4.Checked = true;
+            this.checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox4.Enabled = false;
-            this.checkBox4.Location = new System.Drawing.Point(16, 143);
+            this.checkBox4.Location = new System.Drawing.Point(17, 50);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(112, 17);
+            this.checkBox4.Size = new System.Drawing.Size(189, 17);
             this.checkBox4.TabIndex = 10;
-            this.checkBox4.Text = "Disable Scheduler";
+            this.checkBox4.Text = "Disable Event && Scheduler System";
             this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // Advanced_Other_MarkupLanguage
@@ -2118,7 +2145,7 @@
             this.Advanced_Other_MarkupLanguage.Items.AddRange(new object[] {
             "HTML",
             "Markdown"});
-            this.Advanced_Other_MarkupLanguage.Location = new System.Drawing.Point(197, 218);
+            this.Advanced_Other_MarkupLanguage.Location = new System.Drawing.Point(198, 148);
             this.Advanced_Other_MarkupLanguage.Name = "Advanced_Other_MarkupLanguage";
             this.Advanced_Other_MarkupLanguage.Size = new System.Drawing.Size(121, 21);
             this.Advanced_Other_MarkupLanguage.TabIndex = 9;
@@ -2126,36 +2153,16 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(32, 221);
+            this.label12.Location = new System.Drawing.Point(33, 151);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(153, 13);
             this.label12.TabIndex = 8;
             this.label12.Text = "Memo editor markup language:";
             // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(17, 97);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(228, 17);
-            this.checkBox3.TabIndex = 7;
-            this.checkBox3.Text = "Display Journal Entry ID on browser toolbar";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(17, 74);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(152, 17);
-            this.checkBox2.TabIndex = 6;
-            this.checkBox2.Text = "Use New Database wizard";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(256, 194);
+            this.label3.Location = new System.Drawing.Point(257, 124);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 5;
@@ -2163,7 +2170,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(197, 192);
+            this.numericUpDown1.Location = new System.Drawing.Point(198, 122);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             120,
             0,
@@ -2186,7 +2193,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(32, 194);
+            this.label2.Location = new System.Drawing.Point(33, 124);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(165, 13);
             this.label2.TabIndex = 3;
@@ -2195,31 +2202,16 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(17, 51);
+            this.checkBox1.Location = new System.Drawing.Point(17, 27);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(229, 17);
             this.checkBox1.TabIndex = 2;
             this.checkBox1.Text = "Treat External Project Number as a number";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Date/Time Format:";
-            // 
-            // Advanced_DateTimeFormat
-            // 
-            this.Advanced_DateTimeFormat.Location = new System.Drawing.Point(125, 25);
-            this.Advanced_DateTimeFormat.Name = "Advanced_DateTimeFormat";
-            this.Advanced_DateTimeFormat.Size = new System.Drawing.Size(202, 20);
-            this.Advanced_DateTimeFormat.TabIndex = 0;
-            // 
             // LoggingGroup
             // 
+            this.LoggingGroup.Controls.Add(this.label17);
             this.LoggingGroup.Controls.Add(this.ViewLog);
             this.LoggingGroup.Controls.Add(this.Advanced_Logging_Database);
             this.LoggingGroup.Controls.Add(this.LoggingDatabaseLabel);
@@ -2227,10 +2219,19 @@
             this.LoggingGroup.Controls.Add(this.LoggingApplicationLabel);
             this.LoggingGroup.Location = new System.Drawing.Point(17, 16);
             this.LoggingGroup.Name = "LoggingGroup";
-            this.LoggingGroup.Size = new System.Drawing.Size(345, 87);
+            this.LoggingGroup.Size = new System.Drawing.Size(345, 109);
             this.LoggingGroup.TabIndex = 2;
             this.LoggingGroup.TabStop = false;
             this.LoggingGroup.Text = "Logging";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(14, 83);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(304, 13);
+            this.label17.TabIndex = 5;
+            this.label17.Text = "Note: Changing the logging level requires a Timekeeper restart.";
             // 
             // ViewLog
             // 
@@ -2240,6 +2241,7 @@
             this.ViewLog.TabIndex = 4;
             this.ViewLog.Text = "View Log";
             this.ViewLog.UseVisualStyleBackColor = true;
+            this.ViewLog.Click += new System.EventHandler(this.ViewLog_Click);
             // 
             // Advanced_Logging_Database
             // 
@@ -2288,6 +2290,52 @@
             this.LoggingApplicationLabel.Size = new System.Drawing.Size(62, 13);
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(17, 142);
+            this.label19.MaximumSize = new System.Drawing.Size(340, 95);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(338, 26);
+            this.label19.TabIndex = 13;
+            this.label19.Text = "Advanced. For complete control over the report layout, you can create your own st" +
+    "yle sheet or even an entirely new layout.";
+            // 
+            // Report_StyleSheetFileChooser
+            // 
+            this.Report_StyleSheetFileChooser.Location = new System.Drawing.Point(319, 195);
+            this.Report_StyleSheetFileChooser.Name = "Report_StyleSheetFileChooser";
+            this.Report_StyleSheetFileChooser.Size = new System.Drawing.Size(27, 20);
+            this.Report_StyleSheetFileChooser.TabIndex = 14;
+            this.Report_StyleSheetFileChooser.Text = "···";
+            this.Report_StyleSheetFileChooser.UseVisualStyleBackColor = true;
+            // 
+            // Report_LayoutFileChooser
+            // 
+            this.Report_LayoutFileChooser.Location = new System.Drawing.Point(319, 221);
+            this.Report_LayoutFileChooser.Name = "Report_LayoutFileChooser";
+            this.Report_LayoutFileChooser.Size = new System.Drawing.Size(27, 20);
+            this.Report_LayoutFileChooser.TabIndex = 17;
+            this.Report_LayoutFileChooser.Text = "···";
+            this.Report_LayoutFileChooser.UseVisualStyleBackColor = true;
+            // 
+            // Report_LayoutFile
+            // 
+            this.Report_LayoutFile.Location = new System.Drawing.Point(109, 221);
+            this.Report_LayoutFile.Name = "Report_LayoutFile";
+            this.Report_LayoutFile.Size = new System.Drawing.Size(204, 20);
+            this.Report_LayoutFile.TabIndex = 16;
+            this.Report_LayoutFile.Text = "Files\\JournalEntryReport.html";
+            // 
+            // Report_LayoutFileLabel
+            // 
+            this.Report_LayoutFileLabel.AutoSize = true;
+            this.Report_LayoutFileLabel.Location = new System.Drawing.Point(14, 225);
+            this.Report_LayoutFileLabel.Name = "Report_LayoutFileLabel";
+            this.Report_LayoutFileLabel.Size = new System.Drawing.Size(77, 13);
+            this.Report_LayoutFileLabel.TabIndex = 15;
+            this.Report_LayoutFileLabel.Text = "Report Layout:";
             // 
             // Options
             // 
@@ -2382,7 +2430,6 @@
             this.ReportPage.ResumeLayout(false);
             this.ReportGroup.ResumeLayout(false);
             this.ReportGroup.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Report_FontSize)).EndInit();
             this.KeyboardPage.ResumeLayout(false);
             this.ShortcutGroup.ResumeLayout(false);
             this.ShortcutGroup.PerformLayout();
@@ -2393,6 +2440,9 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).EndInit();
             this.AdvancedPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.AdvancedSpacerBox)).EndInit();
+            this.AdvancedFormattingGroup.ResumeLayout(false);
+            this.AdvancedFormattingGroup.PerformLayout();
             this.OtherAdvancedGroup.ResumeLayout(false);
             this.OtherAdvancedGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Advanced_Other_DimensionWidth)).EndInit();
@@ -2450,12 +2500,7 @@
         private System.Windows.Forms.GroupBox TitleBarGroup;
         private System.Windows.Forms.TextBox Behavior_TitleBar_Template;
         private System.Windows.Forms.Label TitleBarTemplateLabel;
-        private System.Windows.Forms.Label LabelStyleSheet;
-        private System.Windows.Forms.Label PointSizeLabel;
-        private System.Windows.Forms.NumericUpDown Report_FontSize;
-        private System.Windows.Forms.Label LabelBaseFontSize;
-        private System.Windows.Forms.ListBox Report_FontList;
-        private System.Windows.Forms.Label LabelBaseFont;
+        private System.Windows.Forms.Label Report_StyleSheetFileLabel;
         private System.Windows.Forms.GroupBox AnnoyGroup;
         private System.Windows.Forms.Label MinutesLabel;
         private System.Windows.Forms.NumericUpDown Behavior_Annoy_NoRunningPromptAmount;
@@ -2485,7 +2530,6 @@
         private System.Windows.Forms.Label LoggingApplicationLabel;
         private System.Windows.Forms.Label LoggingDatabaseLabel;
         private System.Windows.Forms.GroupBox OtherAdvancedGroup;
-        private System.Windows.Forms.TextBox Advanced_DateTimeFormat;
         private System.Windows.Forms.GroupBox StatusBarGroup;
         private System.Windows.Forms.GroupBox HiddenGroup;
         private System.Windows.Forms.GroupBox ReportGroup;
@@ -2504,13 +2548,10 @@
         private System.Windows.Forms.Label DisplayLabel;
         private System.Windows.Forms.ComboBox Behavior_TitleBar_Time;
         private System.Windows.Forms.Label DimensionsInstructionsLabel;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox Behavior_Annoy_UseNewDatabaseWizard;
         private System.Windows.Forms.TabPage MailSettingsPage;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -2536,7 +2577,6 @@
         private System.Windows.Forms.ComboBox Advanced_Other_MarkupLanguage;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.GroupBox BrowsingGroup;
         private System.Windows.Forms.ComboBox Behavior_BrowseNextBy;
@@ -2565,7 +2605,7 @@
         private System.Windows.Forms.Panel AnnoyGroup_CategoryFollowPanel;
         private System.Windows.Forms.Panel AnnoyGroup_LocationFollowPanel;
         private System.Windows.Forms.Panel AnnoyGroup_ActivityFollowPanel;
-        private System.Windows.Forms.TextBox Report_StyleSheet;
+        private System.Windows.Forms.TextBox Report_StyleSheetFile;
         private System.Windows.Forms.Panel StatusBarGroup_CategoryElapsedPanel;
         private System.Windows.Forms.CheckBox View_StatusBar_ElapsedCategoryToday;
         private System.Windows.Forms.Panel StatusBarGroup_LocationElapsedPanel;
@@ -2582,6 +2622,21 @@
         private System.Windows.Forms.Panel HiddenGroup_TodoPanel;
         private System.Windows.Forms.CheckBox View_HiddenTodoItems;
         private System.Windows.Forms.ComboBox View_HiddenTodoItemsSince;
+        private System.Windows.Forms.PictureBox AdvancedSpacerBox;
+        private System.Windows.Forms.GroupBox AdvancedFormattingGroup;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox Advanced_BreakTemplate;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox Advanced_DateTimeFormat;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox Report_Font;
+        private System.Windows.Forms.Button Report_FontButton;
+        private System.Windows.Forms.Button Report_StyleSheetFileChooser;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button Report_LayoutFileChooser;
+        private System.Windows.Forms.TextBox Report_LayoutFile;
+        private System.Windows.Forms.Label Report_LayoutFileLabel;
 
     }
 }

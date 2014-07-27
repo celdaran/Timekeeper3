@@ -69,6 +69,7 @@ namespace Timekeeper.Classes
                     datetime(j.StopTime{2}) as StopTime,
                     j.Seconds, 
                     p.Name as ProjectName, a.Name as ActivityName,
+                    l.Name as LocationName, t.Name as CategoryName,
                     j.Memo
                 from Journal j
                 join Activity a on a.ActivityId = j.ActivityId
