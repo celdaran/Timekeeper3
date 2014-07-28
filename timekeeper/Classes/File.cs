@@ -163,11 +163,11 @@ namespace Timekeeper
                 CreateTable("RefTimeDisplay", version, populate);
                 CreateTable("RefTimeZone", version, false);
                 CreateTable("RefTodoStatus", version, populate);
-                PopulateRefTimeZone();
+                PopulateRefTimeZone(desiredVersion);
 
                 // User Reference Tables
                 CreateTable("Location", version, false);
-                PopulateLocation((FileBaseOptions)this.CreateOptions);
+                PopulateLocation(desiredVersion, (FileBaseOptions)this.CreateOptions);
                 CreateTable("Category", version, populate);
 
                 CreateTable("Activity", version, false);
@@ -259,8 +259,13 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        private void PopulateRefTimeZone()
+        private void PopulateRefTimeZone(Version desiredVersion)
         {
+            if (desiredVersion.Major < 3) {
+                // Don't attempt to populate a table that didn't exist
+                return;
+            }
+
             //----------------------------------------------
             // The Time Zone reference table is populated
             // at database creation by copying the OS list
@@ -283,8 +288,13 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public void PopulateLocation(FileBaseOptions options)
+        public void PopulateLocation(Version desiredVersion, FileBaseOptions options)
         {
+            if (desiredVersion.Major < 3) {
+                // Don't attempt to populate a table that didn't exist
+                return;
+            }
+
             Row Location = new Row();
 
             Location["CreateTime"] = Timekeeper.DateForDatabase();

@@ -1088,9 +1088,33 @@ namespace Timekeeper.Forms
             File CurrentFile = new File();
             File NewFile = new File(NewDatabase);
 
-            CurrentFile.SaveAs22(NewFile);
+            Cursor.Current = Cursors.WaitCursor;
 
             //Common.Info("You selected Save As Type: " + fileType.ToString());
+            switch (fileType) {
+                case 1: 
+                    // Save as Version 3.0
+                    CurrentFile.SaveAs30(NewFile);
+                    break;
+                case 2:
+                    // Save as Version 2.3
+                    CurrentFile.SaveAs23(NewFile);
+                    break;
+                case 3:
+                    // Save as Version 2.2
+                    CurrentFile.SaveAs22(NewFile);
+                    break;
+                case 4:
+                    // Save as Version 2.1
+                    CurrentFile.SaveAs21(NewFile);
+                    break;
+                case 5:
+                    // Save as Version 2.0
+                    CurrentFile.SaveAs20(NewFile);
+                    break;
+            }
+
+            Cursor.Current = Cursors.Default;
         }
 
         //---------------------------------------------------------------------

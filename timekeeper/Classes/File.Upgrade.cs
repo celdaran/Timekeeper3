@@ -50,7 +50,7 @@ namespace Timekeeper
 
                     // Create new 3.0 dimensions
                     CreateNewTable("Location", CurrentSchemaVersion, false);
-                    PopulateLocation((FileBaseOptions)this.UpgradeOptions);
+                    PopulateLocation(CurrentSchemaVersion, (FileBaseOptions)this.UpgradeOptions);
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
 
                     // Upgrade 2.0 tables
@@ -93,7 +93,7 @@ namespace Timekeeper
 
                     // Create new 3.0 dimensions
                     CreateNewTable("Location", CurrentSchemaVersion, false);
-                    PopulateLocation((FileBaseOptions)this.UpgradeOptions);
+                    PopulateLocation(CurrentSchemaVersion, (FileBaseOptions)this.UpgradeOptions);
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
 
                     // Upgrade 2.1 tables
@@ -135,7 +135,7 @@ namespace Timekeeper
 
                     // Create new 3.0 dimensions
                     CreateNewTable("Location", CurrentSchemaVersion, false);
-                    PopulateLocation((FileBaseOptions)this.UpgradeOptions);
+                    PopulateLocation(CurrentSchemaVersion, (FileBaseOptions)this.UpgradeOptions);
                     CreateNewTable("Category", CurrentSchemaVersion, Populate);
 
                     // Upgrade 2.2 tables
@@ -189,7 +189,7 @@ namespace Timekeeper
             CreateNewTable("RefTimeDisplay", version, true);
             CreateNewTable("RefTimeZone", version, false);
             CreateNewTable("RefTodoStatus", version, true);
-            PopulateRefTimeZone();
+            PopulateRefTimeZone(version);
         }
 
         //---------------------------------------------------------------------
@@ -332,7 +332,6 @@ namespace Timekeeper
                     {"Description", OldRow["descr"]},
                     {"ParentId", OldRow["parent_id"]},
                     {"SortOrderNo", SortOrderNo++},
-                    {"LastProjectId", 0},
                     {"IsFolder", OldRow["is_folder"] ? 1 : 0},
                     {"IsFolderOpened", OldRow["is_folder"] ? 1 : 0},
                     {"IsHidden", 0},
@@ -367,8 +366,7 @@ namespace Timekeeper
                     {"Description", OldRow["descr"]},
                     {"ParentId", OldRow["parent_id"]},
                     {"SortOrderNo", SortOrderNo++},
-                    {"LastProjectId", OldRow["project_id__last"] ?? 0},
-                    {"IsFolder", OldRow["is_folder"] ? 1: 0},
+                    {"IsFolder", OldRow["is_folder"] ? 1 : 0},
                     {"IsFolderOpened", OldRow["is_folder"] ? 1 : 0},
                     {"IsHidden", 0},
                     {"IsDeleted", OldRow["is_deleted"] ? 1 : 0},
@@ -400,10 +398,9 @@ namespace Timekeeper
                     {"ActivityGuid", UUID.Get()},
                     {"Name", OldRow["name"]},
                     {"Description", OldRow["descr"]},
-                    {"ParentId", OldRow["parent_id"]},
+                    {"ParentId", OldRow["parent_id"] == 0 ? null : OldRow["parent_id"]},
                     {"SortOrderNo", SortOrderNo++},
-                    {"LastProjectId", OldRow["project_id__last"] ?? 0},
-                    {"IsFolder", OldRow["is_folder"] ? 1: 0},
+                    {"IsFolder", OldRow["is_folder"] ? 1 : 0},
                     {"IsFolderOpened", OldRow["is_folder"] ? 1 : 0},
                     {"IsHidden", OldRow["is_hidden"] ? 1 : 0},
                     {"IsDeleted", OldRow["is_deleted"] ? 1 : 0},
@@ -469,13 +466,15 @@ namespace Timekeeper
                     {"Description", OldRow["descr"]},
                     {"ParentId", OldRow["parent_id"]},
                     {"SortOrderNo", SortOrderNo++},
-                    {"LastActivityId", 0},
                     {"IsFolder", OldRow["is_folder"] ? 1 : 0},
                     {"IsFolderOpened", OldRow["is_folder"] ? 1 : 0},
                     {"IsHidden", 0},
                     {"IsDeleted", OldRow["is_deleted"] ? 1 : 0},
                     {"HiddenTime", null},
                     {"DeletedTime", null},
+                    {"LastActivityId", null},
+                    {"LastLocationId", null},
+                    {"LastCategoryId", null},
                     {"ExternalProjectNo", null}
                 };
                 InsertedRowId = this.Database.Insert("Project", NewRow);
@@ -509,13 +508,15 @@ namespace Timekeeper
                     {"Description", OldRow["descr"]},
                     {"ParentId", OldRow["parent_id"]},
                     {"SortOrderNo", SortOrderNo++},
-                    {"LastActivityId", 0},
                     {"IsFolder", OldRow["is_folder"] ? 1 : 0},
                     {"IsFolderOpened", OldRow["is_folder"] ? 1 : 0},
                     {"IsHidden", 0},
                     {"IsDeleted", OldRow["is_deleted"] ? 1 : 0},
                     {"HiddenTime", null},
                     {"DeletedTime", null},
+                    {"LastActivityId", null},
+                    {"LastLocationId", null},
+                    {"LastCategoryId", null},
                     {"ExternalProjectNo", null}
                 };
                 InsertedRowId = this.Database.Insert("Project", NewRow);
@@ -548,15 +549,17 @@ namespace Timekeeper
                     {"ProjectGuid", UUID.Get()},
                     {"Name", OldRow["name"]},
                     {"Description", OldRow["descr"]},
-                    {"ParentId", OldRow["parent_id"]},
+                    {"ParentId", OldRow["parent_id"] == 0 ? null : OldRow["parent_id"]},
                     {"SortOrderNo", SortOrderNo++},
-                    {"LastActivityId", 0},
                     {"IsFolder", OldRow["is_folder"] ? 1 : 0},
                     {"IsFolderOpened", OldRow["is_folder"] ? 1 : 0},
                     {"IsHidden", OldRow["is_hidden"] ? 1 : 0},
                     {"IsDeleted", OldRow["is_deleted"] ? 1 : 0},
                     {"HiddenTime", null},
                     {"DeletedTime", null},
+                    {"LastActivityId", null},
+                    {"LastLocationId", null},
+                    {"LastCategoryId", null},
                     {"ExternalProjectNo", null}
                 };
                 InsertedRowId = this.Database.Insert("Project", NewRow);
@@ -645,17 +648,14 @@ namespace Timekeeper
                     {"CreateTime", ConvertTime(OldRow["timestamp_s"])}, // column didn't exist until TK3
                     {"ModifyTime", ConvertTime(OldRow["timestamp_e"])}, // column didn't exist until TK3
                     {"JournalGuid", UUID.Get()},
-                    {"ActivityId", OldRow["task_id"]},
-                    {"ProjectId", OldRow["project_id"]},
                     {"StartTime", ConvertTime(OldRow["timestamp_s"])},
                     {"StopTime", ConvertTime(OldRow["timestamp_e"])},
                     {"Seconds", DeltaSeconds},
+                    {"ProjectId", OldRow["project_id"]},
+                    {"ActivityId", OldRow["task_id"]},
                     {"LocationId", 1},
-                    {"CategoryId", null},
+                    {"CategoryId", 1},
                     {"IsLocked", OldRow["is_locked"] ? 1 : 0},
-                    // FIXME: Don't forget to get rid of these
-                    {"OriginalStartTime", Timekeeper.DateForDatabase(OldRow["timestamp_s"])},
-                    {"OriginalStopTime", Timekeeper.DateForDatabase(OldRow["timestamp_e"])},
                 };
 
                 switch (UpgradeOptions.MemoMergeTypeId) {
@@ -710,7 +710,9 @@ namespace Timekeeper
                     {"NotebookGuid", UUID.Get()},
                     {"EntryTime", ConvertTime(OldRow["timestamp_entry"])},
                     {"Memo", OldRow["description"]},
-                    {"LocationId", 1},
+                    {"ProjectId", null},
+                    {"ActivityId", null},
+                    {"LocationId", null},
                     {"CategoryId", null},
                 };
                 InsertedRowId = this.Database.Insert("Notebook", NewRow);
@@ -746,22 +748,22 @@ namespace Timekeeper
             foreach (Row OldRow in GridView) {
                 RowId = OldRow["id"];
 
-                // FIXME: we're still missing the "end date type' concept (previously known as grid_views.end_date_type)
                 Row NewFilterOptionsRow = new Row() {
                     {"CreateTime", Timekeeper.DateForDatabase()},
                     {"ModifyTime", Timekeeper.DateForDatabase()},
-                    {"ActivityList", OldRow["task_list"]},
-                    {"ProjectList", OldRow["project_list"]},
+                    {"FilterOptionsType", 1},
                     {"RefDatePresetId", OldRow["date_preset"]},
-                    {"FromDate", OldRow["start_date"]},
-                    {"ToDate", OldRow["end_date"]},
+                    {"FromTime", OldRow["start_date"]},
+                    {"ToTime", OldRow["end_date"]},
                     {"MemoOperator", null},
                     {"MemoValue", null},
+                    {"ProjectList", OldRow["project_list"]},
+                    {"ActivityList", OldRow["task_list"]},
+                    {"LocationList", null},
+                    {"CategoryList", null},
                     {"DurationOperator", null},
                     {"DurationAmount", null},
                     {"DurationUnit", null},
-                    {"LocationList", null},
-                    {"CategoryList", null}
                 };
                 InsertedRowId = this.Database.Insert("FilterOptions", NewFilterOptionsRow);
                 if (InsertedRowId == 0) throw new Exception("Insert failed");
