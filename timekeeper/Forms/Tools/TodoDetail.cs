@@ -83,7 +83,7 @@ namespace Timekeeper.Forms.Tools
                     if (DateSpecified(TodoItem.DueTime))
                         this.DueTime.Value = TodoItem.DueTime.Value.DateTime;
                     if (TodoItem.Estimate > 0)
-                        this.EstimateBox.Text = Timekeeper.FormatSeconds(TodoItem.Estimate);
+                        this.EstimateBox.Text = Timekeeper.FormatSeconds(TodoItem.Estimate.HasValue ? TodoItem.Estimate.Value : 0);
 
                 } else {
 

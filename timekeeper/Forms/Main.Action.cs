@@ -241,6 +241,9 @@ namespace Timekeeper.Forms
                     return false;
                 }
 
+                // Instantiate Meta data as soon as possible
+                Meta = new Classes.Meta();
+
                 File File = new File();
 
                 switch (File.Check()) {
@@ -261,16 +264,12 @@ namespace Timekeeper.Forms
                         return false;
 
                     case File.ERROR_REQUIRES_UPGRADE:
-                        if (Action_ConvertPriorVersion()) {
+                        if (Action_ConvertPriorVersion(File)) {
                             return true;
                         } else {
                             return false;
                         }
                 }
-
-                // Instantiate Meta class. This is used here
-                // and globally throughout the Main object realm.
-                Meta = new Classes.Meta();
 
                 if (Meta.ProcessId > 0) {
 
@@ -1012,7 +1011,7 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        private bool Action_ConvertPriorVersion()
+        private bool Action_ConvertPriorVersion(File file)
         {
             bool status = false;
 
@@ -1025,6 +1024,7 @@ namespace Timekeeper.Forms
                 // Open dialog box
                 Forms.Wizards.UpgradeDatabase Dialog = new Forms.Wizards.UpgradeDatabase();
                 Dialog.BackUpFileLabel.Text = NewDataFile;
+                Dialog.FileToUpgrade = file;
                 //Dialog.StepLabel.Text = "Click the Start button to begin the database upgrade...";
                 if (Dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
                     status = true;

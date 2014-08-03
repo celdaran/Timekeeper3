@@ -21,9 +21,6 @@ namespace Timekeeper.Classes
         public string Memo { get; set; }
         public long ProjectId { get; set; }
         public long RefTodoStatusId { get; set; }
-        public DateTimeOffset? StartTime { get; set; }
-        public DateTimeOffset? DueTime { get; set; }
-        public long Estimate { get; set; }
         public bool IsHidden { get; set; }
         public bool IsDeleted { get; set; }
         public DateTimeOffset? HiddenTime { get; set; }
@@ -33,6 +30,13 @@ namespace Timekeeper.Classes
         public string StatusName { get; private set; }
         public string StatusDescription { get; private set; }
         public string ProjectFolderName { get; private set; }
+
+        // These attributes are persisted with the Project, but 
+        // exposed as properties here for convenience. The methods
+        // sort out the underlying table implementation.
+        public DateTimeOffset? StartTime { get; set; }
+        public DateTimeOffset? DueTime { get; set; }
+        public long? Estimate { get; set; }
 
         //----------------------------------------------------------------------
 
@@ -59,9 +63,9 @@ namespace Timekeeper.Classes
                     t.TodoId, t.CreateTime, t.ModifyTime,
                     t.Memo,
                     p.ProjectId, p.Name as ProjectName,
+                    p.StartTime, p.DueTime, 
+                    p.Estimate,
                     r.RefTodoStatusId, r.Name as StatusName , r.Description as StatusDescription,
-                    t.StartTime, t.DueTime, 
-                    t.Estimate,
                     t.IsHidden, t.HiddenTime,
                     t.IsDeleted, t.DeletedTime
                 FROM Todo t
@@ -103,6 +107,8 @@ namespace Timekeeper.Classes
         public bool Create()
         {
             try {
+                // Update Todo table
+
                 Row TodoItem = new Row();
 
                 string Now = Timekeeper.DateForDatabase();
@@ -113,9 +119,6 @@ namespace Timekeeper.Classes
                 TodoItem["Memo"] = this.Memo;
                 TodoItem["ProjectId"] = this.ProjectId;
                 TodoItem["RefTodoStatusId"] = this.RefTodoStatusId;
-                TodoItem["StartTime"] = Timekeeper.NullableDateForDatabase(this.StartTime);
-                TodoItem["DueTime"] = Timekeeper.NullableDateForDatabase(this.DueTime);
-                TodoItem["Estimate"] = 0;
                 TodoItem["IsHidden"] = 0;
                 TodoItem["IsDeleted"] = 0;
 
@@ -124,6 +127,13 @@ namespace Timekeeper.Classes
                 if (this.TodoId == 0) {
                     throw new Exception("Could not create Todo item.");
                 }
+
+                // Update Project
+                Classes.Project RelatedProject = new Classes.Project(this.ProjectId);
+                RelatedProject.StartTime = this.StartTime;
+                RelatedProject.DueTime = this.DueTime;
+                RelatedProject.Estimate = this.Estimate;
+                RelatedProject.SaveTask();
 
                 // Backfill instance with system-generated values
                 this.CreateTime = Timekeeper.StringToDate(TodoItem["CreateTime"]);
@@ -156,13 +166,17 @@ namespace Timekeeper.Classes
                 TodoItem["Memo"] = this.Memo;
                 TodoItem["ProjectId"] = this.ProjectId;
                 TodoItem["RefTodoStatusId"] = this.RefTodoStatusId;
-                TodoItem["StartTime"] = Timekeeper.NullableDateForDatabase(this.StartTime);
-                TodoItem["DueTime"] = Timekeeper.NullableDateForDatabase(this.DueTime);
-                TodoItem["Estimate"] = this.Estimate;
 
                 if (Database.Update("Todo", TodoItem, "TodoId", this.TodoId) != 1) {
                     throw new Exception("Could not save Todo item.");
                 }
+
+                // Update Project
+                Classes.Project RelatedProject = new Classes.Project(this.ProjectId);
+                RelatedProject.StartTime = this.StartTime;
+                RelatedProject.DueTime = this.DueTime;
+                RelatedProject.Estimate = this.Estimate;
+                RelatedProject.SaveTask();
 
                 // Backfill instance with system-generated values
                 this.ModifyTime = Timekeeper.StringToDate(TodoItem["ModifyTime"]);

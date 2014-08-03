@@ -18,10 +18,6 @@ CREATE TABLE Todo
     ProjectId               INTEGER     NOT NULL UNIQUE,
     RefTodoStatusId         INTEGER     NOT NULL,
 
-    StartTime               DATETIME        NULL,
-    DueTime                 DATETIME        NULL,
-    Estimate                INTEGER     NOT NULL,
-
     IsHidden                BOOLEAN     NOT NULL,
     IsDeleted               BOOLEAN     NOT NULL,
     HiddenTime              DATETIME        NULL,

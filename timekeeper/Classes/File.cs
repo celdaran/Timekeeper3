@@ -11,7 +11,7 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper
 {
-    partial class File
+    public partial class File
     {
         public DBI Database;
 
@@ -38,7 +38,7 @@ namespace Timekeeper
         // (nor were the DDL statements stored as resources or under version 
         // control).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.9.2";
+        public const string SCHEMA_VERSION = "3.0.9.3";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;

@@ -33,12 +33,15 @@ namespace Timekeeper.Classes
         public long? LastLocationId { get; set; }        // used by Project
         public long? LastCategoryId { get; set; }        // used by Project
         public string ExternalProjectNo { get; set; }    // used by Project
+        public DateTimeOffset? StartTime { get; set; }   // used by Project
+        public DateTimeOffset? DueTime { get; set; }     // used by Project
+        public long? Estimate { get; set; }              // used by Project
         public long? RefTimeZoneId { get; set; }         // used by Location
 
         public Timekeeper.Dimension Dimension { get; set; }
 
         // In-memory only
-        public DateTimeOffset StartTime;
+        public DateTimeOffset TimerStartedTime;
 
         //---------------------------------------------------------------------
         // Protected Properties
@@ -279,6 +282,9 @@ namespace Timekeeper.Classes
             this.LastLocationId = source.LastLocationId;
             this.LastCategoryId = source.LastCategoryId;
             this.ExternalProjectNo = source.ExternalProjectNo;
+            this.StartTime = source.StartTime;
+            this.DueTime = source.DueTime;
+            this.Estimate = source.Estimate;
             this.RefTimeZoneId = source.RefTimeZoneId;
         }
 
@@ -324,6 +330,9 @@ namespace Timekeeper.Classes
                 Row["LastLocationId"] = this.LastLocationId;
                 Row["LastCategoryId"] = this.LastCategoryId;
                 Row["ExternalProjectNo"] = this.ExternalProjectNo;
+                Row["StartTime"] = this.StartTime;
+                Row["DueTime"] = this.DueTime;
+                Row["Estimate"] = this.Estimate;
             }
 
             if (this.Dimension == Timekeeper.Dimension.Activity) {
@@ -357,7 +366,7 @@ namespace Timekeeper.Classes
         public TimeSpan Elapsed()
         {
             DateTimeOffset Now = Timekeeper.LocalNow;
-            return new TimeSpan(Now.Ticks - StartTime.Ticks);
+            return new TimeSpan(Now.Ticks - TimerStartedTime.Ticks);
         }
 
         //---------------------------------------------------------------------
@@ -366,7 +375,7 @@ namespace Timekeeper.Classes
         {
             DateTimeOffset Now = Timekeeper.LocalNow;
             Now = Now.AddSeconds(this.SecondsElapsedToday);
-            return new TimeSpan(Now.Ticks - StartTime.Ticks);
+            return new TimeSpan(Now.Ticks - TimerStartedTime.Ticks);
         }
 
         //---------------------------------------------------------------------
@@ -467,6 +476,9 @@ namespace Timekeeper.Classes
                 this.LastLocationId = row["LastLocationId"];
                 this.LastCategoryId = row["LastCategoryId"];
                 this.ExternalProjectNo = row["ExternalProjectNo"];
+                this.StartTime = row["StartTime"];
+                this.DueTime = row["DueTime"];
+                this.Estimate = row["Estimate"];
             }
 
             if (this.Dimension == Timekeeper.Dimension.Activity) {
@@ -606,7 +618,7 @@ namespace Timekeeper.Classes
         public void StartTiming(DateTimeOffset setStartTime)
         {
             // Simply record the time we start
-            this.StartTime = setStartTime;
+            this.TimerStartedTime = setStartTime;
 
             // Update (in memory) elapsed seconds for today
             this.SetSecondsElapsedToday();
@@ -624,7 +636,7 @@ namespace Timekeeper.Classes
             */
              
             // Calculate elapsed seconds
-            TimeSpan Delta = setStopTime.Subtract(this.StartTime);
+            TimeSpan Delta = setStopTime.Subtract(this.TimerStartedTime);
             int ElapsedSeconds = Convert.ToInt32(Delta.TotalSeconds);
 
             // Update (in memory) elapsed seconds for today
@@ -647,6 +659,17 @@ namespace Timekeeper.Classes
         {
             this.IsHidden = false;
             return SetStatus("Hidden", this.IsHidden);
+        }
+
+        //---------------------------------------------------------------------
+
+        public int SaveTask()
+        {
+            Row Project = new Row();
+            Project["StartTime"] = Timekeeper.NullableDateForDatabase(this.StartTime);
+            Project["DueTime"] = Timekeeper.NullableDateForDatabase(this.DueTime);
+            Project["Estimate"] = this.Estimate;
+            return (int)this.Database.Update("Project", Project, "ProjectId", this.ItemId);
         }
 
         //---------------------------------------------------------------------

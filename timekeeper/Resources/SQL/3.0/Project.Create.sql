@@ -34,6 +34,9 @@ CREATE TABLE Project
     LastCategoryId      INTEGER         NULL,
 
     ExternalProjectNo   TEXT            NULL,
+    StartTime           DATETIME        NULL,
+    DueTime             DATETIME        NULL,
+    Estimate            INTEGER         NULL,
 
     FOREIGN KEY(ParentId)           REFERENCES Project(ProjectId)
     FOREIGN KEY(LastActivityId)     REFERENCES Activity(ActivityId)

@@ -28,6 +28,10 @@ namespace Timekeeper.Forms.Wizards
 
         //----------------------------------------------------------------------
 
+        public File FileToUpgrade { get; set; }
+
+        //----------------------------------------------------------------------
+
         // FIXME: This belongs in the wizard code
         private bool IsDirty = false;
 
@@ -85,12 +89,22 @@ namespace Timekeeper.Forms.Wizards
                     IsDirty = true;
                 }
 
+                if (this.Widgets.CurrentTab() == 2) {
+                    // If they've just entered their file name, find out 
+                    // what version it is. The selected file can affect
+                    // the wizard flow from here on out.
+                    Version FoundSchemaVersion = FileToUpgrade.GetSchemaVersion();
+                    if (FoundSchemaVersion.Major == 3) {
+                        this.Widgets.GoForward();
+                        this.Widgets.GoForward();
+                    }
+                }
+
                 // Move to next tab
                 this.Widgets.GoForward();
 
                 // Advance buttons
                 if (this.Widgets.AtEnd()) {
-                //if (tablessControl1.SelectedIndex == tablessControl1.TabCount - 1) {
                     StartButton.Visible = true;
                     StartButton.Location = NextButton.Location;
                     StartButton.Size = NextButton.Size;
@@ -149,6 +163,9 @@ namespace Timekeeper.Forms.Wizards
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            // Issue #1317: We need to give something focus other than the review box.
+            UpgradeProgress.Focus();
+
             // Change button state
             StartButton.Enabled = false;
             LaterButton.Enabled = false;
