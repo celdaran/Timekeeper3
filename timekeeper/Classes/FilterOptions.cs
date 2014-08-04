@@ -105,12 +105,13 @@ namespace Timekeeper.Classes
         public const int DATE_PRESET_YESTERDAY = 2;
         public const int DATE_PRESET_PREVIOUS_DAY = 3;
         public const int DATE_PRESET_THIS_WEEK = 4;
-        public const int DATE_PRESET_THIS_MONTH = 5;
-        public const int DATE_PRESET_LAST_MONTH = 6;
-        public const int DATE_PRESET_THIS_YEAR = 7;
-        public const int DATE_PRESET_LAST_YEAR = 8;
-        public const int DATE_PRESET_ALL = 9;
-        public const int DATE_PRESET_CUSTOM = 10;
+        public const int DATE_PRESET_LAST_WEEK = 5;
+        public const int DATE_PRESET_THIS_MONTH = 6;
+        public const int DATE_PRESET_LAST_MONTH = 7;
+        public const int DATE_PRESET_THIS_YEAR = 8;
+        public const int DATE_PRESET_LAST_YEAR = 9;
+        public const int DATE_PRESET_ALL = 10;
+        public const int DATE_PRESET_CUSTOM = 11;
 
         //---------------------------------------------------------------------
         // Constructor
@@ -599,11 +600,17 @@ namespace Timekeeper.Classes
 
                 case DATE_PRESET_THIS_WEEK:
                     // TODO: Make the week start day user-definable (e.g., Monday vs. Sunday)
-                    // FIXME: You've defined "THIS WEEK" as "THIS WORK WEEK"
+                    // TODO: Make the week length user-definable (e.g., 5 vs. 7)
                     int MondayDelta = Today.DayOfWeek - DayOfWeek.Monday;
                     this.FromTime = Today.Subtract(new TimeSpan(MondayDelta * 24, 0, 0));
-                    int FridayDelta = DayOfWeek.Friday - Today.DayOfWeek;
-                    this.ToTime = Today.Add(new TimeSpan(FridayDelta * 24, 0, 0));
+                    this.ToTime = FromTime.Value.Add(new TimeSpan(6 * 24, 0, 0));
+                    break;
+
+                case DATE_PRESET_LAST_WEEK:
+                    int LastMondayDelta = Today.DayOfWeek - DayOfWeek.Monday;
+                    this.FromTime = Today.Subtract(new TimeSpan(LastMondayDelta * 24, 0, 0));
+                    this.FromTime = FromTime.Value.Subtract(new TimeSpan(7 * 24, 0, 0));
+                    this.ToTime = FromTime.Value.Add(new TimeSpan(6 * 24, 0, 0));
                     break;
 
                 case DATE_PRESET_THIS_MONTH:

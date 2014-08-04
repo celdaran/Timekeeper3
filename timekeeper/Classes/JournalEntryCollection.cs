@@ -154,15 +154,30 @@ namespace Timekeeper.Classes
         public DateTimeOffset PreviousDay()
         {
             DateTimeOffset PreviousDay;
+            DateTimeOffset Today = DateTimeOffset.Now;
+            string Midnight = "";
 
-            string Query = @"
+            // TODO: if this logic is fairly common, how about 
+            // putting it in class Timekeeper?
+            if (Timekeeper.Options.Advanced_Other_MidnightOffset != 0) {
+                Midnight = String.Format(@"datetime('{0} 00:00:00', '{1} hours')",
+                    Today.Date.ToString(Timekeeper.DATE_FORMAT),
+                    Timekeeper.Options.Advanced_Other_MidnightOffset);
+            } else {
+                Midnight = String.Format(@"'{0} 00:00:00'",
+                    Today.Date.ToString(Timekeeper.DATE_FORMAT));
+            }
+
+            string Query = String.Format(@"
                 select distinct strftime('%Y-%m-%d', StartTime) as Date 
                 from Journal 
-                order by Date desc";
+                where StartTime < {0}
+                order by Date desc
+                limit 1", Midnight);
             Table Rows = Timekeeper.Database.Select(Query);
 
-            if (Rows.Count > 1) {
-                PreviousDay = DateTimeOffset.Parse(Rows[1]["Date"]);
+            if (Rows.Count > 0) {
+                PreviousDay = DateTimeOffset.Parse(Rows[0]["Date"]);
             } else {
                 PreviousDay = Timekeeper.LocalNow;
             }

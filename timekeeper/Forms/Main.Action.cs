@@ -410,7 +410,6 @@ namespace Timekeeper.Forms
 
         private void Action_EnableRevert(string currentText, string previousText)
         {
-//            if ((isBrowsing) || (!isBrowsing && timerRunning)) {
             if (isBrowsing) {
                 if (currentText != previousText) {
                     Browser_EnableRevert(true);
@@ -1460,6 +1459,7 @@ namespace Timekeeper.Forms
                 }
 
                 // Next, adjust the current entry
+                Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
                 browserEntry.StopTime = browserEntry.StartTime.AddTicks(ChunkSize);
                 browserEntry.Seconds = ChunkSizeInSeconds;
                 browserEntry.Save(); // FIXME: rethink a global "save" and support specific updates
