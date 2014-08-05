@@ -262,15 +262,16 @@ namespace Timekeeper.Forms.Shared
 
         private void ChangeMemoValue()
         {
-            // -1: not selected
-            //  0 : contains
-            //  1 : does not contain
-            //  2 : empty
-            //  3 : not empty
-            if ((MemoOperator.SelectedIndex < 0) || (MemoOperator.SelectedIndex > 1)) {
-                MemoValue.Enabled = false;
-            } else {
+            // -1 : not selected
+            //  0 : any
+            //  1 : contains
+            //  2 : does not contain
+            //  3 : empty
+            //  4 : not empty
+            if ((MemoOperator.SelectedIndex == 1) || (MemoOperator.SelectedIndex == 2)) {
                 MemoValue.Enabled = true;
+            } else {
+                MemoValue.Enabled = false;
             }
         }
 
@@ -540,6 +541,56 @@ namespace Timekeeper.Forms.Shared
                 Presets.SelectedIndex = Classes.FilterOptions.DATE_PRESET_CUSTOM - 1;
                 ChangeDateRange = true;
             }
+        }
+
+        // Date Picker Popup Menus
+        // FIXME: Code stolen from Main.cs
+        // Also, SetTimeToMidnight not needed here. Look to Events and Todo items.
+
+        private void Action_CopyDate(DateTimePicker picker)
+        {
+            Clipboard.SetData(DataFormats.StringFormat, picker.Value.ToString(Options.Advanced_DateTimeFormat));
+        }
+
+        private void Action_PasteDate(DateTimePicker picker)
+        {
+            string ClipboardTime = (string)Clipboard.GetData(DataFormats.StringFormat);
+            try {
+                picker.Value = Convert.ToDateTime(ClipboardTime);
+            }
+            catch {
+                Timekeeper.Debug("Invalid date/time format: " + ClipboardTime);
+            }
+        }
+
+        private void Action_SetTimeToMidnight(DateTimePicker picker)
+        {
+            DateTime CurrentValue = picker.Value;
+            CurrentValue = DateTime.Parse(CurrentValue.Date.ToString(Timekeeper.DATE_FORMAT) + " 00:00:00");
+            CurrentValue = CurrentValue.AddHours(Timekeeper.Options.Advanced_Other_MidnightOffset);
+            picker.Value = CurrentValue;
+        }
+
+        private void PopupMenuDatesCopy_Click(object sender, EventArgs e)
+        {
+            // Maybe have next two lines be some sort of Classes.Widget thing? GetSourceDatePicker() or something?
+            ToolStripDropDownItem PopupItem = (ToolStripDropDownItem)sender;
+            DateTimePicker Picker = (DateTimePicker)((ContextMenuStrip)PopupItem.Owner).SourceControl;
+            Action_CopyDate((DateTimePicker)Picker);
+        }
+
+        private void PopupMenuDatesPaste_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem PopupItem = (ToolStripDropDownItem)sender;
+            DateTimePicker Picker = (DateTimePicker)((ContextMenuStrip)PopupItem.Owner).SourceControl;
+            Action_PasteDate((DateTimePicker)Picker);
+        }
+
+        private void PopupMenuDatesSetTimeToMidnight_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem PopupItem = (ToolStripDropDownItem)sender;
+            DateTimePicker Picker = (DateTimePicker)((ContextMenuStrip)PopupItem.Owner).SourceControl;
+            Action_SetTimeToMidnight((DateTimePicker)Picker);
         }
 
         //----------------------------------------------------------------------

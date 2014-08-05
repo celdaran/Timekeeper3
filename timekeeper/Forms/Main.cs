@@ -891,6 +891,17 @@ namespace Timekeeper.Forms
             Action_PasteDate((DateTimePicker)Picker);
         }
 
+        private void PopupMenuDatesCloseGap_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem PopupItem = (ToolStripDropDownItem)sender;
+            DateTimePicker Picker = (DateTimePicker)((ContextMenuStrip)PopupItem.Owner).SourceControl;
+            if (Picker.Name == "StartTimeSelector") {
+                Browser_CloseStartGap();
+            } else {
+                Browser_CloseStopGap();
+            }
+        }
+
         private void wStopTime_ValueChanged(object sender, EventArgs e)
         {
             if (!isBrowsing) {
@@ -1076,6 +1087,13 @@ namespace Timekeeper.Forms
 
             this.MemoEditor.Text += "\n";
         }
+
+        private void MenuToolCustomCalendar_Click(object sender, EventArgs e)
+        {
+            Forms.Tools.CustomCalendar Dialog = new Tools.CustomCalendar();
+            Dialog.Show();
+        }
+
 
         //---------------------------------------------------------------------
         // FIXME - EXPERIMENTAL - NOT READY FOR PRIME TIME

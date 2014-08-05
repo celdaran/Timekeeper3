@@ -186,8 +186,8 @@ namespace Timekeeper.Forms
             this.PopupMenuDates = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuDatesCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuDatesPaste = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.closeGapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuDatesSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.PopupMenuDatesCloseGap = new System.Windows.Forms.ToolStripMenuItem();
             this.StartTimeSelector = new System.Windows.Forms.DateTimePicker();
             this.StartLabel = new System.Windows.Forms.Label();
             this.StopLabel = new System.Windows.Forms.Label();
@@ -230,6 +230,7 @@ namespace Timekeeper.Forms
             this.PopupMenuMemoCutSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.MenuToolCustomCalendar = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -511,6 +512,7 @@ namespace Timekeeper.Forms
             this.MenuToolEvents,
             this.MenuToolNotebook,
             this.MenuToolCalendar,
+            this.MenuToolCustomCalendar,
             this.MenuToolStopwatch,
             this.MenuToolCountdown,
             this.MenuToolDatecalc,
@@ -1626,8 +1628,8 @@ namespace Timekeeper.Forms
             this.PopupMenuDates.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PopupMenuDatesCopy,
             this.PopupMenuDatesPaste,
-            this.toolStripMenuItem1,
-            this.closeGapToolStripMenuItem});
+            this.PopupMenuDatesSep1,
+            this.PopupMenuDatesCloseGap});
             this.PopupMenuDates.Name = "PopupMenuDates";
             this.PopupMenuDates.Size = new System.Drawing.Size(123, 76);
             // 
@@ -1645,16 +1647,17 @@ namespace Timekeeper.Forms
             this.PopupMenuDatesPaste.Text = "Paste";
             this.PopupMenuDatesPaste.Click += new System.EventHandler(this.PopupMenuDatesPaste_Click);
             // 
-            // toolStripMenuItem1
+            // PopupMenuDatesSep1
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(119, 6);
+            this.PopupMenuDatesSep1.Name = "PopupMenuDatesSep1";
+            this.PopupMenuDatesSep1.Size = new System.Drawing.Size(119, 6);
             // 
-            // closeGapToolStripMenuItem
+            // PopupMenuDatesCloseGap
             // 
-            this.closeGapToolStripMenuItem.Name = "closeGapToolStripMenuItem";
-            this.closeGapToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.closeGapToolStripMenuItem.Text = "Close Gap";
+            this.PopupMenuDatesCloseGap.Name = "PopupMenuDatesCloseGap";
+            this.PopupMenuDatesCloseGap.Size = new System.Drawing.Size(122, 22);
+            this.PopupMenuDatesCloseGap.Text = "Close Gap";
+            this.PopupMenuDatesCloseGap.Click += new System.EventHandler(this.PopupMenuDatesCloseGap_Click);
             // 
             // StartTimeSelector
             // 
@@ -2066,6 +2069,14 @@ namespace Timekeeper.Forms
             this.MainPanel.Size = new System.Drawing.Size(684, 273);
             this.MainPanel.TabIndex = 1;
             // 
+            // MenuToolCustomCalendar
+            // 
+            this.MenuToolCustomCalendar.Name = "MenuToolCustomCalendar";
+            this.MenuToolCustomCalendar.Size = new System.Drawing.Size(182, 22);
+            this.MenuToolCustomCalendar.Text = "Custom Calendar";
+            this.MenuToolCustomCalendar.Visible = false;
+            this.MenuToolCustomCalendar.Click += new System.EventHandler(this.MenuToolCustomCalendar_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2259,8 +2270,8 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.Panel ProjectPanel;
         private System.Windows.Forms.ToolStripMenuItem MenuActionManageProjects;
         private System.Windows.Forms.ToolStripMenuItem MenuActionManageActivities;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem closeGapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator PopupMenuDatesSep1;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuDatesCloseGap;
         private ComboTreeBox LocationTreeDropdown;
         private ComboTreeBox CategoryTreeDropdown;
         private System.Windows.Forms.ContextMenuStrip PopupMenuDimension;
@@ -2310,5 +2321,6 @@ namespace Timekeeper.Forms
         internal System.Windows.Forms.Panel DimensionPanel;
         internal System.Windows.Forms.Button CloseStartGapButton;
         internal System.Windows.Forms.Button CloseStopGapButton;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolCustomCalendar;
     }
 }

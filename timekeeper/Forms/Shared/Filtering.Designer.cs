@@ -74,6 +74,10 @@ namespace Timekeeper.Forms.Shared
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.ClearButton = new System.Windows.Forms.Button();
             this.ButtonPanel = new System.Windows.Forms.Panel();
+            this.PopupMenuDates = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.PopupMenuDatesCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuDatesPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuDatesSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.TreeViewMenu.SuspendLayout();
             this.FilterOptionsTabControl.SuspendLayout();
             this.CommonTab.SuspendLayout();
@@ -89,6 +93,7 @@ namespace Timekeeper.Forms.Shared
             this.groupBox1.SuspendLayout();
             this.BottomPanel.SuspendLayout();
             this.ButtonPanel.SuspendLayout();
+            this.PopupMenuDates.SuspendLayout();
             this.SuspendLayout();
             // 
             // ToDateLabel
@@ -130,6 +135,7 @@ namespace Timekeeper.Forms.Shared
             // 
             // ToDate
             // 
+            this.ToDate.ContextMenuStrip = this.PopupMenuDates;
             this.ToDate.CustomFormat = "yyyy-MM-dd";
             this.ToDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.ToDate.Location = new System.Drawing.Point(84, 78);
@@ -141,6 +147,7 @@ namespace Timekeeper.Forms.Shared
             // 
             // FromDate
             // 
+            this.FromDate.ContextMenuStrip = this.PopupMenuDates;
             this.FromDate.CustomFormat = "yyyy-MM-dd";
             this.FromDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.FromDate.Location = new System.Drawing.Point(84, 52);
@@ -296,6 +303,7 @@ namespace Timekeeper.Forms.Shared
             this.MemoOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MemoOperator.FormattingEnabled = true;
             this.MemoOperator.Items.AddRange(new object[] {
+            "Any",
             "Contains",
             "Does Not Contain",
             "Is Empty",
@@ -527,6 +535,7 @@ namespace Timekeeper.Forms.Shared
             // 
             // ModifyTimePresets
             // 
+            this.ModifyTimePresets.ContextMenuStrip = this.PopupMenuDates;
             this.ModifyTimePresets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ModifyTimePresets.FormattingEnabled = true;
             this.ModifyTimePresets.Location = new System.Drawing.Point(146, 51);
@@ -545,6 +554,7 @@ namespace Timekeeper.Forms.Shared
             // 
             // CreateTimePresets
             // 
+            this.CreateTimePresets.ContextMenuStrip = this.PopupMenuDates;
             this.CreateTimePresets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CreateTimePresets.FormattingEnabled = true;
             this.CreateTimePresets.Location = new System.Drawing.Point(146, 24);
@@ -581,6 +591,35 @@ namespace Timekeeper.Forms.Shared
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(164, 34);
             this.ButtonPanel.TabIndex = 0;
+            // 
+            // PopupMenuDates
+            // 
+            this.PopupMenuDates.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PopupMenuDatesCopy,
+            this.PopupMenuDatesPaste,
+            this.PopupMenuDatesSep1});
+            this.PopupMenuDates.Name = "PopupMenuDates";
+            this.PopupMenuDates.Size = new System.Drawing.Size(153, 76);
+            // 
+            // PopupMenuDatesCopy
+            // 
+            this.PopupMenuDatesCopy.Name = "PopupMenuDatesCopy";
+            this.PopupMenuDatesCopy.Size = new System.Drawing.Size(171, 22);
+            this.PopupMenuDatesCopy.Text = "Copy";
+            this.PopupMenuDatesCopy.Click += new System.EventHandler(this.PopupMenuDatesCopy_Click);
+            // 
+            // PopupMenuDatesPaste
+            // 
+            this.PopupMenuDatesPaste.Name = "PopupMenuDatesPaste";
+            this.PopupMenuDatesPaste.Size = new System.Drawing.Size(171, 22);
+            this.PopupMenuDatesPaste.Text = "Paste";
+            this.PopupMenuDatesPaste.Click += new System.EventHandler(this.PopupMenuDatesPaste_Click);
+            // 
+            // PopupMenuDatesSep1
+            // 
+            this.PopupMenuDatesSep1.Name = "PopupMenuDatesSep1";
+            this.PopupMenuDatesSep1.Size = new System.Drawing.Size(149, 6);
+            this.PopupMenuDatesSep1.Visible = false;
             // 
             // Filtering
             // 
@@ -619,6 +658,7 @@ namespace Timekeeper.Forms.Shared
             this.groupBox1.PerformLayout();
             this.BottomPanel.ResumeLayout(false);
             this.ButtonPanel.ResumeLayout(false);
+            this.PopupMenuDates.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -670,5 +710,9 @@ namespace Timekeeper.Forms.Shared
         public System.Windows.Forms.ImageList TreeImageList;
         private System.Windows.Forms.TreeView LocationTree;
         private System.Windows.Forms.TreeView CategoryTree;
+        private System.Windows.Forms.ContextMenuStrip PopupMenuDates;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuDatesCopy;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuDatesPaste;
+        private System.Windows.Forms.ToolStripSeparator PopupMenuDatesSep1;
     }
 }

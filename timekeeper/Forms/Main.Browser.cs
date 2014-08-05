@@ -162,37 +162,8 @@ namespace Timekeeper.Forms
                     Browser_EnableSplit(true);
                 }
 
-                // Enable/disable start gap button
-                if (browserEntry.AtBeginning()) {
-                    Browser_EnableCloseStartGap(false);
-                } else {
-                    DateTimeOffset? PreviousEndTime = Browser_GetPreviousEndTime();
-                    if (PreviousEndTime == null) {
-                        Browser_EnableCloseStartGap(false);
-                    } else {
-                        if (PreviousEndTime.Value.DateTime.CompareTo(StartTimeSelector.Value) == 0) {
-                            Browser_EnableCloseStartGap(false);
-                        } else {
-                            Browser_EnableCloseStartGap(true);
-                        }
-                    }
-                }
-
-                // Enable/disable stop gap button
-                if (browserEntry.AtEnd()) {
-                    Browser_EnableCloseStopGap(true);
-                } else {
-                    DateTimeOffset? NextStartTime = Browser_GetNextStartTime();
-                    if (NextStartTime == null) {
-                        Browser_EnableCloseStopGap(true);
-                    } else {
-                        if (NextStartTime.Value.DateTime.CompareTo(StopTimeSelector.Value) == 0) {
-                            Browser_EnableCloseStopGap(false);
-                        } else {
-                            Browser_EnableCloseStopGap(true);
-                        }
-                    }
-                }
+                Browser_DetermineStartGapState();
+                Browser_DetermineStopGapState();
 
                 // Set focus
                 MemoEditor.Focus();
@@ -200,6 +171,44 @@ namespace Timekeeper.Forms
             catch (Exception x) {
                 //Common.Warn(x.ToString());
                 Timekeeper.Exception(x);
+            }
+        }
+
+        private void Browser_DetermineStartGapState()
+        {
+            // Enable/disable start gap button
+            if (browserEntry.AtBeginning()) {
+                Browser_EnableCloseStartGap(false);
+            } else {
+                DateTimeOffset? PreviousEndTime = Browser_GetPreviousEndTime();
+                if (PreviousEndTime == null) {
+                    Browser_EnableCloseStartGap(false);
+                } else {
+                    if (PreviousEndTime.Value.DateTime.CompareTo(StartTimeSelector.Value) == 0) {
+                        Browser_EnableCloseStartGap(false);
+                    } else {
+                        Browser_EnableCloseStartGap(true);
+                    }
+                }
+            }
+        }
+
+        private void Browser_DetermineStopGapState()
+        {
+            // Enable/disable stop gap button
+            if (browserEntry.AtEnd()) {
+                Browser_EnableCloseStopGap(true);
+            } else {
+                DateTimeOffset? NextStartTime = Browser_GetNextStartTime();
+                if (NextStartTime == null) {
+                    Browser_EnableCloseStopGap(true);
+                } else {
+                    if (NextStartTime.Value.DateTime.CompareTo(StopTimeSelector.Value) == 0) {
+                        Browser_EnableCloseStopGap(false);
+                    } else {
+                        Browser_EnableCloseStopGap(true);
+                    }
+                }
             }
         }
 
@@ -280,6 +289,13 @@ namespace Timekeeper.Forms
         {
             ToolbarRevert.Enabled = enabled;
             MenuToolbarBrowserRevert.Enabled = enabled;
+            // Revert is locked to Save
+            Browser_EnableSave(enabled);
+        }
+
+        private void Browser_EnableSave(bool enabled)
+        {
+            // Save is not locked to Revert
             ToolbarSave.Enabled = enabled;
             MenuToolbarBrowserSave.Enabled = enabled;
         }

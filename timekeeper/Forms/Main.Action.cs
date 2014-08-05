@@ -66,8 +66,7 @@ namespace Timekeeper.Forms
         private void SetDirtyBit(Classes.TreeAttribute item, long browserItemId)
         {
             if ((isBrowsing) && (item.ItemId != browserItemId)) {
-                ToolbarSave.Enabled = true;
-                ToolbarRevert.Enabled = true;
+                Browser_EnableRevert(true);
             }
         }
 
@@ -413,6 +412,12 @@ namespace Timekeeper.Forms
             if (isBrowsing) {
                 if (currentText != previousText) {
                     Browser_EnableRevert(true);
+                }
+            } else if (timerRunning) {
+                if (currentText != previousText) {
+                    // Issue #1369 starts here
+                    // But it gets complicated. Passing on this until later...
+                    //Browser_EnableSave(true);
                 }
             }
         }
@@ -1321,7 +1326,9 @@ namespace Timekeeper.Forms
             TimedEntry.LocationId = TimedLocation.ItemId;
             TimedEntry.CategoryId = TimedCategory.ItemId;
             TimedEntry.IsLocked = true;
-            if (!TimedEntry.Create()) {
+            if (TimedEntry.Create()) {
+                browserEntry.JournalId = TimedEntry.JournalId;
+            } else {
                 Common.Warn("There was an error starting the timer.");
                 return;
             }
@@ -1462,8 +1469,7 @@ namespace Timekeeper.Forms
                 Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
                 browserEntry.StopTime = browserEntry.StartTime.AddTicks(ChunkSize);
                 browserEntry.Seconds = ChunkSizeInSeconds;
-                browserEntry.Save(); // FIXME: rethink a global "save" and support specific updates
-                                     // TODO: I swear I typed stuff in, hit Split, and it didn't save my current edits
+                browserEntry.Save();
                 DateTimeOffset LastChunkTime = browserEntry.StopTime;
 
                 // Clone the current entry
@@ -1527,6 +1533,8 @@ namespace Timekeeper.Forms
                 if ((currentTime != previousTime) || (ToolbarRevert.Enabled)) {
                     Browser_UpdateDurationBox();
                     Browser_EnableRevert(true);
+                    Browser_DetermineStartGapState();
+                    Browser_DetermineStopGapState();
                 }
             }
         }
