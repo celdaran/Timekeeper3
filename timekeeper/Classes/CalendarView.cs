@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,13 +7,13 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    public class FindView : BaseView
+    class CalendarView : BaseView
     {
         //----------------------------------------------------------------------
         // Private Properties
         //----------------------------------------------------------------------
 
-        private static string ViewTableName = "FindView";
+        private static string ViewTableName = "CalendarView";
 
         //----------------------------------------------------------------------
         // Public Properties
@@ -23,19 +23,21 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public FindView() : base(ViewTableName)
+        public CalendarView() : base(ViewTableName)
         {
         }
 
         //---------------------------------------------------------------------
 
-        public FindView(long findViewId) : base(ViewTableName, findViewId)
+        public CalendarView(long calendarViewId)
+            : base(ViewTableName, calendarViewId)
         {
         }
 
         //---------------------------------------------------------------------
 
-        public FindView(string findViewName) : base(ViewTableName, findViewName)
+        public CalendarView(string calendarViewName)
+            : base(ViewTableName, calendarViewName)
         {
         }
 
@@ -62,39 +64,13 @@ namespace Timekeeper.Classes
                     j.StartTime, j.StopTime, j.Seconds,
                     j.Memo, j.IsLocked
                 from Journal j
-                join Project p on p.ProjectId = j.ProjectId
                 join Activity a on a.ActivityId = j.ActivityId
+                join Project p on p.ProjectId = j.ProjectId
                 join Location l on l.LocationId = j.LocationId
                 join Category c on c.CategoryId = j.CategoryId
                 where {0}
                 order by {1}",
                 this.FilterOptions.WhereClause, "j.JournalId");
-
-            Table FindResults = Database.Select(Query);
-
-            return FindResults;
-        }
-
-        //---------------------------------------------------------------------
-
-        public Table NotebookResults()
-        {
-            string Query = String.Format(@"
-                select
-                    j.NotebookId, j.CreateTime, j.ModifyTime,
-                    j.ProjectId as NotebookProjectId, p.Name as NotebookProjectName,
-                    j.ActivityId as NotebookActivityId, a.Name as NotebookActivityName,
-                    j.LocationId as NotebookLocationId, l.Name as NotebookLocationName,
-                    j.CategoryId as NotebookCategoryId, c.Name as NotebookCategoryName,
-                    j.EntryTime as NotebookEntryTime, j.Memo as NotebookMemo
-                from Notebook j
-                join Project p on p.ProjectId = j.ProjectId
-                join Activity a on a.ActivityId = j.ActivityId
-                join Location l on l.LocationId = j.LocationId
-                join Category c on c.CategoryId = j.CategoryId
-                where {0}
-                order by {1}",
-                this.FilterOptions.WhereClause, "j.NotebookId");
 
             Table FindResults = Database.Select(Query);
 

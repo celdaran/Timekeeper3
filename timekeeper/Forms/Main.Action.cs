@@ -270,7 +270,7 @@ namespace Timekeeper.Forms
                         }
                 }
 
-                if (Meta.ProcessId > 0) {
+                if ((Meta.ProcessId > 0) && (Options.Advanced_Other_WarnOpeningLockedDatabase)) {
 
                     string Message;
                     string ProcessName = "Unknown";

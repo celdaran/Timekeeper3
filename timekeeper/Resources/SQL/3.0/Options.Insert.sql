@@ -100,3 +100,17 @@ INSERT INTO Options
     'LastReportViewId',
     null
 );
+
+INSERT INTO Options
+(
+    CreateTime,
+    ModifyTime,
+    Key,
+    Value
+
+) VALUES (
+    '{0}',
+    '{0}',
+    'LastCalendarViewId',
+    null
+);

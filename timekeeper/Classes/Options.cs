@@ -116,6 +116,7 @@ namespace Timekeeper.Classes
         public bool Advanced_Other_EnableStackTracing { get; set; }
         public int Advanced_Other_DimensionWidth { get; set; }
         public int Advanced_Other_MidnightOffset { get; set; }
+        public bool Advanced_Other_WarnOpeningLockedDatabase { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Metrics)
@@ -144,16 +145,39 @@ namespace Timekeeper.Classes
         public int Find_Width { get; set; }
         public int Find_Top { get; set; }
         public int Find_Left { get; set; }
-        public int Find_Grid_JournalIdWidth { get; set; }
-        public int Find_Grid_ProjectNameWidth { get; set; }
-        public int Find_Grid_ActivityNameWidth { get; set; }
-        public int Find_Grid_StartTimeWidth { get; set; }
-        public int Find_Grid_StopTimeWidth { get; set; }
-        public int Find_Grid_SecondsWidth { get; set; }
-        public int Find_Grid_MemoWidth { get; set; }
-        public int Find_Grid_LocationNameWidth { get; set; }
-        public int Find_Grid_CategoryNameWidth { get; set; }
-        public int Find_Grid_IsLockedWidth { get; set; }
+        public int Find_JournalGrid_StartTimeWidth { get; set; }
+        public int Find_JournalGrid_StopTimeWidth { get; set; }
+        public int Find_JournalGrid_SecondsWidth { get; set; }
+        public int Find_JournalGrid_MemoWidth { get; set; }
+        public int Find_JournalGrid_ProjectNameWidth { get; set; }
+        public int Find_JournalGrid_ActivityNameWidth { get; set; }
+        public int Find_JournalGrid_LocationNameWidth { get; set; }
+        public int Find_JournalGrid_CategoryNameWidth { get; set; }
+        public int Find_JournalGrid_IsLockedWidth { get; set; }
+        public int Find_JournalGrid_JournalIdWidth { get; set; }
+        public int Find_NotebookGrid_EntryTimeWidth { get; set; }
+        public int Find_NotebookGrid_MemoWidth { get; set; }
+        public int Find_NotebookGrid_ProjectNameWidth { get; set; }
+        public int Find_NotebookGrid_ActivityNameWidth { get; set; }
+        public int Find_NotebookGrid_LocationNameWidth { get; set; }
+        public int Find_NotebookGrid_CategoryNameWidth { get; set; }
+        public int Find_NotebookGrid_NotebookIdWidth { get; set; }
+
+        public int Calendar_Height { get; set; }
+        public int Calendar_Width { get; set; }
+        public int Calendar_Top { get; set; }
+        public int Calendar_Left { get; set; }
+        public bool Calendar_ShowEntries { get; set; }
+        public int Calendar_Grid_StartTimeWidth { get; set; }
+        public int Calendar_Grid_StopTimeWidth { get; set; }
+        public int Calendar_Grid_SecondsWidth { get; set; }
+        public int Calendar_Grid_MemoWidth { get; set; }
+        public int Calendar_Grid_ProjectNameWidth { get; set; }
+        public int Calendar_Grid_ActivityNameWidth { get; set; }
+        public int Calendar_Grid_LocationNameWidth { get; set; }
+        public int Calendar_Grid_CategoryNameWidth { get; set; }
+        public int Calendar_Grid_IsLockedWidth { get; set; }
+        public int Calendar_Grid_JournalIdWidth { get; set; }
 
         public int Todo_Height { get; set; }
         public int Todo_Width { get; set; }
@@ -219,6 +243,7 @@ namespace Timekeeper.Classes
         public long State_LastFindViewId { get; set; }
         public long State_LastGridViewId { get; set; }
         public long State_LastReportViewId { get; set; }
+        public long State_LastCalendarViewId { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -418,6 +443,7 @@ namespace Timekeeper.Classes
             Advanced_Other_EnableStackTracing = ((int)Key.GetValue("Other_EnableStackTracing", 0)) == 1;
             Advanced_Other_DimensionWidth = (int)Key.GetValue("Other_DimensionWidth", 250);
             Advanced_Other_MidnightOffset = (int)Key.GetValue("Other_MidnightOffset", 0);
+            Advanced_Other_WarnOpeningLockedDatabase = ((int)Key.GetValue("Other_WarnOpeningLockedDatabase", 1)) == 1;
 
             //----------------------------------------------------------------------
 
@@ -472,16 +498,41 @@ namespace Timekeeper.Classes
             Find_Width = (int)Key.GetValue("Width", 530);
             Find_Top = (int)Key.GetValue("Top", 100);
             Find_Left = (int)Key.GetValue("Left", 100);
-            Find_Grid_JournalIdWidth = (int)Key.GetValue("Grid_JournalIdWidth", 40);
-            Find_Grid_ProjectNameWidth = (int)Key.GetValue("Grid_ProjectNameWidth", 40);
-            Find_Grid_ActivityNameWidth = (int)Key.GetValue("Grid_ActivityNameWidth", 40);
-            Find_Grid_StartTimeWidth = (int)Key.GetValue("Grid_StartTimeWidth", 40);
-            Find_Grid_StopTimeWidth = (int)Key.GetValue("Grid_StopTimeWidth", 40);
-            Find_Grid_SecondsWidth = (int)Key.GetValue("Grid_SecondsWidth", 40);
-            Find_Grid_MemoWidth = (int)Key.GetValue("Grid_MemoWidth", 40);
-            Find_Grid_LocationNameWidth = (int)Key.GetValue("Grid_LocationNameWidth", 40);
-            Find_Grid_CategoryNameWidth = (int)Key.GetValue("Grid_CategoryNameWidth", 40);
-            Find_Grid_IsLockedWidth = (int)Key.GetValue("Grid_IsLockedWidth", 40);
+            Find_JournalGrid_StartTimeWidth = (int)Key.GetValue("JournalGrid_StartTimeWidth", 80);
+            Find_JournalGrid_StopTimeWidth = (int)Key.GetValue("JournalGrid_StopTimeWidth", 80);
+            Find_JournalGrid_SecondsWidth = (int)Key.GetValue("JournalGrid_SecondsWidth", 72);
+            Find_JournalGrid_MemoWidth = (int)Key.GetValue("JournalGrid_MemoWidth", 100);
+            Find_JournalGrid_ProjectNameWidth = (int)Key.GetValue("JournalGrid_ProjectNameWidth", 65);
+            Find_JournalGrid_ActivityNameWidth = (int)Key.GetValue("JournalGrid_ActivityNameWidth", 65);
+            Find_JournalGrid_LocationNameWidth = (int)Key.GetValue("JournalGrid_LocationNameWidth", 65);
+            Find_JournalGrid_CategoryNameWidth = (int)Key.GetValue("JournalGrid_CategoryNameWidth", 65);
+            Find_JournalGrid_IsLockedWidth = (int)Key.GetValue("JournalGrid_IsLockedWidth", 50);
+            Find_JournalGrid_JournalIdWidth = (int)Key.GetValue("JournalGrid_JournalIdWidth", 50);
+            Find_NotebookGrid_EntryTimeWidth = (int)Key.GetValue("NotebookGrid_EntryTimeWidth", 72);
+            Find_NotebookGrid_MemoWidth = (int)Key.GetValue("NotebookGrid_MemoWidth", 100);
+            Find_NotebookGrid_ProjectNameWidth = (int)Key.GetValue("NotebookGrid_ProjectNameWidth", 65);
+            Find_NotebookGrid_ActivityNameWidth = (int)Key.GetValue("NotebookGrid_ActivityNameWidth", 65);
+            Find_NotebookGrid_LocationNameWidth = (int)Key.GetValue("NotebookGrid_LocationNameWidth", 65);
+            Find_NotebookGrid_CategoryNameWidth = (int)Key.GetValue("NotebookGrid_CategoryNameWidth", 65);
+            Find_NotebookGrid_NotebookIdWidth = (int)Key.GetValue("NotebookGrid_NotebookIdWidth", 50);
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Calendar");
+
+            Calendar_Height = (int)Key.GetValue("Height", 235);
+            Calendar_Width = (int)Key.GetValue("Width", 719);
+            Calendar_Top = (int)Key.GetValue("Top", 100);
+            Calendar_Left = (int)Key.GetValue("Left", 100);
+            Calendar_ShowEntries = ((int)Key.GetValue("ShowEntries", 1) == 1);
+            Calendar_Grid_StartTimeWidth = (int)Key.GetValue("Grid_StartTimeWidth", 80);
+            Calendar_Grid_StopTimeWidth = (int)Key.GetValue("Grid_StopTimeWidth", 80);
+            Calendar_Grid_SecondsWidth = (int)Key.GetValue("Grid_SecondsWidth", 72);
+            Calendar_Grid_MemoWidth = (int)Key.GetValue("Grid_MemoWidth", 100);
+            Calendar_Grid_ProjectNameWidth = (int)Key.GetValue("Grid_ProjectNameWidth", 65);
+            Calendar_Grid_ActivityNameWidth = (int)Key.GetValue("Grid_ActivityNameWidth", 65);
+            Calendar_Grid_LocationNameWidth = (int)Key.GetValue("Grid_LocationNameWidth", 65);
+            Calendar_Grid_CategoryNameWidth = (int)Key.GetValue("Grid_CategoryNameWidth", 65);
+            Calendar_Grid_IsLockedWidth = (int)Key.GetValue("Grid_IsLockedWidth", 50);
+            Calendar_Grid_JournalIdWidth = (int)Key.GetValue("Grid_JournalIdWidth", 50);
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Todo");
 
@@ -753,6 +804,7 @@ namespace Timekeeper.Classes
             Key.SetValue("Other_EnableStackTracing", Advanced_Other_EnableStackTracing, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_DimensionWidth", Advanced_Other_DimensionWidth, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_MidnightOffset", unchecked((int)Advanced_Other_MidnightOffset), Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Other_WarnOpeningLockedDatabase", Advanced_Other_WarnOpeningLockedDatabase, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 
@@ -804,16 +856,40 @@ namespace Timekeeper.Classes
             Key.SetValue("Width", Find_Width, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Top", Find_Top, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Left", Find_Left, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Grid_JournalIdWidth", Find_Grid_JournalIdWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Grid_ProjectNameWidth", Find_Grid_ProjectNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Grid_ActivityNameWidth", Find_Grid_ActivityNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Grid_StartTimeWidth", Find_Grid_StartTimeWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Grid_StopTimeWidth", Find_Grid_StopTimeWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Grid_SecondsWidth", Find_Grid_SecondsWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Grid_MemoWidth", Find_Grid_MemoWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Grid_LocationNameWidth", Find_Grid_LocationNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Grid_CategoryNameWidth", Find_Grid_CategoryNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Grid_IsLockedWidth", Find_Grid_IsLockedWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("JournalGrid_StartTimeWidth", Find_JournalGrid_StartTimeWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("JournalGrid_StopTimeWidth", Find_JournalGrid_StopTimeWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("JournalGrid_SecondsWidth", Find_JournalGrid_SecondsWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("JournalGrid_MemoWidth", Find_JournalGrid_MemoWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("JournalGrid_ProjectNameWidth", Find_JournalGrid_ProjectNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("JournalGrid_ActivityNameWidth", Find_JournalGrid_ActivityNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("JournalGrid_LocationNameWidth", Find_JournalGrid_LocationNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("JournalGrid_CategoryNameWidth", Find_JournalGrid_CategoryNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("JournalGrid_IsLockedWidth", Find_JournalGrid_IsLockedWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NotebookGrid_EntryTimeWidth", Find_NotebookGrid_EntryTimeWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NotebookGrid_MemoWidth", Find_NotebookGrid_MemoWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NotebookGrid_ProjectNameWidth", Find_NotebookGrid_ProjectNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NotebookGrid_ActivityNameWidth", Find_NotebookGrid_ActivityNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NotebookGrid_LocationNameWidth", Find_NotebookGrid_LocationNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NotebookGrid_CategoryNameWidth", Find_NotebookGrid_CategoryNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NotebookGrid_NotebookIdWidth", Find_NotebookGrid_NotebookIdWidth, Microsoft.Win32.RegistryValueKind.DWord);
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Calendar");
+
+            Key.SetValue("Height", Calendar_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", Calendar_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", Calendar_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", Calendar_Left, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("ShowEntries", Calendar_ShowEntries, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_StartTimeWidth", Calendar_Grid_StartTimeWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_StopTimeWidth", Calendar_Grid_StopTimeWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_SecondsWidth", Calendar_Grid_SecondsWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_MemoWidth", Calendar_Grid_MemoWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_ProjectNameWidth", Calendar_Grid_ProjectNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_ActivityNameWidth", Calendar_Grid_ActivityNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_LocationNameWidth", Calendar_Grid_LocationNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_CategoryNameWidth", Calendar_Grid_CategoryNameWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_IsLockedWidth", Calendar_Grid_IsLockedWidth, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Grid_JournalIdWidth", Calendar_Grid_JournalIdWidth, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Todo");
 

@@ -31,50 +31,57 @@ namespace Timekeeper.Forms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.FilterButton = new System.Windows.Forms.ToolStripButton();
             this.SortButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.RefreshButton = new System.Windows.Forms.ToolStripButton();
             this.ToolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.ClearViewButton = new System.Windows.Forms.ToolStripButton();
             this.LoadViewMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.ActionMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveViewAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ClearViewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.manageViewsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ManageViewsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.JournalResultsGrid = new System.Windows.Forms.DataGridView();
+            this.StatusBar = new System.Windows.Forms.StatusStrip();
+            this.ResultCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.NotebookResultsGrid = new System.Windows.Forms.DataGridView();
+            this.ManageViewsButton = new System.Windows.Forms.ToolStripButton();
             this.SaveViewButton = new System.Windows.Forms.ToolStripButton();
             this.SaveViewAsButton = new System.Windows.Forms.ToolStripButton();
-            this.ManageViewsButton = new System.Windows.Forms.ToolStripButton();
-            this.JournalResultsGrid = new System.Windows.Forms.DataGridView();
-            this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProjectId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ActivityId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ActivityName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ClearViewButton = new System.Windows.Forms.ToolStripButton();
             this.StartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StopTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Seconds = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProjectId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ActivityId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ActivityName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LocationId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.LocationName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CategoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CategoryName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IsLocked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.StatusBar = new System.Windows.Forms.StatusStrip();
-            this.ResultCount = new System.Windows.Forms.ToolStripStatusLabel();
-            this.NotebookResultsGrid = new System.Windows.Forms.DataGridView();
-            this.NotebookId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotebookEntryTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotebookMemo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotebookLocationId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookProjectId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookProject = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookActivityId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookActivity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotebookLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotebookCategoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotebookCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NotebookId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.JournalResultsGrid)).BeginInit();
             this.StatusBar.SuspendLayout();
@@ -90,12 +97,12 @@ namespace Timekeeper.Forms
             this.toolStripSeparator2,
             this.RefreshButton,
             this.ToolStripSeparator1,
-            this.ClearViewButton,
             this.LoadViewMenuButton,
             this.ActionMenuButton,
             this.toolStripSeparator3,
             this.SaveViewButton,
             this.SaveViewAsButton,
+            this.ClearViewButton,
             this.ManageViewsButton});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
@@ -143,18 +150,6 @@ namespace Timekeeper.Forms
             this.ToolStripSeparator1.Name = "ToolStripSeparator1";
             this.ToolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // ClearViewButton
-            // 
-            this.ClearViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ClearViewButton.Image = ((System.Drawing.Image)(resources.GetObject("ClearViewButton.Image")));
-            this.ClearViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ClearViewButton.Name = "ClearViewButton";
-            this.ClearViewButton.Size = new System.Drawing.Size(36, 22);
-            this.ClearViewButton.Text = "Clear";
-            this.ClearViewButton.ToolTipText = "Clear the current view";
-            this.ClearViewButton.Visible = false;
-            this.ClearViewButton.Click += new System.EventHandler(this.ClearViewButton_Click);
-            // 
             // LoadViewMenuButton
             // 
             this.LoadViewMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -169,98 +164,62 @@ namespace Timekeeper.Forms
             // 
             this.ActionMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.ActionMenuButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
+            this.SaveViewMenuItem,
+            this.SaveViewAsMenuItem,
             this.toolStripMenuItem1,
-            this.clearToolStripMenuItem,
+            this.ClearViewMenuItem,
             this.toolStripMenuItem2,
-            this.manageViewsToolStripMenuItem});
+            this.ManageViewsMenuItem});
             this.ActionMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("ActionMenuButton.Image")));
             this.ActionMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ActionMenuButton.Name = "ActionMenuButton";
             this.ActionMenuButton.Size = new System.Drawing.Size(42, 22);
             this.ActionMenuButton.Text = "View";
             // 
-            // saveToolStripMenuItem
+            // SaveViewMenuItem
             // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveViewButton_Click);
+            this.SaveViewMenuItem.Name = "SaveViewMenuItem";
+            this.SaveViewMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.SaveViewMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.SaveViewMenuItem.Text = "Save";
+            this.SaveViewMenuItem.Click += new System.EventHandler(this.SaveViewButton_Click);
             // 
-            // saveAsToolStripMenuItem
+            // SaveViewAsMenuItem
             // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.saveAsToolStripMenuItem.Text = "Save As...";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveViewAsButton_Click);
+            this.SaveViewAsMenuItem.Name = "SaveViewAsMenuItem";
+            this.SaveViewAsMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.SaveViewAsMenuItem.Text = "Save As...";
+            this.SaveViewAsMenuItem.Click += new System.EventHandler(this.SaveViewAsButton_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(151, 6);
             // 
-            // clearToolStripMenuItem
+            // ClearViewMenuItem
             // 
-            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.clearToolStripMenuItem.Text = "Clear";
-            this.clearToolStripMenuItem.Click += new System.EventHandler(this.ClearViewButton_Click);
+            this.ClearViewMenuItem.Name = "ClearViewMenuItem";
+            this.ClearViewMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.ClearViewMenuItem.Text = "Clear";
+            this.ClearViewMenuItem.Click += new System.EventHandler(this.ClearViewButton_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(151, 6);
             // 
-            // manageViewsToolStripMenuItem
+            // ManageViewsMenuItem
             // 
-            this.manageViewsToolStripMenuItem.Name = "manageViewsToolStripMenuItem";
-            this.manageViewsToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.manageViewsToolStripMenuItem.Text = "Manage Views...";
-            this.manageViewsToolStripMenuItem.Click += new System.EventHandler(this.ManageViewsButton_Click);
+            this.ManageViewsMenuItem.Name = "ManageViewsMenuItem";
+            this.ManageViewsMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.ManageViewsMenuItem.Text = "Manage Views...";
+            this.ManageViewsMenuItem.Click += new System.EventHandler(this.ManageViewsButton_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             this.toolStripSeparator3.Visible = false;
-            // 
-            // SaveViewButton
-            // 
-            this.SaveViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.SaveViewButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewButton.Image")));
-            this.SaveViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SaveViewButton.Name = "SaveViewButton";
-            this.SaveViewButton.Size = new System.Drawing.Size(35, 22);
-            this.SaveViewButton.Text = "Save";
-            this.SaveViewButton.ToolTipText = "Save Current View";
-            this.SaveViewButton.Visible = false;
-            this.SaveViewButton.Click += new System.EventHandler(this.SaveViewButton_Click);
-            // 
-            // SaveViewAsButton
-            // 
-            this.SaveViewAsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.SaveViewAsButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewAsButton.Image")));
-            this.SaveViewAsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.SaveViewAsButton.Name = "SaveViewAsButton";
-            this.SaveViewAsButton.Size = new System.Drawing.Size(62, 22);
-            this.SaveViewAsButton.Text = "Save As...";
-            this.SaveViewAsButton.ToolTipText = "Save current view for future use";
-            this.SaveViewAsButton.Visible = false;
-            this.SaveViewAsButton.Click += new System.EventHandler(this.SaveViewAsButton_Click);
-            // 
-            // ManageViewsButton
-            // 
-            this.ManageViewsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.ManageViewsButton.Image = ((System.Drawing.Image)(resources.GetObject("ManageViewsButton.Image")));
-            this.ManageViewsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ManageViewsButton.Name = "ManageViewsButton";
-            this.ManageViewsButton.Size = new System.Drawing.Size(61, 22);
-            this.ManageViewsButton.Text = "Manage...";
-            this.ManageViewsButton.ToolTipText = "Manage your saved Views";
-            this.ManageViewsButton.Visible = false;
-            this.ManageViewsButton.Click += new System.EventHandler(this.ManageViewsButton_Click);
             // 
             // JournalResultsGrid
             // 
@@ -273,20 +232,20 @@ namespace Timekeeper.Forms
             this.JournalResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.JournalResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.JournalResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.JournalId,
-            this.ProjectId,
-            this.ProjectName,
-            this.ActivityId,
-            this.ActivityName,
             this.StartTime,
             this.StopTime,
             this.Seconds,
             this.Memo,
+            this.ProjectId,
+            this.ProjectName,
+            this.ActivityId,
+            this.ActivityName,
             this.LocationId,
             this.LocationName,
             this.CategoryId,
             this.CategoryName,
-            this.IsLocked});
+            this.IsLocked,
+            this.JournalId});
             this.JournalResultsGrid.Location = new System.Drawing.Point(0, 25);
             this.JournalResultsGrid.Name = "JournalResultsGrid";
             this.JournalResultsGrid.RowHeadersVisible = false;
@@ -294,16 +253,129 @@ namespace Timekeeper.Forms
             this.JournalResultsGrid.TabIndex = 1;
             this.JournalResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JournalFindResults_CellDoubleClick);
             // 
-            // JournalId
+            // StatusBar
+            // 
+            this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ResultCount});
+            this.StatusBar.Location = new System.Drawing.Point(0, 271);
+            this.StatusBar.Name = "StatusBar";
+            this.StatusBar.Size = new System.Drawing.Size(893, 22);
+            this.StatusBar.TabIndex = 2;
+            this.StatusBar.Text = "statusStrip1";
+            // 
+            // ResultCount
+            // 
+            this.ResultCount.Name = "ResultCount";
+            this.ResultCount.Size = new System.Drawing.Size(0, 17);
+            // 
+            // NotebookResultsGrid
+            // 
+            this.NotebookResultsGrid.AllowUserToAddRows = false;
+            this.NotebookResultsGrid.AllowUserToDeleteRows = false;
+            this.NotebookResultsGrid.AllowUserToOrderColumns = true;
+            this.NotebookResultsGrid.AllowUserToResizeRows = false;
+            this.NotebookResultsGrid.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.NotebookResultsGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.NotebookResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.NotebookResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.NotebookResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NotebookEntryTime,
+            this.NotebookMemo,
+            this.NotebookLocationId,
+            this.NotebookProjectId,
+            this.NotebookProject,
+            this.NotebookActivityId,
+            this.NotebookActivity,
+            this.NotebookLocation,
+            this.NotebookCategoryId,
+            this.NotebookCategory,
+            this.NotebookId});
+            this.NotebookResultsGrid.Location = new System.Drawing.Point(0, 141);
+            this.NotebookResultsGrid.Name = "NotebookResultsGrid";
+            this.NotebookResultsGrid.RowHeadersVisible = false;
+            this.NotebookResultsGrid.Size = new System.Drawing.Size(893, 110);
+            this.NotebookResultsGrid.TabIndex = 3;
+            this.NotebookResultsGrid.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.NotebookFindResults_CellDoubleClick);
+            // 
+            // ManageViewsButton
+            // 
+            this.ManageViewsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ManageViewsButton.Image = ((System.Drawing.Image)(resources.GetObject("ManageViewsButton.Image")));
+            this.ManageViewsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ManageViewsButton.Name = "ManageViewsButton";
+            this.ManageViewsButton.Size = new System.Drawing.Size(108, 22);
+            this.ManageViewsButton.Text = "ManageViewsButton";
+            this.ManageViewsButton.ToolTipText = "ManageViewsButton";
+            this.ManageViewsButton.Visible = false;
+            this.ManageViewsButton.Click += new System.EventHandler(this.ManageViewsButton_Click);
+            // 
+            // SaveViewButton
+            // 
+            this.SaveViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SaveViewButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewButton.Image")));
+            this.SaveViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveViewButton.Name = "SaveViewButton";
+            this.SaveViewButton.Size = new System.Drawing.Size(89, 22);
+            this.SaveViewButton.Text = "SaveViewButton";
+            this.SaveViewButton.Visible = false;
+            this.SaveViewButton.Click += new System.EventHandler(this.SaveViewButton_Click);
+            // 
+            // SaveViewAsButton
+            // 
+            this.SaveViewAsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SaveViewAsButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewAsButton.Image")));
+            this.SaveViewAsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SaveViewAsButton.Name = "SaveViewAsButton";
+            this.SaveViewAsButton.Size = new System.Drawing.Size(101, 22);
+            this.SaveViewAsButton.Text = "SaveViewAsButton";
+            this.SaveViewAsButton.ToolTipText = "SaveViewAsButton";
+            this.SaveViewAsButton.Visible = false;
+            this.SaveViewAsButton.Click += new System.EventHandler(this.SaveViewAsButton_Click);
+            // 
+            // ClearViewButton
+            // 
+            this.ClearViewButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ClearViewButton.Image = ((System.Drawing.Image)(resources.GetObject("ClearViewButton.Image")));
+            this.ClearViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ClearViewButton.Name = "ClearViewButton";
+            this.ClearViewButton.Size = new System.Drawing.Size(90, 22);
+            this.ClearViewButton.Text = "ClearViewButton";
+            this.ClearViewButton.ToolTipText = "ClearViewButton";
+            this.ClearViewButton.Visible = false;
+            this.ClearViewButton.Click += new System.EventHandler(this.ClearViewButton_Click);
+            // 
+            // StartTime
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.JournalId.DefaultCellStyle = dataGridViewCellStyle1;
-            this.JournalId.HeaderText = "ID";
-            this.JournalId.MinimumWidth = 8;
-            this.JournalId.Name = "JournalId";
-            this.JournalId.ReadOnly = true;
-            this.JournalId.ToolTipText = "Internal Journal Entry Identifier";
-            this.JournalId.Width = 43;
+            this.StartTime.DefaultCellStyle = dataGridViewCellStyle1;
+            this.StartTime.HeaderText = "Start Time";
+            this.StartTime.Name = "StartTime";
+            this.StartTime.ReadOnly = true;
+            this.StartTime.Width = 80;
+            // 
+            // StopTime
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.StopTime.DefaultCellStyle = dataGridViewCellStyle2;
+            this.StopTime.HeaderText = "Stop Time";
+            this.StopTime.Name = "StopTime";
+            this.StopTime.ReadOnly = true;
+            this.StopTime.Width = 80;
+            // 
+            // Seconds
+            // 
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Seconds.DefaultCellStyle = dataGridViewCellStyle3;
+            this.Seconds.HeaderText = "Duration";
+            this.Seconds.Name = "Seconds";
+            this.Seconds.ReadOnly = true;
+            this.Seconds.Width = 72;
+            // 
+            // Memo
+            // 
+            this.Memo.HeaderText = "Memo";
+            this.Memo.Name = "Memo";
+            this.Memo.ReadOnly = true;
             // 
             // ProjectId
             // 
@@ -334,35 +406,6 @@ namespace Timekeeper.Forms
             this.ActivityName.ReadOnly = true;
             this.ActivityName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ActivityName.Width = 66;
-            // 
-            // StartTime
-            // 
-            this.StartTime.HeaderText = "Start Time";
-            this.StartTime.Name = "StartTime";
-            this.StartTime.ReadOnly = true;
-            this.StartTime.Width = 80;
-            // 
-            // StopTime
-            // 
-            this.StopTime.HeaderText = "Stop Time";
-            this.StopTime.Name = "StopTime";
-            this.StopTime.ReadOnly = true;
-            this.StopTime.Width = 80;
-            // 
-            // Seconds
-            // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Seconds.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Seconds.HeaderText = "Duration";
-            this.Seconds.Name = "Seconds";
-            this.Seconds.ReadOnly = true;
-            this.Seconds.Width = 72;
-            // 
-            // Memo
-            // 
-            this.Memo.HeaderText = "Memo";
-            this.Memo.Name = "Memo";
-            this.Memo.ReadOnly = true;
             // 
             // LocationId
             // 
@@ -402,59 +445,21 @@ namespace Timekeeper.Forms
             this.IsLocked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.IsLocked.Width = 40;
             // 
-            // StatusBar
+            // JournalId
             // 
-            this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ResultCount});
-            this.StatusBar.Location = new System.Drawing.Point(0, 271);
-            this.StatusBar.Name = "StatusBar";
-            this.StatusBar.Size = new System.Drawing.Size(893, 22);
-            this.StatusBar.TabIndex = 2;
-            this.StatusBar.Text = "statusStrip1";
-            // 
-            // ResultCount
-            // 
-            this.ResultCount.Name = "ResultCount";
-            this.ResultCount.Size = new System.Drawing.Size(0, 17);
-            // 
-            // NotebookResultsGrid
-            // 
-            this.NotebookResultsGrid.AllowUserToAddRows = false;
-            this.NotebookResultsGrid.AllowUserToDeleteRows = false;
-            this.NotebookResultsGrid.AllowUserToOrderColumns = true;
-            this.NotebookResultsGrid.AllowUserToResizeRows = false;
-            this.NotebookResultsGrid.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.NotebookResultsGrid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.NotebookResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.NotebookResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.NotebookResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.NotebookId,
-            this.NotebookEntryTime,
-            this.NotebookMemo,
-            this.NotebookLocationId,
-            this.NotebookLocation,
-            this.NotebookCategoryId,
-            this.NotebookCategory});
-            this.NotebookResultsGrid.Location = new System.Drawing.Point(0, 141);
-            this.NotebookResultsGrid.Name = "NotebookResultsGrid";
-            this.NotebookResultsGrid.RowHeadersVisible = false;
-            this.NotebookResultsGrid.Size = new System.Drawing.Size(893, 110);
-            this.NotebookResultsGrid.TabIndex = 3;
-            this.NotebookResultsGrid.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.NotebookFindResults_CellDoubleClick);
-            // 
-            // NotebookId
-            // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.NotebookId.DefaultCellStyle = dataGridViewCellStyle3;
-            this.NotebookId.HeaderText = "ID";
-            this.NotebookId.MinimumWidth = 8;
-            this.NotebookId.Name = "NotebookId";
-            this.NotebookId.ReadOnly = true;
-            this.NotebookId.ToolTipText = "Internal Journal Entry Identifier";
-            this.NotebookId.Width = 43;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.JournalId.DefaultCellStyle = dataGridViewCellStyle4;
+            this.JournalId.HeaderText = "ID";
+            this.JournalId.MinimumWidth = 8;
+            this.JournalId.Name = "JournalId";
+            this.JournalId.ReadOnly = true;
+            this.JournalId.ToolTipText = "Internal Journal Entry Identifier";
+            this.JournalId.Width = 43;
             // 
             // NotebookEntryTime
             // 
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.NotebookEntryTime.DefaultCellStyle = dataGridViewCellStyle5;
             this.NotebookEntryTime.HeaderText = "Entry Time";
             this.NotebookEntryTime.Name = "NotebookEntryTime";
             this.NotebookEntryTime.ReadOnly = true;
@@ -472,6 +477,28 @@ namespace Timekeeper.Forms
             this.NotebookLocationId.Name = "NotebookLocationId";
             this.NotebookLocationId.ReadOnly = true;
             this.NotebookLocationId.Visible = false;
+            // 
+            // NotebookProjectId
+            // 
+            this.NotebookProjectId.HeaderText = "ProjectId";
+            this.NotebookProjectId.Name = "NotebookProjectId";
+            this.NotebookProjectId.Visible = false;
+            // 
+            // NotebookProject
+            // 
+            this.NotebookProject.HeaderText = "Project";
+            this.NotebookProject.Name = "NotebookProject";
+            // 
+            // NotebookActivityId
+            // 
+            this.NotebookActivityId.HeaderText = "ActivityId";
+            this.NotebookActivityId.Name = "NotebookActivityId";
+            this.NotebookActivityId.Visible = false;
+            // 
+            // NotebookActivity
+            // 
+            this.NotebookActivity.HeaderText = "Activity";
+            this.NotebookActivity.Name = "NotebookActivity";
             // 
             // NotebookLocation
             // 
@@ -495,6 +522,17 @@ namespace Timekeeper.Forms
             this.NotebookCategory.ReadOnly = true;
             this.NotebookCategory.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.NotebookCategory.Width = 74;
+            // 
+            // NotebookId
+            // 
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.NotebookId.DefaultCellStyle = dataGridViewCellStyle6;
+            this.NotebookId.HeaderText = "ID";
+            this.NotebookId.MinimumWidth = 8;
+            this.NotebookId.Name = "NotebookId";
+            this.NotebookId.ReadOnly = true;
+            this.NotebookId.ToolTipText = "Internal Journal Entry Identifier";
+            this.NotebookId.Width = 43;
             // 
             // Find
             // 
@@ -529,45 +567,49 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripButton FilterButton;
         private System.Windows.Forms.ToolStripSeparator ToolStripSeparator1;
         private System.Windows.Forms.ToolStripDropDownButton LoadViewMenuButton;
-        private System.Windows.Forms.ToolStripButton SaveViewAsButton;
-        private System.Windows.Forms.ToolStripButton ManageViewsButton;
         private System.Windows.Forms.ToolStripButton RefreshButton;
         private System.Windows.Forms.ToolStripButton SortButton;
         private System.Windows.Forms.DataGridView JournalResultsGrid;
         private System.Windows.Forms.StatusStrip StatusBar;
         private System.Windows.Forms.ToolStripStatusLabel ResultCount;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton ClearViewButton;
         private System.Windows.Forms.DataGridView NotebookResultsGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookEntryTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookMemo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookLocationId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookLocation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookCategoryId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookCategory;
         private System.Windows.Forms.ToolStripDropDownButton ActionMenuButton;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem manageViewsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SaveViewMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SaveViewAsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ManageViewsMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripButton SaveViewButton;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ClearViewMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JournalId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ActivityId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ActivityName;
+        private System.Windows.Forms.ToolStripButton ManageViewsButton;
+        private System.Windows.Forms.ToolStripButton SaveViewButton;
+        private System.Windows.Forms.ToolStripButton SaveViewAsButton;
+        private System.Windows.Forms.ToolStripButton ClearViewButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn StartTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn StopTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn Seconds;
         private System.Windows.Forms.DataGridViewTextBoxColumn Memo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ActivityId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ActivityName;
         private System.Windows.Forms.DataGridViewTextBoxColumn LocationId;
         private System.Windows.Forms.DataGridViewTextBoxColumn LocationName;
         private System.Windows.Forms.DataGridViewTextBoxColumn CategoryId;
         private System.Windows.Forms.DataGridViewTextBoxColumn CategoryName;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsLocked;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JournalId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookEntryTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookMemo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookLocationId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookProjectId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookProject;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookActivityId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookActivity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookLocation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookCategoryId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookCategory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NotebookId;
     }
 }

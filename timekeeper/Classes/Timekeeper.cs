@@ -287,6 +287,13 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
+        public static string TimeForDisplay(DateTimeOffset datetime)
+        {
+            return UserTimeString(datetime);
+        }
+
+        //---------------------------------------------------------------------
+
         private static string DatabaseDateTimeString(DateTimeOffset datetime)
         {
             return datetime.ToLocalTime().ToString(Timekeeper.LOCAL_DATETIME_FORMAT);
@@ -309,6 +316,14 @@ namespace Timekeeper
         private static string UserDateTimeString(DateTimeOffset datetime)
         {
             return datetime.ToLocalTime().ToString(Options.Advanced_DateTimeFormat);
+        }
+
+        //---------------------------------------------------------------------
+
+        private static string UserTimeString(DateTimeOffset datetime)
+        {
+            // TODO/FIXME: implement this: Options.Advanced_TimeFormat);
+            return datetime.ToLocalTime().ToString("hh:mm:ss"); 
         }
 
         //---------------------------------------------------------------------
@@ -672,6 +687,23 @@ namespace Timekeeper
             } else {
                 return value;
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        // TODO: TBX helper?
+        public static string Pluralize(int count, string singluar, string plural)
+        {
+            if (count == 0)
+                // TODO: I'm not 100% sold on "0 ==> No"
+                // Just trying it on for size at this point.
+                return String.Format(@"No {0}", plural);
+            else if (count == 1)
+                // I could add an "English" mode which would
+                // substitute "No" for 0 and "One" for 1...?
+                return String.Format(@"{0} {1}", count, singluar);
+            else
+                return String.Format(@"{0} {1}", count, plural);
         }
 
         //----------------------------------------------------------------------

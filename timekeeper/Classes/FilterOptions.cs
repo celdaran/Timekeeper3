@@ -97,7 +97,8 @@ namespace Timekeeper.Classes
         {
             Journal,
             Notebook,
-            Merge
+            Merge,
+            Calendar,
         };
 
         public const int DATE_PRESET_NONE = 0;
@@ -155,6 +156,7 @@ namespace Timekeeper.Classes
                     case 1: FilterOptionsType = OptionsType.Journal; break;
                     case 2: FilterOptionsType = OptionsType.Notebook; break;
                     case 3: FilterOptionsType = OptionsType.Merge; break;
+                    case 4: FilterOptionsType = OptionsType.Calendar; break;
                 }
 
                 DateRangePreset = (int)Timekeeper.GetValue(Options["RefDatePresetId"], DATE_PRESET_ALL);
@@ -328,6 +330,7 @@ namespace Timekeeper.Classes
                     case OptionsType.Journal: DbFilterOptionsType = 1; break;
                     case OptionsType.Notebook: DbFilterOptionsType = 2; break;
                     case OptionsType.Merge: DbFilterOptionsType = 3; break;
+                    case OptionsType.Calendar: DbFilterOptionsType = 4; break;
                 }
 
                 Options["FilterOptionsType"] = DbFilterOptionsType;
@@ -463,7 +466,8 @@ namespace Timekeeper.Classes
             string TableAlias = this.SuppressTableAlias ? "" : "j.";
 
             if ((this.FilterOptionsType == Classes.FilterOptions.OptionsType.Journal) ||
-                (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Merge))
+                (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Merge) ||
+                (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Calendar))
             {
                 WhereClause += String.Format("{0}StartTime >= {1}",
                     TableAlias, this.FormatFromTime()) + System.Environment.NewLine;

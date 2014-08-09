@@ -26,11 +26,6 @@ namespace Timekeeper.Forms
         // Options
         private Classes.Options Options;
 
-        // Persistent dialog boxes
-        // FIXME: why? Why these?
-        //private Forms.OptionsLegacy options;
-        private Forms.Tools.Calendar calendar;
-
         // Misc
         private bool StartTimeManuallySet = false;
 
@@ -277,9 +272,9 @@ namespace Timekeeper.Forms
         // Tools | Calendar
         private void MenuToolCalendar_Click(object sender, EventArgs e)
         {
-            calendar = new Forms.Tools.Calendar();
-            calendar.Show(this);
-            OpenForms.Add(calendar);
+            Forms.Tools.Calendar Calendar = new Forms.Tools.Calendar(Browser_GotoEntry);
+            Calendar.Show();
+            OpenForms.Add(Calendar);
         }
 
         // Tools | Stopwatch

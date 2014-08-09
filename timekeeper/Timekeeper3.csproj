@@ -147,6 +147,7 @@
   <ItemGroup>
     <Compile Include="Classes\BaseView.cs" />
     <Compile Include="Classes\BaseViewCollection.cs" />
+    <Compile Include="Classes\CalendarView.cs" />
     <Compile Include="Classes\CategoryCollection.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Datatypes.cs" />
