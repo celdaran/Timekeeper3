@@ -121,44 +121,12 @@ namespace Timekeeper
 
     public class FileCreateOptions : FileBaseOptions
     {
-        private string _FileName;
-        private bool _UseProjects;
-        private bool _UseActivities;
-        private int _ItemPreset;
-
-        //---------------------------------------------------------------------
-        // Accessors
-        //---------------------------------------------------------------------
-
-        public string FileName
-        {
-            get { return _FileName; }
-            set { _FileName = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public bool UseProjects
-        {
-            get { return _UseProjects; }
-            set { _UseProjects = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public bool UseActivities
-        {
-            get { return _UseActivities; }
-            set { _UseActivities = value; }
-        }
-
-        //---------------------------------------------------------------------
-
-        public int ItemPreset
-        {
-            get { return _ItemPreset; }
-            set { _ItemPreset = value; }
-        }
+        public string FileName { get; set; }
+        public bool UseProjects { get; set; }
+        public bool UseActivities { get; set; }
+        public bool UseLocations { get; set; }
+        public bool UseCategories { get; set; }
+        public int ItemPreset { get; set; }
     }
 
     //---------------------------------------------------------------------

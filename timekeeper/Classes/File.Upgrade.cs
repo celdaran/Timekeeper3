@@ -284,7 +284,7 @@ namespace Timekeeper
                     // Drop old table
                     this.Database.Exec("drop table meta");
                     // Create new table
-                    this.CreateTable(Timekeeper.MetaTableName(), CurrentSchemaVersion, false);
+                    this.CreateTable("Meta", CurrentSchemaVersion, false);
                     break;
                 case 3:
                     Meta = this.Database.Select("select * from " + Timekeeper.MetaTableName() + " where MetaId = 1");
@@ -1508,8 +1508,8 @@ namespace Timekeeper
                     {"Description", OldRow["description"]},
                     {"SortOrderNo", OldRow["sort_index"]},
                     {"FilterOptionsId", InsertedRowId},
-                    {"RefDimensionId", OldRow["data_from"]},
-                    {"RefGroupById", OldRow["group_by"]},
+                    {"RefDimensionId", OldRow["data_from"] == 0 ? 1 : OldRow["data_from"]},
+                    {"RefGroupById", OldRow["group_by"] == 0 ? 1 : OldRow["group_by"]},
                     {"RefTimeDisplayId", null},
                 };
                 InsertedRowId = this.Database.Insert("GridView", NewRow);
@@ -1661,11 +1661,8 @@ namespace Timekeeper
             int Count = 0;
             Row Row;
 
-            /* No. Don't count how many there were. Count how many there will be
-            Row = this.Database.SelectRow("select count(*) as Count from meta");
-            Count += Row["Count"];
-            */
-            Count = 4; // Hardcoding for the four rows that the meta table gets in schema 3.0.x
+            // Start with the number of rows in a 3.0.x meta table.
+            Count = 5; 
 
             Row = this.Database.SelectRow("select count(*) as Count from tasks");
             Count += Row["Count"];

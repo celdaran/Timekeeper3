@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LocationInstructions.Text" xml:space="preserve">
-    <value>Timekeeper associates the data it records with a location. You may find that you access your database from more than one location. For example, if you travel with a laptop or store your database in the cloud. In this case, Location becomes another time-tracking dimension.
+    <value>As mentioned, Timekeeper can associate the data it records with a location. You may find that you access your database from more than one location. For example, if you travel with a laptop or store your database in the cloud.
 
 Create (or accept) the default location. You may edit this later.</value>
   </data>
   <data name="ItemPresetInstructions.Text" xml:space="preserve">
-    <value>If you're unsure what types of Projects and Activities you should set up, you can let Timekeeper create a few for you, based on your job.
+    <value>If you're unsure what types of Projects, Activities, Locations or Categories you should set up, you can let Timekeeper create a starter set for you, based on the job you select below.
 
 Once your new database is open, you can add, delete, or customize them as you see fit.</value>
   </data>

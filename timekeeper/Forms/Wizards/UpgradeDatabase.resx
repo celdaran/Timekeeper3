@@ -117,17 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LocationInstructions.Text" xml:space="preserve">
-    <value>Timekeeper 3.0 associates your time tracking data with a geographic location. (For example, if you frequently travel and want to add a geographic dimension to your reporting.)
-
-Customize the default location here. The upgrade process will assign this location to your existing data. Locations can be freely edited after the upgrade is complete.</value>
-  </data>
   <data name="IntroductionInstructions.Text" xml:space="preserve">
     <value>This database is from a prior version of Timekeeper and must be upgraded before continuing.
 
 If you're ready to perform the upgrade, click the Next button below and follow the instructions. If you're not ready to upgrade at this time, click Cancel.
 
-Note that this database cannot be used by Timeekeeper 3.0 until it has been upgraded. If you upgrade and change your mind, you can restore your old database from the backup created by this process or use "Save As" to convert the upgraded database to a prior version.</value>
+Note that this database cannot be used by Timeekeeper 3.0 until it has been upgraded. If you upgrade and change your mind, you can restore your old database from backup (a backup is created during the upgrade process) or use "Save As" to convert the upgraded database to a prior version.</value>
+  </data>
+  <data name="LocationInstructions.Text" xml:space="preserve">
+    <value>Timekeeper 3.0 associates your time tracking data with a geographic location. (For example, if you frequently travel and want to add a geographic dimension to your reporting.)
+
+Customize the default location here. The upgrade process will assign this location to your existing data. Locations can be freely edited after the upgrade is complete.</value>
   </data>
   <metadata name="FileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>

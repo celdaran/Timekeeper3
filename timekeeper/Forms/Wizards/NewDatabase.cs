@@ -158,10 +158,12 @@ namespace Timekeeper.Forms.Wizards
                 // Item Type validation
                 if (this.Widgets.CurrentTab() == 3) {
                 //if (tablessControl1.SelectedIndex == 2) {
+                    /*
                     if (UseProjects.Checked == false && UseActivities.Checked == false) {
                         Common.Warn("You must track at least one dimension: Projects or Activities");
                         return;
                     }
+                    */
                 }
 
                 // Location validation
@@ -194,6 +196,8 @@ namespace Timekeeper.Forms.Wizards
                     Options.FileName = NewDatabaseFileName.Text;
                     Options.UseProjects = UseProjects.Checked;
                     Options.UseActivities = UseActivities.Checked;
+                    Options.UseLocations = UseLocations.Checked;
+                    Options.UseCategories = UseCategories.Checked;
                     Options.ItemPreset = ItemPreset.SelectedIndex;
                     Options.LocationName = LocationName.Text;
                     Options.LocationDescription = LocationDescription.Text;
@@ -221,6 +225,14 @@ namespace Timekeeper.Forms.Wizards
 
             WizardReview.Text += "Use Activities:" + Environment.NewLine + "  ";
             WizardReview.Text += UseActivities.Checked ? "Yes" : "No";
+            WizardReview.Text += Environment.NewLine + Environment.NewLine;
+
+            WizardReview.Text += "Use Locations:" + Environment.NewLine + "  ";
+            WizardReview.Text += UseLocations.Checked ? "Yes" : "No";
+            WizardReview.Text += Environment.NewLine + Environment.NewLine;
+
+            WizardReview.Text += "Use Categories:" + Environment.NewLine + "  ";
+            WizardReview.Text += UseCategories.Checked ? "Yes" : "No";
             WizardReview.Text += Environment.NewLine + Environment.NewLine;
 
             WizardReview.Text += "Preset Job Template:" + Environment.NewLine + "  ";

@@ -356,6 +356,7 @@
             this.LocationDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.LocationDescription.Size = new System.Drawing.Size(260, 46);
             this.LocationDescription.TabIndex = 19;
+            this.LocationDescription.Text = "My default location.";
             // 
             // LocationDescriptionLabel
             // 
@@ -382,7 +383,7 @@
             this.LocationName.Name = "LocationName";
             this.LocationName.Size = new System.Drawing.Size(260, 20);
             this.LocationName.TabIndex = 18;
-            this.LocationName.Text = "Default";
+            this.LocationName.Text = "Default Location";
             // 
             // Tab2
             // 
@@ -441,7 +442,7 @@
             this.IntroductionInstructions.Location = new System.Drawing.Point(3, 9);
             this.IntroductionInstructions.MaximumSize = new System.Drawing.Size(336, 0);
             this.IntroductionInstructions.Name = "IntroductionInstructions";
-            this.IntroductionInstructions.Size = new System.Drawing.Size(333, 143);
+            this.IntroductionInstructions.Size = new System.Drawing.Size(332, 156);
             this.IntroductionInstructions.TabIndex = 11;
             this.IntroductionInstructions.Text = resources.GetString("IntroductionInstructions.Text");
             // 

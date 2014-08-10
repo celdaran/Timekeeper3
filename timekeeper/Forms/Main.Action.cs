@@ -240,36 +240,50 @@ namespace Timekeeper.Forms
                     return false;
                 }
 
-                // Instantiate Meta data as soon as possible
-                Meta = new Classes.Meta();
-
                 File File = new File();
+                int FileCheckResult = File.Check();
+                bool FileUpgraded = false;
 
-                switch (File.Check()) {
+                switch (FileCheckResult) {
                     case File.ERROR_UNEXPECTED:
                         Timekeeper.DoubleWarn("An error occurred during the database check. Cannot open file.");
-                        return false;
+                        break;
 
                     case File.ERROR_NEWER_VERSION_DETECTED:
                         Timekeeper.DoubleWarn("This database is from a newer version of Timekeeper. Cannot open file.");
-                        return false;
+                        break;
 
                     case File.ERROR_NOT_TKDB:
                         Timekeeper.DoubleWarn("This is not a Timekeeper database. File not opened.");
-                        return false;
+                        break;
 
                     case File.ERROR_EMPTY_DB:
                         Timekeeper.DoubleWarn("This is not a Timekeeper database. File not opened.");
-                        return false;
+                        break;
 
                     case File.ERROR_REQUIRES_UPGRADE:
                         if (Action_ConvertPriorVersion(File)) {
-                            return true;
-                        } else {
-                            return false;
+                            FileUpgraded = true;
+                            Options.Layout_UseProjects = true;
+                            Options.Layout_UseActivities = true;
                         }
+                        break;
                 }
 
+                // Instantiate Meta data, if we're reasonably sure the meta table exists
+                if ((FileCheckResult == 0) || ((FileCheckResult == File.ERROR_REQUIRES_UPGRADE) && FileUpgraded))
+                    Meta = new Classes.Meta();
+
+                // And bail if anything went wrong.
+                if (FileCheckResult != 0) {
+                    if (FileUpgraded) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+
+                // Check for database already opened
                 if ((Meta.ProcessId > 0) && (Options.Advanced_Other_WarnOpeningLockedDatabase)) {
 
                     string Message;
@@ -1038,7 +1052,7 @@ namespace Timekeeper.Forms
                 Timekeeper.Exception(x);
             }
             finally {
-                Timekeeper.Info("Database Upgrade Completed");
+                Timekeeper.Info("Database Upgrade Completed (Status: " + status.ToString() + ")");
             }
 
             return status;

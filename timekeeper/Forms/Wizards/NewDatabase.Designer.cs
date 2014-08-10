@@ -60,6 +60,8 @@
             this.Tab1 = new System.Windows.Forms.Panel();
             this.IntroductionInstructions = new System.Windows.Forms.Label();
             this.NewFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.UseLocations = new System.Windows.Forms.CheckBox();
+            this.UseCategories = new System.Windows.Forms.CheckBox();
             this.ButtonPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WizardPicture)).BeginInit();
             this.TopPanel.SuspendLayout();
@@ -214,7 +216,7 @@
             this.LocationInstructions.Location = new System.Drawing.Point(3, 9);
             this.LocationInstructions.MaximumSize = new System.Drawing.Size(336, 0);
             this.LocationInstructions.Name = "LocationInstructions";
-            this.LocationInstructions.Size = new System.Drawing.Size(330, 91);
+            this.LocationInstructions.Size = new System.Drawing.Size(335, 78);
             this.LocationInstructions.TabIndex = 22;
             this.LocationInstructions.Text = resources.GetString("LocationInstructions.Text");
             // 
@@ -291,7 +293,7 @@
             "Tradesman",
             "Transponster",
             "Writer"});
-            this.ItemPreset.Location = new System.Drawing.Point(6, 92);
+            this.ItemPreset.Location = new System.Drawing.Point(6, 100);
             this.ItemPreset.Name = "ItemPreset";
             this.ItemPreset.Size = new System.Drawing.Size(328, 21);
             this.ItemPreset.TabIndex = 19;
@@ -302,13 +304,15 @@
             this.ItemPresetInstructions.Location = new System.Drawing.Point(3, 9);
             this.ItemPresetInstructions.MaximumSize = new System.Drawing.Size(336, 0);
             this.ItemPresetInstructions.Name = "ItemPresetInstructions";
-            this.ItemPresetInstructions.Size = new System.Drawing.Size(331, 65);
+            this.ItemPresetInstructions.Size = new System.Drawing.Size(334, 78);
             this.ItemPresetInstructions.TabIndex = 18;
             this.ItemPresetInstructions.Text = resources.GetString("ItemPresetInstructions.Text");
             // 
             // Tab3
             // 
             this.Tab3.BackColor = System.Drawing.SystemColors.Window;
+            this.Tab3.Controls.Add(this.UseCategories);
+            this.Tab3.Controls.Add(this.UseLocations);
             this.Tab3.Controls.Add(this.UseActivities);
             this.Tab3.Controls.Add(this.DimensionInstructions);
             this.Tab3.Controls.Add(this.UseProjects);
@@ -322,12 +326,13 @@
             this.UseActivities.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
             this.UseActivities.Checked = true;
             this.UseActivities.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.UseActivities.Location = new System.Drawing.Point(16, 136);
+            this.UseActivities.Location = new System.Drawing.Point(16, 127);
             this.UseActivities.Name = "UseActivities";
             this.UseActivities.Size = new System.Drawing.Size(319, 44);
             this.UseActivities.TabIndex = 19;
             this.UseActivities.Text = "Activities. An activity is a verb and most closely represents an action to be tra" +
     "cked. Some Activity examples: Developing, Writing, Recording.";
+            this.UseActivities.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.UseActivities.UseVisualStyleBackColor = true;
             // 
             // DimensionInstructions
@@ -338,8 +343,8 @@
             this.DimensionInstructions.Name = "DimensionInstructions";
             this.DimensionInstructions.Size = new System.Drawing.Size(332, 39);
             this.DimensionInstructions.TabIndex = 17;
-            this.DimensionInstructions.Text = "Timekeeper supports time tracking in one or two dimensions. Check which ones you\'" +
-    "d like to use in your new database. You can change your mind later at any time:";
+            this.DimensionInstructions.Text = "Timekeeper supports time tracking in multiple dimensions. Check which ones you\'d " +
+    "like to use in your new database. You can change your mind later at any time:";
             // 
             // UseProjects
             // 
@@ -351,8 +356,9 @@
             this.UseProjects.Size = new System.Drawing.Size(319, 57);
             this.UseProjects.TabIndex = 18;
             this.UseProjects.Text = "Projects. A project is a noun and most closely represents a deliverable and/or cu" +
-    "stomer. Some Project examples: Software Update 2.0, My Great American Novel, My " +
-    "New CD Release.";
+    "stomer. Some Project examples: Software Release 2.0, My Great American Novel, Ne" +
+    "xt CD Release.";
+            this.UseProjects.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.UseProjects.UseVisualStyleBackColor = true;
             // 
             // Tab2
@@ -420,6 +426,34 @@
             // 
             this.NewFileDialog.CheckFileExists = false;
             this.NewFileDialog.DefaultExt = "tkdb";
+            // 
+            // UseLocations
+            // 
+            this.UseLocations.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.UseLocations.Checked = true;
+            this.UseLocations.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.UseLocations.Location = new System.Drawing.Point(16, 178);
+            this.UseLocations.Name = "UseLocations";
+            this.UseLocations.Size = new System.Drawing.Size(319, 33);
+            this.UseLocations.TabIndex = 20;
+            this.UseLocations.Text = "Locations. A location is a geographic area where time has been tracked. Useful if" +
+    " you work from home or travel often.";
+            this.UseLocations.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.UseLocations.UseVisualStyleBackColor = true;
+            // 
+            // UseCategories
+            // 
+            this.UseCategories.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.UseCategories.Checked = true;
+            this.UseCategories.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.UseCategories.Location = new System.Drawing.Point(16, 217);
+            this.UseCategories.Name = "UseCategories";
+            this.UseCategories.Size = new System.Drawing.Size(319, 33);
+            this.UseCategories.TabIndex = 21;
+            this.UseCategories.Text = "Categories. A category is any other attribute you wish to assign an entry. For ex" +
+    "ample: Important, Followup, Incomplete.";
+            this.UseCategories.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.UseCategories.UseVisualStyleBackColor = true;
             // 
             // NewDatabase
             // 
@@ -495,5 +529,7 @@
         private System.Windows.Forms.Panel Tab4;
         private System.Windows.Forms.Panel Tab3;
         private System.Windows.Forms.Panel Tab2;
+        private System.Windows.Forms.CheckBox UseCategories;
+        private System.Windows.Forms.CheckBox UseLocations;
     }
 }

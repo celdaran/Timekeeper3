@@ -41,6 +41,8 @@ namespace Timekeeper.Forms
                     CreateOptions = new FileCreateOptions();
                     CreateOptions.UseProjects = true;
                     CreateOptions.UseActivities = false;
+                    CreateOptions.UseLocations = false;
+                    CreateOptions.UseCategories = false;
                     CreateOptions.ItemPreset = 0;
                     CreateOptions.LocationName = "Default";
                     CreateOptions.LocationDescription = "Default Location";
@@ -63,9 +65,13 @@ namespace Timekeeper.Forms
                     // Fixes Ticket #1291 but see also Ticket #1301
                     Options.Layout_UseProjects = CreateOptions.UseProjects;
                     Options.Layout_UseActivities = CreateOptions.UseActivities;
+                    Options.Layout_UseLocations = CreateOptions.UseLocations;
+                    Options.Layout_UseCategories = CreateOptions.UseCategories;
 
                     Action_UseProjects(Options.Layout_UseProjects);
                     Action_UseActivities(Options.Layout_UseActivities);
+                    Action_UseLocations(Options.Layout_UseLocations);
+                    Action_UseCategories(Options.Layout_UseCategories);
                 } else {
                     Common.Warn("The database was successfully created but could not be opened.");
                 }
