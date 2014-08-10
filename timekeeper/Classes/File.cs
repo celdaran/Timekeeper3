@@ -467,6 +467,8 @@ namespace Timekeeper
                 // Grab a few handy objects
                 Classes.ProjectCollection Projects = new Classes.ProjectCollection();
                 Classes.ActivityCollection Activities = new Classes.ActivityCollection();
+                Classes.LocationCollection Locations = new Classes.LocationCollection();
+                Classes.CategoryCollection Categories = new Classes.CategoryCollection();
                 Classes.NotebookEntryCollection Notebook = new Classes.NotebookEntryCollection();
                 Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
 
@@ -484,6 +486,8 @@ namespace Timekeeper
                 Info.Add("NotebookCount", Notebook.Count());
                 Info.Add("ProjectCount", Projects.Count());
                 Info.Add("ActivityCount", Activities.Count());
+                Info.Add("LocationCount", Locations.Count());
+                Info.Add("CategoryCount", Categories.Count());
                 Info.Add("TotalTime", Timekeeper.FormatSeconds(Entries.TotalSeconds()));
 
                 // Flag that we're good

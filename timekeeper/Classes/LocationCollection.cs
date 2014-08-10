@@ -7,44 +7,39 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class LocationCollection : Classes.ListAttributeCollection
+    class LocationCollection : Classes.TreeAttributeCollection
     {
-        //private DBI Database;
-
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
 
-        public LocationCollection() : base("Location")
-        {
-        }
+        public LocationCollection(string orderByClause)
+            : base("Location", orderByClause)
+        {}
+
+        public LocationCollection() 
+            : this ("CreateTime")
+        {}
 
         //----------------------------------------------------------------------
         // Public Methods
         //----------------------------------------------------------------------
 
-        public List<IdObjectPair> Fetch()
+        new public List<Classes.Location> Fetch(long? parentId, bool showHidden, DateTimeOffset showHiddenSince)
         {
-            return Fetch(false);
-        }
+            Table Table = base.GetItems(parentId, showHidden, showHiddenSince);
 
-        //----------------------------------------------------------------------
+            List<Classes.Location> Locations = new List<Classes.Location>();
 
-        public List<IdObjectPair> Fetch(bool includeHidden)
-        {
-            Table Locations = base.GetItems(includeHidden);
-
-            List<IdObjectPair> Values = new List<IdObjectPair>();
-
-            foreach (Row Row in Locations) {
-                Location Location = new Location(Row["LocationId"]);
-                IdObjectPair Pair = new IdObjectPair((int)Row["LocationId"], Location);
-                Values.Add(Pair);
+            foreach (Row Row in Table) {
+                var Location = new Classes.Location(Row["LocationId"]);
+                Locations.Add(Location);
             }
 
-            return Values;
+            return Locations;
         }
 
         //---------------------------------------------------------------------
+
     }
 }

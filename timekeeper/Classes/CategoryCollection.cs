@@ -7,43 +7,39 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class CategoryCollection : Classes.ListAttributeCollection
+    class CategoryCollection : Classes.TreeAttributeCollection
     {
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
 
-        public CategoryCollection()
-            : base("Category")
-        {
-        }
+        public CategoryCollection(string orderByClause)
+            : base("Category", orderByClause)
+        {}
+
+        public CategoryCollection() 
+            : this ("CreateTime")
+        {}
 
         //----------------------------------------------------------------------
         // Public Methods
         //----------------------------------------------------------------------
 
-        public List<IdObjectPair> Fetch()
+        new public List<Classes.Category> Fetch(long? parentId, bool showHidden, DateTimeOffset showHiddenSince)
         {
-            return Fetch(false);
-        }
+            Table Table = base.GetItems(parentId, showHidden, showHiddenSince);
 
-        //----------------------------------------------------------------------
+            List<Classes.Category> Categories = new List<Classes.Category>();
 
-        public List<IdObjectPair> Fetch(bool includeHidden)
-        {
-            Table Categories = base.GetItems(includeHidden);
-
-            List<IdObjectPair> Values = new List<IdObjectPair>();
-
-            foreach (Row Row in Categories) {
-                Category Category = new Category(Row["CategoryId"]);
-                IdObjectPair Pair = new IdObjectPair((int)Row["CategoryId"], Category);
-                Values.Add(Pair);
+            foreach (Row Row in Table) {
+                var Category = new Classes.Category(Row["CategoryId"]);
+                Categories.Add(Category);
             }
 
-            return Values;
+            return Categories;
         }
 
         //---------------------------------------------------------------------
+
     }
 }
