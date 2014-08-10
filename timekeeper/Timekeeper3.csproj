@@ -236,18 +236,6 @@
     <Compile Include="Forms\Shared\TreeAttributeManager.Designer.cs">
       <DependentUpon>TreeAttributeManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Tools\CalendarMonth.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\Tools\CalendarMonth.Designer.cs">
-      <DependentUpon>CalendarMonth.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Tools\CustomCalendar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Tools\CustomCalendar.Designer.cs">
-      <DependentUpon>CustomCalendar.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Tools\EditEventGroup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -494,12 +482,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Shared\TreeAttributeManager.resx">
       <DependentUpon>TreeAttributeManager.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Tools\CalendarMonth.resx">
-      <DependentUpon>CalendarMonth.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Tools\CustomCalendar.resx">
-      <DependentUpon>CustomCalendar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tools\EditEventGroup.resx">
       <DependentUpon>EditEventGroup.cs</DependentUpon>

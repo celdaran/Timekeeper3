@@ -1083,13 +1083,6 @@ namespace Timekeeper.Forms
             this.MemoEditor.Text += "\n";
         }
 
-        private void MenuToolCustomCalendar_Click(object sender, EventArgs e)
-        {
-            Forms.Tools.CustomCalendar Dialog = new Tools.CustomCalendar();
-            Dialog.Show();
-        }
-
-
         //---------------------------------------------------------------------
         // FIXME - EXPERIMENTAL - NOT READY FOR PRIME TIME
         //---------------------------------------------------------------------

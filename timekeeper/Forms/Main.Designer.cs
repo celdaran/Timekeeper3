@@ -230,7 +230,6 @@ namespace Timekeeper.Forms
             this.PopupMenuMemoCutSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.MenuToolCustomCalendar = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -485,18 +484,21 @@ namespace Timekeeper.Forms
             this.MenuReportTodo.Name = "MenuReportTodo";
             this.MenuReportTodo.Size = new System.Drawing.Size(158, 22);
             this.MenuReportTodo.Text = "To Do...";
+            this.MenuReportTodo.Visible = false;
             // 
             // MenuReportEvents
             // 
             this.MenuReportEvents.Name = "MenuReportEvents";
             this.MenuReportEvents.Size = new System.Drawing.Size(158, 22);
             this.MenuReportEvents.Text = "Events...";
+            this.MenuReportEvents.Visible = false;
             // 
             // MenuReportNotebook
             // 
             this.MenuReportNotebook.Name = "MenuReportNotebook";
             this.MenuReportNotebook.Size = new System.Drawing.Size(158, 22);
             this.MenuReportNotebook.Text = "Notebook...";
+            this.MenuReportNotebook.Visible = false;
             // 
             // MenuReportPunch
             // 
@@ -512,7 +514,6 @@ namespace Timekeeper.Forms
             this.MenuToolEvents,
             this.MenuToolNotebook,
             this.MenuToolCalendar,
-            this.MenuToolCustomCalendar,
             this.MenuToolStopwatch,
             this.MenuToolCountdown,
             this.MenuToolDatecalc,
@@ -2069,14 +2070,6 @@ namespace Timekeeper.Forms
             this.MainPanel.Size = new System.Drawing.Size(684, 273);
             this.MainPanel.TabIndex = 1;
             // 
-            // MenuToolCustomCalendar
-            // 
-            this.MenuToolCustomCalendar.Name = "MenuToolCustomCalendar";
-            this.MenuToolCustomCalendar.Size = new System.Drawing.Size(182, 22);
-            this.MenuToolCustomCalendar.Text = "Custom Calendar";
-            this.MenuToolCustomCalendar.Visible = false;
-            this.MenuToolCustomCalendar.Click += new System.EventHandler(this.MenuToolCustomCalendar_Click);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2321,6 +2314,5 @@ namespace Timekeeper.Forms
         internal System.Windows.Forms.Panel DimensionPanel;
         internal System.Windows.Forms.Button CloseStartGapButton;
         internal System.Windows.Forms.Button CloseStopGapButton;
-        private System.Windows.Forms.ToolStripMenuItem MenuToolCustomCalendar;
     }
 }

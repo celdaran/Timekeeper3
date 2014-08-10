@@ -1234,30 +1234,35 @@ namespace Timekeeper.Forms
 
         private void Action_LongTick()
         {
-            if (timerRunning) {
+            try {
                 // Refresh actual time values from database to correct for drift
-                ElapsedSinceStart = Convert.ToInt32(TimedActivity.Elapsed().TotalSeconds); // FIXME: CURRENT ACTIVITY?
-                ElapsedProjectToday = Convert.ToInt32(TimedProject.ElapsedToday().TotalSeconds);
-                ElapsedActivityToday = Convert.ToInt32(TimedActivity.ElapsedToday().TotalSeconds);
-                ElapsedLocationToday = Convert.ToInt32(TimedLocation.ElapsedToday().TotalSeconds);
-                ElapsedCategoryToday = Convert.ToInt32(TimedCategory.ElapsedToday().TotalSeconds);
-                ElapsedAllToday = Convert.ToInt32(Entries.ElapsedToday());
-            }
+                if (timerRunning) {
+                    ElapsedSinceStart = Convert.ToInt32(TimedProject.Elapsed().TotalSeconds);
+                    ElapsedProjectToday = Convert.ToInt32(TimedProject.ElapsedToday().TotalSeconds);
+                    ElapsedActivityToday = Convert.ToInt32(TimedActivity.ElapsedToday().TotalSeconds);
+                    ElapsedLocationToday = Convert.ToInt32(TimedLocation.ElapsedToday().TotalSeconds);
+                    ElapsedCategoryToday = Convert.ToInt32(TimedCategory.ElapsedToday().TotalSeconds);
+                    ElapsedAllToday = Convert.ToInt32(Entries.ElapsedToday());
+                }
 
-            // Annoyance support: if so desired, bug the user that the timer isn't running
-            DateTimeOffset now = Timekeeper.LocalNow;
-            TimeSpan ts = new TimeSpan(now.Ticks - timerLastRun.Ticks);
-            if (Options.Behavior_Annoy_NoRunningPrompt) {
-                if (ts.TotalMinutes > (double)Options.Behavior_Annoy_NoRunningPromptAmount) {
-                    if (timerRunning == false) {
-                        if (TrayIcon.Visible) {
-                            TrayIcon.ShowBalloonTip(30000,
-                                Timekeeper.TITLE,
-                                "No timer is currently running.\n\nYou can change the frequency of this notification (or disable it completely) in the Options dialog box.",
-                                ToolTipIcon.Info);
+                // Annoyance support: if so desired, bug the user that the timer isn't running
+                DateTimeOffset now = Timekeeper.LocalNow;
+                TimeSpan ts = new TimeSpan(now.Ticks - timerLastRun.Ticks);
+                if (Options.Behavior_Annoy_NoRunningPrompt) {
+                    if (ts.TotalMinutes > (double)Options.Behavior_Annoy_NoRunningPromptAmount) {
+                        if (timerRunning == false) {
+                            if (TrayIcon.Visible) {
+                                TrayIcon.ShowBalloonTip(30000,
+                                    Timekeeper.TITLE,
+                                    "No timer is currently running.\n\nYou can change the frequency of this notification (or disable it completely) in the Options dialog box.",
+                                    ToolTipIcon.Info);
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
             }
         }
 
@@ -1286,6 +1291,9 @@ namespace Timekeeper.Forms
 
         private void ReleaseDimensions()
         {
+            if (timerRunning)
+                return;
+
             TimedProject = null;
             TimedActivity = null;
             TimedLocation = null;
@@ -1393,7 +1401,8 @@ namespace Timekeeper.Forms
                 TimedCategory.StopTiming(StopTime);
 
             // Get current dimension selections
-            // Note: they may have changed while the timer was running
+            // Note: they may have changed while the timer was running,
+            // that's why we're getting them again
             GetDimensions();
 
             // Close off timer
@@ -1407,6 +1416,7 @@ namespace Timekeeper.Forms
             TimedEntry.CategoryId = TimedCategory.ItemId;
             TimedEntry.IsLocked = false;
             TimedEntry.Save();
+
             timerRunning = false;
 
             // Clear instances of current object
