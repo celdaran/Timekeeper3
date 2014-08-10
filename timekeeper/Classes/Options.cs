@@ -87,6 +87,8 @@ namespace Timekeeper.Classes
 
         public int Behavior_SortProjectsBy { get; set; }
         public int Behavior_SortProjectsByDirection { get; set; }
+        public int Behavior_SortProjectsThenBy { get; set; }
+        public int Behavior_SortProjectsThenByDirection { get; set; }
         public int Behavior_SortItemsBy { get; set; }
         public int Behavior_SortItemsByDirection { get; set; }
         public int Behavior_BrowsePrevBy { get; set; }
@@ -117,6 +119,7 @@ namespace Timekeeper.Classes
         public int Advanced_Other_DimensionWidth { get; set; }
         public int Advanced_Other_MidnightOffset { get; set; }
         public bool Advanced_Other_WarnOpeningLockedDatabase { get; set; }
+        public bool Advanced_Other_SortExProjectAsNumber { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Metrics)
@@ -225,6 +228,11 @@ namespace Timekeeper.Classes
         public int Merge_Width { get; set; }
         public int Merge_Top { get; set; }
         public int Merge_Left { get; set; }
+
+        public int TreeManager_Height { get; set; }
+        public int TreeManager_Width { get; set; }
+        public int TreeManager_Top { get; set; }
+        public int TreeManager_Left { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/MRU)
@@ -390,6 +398,8 @@ namespace Timekeeper.Classes
 
             Behavior_SortProjectsBy = (int)Key.GetValue("SortProjectsBy", 0);
             Behavior_SortProjectsByDirection = (int)Key.GetValue("SortProjectsByDirection", 0);
+            Behavior_SortProjectsThenBy = (int)Key.GetValue("SortProjectsThenBy", 0);
+            Behavior_SortProjectsThenByDirection = (int)Key.GetValue("SortProjectsThenByDirection", 0);
             Behavior_SortItemsBy = (int)Key.GetValue("SortItemsBy", 0);
             Behavior_SortItemsByDirection = (int)Key.GetValue("SortItemsByDirection", 0);
             Behavior_BrowsePrevBy = (int)Key.GetValue("BrowsePrevBy", 0);
@@ -444,6 +454,7 @@ namespace Timekeeper.Classes
             Advanced_Other_DimensionWidth = (int)Key.GetValue("Other_DimensionWidth", 250);
             Advanced_Other_MidnightOffset = (int)Key.GetValue("Other_MidnightOffset", 0);
             Advanced_Other_WarnOpeningLockedDatabase = ((int)Key.GetValue("Other_WarnOpeningLockedDatabase", 1)) == 1;
+            Advanced_Other_SortExProjectAsNumber = ((int)Key.GetValue("Other_SortExProjectAsNumber", 1)) == 1;
 
             //----------------------------------------------------------------------
 
@@ -589,6 +600,13 @@ namespace Timekeeper.Classes
             Merge_Width = (int)Key.GetValue("Width", 0);
             Merge_Top = (int)Key.GetValue("Top", 0);
             Merge_Left = (int)Key.GetValue("Left", 0);
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\TreeManager");
+
+            TreeManager_Height = (int)Key.GetValue("Height", 269);
+            TreeManager_Width = (int)Key.GetValue("Width", 359);
+            TreeManager_Top = (int)Key.GetValue("Top", 100);
+            TreeManager_Left = (int)Key.GetValue("Left", 100);
 
             Key.Close();
 
@@ -757,6 +775,8 @@ namespace Timekeeper.Classes
 
             Key.SetValue("SortProjectsBy", Behavior_SortProjectsBy, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("SortProjectsByDirection", Behavior_SortProjectsByDirection, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("SortProjectsThenBy", Behavior_SortProjectsThenBy, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("SortProjectsThenByDirection", Behavior_SortProjectsThenByDirection, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("SortItemsBy", Behavior_SortItemsBy, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("SortItemsByDirection", Behavior_SortItemsByDirection, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("BrowsePrevBy", Behavior_BrowsePrevBy, Microsoft.Win32.RegistryValueKind.DWord);
@@ -805,6 +825,7 @@ namespace Timekeeper.Classes
             Key.SetValue("Other_DimensionWidth", Advanced_Other_DimensionWidth, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_MidnightOffset", unchecked((int)Advanced_Other_MidnightOffset), Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_WarnOpeningLockedDatabase", Advanced_Other_WarnOpeningLockedDatabase, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Other_SortExProjectAsNumber", Advanced_Other_SortExProjectAsNumber, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 
@@ -941,10 +962,17 @@ namespace Timekeeper.Classes
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Merge");
 
-            Key.SetValue("Height", Notebook_Height, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Width", Notebook_Width, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Top", Notebook_Top, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Left", Notebook_Left, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Height", Merge_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", Merge_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", Merge_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", Merge_Left, Microsoft.Win32.RegistryValueKind.DWord);
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\TreeManager");
+
+            Key.SetValue("Height", TreeManager_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", TreeManager_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", TreeManager_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", TreeManager_Left, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.Close();
         }

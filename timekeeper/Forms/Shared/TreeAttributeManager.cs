@@ -32,6 +32,12 @@ namespace Timekeeper.Forms.Shared
             this.Options = Timekeeper.Options;
             this.Widgets = new Classes.Widgets();
 
+            // Restore window metrics
+            Height = Options.TreeManager_Height;
+            Width = Options.TreeManager_Width;
+            Top = Options.TreeManager_Top;
+            Left = Options.TreeManager_Left;
+
             // Set the window flavor
             this.Dimension = dimension;
 
@@ -96,6 +102,16 @@ namespace Timekeeper.Forms.Shared
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void TreeAttributeManager_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Options.TreeManager_Height = Height;
+            Options.TreeManager_Width = Width;
+            Options.TreeManager_Top = Top;
+            Options.TreeManager_Left = Left;
         }
 
         //----------------------------------------------------------------------
@@ -188,6 +204,32 @@ namespace Timekeeper.Forms.Shared
         // Tree events
         //----------------------------------------------------------------------
 
+        private void Tree_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)SelectedNode.Tag;
+                if (Item.IsFolderOpened) {
+                    Item.CloseFolder();
+                }
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Tree_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)SelectedNode.Tag;
+                if (!Item.IsFolderOpened) {
+                    Item.OpenFolder();
+                }
+            }
+        }
+
+        //----------------------------------------------------------------------
+
         private void Tree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             SetHideUnhide();
@@ -202,6 +244,13 @@ namespace Timekeeper.Forms.Shared
             PopupMenuHide.Visible = !Item.IsHidden;
             MenuUnhide.Visible = Item.IsHidden;
             PopupMenuUnhide.Visible = Item.IsHidden;
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Tree_DoubleClick(object sender, EventArgs e)
+        {
+            MenuEdit_Click(sender, e);
         }
 
         //----------------------------------------------------------------------
@@ -340,8 +389,6 @@ namespace Timekeeper.Forms.Shared
 
         //----------------------------------------------------------------------
         // gets messy below --- still needs cleanup
-        //----------------------------------------------------------------------
-
         //----------------------------------------------------------------------
 
         private void Dialog_HideItem(TreeView tree)
@@ -542,54 +589,11 @@ namespace Timekeeper.Forms.Shared
         }
 
         //----------------------------------------------------------------------
-        // CODE ARCHIVE
-        //----------------------------------------------------------------------
-
-        // Drag and Drop: Node selection on DragOver (Projects)
-        /*
-        private void ProjectTree_DragOver(object sender, DragEventArgs e)
-        {
-            // Retrieve the client coordinates of the mouse position.
-            Point targetPoint = ProjectTree.PointToClient(new Point(e.X, e.Y));
-
-            // Select the node at the mouse position.
-            ProjectTree.SelectedNode = ProjectTree.GetNodeAt(targetPoint);
-        }
-
-        // Drag and Drop: Node selection on DragOver (Activities)
-        private void ActivityTree_DragOver(object sender, DragEventArgs e)
-        {
-            // Retrieve the client coordinates of the mouse position.
-            Point targetPoint = ActivityTree.PointToClient(new Point(e.X, e.Y));
-
-            // Select the node at the mouse position.
-            ActivityTree.SelectedNode = ActivityTree.GetNodeAt(targetPoint);
-        }
-
-        // Drag and Drop: Wrapper around the core drop logic
-        private void ProjectTree_DragDrop(object sender, DragEventArgs e)
-        {
-            Action_TreeView_DragDrop(ProjectTree, sender, e);
-        }
-
-        private void ActivityTree_DragDrop(object sender, DragEventArgs e)
-        {
-            Action_TreeView_DragDrop(ActivityTree, sender, e);
-        }
-        */
-
+        // Drag and Drop Support
         //----------------------------------------------------------------------
 
         // Drag and Drop: Initiate drag sequence
-        /*
-        private void ProjectTree_ItemDrag(object sender, ItemDragEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left) {
-                DoDragDrop(e.Item, DragDropEffects.Move);
-            }
-        }
-
-        private void ActivityTree_ItemDrag(object sender, ItemDragEventArgs e)
+        private void Tree_ItemDrag(object sender, ItemDragEventArgs e)
         {
             if (e.Button == MouseButtons.Left) {
                 DoDragDrop(e.Item, DragDropEffects.Move);
@@ -601,94 +605,26 @@ namespace Timekeeper.Forms.Shared
         {
             e.Effect = e.AllowedEffect;
         }
-        */
 
         //----------------------------------------------------------------------
 
-        /*
-        private void ProjectTree_AfterCollapse(object sender, TreeViewEventArgs e)
+        // Drag and Drop: Node selection on DragOver
+        private void Tree_DragOver(object sender, DragEventArgs e)
         {
-            TreeNode SelectedNode = e.Node;
-            if (SelectedNode != null) {
-                Classes.Project Project = (Classes.Project)SelectedNode.Tag;
-                if (Project.IsFolderOpened) {
-                    Project.CloseFolder();
-                }
-            }
-        }
+            // Retrieve the client coordinates of the mouse position.
+            Point targetPoint = Tree.PointToClient(new Point(e.X, e.Y));
 
-        private void ActivityTree_AfterExpand(object sender, TreeViewEventArgs e)
-        {
-            TreeNode SelectedNode = e.Node;
-            if (SelectedNode != null) {
-                Classes.Activity Activity = (Classes.Activity)SelectedNode.Tag;
-                if (!Activity.IsFolderOpened) {
-                    Activity.OpenFolder();
-                }
-            }
+            // Select the node at the mouse position.
+            Tree.SelectedNode = Tree.GetNodeAt(targetPoint);
         }
-
-        private void ActivityTree_AfterCollapse(object sender, TreeViewEventArgs e)
-        {
-            TreeNode SelectedNode = e.Node;
-            if (SelectedNode != null) {
-                Classes.Activity Activity = (Classes.Activity)SelectedNode.Tag;
-                if (Activity.IsFolderOpened) {
-                    Activity.CloseFolder();
-                }
-            }
-        }
-        */
 
         //----------------------------------------------------------------------
 
-        /*
-        private void PopupMenuProjectAddtoTodoList_Click(object sender, EventArgs e)
+        // Drag and Drop: Wrapper around the core drop logic
+        private void Tree_DragDrop(object sender, DragEventArgs e)
         {
-            Forms.Tools.TodoDetail DialogBox = new Forms.Tools.TodoDetail();
-
-            Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-            DialogBox.ProjectId = Project.ItemId;
-
-            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                Classes.TodoItem TodoItem = DialogBox.TodoItem;
-                TodoItem.Create();
-
-                // If a Todo form is open, add it to its list
-                foreach (Form Form in OpenForms) {
-                    if (Form.Name == "Todo") {
-                        Forms.Tools.Todo Todo = (Forms.Tools.Todo)Form;
-                        Todo.AddItem(Project.DisplayName(), TodoItem, Todo.TodoList.Groups[TodoItem.StatusName]);
-                    }
-                }
-            }
+            Action_TreeView_DragDrop(Tree, sender, e);
         }
-        */
-
-        /*
-        private void PopupMenuProject_Opening(object sender, CancelEventArgs e)
-        {
-            // FIXME: too much logic here
-            if (ProjectTree.SelectedNode != null) {
-                Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-
-                if (Project.IsFolder) {
-                    PopupMenuProjectAddtoTodoList.Enabled = false;
-                } else {
-                    if (Project.IsDeleted) {
-                        PopupMenuProjectAddtoTodoList.Enabled = false;
-                    } else {
-                        Classes.TodoItemCollection TodoItems = new Classes.TodoItemCollection();
-                        PopupMenuProjectAddtoTodoList.Enabled = !TodoItems.Exists(Project.ItemId);
-                    }
-                }
-            } else {
-                PopupMenuProjectAddtoTodoList.Enabled = false;
-            }
-        }
-        */
-
-        //----------------------------------------------------------------------
 
         //----------------------------------------------------------------------
 
@@ -705,32 +641,6 @@ namespace Timekeeper.Forms.Shared
 
             // Get the Timekeeper Item of the node that was dragged.
             Classes.TreeAttribute draggedItem = (Classes.TreeAttribute)draggedNode.Tag;
-
-            // Cross-tree dragging warning
-            bool CrossDragAccepted = false;
-            if (tree.Name != draggedNode.TreeView.Name) {
-                // TODO: Allow conversion via drag and drop. This means that once confirmed
-                string ToItem = (string)tree.Tag;
-                string FromItem = (ToItem == "Project") ? "Activity" : "Project";
-                string Message;
-                if (draggedItem.IsFolder) {
-                    Message = String.Format("You cannot drag this {0} folder to the {1} tree.", FromItem, ToItem);
-                    Common.Warn(Message);
-                    return;
-                } else {
-                    Message = "You are dragging an item to a different tree. ";
-                    Message += String.Format("Do you wish to convert this {0} to a {1}?", FromItem, ToItem);
-                    if (draggedItem.GetType() == typeof(Classes.Project)) {
-                        Message += Environment.NewLine + Environment.NewLine +
-                            "Note that any External Project Number associated with this Project will be lost. This action cannot be undone.";
-                    }
-                    if (Common.WarnPrompt(Message) == DialogResult.Yes) {
-                        CrossDragAccepted = true;
-                    } else {
-                        return;
-                    }
-                }
-            }
 
             // Confirm that the node at the drop location is not 
             // the dragged node or a descendant of the dragged node.
@@ -784,50 +694,8 @@ namespace Timekeeper.Forms.Shared
                     Item.Reorder(Index);
                     Index++;
                 }
-
-            }
-
-            if (CrossDragAccepted) {
-
-                // Conversion
-                if (draggedItem.GetType() == typeof(Classes.Project)) {
-
-                    // Create an Activity in the database
-                    Classes.Activity Activity = new Classes.Activity();
-                    Activity.Copy(draggedItem);
-                    Activity.Create();
-
-                    draggedNode.Tag = (Classes.TreeAttribute)Activity;
-
-                    // Update the UI
-                    if (Activity.IsHidden) {
-                        draggedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                    } else {
-                        draggedNode.ImageIndex = Timekeeper.IMG_ACTIVITY;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ACTIVITY;
-                    }
-                } else {
-                    // Create a Project in the database
-                    Classes.Project Project = new Classes.Project();
-                    Project.Copy(draggedItem);
-                    Project.Create();
-
-                    draggedNode.Tag = (Classes.TreeAttribute)Project;
-
-                    // Update the UI
-                    if (Project.IsHidden) {
-                        draggedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                    } else {
-                        draggedNode.ImageIndex = Timekeeper.IMG_PROJECT;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_PROJECT;
-                    }
-                }
-
-                // Removal
-                draggedItem.Delete();
-                //draggedItem.Rename(draggedItem.ItemGuid);
+            } else {
+                Common.Warn("Cannot drop item here");
             }
         }
 
@@ -869,25 +737,58 @@ namespace Timekeeper.Forms.Shared
             }
         }
 
-        private void Tree_DoubleClick(object sender, EventArgs e)
-        {
-            MenuEdit_Click(sender, e);
-        }
-
+        //----------------------------------------------------------------------
+        // CODE ARCHIVE
         //----------------------------------------------------------------------
 
         /*
-        private void ProjectTree_AfterExpand(object sender, TreeViewEventArgs e)
+        private void PopupMenuProjectAddtoTodoList_Click(object sender, EventArgs e)
         {
-            TreeNode SelectedNode = e.Node;
-            if (SelectedNode != null) {
-                Classes.Project Project = (Classes.Project)SelectedNode.Tag;
-                if (!Project.IsFolderOpened) {
-                    Project.OpenFolder();
+            Forms.Tools.TodoDetail DialogBox = new Forms.Tools.TodoDetail();
+
+            Classes.Project Project = (Classes.Project)Tree.SelectedNode.Tag;
+            DialogBox.ProjectId = Project.ItemId;
+
+            if (DialogBox.ShowDialog(this) == DialogResult.OK) {
+                Classes.TodoItem TodoItem = DialogBox.TodoItem;
+                TodoItem.Create();
+
+                // If a Todo form is open, add it to its list
+                foreach (Form Form in OpenForms) {
+                    if (Form.Name == "Todo") {
+                        Forms.Tools.Todo Todo = (Forms.Tools.Todo)Form;
+                        Todo.AddItem(Project.DisplayName(), TodoItem, Todo.TodoList.Groups[TodoItem.StatusName]);
+                    }
                 }
             }
         }
         */
+
+        /*
+        private void PopupMenuProject_Opening(object sender, CancelEventArgs e)
+        {
+            // FIXME: too much logic here
+            if (Tree.SelectedNode != null) {
+                Classes.Project Project = (Classes.Project)Tree.SelectedNode.Tag;
+
+                if (Project.IsFolder) {
+                    PopupMenuProjectAddtoTodoList.Enabled = false;
+                } else {
+                    if (Project.IsDeleted) {
+                        PopupMenuProjectAddtoTodoList.Enabled = false;
+                    } else {
+                        Classes.TodoItemCollection TodoItems = new Classes.TodoItemCollection();
+                        PopupMenuProjectAddtoTodoList.Enabled = !TodoItems.Exists(Project.ItemId);
+                    }
+                }
+            } else {
+                PopupMenuProjectAddtoTodoList.Enabled = false;
+            }
+        }
+        */
+
+        //----------------------------------------------------------------------
+
 
     }
 }

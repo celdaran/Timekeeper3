@@ -88,8 +88,6 @@ namespace Timekeeper.Forms
 
             UpdateStatusBar();
 
-            Action_UpdateCalendar(ProjectTreeDropdown);
-
             MenuBar_ShowHideProject(!Project.IsHidden);
             MenuBar_ShowMergeProject(Project.IsFolder);
             MenuBar_ShowDeleteProject(Project.IsDeleted);
@@ -109,8 +107,6 @@ namespace Timekeeper.Forms
             Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
 
             UpdateStatusBar();
-
-            Action_UpdateCalendar(ActivityTreeDropdown);
 
             MenuBar_ShowHideActivity(!Activity.IsHidden);
             // FIXME: Activity equiv? What about our other two dimensions?
@@ -138,8 +134,6 @@ namespace Timekeeper.Forms
 
             UpdateStatusBar();
 
-            Action_UpdateCalendar(LocationTreeDropdown);
-
             SetDirtyBit(Location, browserEntry.LocationId);
         }
 
@@ -155,8 +149,6 @@ namespace Timekeeper.Forms
             Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
 
             UpdateStatusBar();
-
-            Action_UpdateCalendar(CategoryTreeDropdown);
 
             SetDirtyBit(Category, browserEntry.CategoryId);
         }
@@ -1523,30 +1515,6 @@ namespace Timekeeper.Forms
                 Common.Warn("There was a problem splitting the entry");
                 Timekeeper.Exception(x);
             }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_UpdateCalendar(ComboTreeBox tree)
-        {
-            // unified
-            /* THIS FEATURE NEEDS SOME RETHINKING NOW THAT THE MAIN WINDOW TREEVIEW CONTROLS ARE GONE
-            if (calendar != null) {
-                Classes.TreeAttribute CurrentItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-                DateTimeOffset LastUsed = CurrentItem.DateLastUsed();
-
-                calendar.wCalendar.TodayDate = LastUsed.DateTime;
-
-                // Bold all dates where item has been used
-                int Count = CurrentItem.NumberOfDaysUsed();
-                DateTime[] Array = new DateTime[Count];
-
-                List<DateTimeOffset> DaysUsed = CurrentItem.DaysUsed();
-                Array = DaysUsed.ToArray();
-
-                calendar.wCalendar.BoldedDates = Array;
-            }
-            */
         }
 
         //---------------------------------------------------------------------

@@ -279,7 +279,13 @@
             this.Tree.TabIndex = 3;
             this.Tree.Tag = "Project";
             this.Tree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.Tree_AfterLabelEdit);
+            this.Tree.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterCollapse);
+            this.Tree.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterExpand);
+            this.Tree.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.Tree_ItemDrag);
             this.Tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterSelect);
+            this.Tree.DragDrop += new System.Windows.Forms.DragEventHandler(this.Tree_DragDrop);
+            this.Tree.DragEnter += new System.Windows.Forms.DragEventHandler(this.Tree_DragEnter);
+            this.Tree.DragOver += new System.Windows.Forms.DragEventHandler(this.Tree_DragOver);
             this.Tree.DoubleClick += new System.EventHandler(this.Tree_DoubleClick);
             this.Tree.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Tree_KeyDown);
             // 
@@ -297,6 +303,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "TreeAttributeManager";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TreeAttributeManager_FormClosing);
             this.Load += new System.EventHandler(this.TreeAttributeManager_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

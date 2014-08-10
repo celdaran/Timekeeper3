@@ -112,7 +112,11 @@ namespace Timekeeper.Classes
         {
             bool showHidden = GetViewHidden();
             DateTimeOffset showHiddenSince = GetViewHiddenSinceTime();
-            string orderByClause = GetOrderBy(Options.Behavior_SortItemsBy, Options.Behavior_SortItemsByDirection);
+            string orderByClause = this.CurrentDimension == Timekeeper.Dimension.Project ?
+                GetOrderBy(Options.Behavior_SortProjectsBy, Options.Behavior_SortProjectsByDirection) :
+                GetOrderBy(Options.Behavior_SortItemsBy, Options.Behavior_SortItemsByDirection);
+            if (Options.Behavior_SortProjectsBy > 3)
+                orderByClause += ", " + GetOrderBy(Options.Behavior_SortProjectsThenBy, Options.Behavior_SortProjectsThenByDirection);
 
             // Instantiate Items
             TreeAttributeCollection Items = new TreeAttributeCollection(this.CurrentDimension.ToString(), orderByClause);
@@ -171,12 +175,19 @@ namespace Timekeeper.Classes
                     dropdown.SelectedNode = dropdown.Nodes[0];
                     Classes.TreeAttribute Item = (Classes.TreeAttribute)dropdown.SelectedNode.Tag;
                     if (Item.IsFolder) {
-                        Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
+                        // This means there's only one item in the entire list and that 
+                        // one item is a folder
+                        Common.Warn("You only have one item defined and it's a folder.");
                     } else {
                         // Do nothing, we're okay
                     }
                 } else {
                     dropdown.SelectedNode = GetFirstNonFolder(dropdown.Nodes);
+                }
+            } else {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)dropdown.SelectedNode.Tag;
+                if (Item.IsFolder) {
+                    dropdown.SelectedNode = GetFirstNonFolder(dropdown.SelectedNode.Nodes);
                 }
             }
         }
@@ -534,17 +545,26 @@ namespace Timekeeper.Classes
             string OrderBy;
 
             switch (sortBy) {
-                case 0: OrderBy = "Name"; break;
-                case 1: OrderBy = "SortOrderNo"; break;
+                // Supported for all dimensions
+                case 0: OrderBy = "SortOrderNo"; break;
+                case 1: OrderBy = "Name"; break;
                 case 2: OrderBy = "CreateTime"; break;
                 case 3: OrderBy = "ModifyTime"; break;
-                // FIXME: the cast below needs to be an option
-                // FIXME: also ONLY supported by Projects
-                case 4: OrderBy = "cast(ExternalProjectNo as int)"; break;
+
+                // Supported for just projects
+                case 4:
+                    if (this.Options.Advanced_Other_SortExProjectAsNumber)
+                        OrderBy = "cast(ExternalProjectNo as int)";
+                    else
+                        OrderBy = "ExternalProjectNo";
+                    break;
+                case 5: OrderBy = "StartTime"; break;
+                case 6: OrderBy = "DueTime"; break;
                 default: OrderBy = "SortOrderNo"; break;
             }
 
-            string Direction = sortDirection == 0 ? "asc" : "desc";
+            // 1 is descending, 0 is ascending, -1 is "don't care" which implies ascending
+            string Direction = (sortDirection == 1) && (sortBy != 0) ? "desc" : "asc";
 
             return OrderBy + " " + Direction;
         }

@@ -129,17 +129,20 @@ namespace Timekeeper.Forms
             // Populate various dropdowns
             //----------------------------------------------
 
-            string[] Entries = new string[5] { 
-                "Alphabetically",
+            string[] Entries = new string[7] { 
                 "as Placed",
+                "Alphabetically",
                 "by Created Date",
                 "by Modified Date",
-                "by External Project Number" };
+                "by External Project Number",
+                "by Todo Start Date",
+                "by Todo Due Date"};
             AddItems(Behavior_SortProjectsBy, Entries);
+            AddItems(Behavior_SortProjectsThenBy, Entries);
 
             Entries = new string[4] { 
-                "Alphabetically",
                 "as Placed",
+                "Alphabetically",
                 "by Created Date",
                 "by Modified Date"};
             AddItems(Behavior_SortItemsBy, Entries);
@@ -361,6 +364,8 @@ namespace Timekeeper.Forms
 
             Behavior_SortProjectsBy.SelectedIndex = Values.Behavior_SortProjectsBy;
             Behavior_SortProjectsByDirection.SelectedIndex = Values.Behavior_SortProjectsByDirection;
+            Behavior_SortProjectsThenBy.SelectedIndex = Values.Behavior_SortProjectsThenBy;
+            Behavior_SortProjectsThenByDirection.SelectedIndex = Values.Behavior_SortProjectsThenByDirection;
             Behavior_SortItemsBy.SelectedIndex = Values.Behavior_SortItemsBy;
             Behavior_SortItemsByDirection.SelectedIndex = Values.Behavior_SortItemsByDirection;
             Behavior_BrowsePrevBy.SelectedIndex = Values.Behavior_BrowsePrevBy;
@@ -464,6 +469,8 @@ namespace Timekeeper.Forms
 
             Values.Behavior_SortProjectsBy = Behavior_SortProjectsBy.SelectedIndex;
             Values.Behavior_SortProjectsByDirection = Behavior_SortProjectsByDirection.SelectedIndex;
+            Values.Behavior_SortProjectsThenBy = Behavior_SortProjectsThenBy.SelectedIndex;
+            Values.Behavior_SortProjectsThenByDirection = Behavior_SortProjectsThenByDirection.SelectedIndex;
             Values.Behavior_SortItemsBy = Behavior_SortItemsBy.SelectedIndex;
             Values.Behavior_SortItemsByDirection = Behavior_SortItemsByDirection.SelectedIndex;
             Values.Behavior_BrowsePrevBy = Behavior_BrowsePrevBy.SelectedIndex;
@@ -709,10 +716,11 @@ namespace Timekeeper.Forms
         {
             // Define Standard Heights
             int TallHeight = Layout_UseProjects.Checked ? 27 : 0;
+            int DoubleTallHeight = Layout_UseProjects.Checked ? 57 : 0;
             int ShortHeight = Layout_UseProjects.Checked ? 23 : 0;
 
             // Set Heights
-            SortingGroup_ProjectPanel.Height = TallHeight;
+            SortingGroup_ProjectPanel.Height = DoubleTallHeight;
             StatusBarGroup_ProjectNamePanel.Height = ShortHeight;
             StatusBarGroup_ProjectElapsedPanel.Height = ShortHeight;
             HiddenGroup_ProjectPanel.Height = TallHeight;
@@ -853,6 +861,23 @@ namespace Timekeeper.Forms
         private void Behavior_Annoy_NoRunningPrompt_CheckedChanged(object sender, EventArgs e)
         {
             Behavior_Annoy_NoRunningPromptAmount.Enabled = Behavior_Annoy_NoRunningPrompt.Checked;
+        }
+
+        private void Behavior_SortProjectsBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Behavior_SortProjectsByDirection.Enabled = Behavior_SortProjectsBy.SelectedIndex > 0;
+            Behavior_SortProjectsThenBy.Enabled = Behavior_SortProjectsBy.SelectedIndex > 3;
+            Behavior_SortProjectsThenByDirection.Enabled = Behavior_SortProjectsBy.SelectedIndex > 3;
+        }
+
+        private void Behavior_SortProjectsThenBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Behavior_SortProjectsThenByDirection.Enabled = Behavior_SortProjectsThenBy.SelectedIndex > 0;
+        }
+
+        private void Behavior_SortItemsBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Behavior_SortItemsByDirection.Enabled = Behavior_SortItemsBy.SelectedIndex > 0;
         }
 
         private void Layout_Preset_Simple_Click(object sender, EventArgs e)
@@ -1006,6 +1031,7 @@ namespace Timekeeper.Forms
                 Report_Font.Text = (string)fc.ConvertToString(FontDialog.Font);
             }
         }
+
 
 
         //----------------------------------------------------------------------

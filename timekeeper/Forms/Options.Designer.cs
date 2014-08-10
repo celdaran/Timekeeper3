@@ -121,10 +121,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.SortingGroup = new System.Windows.Forms.GroupBox();
-            this.SortingGroup_BottomPanel = new System.Windows.Forms.Panel();
-            this.Behavior_SortItemsBy = new System.Windows.Forms.ComboBox();
-            this.Behavior_SortItemsByDirection = new System.Windows.Forms.ComboBox();
-            this.SortItemsLabel = new System.Windows.Forms.Label();
             this.SortingGroup_ProjectPanel = new System.Windows.Forms.Panel();
             this.Behavior_SortProjectsByDirection = new System.Windows.Forms.ComboBox();
             this.Behavior_SortProjectsBy = new System.Windows.Forms.ComboBox();
@@ -140,6 +136,11 @@
             this.TitleBarTemplateLabel = new System.Windows.Forms.Label();
             this.ReportPage = new System.Windows.Forms.TabPage();
             this.ReportGroup = new System.Windows.Forms.GroupBox();
+            this.Report_LayoutFileChooser = new System.Windows.Forms.Button();
+            this.Report_LayoutFile = new System.Windows.Forms.TextBox();
+            this.Report_LayoutFileLabel = new System.Windows.Forms.Label();
+            this.Report_StyleSheetFileChooser = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.Report_Font = new System.Windows.Forms.TextBox();
             this.Report_FontButton = new System.Windows.Forms.Button();
@@ -196,7 +197,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.Advanced_Other_SortExProjectAsNumber = new System.Windows.Forms.CheckBox();
             this.LoggingGroup = new System.Windows.Forms.GroupBox();
             this.label17 = new System.Windows.Forms.Label();
             this.ViewLog = new System.Windows.Forms.Button();
@@ -205,11 +206,13 @@
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
-            this.label19 = new System.Windows.Forms.Label();
-            this.Report_StyleSheetFileChooser = new System.Windows.Forms.Button();
-            this.Report_LayoutFileChooser = new System.Windows.Forms.Button();
-            this.Report_LayoutFile = new System.Windows.Forms.TextBox();
-            this.Report_LayoutFileLabel = new System.Windows.Forms.Label();
+            this.Behavior_SortProjectsThenBy = new System.Windows.Forms.ComboBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.Behavior_SortProjectsThenByDirection = new System.Windows.Forms.ComboBox();
+            this.SortItemsLabel = new System.Windows.Forms.Label();
+            this.Behavior_SortItemsByDirection = new System.Windows.Forms.ComboBox();
+            this.Behavior_SortItemsBy = new System.Windows.Forms.ComboBox();
+            this.SortingGroup_BottomPanel = new System.Windows.Forms.Panel();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -247,7 +250,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.BehaviorSpacingBox)).BeginInit();
             this.BrowsingGroup.SuspendLayout();
             this.SortingGroup.SuspendLayout();
-            this.SortingGroup_BottomPanel.SuspendLayout();
             this.SortingGroup_ProjectPanel.SuspendLayout();
             this.WindowControlGroup.SuspendLayout();
             this.TitleBarGroup.SuspendLayout();
@@ -266,6 +268,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Advanced_Other_DimensionWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.LoggingGroup.SuspendLayout();
+            this.SortingGroup_BottomPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -1206,7 +1209,7 @@
             // BehaviorSpacingBox
             // 
             this.BehaviorSpacingBox.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
-            this.BehaviorSpacingBox.Location = new System.Drawing.Point(17, 554);
+            this.BehaviorSpacingBox.Location = new System.Drawing.Point(17, 575);
             this.BehaviorSpacingBox.Name = "BehaviorSpacingBox";
             this.BehaviorSpacingBox.Size = new System.Drawing.Size(16, 16);
             this.BehaviorSpacingBox.TabIndex = 23;
@@ -1219,7 +1222,7 @@
             this.BrowsingGroup.Controls.Add(this.Behavior_BrowsePrevBy);
             this.BrowsingGroup.Controls.Add(this.label14);
             this.BrowsingGroup.Controls.Add(this.label13);
-            this.BrowsingGroup.Location = new System.Drawing.Point(17, 452);
+            this.BrowsingGroup.Location = new System.Drawing.Point(17, 473);
             this.BrowsingGroup.Name = "BrowsingGroup";
             this.BrowsingGroup.Size = new System.Drawing.Size(345, 102);
             this.BrowsingGroup.TabIndex = 5;
@@ -1291,65 +1294,23 @@
             this.SortingGroup.Controls.Add(this.SortingGroup_ProjectPanel);
             this.SortingGroup.Location = new System.Drawing.Point(17, 365);
             this.SortingGroup.Name = "SortingGroup";
-            this.SortingGroup.Size = new System.Drawing.Size(345, 81);
+            this.SortingGroup.Size = new System.Drawing.Size(345, 102);
             this.SortingGroup.TabIndex = 4;
             this.SortingGroup.TabStop = false;
             this.SortingGroup.Text = "Sorting";
             // 
-            // SortingGroup_BottomPanel
-            // 
-            this.SortingGroup_BottomPanel.Controls.Add(this.Behavior_SortItemsBy);
-            this.SortingGroup_BottomPanel.Controls.Add(this.Behavior_SortItemsByDirection);
-            this.SortingGroup_BottomPanel.Controls.Add(this.SortItemsLabel);
-            this.SortingGroup_BottomPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.SortingGroup_BottomPanel.Location = new System.Drawing.Point(3, 43);
-            this.SortingGroup_BottomPanel.Name = "SortingGroup_BottomPanel";
-            this.SortingGroup_BottomPanel.Size = new System.Drawing.Size(339, 27);
-            this.SortingGroup_BottomPanel.TabIndex = 1;
-            // 
-            // Behavior_SortItemsBy
-            // 
-            this.Behavior_SortItemsBy.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.Behavior_SortItemsBy.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.Behavior_SortItemsBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Behavior_SortItemsBy.FormattingEnabled = true;
-            this.Behavior_SortItemsBy.Location = new System.Drawing.Point(109, 3);
-            this.Behavior_SortItemsBy.Name = "Behavior_SortItemsBy";
-            this.Behavior_SortItemsBy.Size = new System.Drawing.Size(133, 21);
-            this.Behavior_SortItemsBy.TabIndex = 18;
-            // 
-            // Behavior_SortItemsByDirection
-            // 
-            this.Behavior_SortItemsByDirection.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.Behavior_SortItemsByDirection.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.Behavior_SortItemsByDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Behavior_SortItemsByDirection.FormattingEnabled = true;
-            this.Behavior_SortItemsByDirection.Items.AddRange(new object[] {
-            "Ascending",
-            "Descending"});
-            this.Behavior_SortItemsByDirection.Location = new System.Drawing.Point(248, 3);
-            this.Behavior_SortItemsByDirection.Name = "Behavior_SortItemsByDirection";
-            this.Behavior_SortItemsByDirection.Size = new System.Drawing.Size(75, 21);
-            this.Behavior_SortItemsByDirection.TabIndex = 20;
-            // 
-            // SortItemsLabel
-            // 
-            this.SortItemsLabel.AutoSize = true;
-            this.SortItemsLabel.Location = new System.Drawing.Point(11, 6);
-            this.SortItemsLabel.Name = "SortItemsLabel";
-            this.SortItemsLabel.Size = new System.Drawing.Size(63, 13);
-            this.SortItemsLabel.TabIndex = 18;
-            this.SortItemsLabel.Text = "Sort Others:";
-            // 
             // SortingGroup_ProjectPanel
             // 
+            this.SortingGroup_ProjectPanel.Controls.Add(this.Behavior_SortProjectsThenByDirection);
+            this.SortingGroup_ProjectPanel.Controls.Add(this.label20);
+            this.SortingGroup_ProjectPanel.Controls.Add(this.Behavior_SortProjectsThenBy);
             this.SortingGroup_ProjectPanel.Controls.Add(this.Behavior_SortProjectsByDirection);
             this.SortingGroup_ProjectPanel.Controls.Add(this.Behavior_SortProjectsBy);
             this.SortingGroup_ProjectPanel.Controls.Add(this.SortProjectsLabel);
             this.SortingGroup_ProjectPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.SortingGroup_ProjectPanel.Location = new System.Drawing.Point(3, 16);
             this.SortingGroup_ProjectPanel.Name = "SortingGroup_ProjectPanel";
-            this.SortingGroup_ProjectPanel.Size = new System.Drawing.Size(339, 27);
+            this.SortingGroup_ProjectPanel.Size = new System.Drawing.Size(339, 57);
             this.SortingGroup_ProjectPanel.TabIndex = 0;
             // 
             // Behavior_SortProjectsByDirection
@@ -1363,7 +1324,7 @@
             "Descending"});
             this.Behavior_SortProjectsByDirection.Location = new System.Drawing.Point(248, 3);
             this.Behavior_SortProjectsByDirection.Name = "Behavior_SortProjectsByDirection";
-            this.Behavior_SortProjectsByDirection.Size = new System.Drawing.Size(75, 21);
+            this.Behavior_SortProjectsByDirection.Size = new System.Drawing.Size(88, 21);
             this.Behavior_SortProjectsByDirection.TabIndex = 19;
             // 
             // Behavior_SortProjectsBy
@@ -1372,10 +1333,11 @@
             this.Behavior_SortProjectsBy.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.Behavior_SortProjectsBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Behavior_SortProjectsBy.FormattingEnabled = true;
-            this.Behavior_SortProjectsBy.Location = new System.Drawing.Point(109, 3);
+            this.Behavior_SortProjectsBy.Location = new System.Drawing.Point(87, 3);
             this.Behavior_SortProjectsBy.Name = "Behavior_SortProjectsBy";
-            this.Behavior_SortProjectsBy.Size = new System.Drawing.Size(133, 21);
+            this.Behavior_SortProjectsBy.Size = new System.Drawing.Size(155, 21);
             this.Behavior_SortProjectsBy.TabIndex = 16;
+            this.Behavior_SortProjectsBy.SelectedIndexChanged += new System.EventHandler(this.Behavior_SortProjectsBy_SelectedIndexChanged);
             // 
             // SortProjectsLabel
             // 
@@ -1506,6 +1468,52 @@
             this.ReportGroup.TabIndex = 7;
             this.ReportGroup.TabStop = false;
             this.ReportGroup.Text = "Styling";
+            // 
+            // Report_LayoutFileChooser
+            // 
+            this.Report_LayoutFileChooser.Location = new System.Drawing.Point(319, 221);
+            this.Report_LayoutFileChooser.Name = "Report_LayoutFileChooser";
+            this.Report_LayoutFileChooser.Size = new System.Drawing.Size(27, 20);
+            this.Report_LayoutFileChooser.TabIndex = 17;
+            this.Report_LayoutFileChooser.Text = "···";
+            this.Report_LayoutFileChooser.UseVisualStyleBackColor = true;
+            // 
+            // Report_LayoutFile
+            // 
+            this.Report_LayoutFile.Location = new System.Drawing.Point(109, 221);
+            this.Report_LayoutFile.Name = "Report_LayoutFile";
+            this.Report_LayoutFile.Size = new System.Drawing.Size(204, 20);
+            this.Report_LayoutFile.TabIndex = 16;
+            this.Report_LayoutFile.Text = "Files\\JournalEntryReport.html";
+            // 
+            // Report_LayoutFileLabel
+            // 
+            this.Report_LayoutFileLabel.AutoSize = true;
+            this.Report_LayoutFileLabel.Location = new System.Drawing.Point(14, 225);
+            this.Report_LayoutFileLabel.Name = "Report_LayoutFileLabel";
+            this.Report_LayoutFileLabel.Size = new System.Drawing.Size(77, 13);
+            this.Report_LayoutFileLabel.TabIndex = 15;
+            this.Report_LayoutFileLabel.Text = "Report Layout:";
+            // 
+            // Report_StyleSheetFileChooser
+            // 
+            this.Report_StyleSheetFileChooser.Location = new System.Drawing.Point(319, 195);
+            this.Report_StyleSheetFileChooser.Name = "Report_StyleSheetFileChooser";
+            this.Report_StyleSheetFileChooser.Size = new System.Drawing.Size(27, 20);
+            this.Report_StyleSheetFileChooser.TabIndex = 14;
+            this.Report_StyleSheetFileChooser.Text = "···";
+            this.Report_StyleSheetFileChooser.UseVisualStyleBackColor = true;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(17, 142);
+            this.label19.MaximumSize = new System.Drawing.Size(340, 95);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(338, 26);
+            this.label19.TabIndex = 13;
+            this.label19.Text = "Advanced. For complete control over the report layout, you can create your own st" +
+    "yle sheet or even an entirely new layout.";
             // 
             // label18
             // 
@@ -2032,7 +2040,7 @@
             this.OtherAdvancedGroup.Controls.Add(this.label3);
             this.OtherAdvancedGroup.Controls.Add(this.numericUpDown1);
             this.OtherAdvancedGroup.Controls.Add(this.label2);
-            this.OtherAdvancedGroup.Controls.Add(this.checkBox1);
+            this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_SortExProjectAsNumber);
             this.OtherAdvancedGroup.Location = new System.Drawing.Point(17, 231);
             this.OtherAdvancedGroup.Name = "OtherAdvancedGroup";
             this.OtherAdvancedGroup.Size = new System.Drawing.Size(345, 236);
@@ -2199,15 +2207,15 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Warn if splitting an entry less than";
             // 
-            // checkBox1
+            // Advanced_Other_SortExProjectAsNumber
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(17, 27);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(229, 17);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Treat External Project Number as a number";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.Advanced_Other_SortExProjectAsNumber.AutoSize = true;
+            this.Advanced_Other_SortExProjectAsNumber.Location = new System.Drawing.Point(17, 27);
+            this.Advanced_Other_SortExProjectAsNumber.Name = "Advanced_Other_SortExProjectAsNumber";
+            this.Advanced_Other_SortExProjectAsNumber.Size = new System.Drawing.Size(229, 17);
+            this.Advanced_Other_SortExProjectAsNumber.TabIndex = 2;
+            this.Advanced_Other_SortExProjectAsNumber.Text = "Treat External Project Number as a number";
+            this.Advanced_Other_SortExProjectAsNumber.UseVisualStyleBackColor = true;
             // 
             // LoggingGroup
             // 
@@ -2291,51 +2299,88 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
-            // label19
+            // Behavior_SortProjectsThenBy
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(17, 142);
-            this.label19.MaximumSize = new System.Drawing.Size(340, 95);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(338, 26);
-            this.label19.TabIndex = 13;
-            this.label19.Text = "Advanced. For complete control over the report layout, you can create your own st" +
-    "yle sheet or even an entirely new layout.";
+            this.Behavior_SortProjectsThenBy.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.Behavior_SortProjectsThenBy.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.Behavior_SortProjectsThenBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Behavior_SortProjectsThenBy.Enabled = false;
+            this.Behavior_SortProjectsThenBy.FormattingEnabled = true;
+            this.Behavior_SortProjectsThenBy.Location = new System.Drawing.Point(87, 30);
+            this.Behavior_SortProjectsThenBy.Name = "Behavior_SortProjectsThenBy";
+            this.Behavior_SortProjectsThenBy.Size = new System.Drawing.Size(155, 21);
+            this.Behavior_SortProjectsThenBy.TabIndex = 20;
+            this.Behavior_SortProjectsThenBy.SelectedIndexChanged += new System.EventHandler(this.Behavior_SortProjectsThenBy_SelectedIndexChanged);
             // 
-            // Report_StyleSheetFileChooser
+            // label20
             // 
-            this.Report_StyleSheetFileChooser.Location = new System.Drawing.Point(319, 195);
-            this.Report_StyleSheetFileChooser.Name = "Report_StyleSheetFileChooser";
-            this.Report_StyleSheetFileChooser.Size = new System.Drawing.Size(27, 20);
-            this.Report_StyleSheetFileChooser.TabIndex = 14;
-            this.Report_StyleSheetFileChooser.Text = "···";
-            this.Report_StyleSheetFileChooser.UseVisualStyleBackColor = true;
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(11, 33);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(50, 13);
+            this.label20.TabIndex = 21;
+            this.label20.Text = "Then By:";
             // 
-            // Report_LayoutFileChooser
+            // Behavior_SortProjectsThenByDirection
             // 
-            this.Report_LayoutFileChooser.Location = new System.Drawing.Point(319, 221);
-            this.Report_LayoutFileChooser.Name = "Report_LayoutFileChooser";
-            this.Report_LayoutFileChooser.Size = new System.Drawing.Size(27, 20);
-            this.Report_LayoutFileChooser.TabIndex = 17;
-            this.Report_LayoutFileChooser.Text = "···";
-            this.Report_LayoutFileChooser.UseVisualStyleBackColor = true;
+            this.Behavior_SortProjectsThenByDirection.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.Behavior_SortProjectsThenByDirection.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.Behavior_SortProjectsThenByDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Behavior_SortProjectsThenByDirection.Enabled = false;
+            this.Behavior_SortProjectsThenByDirection.FormattingEnabled = true;
+            this.Behavior_SortProjectsThenByDirection.Items.AddRange(new object[] {
+            "Ascending",
+            "Descending"});
+            this.Behavior_SortProjectsThenByDirection.Location = new System.Drawing.Point(248, 30);
+            this.Behavior_SortProjectsThenByDirection.Name = "Behavior_SortProjectsThenByDirection";
+            this.Behavior_SortProjectsThenByDirection.Size = new System.Drawing.Size(88, 21);
+            this.Behavior_SortProjectsThenByDirection.TabIndex = 22;
             // 
-            // Report_LayoutFile
+            // SortItemsLabel
             // 
-            this.Report_LayoutFile.Location = new System.Drawing.Point(109, 221);
-            this.Report_LayoutFile.Name = "Report_LayoutFile";
-            this.Report_LayoutFile.Size = new System.Drawing.Size(204, 20);
-            this.Report_LayoutFile.TabIndex = 16;
-            this.Report_LayoutFile.Text = "Files\\JournalEntryReport.html";
+            this.SortItemsLabel.AutoSize = true;
+            this.SortItemsLabel.Location = new System.Drawing.Point(11, 6);
+            this.SortItemsLabel.Name = "SortItemsLabel";
+            this.SortItemsLabel.Size = new System.Drawing.Size(63, 13);
+            this.SortItemsLabel.TabIndex = 18;
+            this.SortItemsLabel.Text = "Sort Others:";
             // 
-            // Report_LayoutFileLabel
+            // Behavior_SortItemsByDirection
             // 
-            this.Report_LayoutFileLabel.AutoSize = true;
-            this.Report_LayoutFileLabel.Location = new System.Drawing.Point(14, 225);
-            this.Report_LayoutFileLabel.Name = "Report_LayoutFileLabel";
-            this.Report_LayoutFileLabel.Size = new System.Drawing.Size(77, 13);
-            this.Report_LayoutFileLabel.TabIndex = 15;
-            this.Report_LayoutFileLabel.Text = "Report Layout:";
+            this.Behavior_SortItemsByDirection.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.Behavior_SortItemsByDirection.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.Behavior_SortItemsByDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Behavior_SortItemsByDirection.FormattingEnabled = true;
+            this.Behavior_SortItemsByDirection.Items.AddRange(new object[] {
+            "Ascending",
+            "Descending"});
+            this.Behavior_SortItemsByDirection.Location = new System.Drawing.Point(248, 3);
+            this.Behavior_SortItemsByDirection.Name = "Behavior_SortItemsByDirection";
+            this.Behavior_SortItemsByDirection.Size = new System.Drawing.Size(88, 21);
+            this.Behavior_SortItemsByDirection.TabIndex = 20;
+            // 
+            // Behavior_SortItemsBy
+            // 
+            this.Behavior_SortItemsBy.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.Behavior_SortItemsBy.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.Behavior_SortItemsBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Behavior_SortItemsBy.FormattingEnabled = true;
+            this.Behavior_SortItemsBy.Location = new System.Drawing.Point(87, 3);
+            this.Behavior_SortItemsBy.Name = "Behavior_SortItemsBy";
+            this.Behavior_SortItemsBy.Size = new System.Drawing.Size(155, 21);
+            this.Behavior_SortItemsBy.TabIndex = 18;
+            this.Behavior_SortItemsBy.SelectedIndexChanged += new System.EventHandler(this.Behavior_SortItemsBy_SelectedIndexChanged);
+            // 
+            // SortingGroup_BottomPanel
+            // 
+            this.SortingGroup_BottomPanel.Controls.Add(this.Behavior_SortItemsBy);
+            this.SortingGroup_BottomPanel.Controls.Add(this.Behavior_SortItemsByDirection);
+            this.SortingGroup_BottomPanel.Controls.Add(this.SortItemsLabel);
+            this.SortingGroup_BottomPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SortingGroup_BottomPanel.Location = new System.Drawing.Point(3, 73);
+            this.SortingGroup_BottomPanel.Name = "SortingGroup_BottomPanel";
+            this.SortingGroup_BottomPanel.Size = new System.Drawing.Size(339, 27);
+            this.SortingGroup_BottomPanel.TabIndex = 1;
             // 
             // Options
             // 
@@ -2419,8 +2464,6 @@
             this.BrowsingGroup.ResumeLayout(false);
             this.BrowsingGroup.PerformLayout();
             this.SortingGroup.ResumeLayout(false);
-            this.SortingGroup_BottomPanel.ResumeLayout(false);
-            this.SortingGroup_BottomPanel.PerformLayout();
             this.SortingGroup_ProjectPanel.ResumeLayout(false);
             this.SortingGroup_ProjectPanel.PerformLayout();
             this.WindowControlGroup.ResumeLayout(false);
@@ -2449,6 +2492,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
+            this.SortingGroup_BottomPanel.ResumeLayout(false);
+            this.SortingGroup_BottomPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2485,8 +2530,6 @@
         private System.Windows.Forms.CheckBox View_HiddenActivities;
         private System.Windows.Forms.CheckBox View_HiddenProjects;
         private System.Windows.Forms.GroupBox SortingGroup;
-        private System.Windows.Forms.Label SortItemsLabel;
-        private System.Windows.Forms.ComboBox Behavior_SortItemsBy;
         private System.Windows.Forms.Label SortProjectsLabel;
         private System.Windows.Forms.ComboBox Behavior_SortProjectsBy;
         private System.Windows.Forms.ComboBox View_HiddenCategoriesSince;
@@ -2516,7 +2559,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label PresetInstructionsLabel;
         private System.Windows.Forms.ComboBox Behavior_SortProjectsByDirection;
-        private System.Windows.Forms.ComboBox Behavior_SortItemsByDirection;
         private System.Windows.Forms.ImageList SmallImages;
         private System.Windows.Forms.CheckBox AltKey;
         private System.Windows.Forms.Button AssignKey;
@@ -2543,12 +2585,11 @@
         private System.Windows.Forms.Panel StatusBarGroup_ProjectElapsedPanel;
         private System.Windows.Forms.Panel StatusBarGroup_BottomPanel;
         private System.Windows.Forms.Panel StatusBarGroup_ActivityElapsedPanel;
-        private System.Windows.Forms.Panel SortingGroup_BottomPanel;
         private System.Windows.Forms.Panel SortingGroup_ProjectPanel;
         private System.Windows.Forms.Label DisplayLabel;
         private System.Windows.Forms.ComboBox Behavior_TitleBar_Time;
         private System.Windows.Forms.Label DimensionsInstructionsLabel;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox Advanced_Other_SortExProjectAsNumber;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
@@ -2637,6 +2678,13 @@
         private System.Windows.Forms.Button Report_LayoutFileChooser;
         private System.Windows.Forms.TextBox Report_LayoutFile;
         private System.Windows.Forms.Label Report_LayoutFileLabel;
+        private System.Windows.Forms.ComboBox Behavior_SortProjectsThenByDirection;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.ComboBox Behavior_SortProjectsThenBy;
+        private System.Windows.Forms.Panel SortingGroup_BottomPanel;
+        private System.Windows.Forms.ComboBox Behavior_SortItemsBy;
+        private System.Windows.Forms.ComboBox Behavior_SortItemsByDirection;
+        private System.Windows.Forms.Label SortItemsLabel;
 
     }
 }
