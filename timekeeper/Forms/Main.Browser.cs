@@ -191,6 +191,10 @@ namespace Timekeeper.Forms
                     }
                 }
             }
+
+            // Oh, one last shot at disabling
+            if (browserEntry.IsLocked)
+                Browser_EnableCloseStartGap(false);
         }
 
         private void Browser_DetermineStopGapState()
@@ -210,6 +214,10 @@ namespace Timekeeper.Forms
                     }
                 }
             }
+
+            // Oh, one last shot at disabling
+            if (browserEntry.IsLocked)
+                Browser_EnableCloseStopGap(false);
         }
 
         //---------------------------------------------------------------------
