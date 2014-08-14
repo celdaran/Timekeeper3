@@ -108,7 +108,7 @@
   <Choose>
     <When Condition="'$(Platform)' == 'x64'">
       <ItemGroup>
-        <Reference Include="Technitivity.Toolbox, Version=3.0.15.2, Culture=neutral, processorArchitecture=MSIL">
+        <Reference Include="Technitivity.Toolbox, Version=3.0.17.1, Culture=neutral, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>References\x64\Technitivity.Toolbox.dll</HintPath>
         </Reference>
@@ -116,7 +116,7 @@
     </When>
     <When Condition="'$(Platform)' == 'x86'">
       <ItemGroup>
-        <Reference Include="Technitivity.Toolbox, Version=3.0.15.2, Culture=neutral, processorArchitecture=MSIL">
+        <Reference Include="Technitivity.Toolbox, Version=3.0.17.1, Culture=neutral, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>References\x86\Technitivity.Toolbox.dll</HintPath>
         </Reference>
@@ -194,6 +194,12 @@
     <Compile Include="Forms\Reports\DatabaseCheck.Designer.cs">
       <DependentUpon>DatabaseCheck.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Shared\BaseView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Shared\BaseView.Designer.cs">
+      <DependentUpon>BaseView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Shared\MemoEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -235,6 +241,12 @@
     </Compile>
     <Compile Include="Forms\Shared\TreeAttributeManager.Designer.cs">
       <DependentUpon>TreeAttributeManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\Calendar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\Calendar.Designer.cs">
+      <DependentUpon>Calendar.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Tools\EditEventGroup.cs">
       <SubType>Form</SubType>
@@ -348,12 +360,6 @@
     <Compile Include="Forms\Reports\PunchCard.Designer.cs">
       <DependentUpon>PunchCard.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Tools\Calendar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Tools\Calendar.Designer.cs">
-      <DependentUpon>Calendar.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Reports\Grid.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -440,6 +446,9 @@
     <EmbeddedResource Include="Forms\Reports\DatabaseCheck.resx">
       <DependentUpon>DatabaseCheck.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Shared\BaseView.resx">
+      <DependentUpon>BaseView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Shared\MemoEditor.resx">
       <DependentUpon>MemoEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -483,12 +492,12 @@
     <EmbeddedResource Include="Forms\Shared\TreeAttributeManager.resx">
       <DependentUpon>TreeAttributeManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Tools\EditEventGroup.resx">
-      <DependentUpon>EditEventGroup.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tools\Calendar.resx">
       <DependentUpon>Calendar.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\EditEventGroup.resx">
+      <DependentUpon>EditEventGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Reports\Grid.resx">
       <SubType>Designer</SubType>
