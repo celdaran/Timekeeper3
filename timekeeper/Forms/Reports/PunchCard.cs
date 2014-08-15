@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -10,105 +11,119 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Forms.Reports
 {
-    public partial class PunchCard : Form
+    public partial class PunchCard : Forms.Shared.BaseView
     {
+        //---------------------------------------------------------------------
+        // Properties
+        //---------------------------------------------------------------------
+
+        private Table PunchCardResults;
+
+        //---------------------------------------------------------------------
+        // Constructor
+        //---------------------------------------------------------------------
+
         public PunchCard()
+            : base()
         {
             InitializeComponent();
-            wDatePreset.SelectedIndex = 2;
-        }
+            InitializeComponentExtensions();
 
+            // Define the things that make this form *this* form
+            this.FilterOptionsType = Classes.FilterOptions.OptionsType.PunchCard;
+            this.ViewName = "PunchCard";
+            this.TableName = "PunchCardView";
+            this.CurrentView = new Classes.PunchCardView();
+            this.AutoSavedView = new Classes.PunchCardView();
+            this.CurrentViewEmpty = new Classes.PunchCardView();
+            this.AutoSavedViewEmpty = new Classes.PunchCardView("Unsaved View");
 
-        private void fPunch_Load(object sender, EventArgs e)
-        {
-            _load_grid(sender, e);
-        }
-
-
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            if (wStartDate.Text.CompareTo(wEndDate.Text) > 0)
-            {
-                Common.Info("Start date is set past end date.");
-                return;
-            }
-
-            _load_grid(sender, e);
-        }
-
-
-        private void wDatePreset_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _set_start_date();
-        }
-
-
-        private void _load_grid(object sender, EventArgs e)
-        {
-            // Clear rows
-            wGrid.Rows.Clear();
-
-            Common.Info("You haven't finished refactoring this");
-
-            /*
-            // Handle date ranges
-            string sStartDate = wStartDate.Text + " 00:00:00";
-            string sEndDate = wEndDate.Text + " 29:59:59";
-
-            // Grab punch in/out times by day
-            string query = String.Format(@"
-                select strftime('%Y/%m/%d', timestamp_s) as day, min(timestamp_s) as punch_in, max(timestamp_e) as punch_out
-                from timekeeper
-                where timestamp_s >= '{0}'
-                    and timestamp_s <= '{1}'
-                group by day
-                order by day",
-                sStartDate, sEndDate);
-
-            Table rows = data.Select(query);
-            foreach (Row row in rows)
-            {
-                DateTime punch_in = DateTime.Parse(row["punch_in"].ToString());
-                DateTime punch_out = DateTime.Parse(row["punch_out"].ToString());
-                TimeSpan ts = punch_out.Subtract(punch_in);
-                string[] result = { row["day"].ToString(), punch_in.ToString("HH:mm:ss"), punch_out.ToString("HH:mm:ss"), Timekeeper.FormatTimeSpan(ts) };
-                wGrid.Rows.Add(result);
-            }
-            */
-        }
-
-
-        // Move this to Common: a standard 
-        // FIXME: copy/pasted from fGrid.cs -- ugh
-        private void _set_start_date()
-        {
-            /*
-            DateTime now = DateTime.Now;
-            switch (wDatePreset.Text)
-            {
-                case "Today": wStartDate.Value = now; break;
-                case "Last Five Days": wStartDate.Value = now.Subtract(new TimeSpan(24 * 5, 0, 0)); break;
-                case "Last Seven Days": wStartDate.Value = now.Subtract(new TimeSpan(24 * 7, 0, 0)); break;
-                case "This Month": wStartDate.Value = DateTime.Parse(now.Year.ToString() + "/" + now.Month.ToString() + "/1"); break;
-                case "Year to Date": wStartDate.Value = DateTime.Parse(now.Year.ToString() + "/01/01"); break;
-                case "All":
-                    String query = @"select min(timestamp_s) as min from timekeeper";
-                    Row row = data.SelectRow(query);
-                    wStartDate.Value = DateTime.Parse(row["min"]); break;
-            }
-            */
+            // Then initialize the base class
+            this.Initialize();
         }
 
         //---------------------------------------------------------------------
-        // Context-sensitive help
-        //---------------------------------------------------------------------
 
-        private void widget_HelpRequested(object sender, HelpEventArgs hlpevent)
+        private void InitializeComponentExtensions()
         {
-            Control c = (Control)sender;
-            string topic = String.Format("html\\context\\fPunch\\{0}.html", c.Name);
-            Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
         }
 
+        //---------------------------------------------------------------------
+        // Form Events
+        //---------------------------------------------------------------------
+
+        private void PunchCard_Load(object sender, EventArgs e)
+        {
+            // Restore window metrics
+            Height = Options.PunchCard_Height;
+            Width = Options.PunchCard_Width;
+            Top = Options.PunchCard_Top;
+            Left = Options.PunchCard_Left;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void PunchCard_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Save window metrics
+            Options.PunchCard_Height = Height;
+            Options.PunchCard_Width = Width;
+            Options.PunchCard_Top = Top;
+            Options.PunchCard_Left = Left;
+
+            // Save last view
+            Options.State_LastPunchCardViewId = this.LastViewId;
+        }
+
+        //---------------------------------------------------------------------
+        // Toolbar events
+        //---------------------------------------------------------------------
+
+        //---------------------------------------------------------------------
+        // Private helpers
+        //---------------------------------------------------------------------
+
+        override internal void PopulateData()
+        {
+            PunchCardGrid.Rows.Clear();
+
+            // At this point, this.CurrentView *should* be enough to get us
+            // by, but it's not. So we need to instantiate a new, specific,
+            // child-class. Then copy the FilterOptions into it.
+            Classes.PunchCardView PunchCardView = new Classes.PunchCardView(this.CurrentView.Id);
+            PunchCardView.FilterOptions.Copy(this.CurrentView.FilterOptions);
+
+            // Now get the results
+            this.PunchCardResults = PunchCardView.FilterResults();
+
+            long TotalSeconds = 0;
+
+            foreach (Row Result in PunchCardResults) {
+
+                DateTime PunchIn = DateTime.Parse(Result["PunchIn"].ToString());
+                DateTime PunchOut = DateTime.Parse(Result["PunchOut"].ToString());
+                TimeSpan ts = PunchOut.Subtract(PunchIn);
+
+                string[] GridRow = { 
+                            Result["Day"].ToString(),
+                            PunchIn.ToString("HH:mm:ss"), 
+                            PunchOut.ToString("HH:mm:ss"), 
+                            Timekeeper.FormatTimeSpan(ts) 
+                        };
+                PunchCardGrid.Rows.Add(GridRow);
+
+                TotalSeconds += (long)ts.TotalSeconds;
+            }
+
+            string[] TotalRow = {
+                        "Total",
+                        "",
+                        "",
+                        Timekeeper.FormatSeconds(TotalSeconds)
+                        };
+            PunchCardGrid.Rows.Add(TotalRow);
+        }
+
+        //---------------------------------------------------------------------
     }
 }

@@ -99,6 +99,7 @@ namespace Timekeeper.Classes
             Notebook,
             Merge,
             Calendar,
+            PunchCard,
         };
 
         public const int DATE_PRESET_NONE = 0;
@@ -467,7 +468,8 @@ namespace Timekeeper.Classes
 
             if ((this.FilterOptionsType == Classes.FilterOptions.OptionsType.Journal) ||
                 (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Merge) ||
-                (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Calendar))
+                (this.FilterOptionsType == Classes.FilterOptions.OptionsType.Calendar) ||
+                (this.FilterOptionsType == Classes.FilterOptions.OptionsType.PunchCard))
             {
                 WhereClause += String.Format("{0}StartTime >= {1}",
                     TableAlias, this.FormatFromTime()) + System.Environment.NewLine;

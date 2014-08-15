@@ -191,6 +191,8 @@ namespace Timekeeper
                 CreateTable("FindView", version, false);
                 CreateTable("GridView", version, false);
                 CreateTable("ReportView", version, false);
+                CreateTable("CalendarView", version, false);
+                CreateTable("PunchCardView", version, false);
 
             }
             catch (Exception x) {

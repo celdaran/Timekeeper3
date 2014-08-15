@@ -151,8 +151,14 @@ namespace Timekeeper.Forms.Tools
             // Populate Table
             //----------------------------------------------
 
+            // At this point, this.CurrentView *should* be enough to get us
+            // by, but it's not. So we need to instantiate a new, specific,
+            // child-class. Then copy the FilterOptions into it.
             Classes.CalendarView CalendarView = new Classes.CalendarView(this.CurrentView.Id);
-            this.CalendarResults = CalendarView.JournalResults();
+            CalendarView.FilterOptions.Copy(this.CurrentView.FilterOptions);
+
+            // Now get the results
+            this.CalendarResults = CalendarView.FilterResults();
 
             List<DateTime> DateList = new List<DateTime>();
 

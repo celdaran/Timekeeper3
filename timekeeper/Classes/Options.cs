@@ -144,6 +144,11 @@ namespace Timekeeper.Classes
         public int Grid_Top { get; set; }
         public int Grid_Left { get; set; }
 
+        public int PunchCard_Height { get; set; }
+        public int PunchCard_Width { get; set; }
+        public int PunchCard_Top { get; set; }
+        public int PunchCard_Left { get; set; }
+
         public int Find_Height { get; set; }
         public int Find_Width { get; set; }
         public int Find_Top { get; set; }
@@ -252,6 +257,7 @@ namespace Timekeeper.Classes
         public long State_LastGridViewId { get; set; }
         public long State_LastReportViewId { get; set; }
         public long State_LastCalendarViewId { get; set; }
+        public long State_LastPunchCardViewId { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -502,6 +508,13 @@ namespace Timekeeper.Classes
             Grid_Top = (int)Key.GetValue("Top", 100);
             Grid_Left = (int)Key.GetValue("Left", 100);
 
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\PunchCard");
+
+            PunchCard_Height = (int)Key.GetValue("Height", 400);
+            PunchCard_Width = (int)Key.GetValue("Width", 275);
+            PunchCard_Top = (int)Key.GetValue("Top", 100);
+            PunchCard_Left = (int)Key.GetValue("Left", 100);
+
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Find");
 
             // TODO: come up with better defaults
@@ -689,6 +702,18 @@ namespace Timekeeper.Classes
                     State_LastReportViewId = Convert.ToInt64(Option["Value"]);
                 }
 
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastCalendarViewId");
+                Option = this.Database.SelectRow(Query);
+                if (Option.Count > 0) {
+                    State_LastCalendarViewId = Convert.ToInt64(Option["Value"]);
+                }
+
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "LastPunchCardViewId");
+                Option = this.Database.SelectRow(Query);
+                if (Option.Count > 0) {
+                    State_LastPunchCardViewId = Convert.ToInt64(Option["Value"]);
+                }
+
                 Timekeeper.Debug("Options Loaded from Database");
             }
             catch (Exception x) {
@@ -870,6 +895,13 @@ namespace Timekeeper.Classes
             Key.SetValue("Width", Grid_Width, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Top", Grid_Top, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Left", Grid_Left, Microsoft.Win32.RegistryValueKind.DWord);
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\PunchCard");
+
+            Key.SetValue("Height", PunchCard_Height, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Width", PunchCard_Width, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Top", PunchCard_Top, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Left", PunchCard_Left, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"Metrics\Find");
 

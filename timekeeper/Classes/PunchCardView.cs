@@ -7,13 +7,13 @@ using Technitivity.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class CalendarView : BaseView
+    class PunchCardView : BaseView
     {
         //----------------------------------------------------------------------
         // Private Properties
         //----------------------------------------------------------------------
 
-        private static string ViewTableName = "CalendarView";
+        private static string ViewTableName = "PunchCardView";
 
         //----------------------------------------------------------------------
         // Public Properties
@@ -23,22 +23,23 @@ namespace Timekeeper.Classes
         // Constructor
         //---------------------------------------------------------------------
 
-        public CalendarView() : base(ViewTableName)
+        public PunchCardView()
+            : base(ViewTableName)
         {
-            this.FilterOptions.FilterOptionsType = Classes.FilterOptions.OptionsType.Calendar;
+            this.FilterOptions.FilterOptionsType = Classes.FilterOptions.OptionsType.PunchCard;
         }
 
         //---------------------------------------------------------------------
 
-        public CalendarView(long calendarViewId)
+        public PunchCardView(long calendarViewId)
             : base(ViewTableName, calendarViewId)
         {
-            this.FilterOptions.FilterOptionsType = Classes.FilterOptions.OptionsType.Calendar;
+            this.FilterOptions.FilterOptionsType = Classes.FilterOptions.OptionsType.PunchCard;
         }
 
         //---------------------------------------------------------------------
 
-        public CalendarView(string calendarViewName)
+        public PunchCardView(string calendarViewName)
             : base(ViewTableName, calendarViewName)
         {
         }
@@ -57,22 +58,14 @@ namespace Timekeeper.Classes
         public Table FilterResults()
         {
             string Query = String.Format(@"
-                select
-                    j.JournalId, j.CreateTime, j.ModifyTime,
-                    j.ProjectId, p.Name as ProjectName,
-                    j.ActivityId, a.Name as ActivityName,
-                    j.LocationId, l.Name as LocationName,
-                    j.CategoryId, c.Name as CategoryName,
-                    j.StartTime, j.StopTime, j.Seconds,
-                    j.Memo, j.IsLocked
-                from Journal j
-                join Activity a on a.ActivityId = j.ActivityId
-                join Project p on p.ProjectId = j.ProjectId
-                join Location l on l.LocationId = j.LocationId
-                join Category c on c.CategoryId = j.CategoryId
-                where {0}
-                order by {1}",
-                this.FilterOptions.WhereClause, "j.JournalId");
+                SELECT
+                    strftime('%Y/%m/%d', j.StartTime) as Day,
+                    min(j.StartTime) as PunchIn, max(j.StopTime) as PunchOut
+                FROM Journal j
+                WHERE {0}
+                GROUP BY Day
+                ORDER BY Day",
+                this.FilterOptions.WhereClause);
 
             Table FindResults = Database.Select(Query);
 

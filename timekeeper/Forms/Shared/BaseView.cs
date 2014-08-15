@@ -62,6 +62,14 @@ namespace Timekeeper.Forms.Shared
             // child forms into a tizzy.
             try {
                 // Load up saved view and paint
+                switch (this.FilterOptionsType) {
+                    case Classes.FilterOptions.OptionsType.Calendar:
+                        this.LastViewId = Options.State_LastCalendarViewId;
+                        break;
+                    case Classes.FilterOptions.OptionsType.PunchCard:
+                        this.LastViewId = Options.State_LastPunchCardViewId;
+                        break;
+                }
                 LoadAndRunView(this.LastViewId);
 
                 if (CurrentView.IsAutoSaved) {
@@ -90,8 +98,8 @@ namespace Timekeeper.Forms.Shared
         private void BaseView_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (CurrentView.Changed) {
-                // TODO: WHAT KIND OF VIEW?
-                if (Common.WarnPrompt("View has not been saved. Continue closing?") == DialogResult.No) {
+                string Warning = String.Format("{0} view has not been saved. Continue closing?", this.ViewName);
+                if (Common.WarnPrompt(Warning) == DialogResult.No) {
                     e.Cancel = true;
                     return;
                 }

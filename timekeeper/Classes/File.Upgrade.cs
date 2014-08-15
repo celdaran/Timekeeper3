@@ -74,6 +74,8 @@ namespace Timekeeper
                     CreateNewTable("FindView", CurrentSchemaVersion, false);
                     CreateNewTable("GridView", CurrentSchemaVersion, false);
                     CreateNewTable("ReportView", CurrentSchemaVersion, false);
+                    CreateNewTable("CalendarView", CurrentSchemaVersion, false);
+                    CreateNewTable("PunchCardView", CurrentSchemaVersion, false);
 
                     // End a unit of work (this is NOT a transaction)
                     this.Database.EndWork();
@@ -116,6 +118,8 @@ namespace Timekeeper
 
                     CreateNewTable("FindView", CurrentSchemaVersion, false);
                     CreateNewTable("ReportView", CurrentSchemaVersion, false);
+                    CreateNewTable("CalendarView", CurrentSchemaVersion, false);
+                    CreateNewTable("PunchCardView", CurrentSchemaVersion, false);
 
                     // End a unit of work (this is NOT a transaction)
                     this.Database.EndWork();
@@ -158,6 +162,8 @@ namespace Timekeeper
 
                     CreateNewTable("FindView", CurrentSchemaVersion, false);
                     CreateNewTable("ReportView", CurrentSchemaVersion, false);
+                    CreateNewTable("CalendarView", CurrentSchemaVersion, false);
+                    CreateNewTable("PunchCardView", CurrentSchemaVersion, false);
 
                     // End a unit of work (this is NOT a transaction)
                     this.Database.EndWork();
@@ -177,33 +183,6 @@ namespace Timekeeper
 
                     this.Database.BeginWork();
                     this.Database.Exec("PRAGMA foreign_keys = OFF");
-
-                    /*
-                  * 7EFF6E35-2448-4AA8-BBB0-441536BE592F
-                  * Activity
-                  * Category
-                  + Event
-                  + EventGroup
-                  + FilterOptions
-                  + FindView
-                  + GridView
-                  * Journal
-                  * Location
-                  * Notebook
-                  * Options
-                  * Project
-                  * RefDatePreset
-                  * RefDimension
-                  * RefGroupBy
-                  * RefScheduleType
-                  * RefTimeDisplay
-                  * RefTimeZone
-                  * RefTodoStatus
-                  + Reminder
-                  * ReportView
-                  + Schedule
-                  * Todo
-                    */
 
                     // Don't (re-)create 3.0 reference tables
                     this.Database.Exec("drop table RefDatePreset");
