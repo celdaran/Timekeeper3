@@ -94,10 +94,12 @@ namespace Timekeeper.Forms.Shared
         {
             this.Widgets.BuildTree(this.Dimension, Tree);
 
-            Classes.TreeAttribute Item = (Classes.TreeAttribute)this.PreSelectedNode.Tag;
             try {
-                TreeNode FoundNode = this.Widgets.FindTreeNode(Tree.Nodes, Item.ItemId);
-                Tree.SelectedNode = FoundNode;
+                if (this.PreSelectedNode != null) {
+                    Classes.TreeAttribute Item = (Classes.TreeAttribute)this.PreSelectedNode.Tag;
+                    TreeNode FoundNode = this.Widgets.FindTreeNode(Tree.Nodes, Item.ItemId);
+                    Tree.SelectedNode = FoundNode;
+                }
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
