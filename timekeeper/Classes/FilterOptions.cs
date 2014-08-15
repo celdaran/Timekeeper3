@@ -504,16 +504,25 @@ namespace Timekeeper.Classes
                 WhereClause += String.Format("and {0}Memo ", TableAlias);
 
                 switch (this.MemoOperator) {
-                    case 0: // Contains
+                    case 0: // Any Value
+                        // leave memo value out of this
+                        break;
+                    case 1: // Contains
                         WhereClause += String.Format("like '%{0}%'", this.MemoValue);
                         break;
-                    case 1: // Does Not Contain
+                    case 2: // Does Not Contain
                         WhereClause += String.Format("not like '%{0}%'", this.MemoValue);
                         break;
-                    case 2: // Is Empty
+                    case 3: // Begins With
+                        WhereClause += String.Format("like '{0}%'", this.MemoValue);
+                        break;
+                    case 4: // Ends With
+                        WhereClause += String.Format("like '%{0}'", this.MemoValue);
+                        break;
+                    case 5: // Is Empty
                         WhereClause += String.Format("= ''");
                         break;
-                    case 3: // Is Not Empty
+                    case 6: // Is Not Empty
                         WhereClause += String.Format("<> ''");
                         break;
                 }

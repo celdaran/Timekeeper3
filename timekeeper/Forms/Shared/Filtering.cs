@@ -266,9 +266,11 @@ namespace Timekeeper.Forms.Shared
             //  0 : any
             //  1 : contains
             //  2 : does not contain
-            //  3 : empty
-            //  4 : not empty
-            if ((MemoOperator.SelectedIndex == 1) || (MemoOperator.SelectedIndex == 2)) {
+            //  3 : begins with
+            //  4 : ends with
+            //  5 : empty
+            //  6 : not empty
+            if ((MemoOperator.SelectedIndex >= 1) && (MemoOperator.SelectedIndex <= 4)) {
                 MemoValue.Enabled = true;
             } else {
                 MemoValue.Enabled = false;

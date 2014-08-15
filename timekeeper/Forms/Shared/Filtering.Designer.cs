@@ -34,6 +34,10 @@ namespace Timekeeper.Forms.Shared
             this.FromDateLabel = new System.Windows.Forms.Label();
             this.PresetLabel = new System.Windows.Forms.Label();
             this.ToDate = new System.Windows.Forms.DateTimePicker();
+            this.PopupMenuDates = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.PopupMenuDatesCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuDatesPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuDatesSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.FromDate = new System.Windows.Forms.DateTimePicker();
             this.CloseButton = new System.Windows.Forms.Button();
             this.OkayButton = new System.Windows.Forms.Button();
@@ -74,10 +78,7 @@ namespace Timekeeper.Forms.Shared
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.ClearButton = new System.Windows.Forms.Button();
             this.ButtonPanel = new System.Windows.Forms.Panel();
-            this.PopupMenuDates = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.PopupMenuDatesCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuDatesPaste = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuDatesSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.PopupMenuDates.SuspendLayout();
             this.TreeViewMenu.SuspendLayout();
             this.FilterOptionsTabControl.SuspendLayout();
             this.CommonTab.SuspendLayout();
@@ -93,7 +94,6 @@ namespace Timekeeper.Forms.Shared
             this.groupBox1.SuspendLayout();
             this.BottomPanel.SuspendLayout();
             this.ButtonPanel.SuspendLayout();
-            this.PopupMenuDates.SuspendLayout();
             this.SuspendLayout();
             // 
             // ToDateLabel
@@ -144,6 +144,35 @@ namespace Timekeeper.Forms.Shared
             this.ToDate.TabIndex = 3;
             this.ToDate.Enter += new System.EventHandler(this.ToDate_Enter);
             this.ToDate.Leave += new System.EventHandler(this.ToDate_Leave);
+            // 
+            // PopupMenuDates
+            // 
+            this.PopupMenuDates.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PopupMenuDatesCopy,
+            this.PopupMenuDatesPaste,
+            this.PopupMenuDatesSep1});
+            this.PopupMenuDates.Name = "PopupMenuDates";
+            this.PopupMenuDates.Size = new System.Drawing.Size(102, 54);
+            // 
+            // PopupMenuDatesCopy
+            // 
+            this.PopupMenuDatesCopy.Name = "PopupMenuDatesCopy";
+            this.PopupMenuDatesCopy.Size = new System.Drawing.Size(101, 22);
+            this.PopupMenuDatesCopy.Text = "Copy";
+            this.PopupMenuDatesCopy.Click += new System.EventHandler(this.PopupMenuDatesCopy_Click);
+            // 
+            // PopupMenuDatesPaste
+            // 
+            this.PopupMenuDatesPaste.Name = "PopupMenuDatesPaste";
+            this.PopupMenuDatesPaste.Size = new System.Drawing.Size(101, 22);
+            this.PopupMenuDatesPaste.Text = "Paste";
+            this.PopupMenuDatesPaste.Click += new System.EventHandler(this.PopupMenuDatesPaste_Click);
+            // 
+            // PopupMenuDatesSep1
+            // 
+            this.PopupMenuDatesSep1.Name = "PopupMenuDatesSep1";
+            this.PopupMenuDatesSep1.Size = new System.Drawing.Size(98, 6);
+            this.PopupMenuDatesSep1.Visible = false;
             // 
             // FromDate
             // 
@@ -303,9 +332,11 @@ namespace Timekeeper.Forms.Shared
             this.MemoOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MemoOperator.FormattingEnabled = true;
             this.MemoOperator.Items.AddRange(new object[] {
-            "Any",
+            "Has Any Value",
             "Contains",
             "Does Not Contain",
+            "Begins With",
+            "Ends With",
             "Is Empty",
             "Is Not Empty"});
             this.MemoOperator.Location = new System.Drawing.Point(84, 21);
@@ -592,35 +623,6 @@ namespace Timekeeper.Forms.Shared
             this.ButtonPanel.Size = new System.Drawing.Size(164, 34);
             this.ButtonPanel.TabIndex = 0;
             // 
-            // PopupMenuDates
-            // 
-            this.PopupMenuDates.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.PopupMenuDatesCopy,
-            this.PopupMenuDatesPaste,
-            this.PopupMenuDatesSep1});
-            this.PopupMenuDates.Name = "PopupMenuDates";
-            this.PopupMenuDates.Size = new System.Drawing.Size(153, 76);
-            // 
-            // PopupMenuDatesCopy
-            // 
-            this.PopupMenuDatesCopy.Name = "PopupMenuDatesCopy";
-            this.PopupMenuDatesCopy.Size = new System.Drawing.Size(171, 22);
-            this.PopupMenuDatesCopy.Text = "Copy";
-            this.PopupMenuDatesCopy.Click += new System.EventHandler(this.PopupMenuDatesCopy_Click);
-            // 
-            // PopupMenuDatesPaste
-            // 
-            this.PopupMenuDatesPaste.Name = "PopupMenuDatesPaste";
-            this.PopupMenuDatesPaste.Size = new System.Drawing.Size(171, 22);
-            this.PopupMenuDatesPaste.Text = "Paste";
-            this.PopupMenuDatesPaste.Click += new System.EventHandler(this.PopupMenuDatesPaste_Click);
-            // 
-            // PopupMenuDatesSep1
-            // 
-            this.PopupMenuDatesSep1.Name = "PopupMenuDatesSep1";
-            this.PopupMenuDatesSep1.Size = new System.Drawing.Size(149, 6);
-            this.PopupMenuDatesSep1.Visible = false;
-            // 
             // Filtering
             // 
             this.AcceptButton = this.OkayButton;
@@ -639,6 +641,7 @@ namespace Timekeeper.Forms.Shared
             this.Text = "Filtering";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Filtering_FormClosing);
             this.Load += new System.EventHandler(this.Filtering_Load);
+            this.PopupMenuDates.ResumeLayout(false);
             this.TreeViewMenu.ResumeLayout(false);
             this.FilterOptionsTabControl.ResumeLayout(false);
             this.CommonTab.ResumeLayout(false);
@@ -658,7 +661,6 @@ namespace Timekeeper.Forms.Shared
             this.groupBox1.PerformLayout();
             this.BottomPanel.ResumeLayout(false);
             this.ButtonPanel.ResumeLayout(false);
-            this.PopupMenuDates.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
