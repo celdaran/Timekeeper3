@@ -354,7 +354,7 @@ namespace Timekeeper.Forms.Reports
             //----------------------------------------------
 
             String Body = "<div class=\"report-header\">";
-            Body += "  <p>Timekeeper Journal Entry Report</p>";
+//            Body += "  <p>Timekeeper Journal Entry Report</p>";
             Body += "</div>\n\n";
             Body += "<div class=\"report-body\">";
 
@@ -365,20 +365,9 @@ namespace Timekeeper.Forms.Reports
                 DateTime StopTime = DateTime.Parse(Entry["StopTime"]);
                 string Memo = MarkdownEngine.Transform(Entry["Memo"]);
 
-                /*
-                string[] MemoParts = post.Split(new string[] { "<br/><br/><!--SEPARATOR--><br/><br/>" }, StringSplitOptions.RemoveEmptyEntries);
-                string MemoArea = "";
-                int index = 1;
-                if (MemoParts.Count() > 1) {
-                    foreach (string MemoPart in MemoParts) {
-                        MemoArea += String.Format(@"<p class=""memo""><b>Part {0}</b>: {1}</p>", index++, MemoPart);
-                    }
-                } else if (MemoParts.Count() > 0) {
-                    MemoArea = String.Format(@"<p class=""memo"">{0}</p>", MemoParts[0]);
-                } else {
-                    MemoArea = String.Format(@"<p class=""memo"">{0}</p>", MemoArea);
-                }
-                */
+                // Special checkbox handling
+                Memo = Memo.Replace(Timekeeper.Uncheckedbox, "<br>" + Timekeeper.Uncheckedbox);
+                Memo = Memo.Replace(Timekeeper.Checkedbox, "<br>" + Timekeeper.Checkedbox);
 
                 string EntryHeader = "";
 

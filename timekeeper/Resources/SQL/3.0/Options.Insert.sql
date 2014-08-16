@@ -114,3 +114,17 @@ INSERT INTO Options
     'LastCalendarViewId',
     null
 );
+
+INSERT INTO Options
+(
+    CreateTime,
+    ModifyTime,
+    Key,
+    Value
+
+) VALUES (
+    '{0}',
+    '{0}',
+    'LastPunchCardViewId',
+    null
+);

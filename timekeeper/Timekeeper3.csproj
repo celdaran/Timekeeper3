@@ -145,6 +145,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Audit.cs" />
     <Compile Include="Classes\BaseView.cs" />
     <Compile Include="Classes\BaseViewCollection.cs" />
     <Compile Include="Classes\CalendarView.cs" />
@@ -606,6 +607,7 @@
     <None Include="Resources\Images\Icons\Ruler.png" />
     <None Include="Resources\Images\Icons\SquareDot.png" />
     <None Include="Resources\Images\Icons\Blank.png" />
+    <None Include="Resources\SQL\3.0\Audit.Create.sql" />
     <Content Include="tk3.icon.ico" />
     <None Include="Resources\Images\Icons\Speaker.png" />
     <None Include="Resources\Images\Icons\Warning.png" />

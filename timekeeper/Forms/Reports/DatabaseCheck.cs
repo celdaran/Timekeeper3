@@ -18,6 +18,7 @@ namespace Timekeeper.Forms.Reports
         //----------------------------------------------------------------------
 
         private Classes.Options Options;
+        private Classes.Audit Audit;
         private int IssueCounter = 0;
 
         public delegate void BrowserCallback(long entryId);
@@ -32,6 +33,7 @@ namespace Timekeeper.Forms.Reports
             InitializeComponent();
             this.Browser_GotoEntry = f;
             this.Options = Timekeeper.Options;
+            this.Audit = new Classes.Audit();
         }
 
         //----------------------------------------------------------------------
@@ -106,6 +108,8 @@ namespace Timekeeper.Forms.Reports
                     Counter++;
                     ProgressBar.Value = Counter;
                 }
+
+                this.Audit.DatabaseChecked(IssueCounter);
 
                 ProgressBar.Visible = false;
                 StatusBox.Text = IssueCounter == 0 ? "No issues found." :

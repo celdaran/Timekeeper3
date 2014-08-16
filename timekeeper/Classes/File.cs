@@ -14,6 +14,7 @@ namespace Timekeeper
     public partial class File
     {
         public DBI Database;
+        public Classes.Audit Audit;
 
         public readonly string Name;
         public readonly string FullPath;
@@ -38,7 +39,7 @@ namespace Timekeeper
         // (nor were the DDL statements stored as resources or under version 
         // control).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.9.4";
+        public const string SCHEMA_VERSION = "3.0.9.5";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
@@ -65,6 +66,7 @@ namespace Timekeeper
         public File(DBI database)
         {
             this.Database = database;
+            this.Audit = new Classes.Audit();
             if ((Database != null) && (Database.FileName != null)) {
                 FileInfo = new FileInfo(this.Database.FileName);
                 this.Name = FileInfo.Name;
@@ -151,8 +153,9 @@ namespace Timekeeper
                 // Note: due to FK constraints, the order
                 // of table creation below matters.
 
-                // Schema Metadata
+                // System tables
                 CreateTable("Meta", version, populate);
+                CreateTable("Audit", version, false);
 
                 // System Reference tables
                 // FIXME: not FALSE for populate. wtf?
@@ -194,6 +197,8 @@ namespace Timekeeper
                 CreateTable("CalendarView", version, false);
                 CreateTable("PunchCardView", version, false);
 
+                // Record it
+                this.Audit.DatabaseCreated(desiredVersion);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -377,50 +382,6 @@ namespace Timekeeper
                 Timekeeper.Exception(x);
                 throw;
             }
-
-            /*
-            // Create Projects
-            foreach (XmlNode ProjectNode in Projects.ChildNodes) {
-
-                Project Project = new Project(Database);
-
-                Project.Name = ProjectNode["name"].InnerText;
-                Project.Description = ProjectNode["description"].InnerText;
-                Project.IsFolder = ProjectNode["isfolder"].InnerText == "true";
-
-                if (ProjectNode["parent"].InnerText != "") {
-                    Project ParentProject = new Project(Database, ProjectNode["parent"].InnerText);
-                    if (ParentProject.ItemId == 0) {
-                        Timekeeper.Warn("Could not find parent item: '" + ProjectNode["parent"].InnerText + "'");
-                    } else {
-                        Project.ParentId = ParentProject.ItemId;
-                    }
-                }
-
-                Project.Create();
-            }
-
-            // Create Activities
-            foreach (XmlNode ActivityNode in Activities.ChildNodes) {
-
-                Activity Activity = new Activity(Database);
-
-                Activity.Name = ActivityNode["name"].InnerText;
-                Activity.Description = ActivityNode["description"].InnerText;
-                Activity.IsFolder = ActivityNode["isfolder"].InnerText == "true";
-
-                if (ActivityNode["parent"].InnerText != "") {
-                    Activity ParentActivity = new Activity(Database, ActivityNode["parent"].InnerText);
-                    if (ParentActivity.ItemId == 0) {
-                        Timekeeper.Warn("Could not find parent item: '" + ActivityNode["parent"].InnerText + "'");
-                    } else {
-                        Activity.ParentId = ParentActivity.ItemId;
-                    }
-                }
-
-                Activity.Create();
-            }
-            */
         }
 
         //----------------------------------------------------------------------

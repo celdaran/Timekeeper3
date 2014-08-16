@@ -34,10 +34,10 @@
             this.PopupMenuCut = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuPaste = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.PopupMenuSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuHideToolbar = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuShowToolbar = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.PopupMenuSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuMarkupLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuHTML = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuMarkdown = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,12 +60,15 @@
             this.FormatBlockquoteButton = new System.Windows.Forms.ToolStripButton();
             this.FormatHorizontalRuleButton = new System.Windows.Forms.ToolStripButton();
             this.FormatSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.FormatInsertSplitButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatInsertBreakButton = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.RulerPanel = new System.Windows.Forms.Panel();
             this.ShowLeftMargin = new System.Windows.Forms.PictureBox();
             this.RightMarginMarker = new System.Windows.Forms.PictureBox();
             this.FontDialog = new System.Windows.Forms.FontDialog();
+            this.FormatBallotBoxButton = new System.Windows.Forms.ToolStripButton();
+            this.PopupMenuToggleCheckbox = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenu.SuspendLayout();
             this.MemoToolbar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -95,12 +98,14 @@
             this.PopupMenuCopy,
             this.PopupMenuPaste,
             this.PopupMenuSep1,
+            this.PopupMenuToggleCheckbox,
+            this.PopupMenuSep2,
             this.PopupMenuHideToolbar,
             this.PopupMenuShowToolbar,
-            this.toolStripMenuItem1,
+            this.PopupMenuSep3,
             this.PopupMenuMarkupLanguage});
             this.PopupMenu.Name = "PopupMenu";
-            this.PopupMenu.Size = new System.Drawing.Size(195, 148);
+            this.PopupMenu.Size = new System.Drawing.Size(195, 198);
             this.PopupMenu.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenu_Opening);
             // 
             // PopupMenuCut
@@ -127,10 +132,10 @@
             this.PopupMenuPaste.Text = "Paste";
             this.PopupMenuPaste.Click += new System.EventHandler(this.PopupMenuPaste_Click);
             // 
-            // PopupMenuSep1
+            // PopupMenuSep2
             // 
-            this.PopupMenuSep1.Name = "PopupMenuSep1";
-            this.PopupMenuSep1.Size = new System.Drawing.Size(191, 6);
+            this.PopupMenuSep2.Name = "PopupMenuSep2";
+            this.PopupMenuSep2.Size = new System.Drawing.Size(191, 6);
             // 
             // PopupMenuHideToolbar
             // 
@@ -147,10 +152,10 @@
             this.PopupMenuShowToolbar.Visible = false;
             this.PopupMenuShowToolbar.Click += new System.EventHandler(this.PopupMenuShowToolbar_Click);
             // 
-            // toolStripMenuItem1
+            // PopupMenuSep3
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 6);
+            this.PopupMenuSep3.Name = "PopupMenuSep3";
+            this.PopupMenuSep3.Size = new System.Drawing.Size(191, 6);
             // 
             // PopupMenuMarkupLanguage
             // 
@@ -194,11 +199,12 @@
             this.FormatHeading2Button,
             this.FormatHeading3Button,
             this.FormatSeparator4,
+            this.FormatBallotBoxButton,
+            this.FormatHorizontalRuleButton,
             this.FormatCodeButton,
             this.FormatBlockquoteButton,
-            this.FormatHorizontalRuleButton,
             this.FormatSeparator5,
-            this.FormatInsertSplitButton});
+            this.FormatInsertBreakButton});
             this.MemoToolbar.Location = new System.Drawing.Point(0, 0);
             this.MemoToolbar.Name = "MemoToolbar";
             this.MemoToolbar.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -369,23 +375,25 @@
             this.FormatHorizontalRuleButton.Name = "FormatHorizontalRuleButton";
             this.FormatHorizontalRuleButton.Size = new System.Drawing.Size(23, 22);
             this.FormatHorizontalRuleButton.Text = "—";
-            this.FormatHorizontalRuleButton.ToolTipText = "Separator";
+            this.FormatHorizontalRuleButton.ToolTipText = "Horizontal Separator";
             this.FormatHorizontalRuleButton.Click += new System.EventHandler(this.FormatHorizontalRuleButton_Click);
             // 
             // FormatSeparator5
             // 
             this.FormatSeparator5.Name = "FormatSeparator5";
             this.FormatSeparator5.Size = new System.Drawing.Size(6, 25);
+            this.FormatSeparator5.Visible = false;
             // 
-            // FormatInsertSplitButton
+            // FormatInsertBreakButton
             // 
-            this.FormatInsertSplitButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatInsertSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatInsertSplitButton.Name = "FormatInsertSplitButton";
-            this.FormatInsertSplitButton.Size = new System.Drawing.Size(38, 22);
-            this.FormatInsertSplitButton.Text = "Break";
-            this.FormatInsertSplitButton.ToolTipText = "Insert separator text into memo";
-            this.FormatInsertSplitButton.Click += new System.EventHandler(this.FormatInsertSplitButton_Click);
+            this.FormatInsertBreakButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatInsertBreakButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatInsertBreakButton.Name = "FormatInsertBreakButton";
+            this.FormatInsertBreakButton.Size = new System.Drawing.Size(38, 22);
+            this.FormatInsertBreakButton.Text = "Break";
+            this.FormatInsertBreakButton.ToolTipText = "Insert separator text into memo";
+            this.FormatInsertBreakButton.Visible = false;
+            this.FormatInsertBreakButton.Click += new System.EventHandler(this.FormatInsertBreakButton_Click);
             // 
             // panel1
             // 
@@ -435,6 +443,30 @@
             this.RightMarginMarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RightMarginMarker_MouseMove);
             this.RightMarginMarker.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RightMarginMarker_MouseUp);
             // 
+            // FormatBallotBoxButton
+            // 
+            this.FormatBallotBoxButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatBallotBoxButton.Font = new System.Drawing.Font("Wingdings", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.FormatBallotBoxButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatBallotBoxButton.Image")));
+            this.FormatBallotBoxButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatBallotBoxButton.Name = "FormatBallotBoxButton";
+            this.FormatBallotBoxButton.Size = new System.Drawing.Size(23, 22);
+            this.FormatBallotBoxButton.Text = "";
+            this.FormatBallotBoxButton.ToolTipText = "Checkbox";
+            this.FormatBallotBoxButton.Click += new System.EventHandler(this.FormatBallotBoxButton_Click);
+            // 
+            // PopupMenuToggleCheckbox
+            // 
+            this.PopupMenuToggleCheckbox.Name = "PopupMenuToggleCheckbox";
+            this.PopupMenuToggleCheckbox.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuToggleCheckbox.Text = "Toggle Checkbox";
+            this.PopupMenuToggleCheckbox.Click += new System.EventHandler(this.PopupMenuToggleCheckbox_Click);
+            // 
+            // PopupMenuSep1
+            // 
+            this.PopupMenuSep1.Name = "PopupMenuSep1";
+            this.PopupMenuSep1.Size = new System.Drawing.Size(191, 6);
+            // 
             // MemoEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -474,11 +506,11 @@
         private System.Windows.Forms.ToolStripMenuItem PopupMenuCut;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuCopy;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuPaste;
-        private System.Windows.Forms.ToolStripSeparator PopupMenuSep1;
+        private System.Windows.Forms.ToolStripSeparator PopupMenuSep2;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuHideToolbar;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuShowToolbar;
         internal System.Windows.Forms.RichTextBox MemoEntry;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator PopupMenuSep3;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuMarkupLanguage;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuHTML;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuMarkdown;
@@ -493,6 +525,9 @@
         private System.Windows.Forms.ToolStripSeparator FormatSeparator1;
         private System.Windows.Forms.FontDialog FontDialog;
         private System.Windows.Forms.ToolStripSeparator FormatSeparator5;
-        private System.Windows.Forms.ToolStripButton FormatInsertSplitButton;
+        private System.Windows.Forms.ToolStripButton FormatInsertBreakButton;
+        private System.Windows.Forms.ToolStripButton FormatBallotBoxButton;
+        private System.Windows.Forms.ToolStripSeparator PopupMenuSep1;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuToggleCheckbox;
     }
 }

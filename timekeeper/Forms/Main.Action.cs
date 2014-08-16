@@ -694,18 +694,6 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
-        /*
-        private bool Action_ManageTree(Timekeeper.Dimension dimension)
-        {
-            Forms.Shared.TreeAttributeManager Form = new Shared.TreeAttributeManager(dimension);
-            Form.StartPosition = FormStartPosition.CenterParent;
-            Form.ShowDialog(this);
-            return true; // FIXME: can we make this conditional?
-        }
-        */
-
-        //---------------------------------------------------------------------
-
         private void Action_ManageTree(Timekeeper.Dimension dimension, ComboTreeBox tree)
         {
             IgnoreDimensionChanges = true;

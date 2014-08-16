@@ -151,6 +151,11 @@ namespace Timekeeper.Forms.Shared
             MemoEntry.Paste(DataFormats.GetFormat(DataFormats.Text));
         }
 
+        private void PopupMenuToggleCheckbox_Click(object sender, EventArgs e)
+        {
+            FormatBallotBoxButton_Click(sender, e);
+        }
+
         //---------------------------------------------------------------------
 
         private void PopupMenuHideToolbar_Click(object sender, EventArgs e)
@@ -341,19 +346,103 @@ namespace Timekeeper.Forms.Shared
 
         internal void FormatHorizontalRuleButton_Click(object sender, EventArgs e)
         {
-            if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
-                FormatLeadTag("<hr>");
-            } else {
-                FormatLeadTag("---");
-            }
+            // Get our template and current timestamp
+            string Template = Options.Advanced_BreakTemplate;
+            string Timestamp = Timekeeper.DateForDisplay();
+
+            // Substitute timestamp, if present
+            Template = Template.Replace("%timestamp", "{0}");
+            Template = Template.Replace("\\n", "\n");
+            string BreakText = String.Format(Template, Timestamp);
+
+            // Send output to the memo box
+            FormatSimpleTextInsert(BreakText);
         }
 
         //---------------------------------------------------------------------
 
-        private void FormatInsertSplitButton_Click(object sender, EventArgs e)
+        private void FormatBallotBoxButton_Click(object sender, EventArgs e)
+        {
+            // Save selection
+            int SelectionStart = MemoEntry.SelectionStart;
+            int SelectionLength = MemoEntry.SelectionLength;
+
+            SelectionStart = Something(SelectionStart);
+
+            // EXPERIMENT to loop through all lines
+            /*
+            string[] AllSelectedLines = GetLines();
+            string ReplacedSelection = "";
+            if (AllSelectedLines.Length > 0) {
+                foreach (string Line in AllSelectedLines) {
+                    ReplacedSelection += ToggleCheckbox(Line) + "\n";
+                }
+            } else {
+                ReplacedSelection = ToggleCheckbox(" ");
+                SelectionStart += 2;
+            }
+            MemoEntry.SelectedText = ReplacedSelection;
+            */
+
+            // Restore selection
+            MemoEntry.SelectionStart = SelectionStart;
+            MemoEntry.SelectionLength = SelectionLength;
+        }
+
+        //---------------------------------------------------------------------
+
+        private int Something(int selectionStart)
+        {
+            int LineNumber = MemoEntry.GetLineFromCharIndex(selectionStart);
+            string[] AllLines = MemoEntry.Lines;
+
+            // If no lines, we have an empty box
+            if (AllLines.Length == 0) {
+                string[] NewLine = new string[1];
+                NewLine[0] = ToggleCheckbox(" ", ref selectionStart);
+                MemoEntry.Lines = NewLine;
+            } else {
+                // Otherwise we have data
+                string CurrentLine = MemoEntry.Lines[LineNumber];
+
+                // If the current *line* is empty, we'll just be
+                // adding a box to an empty line, but let's bump
+                // the selection start
+                if (CurrentLine.Length == 0)
+                    selectionStart += 2;
+
+                AllLines[LineNumber] = ToggleCheckbox(CurrentLine, ref selectionStart);
+                MemoEntry.Lines = AllLines;
+            }
+
+            return selectionStart;
+        }
+
+        //---------------------------------------------------------------------
+
+        private string ToggleCheckbox(string currentLine, ref int selectionStart)
+        {
+            if (currentLine.Length > 0) {
+                if (currentLine.Substring(0, 1) == Timekeeper.Uncheckedbox) {
+                    currentLine = Timekeeper.Checkedbox + currentLine.Substring(1);
+                } else if (currentLine.Substring(0, 1) == Timekeeper.Checkedbox) {
+                    currentLine = Timekeeper.Uncheckedbox + currentLine.Substring(1);
+                } else {
+                    // No checkbox, so let's add one
+                    currentLine = Timekeeper.Uncheckedbox + " " + currentLine;
+                    selectionStart += 2;
+                }
+            } else {
+                currentLine = Timekeeper.Uncheckedbox + " ";
+            }
+            return currentLine;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void FormatInsertBreakButton_Click(object sender, EventArgs e)
         {
             /* 
-
             Saving this hacked up image-insertion code for later
 
             object SaveClipboard = Clipboard.GetDataObject();
@@ -367,18 +456,9 @@ namespace Timekeeper.Forms.Shared
             Clipboard.SetDataObject(SaveClipboard);
             */
 
-
-            // Get our template and current timestamp
-            string Template = Options.Advanced_BreakTemplate;
-            string Timestamp = Timekeeper.DateForDisplay();
-
-            // Substitute timestamp, if present
-            Template = Template.Replace("%timestamp", "{0}");
-            Template = Template.Replace("\\n", "\n");
-            string SplitText = String.Format(Template, Timestamp);
-
-            // Send output to the memo box
-            FormatSimpleTextInsert(SplitText);
+            /*
+            Note! No longer used... I've merged the "Break" and "HorizonalRule" functions.
+            */
         }
 
         //---------------------------------------------------------------------

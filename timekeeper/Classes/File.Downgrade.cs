@@ -39,6 +39,12 @@ namespace Timekeeper
             newFile.Database.Exec("drop table meta");
             newFile.CreateTable("Meta", Version, true);
 
+            // FIXME: 3.1 issue, when downgrading to a schema version
+            // that actually supports Auditing is introduced.
+            this.Audit.DatabaseDowngraded(
+                new System.Version(SCHEMA_VERSION), 
+                new System.Version("3.0.something"));
+
             // For performance
             newFile.Database.EndWork();
         }

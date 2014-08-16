@@ -34,17 +34,20 @@ namespace Timekeeper
 
             bool Populate = true;
 
+            Version FoundSchemaVersion;
+
             try {
-                Version FoundSchemaVersion = this.GetSchemaVersion();
+                FoundSchemaVersion = this.GetSchemaVersion();
                 CurrentSchemaVersion = new Version(SCHEMA_VERSION);
+
+                // Begin a unit of work (this is NOT a transaction)
+                this.Database.BeginWork();
+                this.Database.Exec("PRAGMA foreign_keys = OFF");
 
                 if ((FoundSchemaVersion.Major == 2) && (FoundSchemaVersion.Minor == 0))
                 {
                     Version PriorVersion = new System.Version(2, 0);
                     Progress.Maximum = Count20();
-
-                    // Begin a unit of work (this is NOT a transaction)
-                    this.Database.BeginWork();
 
                     // Create 3.0 reference tables
                     CreateRefTables(CurrentSchemaVersion);
@@ -71,25 +74,19 @@ namespace Timekeeper
                     CreateNewTable("Options", CurrentSchemaVersion, Populate);
                     CreateNewTable("FilterOptions", CurrentSchemaVersion, false);
 
-                    CreateNewTable("FindView", CurrentSchemaVersion, false);
                     CreateNewTable("GridView", CurrentSchemaVersion, false);
+                    CreateNewTable("FindView", CurrentSchemaVersion, false);
                     CreateNewTable("ReportView", CurrentSchemaVersion, false);
                     CreateNewTable("CalendarView", CurrentSchemaVersion, false);
                     CreateNewTable("PunchCardView", CurrentSchemaVersion, false);
 
-                    // End a unit of work (this is NOT a transaction)
-                    this.Database.EndWork();
-
-                    return true;
+                    CreateNewTable("Audit", CurrentSchemaVersion, false);
                 }
 
                 if ((FoundSchemaVersion.Major == 2) && (FoundSchemaVersion.Minor == 1))
                 {
                     Version PriorVersion = new System.Version(2, 1);
                     Progress.Maximum = Count21();
-
-                    // Begin a unit of work (this is NOT a transaction)
-                    this.Database.BeginWork();
 
                     // Create 3.0 reference tables
                     CreateRefTables(CurrentSchemaVersion);
@@ -121,19 +118,13 @@ namespace Timekeeper
                     CreateNewTable("CalendarView", CurrentSchemaVersion, false);
                     CreateNewTable("PunchCardView", CurrentSchemaVersion, false);
 
-                    // End a unit of work (this is NOT a transaction)
-                    this.Database.EndWork();
-
-                    return true;
+                    CreateNewTable("Audit", CurrentSchemaVersion, false);
                 }
 
                 if ((FoundSchemaVersion.Major == 2) && (FoundSchemaVersion.Minor >= 2))
                 {
                     Version PriorVersion = new System.Version(2, 2);
                     Progress.Maximum = Count22();
-
-                    // Begin a unit of work (this is NOT a transaction)
-                    this.Database.BeginWork();
 
                     // Create 3.0 reference tables
                     CreateRefTables(CurrentSchemaVersion);
@@ -149,7 +140,7 @@ namespace Timekeeper
                     UpgradeProject(PriorVersion);
                     UpgradeNotebook(PriorVersion);
                     UpgradeGridView(PriorVersion);
-                    UpgradeJournal(PriorVersion);
+                    //UpgradeJournal(PriorVersion); <-- WARNING WARNING DO NOT SUBMIT LIKE THIS WARNING WARNING
 
                     // Create 3.0 tables
                     CreateNewTable("Todo", CurrentSchemaVersion, false);
@@ -165,10 +156,7 @@ namespace Timekeeper
                     CreateNewTable("CalendarView", CurrentSchemaVersion, false);
                     CreateNewTable("PunchCardView", CurrentSchemaVersion, false);
 
-                    // End a unit of work (this is NOT a transaction)
-                    this.Database.EndWork();
-
-                    return true;
+                    CreateNewTable("Audit", CurrentSchemaVersion, false);
                 }
 
                 // Highly specialized upgrade case to help me make the ginormous
@@ -180,9 +168,6 @@ namespace Timekeeper
                 {
                     Version PriorVersion = new System.Version(3, 0, 7, 2);
                     Progress.Maximum = 9999; // DON'T CARE
-
-                    this.Database.BeginWork();
-                    this.Database.Exec("PRAGMA foreign_keys = OFF");
 
                     // Don't (re-)create 3.0 reference tables
                     this.Database.Exec("drop table RefDatePreset");
@@ -212,22 +197,21 @@ namespace Timekeeper
                     UpgradeGridView(PriorVersion);
                     UpgradeFindView();
                     UpgradeReportView();
-
-                    this.Database.EndWork();
-
-                    return true;
                 }
 
             }
             catch (Exception x) {
                 Timekeeper.Warn("Database upgrade failed on Step '" + this.Step.Text + "' on Row Id " + RowId.ToString());
                 Timekeeper.Exception(x);
+                this.Database.EndWork();
+                return false;
             }
 
-            // Just in case...
+            this.Audit.DatabaseUpgraded(FoundSchemaVersion, CurrentSchemaVersion);
+
             this.Database.EndWork();
 
-            return false;
+            return true;
         }
 
         //---------------------------------------------------------------------

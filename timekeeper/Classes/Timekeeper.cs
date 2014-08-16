@@ -36,6 +36,9 @@ namespace Timekeeper
         public const int IMG_ITEM_HIDDEN = 5;
         public const int IMG_FOLDER_HIDDEN = 6;
 
+        public const char CHAR_UNCHECKEDBOX = '\u2610';
+        public const char CHAR_CHECKEDBOX = '\u2611';
+
         public enum Dimension { Project, Activity, Location, Category };
 
         public const string DATE_FORMAT = "yyyy-MM-dd";
@@ -48,8 +51,12 @@ namespace Timekeeper
 
         public static DBI Database;
         public static Classes.Options Options;
+
         public static IScheduler Scheduler;
         public static Classes.Messages Mailbox = Classes.Messages.Instance;
+
+        public static string Checkedbox { get { return CHAR_CHECKEDBOX.ToString(); } }
+        public static string Uncheckedbox { get { return CHAR_UNCHECKEDBOX.ToString(); } }
 
         private static Log Log;
 
