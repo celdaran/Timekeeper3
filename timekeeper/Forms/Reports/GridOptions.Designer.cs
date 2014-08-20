@@ -76,8 +76,10 @@
             this.Dimension.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Dimension.FormattingEnabled = true;
             this.Dimension.Items.AddRange(new object[] {
-            "Projects",
-            "Activities"});
+            "Project",
+            "Activity",
+            "Location",
+            "Category"});
             this.Dimension.Location = new System.Drawing.Point(120, 33);
             this.Dimension.Name = "Dimension";
             this.Dimension.Size = new System.Drawing.Size(156, 21);

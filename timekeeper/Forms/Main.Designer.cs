@@ -135,8 +135,6 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedCategoryToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarElapsedAllToday = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBarFileName = new System.Windows.Forms.ToolStripStatusLabel();
-            this.StatusBarDebugGeneric1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.StatusBarDebugBenchmark = new System.Windows.Forms.ToolStripStatusLabel();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ShortTimer = new System.Windows.Forms.Timer(this.components);
@@ -1027,9 +1025,7 @@ namespace Timekeeper.Forms
             this.StatusBarElapsedLocationToday,
             this.StatusBarElapsedCategoryToday,
             this.StatusBarElapsedAllToday,
-            this.StatusBarFileName,
-            this.StatusBarDebugGeneric1,
-            this.StatusBarDebugBenchmark});
+            this.StatusBarFileName});
             this.StatusBar.Location = new System.Drawing.Point(0, 297);
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.ShowItemToolTips = true;
@@ -1177,18 +1173,6 @@ namespace Timekeeper.Forms
             this.StatusBarFileName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.StatusBarFileName.ToolTipText = "No Timekeeper file has been opened. Use File|New or File|Open to begin.";
             this.StatusBarFileName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.statusFile_MouseDown);
-            // 
-            // StatusBarDebugGeneric1
-            // 
-            this.StatusBarDebugGeneric1.Name = "StatusBarDebugGeneric1";
-            this.StatusBarDebugGeneric1.Size = new System.Drawing.Size(38, 17);
-            this.StatusBarDebugGeneric1.Text = "Debug";
-            // 
-            // StatusBarDebugBenchmark
-            // 
-            this.StatusBarDebugBenchmark.Name = "StatusBarDebugBenchmark";
-            this.StatusBarDebugBenchmark.Size = new System.Drawing.Size(59, 17);
-            this.StatusBarDebugBenchmark.Text = "Benchmark";
             // 
             // TreeImageList
             // 
@@ -2236,7 +2220,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTrayCountdown;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTrayStopwatch;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuTrayExit;
-        private System.Windows.Forms.ToolStripStatusLabel StatusBarDebugGeneric1;
         private System.Windows.Forms.ToolStripMenuItem MenuReportTodo;
         private System.Windows.Forms.ToolStripMenuItem MenuReportEvents;
         private System.Windows.Forms.ToolStripMenuItem MenuReportNotebook;
@@ -2303,7 +2286,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserNextBrowseByYear;
         private System.Windows.Forms.ToolStripMenuItem MenuActionFind;
         private System.Windows.Forms.ToolStripSeparator MenuActionSep2;
-        private System.Windows.Forms.ToolStripStatusLabel StatusBarDebugBenchmark;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarCurrentLocation;
         private System.Windows.Forms.ToolStripStatusLabel StatusBarCurrentCategory;

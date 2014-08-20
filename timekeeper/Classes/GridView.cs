@@ -77,30 +77,13 @@ namespace Timekeeper.Classes
 
         new public bool Save(bool filterOptionsChanged, long filterOptionsId)
         {
-            bool Saved = false;
+            Row View = new Row();
 
-            try {
-                Saved = base.Save(filterOptionsChanged, filterOptionsId);
+            View["RefDimensionId"] = this.RefDimensionId;
+            View["RefGroupById"] = this.RefGroupById;
+            View["RefTimeDisplayId"] = this.RefTimeDisplayId;
 
-                if (Saved) {
-                    Row View = new Row();
-
-                    View["RefDimensionId"] = this.RefDimensionId;
-                    View["RefGroupById"] = this.RefGroupById;
-                    View["RefTimeDisplayId"] = this.RefTimeDisplayId;
-
-                    if (this.Database.Update(ViewTableName, View, ViewTableName + "Id", this.Id) == 1) {
-                        Saved = true;
-                    } else {
-                        Saved = false;
-                    }
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
-
-            return Saved;
+            return base.Save(filterOptionsChanged, filterOptionsId, View);
         }
 
         //----------------------------------------------------------------------

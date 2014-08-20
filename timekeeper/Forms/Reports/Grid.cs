@@ -152,11 +152,30 @@ namespace Timekeeper.Forms.Reports
             DialogBox.Dimension.SelectedIndex = DimensionComboBox.SelectedIndex;
             DialogBox.TimeDisplay.SelectedIndex = TimeDisplayComboBox.SelectedIndex;
 
+            // Save prior options
+            int SavedGroupBy = GroupByComboBox.SelectedIndex;
+            int SavedDimension = DimensionComboBox.SelectedIndex;
+            int SavedTimeDisplay = TimeDisplayComboBox.SelectedIndex;
+
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                GroupByComboBox.SelectedIndex = DialogBox.GroupDataBy.SelectedIndex;
-                DimensionComboBox.SelectedIndex = DialogBox.Dimension.SelectedIndex;
-                TimeDisplayComboBox.SelectedIndex = DialogBox.TimeDisplay.SelectedIndex;
-                GroupBySelect(GroupByComboBox.SelectedIndex);
+                if ((DialogBox.GroupDataBy.SelectedIndex != SavedGroupBy) ||
+                    (DialogBox.Dimension.SelectedIndex != SavedDimension) ||
+                    (DialogBox.TimeDisplay.SelectedIndex != SavedTimeDisplay))
+                {
+                    GroupByComboBox.SelectedIndex = DialogBox.GroupDataBy.SelectedIndex;
+                    DimensionComboBox.SelectedIndex = DialogBox.Dimension.SelectedIndex;
+                    TimeDisplayComboBox.SelectedIndex = DialogBox.TimeDisplay.SelectedIndex;
+
+                    // FIXME: this is a bit of a hack, but the Options dialog box doesn't
+                    // actually dive into filter options, except that values on the Options
+                    // dialog box do affect the current view, and we'll have to force an
+                    // upsert of the underlying filteroptions to make this all work. That
+                    // force happens when you tell it the filteroptions have changed.
+                    GridView.FilterOptions.Changed = true;
+
+                    // Now run the update
+                    GroupBySelect(GroupByComboBox.SelectedIndex);
+                }
             }
         }
 
@@ -529,6 +548,12 @@ namespace Timekeeper.Forms.Reports
                     case 1 :
                         TableName = "Activity";
                         break;
+                    case 2 :
+                        TableName = "Location";
+                        break;
+                    case 3:
+                        TableName = "Category";
+                        break;
                     default :
                         TableName = "Project";
                         break;
@@ -575,7 +600,7 @@ namespace Timekeeper.Forms.Reports
 
                 // Add one column for the item
                 CreateNewColumn("item",
-                    DimensionComboBox.Text.Substring(0, DimensionComboBox.Text.Length - 1),
+                    DimensionComboBox.Text,
                     DataGridViewContentAlignment.MiddleLeft,
                     true);
 

@@ -70,6 +70,14 @@ namespace Timekeeper.Classes
 
         public bool Save(bool filterOptionsChanged, long filterOptionsId)
         {
+            Row ExtraColumns = new Row();
+            return this.Save(filterOptionsChanged, filterOptionsId, ExtraColumns);
+        }
+
+        //----------------------------------------------------------------------
+
+        public bool Save(bool filterOptionsChanged, long filterOptionsId, Row extraColumns)
+        {
             // 2014-07-25 update: now that I'm enforcing FK constraints, I can
             // no longer save the base row first and *then* the FilterOptions.
             // The FOID is required to save the base view, so it's time to
@@ -83,17 +91,16 @@ namespace Timekeeper.Classes
                 if (SaveFilterOptions(filterOptionsChanged, filterOptionsId))
                 {
                     //--------------------------------------------------------------
-                    // Then save the base view
+                    // Then upsert the base view
                     //--------------------------------------------------------------
 
-                    Row ExtraColumns = new Row();
-                    ExtraColumns["Name"] = this.Name;
-                    ExtraColumns["FilterOptionsId"] = this.FilterOptions.FilterOptionsId;
+                    extraColumns["Name"] = this.Name;
+                    extraColumns["FilterOptionsId"] = this.FilterOptions.FilterOptionsId;
 
                     if (filterOptionsId == this.FilterOptions.FilterOptionsId) {
-                        this.Saved = base.Save(ExtraColumns);
+                        this.Saved = base.Save(extraColumns);
                     } else {
-                        this.Saved = base.Add(ExtraColumns);
+                        this.Saved = base.Add(extraColumns);
                     }
 
                     this.Changed = false;
