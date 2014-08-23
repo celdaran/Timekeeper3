@@ -168,7 +168,6 @@ namespace Timekeeper.Forms
 
             MemoEditor.ToolbarVisible(Options.View_MemoEditor_ShowToolbar);
             MemoEditor.SwitchMarkdown(Options.Advanced_Other_MarkupLanguage);
-            MemoEditor.RightMargin = Options.View_MemoEditor_RightMargin;
             MemoEditor.ShowGutter = Options.View_MemoEditor_ShowGutter;
             MemoEditor.EditorFont = Options.View_MemoEditor_Font;
 

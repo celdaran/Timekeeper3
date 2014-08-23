@@ -341,9 +341,13 @@ namespace Timekeeper.Forms
             View_HiddenEventsSince.SelectedIndex = Values.View_HiddenEventsSince;
 
             View_MemoEditor_ShowToolbar.Checked = Values.View_MemoEditor_ShowToolbar;
-            View_MemoEditor_RightMargin.Value = Values.View_MemoEditor_RightMargin;
             View_MemoEditor_ShowGutter.Checked = Values.View_MemoEditor_ShowGutter;
             View_MemoEditor_Font.Text = Values.View_MemoEditor_Font;
+            /* NOT SUPPORTED IN UI
+            View_MemoEditor_RightMargin_Journal.Value = Values.View_MemoEditor_RightMargin_Journal;
+            View_MemoEditor_RightMargin_Notebook.Value = Values.View_MemoEditor_RightMargin_Notebook;
+            View_MemoEditor_RightMargin_Todo.Value = Values.View_MemoEditor_RightMargin_Todo;
+            */
 
             //----------------------------------------------------------------------
 
@@ -446,9 +450,13 @@ namespace Timekeeper.Forms
             Values.View_HiddenEventsSince = View_HiddenEventsSince.SelectedIndex;
 
             Values.View_MemoEditor_ShowToolbar = View_MemoEditor_ShowToolbar.Checked;
-            Values.View_MemoEditor_RightMargin = (int)View_MemoEditor_RightMargin.Value;
             Values.View_MemoEditor_ShowGutter = View_MemoEditor_ShowGutter.Checked;
             Values.View_MemoEditor_Font = View_MemoEditor_Font.Text;
+            /* NOT SUPPORTED IN UI
+            Values.View_MemoEditor_RightMargin_Journal = (int)View_MemoEditor_RightMargin_Journal.Value;
+            Values.View_MemoEditor_RightMargin_Notebook = (int)View_MemoEditor_RightMargin_Notebook.Value;
+            Values.View_MemoEditor_RightMargin_Todo = (int)View_MemoEditor_RightMargin_Todo.Value;
+            */
 
             //----------------------------------------------------------------------
 

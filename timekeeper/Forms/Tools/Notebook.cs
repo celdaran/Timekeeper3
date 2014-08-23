@@ -54,6 +54,7 @@ namespace Timekeeper.Forms.Tools
                 this.MemoEditor.BringToFront();
                 this.MemoEditor.Dock = DockStyle.Fill;
                 this.MemoEditor.TabIndex = 1;
+                this.MemoEditor.RightMargin = Options.View_MemoEditor_RightMargin_Notebook;
                 this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.MemoEditor_TextChanged);
 
                 /*
@@ -113,6 +114,7 @@ namespace Timekeeper.Forms.Tools
             Options.Notebook_Width = this.Width;
             Options.Notebook_Top = this.Top;
             Options.Notebook_Left = this.Left;
+            Options.View_MemoEditor_RightMargin_Notebook = this.MemoEditor.RightMargin;
         }
 
         //----------------------------------------------------------------------

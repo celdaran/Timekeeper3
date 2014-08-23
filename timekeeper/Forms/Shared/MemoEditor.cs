@@ -29,7 +29,6 @@ namespace Timekeeper.Forms.Shared
 
             this.Options = Timekeeper.Options;
 
-            this.RightMargin = Options.View_MemoEditor_RightMargin;
             this.ShowGutter = Options.View_MemoEditor_ShowGutter;
             this.EditorFont = Options.View_MemoEditor_Font;
         }
@@ -52,7 +51,6 @@ namespace Timekeeper.Forms.Shared
             set {
                 MemoEntry.RightMargin = value;
                 RightMarginMarker.Location = new Point(value, 0);
-                Options.View_MemoEditor_RightMargin = value;
             }
         }
 

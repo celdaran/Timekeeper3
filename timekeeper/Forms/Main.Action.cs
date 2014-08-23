@@ -575,6 +575,7 @@ namespace Timekeeper.Forms
             Options.Main_Width = Width;
             Options.Main_Top = Top;
             Options.Main_Left = Left;
+            Options.View_MemoEditor_RightMargin_Journal = this.MemoEditor.RightMargin;
         }
 
         //---------------------------------------------------------------------
@@ -612,6 +613,7 @@ namespace Timekeeper.Forms
             this.MemoEditor.Dock = DockStyle.Fill;
             this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
             this.MemoEditor.TabIndex = 2; // grasping at straws here
+            this.MemoEditor.RightMargin = Options.View_MemoEditor_RightMargin_Journal;
             this.MemoEditor.Enabled = false;
 
             // Set viewability of primary components
@@ -1231,6 +1233,11 @@ namespace Timekeeper.Forms
             try {
                 // Refresh actual time values from database to correct for drift
                 if (timerRunning) {
+                    // Trying to track down Issue #1395
+                    Timekeeper.Debug("TotalSeconds: " + TimedProject.Elapsed().TotalSeconds.ToString());
+                    Timekeeper.Debug("ElapsedToday: " + Entries.ElapsedToday().ToString());
+
+                    // Carry on...
                     ElapsedSinceStart = Convert.ToInt32(TimedProject.Elapsed().TotalSeconds);
                     ElapsedProjectToday = Convert.ToInt32(TimedProject.ElapsedToday().TotalSeconds);
                     ElapsedActivityToday = Convert.ToInt32(TimedActivity.ElapsedToday().TotalSeconds);

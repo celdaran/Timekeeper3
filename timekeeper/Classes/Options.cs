@@ -67,8 +67,10 @@ namespace Timekeeper.Classes
         public int View_HiddenEventsSince { get; set; }
         public bool View_MemoEditor_ShowToolbar { get; set; }
         public bool View_MemoEditor_ShowGutter { get; set; }
-        public int View_MemoEditor_RightMargin { get; set; }
         public string View_MemoEditor_Font { get; set; }
+        public int View_MemoEditor_RightMargin_Journal { get; set; }
+        public int View_MemoEditor_RightMargin_Notebook { get; set; }
+        public int View_MemoEditor_RightMargin_Todo { get; set; }
 
         public string Behavior_TitleBar_Template { get; set; }
         public int Behavior_TitleBar_Time { get; set; }
@@ -380,7 +382,9 @@ namespace Timekeeper.Classes
 
             View_MemoEditor_ShowToolbar = ((int)Key.GetValue("MemoEditor_ShowToolbar", 0) == 1);
             View_MemoEditor_ShowGutter = ((int)Key.GetValue("MemoEditor_ShowGutter", 1) == 1);
-            View_MemoEditor_RightMargin = (int)Key.GetValue("MemoEditor_RightMargin", 550);
+            View_MemoEditor_RightMargin_Journal = (int)Key.GetValue("MemoEditor_RightMargin_Journal", 550);
+            View_MemoEditor_RightMargin_Notebook = (int)Key.GetValue("MemoEditor_RightMargin_Notebook", 410);
+            View_MemoEditor_RightMargin_Todo = (int)Key.GetValue("MemoEditor_RightMargin_Todo", 333);
             View_MemoEditor_Font = (string)Key.GetValue("MemoEditor_Font", "Microsoft Sans Serif, 8.25pt");
 
             //----------------------------------------------------------------------
@@ -776,7 +780,9 @@ namespace Timekeeper.Classes
 
             Key.SetValue("MemoEditor_ShowToolbar", View_MemoEditor_ShowToolbar, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("MemoEditor_ShowGutter", View_MemoEditor_ShowGutter, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("MemoEditor_RightMargin", View_MemoEditor_RightMargin, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MemoEditor_RightMargin_Journal", View_MemoEditor_RightMargin_Journal, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MemoEditor_RightMargin_Notebook", View_MemoEditor_RightMargin_Notebook, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MemoEditor_RightMargin_Todo", View_MemoEditor_RightMargin_Todo, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("MemoEditor_Font", View_MemoEditor_Font, Microsoft.Win32.RegistryValueKind.String);
 
             //----------------------------------------------------------------------

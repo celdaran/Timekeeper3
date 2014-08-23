@@ -59,7 +59,7 @@ namespace Timekeeper.Forms.Tools
                 this.MemoEditor.BringToFront();
                 this.MemoEditor.Dock = DockStyle.Fill;
                 this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
-                this.MemoEditor.TabIndex = 2; // grasping at straws here
+                this.MemoEditor.RightMargin = Options.View_MemoEditor_RightMargin_Todo;
                 this.MemoEditor.Enabled = true;
 
                 if (this.TodoId > 0) {
@@ -178,6 +178,8 @@ namespace Timekeeper.Forms.Tools
                     }
                 }
             }
+
+            Options.View_MemoEditor_RightMargin_Todo = this.MemoEditor.RightMargin;
         }
 
         private void UseStartDate_CheckedChanged(object sender, EventArgs e)

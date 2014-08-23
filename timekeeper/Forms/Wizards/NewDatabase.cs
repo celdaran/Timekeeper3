@@ -271,13 +271,19 @@ namespace Timekeeper.Forms.Wizards
 
         private void SelectFileButton_Click(object sender, EventArgs e)
         {
+            Timekeeper.Debug("Issue #1356, Checkpoint Alpha");
             if (NewFileDialog.FileName == "") {
+                Timekeeper.Debug("Issue #1356, Checkpoint Bravo");
                 NewFileDialog.FileName = (Environment.UserName ?? "Timekeeper") + ".tkdb";
+                Timekeeper.Debug("Issue #1356, Checkpoint Charlie" + NewFileDialog.FileName);
             }
 
             if (NewFileDialog.ShowDialog(this) == DialogResult.OK) {
+                Timekeeper.Debug("Issue #1356, Checkpoint Delta");
                 NewDatabaseFileName.Text = NewFileDialog.FileName;
+                Timekeeper.Debug("Issue #1356, Checkpoint Echo");
             }
+            Timekeeper.Debug("Issue #1356, Checkpoint Foxtrot");
         }
 
         //----------------------------------------------------------------------
