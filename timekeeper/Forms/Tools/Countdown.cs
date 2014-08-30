@@ -41,8 +41,17 @@ namespace Timekeeper.Forms.Tools
         private void EventsButton_Click(object sender, EventArgs e)
         {
             Forms.Tools.Event EventDialog = new Forms.Tools.Event(this.MainForm);
-            EventDialog.Show(this);
+            EventDialog.Show();
             // If we modify events, we need to rebuild the menu list here
+        }
+
+        //----------------------------------------------------------------------
+
+        private void TodoButton_Click(object sender, EventArgs e)
+        {
+            Forms.Tools.Todo TodoWindow = new Forms.Tools.Todo();
+            TodoWindow.Show();
+            // If we modify the todo list, we need to rebuild the menu list here
         }
 
         //----------------------------------------------------------------------

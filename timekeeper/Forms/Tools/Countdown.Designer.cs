@@ -45,6 +45,7 @@
             this.SecondTimer = new System.Windows.Forms.Timer(this.components);
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.TodoButton = new System.Windows.Forms.ToolStripButton();
             this.ToolStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -72,7 +73,8 @@
             this.DisplayMenuButton,
             this.toolStripSeparator2,
             this.LoadEventMenu,
-            this.EventsButton});
+            this.EventsButton,
+            this.TodoButton});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
             this.ToolStrip.Size = new System.Drawing.Size(292, 25);
@@ -184,6 +186,16 @@
             this.panel1.Size = new System.Drawing.Size(292, 33);
             this.panel1.TabIndex = 8;
             // 
+            // TodoButton
+            // 
+            this.TodoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.TodoButton.Image = ((System.Drawing.Image)(resources.GetObject("TodoButton.Image")));
+            this.TodoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.TodoButton.Name = "TodoButton";
+            this.TodoButton.Size = new System.Drawing.Size(47, 22);
+            this.TodoButton.Text = "Todo...";
+            this.TodoButton.Click += new System.EventHandler(this.TodoButton_Click);
+            // 
             // Countdown
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -224,5 +236,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem AlwaysOnTopButton;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ToolStripButton TodoButton;
     }
 }

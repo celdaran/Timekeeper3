@@ -44,8 +44,8 @@ namespace Timekeeper.Classes
 
         public long EventGroupId { get; set; }
         public DateTimeOffset NextOccurrenceTime { get; set; }
-        public long ReminderId { get; set; }
-        public long ScheduleId { get; set; }
+        public long? ReminderId { get; set; }
+        public long? ScheduleId { get; set; }
 
         public Classes.EventGroup Group { get; set; }
         public Classes.Reminder Reminder { get; set; }
@@ -104,12 +104,12 @@ namespace Timekeeper.Classes
 
                     this.EventGroupId = Event["EventGroupId"];
                     this.NextOccurrenceTime = Event["NextOccurrenceTime"];
-                    this.ReminderId = (long)Timekeeper.GetValue(Event["ReminderId"], 0);
-                    this.ScheduleId = (long)Timekeeper.GetValue(Event["ScheduleId"], 0);
+                    this.ReminderId = (long?)Timekeeper.GetValue(Event["ReminderId"], null);
+                    this.ScheduleId = (long?)Timekeeper.GetValue(Event["ScheduleId"], null);
 
                     this.Group = this.EventGroupId > 0 ? new Classes.EventGroup(this.EventGroupId) : null;
-                    this.Reminder = this.ReminderId > 0 ? new Classes.Reminder(this.ReminderId) : null;
-                    this.Schedule = this.ScheduleId > 0 ? new Classes.Schedule(this.ScheduleId) : null;
+                    this.Reminder = this.ReminderId > 0 ? new Classes.Reminder((long)this.ReminderId) : null;
+                    this.Schedule = this.ScheduleId > 0 ? new Classes.Schedule((long)this.ScheduleId) : null;
 
                     this.IsHidden = (bool)Timekeeper.GetValue(Event["IsHidden"], false);
                     this.IsDeleted = (bool)Timekeeper.GetValue(Event["IsDeleted"], false);

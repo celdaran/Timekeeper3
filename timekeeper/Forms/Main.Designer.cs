@@ -526,43 +526,43 @@ namespace Timekeeper.Forms
             // MenuToolTodo
             // 
             this.MenuToolTodo.Name = "MenuToolTodo";
-            this.MenuToolTodo.Size = new System.Drawing.Size(182, 22);
-            this.MenuToolTodo.Text = "To Do List...";
+            this.MenuToolTodo.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolTodo.Text = "To Do...";
             this.MenuToolTodo.Click += new System.EventHandler(this.MenuToolTodo_Click);
             // 
             // MenuToolEvents
             // 
             this.MenuToolEvents.Name = "MenuToolEvents";
-            this.MenuToolEvents.Size = new System.Drawing.Size(182, 22);
-            this.MenuToolEvents.Text = "&Events && Reminders...";
+            this.MenuToolEvents.Size = new System.Drawing.Size(160, 22);
+            this.MenuToolEvents.Text = "&Events...";
             this.MenuToolEvents.Visible = false;
             this.MenuToolEvents.Click += new System.EventHandler(this.MenuToolReminders_Click);
             // 
             // MenuToolNotebook
             // 
             this.MenuToolNotebook.Name = "MenuToolNotebook";
-            this.MenuToolNotebook.Size = new System.Drawing.Size(182, 22);
+            this.MenuToolNotebook.Size = new System.Drawing.Size(160, 22);
             this.MenuToolNotebook.Text = "&Notebook...";
             this.MenuToolNotebook.Click += new System.EventHandler(this.MenuToolNotebook_Click);
             // 
             // MenuToolCalendar
             // 
             this.MenuToolCalendar.Name = "MenuToolCalendar";
-            this.MenuToolCalendar.Size = new System.Drawing.Size(182, 22);
+            this.MenuToolCalendar.Size = new System.Drawing.Size(160, 22);
             this.MenuToolCalendar.Text = "&Calendar...";
             this.MenuToolCalendar.Click += new System.EventHandler(this.MenuToolCalendar_Click);
             // 
             // MenuToolStopwatch
             // 
             this.MenuToolStopwatch.Name = "MenuToolStopwatch";
-            this.MenuToolStopwatch.Size = new System.Drawing.Size(182, 22);
+            this.MenuToolStopwatch.Size = new System.Drawing.Size(160, 22);
             this.MenuToolStopwatch.Text = "Stopwatch...";
             this.MenuToolStopwatch.Click += new System.EventHandler(this.MenuToolStopwatch_Click);
             // 
             // MenuToolCountdown
             // 
             this.MenuToolCountdown.Name = "MenuToolCountdown";
-            this.MenuToolCountdown.Size = new System.Drawing.Size(182, 22);
+            this.MenuToolCountdown.Size = new System.Drawing.Size(160, 22);
             this.MenuToolCountdown.Text = "C&ountdown...";
             this.MenuToolCountdown.Click += new System.EventHandler(this.MenuToolCountdown_Click);
             // 
@@ -570,7 +570,7 @@ namespace Timekeeper.Forms
             // 
             this.MenuToolDatecalc.Enabled = false;
             this.MenuToolDatecalc.Name = "MenuToolDatecalc";
-            this.MenuToolDatecalc.Size = new System.Drawing.Size(182, 22);
+            this.MenuToolDatecalc.Size = new System.Drawing.Size(160, 22);
             this.MenuToolDatecalc.Text = "&Date Calculator...";
             this.MenuToolDatecalc.Visible = false;
             this.MenuToolDatecalc.Click += new System.EventHandler(this.menuToolsDatecalc_Click);
@@ -578,13 +578,13 @@ namespace Timekeeper.Forms
             // MenuToolSep2
             // 
             this.MenuToolSep2.Name = "MenuToolSep2";
-            this.MenuToolSep2.Size = new System.Drawing.Size(179, 6);
+            this.MenuToolSep2.Size = new System.Drawing.Size(157, 6);
             // 
             // MenuToolOptions
             // 
             this.MenuToolOptions.Name = "MenuToolOptions";
             this.MenuToolOptions.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.MenuToolOptions.Size = new System.Drawing.Size(182, 22);
+            this.MenuToolOptions.Size = new System.Drawing.Size(160, 22);
             this.MenuToolOptions.Text = "Options";
             this.MenuToolOptions.Click += new System.EventHandler(this.MenuToolOptions_Click);
             // 

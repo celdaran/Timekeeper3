@@ -160,7 +160,7 @@ namespace Timekeeper.Classes
             // Duration
             this.DurationTypeId = row["DurationTypeId"];
             this.StopAfterCount = (long)Timekeeper.GetValue(row["StopAfterCount"], 10);
-            this.StopAfterTime = (DateTimeOffset)Timekeeper.GetValue(row["StopAfterTime"], null);
+            this.StopAfterTime = (DateTimeOffset?)Timekeeper.GetValue(row["StopAfterTime"], null);
 
             // Event Metadata
             this.TriggerCount = row["TriggerCount"];

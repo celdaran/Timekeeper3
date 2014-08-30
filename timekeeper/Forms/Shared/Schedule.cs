@@ -34,10 +34,10 @@ namespace Timekeeper.Forms.Shared
         // Constructor
         //----------------------------------------------------------------------
 
-        public Schedule(long scheduleId, DateTime eventNextOccurrence)
+        public Schedule(long? scheduleId, DateTime eventNextOccurrence)
         {
             InitializeComponent();
-            this.ScheduleId = scheduleId;
+            this.ScheduleId = scheduleId == null ? 0 : (long)scheduleId;
             this.ExternalEventNextOccurrence = eventNextOccurrence;
         }
 

@@ -571,32 +571,41 @@ namespace Timekeeper.Forms
 
         public void Browser_SaveRow()
         {
+            Timekeeper.Debug("Browser_SaveRow: Checkpoint Alpha");
             // Bail if we have no entry
             if ((browserEntry == null) || (browserEntry.JournalId == 0)) {
+                Timekeeper.Debug("Browser_SaveRow: Checkpoint Bravo");
                 return;
             }
 
             // Copy form values to browser entry
             Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
+            Timekeeper.Debug("Browser_SaveRow: Checkpoint Charlie");
 
             // Bail if nothing changed
             if (ToolbarRevert.Enabled == false) {
+                Timekeeper.Debug("Browser_SaveRow: Checkpoint Delta");
 
                 if (timerRunning) {
                     if (browserEntry.Memo == priorLoadedBrowserEntry.Memo) {
+                        Timekeeper.Debug("Browser_SaveRow: Checkpoint Echo");
                         return;
                     } else {
+                        Timekeeper.Debug("Browser_SaveRow: Checkpoint Foxtrot");
                         // The timer is running and the memo has changed, so
                         // please proceed to the save code below
                     }
                 } else {
+                    Timekeeper.Debug("Browser_SaveRow: Checkpoint Golf");
                     return;
                 }
 
             }
 
             // If we made it this far, save
+            Timekeeper.Debug("Browser_SaveRow: Checkpoint Hotel");
             browserEntry.Save();
+            Timekeeper.Debug("Browser_SaveRow: Checkpoint India");
 
             // And disable reverting, just in case
             Browser_EnableRevert(false);
@@ -628,7 +637,7 @@ namespace Timekeeper.Forms
 
             if (item.Name.Substring(0, 4) == "Menu") {
                 // HACK -- need to sync toolbar with menubar
-                // This means we got hear due to a keyboard shortcut
+                // This means we got here due to a keyboard shortcut
                 // (which is tied to the invisible menu items and not
                 // the visible toolbar dropdown). In this case, we
                 // need to check the corresponding visible item and

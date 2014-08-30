@@ -160,8 +160,14 @@ namespace Timekeeper.Classes
             this.Database.BeginWork();
 
             try {
-                string Query = String.Format(@"SELECT max(ModifyTime) as EventModifyTime FROM Event WHERE IsDeleted = 0");
+                string Query = String.Format(@"SELECT COUNT(*) AS Count FROM Event WHERE IsDeleted = 0");
                 Row Row = this.Database.SelectRow(Query);
+                // If there are no events at all, just return a placeholder value
+                if (Row["Count"] == 0)
+                    return DateTimeOffset.MinValue;
+
+                Query = String.Format(@"SELECT max(ModifyTime) as EventModifyTime FROM Event WHERE IsDeleted = 0");
+                Row = this.Database.SelectRow(Query);
                 DateTimeOffset EventModifyTime = Timekeeper.StringToDate(Row["EventModifyTime"]);
 
                 Query = String.Format(@"SELECT max(ModifyTime) as ReminderModifyTime FROM Reminder");

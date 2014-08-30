@@ -608,6 +608,8 @@
     <None Include="Resources\Images\Icons\SquareDot.png" />
     <None Include="Resources\Images\Icons\Blank.png" />
     <None Include="Resources\SQL\3.0\Audit.Create.sql" />
+    <None Include="Resources\SQL\3.0\CalendarView.Create.sql" />
+    <None Include="Resources\SQL\3.0\PunchCardView.Create.sql" />
     <Content Include="tk3.icon.ico" />
     <None Include="Resources\Images\Icons\Speaker.png" />
     <None Include="Resources\Images\Icons\Warning.png" />

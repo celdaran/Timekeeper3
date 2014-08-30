@@ -445,4 +445,10 @@
   <data name="SQL_3095_Audit_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Audit.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="SQL_3095_CalendarView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\3.0\CalendarView.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SQL_3095_PunchCardView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\3.0\PunchCardView.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
 </root>

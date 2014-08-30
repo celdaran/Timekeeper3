@@ -349,8 +349,7 @@ namespace Timekeeper
 
         public static DateTimeOffset StringToDate(string datetime)
         {
-            return DateTimeOffset.Parse(datetime).ToLocalTime();
-            //return DateTime.SpecifyKind(DateTime.Parse(datetime), DateTimeKind.Local);
+            return datetime == null ? DateTimeOffset.MinValue : DateTimeOffset.Parse(datetime).ToLocalTime();
         }
 
         //---------------------------------------------------------------------
@@ -554,11 +553,31 @@ namespace Timekeeper
 
         public static void Exception(Exception x)
         {
+            // Get exception text
+            string Message = Common.Exception(x, 2);
+
+            // Build message
+            Message = String.Format("{0} {1}.", Message, x.StackTrace);
+
+            // Sent output to log
             Log = GetLog();
-            string msg = Common.Exception(x, 2);
-            Log.Warn(msg);
+            Log.Warn(Message);
+
+            // Dump full stack trace, if requested
             if (Options.Advanced_Other_EnableStackTracing) {
-                Log.Warn(Environment.StackTrace);
+                string StackTraceOutput = "Stack trace:";
+                var StackTrace = new StackTrace(1, true);
+                StackFrame[] Frames = StackTrace.GetFrames();
+                foreach (StackFrame f in Frames) {
+                    string SourceFileName = f.GetFileName();
+                    if (SourceFileName != null) {
+                        // Only add to the stack trace if we got a file name back.
+                        string StackTraceLine = String.Format("\n  at {0} in {1}:line {2}",
+                            f.GetMethod().Name, SourceFileName, f.GetFileLineNumber());
+                        StackTraceOutput += StackTraceLine;
+                    }
+                }
+                Log.Warn(StackTraceOutput);
             }
         }
 

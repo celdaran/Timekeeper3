@@ -31,10 +31,10 @@ namespace Timekeeper.Forms.Shared
         // Constructor
         //----------------------------------------------------------------------
 
-        public Reminder(long reminderId)
+        public Reminder(long? reminderId)
         {
             InitializeComponent();
-            this.ReminderId = reminderId;
+            this.ReminderId = reminderId == null ? 0 : (long)reminderId;
         }
 
         //----------------------------------------------------------------------
