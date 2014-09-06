@@ -393,9 +393,29 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ImageIconGutter {
+            get {
+                object obj = ResourceManager.GetObject("ImageIconGutter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ImageIconLarge {
             get {
                 object obj = ResourceManager.GetObject("ImageIconLarge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ImageIconLongRuler {
+            get {
+                object obj = ResourceManager.GetObject("ImageIconLongRuler", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

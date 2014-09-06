@@ -166,7 +166,8 @@ namespace Timekeeper.Forms
 
             Action_SetBrowserOptions();
 
-            MemoEditor.ToolbarVisible(Options.View_MemoEditor_ShowToolbar);
+            MemoEditor.FormatToolbarVisible(Options.View_MemoEditor_ShowToolbar);
+            MemoEditor.FormatRulerVisible(Options.View_MemoEditor_ShowRuler);
             MemoEditor.SwitchMarkdown(Options.Advanced_Other_MarkupLanguage);
             MemoEditor.ShowGutter = Options.View_MemoEditor_ShowGutter;
             MemoEditor.EditorFont = Options.View_MemoEditor_Font;

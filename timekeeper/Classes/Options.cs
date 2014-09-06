@@ -66,6 +66,7 @@ namespace Timekeeper.Classes
         public int View_HiddenTodoItemsSince { get; set; }
         public int View_HiddenEventsSince { get; set; }
         public bool View_MemoEditor_ShowToolbar { get; set; }
+        public bool View_MemoEditor_ShowRuler { get; set; }
         public bool View_MemoEditor_ShowGutter { get; set; }
         public string View_MemoEditor_Font { get; set; }
         public int View_MemoEditor_RightMargin_Journal { get; set; }
@@ -381,6 +382,7 @@ namespace Timekeeper.Classes
             View_HiddenEventsSince = (int)Key.GetValue("HiddenEventsSince", 4);
 
             View_MemoEditor_ShowToolbar = ((int)Key.GetValue("MemoEditor_ShowToolbar", 0) == 1);
+            View_MemoEditor_ShowRuler = ((int)Key.GetValue("MemoEditor_ShowRuler", 0) == 1);
             View_MemoEditor_ShowGutter = ((int)Key.GetValue("MemoEditor_ShowGutter", 1) == 1);
             View_MemoEditor_RightMargin_Journal = (int)Key.GetValue("MemoEditor_RightMargin_Journal", 550);
             View_MemoEditor_RightMargin_Notebook = (int)Key.GetValue("MemoEditor_RightMargin_Notebook", 410);
@@ -779,6 +781,7 @@ namespace Timekeeper.Classes
             Key.SetValue("HiddenEventsSince", View_HiddenEventsSince, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.SetValue("MemoEditor_ShowToolbar", View_MemoEditor_ShowToolbar, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MemoEditor_ShowRuler", View_MemoEditor_ShowRuler, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("MemoEditor_ShowGutter", View_MemoEditor_ShowGutter, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("MemoEditor_RightMargin_Journal", View_MemoEditor_RightMargin_Journal, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("MemoEditor_RightMargin_Notebook", View_MemoEditor_RightMargin_Notebook, Microsoft.Win32.RegistryValueKind.DWord);

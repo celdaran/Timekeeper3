@@ -34,9 +34,15 @@
             this.PopupMenuCut = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.PopupMenuToggleCheckbox = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuHideToolbar = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuShowToolbar = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuHideRuler = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuShowRuler = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuHideGutter = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuShowGutter = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuMarkupLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuHTML = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,22 +62,24 @@
             this.FormatHeading2Button = new System.Windows.Forms.ToolStripButton();
             this.FormatHeading3Button = new System.Windows.Forms.ToolStripButton();
             this.FormatSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.FormatBallotBoxButton = new System.Windows.Forms.ToolStripButton();
+            this.FormatHorizontalRuleButton = new System.Windows.Forms.ToolStripButton();
             this.FormatCodeButton = new System.Windows.Forms.ToolStripButton();
             this.FormatBlockquoteButton = new System.Windows.Forms.ToolStripButton();
-            this.FormatHorizontalRuleButton = new System.Windows.Forms.ToolStripButton();
             this.FormatSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.FormatInsertBreakButton = new System.Windows.Forms.ToolStripButton();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.MainPanel = new System.Windows.Forms.Panel();
+            this.RulerContainer = new System.Windows.Forms.Panel();
             this.RulerPanel = new System.Windows.Forms.Panel();
             this.ShowLeftMargin = new System.Windows.Forms.PictureBox();
             this.RightMarginMarker = new System.Windows.Forms.PictureBox();
+            this.GutterPanel = new System.Windows.Forms.Panel();
             this.FontDialog = new System.Windows.Forms.FontDialog();
-            this.FormatBallotBoxButton = new System.Windows.Forms.ToolStripButton();
-            this.PopupMenuToggleCheckbox = new System.Windows.Forms.ToolStripMenuItem();
-            this.PopupMenuSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.Hacktastic = new System.Windows.Forms.TextBox();
             this.PopupMenu.SuspendLayout();
             this.MemoToolbar.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.MainPanel.SuspendLayout();
+            this.RulerContainer.SuspendLayout();
             this.RulerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ShowLeftMargin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RightMarginMarker)).BeginInit();
@@ -81,15 +89,17 @@
             // 
             this.MemoEntry.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.MemoEntry.ContextMenuStrip = this.PopupMenu;
+            this.MemoEntry.DetectUrls = false;
             this.MemoEntry.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MemoEntry.Location = new System.Drawing.Point(0, 41);
+            this.MemoEntry.Location = new System.Drawing.Point(0, 39);
             this.MemoEntry.Name = "MemoEntry";
             this.MemoEntry.RightMargin = 200;
             this.MemoEntry.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
             this.MemoEntry.ShowSelectionMargin = true;
-            this.MemoEntry.Size = new System.Drawing.Size(515, 187);
+            this.MemoEntry.Size = new System.Drawing.Size(515, 189);
             this.MemoEntry.TabIndex = 0;
             this.MemoEntry.Text = "";
+            this.MemoEntry.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MemoEntry_KeyPress);
             // 
             // PopupMenu
             // 
@@ -102,10 +112,14 @@
             this.PopupMenuSep2,
             this.PopupMenuHideToolbar,
             this.PopupMenuShowToolbar,
+            this.PopupMenuHideRuler,
+            this.PopupMenuShowRuler,
+            this.PopupMenuHideGutter,
+            this.PopupMenuShowGutter,
             this.PopupMenuSep3,
             this.PopupMenuMarkupLanguage});
             this.PopupMenu.Name = "PopupMenu";
-            this.PopupMenu.Size = new System.Drawing.Size(195, 198);
+            this.PopupMenu.Size = new System.Drawing.Size(195, 264);
             this.PopupMenu.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenu_Opening);
             // 
             // PopupMenuCut
@@ -132,6 +146,18 @@
             this.PopupMenuPaste.Text = "Paste";
             this.PopupMenuPaste.Click += new System.EventHandler(this.PopupMenuPaste_Click);
             // 
+            // PopupMenuSep1
+            // 
+            this.PopupMenuSep1.Name = "PopupMenuSep1";
+            this.PopupMenuSep1.Size = new System.Drawing.Size(191, 6);
+            // 
+            // PopupMenuToggleCheckbox
+            // 
+            this.PopupMenuToggleCheckbox.Name = "PopupMenuToggleCheckbox";
+            this.PopupMenuToggleCheckbox.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuToggleCheckbox.Text = "Toggle Checkbox";
+            this.PopupMenuToggleCheckbox.Click += new System.EventHandler(this.PopupMenuToggleCheckbox_Click);
+            // 
             // PopupMenuSep2
             // 
             this.PopupMenuSep2.Name = "PopupMenuSep2";
@@ -151,6 +177,35 @@
             this.PopupMenuShowToolbar.Text = "Show Formatting Toolbar";
             this.PopupMenuShowToolbar.Visible = false;
             this.PopupMenuShowToolbar.Click += new System.EventHandler(this.PopupMenuShowToolbar_Click);
+            // 
+            // PopupMenuHideRuler
+            // 
+            this.PopupMenuHideRuler.Name = "PopupMenuHideRuler";
+            this.PopupMenuHideRuler.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuHideRuler.Text = "Hide Ruler";
+            this.PopupMenuHideRuler.Click += new System.EventHandler(this.PopupMenuHideRuler_Click);
+            // 
+            // PopupMenuShowRuler
+            // 
+            this.PopupMenuShowRuler.Name = "PopupMenuShowRuler";
+            this.PopupMenuShowRuler.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuShowRuler.Text = "Show Ruler";
+            this.PopupMenuShowRuler.Visible = false;
+            this.PopupMenuShowRuler.Click += new System.EventHandler(this.PopupMenuShowRuler_Click);
+            // 
+            // PopupMenuHideGutter
+            // 
+            this.PopupMenuHideGutter.Name = "PopupMenuHideGutter";
+            this.PopupMenuHideGutter.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuHideGutter.Text = "Hide Left Gutter";
+            this.PopupMenuHideGutter.Click += new System.EventHandler(this.PopupMenuHideGutter_Click);
+            // 
+            // PopupMenuShowGutter
+            // 
+            this.PopupMenuShowGutter.Name = "PopupMenuShowGutter";
+            this.PopupMenuShowGutter.Size = new System.Drawing.Size(194, 22);
+            this.PopupMenuShowGutter.Text = "Show Left Gutter";
+            this.PopupMenuShowGutter.Click += new System.EventHandler(this.PopupMenuShowGutter_Click);
             // 
             // PopupMenuSep3
             // 
@@ -345,6 +400,29 @@
             this.FormatSeparator4.Name = "FormatSeparator4";
             this.FormatSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
+            // FormatBallotBoxButton
+            // 
+            this.FormatBallotBoxButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatBallotBoxButton.Font = new System.Drawing.Font("Wingdings", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.FormatBallotBoxButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatBallotBoxButton.Image")));
+            this.FormatBallotBoxButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatBallotBoxButton.Name = "FormatBallotBoxButton";
+            this.FormatBallotBoxButton.Size = new System.Drawing.Size(23, 22);
+            this.FormatBallotBoxButton.Text = "";
+            this.FormatBallotBoxButton.ToolTipText = "Checkbox";
+            this.FormatBallotBoxButton.Click += new System.EventHandler(this.FormatBallotBoxButton_Click);
+            // 
+            // FormatHorizontalRuleButton
+            // 
+            this.FormatHorizontalRuleButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatHorizontalRuleButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatHorizontalRuleButton.Image")));
+            this.FormatHorizontalRuleButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.FormatHorizontalRuleButton.Name = "FormatHorizontalRuleButton";
+            this.FormatHorizontalRuleButton.Size = new System.Drawing.Size(23, 22);
+            this.FormatHorizontalRuleButton.Text = "—";
+            this.FormatHorizontalRuleButton.ToolTipText = "Horizontal Separator";
+            this.FormatHorizontalRuleButton.Click += new System.EventHandler(this.FormatHorizontalRuleButton_Click);
+            // 
             // FormatCodeButton
             // 
             this.FormatCodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -367,17 +445,6 @@
             this.FormatBlockquoteButton.ToolTipText = "Blockquote";
             this.FormatBlockquoteButton.Click += new System.EventHandler(this.FormatBlockquoteButton_Click);
             // 
-            // FormatHorizontalRuleButton
-            // 
-            this.FormatHorizontalRuleButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatHorizontalRuleButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatHorizontalRuleButton.Image")));
-            this.FormatHorizontalRuleButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatHorizontalRuleButton.Name = "FormatHorizontalRuleButton";
-            this.FormatHorizontalRuleButton.Size = new System.Drawing.Size(23, 22);
-            this.FormatHorizontalRuleButton.Text = "—";
-            this.FormatHorizontalRuleButton.ToolTipText = "Horizontal Separator";
-            this.FormatHorizontalRuleButton.Click += new System.EventHandler(this.FormatHorizontalRuleButton_Click);
-            // 
             // FormatSeparator5
             // 
             this.FormatSeparator5.Name = "FormatSeparator5";
@@ -395,36 +462,48 @@
             this.FormatInsertBreakButton.Visible = false;
             this.FormatInsertBreakButton.Click += new System.EventHandler(this.FormatInsertBreakButton_Click);
             // 
-            // panel1
+            // MainPanel
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.MemoEntry);
-            this.panel1.Controls.Add(this.RulerPanel);
-            this.panel1.Controls.Add(this.MemoToolbar);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(519, 232);
-            this.panel1.TabIndex = 2;
+            this.MainPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.MainPanel.Controls.Add(this.Hacktastic);
+            this.MainPanel.Controls.Add(this.MemoEntry);
+            this.MainPanel.Controls.Add(this.RulerContainer);
+            this.MainPanel.Controls.Add(this.MemoToolbar);
+            this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainPanel.Location = new System.Drawing.Point(0, 0);
+            this.MainPanel.Name = "MainPanel";
+            this.MainPanel.Size = new System.Drawing.Size(519, 232);
+            this.MainPanel.TabIndex = 2;
+            // 
+            // RulerContainer
+            // 
+            this.RulerContainer.Controls.Add(this.RulerPanel);
+            this.RulerContainer.Controls.Add(this.GutterPanel);
+            this.RulerContainer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.RulerContainer.Location = new System.Drawing.Point(0, 25);
+            this.RulerContainer.Name = "RulerContainer";
+            this.RulerContainer.Size = new System.Drawing.Size(515, 14);
+            this.RulerContainer.TabIndex = 3;
             // 
             // RulerPanel
             // 
-            this.RulerPanel.BackgroundImage = global::Timekeeper.Properties.Resources.ImageIconRuler;
+            this.RulerPanel.BackgroundImage = global::Timekeeper.Properties.Resources.ImageIconLongRuler;
             this.RulerPanel.Controls.Add(this.ShowLeftMargin);
             this.RulerPanel.Controls.Add(this.RightMarginMarker);
-            this.RulerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.RulerPanel.Location = new System.Drawing.Point(0, 25);
+            this.RulerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RulerPanel.Location = new System.Drawing.Point(10, 0);
             this.RulerPanel.Name = "RulerPanel";
-            this.RulerPanel.Size = new System.Drawing.Size(515, 16);
+            this.RulerPanel.Size = new System.Drawing.Size(505, 14);
             this.RulerPanel.TabIndex = 2;
             this.RulerPanel.DoubleClick += new System.EventHandler(this.RulerPanel_DoubleClick);
             // 
             // ShowLeftMargin
             // 
-            this.ShowLeftMargin.BackgroundImage = global::Timekeeper.Properties.Resources.ImageIconSquareDot;
+            this.ShowLeftMargin.BackColor = System.Drawing.Color.Transparent;
+            this.ShowLeftMargin.BackgroundImage = global::Timekeeper.Properties.Resources.ImageIconBlank;
             this.ShowLeftMargin.Location = new System.Drawing.Point(0, 0);
             this.ShowLeftMargin.Name = "ShowLeftMargin";
-            this.ShowLeftMargin.Size = new System.Drawing.Size(8, 15);
+            this.ShowLeftMargin.Size = new System.Drawing.Size(10, 14);
             this.ShowLeftMargin.TabIndex = 2;
             this.ShowLeftMargin.TabStop = false;
             this.ShowLeftMargin.Click += new System.EventHandler(this.ShowLeftMargin_Click);
@@ -443,43 +522,39 @@
             this.RightMarginMarker.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RightMarginMarker_MouseMove);
             this.RightMarginMarker.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RightMarginMarker_MouseUp);
             // 
-            // FormatBallotBoxButton
+            // GutterPanel
             // 
-            this.FormatBallotBoxButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatBallotBoxButton.Font = new System.Drawing.Font("Wingdings", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.FormatBallotBoxButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatBallotBoxButton.Image")));
-            this.FormatBallotBoxButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FormatBallotBoxButton.Name = "FormatBallotBoxButton";
-            this.FormatBallotBoxButton.Size = new System.Drawing.Size(23, 22);
-            this.FormatBallotBoxButton.Text = "";
-            this.FormatBallotBoxButton.ToolTipText = "Checkbox";
-            this.FormatBallotBoxButton.Click += new System.EventHandler(this.FormatBallotBoxButton_Click);
+            this.GutterPanel.BackColor = System.Drawing.Color.Transparent;
+            this.GutterPanel.BackgroundImage = global::Timekeeper.Properties.Resources.ImageIconGutter;
+            this.GutterPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.GutterPanel.Location = new System.Drawing.Point(0, 0);
+            this.GutterPanel.Name = "GutterPanel";
+            this.GutterPanel.Size = new System.Drawing.Size(10, 14);
+            this.GutterPanel.TabIndex = 0;
+            this.GutterPanel.Click += new System.EventHandler(this.GutterPanel_Click);
             // 
-            // PopupMenuToggleCheckbox
+            // Hacktastic
             // 
-            this.PopupMenuToggleCheckbox.Name = "PopupMenuToggleCheckbox";
-            this.PopupMenuToggleCheckbox.Size = new System.Drawing.Size(194, 22);
-            this.PopupMenuToggleCheckbox.Text = "Toggle Checkbox";
-            this.PopupMenuToggleCheckbox.Click += new System.EventHandler(this.PopupMenuToggleCheckbox_Click);
-            // 
-            // PopupMenuSep1
-            // 
-            this.PopupMenuSep1.Name = "PopupMenuSep1";
-            this.PopupMenuSep1.Size = new System.Drawing.Size(191, 6);
+            this.Hacktastic.Location = new System.Drawing.Point(0, 0);
+            this.Hacktastic.Name = "Hacktastic";
+            this.Hacktastic.Size = new System.Drawing.Size(0, 20);
+            this.Hacktastic.TabIndex = 4;
+            this.Hacktastic.TabStop = false;
             // 
             // MemoEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.MainPanel);
             this.Name = "MemoEditor";
             this.Size = new System.Drawing.Size(519, 232);
             this.Load += new System.EventHandler(this.MemoEditor_Load);
             this.PopupMenu.ResumeLayout(false);
             this.MemoToolbar.ResumeLayout(false);
             this.MemoToolbar.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.MainPanel.ResumeLayout(false);
+            this.MainPanel.PerformLayout();
+            this.RulerContainer.ResumeLayout(false);
             this.RulerPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ShowLeftMargin)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.RightMarginMarker)).EndInit();
@@ -501,7 +576,7 @@
         private System.Windows.Forms.ToolStripButton FormatCodeButton;
         private System.Windows.Forms.ToolStripButton FormatBlockquoteButton;
         private System.Windows.Forms.ToolStripButton FormatHorizontalRuleButton;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel MainPanel;
         private System.Windows.Forms.ContextMenuStrip PopupMenu;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuCut;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuCopy;
@@ -509,7 +584,6 @@
         private System.Windows.Forms.ToolStripSeparator PopupMenuSep2;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuHideToolbar;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuShowToolbar;
-        internal System.Windows.Forms.RichTextBox MemoEntry;
         private System.Windows.Forms.ToolStripSeparator PopupMenuSep3;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuMarkupLanguage;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuHTML;
@@ -529,5 +603,13 @@
         private System.Windows.Forms.ToolStripButton FormatBallotBoxButton;
         private System.Windows.Forms.ToolStripSeparator PopupMenuSep1;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuToggleCheckbox;
+        internal System.Windows.Forms.RichTextBox MemoEntry;
+        private System.Windows.Forms.Panel RulerContainer;
+        private System.Windows.Forms.Panel GutterPanel;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuHideRuler;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuShowRuler;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuHideGutter;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuShowGutter;
+        private System.Windows.Forms.TextBox Hacktastic;
     }
 }

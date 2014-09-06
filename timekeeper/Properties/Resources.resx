@@ -451,4 +451,10 @@
   <data name="SQL_3095_PunchCardView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\PunchCardView.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="ImageIconGutter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\Gutter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageIconLongRuler" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\LongRuler.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

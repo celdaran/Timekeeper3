@@ -27,8 +27,10 @@ namespace Timekeeper.Classes
 
         public DateTimeOffset EntryTime { get; set; }
         public string Memo { get; set; }
-        public long LocationId { get; set; }
-        public long CategoryId { get; set; }
+        public long? ProjectId { get; set; }
+        public long? ActivityId { get; set; }
+        public long? LocationId { get; set; }
+        public long? CategoryId { get; set; }
 
         //---------------------------------------------------------------------
         // Constructor
@@ -154,6 +156,24 @@ namespace Timekeeper.Classes
 
             return true;
 
+        }
+
+        //---------------------------------------------------------------------
+        // Helpers
+        //---------------------------------------------------------------------
+
+        public void Copy(Classes.NotebookEntry that)
+        {
+            this.NotebookId = that.NotebookId;
+            this.CreateTime = that.CreateTime;
+            this.ModifyTime = that.ModifyTime;
+            this.NotebookGuid = that.NotebookGuid;
+            this.EntryTime = that.EntryTime;
+            this.Memo = that.Memo;
+            this.ProjectId = that.ProjectId;
+            this.ActivityId = that.ActivityId;
+            this.LocationId = that.LocationId;
+            this.CategoryId = that.CategoryId;
         }
 
         //---------------------------------------------------------------------

@@ -44,26 +44,41 @@
             this.ToolbarSave = new System.Windows.Forms.ToolStripButton();
             this.ToolbarRevert = new System.Windows.Forms.ToolStripButton();
             this.ControlPanel = new System.Windows.Forms.Panel();
-            this.LocationAndCategoryPanel = new System.Windows.Forms.Panel();
-            this.CategoryPanel = new System.Windows.Forms.Panel();
-            this.CategoryLabel = new System.Windows.Forms.Label();
-            this.wCategory = new System.Windows.Forms.ComboBox();
-            this.LocationPanel = new System.Windows.Forms.Panel();
-            this.LocationLabel = new System.Windows.Forms.Label();
-            this.wLocation = new System.Windows.Forms.ComboBox();
-            this.EditPanel = new System.Windows.Forms.Panel();
-            this.MenuMain = new System.Windows.Forms.MenuStrip();
-            this.MenuToolbar = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuToolbarSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuToolbarRevert = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuFormat = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuFormatBold = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenu = new System.Windows.Forms.MenuStrip();
+            this.NotebookMenuToolbar = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarBrowser = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarBrowserFirst = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarBrowserPrev = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarBrowserNext = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarBrowserLast = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarBrowserNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.NotebookMenuToolbarBrowserSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarBrowserRevert = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormat = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatBold = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatItalic = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatUnderline = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatStrikethrough = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.NotebookMenuToolbarFormatBulletedList = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatNumberedList = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.NotebookMenuToolbarFormatHeading1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatHeading2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatHeading3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatSep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.NotebookMenuToolbarFormatCode = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatBlockQuote = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuToolbarFormatHorizontalRule = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuAction = new System.Windows.Forms.ToolStripMenuItem();
+            this.NotebookMenuActionFind = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainPanel = new System.Windows.Forms.Panel();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStrip1.SuspendLayout();
             this.ControlPanel.SuspendLayout();
-            this.LocationAndCategoryPanel.SuspendLayout();
-            this.CategoryPanel.SuspendLayout();
-            this.LocationPanel.SuspendLayout();
-            this.MenuMain.SuspendLayout();
+            this.NotebookMenu.SuspendLayout();
+            this.MainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // EntryDateTime
@@ -73,6 +88,7 @@
             this.EntryDateTime.Name = "EntryDateTime";
             this.EntryDateTime.Size = new System.Drawing.Size(148, 20);
             this.EntryDateTime.TabIndex = 2;
+            this.EntryDateTime.ValueChanged += new System.EventHandler(this.EntryDateTime_ValueChanged);
             // 
             // DateLabel
             // 
@@ -100,7 +116,6 @@
             this.ToolbarRevert});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.toolStrip1.Size = new System.Drawing.Size(423, 25);
             this.toolStrip1.TabIndex = 5;
             this.toolStrip1.Text = "Notebook";
@@ -115,7 +130,7 @@
             this.ToolbarFirstEntry.Size = new System.Drawing.Size(23, 22);
             this.ToolbarFirstEntry.Text = "|<";
             this.ToolbarFirstEntry.ToolTipText = "Go to First Entry";
-            this.ToolbarFirstEntry.Click += new System.EventHandler(this.ToolbarFirstEntry_Click);
+            this.ToolbarFirstEntry.Click += new System.EventHandler(this.MenuToolbarBrowserFirst_Click);
             // 
             // ToolbarPreviousEntry
             // 
@@ -127,7 +142,7 @@
             this.ToolbarPreviousEntry.Size = new System.Drawing.Size(23, 22);
             this.ToolbarPreviousEntry.Text = "<<";
             this.ToolbarPreviousEntry.ToolTipText = "Go to Previous Entry";
-            this.ToolbarPreviousEntry.Click += new System.EventHandler(this.ToolbarPreviousEntry_Click);
+            this.ToolbarPreviousEntry.Click += new System.EventHandler(this.MenuToolbarBrowserPrev_Click);
             // 
             // ToolbarNextEntry
             // 
@@ -139,7 +154,7 @@
             this.ToolbarNextEntry.Size = new System.Drawing.Size(23, 22);
             this.ToolbarNextEntry.Text = ">>";
             this.ToolbarNextEntry.ToolTipText = "Go to Next Entry";
-            this.ToolbarNextEntry.Click += new System.EventHandler(this.ToolbarNextEntry_Click);
+            this.ToolbarNextEntry.Click += new System.EventHandler(this.MenuToolbarBrowserNext_Click);
             // 
             // ToolbarLastEntry
             // 
@@ -151,7 +166,7 @@
             this.ToolbarLastEntry.Size = new System.Drawing.Size(23, 22);
             this.ToolbarLastEntry.Text = ">|";
             this.ToolbarLastEntry.ToolTipText = "Go to Last Entry";
-            this.ToolbarLastEntry.Click += new System.EventHandler(this.ToolbarLastEntry_Click);
+            this.ToolbarLastEntry.Click += new System.EventHandler(this.MenuToolbarBrowserLast_Click);
             // 
             // ToolbarNewEntry
             // 
@@ -163,7 +178,7 @@
             this.ToolbarNewEntry.Size = new System.Drawing.Size(23, 22);
             this.ToolbarNewEntry.Text = "New Entry";
             this.ToolbarNewEntry.ToolTipText = "Go to New Entry";
-            this.ToolbarNewEntry.Click += new System.EventHandler(this.ToolbarNewEntry_Click);
+            this.ToolbarNewEntry.Click += new System.EventHandler(this.MenuToolbarBrowserNew_Click);
             // 
             // ToolbarNotebookEntryId
             // 
@@ -186,7 +201,7 @@
             this.ToolbarFind.Size = new System.Drawing.Size(47, 22);
             this.ToolbarFind.Text = "Find";
             this.ToolbarFind.ToolTipText = "Find Entries";
-            this.ToolbarFind.Click += new System.EventHandler(this.ToolbarFind_Click);
+            this.ToolbarFind.Click += new System.EventHandler(this.MenuToolbarBrowserFind_Click);
             // 
             // ToolbarSep2
             // 
@@ -202,7 +217,7 @@
             this.ToolbarSave.Name = "ToolbarSave";
             this.ToolbarSave.Size = new System.Drawing.Size(23, 22);
             this.ToolbarSave.Text = "Save";
-            this.ToolbarSave.Click += new System.EventHandler(this.MenuToolbarSave_Click);
+            this.ToolbarSave.Click += new System.EventHandler(this.MenuToolbarBrowserSave_Click);
             // 
             // ToolbarRevert
             // 
@@ -213,154 +228,273 @@
             this.ToolbarRevert.Name = "ToolbarRevert";
             this.ToolbarRevert.Size = new System.Drawing.Size(23, 22);
             this.ToolbarRevert.Text = "Revert";
-            this.ToolbarRevert.Click += new System.EventHandler(this.ToolbarRevert_Click);
+            this.ToolbarRevert.Click += new System.EventHandler(this.MenuToolbarBrowserRevert_Click);
             // 
             // ControlPanel
             // 
-            this.ControlPanel.Controls.Add(this.LocationAndCategoryPanel);
+            this.ControlPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ControlPanel.Controls.Add(this.EntryDateTime);
             this.ControlPanel.Controls.Add(this.DateLabel);
-            this.ControlPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ControlPanel.Location = new System.Drawing.Point(0, 25);
+            this.ControlPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ControlPanel.Location = new System.Drawing.Point(0, 187);
             this.ControlPanel.Name = "ControlPanel";
-            this.ControlPanel.Size = new System.Drawing.Size(423, 64);
+            this.ControlPanel.Size = new System.Drawing.Size(423, 35);
             this.ControlPanel.TabIndex = 7;
             // 
-            // LocationAndCategoryPanel
+            // NotebookMenu
             // 
-            this.LocationAndCategoryPanel.Controls.Add(this.CategoryPanel);
-            this.LocationAndCategoryPanel.Controls.Add(this.LocationPanel);
-            this.LocationAndCategoryPanel.Location = new System.Drawing.Point(195, 3);
-            this.LocationAndCategoryPanel.Name = "LocationAndCategoryPanel";
-            this.LocationAndCategoryPanel.Size = new System.Drawing.Size(216, 61);
-            this.LocationAndCategoryPanel.TabIndex = 17;
+            this.NotebookMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NotebookMenuToolbar});
+            this.NotebookMenu.Location = new System.Drawing.Point(0, 0);
+            this.NotebookMenu.Name = "NotebookMenu";
+            this.NotebookMenu.Size = new System.Drawing.Size(423, 24);
+            this.NotebookMenu.TabIndex = 9;
+            this.NotebookMenu.Text = "menuStrip1";
+            this.NotebookMenu.Visible = false;
             // 
-            // CategoryPanel
+            // NotebookMenuToolbar
             // 
-            this.CategoryPanel.Controls.Add(this.CategoryLabel);
-            this.CategoryPanel.Controls.Add(this.wCategory);
-            this.CategoryPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.CategoryPanel.Location = new System.Drawing.Point(0, 27);
-            this.CategoryPanel.Name = "CategoryPanel";
-            this.CategoryPanel.Size = new System.Drawing.Size(216, 27);
-            this.CategoryPanel.TabIndex = 1;
+            this.NotebookMenuToolbar.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NotebookMenuToolbarBrowser,
+            this.NotebookMenuToolbarFormat,
+            this.NotebookMenuAction});
+            this.NotebookMenuToolbar.Name = "NotebookMenuToolbar";
+            this.NotebookMenuToolbar.Size = new System.Drawing.Size(104, 20);
+            this.NotebookMenuToolbar.Text = "Toolbar Functions";
             // 
-            // CategoryLabel
+            // NotebookMenuToolbarBrowser
             // 
-            this.CategoryLabel.Location = new System.Drawing.Point(3, 4);
-            this.CategoryLabel.Name = "CategoryLabel";
-            this.CategoryLabel.Size = new System.Drawing.Size(52, 13);
-            this.CategoryLabel.TabIndex = 15;
-            this.CategoryLabel.Text = "Category:";
+            this.NotebookMenuToolbarBrowser.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NotebookMenuToolbarBrowserFirst,
+            this.NotebookMenuToolbarBrowserPrev,
+            this.NotebookMenuToolbarBrowserNext,
+            this.NotebookMenuToolbarBrowserLast,
+            this.NotebookMenuToolbarBrowserNew,
+            this.toolStripSeparator1,
+            this.NotebookMenuToolbarBrowserSave,
+            this.NotebookMenuToolbarBrowserRevert});
+            this.NotebookMenuToolbarBrowser.Name = "NotebookMenuToolbarBrowser";
+            this.NotebookMenuToolbarBrowser.Size = new System.Drawing.Size(113, 22);
+            this.NotebookMenuToolbarBrowser.Text = "&Browser";
             // 
-            // wCategory
+            // NotebookMenuToolbarBrowserFirst
             // 
-            this.wCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.wCategory.FormattingEnabled = true;
-            this.wCategory.Location = new System.Drawing.Point(58, 1);
-            this.wCategory.Name = "wCategory";
-            this.wCategory.Size = new System.Drawing.Size(151, 21);
-            this.wCategory.TabIndex = 4;
+            this.NotebookMenuToolbarBrowserFirst.Name = "NotebookMenuToolbarBrowserFirst";
+            this.NotebookMenuToolbarBrowserFirst.Size = new System.Drawing.Size(144, 22);
+            this.NotebookMenuToolbarBrowserFirst.Text = "&First Entry";
+            this.NotebookMenuToolbarBrowserFirst.Click += new System.EventHandler(this.MenuToolbarBrowserFirst_Click);
             // 
-            // LocationPanel
+            // NotebookMenuToolbarBrowserPrev
             // 
-            this.LocationPanel.Controls.Add(this.LocationLabel);
-            this.LocationPanel.Controls.Add(this.wLocation);
-            this.LocationPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LocationPanel.Location = new System.Drawing.Point(0, 0);
-            this.LocationPanel.Name = "LocationPanel";
-            this.LocationPanel.Size = new System.Drawing.Size(216, 27);
-            this.LocationPanel.TabIndex = 0;
+            this.NotebookMenuToolbarBrowserPrev.Name = "NotebookMenuToolbarBrowserPrev";
+            this.NotebookMenuToolbarBrowserPrev.Size = new System.Drawing.Size(144, 22);
+            this.NotebookMenuToolbarBrowserPrev.Text = "&Previous Entry";
+            this.NotebookMenuToolbarBrowserPrev.Click += new System.EventHandler(this.MenuToolbarBrowserPrev_Click);
             // 
-            // LocationLabel
+            // NotebookMenuToolbarBrowserNext
             // 
-            this.LocationLabel.Location = new System.Drawing.Point(3, 5);
-            this.LocationLabel.Name = "LocationLabel";
-            this.LocationLabel.Size = new System.Drawing.Size(52, 13);
-            this.LocationLabel.TabIndex = 13;
-            this.LocationLabel.Text = "&Location:";
+            this.NotebookMenuToolbarBrowserNext.Name = "NotebookMenuToolbarBrowserNext";
+            this.NotebookMenuToolbarBrowserNext.Size = new System.Drawing.Size(144, 22);
+            this.NotebookMenuToolbarBrowserNext.Text = "&Next Entry";
+            this.NotebookMenuToolbarBrowserNext.Click += new System.EventHandler(this.MenuToolbarBrowserNext_Click);
             // 
-            // wLocation
+            // NotebookMenuToolbarBrowserLast
             // 
-            this.wLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.wLocation.FormattingEnabled = true;
-            this.wLocation.Location = new System.Drawing.Point(58, 2);
-            this.wLocation.Name = "wLocation";
-            this.wLocation.Size = new System.Drawing.Size(151, 21);
-            this.wLocation.TabIndex = 3;
+            this.NotebookMenuToolbarBrowserLast.Name = "NotebookMenuToolbarBrowserLast";
+            this.NotebookMenuToolbarBrowserLast.Size = new System.Drawing.Size(144, 22);
+            this.NotebookMenuToolbarBrowserLast.Text = "&Last Entry";
+            this.NotebookMenuToolbarBrowserLast.Click += new System.EventHandler(this.MenuToolbarBrowserLast_Click);
             // 
-            // EditPanel
+            // NotebookMenuToolbarBrowserNew
             // 
-            this.EditPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.EditPanel.Location = new System.Drawing.Point(0, 89);
-            this.EditPanel.Name = "EditPanel";
-            this.EditPanel.Size = new System.Drawing.Size(423, 227);
-            this.EditPanel.TabIndex = 8;
+            this.NotebookMenuToolbarBrowserNew.Name = "NotebookMenuToolbarBrowserNew";
+            this.NotebookMenuToolbarBrowserNew.Size = new System.Drawing.Size(144, 22);
+            this.NotebookMenuToolbarBrowserNew.Text = "&New Entry";
+            this.NotebookMenuToolbarBrowserNew.Click += new System.EventHandler(this.MenuToolbarBrowserNew_Click);
             // 
-            // MenuMain
+            // toolStripSeparator1
             // 
-            this.MenuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuToolbar,
-            this.MenuFormat});
-            this.MenuMain.Location = new System.Drawing.Point(0, 0);
-            this.MenuMain.Name = "MenuMain";
-            this.MenuMain.Size = new System.Drawing.Size(423, 24);
-            this.MenuMain.TabIndex = 9;
-            this.MenuMain.Text = "menuStrip1";
-            this.MenuMain.Visible = false;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(141, 6);
             // 
-            // MenuToolbar
+            // NotebookMenuToolbarBrowserSave
             // 
-            this.MenuToolbar.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuToolbarSave,
-            this.MenuToolbarRevert});
-            this.MenuToolbar.Name = "MenuToolbar";
-            this.MenuToolbar.Size = new System.Drawing.Size(55, 20);
-            this.MenuToolbar.Text = "Toolbar";
+            this.NotebookMenuToolbarBrowserSave.Name = "NotebookMenuToolbarBrowserSave";
+            this.NotebookMenuToolbarBrowserSave.Size = new System.Drawing.Size(144, 22);
+            this.NotebookMenuToolbarBrowserSave.Text = "Save";
+            this.NotebookMenuToolbarBrowserSave.Click += new System.EventHandler(this.MenuToolbarBrowserSave_Click);
             // 
-            // MenuToolbarSave
+            // NotebookMenuToolbarBrowserRevert
             // 
-            this.MenuToolbarSave.Name = "MenuToolbarSave";
-            this.MenuToolbarSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.MenuToolbarSave.Size = new System.Drawing.Size(175, 22);
-            this.MenuToolbarSave.Text = "Save";
-            this.MenuToolbarSave.Click += new System.EventHandler(this.MenuToolbarSave_Click);
+            this.NotebookMenuToolbarBrowserRevert.Name = "NotebookMenuToolbarBrowserRevert";
+            this.NotebookMenuToolbarBrowserRevert.Size = new System.Drawing.Size(144, 22);
+            this.NotebookMenuToolbarBrowserRevert.Text = "&Revert";
+            this.NotebookMenuToolbarBrowserRevert.Click += new System.EventHandler(this.MenuToolbarBrowserRevert_Click);
             // 
-            // MenuToolbarRevert
+            // NotebookMenuToolbarFormat
             // 
-            this.MenuToolbarRevert.Name = "MenuToolbarRevert";
-            this.MenuToolbarRevert.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.Z)));
-            this.MenuToolbarRevert.Size = new System.Drawing.Size(175, 22);
-            this.MenuToolbarRevert.Text = "Revert";
+            this.NotebookMenuToolbarFormat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NotebookMenuToolbarFormatBold,
+            this.NotebookMenuToolbarFormatItalic,
+            this.NotebookMenuToolbarFormatUnderline,
+            this.NotebookMenuToolbarFormatStrikethrough,
+            this.NotebookMenuToolbarFormatSep1,
+            this.NotebookMenuToolbarFormatBulletedList,
+            this.NotebookMenuToolbarFormatNumberedList,
+            this.NotebookMenuToolbarFormatSep2,
+            this.NotebookMenuToolbarFormatHeading1,
+            this.NotebookMenuToolbarFormatHeading2,
+            this.NotebookMenuToolbarFormatHeading3,
+            this.NotebookMenuToolbarFormatSep3,
+            this.NotebookMenuToolbarFormatCode,
+            this.NotebookMenuToolbarFormatBlockQuote,
+            this.NotebookMenuToolbarFormatHorizontalRule});
+            this.NotebookMenuToolbarFormat.Name = "NotebookMenuToolbarFormat";
+            this.NotebookMenuToolbarFormat.Size = new System.Drawing.Size(113, 22);
+            this.NotebookMenuToolbarFormat.Text = "&Format";
             // 
-            // MenuFormat
+            // NotebookMenuToolbarFormatBold
             // 
-            this.MenuFormat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuFormatBold});
-            this.MenuFormat.Name = "MenuFormat";
-            this.MenuFormat.Size = new System.Drawing.Size(53, 20);
-            this.MenuFormat.Text = "Format";
+            this.NotebookMenuToolbarFormatBold.Name = "NotebookMenuToolbarFormatBold";
+            this.NotebookMenuToolbarFormatBold.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatBold.Text = "&Bold";
+            this.NotebookMenuToolbarFormatBold.Click += new System.EventHandler(this.MenuToolbarFormatBold_Click);
             // 
-            // MenuFormatBold
+            // NotebookMenuToolbarFormatItalic
             // 
-            this.MenuFormatBold.Name = "MenuFormatBold";
-            this.MenuFormatBold.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-            this.MenuFormatBold.Size = new System.Drawing.Size(132, 22);
-            this.MenuFormatBold.Text = "Bold";
-            this.MenuFormatBold.Click += new System.EventHandler(this.MenuFormatBold_Click);
+            this.NotebookMenuToolbarFormatItalic.Name = "NotebookMenuToolbarFormatItalic";
+            this.NotebookMenuToolbarFormatItalic.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatItalic.Text = "&Italic";
+            this.NotebookMenuToolbarFormatItalic.Click += new System.EventHandler(this.MenuToolbarFormatItalic_Click);
+            // 
+            // NotebookMenuToolbarFormatUnderline
+            // 
+            this.NotebookMenuToolbarFormatUnderline.Name = "NotebookMenuToolbarFormatUnderline";
+            this.NotebookMenuToolbarFormatUnderline.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatUnderline.Text = "&Underline";
+            this.NotebookMenuToolbarFormatUnderline.Click += new System.EventHandler(this.MenuToolbarFormatUnderline_Click);
+            // 
+            // NotebookMenuToolbarFormatStrikethrough
+            // 
+            this.NotebookMenuToolbarFormatStrikethrough.Name = "NotebookMenuToolbarFormatStrikethrough";
+            this.NotebookMenuToolbarFormatStrikethrough.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatStrikethrough.Text = "&Strikethrough";
+            this.NotebookMenuToolbarFormatStrikethrough.Click += new System.EventHandler(this.MenuToolbarFormatStrikethrough_Click);
+            // 
+            // NotebookMenuToolbarFormatSep1
+            // 
+            this.NotebookMenuToolbarFormatSep1.Name = "NotebookMenuToolbarFormatSep1";
+            this.NotebookMenuToolbarFormatSep1.Size = new System.Drawing.Size(143, 6);
+            // 
+            // NotebookMenuToolbarFormatBulletedList
+            // 
+            this.NotebookMenuToolbarFormatBulletedList.Name = "NotebookMenuToolbarFormatBulletedList";
+            this.NotebookMenuToolbarFormatBulletedList.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatBulletedList.Text = "Bulleted List";
+            this.NotebookMenuToolbarFormatBulletedList.Click += new System.EventHandler(this.MenuToolbarFormatBulletedList_Click);
+            // 
+            // NotebookMenuToolbarFormatNumberedList
+            // 
+            this.NotebookMenuToolbarFormatNumberedList.Name = "NotebookMenuToolbarFormatNumberedList";
+            this.NotebookMenuToolbarFormatNumberedList.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatNumberedList.Text = "Numbered List";
+            this.NotebookMenuToolbarFormatNumberedList.Click += new System.EventHandler(this.MenuToolbarFormatNumberedList_Click);
+            // 
+            // NotebookMenuToolbarFormatSep2
+            // 
+            this.NotebookMenuToolbarFormatSep2.Name = "NotebookMenuToolbarFormatSep2";
+            this.NotebookMenuToolbarFormatSep2.Size = new System.Drawing.Size(143, 6);
+            // 
+            // NotebookMenuToolbarFormatHeading1
+            // 
+            this.NotebookMenuToolbarFormatHeading1.Name = "NotebookMenuToolbarFormatHeading1";
+            this.NotebookMenuToolbarFormatHeading1.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatHeading1.Text = "Heading 1";
+            this.NotebookMenuToolbarFormatHeading1.Click += new System.EventHandler(this.MenuToolbarFormatHeading1_Click);
+            // 
+            // NotebookMenuToolbarFormatHeading2
+            // 
+            this.NotebookMenuToolbarFormatHeading2.Name = "NotebookMenuToolbarFormatHeading2";
+            this.NotebookMenuToolbarFormatHeading2.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatHeading2.Text = "Heading 2";
+            this.NotebookMenuToolbarFormatHeading2.Click += new System.EventHandler(this.MenuToolbarFormatHeading2_Click);
+            // 
+            // NotebookMenuToolbarFormatHeading3
+            // 
+            this.NotebookMenuToolbarFormatHeading3.Name = "NotebookMenuToolbarFormatHeading3";
+            this.NotebookMenuToolbarFormatHeading3.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatHeading3.Text = "Heading 3";
+            this.NotebookMenuToolbarFormatHeading3.Click += new System.EventHandler(this.MenuToolbarFormatHeading3_Click);
+            // 
+            // NotebookMenuToolbarFormatSep3
+            // 
+            this.NotebookMenuToolbarFormatSep3.Name = "NotebookMenuToolbarFormatSep3";
+            this.NotebookMenuToolbarFormatSep3.Size = new System.Drawing.Size(143, 6);
+            // 
+            // NotebookMenuToolbarFormatCode
+            // 
+            this.NotebookMenuToolbarFormatCode.Name = "NotebookMenuToolbarFormatCode";
+            this.NotebookMenuToolbarFormatCode.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatCode.Text = "Code";
+            this.NotebookMenuToolbarFormatCode.Click += new System.EventHandler(this.MenuToolbarFormatCode_Click);
+            // 
+            // NotebookMenuToolbarFormatBlockQuote
+            // 
+            this.NotebookMenuToolbarFormatBlockQuote.Name = "NotebookMenuToolbarFormatBlockQuote";
+            this.NotebookMenuToolbarFormatBlockQuote.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatBlockQuote.Text = "Blockquote";
+            this.NotebookMenuToolbarFormatBlockQuote.Click += new System.EventHandler(this.MenuToolbarFormatBlockquote_Click);
+            // 
+            // NotebookMenuToolbarFormatHorizontalRule
+            // 
+            this.NotebookMenuToolbarFormatHorizontalRule.Name = "NotebookMenuToolbarFormatHorizontalRule";
+            this.NotebookMenuToolbarFormatHorizontalRule.Size = new System.Drawing.Size(146, 22);
+            this.NotebookMenuToolbarFormatHorizontalRule.Text = "Horizontal Rule";
+            this.NotebookMenuToolbarFormatHorizontalRule.Click += new System.EventHandler(this.MenuToolbarFormatHorizontalRule_Click);
+            // 
+            // NotebookMenuAction
+            // 
+            this.NotebookMenuAction.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NotebookMenuActionFind});
+            this.NotebookMenuAction.Name = "NotebookMenuAction";
+            this.NotebookMenuAction.Size = new System.Drawing.Size(113, 22);
+            this.NotebookMenuAction.Text = "Action";
+            // 
+            // NotebookMenuActionFind
+            // 
+            this.NotebookMenuActionFind.Name = "NotebookMenuActionFind";
+            this.NotebookMenuActionFind.Size = new System.Drawing.Size(94, 22);
+            this.NotebookMenuActionFind.Text = "Find";
+            // 
+            // MainPanel
+            // 
+            this.MainPanel.Controls.Add(this.ControlPanel);
+            this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainPanel.Location = new System.Drawing.Point(0, 25);
+            this.MainPanel.Name = "MainPanel";
+            this.MainPanel.Size = new System.Drawing.Size(423, 222);
+            this.MainPanel.TabIndex = 10;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Location = new System.Drawing.Point(0, 276);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(454, 22);
+            this.statusStrip1.TabIndex = 11;
+            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip1.Visible = false;
             // 
             // Notebook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(423, 316);
-            this.Controls.Add(this.EditPanel);
-            this.Controls.Add(this.ControlPanel);
+            this.ClientSize = new System.Drawing.Size(423, 247);
+            this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.MenuMain);
+            this.Controls.Add(this.NotebookMenu);
+            this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.MenuMain;
+            this.MainMenuStrip = this.NotebookMenu;
             this.Name = "Notebook";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Notebook";
@@ -371,11 +505,9 @@
             this.toolStrip1.PerformLayout();
             this.ControlPanel.ResumeLayout(false);
             this.ControlPanel.PerformLayout();
-            this.LocationAndCategoryPanel.ResumeLayout(false);
-            this.CategoryPanel.ResumeLayout(false);
-            this.LocationPanel.ResumeLayout(false);
-            this.MenuMain.ResumeLayout(false);
-            this.MenuMain.PerformLayout();
+            this.NotebookMenu.ResumeLayout(false);
+            this.NotebookMenu.PerformLayout();
+            this.MainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -392,25 +524,42 @@
         private System.Windows.Forms.ToolStripButton ToolbarLastEntry;
         private System.Windows.Forms.ToolStripButton ToolbarNewEntry;
         private System.Windows.Forms.Panel ControlPanel;
-        private System.Windows.Forms.Panel EditPanel;
         private System.Windows.Forms.ToolStripSeparator ToolbarSep2;
-        private System.Windows.Forms.Panel LocationAndCategoryPanel;
-        private System.Windows.Forms.Panel CategoryPanel;
-        private System.Windows.Forms.Label CategoryLabel;
-        private System.Windows.Forms.ComboBox wCategory;
-        private System.Windows.Forms.Panel LocationPanel;
-        private System.Windows.Forms.Label LocationLabel;
-        private System.Windows.Forms.ComboBox wLocation;
         private System.Windows.Forms.ToolStripButton ToolbarSave;
         private System.Windows.Forms.ToolStripButton ToolbarRevert;
-        private System.Windows.Forms.MenuStrip MenuMain;
-        private System.Windows.Forms.ToolStripMenuItem MenuToolbar;
-        private System.Windows.Forms.ToolStripMenuItem MenuToolbarSave;
-        private System.Windows.Forms.ToolStripMenuItem MenuFormat;
-        private System.Windows.Forms.ToolStripMenuItem MenuFormatBold;
+        private System.Windows.Forms.MenuStrip NotebookMenu;
         private System.Windows.Forms.ToolStripSeparator ToolbarSep1;
         private System.Windows.Forms.ToolStripButton ToolbarFind;
         private System.Windows.Forms.ToolStripLabel ToolbarNotebookEntryId;
-        private System.Windows.Forms.ToolStripMenuItem MenuToolbarRevert;
+        private System.Windows.Forms.Panel MainPanel;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarBrowser;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarBrowserFirst;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarBrowserPrev;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarBrowserNext;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarBrowserLast;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarBrowserNew;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarBrowserSave;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarBrowserRevert;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormat;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatBold;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatItalic;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatUnderline;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatStrikethrough;
+        private System.Windows.Forms.ToolStripSeparator NotebookMenuToolbarFormatSep1;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatBulletedList;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatNumberedList;
+        private System.Windows.Forms.ToolStripSeparator NotebookMenuToolbarFormatSep2;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatHeading1;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatHeading2;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatHeading3;
+        private System.Windows.Forms.ToolStripSeparator NotebookMenuToolbarFormatSep3;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatCode;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatBlockQuote;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbarFormatHorizontalRule;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuToolbar;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuAction;
+        private System.Windows.Forms.ToolStripMenuItem NotebookMenuActionFind;
     }
 }

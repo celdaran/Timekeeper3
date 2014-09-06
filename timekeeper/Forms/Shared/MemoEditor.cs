@@ -49,8 +49,10 @@ namespace Timekeeper.Forms.Shared
         {
             get { return MemoEntry.RightMargin; }
             set {
-                MemoEntry.RightMargin = value;
-                RightMarginMarker.Location = new Point(value, 0);
+                if (value > 0) {
+                    MemoEntry.RightMargin = value;
+                    RightMarginMarker.Location = new Point(value, 0);
+                }
             }
         }
 
@@ -60,7 +62,23 @@ namespace Timekeeper.Forms.Shared
         {
             get { return MemoEntry.ShowSelectionMargin; }
             set {
+                // First off, set the actual memo margin visibility
                 MemoEntry.ShowSelectionMargin = value;
+
+                // UI feedback
+                GutterPanel.Visible = value;
+                ShowLeftMargin.Visible = !value;
+                PopupMenuShowGutter.Visible = !value;
+                PopupMenuHideGutter.Visible = value;
+
+                /*
+                if (value)
+                    this.RightMargin -= 10;
+                else
+                    this.RightMargin += 10;
+                */
+
+                // Lastly, remember this option
                 Options.View_MemoEditor_ShowGutter = value;
             }
         }
@@ -110,8 +128,9 @@ namespace Timekeeper.Forms.Shared
 
         private void MemoEditor_Load(object sender, EventArgs e)
         {
-            // Is the formatting toolbar visible?
-            ToolbarVisible(Timekeeper.Options.View_MemoEditor_ShowToolbar);
+            // Are the toolbar components visible?
+            FormatToolbarVisible(Timekeeper.Options.View_MemoEditor_ShowToolbar);
+            FormatRulerVisible(Timekeeper.Options.View_MemoEditor_ShowRuler);
 
             // Adjust interface based on markup language
             SwitchMarkdown(Timekeeper.Options.Advanced_Other_MarkupLanguage);
@@ -149,6 +168,8 @@ namespace Timekeeper.Forms.Shared
             MemoEntry.Paste(DataFormats.GetFormat(DataFormats.Text));
         }
 
+        //---------------------------------------------------------------------
+
         private void PopupMenuToggleCheckbox_Click(object sender, EventArgs e)
         {
             FormatBallotBoxButton_Click(sender, e);
@@ -158,25 +179,62 @@ namespace Timekeeper.Forms.Shared
 
         private void PopupMenuHideToolbar_Click(object sender, EventArgs e)
         {
-            ToolbarVisible(false);
+            FormatToolbarVisible(false);
         }
 
         //---------------------------------------------------------------------
 
         private void PopupMenuShowToolbar_Click(object sender, EventArgs e)
         {
-            ToolbarVisible(true);
+            FormatToolbarVisible(true);
         }
 
         //---------------------------------------------------------------------
 
-        internal void ToolbarVisible(bool visible)
+        private void PopupMenuHideRuler_Click(object sender, EventArgs e)
+        {
+            FormatRulerVisible(false);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void PopupMenuShowRuler_Click(object sender, EventArgs e)
+        {
+            FormatRulerVisible(true);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void PopupMenuHideGutter_Click(object sender, EventArgs e)
+        {
+            this.ShowGutter = false;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void PopupMenuShowGutter_Click(object sender, EventArgs e)
+        {
+            this.ShowGutter = true;
+        }
+
+        //---------------------------------------------------------------------
+
+        internal void FormatToolbarVisible(bool visible)
         {
             PopupMenuShowToolbar.Visible = !visible;
             PopupMenuHideToolbar.Visible = visible;
             MemoToolbar.Visible = visible;
-            RulerPanel.Visible = visible;
             Timekeeper.Options.View_MemoEditor_ShowToolbar = visible;
+        }
+
+        //---------------------------------------------------------------------
+
+        internal void FormatRulerVisible(bool visible)
+        {
+            PopupMenuShowRuler.Visible = !visible;
+            PopupMenuHideRuler.Visible = visible;
+            RulerContainer.Visible = visible;
+            Timekeeper.Options.View_MemoEditor_ShowRuler = visible;
         }
 
         //---------------------------------------------------------------------
@@ -628,7 +686,7 @@ namespace Timekeeper.Forms.Shared
         private void RightMarginMarker_DoubleClick(object sender, EventArgs e)
         {
             this.RightMargin = 
-                (MemoEntry.Size.Width - System.Windows.Forms.SystemInformation.VerticalScrollBarWidth) - 
+                (MemoEntry.Size.Width - System.Windows.Forms.SystemInformation.VerticalScrollBarWidth - 10) - 
                 (RightMarginMarker.Width / 2);
         }
 
@@ -643,6 +701,24 @@ namespace Timekeeper.Forms.Shared
         {
             MouseEventArgs me = (MouseEventArgs)e;
             this.RightMargin = me.X - (RightMarginMarker.Width / 2);
+        }
+
+        private void GutterPanel_Click(object sender, EventArgs e)
+        {
+            this.ShowGutter = false;
+        }
+
+        private void MemoEntry_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            /*
+            By moving focus away from the RichTextBox and then back
+            again, I'm able to avoid the "random unicode character swap"
+            problem tracked in Issue #1364 and also posed to the Stack
+            Overflow community in a vain effort to solve this mystery.
+            */
+            Hacktastic.Focus();
+            Hacktastic.Text = e.KeyChar.ToString();
+            MemoEntry.Focus();
         }
 
         //---------------------------------------------------------------------

@@ -64,7 +64,7 @@ namespace Timekeeper.Classes
             } else {
                 string SubQuery = String.Format(
                     "SELECT MAX(EntryTime) FROM Notebook WHERE EntryTime < '{0}'",
-                    entry.EntryTime.ToString(Common.UTC_DATETIME_FORMAT));
+                    entry.EntryTime.ToString(Timekeeper.LOCAL_DATETIME_FORMAT));
                 return FetchEntry(SubQuery);
             }
         }
@@ -75,7 +75,7 @@ namespace Timekeeper.Classes
         {
             string SubQuery = String.Format(
                 "SELECT MIN(EntryTime) FROM Notebook WHERE EntryTime > '{0}'",
-                entry.EntryTime.ToString(Common.UTC_DATETIME_FORMAT));
+                entry.EntryTime.ToString(Timekeeper.LOCAL_DATETIME_FORMAT));
             return FetchEntry(SubQuery);
         }
 

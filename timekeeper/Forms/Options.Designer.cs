@@ -55,8 +55,6 @@
             this.View_MemoEditor_Font = new System.Windows.Forms.TextBox();
             this.View_MemoEditor_FontButton = new System.Windows.Forms.Button();
             this.View_MemoEditor_ShowGutter = new System.Windows.Forms.CheckBox();
-            this.View_MemoEditor_RightMarginLabel = new System.Windows.Forms.Label();
-            this.View_MemoEditor_RightMargin = new System.Windows.Forms.NumericUpDown();
             this.View_MemoEditor_ShowToolbar = new System.Windows.Forms.CheckBox();
             this.StatusBarGroup = new System.Windows.Forms.GroupBox();
             this.StatusBarGroup_BottomPanel = new System.Windows.Forms.Panel();
@@ -213,6 +211,7 @@
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
+            this.View_MemoEditor_ShowRuler = new System.Windows.Forms.CheckBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -221,7 +220,6 @@
             this.MainViewGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ViewSpacerBox)).BeginInit();
             this.MemoEditorGroup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.View_MemoEditor_RightMargin)).BeginInit();
             this.StatusBarGroup.SuspendLayout();
             this.StatusBarGroup_BottomPanel.SuspendLayout();
             this.StatusBarGroup_CategoryElapsedPanel.SuspendLayout();
@@ -539,7 +537,7 @@
             // ViewSpacerBox
             // 
             this.ViewSpacerBox.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
-            this.ViewSpacerBox.Location = new System.Drawing.Point(17, 663);
+            this.ViewSpacerBox.Location = new System.Drawing.Point(17, 693);
             this.ViewSpacerBox.Name = "ViewSpacerBox";
             this.ViewSpacerBox.Size = new System.Drawing.Size(16, 16);
             this.ViewSpacerBox.TabIndex = 22;
@@ -547,22 +545,21 @@
             // 
             // MemoEditorGroup
             // 
+            this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_ShowRuler);
             this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_Font);
             this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_FontButton);
             this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_ShowGutter);
-            this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_RightMarginLabel);
-            this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_RightMargin);
             this.MemoEditorGroup.Controls.Add(this.View_MemoEditor_ShowToolbar);
             this.MemoEditorGroup.Location = new System.Drawing.Point(17, 89);
             this.MemoEditorGroup.Name = "MemoEditorGroup";
-            this.MemoEditorGroup.Size = new System.Drawing.Size(345, 98);
+            this.MemoEditorGroup.Size = new System.Drawing.Size(345, 128);
             this.MemoEditorGroup.TabIndex = 21;
             this.MemoEditorGroup.TabStop = false;
             this.MemoEditorGroup.Text = "Memo Editor";
             // 
             // View_MemoEditor_Font
             // 
-            this.View_MemoEditor_Font.Location = new System.Drawing.Point(109, 67);
+            this.View_MemoEditor_Font.Location = new System.Drawing.Point(109, 92);
             this.View_MemoEditor_Font.Name = "View_MemoEditor_Font";
             this.View_MemoEditor_Font.ReadOnly = true;
             this.View_MemoEditor_Font.Size = new System.Drawing.Size(220, 20);
@@ -570,7 +567,7 @@
             // 
             // View_MemoEditor_FontButton
             // 
-            this.View_MemoEditor_FontButton.Location = new System.Drawing.Point(17, 65);
+            this.View_MemoEditor_FontButton.Location = new System.Drawing.Point(17, 90);
             this.View_MemoEditor_FontButton.Name = "View_MemoEditor_FontButton";
             this.View_MemoEditor_FontButton.Size = new System.Drawing.Size(86, 23);
             this.View_MemoEditor_FontButton.TabIndex = 4;
@@ -581,40 +578,12 @@
             // View_MemoEditor_ShowGutter
             // 
             this.View_MemoEditor_ShowGutter.AutoSize = true;
-            this.View_MemoEditor_ShowGutter.Location = new System.Drawing.Point(37, 42);
+            this.View_MemoEditor_ShowGutter.Location = new System.Drawing.Point(17, 65);
             this.View_MemoEditor_ShowGutter.Name = "View_MemoEditor_ShowGutter";
             this.View_MemoEditor_ShowGutter.Size = new System.Drawing.Size(100, 17);
             this.View_MemoEditor_ShowGutter.TabIndex = 2;
             this.View_MemoEditor_ShowGutter.Text = "Show left gutter";
             this.View_MemoEditor_ShowGutter.UseVisualStyleBackColor = true;
-            // 
-            // View_MemoEditor_RightMarginLabel
-            // 
-            this.View_MemoEditor_RightMarginLabel.AutoSize = true;
-            this.View_MemoEditor_RightMarginLabel.Location = new System.Drawing.Point(171, 46);
-            this.View_MemoEditor_RightMarginLabel.Name = "View_MemoEditor_RightMarginLabel";
-            this.View_MemoEditor_RightMarginLabel.Size = new System.Drawing.Size(69, 13);
-            this.View_MemoEditor_RightMarginLabel.TabIndex = 2;
-            this.View_MemoEditor_RightMarginLabel.Text = "Right margin:";
-            this.View_MemoEditor_RightMarginLabel.Visible = false;
-            // 
-            // View_MemoEditor_RightMargin
-            // 
-            this.View_MemoEditor_RightMargin.Location = new System.Drawing.Point(243, 44);
-            this.View_MemoEditor_RightMargin.Maximum = new decimal(new int[] {
-            9999,
-            0,
-            0,
-            0});
-            this.View_MemoEditor_RightMargin.Name = "View_MemoEditor_RightMargin";
-            this.View_MemoEditor_RightMargin.Size = new System.Drawing.Size(56, 20);
-            this.View_MemoEditor_RightMargin.TabIndex = 3;
-            this.View_MemoEditor_RightMargin.Value = new decimal(new int[] {
-            9999,
-            0,
-            0,
-            0});
-            this.View_MemoEditor_RightMargin.Visible = false;
             // 
             // View_MemoEditor_ShowToolbar
             // 
@@ -639,7 +608,7 @@
             this.StatusBarGroup.Controls.Add(this.StatusBarGroup_LocationNamePanel);
             this.StatusBarGroup.Controls.Add(this.StatusBarGroup_ActivityNamePanel);
             this.StatusBarGroup.Controls.Add(this.StatusBarGroup_ProjectNamePanel);
-            this.StatusBarGroup.Location = new System.Drawing.Point(17, 193);
+            this.StatusBarGroup.Location = new System.Drawing.Point(17, 223);
             this.StatusBarGroup.Name = "StatusBarGroup";
             this.StatusBarGroup.Size = new System.Drawing.Size(345, 275);
             this.StatusBarGroup.TabIndex = 20;
@@ -855,7 +824,7 @@
             this.HiddenGroup.Controls.Add(this.HiddenGroup_LocationPanel);
             this.HiddenGroup.Controls.Add(this.HiddenGroup_ActivityPanel);
             this.HiddenGroup.Controls.Add(this.HiddenGroup_ProjectPanel);
-            this.HiddenGroup.Location = new System.Drawing.Point(17, 474);
+            this.HiddenGroup.Location = new System.Drawing.Point(17, 504);
             this.HiddenGroup.Name = "HiddenGroup";
             this.HiddenGroup.Size = new System.Drawing.Size(345, 183);
             this.HiddenGroup.TabIndex = 19;
@@ -2383,6 +2352,17 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
+            // View_MemoEditor_ShowRuler
+            // 
+            this.View_MemoEditor_ShowRuler.AutoSize = true;
+            this.View_MemoEditor_ShowRuler.Location = new System.Drawing.Point(17, 42);
+            this.View_MemoEditor_ShowRuler.Name = "View_MemoEditor_ShowRuler";
+            this.View_MemoEditor_ShowRuler.Size = new System.Drawing.Size(76, 17);
+            this.View_MemoEditor_ShowRuler.TabIndex = 6;
+            this.View_MemoEditor_ShowRuler.Text = "Show ruler";
+            this.View_MemoEditor_ShowRuler.UseVisualStyleBackColor = true;
+            this.View_MemoEditor_ShowRuler.CheckedChanged += new System.EventHandler(this.View_MemoEditor_ShowRuler_CheckedChanged);
+            // 
             // Options
             // 
             this.AcceptButton = this.AcceptDialogButton;
@@ -2415,7 +2395,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.ViewSpacerBox)).EndInit();
             this.MemoEditorGroup.ResumeLayout(false);
             this.MemoEditorGroup.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.View_MemoEditor_RightMargin)).EndInit();
             this.StatusBarGroup.ResumeLayout(false);
             this.StatusBarGroup_BottomPanel.ResumeLayout(false);
             this.StatusBarGroup_BottomPanel.PerformLayout();
@@ -2626,8 +2605,6 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.Label View_MemoEditor_RightMarginLabel;
-        private System.Windows.Forms.NumericUpDown View_MemoEditor_RightMargin;
         private System.Windows.Forms.CheckBox View_MemoEditor_ShowGutter;
         private System.Windows.Forms.Button View_MemoEditor_FontButton;
         private System.Windows.Forms.FontDialog FontDialog;
@@ -2686,6 +2663,7 @@
         private System.Windows.Forms.ComboBox Behavior_SortItemsBy;
         private System.Windows.Forms.ComboBox Behavior_SortItemsByDirection;
         private System.Windows.Forms.Label SortItemsLabel;
+        private System.Windows.Forms.CheckBox View_MemoEditor_ShowRuler;
 
     }
 }

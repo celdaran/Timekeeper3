@@ -341,6 +341,7 @@ namespace Timekeeper.Forms
             View_HiddenEventsSince.SelectedIndex = Values.View_HiddenEventsSince;
 
             View_MemoEditor_ShowToolbar.Checked = Values.View_MemoEditor_ShowToolbar;
+            View_MemoEditor_ShowRuler.Checked = Values.View_MemoEditor_ShowRuler;
             View_MemoEditor_ShowGutter.Checked = Values.View_MemoEditor_ShowGutter;
             View_MemoEditor_Font.Text = Values.View_MemoEditor_Font;
             /* NOT SUPPORTED IN UI
@@ -450,6 +451,7 @@ namespace Timekeeper.Forms
             Values.View_HiddenEventsSince = View_HiddenEventsSince.SelectedIndex;
 
             Values.View_MemoEditor_ShowToolbar = View_MemoEditor_ShowToolbar.Checked;
+            Values.View_MemoEditor_ShowRuler = View_MemoEditor_ShowRuler.Checked;
             Values.View_MemoEditor_ShowGutter = View_MemoEditor_ShowGutter.Checked;
             Values.View_MemoEditor_Font = View_MemoEditor_Font.Text;
             /* NOT SUPPORTED IN UI
@@ -627,12 +629,24 @@ namespace Timekeeper.Forms
 
         private void View_MemoEditor_ShowToolbar_CheckedChanged(object sender, EventArgs e)
         {
+            /*
             View_MemoEditor_RightMarginLabel.Enabled = View_MemoEditor_ShowToolbar.Checked;
             View_MemoEditor_RightMargin.Enabled = View_MemoEditor_ShowToolbar.Checked;
             View_MemoEditor_ShowGutter.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            */
+
             /*
             View_MemoEditor_FontButton.Enabled = View_MemoEditor_ShowToolbar.Checked;
             View_MemoEditor_Font.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            */
+        }
+
+        //----------------------------------------------------------------------
+
+        private void View_MemoEditor_ShowRuler_CheckedChanged(object sender, EventArgs e)
+        {
+            /*
+            View_MemoEditor_ShowGutter.Enabled = View_MemoEditor_ShowToolbar.Checked;
             */
         }
 
@@ -899,8 +913,7 @@ namespace Timekeeper.Forms
             View_MemoEditor.Checked = true;
             View_ControlPanel.Checked = false;
             View_StatusBar.Checked = false;
-            View_MemoEditor_RightMargin.Value = 250;
-            // FIXME: System.Windows.Forms.SystemInformation.VerticalScrollBarWidth <--- USE THIS
+            //View_MemoEditor_RightMargin.Value = 250;
 
             View_StatusBar_ProjectName.Checked = false;
             View_StatusBar_ActivityName.Checked = false;
@@ -941,7 +954,7 @@ namespace Timekeeper.Forms
             View_MemoEditor.Checked = true;
             View_ControlPanel.Checked = true;
             View_StatusBar.Checked = true;
-            View_MemoEditor_RightMargin.Value = 420;
+            //View_MemoEditor_RightMargin.Value = 420;
 
             View_StatusBar_ProjectName.Checked = true;
             View_StatusBar_ActivityName.Checked = false;
@@ -982,7 +995,7 @@ namespace Timekeeper.Forms
             View_MemoEditor.Checked = true;
             View_ControlPanel.Checked = true;
             View_StatusBar.Checked = true;
-            View_MemoEditor_RightMargin.Value = 520;
+            //View_MemoEditor_RightMargin.Value = 520;
 
             View_StatusBar_ProjectName.Checked = true;
             View_StatusBar_ActivityName.Checked = true;
