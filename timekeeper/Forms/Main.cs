@@ -321,6 +321,12 @@ namespace Timekeeper.Forms
             Help.ShowHelpIndex(this, "timekeeper.chm");
         }
 
+        // Help | Check for Updates
+        private void MenuHelpCheckForUpdates_Click(object sender, EventArgs e)
+        {
+            Action_CheckForUpdates();
+        }
+
         // Help | Web Support
         private void menuHelpWeb_Click(object sender, EventArgs e)
         {

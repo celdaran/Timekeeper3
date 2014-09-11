@@ -75,6 +75,7 @@ namespace Timekeeper.Forms
             this.MenuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelpContents = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelpWeb = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuHelpCheckForUpdates = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuHelpSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuToolbar = new System.Windows.Forms.ToolStripMenuItem();
@@ -593,6 +594,7 @@ namespace Timekeeper.Forms
             this.MenuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuHelpContents,
             this.MenuHelpWeb,
+            this.MenuHelpCheckForUpdates,
             this.MenuHelpSep1,
             this.MenuHelpAbout});
             this.MenuHelp.Name = "MenuHelp";
@@ -602,27 +604,36 @@ namespace Timekeeper.Forms
             // MenuHelpContents
             // 
             this.MenuHelpContents.Name = "MenuHelpContents";
-            this.MenuHelpContents.ShortcutKeyDisplayString = "F1";
-            this.MenuHelpContents.Size = new System.Drawing.Size(137, 22);
+            this.MenuHelpContents.ShortcutKeyDisplayString = "";
+            this.MenuHelpContents.Size = new System.Drawing.Size(198, 22);
             this.MenuHelpContents.Text = "&Contents";
+            this.MenuHelpContents.Visible = false;
             this.MenuHelpContents.Click += new System.EventHandler(this.menuHelpContents_Click);
             // 
             // MenuHelpWeb
             // 
             this.MenuHelpWeb.Name = "MenuHelpWeb";
-            this.MenuHelpWeb.Size = new System.Drawing.Size(137, 22);
-            this.MenuHelpWeb.Text = "&Web Support";
+            this.MenuHelpWeb.ShortcutKeyDisplayString = "F1";
+            this.MenuHelpWeb.Size = new System.Drawing.Size(198, 22);
+            this.MenuHelpWeb.Text = "&Online Documentation";
             this.MenuHelpWeb.Click += new System.EventHandler(this.menuHelpWeb_Click);
+            // 
+            // MenuHelpCheckForUpdates
+            // 
+            this.MenuHelpCheckForUpdates.Name = "MenuHelpCheckForUpdates";
+            this.MenuHelpCheckForUpdates.Size = new System.Drawing.Size(198, 22);
+            this.MenuHelpCheckForUpdates.Text = "Check for Updates";
+            this.MenuHelpCheckForUpdates.Click += new System.EventHandler(this.MenuHelpCheckForUpdates_Click);
             // 
             // MenuHelpSep1
             // 
             this.MenuHelpSep1.Name = "MenuHelpSep1";
-            this.MenuHelpSep1.Size = new System.Drawing.Size(134, 6);
+            this.MenuHelpSep1.Size = new System.Drawing.Size(195, 6);
             // 
             // MenuHelpAbout
             // 
             this.MenuHelpAbout.Name = "MenuHelpAbout";
-            this.MenuHelpAbout.Size = new System.Drawing.Size(137, 22);
+            this.MenuHelpAbout.Size = new System.Drawing.Size(198, 22);
             this.MenuHelpAbout.Text = "&About...";
             this.MenuHelpAbout.Click += new System.EventHandler(this.menuHelpAbout_Click);
             // 
@@ -2296,5 +2307,6 @@ namespace Timekeeper.Forms
         internal System.Windows.Forms.Panel DimensionPanel;
         internal System.Windows.Forms.Button CloseStartGapButton;
         internal System.Windows.Forms.Button CloseStopGapButton;
+        private System.Windows.Forms.ToolStripMenuItem MenuHelpCheckForUpdates;
     }
 }

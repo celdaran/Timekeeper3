@@ -9,6 +9,8 @@ using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Diagnostics;
+using System.Net;
+using System.Threading;
 
 using Technitivity.Toolbox;
 
@@ -152,6 +154,13 @@ namespace Timekeeper.Forms
             UpdateStatusBar();
 
             SetDirtyBit(Category, browserEntry.CategoryId);
+        }
+
+        public void Action_CheckForUpdates()
+        {
+            ThreadClass workerObject = new ThreadClass();
+            Thread workerThread = new Thread(workerObject.CheckForUpdate);
+            workerThread.Start();
         }
 
         //----------------------------------------------------------------------
@@ -1483,6 +1492,51 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
+
+    }
+
+    //--------------------------------------------------------------------------
+    // Worker class for Update Checks
+    //--------------------------------------------------------------------------
+
+    class ThreadClass
+    {
+        public void CheckForUpdate()
+        {
+            try {
+                // Would like to use Cursors.AppStarting, but can't seem to get it to work
+                Application.UseWaitCursor = true;
+
+                WebRequest Request = WebRequest.Create("http://www.technitivity.com/timekeeper/currentversion.txt");
+                HttpWebResponse Response = (HttpWebResponse)Request.GetResponse();
+
+                Stream DataStream = Response.GetResponseStream();
+                StreamReader Reader = new StreamReader(DataStream);
+                string Content = Reader.ReadToEnd();
+
+                Version FoundVersion = new Version(Content);
+                Version CurrentVersion = new Version(Timekeeper.VERSION);
+
+                string Message;
+                if (CurrentVersion.CompareTo(FoundVersion) < 0) {
+                    Message = String.Format("A new version of Timekeeper is available.\n\nFound version: {0}\nCurrent version: {1}",
+                        FoundVersion, CurrentVersion);
+                    Common.Info(Message);
+                } else {
+                    Message = String.Format("Timekeeper Version {0} is up to date.", CurrentVersion);
+                    Common.Info(Message);
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                Common.Warn("Update check failed.");
+            }
+            finally {
+                Application.UseWaitCursor = false;
+            }
+        }
+
+        //--------------------------------------------------------------------------
 
     }
 }
