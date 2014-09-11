@@ -129,6 +129,8 @@ namespace Timekeeper.Classes
 
                 Row["EntryTime"] = Timekeeper.DateForDatabase(this.EntryTime);
                 Row["Memo"] = this.Memo;
+                Row["ProjectId"] = this.ProjectId;
+                Row["ActivityId"] = this.ActivityId;
                 Row["LocationId"] = this.LocationId;
                 Row["CategoryId"] = this.CategoryId;
 

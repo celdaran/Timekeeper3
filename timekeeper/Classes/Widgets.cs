@@ -168,8 +168,12 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public void SetTimeInputWidths(Forms.Main mainForm)
+        public void SetMainFormDatePickerFormats(Forms.Main mainForm)
         {
+            SetDatePickerFormat(mainForm.StartTimeSelector);
+            SetDatePickerFormat(mainForm.StopTimeSelector);
+
+            /*
             mainForm.StartTimeSelector.CustomFormat = Options.Advanced_DateTimeFormat;
             mainForm.StopTimeSelector.CustomFormat = Options.Advanced_DateTimeFormat;
 
@@ -183,11 +187,33 @@ namespace Timekeeper.Classes
 
             mainForm.StartTimeSelector.Width = DateTimeWidth + DropDownButtonWidth;
             mainForm.StopTimeSelector.Width = DateTimeWidth + DropDownButtonWidth;
+            */
 
             mainForm.CloseStartGapButton.Left = Math.Max(mainForm.StartTimeSelector.Width + 73, 142);
             mainForm.CloseStopGapButton.Left = Math.Max(mainForm.StartTimeSelector.Width + 73, 142);
 
-            mainForm.DimensionPanel.Left = mainForm.CloseStartGapButton.Left + DropDownButtonWidth;
+            mainForm.DimensionPanel.Left = mainForm.CloseStartGapButton.Left + (SystemInformation.VerticalScrollBarWidth * 2 + 1);
+        }
+
+        //----------------------------------------------------------------------
+
+        public void SetDatePickerFormat(DateTimePicker picker)
+        {
+            // First set the format
+            picker.CustomFormat = Options.Advanced_DateTimeFormat;
+
+            // Give it a dummy value: the control requires text to be measured
+            picker.Value = Timekeeper.LocalNow.DateTime;
+
+            // Now measure the text and the button width
+            Size DateSize = TextRenderer.MeasureText(
+                picker.Value.ToString(Options.Advanced_DateTimeFormat),
+                picker.Font);
+            int DateTimeWidth = DateSize.Width;
+            int DropDownButtonWidth = (SystemInformation.VerticalScrollBarWidth * 2 + 1);
+
+            // Set width
+            picker.Width = DateTimeWidth + DropDownButtonWidth;
         }
 
         //----------------------------------------------------------------------

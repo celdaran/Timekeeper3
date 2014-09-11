@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace Timekeeper
 {
@@ -147,6 +148,18 @@ namespace Timekeeper
             set { _MemoMergeTypeId = value; }
         }
     }
+
+    //---------------------------------------------------------------------
+    // Benchmarking class
+    //---------------------------------------------------------------------
+
+    /*
+    public struct Benchmarking
+    {
+        private Stopwatch t;
+        public string name { get; set; }
+    }
+    */
 
     //---------------------------------------------------------------------
     // Next Big Thing

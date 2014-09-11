@@ -87,6 +87,44 @@ namespace Timekeeper.Classes
             return FetchEntry(SubQuery);
         }
 
+        //----------------------------------------------------------------------
+
+        public DateTimeOffset FirstDay()
+        {
+            DateTimeOffset FirstDay;
+
+            string Query = @"
+                select min(EntryTime) as FirstDate 
+                from Notebook";
+            Row Row = Timekeeper.Database.SelectRow(Query);
+            if (Row["FirstDate"] == null) {
+                FirstDay = Timekeeper.LocalNow;
+            } else {
+                FirstDay = DateTimeOffset.Parse(Row["FirstDate"]);
+            }
+
+            return FirstDay;
+        }
+
+        //----------------------------------------------------------------------
+
+        public DateTimeOffset LastDay()
+        {
+            DateTimeOffset LastDay;
+
+            string Query = @"
+                select max(EntryTime) as LastDate 
+                from Notebook";
+            Row Row = Timekeeper.Database.SelectRow(Query);
+            if (Row["LastDate"] == null) {
+                LastDay = Timekeeper.LocalNow;
+            } else {
+                LastDay = DateTimeOffset.Parse(Row["LastDate"]);
+            }
+
+            return LastDay;
+        }
+
         //---------------------------------------------------------------------
         // Helpers
         //---------------------------------------------------------------------

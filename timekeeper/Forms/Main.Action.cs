@@ -78,6 +78,7 @@ namespace Timekeeper.Forms
             EnsureSelections();
 
             Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+            Project = new Classes.TreeAttribute(Project.ItemId, "Project", "ProjectId"); // Note: Must reinstantiate to pick up attribute changes
             AutoFollow(Project.LastActivityId, ActivityTreeDropdown, Options.Behavior_Annoy_ActivityFollowsProject);
 
             Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
@@ -226,6 +227,7 @@ namespace Timekeeper.Forms
 
                 Timekeeper.Info("Opening Database: " + DatabaseFileName);
                 Timekeeper.OpenDatabase(DatabaseFileName, LogLevel);
+                Timekeeper.Database.BeginWork();
 
                 if (!Timekeeper.Database.FileExists) {
                     Timekeeper.DoubleWarn("File " + DatabaseFileName + " not found");
@@ -477,12 +479,6 @@ namespace Timekeeper.Forms
                 // Set browser options
                 Action_SetBrowserOptions();
 
-                // Initialize drag drop operations
-                /*
-                this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
-                this.ActivityTree.ItemDrag += new ItemDragEventHandler(ActivityTree_ItemDrag);
-                */
-
                 // Is the scheduler subsystem enabled?
                 if (Options.Advanced_Other_DisableScheduler) {
                     // Remove from UI
@@ -502,59 +498,11 @@ namespace Timekeeper.Forms
                 // Subscribe to the message event. This will allow the form to be notified whenever there's a new message.
                 Timekeeper.Mailbox.HandleMessage += new EventHandler(OnHandleMessage);
 
-                // SHORTCUTS
+                // Specific-Window Testing
 
                 /*
                 Forms.Tools.Todo DialogBox = new Forms.Tools.Todo();
                 DialogBox.ShowDialog(this);
-                Application.Exit();
-                */
-
-                /*
-                Forms.Shared.Schedule DialogBox = new Forms.Shared.Schedule();
-                DialogBox.ShowDialog(this);
-                Application.Exit();
-                */
-
-                /*
-                Forms.Tools.Event DialogBox = new Forms.Tools.Event();
-                DialogBox.Show(this);
-                //Application.Exit();
-                */
-
-                /*
-                Forms.Shared.Schedule ScheduleDialog = new Forms.Shared.Schedule(9, Timekeeper.LocalNow);
-                ScheduleDialog.ShowDialog(this);
-                Application.Exit();
-                */
-
-                /*
-                Forms.Tools.EventDetail EventDetail = new Forms.Tools.EventDetail();
-                EventDetail.ShowDialog(this);
-                if (EventDetail.DialogResult == DialogResult.OK) {
-                    Common.Info("Creating a new event");
-                } else {
-                    Common.Info("Not OK");
-                }
-                Application.Exit();
-                */
-
-                /*
-                Forms.Tools.Event EventWindow = new Forms.Tools.Event();
-                EventWindow.ShowDialog(this);
-                Application.Exit();
-                */
-
-                /*
-                Forms.Tools.Notebook NotebookWindow = new Forms.Tools.Notebook();
-                NotebookWindow.ShowDialog(this);
-                Application.Exit();
-                */
-
-                //Forms.Find FindDialog = new Forms.Find(Browser_GotoEntry, Find.FindDataSources.Journal);
-                /*
-                var DatabaseCheckWindow = new Reports.DatabaseCheck(Browser_GotoEntry);
-                DatabaseCheckWindow.ShowDialog(this);
                 Application.Exit();
                 */
             }
@@ -676,7 +624,7 @@ namespace Timekeeper.Forms
             }
 
             // Set date/time formats
-            this.Widgets.SetTimeInputWidths(this);
+            this.Widgets.SetMainFormDatePickerFormats(this);
         }
 
         //---------------------------------------------------------------------
@@ -809,6 +757,9 @@ namespace Timekeeper.Forms
 
                 Meta.MarkInUse();
 
+                // This unit of work was started in Action_CheckDatabase
+                Timekeeper.Database.EndWork();
+
                 return true;
             }
             catch (Exception x) {
@@ -927,6 +878,8 @@ namespace Timekeeper.Forms
         {
             try
             {
+                Timekeeper.Database.BeginWork();
+
                 // Open a scheduler
                 Timekeeper.OpenScheduler();
 
@@ -936,9 +889,12 @@ namespace Timekeeper.Forms
                 // Then loop through them
                 foreach (Classes.ScheduledEvent ScheduledEvent in ScheduledEvents.Fetch()) {
                     // And schedule
+                    Timekeeper.Database.BeginWork();
                     Timekeeper.Schedule(ScheduledEvent, this);
+                    Timekeeper.Database.EndWork();
                 }
 
+                Timekeeper.Database.EndWork();
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

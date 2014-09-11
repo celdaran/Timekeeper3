@@ -52,6 +52,7 @@
             this.View_BrowserToolbar = new System.Windows.Forms.CheckBox();
             this.ViewSpacerBox = new System.Windows.Forms.PictureBox();
             this.MemoEditorGroup = new System.Windows.Forms.GroupBox();
+            this.View_MemoEditor_ShowRuler = new System.Windows.Forms.CheckBox();
             this.View_MemoEditor_Font = new System.Windows.Forms.TextBox();
             this.View_MemoEditor_FontButton = new System.Windows.Forms.Button();
             this.View_MemoEditor_ShowGutter = new System.Windows.Forms.CheckBox();
@@ -189,7 +190,6 @@
             this.label16 = new System.Windows.Forms.Label();
             this.Advanced_BreakTemplate = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.Advanced_DateTimeFormat = new System.Windows.Forms.TextBox();
             this.OtherAdvancedGroup = new System.Windows.Forms.GroupBox();
             this.Advanced_Other_MidnightOffset = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -211,7 +211,7 @@
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
-            this.View_MemoEditor_ShowRuler = new System.Windows.Forms.CheckBox();
+            this.Advanced_DateTimeFormat = new System.Windows.Forms.ComboBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -556,6 +556,17 @@
             this.MemoEditorGroup.TabIndex = 21;
             this.MemoEditorGroup.TabStop = false;
             this.MemoEditorGroup.Text = "Memo Editor";
+            // 
+            // View_MemoEditor_ShowRuler
+            // 
+            this.View_MemoEditor_ShowRuler.AutoSize = true;
+            this.View_MemoEditor_ShowRuler.Location = new System.Drawing.Point(17, 42);
+            this.View_MemoEditor_ShowRuler.Name = "View_MemoEditor_ShowRuler";
+            this.View_MemoEditor_ShowRuler.Size = new System.Drawing.Size(76, 17);
+            this.View_MemoEditor_ShowRuler.TabIndex = 6;
+            this.View_MemoEditor_ShowRuler.Text = "Show ruler";
+            this.View_MemoEditor_ShowRuler.UseVisualStyleBackColor = true;
+            this.View_MemoEditor_ShowRuler.CheckedChanged += new System.EventHandler(this.View_MemoEditor_ShowRuler_CheckedChanged);
             // 
             // View_MemoEditor_Font
             // 
@@ -2036,10 +2047,10 @@
             // 
             // AdvancedFormattingGroup
             // 
+            this.AdvancedFormattingGroup.Controls.Add(this.Advanced_DateTimeFormat);
             this.AdvancedFormattingGroup.Controls.Add(this.label16);
             this.AdvancedFormattingGroup.Controls.Add(this.Advanced_BreakTemplate);
             this.AdvancedFormattingGroup.Controls.Add(this.label1);
-            this.AdvancedFormattingGroup.Controls.Add(this.Advanced_DateTimeFormat);
             this.AdvancedFormattingGroup.Location = new System.Drawing.Point(17, 131);
             this.AdvancedFormattingGroup.Name = "AdvancedFormattingGroup";
             this.AdvancedFormattingGroup.Size = new System.Drawing.Size(345, 88);
@@ -2072,13 +2083,6 @@
             this.label1.Size = new System.Drawing.Size(96, 13);
             this.label1.TabIndex = 20;
             this.label1.Text = "Date/Time Format:";
-            // 
-            // Advanced_DateTimeFormat
-            // 
-            this.Advanced_DateTimeFormat.Location = new System.Drawing.Point(127, 27);
-            this.Advanced_DateTimeFormat.Name = "Advanced_DateTimeFormat";
-            this.Advanced_DateTimeFormat.Size = new System.Drawing.Size(202, 20);
-            this.Advanced_DateTimeFormat.TabIndex = 19;
             // 
             // OtherAdvancedGroup
             // 
@@ -2352,16 +2356,18 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
-            // View_MemoEditor_ShowRuler
+            // Advanced_DateTimeFormat
             // 
-            this.View_MemoEditor_ShowRuler.AutoSize = true;
-            this.View_MemoEditor_ShowRuler.Location = new System.Drawing.Point(17, 42);
-            this.View_MemoEditor_ShowRuler.Name = "View_MemoEditor_ShowRuler";
-            this.View_MemoEditor_ShowRuler.Size = new System.Drawing.Size(76, 17);
-            this.View_MemoEditor_ShowRuler.TabIndex = 6;
-            this.View_MemoEditor_ShowRuler.Text = "Show ruler";
-            this.View_MemoEditor_ShowRuler.UseVisualStyleBackColor = true;
-            this.View_MemoEditor_ShowRuler.CheckedChanged += new System.EventHandler(this.View_MemoEditor_ShowRuler_CheckedChanged);
+            this.Advanced_DateTimeFormat.FormattingEnabled = true;
+            this.Advanced_DateTimeFormat.Items.AddRange(new object[] {
+            "yyyy-MM-dd hh:mm:ss",
+            "M/d/yy h:mm:ss tt",
+            "d/M/yyyy hh:mm:ss",
+            "MMMM d, yyyy hh:mm:ss"});
+            this.Advanced_DateTimeFormat.Location = new System.Drawing.Point(127, 26);
+            this.Advanced_DateTimeFormat.Name = "Advanced_DateTimeFormat";
+            this.Advanced_DateTimeFormat.Size = new System.Drawing.Size(202, 21);
+            this.Advanced_DateTimeFormat.TabIndex = 17;
             // 
             // Options
             // 
@@ -2646,7 +2652,6 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox Advanced_BreakTemplate;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox Advanced_DateTimeFormat;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.TextBox Report_Font;
@@ -2664,6 +2669,7 @@
         private System.Windows.Forms.ComboBox Behavior_SortItemsByDirection;
         private System.Windows.Forms.Label SortItemsLabel;
         private System.Windows.Forms.CheckBox View_MemoEditor_ShowRuler;
+        private System.Windows.Forms.ComboBox Advanced_DateTimeFormat;
 
     }
 }

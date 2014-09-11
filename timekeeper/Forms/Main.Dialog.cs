@@ -182,7 +182,7 @@ namespace Timekeeper.Forms
             ReleaseDimensions();
 
             // Set date/time formats
-            this.Widgets.SetTimeInputWidths(this);
+            this.Widgets.SetMainFormDatePickerFormats(this);
 
             // Set form dimensions
             if (interfaceChanged) {

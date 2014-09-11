@@ -533,6 +533,20 @@ namespace Timekeeper
         // Benchmarking
         //---------------------------------------------------------------------
 
+        public static Stopwatch Bench()
+        {
+            Stopwatch t = new Stopwatch();
+            t.Start();
+            return t;
+        }
+
+        //---------------------------------------------------------------------
+        // TODO: Use my own Stopwatch wrapper class instead of Stopwatch 
+        // directly. See Classes.Datatypes for more info.
+        //---------------------------------------------------------------------
+
+        //---------------------------------------------------------------------
+
         public static void Bench(Stopwatch t)
         {
             t.Start();
@@ -543,8 +557,9 @@ namespace Timekeeper
         public static void Bench(Stopwatch t, string message)
         {
             t.Stop();
-            Timekeeper.Debug(message + ": " + t.ElapsedMilliseconds.ToString() + "ms");
+            Timekeeper.Debug("BENCH: " + message + ": " + t.ElapsedMilliseconds.ToString() + "ms");
             t.Reset();
+            t.Start();
         }
 
         //---------------------------------------------------------------------

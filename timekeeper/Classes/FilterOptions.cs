@@ -48,7 +48,6 @@ namespace Timekeeper.Classes
 
         private DBI Database;
         private Classes.Options Options;
-        private Classes.JournalEntryCollection JournalEntries;
 
         private string _WhereClause = "";
 
@@ -124,7 +123,6 @@ namespace Timekeeper.Classes
             Clear();
             this.Database = Timekeeper.Database;
             this.Options = Timekeeper.Options;
-            this.JournalEntries = new Classes.JournalEntryCollection();
             this.SuppressTableAlias = false;
         }
 
@@ -384,13 +382,22 @@ namespace Timekeeper.Classes
 
         public void Clear()
         {
-            Classes.JournalEntryCollection Entries = new JournalEntryCollection();
+            switch (this.FilterOptionsType) {
+                case OptionsType.Journal:
+                    Classes.JournalEntryCollection JournalEntries = new JournalEntryCollection();
+                    FromTime = JournalEntries.FirstDay();
+                    ToTime = JournalEntries.LastDay();
+                    break;
+                case OptionsType.Notebook:
+                    Classes.NotebookEntryCollection NotebookEntries = new NotebookEntryCollection();
+                    FromTime = NotebookEntries.FirstDay();
+                    ToTime = NotebookEntries.LastDay();
+                    break;
+            }
 
             FilterOptionsId = -1;
             FilterOptionsType = 0;
             DateRangePreset = DATE_PRESET_ALL;
-            FromTime = Entries.FirstDay();
-            ToTime = Entries.LastDay();
             MemoOperator = -1;
             MemoValue = "";
             Projects = new List<long>();

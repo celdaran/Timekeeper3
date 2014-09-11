@@ -116,11 +116,13 @@ namespace Timekeeper.Forms.Shared
             }
 
             if ((!Options.Layout_UseLocations) ||
+                (this.FilterOptions.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook) ||
                 (this.FilterOptions.FilterMergeType == Timekeeper.Dimension.Location)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("LocationTab");
             }
 
             if ((!Options.Layout_UseCategories) ||
+                (this.FilterOptions.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook) ||
                 (this.FilterOptions.FilterMergeType == Timekeeper.Dimension.Category)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("CategoryTab");
             }

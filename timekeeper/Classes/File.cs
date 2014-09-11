@@ -501,8 +501,11 @@ namespace Timekeeper
             Version FoundSchemaVersion = null;
 
             try {
+                bool NewMetaTableExists = Database.TableExists(Timekeeper.MetaTableName());
+                bool OldMetaTableExists = Database.TableExists("meta");
+
                 // Universal (i.e., all TK 2.x and above) meta table detection.
-                if (Database.TableExists(Timekeeper.MetaTableName()) || Database.TableExists("meta"))
+                if (NewMetaTableExists || OldMetaTableExists)
                 {
                     // Determine table name and column names
                     string TableName;
@@ -510,7 +513,7 @@ namespace Timekeeper
                     string KeyColumnName;
                     string KeyColumnValue;
 
-                    if (Database.TableExists(Timekeeper.MetaTableName())) {
+                    if (NewMetaTableExists) {
                         TableName = Timekeeper.MetaTableName();
                         ValueColumnName = "Value";
                         KeyColumnName = "Key";

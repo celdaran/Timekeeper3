@@ -263,7 +263,7 @@ namespace Timekeeper.Forms
         {
             if (e.RowIndex >= 0) {
                 DataGridViewRow Row = NotebookResultsGrid.Rows[e.RowIndex];
-                long NotebookId = Convert.ToInt64(Row.Cells[0].Value);
+                long NotebookId = Convert.ToInt64(Row.Cells["NotebookId"].Value);
                 // Browser_GotoEntry() is a callback. The call you see here is
                 // not the same as the call you see above.
                 this.Browser_GotoEntry(NotebookId);

@@ -17,9 +17,10 @@ namespace Timekeeper.Forms.Tools
         //----------------------------------------------------------------------
 
         private Classes.Options Options;
+        private Classes.Widgets Widgets;
 
         private Classes.NotebookEntry CurrentEntry;
-        private Classes.NotebookEntry PreviousEntry;
+        //private Classes.NotebookEntry PreviousEntry;
         private Classes.NotebookEntryCollection AllEntries;
 
         private bool IsBrowsing;
@@ -37,6 +38,7 @@ namespace Timekeeper.Forms.Tools
         {
             InitializeComponent();
             this.Options = Timekeeper.Options;
+            this.Widgets = new Classes.Widgets();
         }
 
         //----------------------------------------------------------------------
@@ -64,8 +66,8 @@ namespace Timekeeper.Forms.Tools
                 // Set up UI bits
                 //LocationPanel.Visible = Options.Layout_UseLocations;
                 //CategoryPanel.Visible = Options.Layout_UseCategories;
-                EntryDateTime.CustomFormat = Options.Advanced_DateTimeFormat;
-
+                Widgets.SetDatePickerFormat(EntryDateTime);
+                //.CustomFormat = Options.Advanced_DateTimeFormat;
                 //ControlPanel.Height = LocationPanel.Visible && CategoryPanel.Visible ? 64 : (64 - 27);
 
                 this.Height = Options.Notebook_Height;
@@ -75,7 +77,7 @@ namespace Timekeeper.Forms.Tools
 
                 // Create in-memory entries
                 CurrentEntry = new Classes.NotebookEntry();
-                PreviousEntry = new Classes.NotebookEntry();
+                //PreviousEntry = new Classes.NotebookEntry();
                 AllEntries = new Classes.NotebookEntryCollection();
 
                 IsBrowsing = false;
@@ -161,8 +163,6 @@ namespace Timekeeper.Forms.Tools
         //----------------------------------------------------------------------
         // Menu (and Toolbar) Events
         //----------------------------------------------------------------------
-
-        // MenuToolbarBrowserLast_Click
 
         private void MenuToolbarBrowserFirst_Click(object sender, EventArgs e)
         {
@@ -267,8 +267,6 @@ namespace Timekeeper.Forms.Tools
                     return;
                 }
             }
-            CurrentEntry.Copy(PreviousEntry);
-            SaveEntry();
             EntryToForm(CurrentEntry);
             EnableSaveButton(false);
         }
@@ -277,10 +275,9 @@ namespace Timekeeper.Forms.Tools
 
         private void SaveEntry()
         {
-            PreviousEntry.Copy(CurrentEntry);
             FormToEntry();
 
-            if ((!ToolbarSave.Enabled) || (!IsBrowsing))
+            if (!ToolbarSave.Enabled)
                 return;
 
             if (CurrentEntry.Save()) {
@@ -292,11 +289,13 @@ namespace Timekeeper.Forms.Tools
                     CurrentEntry.NotebookGuid);
                 Common.Info(Message);
                 */
+                IsBrowsing = true;
             } else {
                 Common.Warn("Problem saving Notebook entry");
             }
 
             EnableSaveButton(false);
+            EntryToForm();
         }
 
         //----------------------------------------------------------------------
@@ -399,42 +398,14 @@ namespace Timekeeper.Forms.Tools
             IgnoreTextChanges = true;
 
             try {
+                // Save state
+                //PreviousEntry.Copy(entry);
+
+                // Update form
                 this.MemoEditor.Text = entry.Memo;
                 this.EntryDateTime.Value = entry.EntryTime ==
                     DateTimeOffset.MinValue ? Timekeeper.LocalNow.DateTime : entry.EntryTime.DateTime;
                 this.ToolbarNotebookEntryId.Text = entry.NotebookId.ToString();
-
-                // FIXME: Serious copy/paste problems here.
-                // You really need to fix that. This was
-                // lifted directly from Main.Browser.cs.
-                // Let's move this to the Widgets class
-
-                /*
-                if (entry.LocationId > 0) {
-                    Classes.Location Location = new Classes.Location(entry.LocationId);
-                    if (Location.Name != null) {
-                        int LocationIndex = wLocation.FindString(Location.Name);
-                        wLocation.SelectedIndex = LocationIndex;
-                    } else {
-                        wLocation.SelectedIndex = -1;
-                    }
-                } else {
-                    wLocation.SelectedIndex = -1;
-                }
-
-                if (entry.CategoryId > 0) {
-                    Classes.Category Category = new Classes.Category(entry.CategoryId);
-                    if (Category.Name != null) {
-                        int CategoryIndex = wCategory.FindString(Category.Name);
-                        wCategory.SelectedIndex = CategoryIndex;
-                    } else {
-                        wCategory.SelectedIndex = -1;
-                    }
-                } else {
-                    wCategory.SelectedIndex = -1;
-                }
-                */
-
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
