@@ -152,26 +152,26 @@ namespace Timekeeper.Forms.Shared
             this.PopupMenuDatesPaste,
             this.PopupMenuDatesSep1});
             this.PopupMenuDates.Name = "PopupMenuDates";
-            this.PopupMenuDates.Size = new System.Drawing.Size(102, 54);
+            this.PopupMenuDates.Size = new System.Drawing.Size(103, 54);
             // 
             // PopupMenuDatesCopy
             // 
             this.PopupMenuDatesCopy.Name = "PopupMenuDatesCopy";
-            this.PopupMenuDatesCopy.Size = new System.Drawing.Size(101, 22);
+            this.PopupMenuDatesCopy.Size = new System.Drawing.Size(102, 22);
             this.PopupMenuDatesCopy.Text = "Copy";
             this.PopupMenuDatesCopy.Click += new System.EventHandler(this.PopupMenuDatesCopy_Click);
             // 
             // PopupMenuDatesPaste
             // 
             this.PopupMenuDatesPaste.Name = "PopupMenuDatesPaste";
-            this.PopupMenuDatesPaste.Size = new System.Drawing.Size(101, 22);
+            this.PopupMenuDatesPaste.Size = new System.Drawing.Size(102, 22);
             this.PopupMenuDatesPaste.Text = "Paste";
             this.PopupMenuDatesPaste.Click += new System.EventHandler(this.PopupMenuDatesPaste_Click);
             // 
             // PopupMenuDatesSep1
             // 
             this.PopupMenuDatesSep1.Name = "PopupMenuDatesSep1";
-            this.PopupMenuDatesSep1.Size = new System.Drawing.Size(98, 6);
+            this.PopupMenuDatesSep1.Size = new System.Drawing.Size(99, 6);
             this.PopupMenuDatesSep1.Visible = false;
             // 
             // FromDate
@@ -219,6 +219,8 @@ namespace Timekeeper.Forms.Shared
             this.ActivityTree.SelectedImageIndex = 0;
             this.ActivityTree.Size = new System.Drawing.Size(387, 221);
             this.ActivityTree.TabIndex = 0;
+            this.ActivityTree.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterCollapse);
+            this.ActivityTree.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterExpand);
             // 
             // TreeViewMenu
             // 
@@ -228,33 +230,33 @@ namespace Timekeeper.Forms.Shared
             this.TreeViewMenuInvertSelection,
             this.TreeViewMenuShowHiddenItems});
             this.TreeViewMenu.Name = "TreeMenu";
-            this.TreeViewMenu.Size = new System.Drawing.Size(167, 92);
+            this.TreeViewMenu.Size = new System.Drawing.Size(178, 92);
             // 
             // TreeViewMenuSelectAll
             // 
             this.TreeViewMenuSelectAll.Name = "TreeViewMenuSelectAll";
-            this.TreeViewMenuSelectAll.Size = new System.Drawing.Size(166, 22);
+            this.TreeViewMenuSelectAll.Size = new System.Drawing.Size(177, 22);
             this.TreeViewMenuSelectAll.Text = "Select All";
             this.TreeViewMenuSelectAll.Click += new System.EventHandler(this.MenuSelectAll_Click);
             // 
             // TreeViewMenuSelectNone
             // 
             this.TreeViewMenuSelectNone.Name = "TreeViewMenuSelectNone";
-            this.TreeViewMenuSelectNone.Size = new System.Drawing.Size(166, 22);
+            this.TreeViewMenuSelectNone.Size = new System.Drawing.Size(177, 22);
             this.TreeViewMenuSelectNone.Text = "Select None";
             this.TreeViewMenuSelectNone.Click += new System.EventHandler(this.MenuSelectNone_Click);
             // 
             // TreeViewMenuInvertSelection
             // 
             this.TreeViewMenuInvertSelection.Name = "TreeViewMenuInvertSelection";
-            this.TreeViewMenuInvertSelection.Size = new System.Drawing.Size(166, 22);
+            this.TreeViewMenuInvertSelection.Size = new System.Drawing.Size(177, 22);
             this.TreeViewMenuInvertSelection.Text = "Invert Selection";
             this.TreeViewMenuInvertSelection.Click += new System.EventHandler(this.MenuInvertSelection_Click);
             // 
             // TreeViewMenuShowHiddenItems
             // 
             this.TreeViewMenuShowHiddenItems.Name = "TreeViewMenuShowHiddenItems";
-            this.TreeViewMenuShowHiddenItems.Size = new System.Drawing.Size(166, 22);
+            this.TreeViewMenuShowHiddenItems.Size = new System.Drawing.Size(177, 22);
             this.TreeViewMenuShowHiddenItems.Text = "Show Hidden Items";
             // 
             // TreeImageList
@@ -281,6 +283,8 @@ namespace Timekeeper.Forms.Shared
             this.ProjectTree.SelectedImageIndex = 0;
             this.ProjectTree.Size = new System.Drawing.Size(387, 221);
             this.ProjectTree.TabIndex = 0;
+            this.ProjectTree.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterCollapse);
+            this.ProjectTree.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterExpand);
             // 
             // FilterOptionsTabControl
             // 
@@ -301,6 +305,7 @@ namespace Timekeeper.Forms.Shared
             // 
             // CommonTab
             // 
+            this.CommonTab.BackColor = System.Drawing.SystemColors.Control;
             this.CommonTab.Controls.Add(this.OtherGroup);
             this.CommonTab.Controls.Add(this.DateRangeGroup);
             this.CommonTab.Location = new System.Drawing.Point(4, 22);
@@ -309,7 +314,6 @@ namespace Timekeeper.Forms.Shared
             this.CommonTab.Size = new System.Drawing.Size(393, 227);
             this.CommonTab.TabIndex = 0;
             this.CommonTab.Text = "Common";
-            this.CommonTab.UseVisualStyleBackColor = true;
             // 
             // OtherGroup
             // 
@@ -472,6 +476,8 @@ namespace Timekeeper.Forms.Shared
             this.LocationTree.SelectedImageIndex = 0;
             this.LocationTree.Size = new System.Drawing.Size(387, 221);
             this.LocationTree.TabIndex = 1;
+            this.LocationTree.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterCollapse);
+            this.LocationTree.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterExpand);
             // 
             // CategoryTab
             // 
@@ -496,9 +502,12 @@ namespace Timekeeper.Forms.Shared
             this.CategoryTree.SelectedImageIndex = 0;
             this.CategoryTree.Size = new System.Drawing.Size(387, 221);
             this.CategoryTree.TabIndex = 1;
+            this.CategoryTree.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterCollapse);
+            this.CategoryTree.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterExpand);
             // 
             // AdvancedTab
             // 
+            this.AdvancedTab.BackColor = System.Drawing.SystemColors.Control;
             this.AdvancedTab.Controls.Add(this.groupBox3);
             this.AdvancedTab.Controls.Add(this.groupBox1);
             this.AdvancedTab.Location = new System.Drawing.Point(4, 22);
@@ -507,7 +516,6 @@ namespace Timekeeper.Forms.Shared
             this.AdvancedTab.Size = new System.Drawing.Size(393, 227);
             this.AdvancedTab.TabIndex = 2;
             this.AdvancedTab.Text = "Advanced";
-            this.AdvancedTab.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 

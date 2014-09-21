@@ -122,9 +122,11 @@ namespace Timekeeper.Classes
         {
             // TODO: Make this format user-definable (like the app title bar)
             if (viewName == null) {
-                window.Text = String.Format("{0} {1}", Timekeeper.TITLE, windowTitle);
+                //window.Text = String.Format("{0} {1}", Timekeeper.TITLE, windowTitle);
+                window.Text = String.Format("{0}", windowTitle);
             } else {
-                window.Text = String.Format("{0} {1} - {2}", Timekeeper.TITLE, windowTitle, viewName);
+                //window.Text = String.Format("{0} {1} - {2}", Timekeeper.TITLE, windowTitle, viewName);
+                window.Text = String.Format("{0} - {1}", windowTitle, viewName);
             }
         }
 

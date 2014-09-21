@@ -57,11 +57,13 @@ namespace Timekeeper.Forms
         private void UpdateStatusBar()
         {
             if (timerRunning == false) {
-                Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
-                Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
-                Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
-                Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
-                StatusBar_Update(Project, Activity, Location, Category);
+                if (ProjectTreeDropdown.SelectedNode != null ) {
+                    Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+                    Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
+                    Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+                    Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
+                    StatusBar_Update(Project, Activity, Location, Category);
+                }
             }
         }
 
@@ -290,19 +292,10 @@ namespace Timekeeper.Forms
                 if ((Meta.ProcessId > 0) && (Options.Advanced_Other_WarnOpeningLockedDatabase)) {
 
                     string Message;
-                    string ProcessName = "Unknown";
-
-                    try {
-                        Process OpenProcess = Process.GetProcessById(Meta.ProcessId);
-                        ProcessName = OpenProcess.ProcessName;
-                    }
-                    catch {
-                        // Safe to ignore
-                    }
 
                     Message = String.Format(
-                            "This database appears to be in use by another program (PID={1}, Name=\"{0}\"). Continue opening?",
-                            ProcessName, Meta.ProcessId);
+                            "This database appears to be in use by another program (PID={0}). Continue opening?",
+                            Meta.ProcessId);
 
                     if (Common.WarnPrompt(Message) == DialogResult.Yes) {
                         Meta.MarkFree();
@@ -317,6 +310,23 @@ namespace Timekeeper.Forms
             }
 
             return true;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_CheckStartTime()
+        {
+            if (StartTimeSelector.Value != priorLoadedBrowserEntry.StartTime) {
+                // First, flag that we've manually set the time if we're leaving and the value has changed
+                StartTimeManuallySet = true;
+
+                // Next, flag a warning if this time already exists in the database
+                if (Entries.Exists(StartTimeSelector.Value)) {
+                    Common.Warn("This is a duplicate start time");
+                }
+            } else {
+                StartTimeManuallySet = false;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -632,8 +642,15 @@ namespace Timekeeper.Forms
                 TrayIcon.Visible = false;
             }
 
+            // Visual tweak
+            Action_SetActionSepVisibility();
+
             // Set date/time formats
             this.Widgets.SetMainFormDatePickerFormats(this);
+
+            // Set idle time (and enable by default; it gets disabled when we start the timer)
+            this.IdleTimer.Interval = this.Options.Behavior_Annoy_NoRunningPromptAmount * 60 * 1000;
+            this.IdleTimer.Enabled = true;
         }
 
         //---------------------------------------------------------------------
@@ -675,12 +692,29 @@ namespace Timekeeper.Forms
         {
             try {
                 //------------------------------------------
+                // Enable UI elements
+                //------------------------------------------
+
+                this.MemoEditor.Enabled = true;
+                this.PanelControls.Enabled = true;
+                this.BrowserToolbar.Enabled = true;
+
+                //------------------------------------------
                 // Perform database sanity check
                 //------------------------------------------
 
                 if (Action_CheckDatabase()) {
                     OpenFileDialog.FileName = DatabaseFileName;
                 } else {
+                    // This looks weird. But then again Issue #1364 was weird.
+                    // In short, the MessageBox (potentially) shown during the
+                    // check database call caused the MemoEditor to *appear*
+                    // disabled (but not actually be disabled) if the MemoEditor
+                    // wasn't enabled before the MessageBox popup. I still can't
+                    // explain it, but this fixes it.
+                    this.MemoEditor.Enabled = false;
+                    this.PanelControls.Enabled = false;
+                    this.BrowserToolbar.Enabled = false;
                     return false;
                 }
 
@@ -715,14 +749,6 @@ namespace Timekeeper.Forms
                 Action_UseLocations(Options.Layout_UseLocations);
                 Action_UseCategories(Options.Layout_UseCategories);
                 Action_AdjustControlPanel();
-
-                //------------------------------------------
-                // Enable UI elements
-                //------------------------------------------
-
-                this.MemoEditor.Enabled = true;
-                this.PanelControls.Enabled = true;
-                this.BrowserToolbar.Enabled = true;
 
                 //------------------------------------------
                 // Prepare Browser
@@ -931,6 +957,15 @@ namespace Timekeeper.Forms
         }
 
         //----------------------------------------------------------------------
+
+        private void Action_SetActionSepVisibility()
+        {
+            MenuActionSep2.Visible =
+                MenuActionManageProjects.Visible ||
+                MenuActionManageActivities.Visible ||
+                MenuActionManageLocations.Visible ||
+                MenuActionManageCategories.Visible;
+        }
 
         private void Action_UseProjects(bool show)
         {
@@ -1210,22 +1245,6 @@ namespace Timekeeper.Forms
                     ElapsedCategoryToday = Convert.ToInt32(TimedCategory.ElapsedToday().TotalSeconds);
                     ElapsedAllToday = Convert.ToInt32(Entries.ElapsedToday());
                 }
-
-                // Annoyance support: if so desired, bug the user that the timer isn't running
-                DateTimeOffset now = Timekeeper.LocalNow;
-                TimeSpan ts = new TimeSpan(now.Ticks - timerLastRun.Ticks);
-                if (Options.Behavior_Annoy_NoRunningPrompt) {
-                    if (ts.TotalMinutes > (double)Options.Behavior_Annoy_NoRunningPromptAmount) {
-                        if (timerRunning == false) {
-                            if (TrayIcon.Visible) {
-                                TrayIcon.ShowBalloonTip(30000,
-                                    Timekeeper.TITLE,
-                                    "No timer is currently running.\n\nYou can change the frequency of this notification (or disable it completely) in the Options dialog box.",
-                                    ToolTipIcon.Info);
-                            }
-                        }
-                    }
-                }
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -1264,6 +1283,19 @@ namespace Timekeeper.Forms
             TimedActivity = null;
             TimedLocation = null;
             TimedCategory = null;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_IdleTick()
+        {
+            string Message = String.Format(
+                "No timer is currently running.\n\n" +
+                "You can change the frequency of this notification (or disable it completely) in the Options dialog box.");
+
+            if (Options.Behavior_Annoy_NoRunningPrompt)
+                if (TrayIcon.Visible)
+                    TrayIcon.ShowBalloonTip(30000, Timekeeper.TITLE, Message, ToolTipIcon.Info);
         }
 
         //---------------------------------------------------------------------
@@ -1348,6 +1380,9 @@ namespace Timekeeper.Forms
                 }
             }
 
+            // We're not idle if the timer is running
+            IdleTimer.Enabled = false;
+
             // As soon as the timer has started, we have to paint "stop" mode.
             Browser_SetupForStopping();
         }
@@ -1407,6 +1442,9 @@ namespace Timekeeper.Forms
 
             // As soon as the timer has stopped, we have to paint "start" mode.
             newBrowserEntry = null;
+
+            // Start the clock
+            IdleTimer.Enabled = true;
 
             // FIXME: stopping the timer != opening the browser
             Browser_SetupForStarting(false);
@@ -1485,8 +1523,10 @@ namespace Timekeeper.Forms
                 if ((currentTime != previousTime) || (ToolbarRevert.Enabled)) {
                     Browser_UpdateDurationBox();
                     Browser_EnableRevert(true);
-                    Browser_DetermineStartGapState();
-                    Browser_DetermineStopGapState();
+                    if (InlineEditing == TimeBox.StartTime)
+                        Browser_DetermineStartGapState();
+                    if (InlineEditing == TimeBox.StopTime)
+                        Browser_DetermineStopGapState();
                 }
             }
         }

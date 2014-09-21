@@ -61,6 +61,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.btnCalcDifference);
             this.tabPage1.Controls.Add(this.wResultDiff2);
@@ -76,7 +77,6 @@
             this.tabPage1.Size = new System.Drawing.Size(455, 184);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Date Difference";
-            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -157,31 +157,31 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(455, 184);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Add or Subtract Days";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabPage3
             // 
+            this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(455, 184);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Calendar Conversion";
-            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // tabPage4
             // 
+            this.tabPage4.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Size = new System.Drawing.Size(455, 184);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Milestones";
-            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // btnClose
             // 

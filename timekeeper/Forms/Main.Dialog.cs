@@ -153,6 +153,7 @@ namespace Timekeeper.Forms
             Action_UseLocations(Options.Layout_UseLocations);
             Action_UseCategories(Options.Layout_UseCategories);
             Action_AdjustControlPanel();
+            Action_SetActionSepVisibility();
 
             // Set dimension widget width
 
@@ -184,20 +185,41 @@ namespace Timekeeper.Forms
             // Set date/time formats
             this.Widgets.SetMainFormDatePickerFormats(this);
 
+            // Set idle time
+            this.IdleTimer.Interval = this.Options.Behavior_Annoy_NoRunningPromptAmount * 60 * 1000;
+
             // Set form dimensions
             if (interfaceChanged) {
                 switch (Options.Layout_InterfacePreset) {
                     case 0:
-                        Height = 175;
-                        Width = 300;
+                        /*
+                        Height = 60;
+                        Width = 250;
+                        ClientSize.Width = 260;
+                        ClientSize.Height = 24;
+                        */
+                        ClientSize = new Size(260, 24);
                         break;
                     case 1:
-                        Height = 310;
-                        Width = 470;
+                        /*
+                        Height = 175;
+                        Width = 300;
+                        */
+                        ClientSize = new Size(310, 140);
                         break;
                     case 2:
+                        /*
+                        Height = 310;
+                        Width = 470;
+                        */
+                        ClientSize = new Size(464, 270);
+                        break;
+                    case 3:
+                        /*
                         Height = 460;
                         Width = 570;
+                        */
+                        ClientSize = new Size(566, 340);
                         break;
                 }
             }

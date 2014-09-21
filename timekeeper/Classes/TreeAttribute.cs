@@ -589,7 +589,10 @@ namespace Timekeeper.Classes
         {
             // Update database
             Row Row = new Row();
-            Row["ParentId"] = itemId;
+            if (itemId == 0)
+                Row["ParentId"] = null;
+            else
+                Row["ParentId"] = itemId;
             Row["ModifyTime"] = Timekeeper.DateForDatabase();
             Row["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName, itemId);
             long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);

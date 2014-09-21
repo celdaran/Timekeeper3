@@ -902,6 +902,25 @@ namespace Timekeeper.Forms
             Behavior_SortItemsByDirection.Enabled = Behavior_SortItemsBy.SelectedIndex > 0;
         }
 
+        private void Layout_Preset_Minimal_Click(object sender, EventArgs e)
+        {
+            Layout_UseProjects.Checked = false;
+            Layout_UseActivities.Checked = false;
+            Layout_UseLocations.Checked = false;
+            Layout_UseCategories.Checked = false;
+
+            View_BrowserToolbar.Checked = false;
+            View_MemoEditor.Checked = false;
+            View_ControlPanel.Checked = false;
+            View_StatusBar.Checked = false;
+
+            Behavior_TitleBar_Template.Text = "%time";
+            Behavior_TitleBar_Time.SelectedIndex = 0;
+
+            Values.Layout_InterfacePreset = 0;
+            InterfaceChanged = true;
+        }
+
         private void Layout_Preset_Simple_Click(object sender, EventArgs e)
         {
             Layout_UseProjects.Checked = true;
@@ -933,13 +952,14 @@ namespace Timekeeper.Forms
             View_HiddenCategories.Checked = false;
 
             View_MemoEditor_ShowToolbar.Checked = false;
+            View_MemoEditor_ShowRuler.Checked = false;
 
             Behavior_TitleBar_Template.Text = "%time - %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
             Advanced_Other_DimensionWidth.Value = 150;
 
-            Values.Layout_InterfacePreset = 0;
+            Values.Layout_InterfacePreset = 1;
             InterfaceChanged = true;
         }
 
@@ -974,13 +994,14 @@ namespace Timekeeper.Forms
             View_HiddenCategories.Checked = false;
 
             View_MemoEditor_ShowToolbar.Checked = false;
+            View_MemoEditor_ShowRuler.Checked = false;
 
             Behavior_TitleBar_Template.Text = "%time - %activity for %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
             Advanced_Other_DimensionWidth.Value = 150;
 
-            Values.Layout_InterfacePreset = 1;
+            Values.Layout_InterfacePreset = 2;
             InterfaceChanged = true;
         }
 
@@ -1015,13 +1036,14 @@ namespace Timekeeper.Forms
             View_HiddenCategories.Checked = true;
 
             View_MemoEditor_ShowToolbar.Checked = true;
+            View_MemoEditor_ShowRuler.Checked = true;
 
             Behavior_TitleBar_Template.Text = "%time - %activity for %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
             Advanced_Other_DimensionWidth.Value = 250;
 
-            Values.Layout_InterfacePreset = 2;
+            Values.Layout_InterfacePreset = 3;
             InterfaceChanged = true;
         }
 

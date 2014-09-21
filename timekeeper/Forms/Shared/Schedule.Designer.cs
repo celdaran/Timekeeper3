@@ -171,6 +171,7 @@ namespace Timekeeper.Forms.Shared
             // 
             // ScheduleTab
             // 
+            this.ScheduleTab.BackColor = System.Drawing.SystemColors.Control;
             this.ScheduleTab.Controls.Add(this.RecurCronRadioButton);
             this.ScheduleTab.Controls.Add(this.ThenLabel);
             this.ScheduleTab.Controls.Add(this.EventNextOccurrence);
@@ -188,7 +189,6 @@ namespace Timekeeper.Forms.Shared
             this.ScheduleTab.Size = new System.Drawing.Size(407, 218);
             this.ScheduleTab.TabIndex = 1;
             this.ScheduleTab.Text = "Schedule";
-            this.ScheduleTab.UseVisualStyleBackColor = true;
             // 
             // RecurCronRadioButton
             // 
@@ -1016,6 +1016,7 @@ namespace Timekeeper.Forms.Shared
             // 
             // DurationTab
             // 
+            this.DurationTab.BackColor = System.Drawing.SystemColors.Control;
             this.DurationTab.Controls.Add(this.StopAfterTimeValue);
             this.DurationTab.Controls.Add(this.label4);
             this.DurationTab.Controls.Add(this.StopAfterCountValue);
@@ -1028,7 +1029,6 @@ namespace Timekeeper.Forms.Shared
             this.DurationTab.Size = new System.Drawing.Size(407, 218);
             this.DurationTab.TabIndex = 3;
             this.DurationTab.Text = "Duration";
-            this.DurationTab.UseVisualStyleBackColor = true;
             // 
             // StopAfterTimeValue
             // 
@@ -1109,6 +1109,7 @@ namespace Timekeeper.Forms.Shared
             // 
             // PreviewTab
             // 
+            this.PreviewTab.BackColor = System.Drawing.SystemColors.Control;
             this.PreviewTab.Controls.Add(this.PreviewCountUpdateButton);
             this.PreviewTab.Controls.Add(this.PreviewCountLabel);
             this.PreviewTab.Controls.Add(this.PreviewCount);
@@ -1119,7 +1120,6 @@ namespace Timekeeper.Forms.Shared
             this.PreviewTab.Size = new System.Drawing.Size(407, 218);
             this.PreviewTab.TabIndex = 4;
             this.PreviewTab.Text = "Preview";
-            this.PreviewTab.UseVisualStyleBackColor = true;
             // 
             // PreviewCountUpdateButton
             // 

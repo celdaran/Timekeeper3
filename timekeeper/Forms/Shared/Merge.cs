@@ -138,6 +138,31 @@ namespace Timekeeper.Forms.Shared
         }
 
         //----------------------------------------------------------------------
+
+        // FIXME: duplicated code from TreeAttributeManager. Move to Widgets class...
+        private void Tree_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)SelectedNode.Tag;
+                if (Item.IsFolderOpened) {
+                    Item.CloseFolder();
+                }
+            }
+        }
+
+        private void Tree_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)SelectedNode.Tag;
+                if (!Item.IsFolderOpened) {
+                    Item.OpenFolder();
+                }
+            }
+        }
+
+        //----------------------------------------------------------------------
         // Button events
         //----------------------------------------------------------------------
 

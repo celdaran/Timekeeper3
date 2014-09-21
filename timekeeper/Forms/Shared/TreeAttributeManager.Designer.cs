@@ -54,6 +54,7 @@
             this.PopupMenuProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.Tree = new System.Windows.Forms.TreeView();
+            this.CloseDialogButton = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.PopupMenu.SuspendLayout();
             this.SuspendLayout();
@@ -76,7 +77,7 @@
             this.MenuNew.Image = global::Timekeeper.Properties.Resources.ImageButtonNew;
             this.MenuNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.MenuNew.Name = "MenuNew";
-            this.MenuNew.Size = new System.Drawing.Size(48, 22);
+            this.MenuNew.Size = new System.Drawing.Size(51, 22);
             this.MenuNew.Text = "New";
             this.MenuNew.Click += new System.EventHandler(this.MenuNew_Click);
             // 
@@ -85,7 +86,7 @@
             this.MenuNewFolder.Image = global::Timekeeper.Properties.Resources.ImageIconSmallFolder;
             this.MenuNewFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.MenuNewFolder.Name = "MenuNewFolder";
-            this.MenuNewFolder.Size = new System.Drawing.Size(81, 22);
+            this.MenuNewFolder.Size = new System.Drawing.Size(87, 22);
             this.MenuNewFolder.Text = "New Folder";
             this.MenuNewFolder.Click += new System.EventHandler(this.MenuNewFolder_Click);
             // 
@@ -104,60 +105,60 @@
             this.MenuOther.Image = ((System.Drawing.Image)(resources.GetObject("MenuOther.Image")));
             this.MenuOther.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.MenuOther.Name = "MenuOther";
-            this.MenuOther.Size = new System.Drawing.Size(48, 22);
+            this.MenuOther.Size = new System.Drawing.Size(50, 22);
             this.MenuOther.Text = "Other";
             // 
             // MenuEdit
             // 
             this.MenuEdit.Name = "MenuEdit";
-            this.MenuEdit.Size = new System.Drawing.Size(123, 22);
+            this.MenuEdit.Size = new System.Drawing.Size(127, 22);
             this.MenuEdit.Text = "Edit...";
             this.MenuEdit.Click += new System.EventHandler(this.MenuEdit_Click);
             // 
             // MenuRename
             // 
             this.MenuRename.Name = "MenuRename";
-            this.MenuRename.Size = new System.Drawing.Size(123, 22);
+            this.MenuRename.Size = new System.Drawing.Size(127, 22);
             this.MenuRename.Text = "Rename";
             this.MenuRename.Click += new System.EventHandler(this.MenuRename_Click);
             // 
             // MenuHide
             // 
             this.MenuHide.Name = "MenuHide";
-            this.MenuHide.Size = new System.Drawing.Size(123, 22);
+            this.MenuHide.Size = new System.Drawing.Size(127, 22);
             this.MenuHide.Text = "Hide";
             this.MenuHide.Click += new System.EventHandler(this.MenuHide_Click);
             // 
             // MenuUnhide
             // 
             this.MenuUnhide.Name = "MenuUnhide";
-            this.MenuUnhide.Size = new System.Drawing.Size(123, 22);
+            this.MenuUnhide.Size = new System.Drawing.Size(127, 22);
             this.MenuUnhide.Text = "Unhide";
             this.MenuUnhide.Click += new System.EventHandler(this.MenuUnhide_Click);
             // 
             // MenuMerge
             // 
             this.MenuMerge.Name = "MenuMerge";
-            this.MenuMerge.Size = new System.Drawing.Size(123, 22);
+            this.MenuMerge.Size = new System.Drawing.Size(127, 22);
             this.MenuMerge.Text = "Merge...";
             this.MenuMerge.Click += new System.EventHandler(this.MenuMerge_Click);
             // 
             // MenuDelete
             // 
             this.MenuDelete.Name = "MenuDelete";
-            this.MenuDelete.Size = new System.Drawing.Size(123, 22);
+            this.MenuDelete.Size = new System.Drawing.Size(127, 22);
             this.MenuDelete.Text = "Delete...";
             this.MenuDelete.Click += new System.EventHandler(this.MenuDelete_Click);
             // 
             // MenuSep1
             // 
             this.MenuSep1.Name = "MenuSep1";
-            this.MenuSep1.Size = new System.Drawing.Size(120, 6);
+            this.MenuSep1.Size = new System.Drawing.Size(124, 6);
             // 
             // MenuProperties
             // 
             this.MenuProperties.Name = "MenuProperties";
-            this.MenuProperties.Size = new System.Drawing.Size(123, 22);
+            this.MenuProperties.Size = new System.Drawing.Size(127, 22);
             this.MenuProperties.Text = "Properties";
             this.MenuProperties.Click += new System.EventHandler(this.MenuProperties_Click);
             // 
@@ -175,13 +176,13 @@
             this.PopupMenuSep1,
             this.PopupMenuProperties});
             this.PopupMenu.Name = "menuTask";
-            this.PopupMenu.Size = new System.Drawing.Size(141, 208);
+            this.PopupMenu.Size = new System.Drawing.Size(144, 208);
             // 
             // PopupMenuNew
             // 
             this.PopupMenuNew.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.PopupMenuNew.Name = "PopupMenuNew";
-            this.PopupMenuNew.Size = new System.Drawing.Size(140, 22);
+            this.PopupMenuNew.Size = new System.Drawing.Size(143, 22);
             this.PopupMenuNew.Text = "&New...";
             this.PopupMenuNew.Click += new System.EventHandler(this.MenuNew_Click);
             // 
@@ -190,42 +191,42 @@
             this.PopupMenuNewFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.PopupMenuNewFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.PopupMenuNewFolder.Name = "PopupMenuNewFolder";
-            this.PopupMenuNewFolder.Size = new System.Drawing.Size(140, 22);
+            this.PopupMenuNewFolder.Size = new System.Drawing.Size(143, 22);
             this.PopupMenuNewFolder.Text = "New &Folder...";
             this.PopupMenuNewFolder.Click += new System.EventHandler(this.MenuNewFolder_Click);
             // 
             // PopupMenuEdit
             // 
             this.PopupMenuEdit.Name = "PopupMenuEdit";
-            this.PopupMenuEdit.Size = new System.Drawing.Size(140, 22);
+            this.PopupMenuEdit.Size = new System.Drawing.Size(143, 22);
             this.PopupMenuEdit.Text = "&Edit...";
             this.PopupMenuEdit.Click += new System.EventHandler(this.MenuEdit_Click);
             // 
             // PopupMenuRename
             // 
             this.PopupMenuRename.Name = "PopupMenuRename";
-            this.PopupMenuRename.Size = new System.Drawing.Size(140, 22);
+            this.PopupMenuRename.Size = new System.Drawing.Size(143, 22);
             this.PopupMenuRename.Text = "&Rename";
             this.PopupMenuRename.Click += new System.EventHandler(this.MenuRename_Click);
             // 
             // PopupMenuMerge
             // 
             this.PopupMenuMerge.Name = "PopupMenuMerge";
-            this.PopupMenuMerge.Size = new System.Drawing.Size(140, 22);
+            this.PopupMenuMerge.Size = new System.Drawing.Size(143, 22);
             this.PopupMenuMerge.Text = "Merge...";
             this.PopupMenuMerge.Click += new System.EventHandler(this.MenuMerge_Click);
             // 
             // PopupMenuHide
             // 
             this.PopupMenuHide.Name = "PopupMenuHide";
-            this.PopupMenuHide.Size = new System.Drawing.Size(140, 22);
+            this.PopupMenuHide.Size = new System.Drawing.Size(143, 22);
             this.PopupMenuHide.Text = "&Hide";
             this.PopupMenuHide.Click += new System.EventHandler(this.MenuHide_Click);
             // 
             // PopupMenuUnhide
             // 
             this.PopupMenuUnhide.Name = "PopupMenuUnhide";
-            this.PopupMenuUnhide.Size = new System.Drawing.Size(140, 22);
+            this.PopupMenuUnhide.Size = new System.Drawing.Size(143, 22);
             this.PopupMenuUnhide.Text = "Un&hide";
             this.PopupMenuUnhide.Visible = false;
             this.PopupMenuUnhide.Click += new System.EventHandler(this.MenuUnhide_Click);
@@ -233,19 +234,19 @@
             // PopupMenuDelete
             // 
             this.PopupMenuDelete.Name = "PopupMenuDelete";
-            this.PopupMenuDelete.Size = new System.Drawing.Size(140, 22);
+            this.PopupMenuDelete.Size = new System.Drawing.Size(143, 22);
             this.PopupMenuDelete.Text = "&Delete...";
             this.PopupMenuDelete.Click += new System.EventHandler(this.MenuDelete_Click);
             // 
             // PopupMenuSep1
             // 
             this.PopupMenuSep1.Name = "PopupMenuSep1";
-            this.PopupMenuSep1.Size = new System.Drawing.Size(137, 6);
+            this.PopupMenuSep1.Size = new System.Drawing.Size(140, 6);
             // 
             // PopupMenuProperties
             // 
             this.PopupMenuProperties.Name = "PopupMenuProperties";
-            this.PopupMenuProperties.Size = new System.Drawing.Size(140, 22);
+            this.PopupMenuProperties.Size = new System.Drawing.Size(143, 22);
             this.PopupMenuProperties.Text = "&Properties...";
             this.PopupMenuProperties.Click += new System.EventHandler(this.MenuProperties_Click);
             // 
@@ -289,11 +290,24 @@
             this.Tree.DoubleClick += new System.EventHandler(this.Tree_DoubleClick);
             this.Tree.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Tree_KeyDown);
             // 
+            // CloseDialogButton
+            // 
+            this.CloseDialogButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CloseDialogButton.Location = new System.Drawing.Point(0, 25);
+            this.CloseDialogButton.Name = "CloseDialogButton";
+            this.CloseDialogButton.Size = new System.Drawing.Size(0, 0);
+            this.CloseDialogButton.TabIndex = 4;
+            this.CloseDialogButton.TabStop = false;
+            this.CloseDialogButton.Text = "button1";
+            this.CloseDialogButton.UseVisualStyleBackColor = true;
+            // 
             // TreeAttributeManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.CloseDialogButton;
             this.ClientSize = new System.Drawing.Size(350, 242);
+            this.Controls.Add(this.CloseDialogButton);
             this.Controls.Add(this.Tree);
             this.Controls.Add(this.toolStrip1);
             this.MaximizeBox = false;
@@ -340,5 +354,6 @@
         private System.Windows.Forms.ToolStripSeparator MenuSep1;
         private System.Windows.Forms.ToolStripMenuItem MenuProperties;
         private System.Windows.Forms.ToolStripMenuItem MenuEdit;
+        private System.Windows.Forms.Button CloseDialogButton;
     }
 }

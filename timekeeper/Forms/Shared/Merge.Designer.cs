@@ -54,6 +54,8 @@
             this.ItemTree.SelectedImageIndex = 0;
             this.ItemTree.Size = new System.Drawing.Size(510, 200);
             this.ItemTree.TabIndex = 1;
+            this.ItemTree.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterCollapse);
+            this.ItemTree.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterExpand);
             this.ItemTree.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.ItemTree_BeforeSelect);
             this.ItemTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ItemTree_AfterSelect);
             this.ItemTree.DoubleClick += new System.EventHandler(this.ItemTree_DoubleClick);
@@ -136,7 +138,7 @@
             this.FilterButton.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
             this.FilterButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FilterButton.Name = "FilterButton";
-            this.FilterButton.Size = new System.Drawing.Size(51, 22);
+            this.FilterButton.Size = new System.Drawing.Size(53, 22);
             this.FilterButton.Text = "Filter";
             this.FilterButton.ToolTipText = "Use a filter to limit the number of Journal Entries merged.";
             this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);

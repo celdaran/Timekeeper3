@@ -54,6 +54,10 @@ namespace Timekeeper.Forms
         private long ElapsedCategoryToday;
         private long ElapsedAllToday;
 
+        // Hack? Set when editing start/end time
+        public enum TimeBox { None, StartTime, StopTime, Duration };
+        private TimeBox InlineEditing = TimeBox.None;
+
         // Open form tracking
         public List<Form> OpenForms = new List<Form>();
 
@@ -133,6 +137,12 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
+
+        // Adjust menu upon opening
+        private void MenuAction_DropDownOpened(object sender, EventArgs e)
+        {
+            Action_SetActionSepVisibility();
+        }
 
         // Action | Start Timer
         private void MenuActionStartTimer_Click(object sender, EventArgs e)
@@ -646,21 +656,27 @@ namespace Timekeeper.Forms
             Action_LongTick();
         }
 
+        private void IdleTimer_Tick(object sender, EventArgs e)
+        {
+            Action_IdleTick();
+        }
+
         //---------------------------------------------------------------------
         // Editing events
         //---------------------------------------------------------------------
 
         private void wStartTime_Leave(object sender, EventArgs e)
         {
-            // FIXME: move this into Action
-            StartTimeManuallySet = (StartTimeSelector.Value != priorLoadedBrowserEntry.StartTime);
+            InlineEditing = TimeBox.StartTime;
             Action_UpdateDuration(StartTimeSelector.Value, priorLoadedBrowserEntry.StartTime);
+            Action_CheckStartTime();
         }
 
         //---------------------------------------------------------------------
 
         private void wStopTime_Leave(object sender, EventArgs e)
         {
+            InlineEditing = TimeBox.StopTime;
             Action_UpdateDuration(StopTimeSelector.Value, priorLoadedBrowserEntry.StopTime);
         }
 
@@ -668,6 +684,7 @@ namespace Timekeeper.Forms
 
         private void wDuration_Leave(object sender, EventArgs e)
         {
+            InlineEditing = TimeBox.Duration;
             Browser_UpdateTimes();
         }
 

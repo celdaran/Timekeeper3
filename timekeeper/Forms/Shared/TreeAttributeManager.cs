@@ -680,22 +680,44 @@ namespace Timekeeper.Forms.Shared
                         targetNode.Expand();
                     }
                 }
-            } else if (!draggedNode.Equals(targetNode) && Action_TreeView_IsSibling(draggedNode, targetNode)) {
+            }
+            else if (!draggedNode.Equals(targetNode) && Action_TreeView_IsSibling(draggedNode, targetNode)) {
 
                 int OldIndex = targetNode.Index;
                 TreeNode Parent = targetNode.Parent;
 
-                draggedNode.Remove();
-                targetNode.Parent.Nodes.Insert(targetNode.Index + 1, draggedNode);
-                targetNode.Remove();
-                Parent.Nodes.Insert(OldIndex + 1, targetNode);
+                if (Parent == null) {
+                    // Swapping siblings at the root
+                    // FIXME: about 100% copy/paste here between the two
+                    // the only difference is "who's the parent"?
+                    draggedNode.Remove();
 
-                long Index = 1;
-                foreach (TreeNode node in Parent.Nodes) {
-                    Classes.TreeAttribute Item = (Classes.TreeAttribute)node.Tag;
-                    Item.Reorder(Index);
-                    Index++;
+                    tree.Nodes.Insert(targetNode.Index + 1, draggedNode);
+                    targetNode.Remove();
+                    tree.Nodes.Insert(OldIndex + 1, targetNode);
+
+                    long Index = 1;
+                    foreach (TreeNode node in tree.Nodes) {
+                        Classes.TreeAttribute Item = (Classes.TreeAttribute)node.Tag;
+                        Item.Reorder(Index);
+                        Index++;
+                    }
+                } else {
+                    // Swapping siblings under a folder
+                    draggedNode.Remove();
+
+                    Parent.Nodes.Insert(targetNode.Index + 1, draggedNode);
+                    targetNode.Remove();
+                    Parent.Nodes.Insert(OldIndex + 1, targetNode);
+
+                    long Index = 1;
+                    foreach (TreeNode node in Parent.Nodes) {
+                        Classes.TreeAttribute Item = (Classes.TreeAttribute)node.Tag;
+                        Item.Reorder(Index);
+                        Index++;
+                    }
                 }
+
             } else {
                 Common.Warn("Cannot drop item here");
             }

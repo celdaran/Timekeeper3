@@ -34,6 +34,7 @@
             this.OptionsPanelCollection = new System.Windows.Forms.TabControl();
             this.LayoutPage = new System.Windows.Forms.TabPage();
             this.PresetGroup = new System.Windows.Forms.GroupBox();
+            this.Layout_Preset_Minimal = new System.Windows.Forms.RadioButton();
             this.PresetInstructionsLabel = new System.Windows.Forms.Label();
             this.Layout_Preset_TheWorks = new System.Windows.Forms.RadioButton();
             this.Layout_Preset_Simple = new System.Windows.Forms.RadioButton();
@@ -187,6 +188,7 @@
             this.AdvancedPage = new System.Windows.Forms.TabPage();
             this.AdvancedSpacerBox = new System.Windows.Forms.PictureBox();
             this.AdvancedFormattingGroup = new System.Windows.Forms.GroupBox();
+            this.Advanced_DateTimeFormat = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.Advanced_BreakTemplate = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -211,7 +213,6 @@
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
-            this.Advanced_DateTimeFormat = new System.Windows.Forms.ComboBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -323,16 +324,29 @@
             // 
             // PresetGroup
             // 
+            this.PresetGroup.Controls.Add(this.Layout_Preset_Minimal);
             this.PresetGroup.Controls.Add(this.PresetInstructionsLabel);
             this.PresetGroup.Controls.Add(this.Layout_Preset_TheWorks);
             this.PresetGroup.Controls.Add(this.Layout_Preset_Simple);
             this.PresetGroup.Controls.Add(this.Layout_Preset_Typical);
             this.PresetGroup.Location = new System.Drawing.Point(17, 16);
             this.PresetGroup.Name = "PresetGroup";
-            this.PresetGroup.Size = new System.Drawing.Size(345, 125);
-            this.PresetGroup.TabIndex = 3;
+            this.PresetGroup.Size = new System.Drawing.Size(345, 150);
+            this.PresetGroup.TabIndex = 0;
             this.PresetGroup.TabStop = false;
             this.PresetGroup.Text = "Interface Presets";
+            // 
+            // Layout_Preset_Minimal
+            // 
+            this.Layout_Preset_Minimal.Appearance = System.Windows.Forms.Appearance.Button;
+            this.Layout_Preset_Minimal.Location = new System.Drawing.Point(17, 24);
+            this.Layout_Preset_Minimal.Name = "Layout_Preset_Minimal";
+            this.Layout_Preset_Minimal.Size = new System.Drawing.Size(90, 23);
+            this.Layout_Preset_Minimal.TabIndex = 1;
+            this.Layout_Preset_Minimal.Text = "Minimal";
+            this.Layout_Preset_Minimal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Layout_Preset_Minimal.UseVisualStyleBackColor = true;
+            this.Layout_Preset_Minimal.Click += new System.EventHandler(this.Layout_Preset_Minimal_Click);
             // 
             // PresetInstructionsLabel
             // 
@@ -347,10 +361,10 @@
             // Layout_Preset_TheWorks
             // 
             this.Layout_Preset_TheWorks.Appearance = System.Windows.Forms.Appearance.Button;
-            this.Layout_Preset_TheWorks.Location = new System.Drawing.Point(17, 86);
+            this.Layout_Preset_TheWorks.Location = new System.Drawing.Point(17, 111);
             this.Layout_Preset_TheWorks.Name = "Layout_Preset_TheWorks";
             this.Layout_Preset_TheWorks.Size = new System.Drawing.Size(90, 23);
-            this.Layout_Preset_TheWorks.TabIndex = 2;
+            this.Layout_Preset_TheWorks.TabIndex = 4;
             this.Layout_Preset_TheWorks.Text = "The Works";
             this.Layout_Preset_TheWorks.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Layout_Preset_TheWorks.UseVisualStyleBackColor = true;
@@ -359,10 +373,10 @@
             // Layout_Preset_Simple
             // 
             this.Layout_Preset_Simple.Appearance = System.Windows.Forms.Appearance.Button;
-            this.Layout_Preset_Simple.Location = new System.Drawing.Point(17, 28);
+            this.Layout_Preset_Simple.Location = new System.Drawing.Point(17, 53);
             this.Layout_Preset_Simple.Name = "Layout_Preset_Simple";
             this.Layout_Preset_Simple.Size = new System.Drawing.Size(90, 23);
-            this.Layout_Preset_Simple.TabIndex = 0;
+            this.Layout_Preset_Simple.TabIndex = 2;
             this.Layout_Preset_Simple.Text = "Simple";
             this.Layout_Preset_Simple.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Layout_Preset_Simple.UseVisualStyleBackColor = true;
@@ -371,10 +385,10 @@
             // Layout_Preset_Typical
             // 
             this.Layout_Preset_Typical.Appearance = System.Windows.Forms.Appearance.Button;
-            this.Layout_Preset_Typical.Location = new System.Drawing.Point(17, 57);
+            this.Layout_Preset_Typical.Location = new System.Drawing.Point(17, 82);
             this.Layout_Preset_Typical.Name = "Layout_Preset_Typical";
             this.Layout_Preset_Typical.Size = new System.Drawing.Size(90, 23);
-            this.Layout_Preset_Typical.TabIndex = 1;
+            this.Layout_Preset_Typical.TabIndex = 3;
             this.Layout_Preset_Typical.Text = "Typical";
             this.Layout_Preset_Typical.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Layout_Preset_Typical.UseVisualStyleBackColor = true;
@@ -387,7 +401,7 @@
             this.DimensionGroup.Controls.Add(this.Layout_UseLocations);
             this.DimensionGroup.Controls.Add(this.Layout_UseActivities);
             this.DimensionGroup.Controls.Add(this.Layout_UseProjects);
-            this.DimensionGroup.Location = new System.Drawing.Point(17, 147);
+            this.DimensionGroup.Location = new System.Drawing.Point(17, 172);
             this.DimensionGroup.Name = "DimensionGroup";
             this.DimensionGroup.Size = new System.Drawing.Size(345, 151);
             this.DimensionGroup.TabIndex = 0;
@@ -410,7 +424,7 @@
             this.Layout_UseCategories.Location = new System.Drawing.Point(17, 115);
             this.Layout_UseCategories.Name = "Layout_UseCategories";
             this.Layout_UseCategories.Size = new System.Drawing.Size(90, 23);
-            this.Layout_UseCategories.TabIndex = 9;
+            this.Layout_UseCategories.TabIndex = 8;
             this.Layout_UseCategories.Text = "Use Categories";
             this.Layout_UseCategories.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Layout_UseCategories.UseVisualStyleBackColor = true;
@@ -423,7 +437,7 @@
             this.Layout_UseLocations.Location = new System.Drawing.Point(17, 86);
             this.Layout_UseLocations.Name = "Layout_UseLocations";
             this.Layout_UseLocations.Size = new System.Drawing.Size(90, 23);
-            this.Layout_UseLocations.TabIndex = 8;
+            this.Layout_UseLocations.TabIndex = 7;
             this.Layout_UseLocations.Text = "Use Locations";
             this.Layout_UseLocations.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Layout_UseLocations.UseVisualStyleBackColor = true;
@@ -436,7 +450,7 @@
             this.Layout_UseActivities.Location = new System.Drawing.Point(17, 57);
             this.Layout_UseActivities.Name = "Layout_UseActivities";
             this.Layout_UseActivities.Size = new System.Drawing.Size(90, 23);
-            this.Layout_UseActivities.TabIndex = 7;
+            this.Layout_UseActivities.TabIndex = 6;
             this.Layout_UseActivities.Text = "Use Activities";
             this.Layout_UseActivities.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Layout_UseActivities.UseVisualStyleBackColor = true;
@@ -449,7 +463,7 @@
             this.Layout_UseProjects.Location = new System.Drawing.Point(17, 28);
             this.Layout_UseProjects.Name = "Layout_UseProjects";
             this.Layout_UseProjects.Size = new System.Drawing.Size(90, 23);
-            this.Layout_UseProjects.TabIndex = 6;
+            this.Layout_UseProjects.TabIndex = 5;
             this.Layout_UseProjects.Text = "Use Projects";
             this.Layout_UseProjects.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Layout_UseProjects.UseVisualStyleBackColor = true;
@@ -1174,9 +1188,24 @@
             // Behavior_Annoy_NoRunningPromptAmount
             // 
             this.Behavior_Annoy_NoRunningPromptAmount.Location = new System.Drawing.Point(189, 25);
+            this.Behavior_Annoy_NoRunningPromptAmount.Maximum = new decimal(new int[] {
+            720,
+            0,
+            0,
+            0});
+            this.Behavior_Annoy_NoRunningPromptAmount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.Behavior_Annoy_NoRunningPromptAmount.Name = "Behavior_Annoy_NoRunningPromptAmount";
             this.Behavior_Annoy_NoRunningPromptAmount.Size = new System.Drawing.Size(53, 20);
             this.Behavior_Annoy_NoRunningPromptAmount.TabIndex = 6;
+            this.Behavior_Annoy_NoRunningPromptAmount.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // MinutesLabel
             // 
@@ -2058,6 +2087,19 @@
             this.AdvancedFormattingGroup.TabStop = false;
             this.AdvancedFormattingGroup.Text = "Formatting";
             // 
+            // Advanced_DateTimeFormat
+            // 
+            this.Advanced_DateTimeFormat.FormattingEnabled = true;
+            this.Advanced_DateTimeFormat.Items.AddRange(new object[] {
+            "yyyy-MM-dd HH:mm:ss",
+            "M/d/yy h:mm:ss tt",
+            "d/M/yyyy hh:mm:ss",
+            "MMMM d, yyyy hh:mm:ss"});
+            this.Advanced_DateTimeFormat.Location = new System.Drawing.Point(127, 26);
+            this.Advanced_DateTimeFormat.Name = "Advanced_DateTimeFormat";
+            this.Advanced_DateTimeFormat.Size = new System.Drawing.Size(202, 21);
+            this.Advanced_DateTimeFormat.TabIndex = 17;
+            // 
             // label16
             // 
             this.label16.AutoSize = true;
@@ -2355,19 +2397,6 @@
             this.LoggingApplicationLabel.Size = new System.Drawing.Size(62, 13);
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
-            // 
-            // Advanced_DateTimeFormat
-            // 
-            this.Advanced_DateTimeFormat.FormattingEnabled = true;
-            this.Advanced_DateTimeFormat.Items.AddRange(new object[] {
-            "yyyy-MM-dd hh:mm:ss",
-            "M/d/yy h:mm:ss tt",
-            "d/M/yyyy hh:mm:ss",
-            "MMMM d, yyyy hh:mm:ss"});
-            this.Advanced_DateTimeFormat.Location = new System.Drawing.Point(127, 26);
-            this.Advanced_DateTimeFormat.Name = "Advanced_DateTimeFormat";
-            this.Advanced_DateTimeFormat.Size = new System.Drawing.Size(202, 21);
-            this.Advanced_DateTimeFormat.TabIndex = 17;
             // 
             // Options
             // 
@@ -2670,6 +2699,7 @@
         private System.Windows.Forms.Label SortItemsLabel;
         private System.Windows.Forms.CheckBox View_MemoEditor_ShowRuler;
         private System.Windows.Forms.ComboBox Advanced_DateTimeFormat;
+        private System.Windows.Forms.RadioButton Layout_Preset_Minimal;
 
     }
 }

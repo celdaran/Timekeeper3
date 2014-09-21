@@ -460,10 +460,10 @@ namespace Timekeeper
                         }
                         break;
                     case 2:
-                        // two parts => hours minutes
-                        h = Convert.ToInt64(parts[0]) * 3600;
-                        m = Convert.ToInt64(parts[1]) * 60;
-                        s = 0;
+                        // two parts => minutes seconds
+                        h = 0;
+                        m = Convert.ToInt64(parts[0]) * 60;
+                        s = Convert.ToInt64(parts[1]);
                         if ((m < 0) || (m > 3599)) {
                             throw new System.ApplicationException("invalid minutes");
                         }

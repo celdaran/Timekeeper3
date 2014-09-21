@@ -213,14 +213,18 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public void Save()
+        public bool Save()
         {
+            bool Saved = false;
             try {
-                Database.Update("Journal", GetAttributes(Mode.Update), "JournalId", JournalId);
+                long RowsUpdated = Database.Update("Journal", GetAttributes(Mode.Update), "JournalId", JournalId);
+                if (RowsUpdated > 0)
+                    Saved = true;
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
+            return Saved;
         }
 
         //---------------------------------------------------------------------

@@ -58,6 +58,9 @@ namespace Timekeeper.Forms
                 if (!isBrowsing) {
                     StartTimeManuallySet = true;
                 }
+
+                // Remove alert
+                Browser_AlertCloseStartGap(false);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -86,6 +89,9 @@ namespace Timekeeper.Forms
 
                 // Enable revert
                 Browser_EnableRevert(true);
+
+                // Remove alert
+                Browser_AlertCloseStopGap(false);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -120,12 +126,6 @@ namespace Timekeeper.Forms
 
         private void Browser_DisplayRow()
         {
-            /*
-             * Run just this part for performance testing purposes.
-            Browser_EntryToForm(browserEntry);
-            return;
-            */
-
             try {
                 Browser_SetBrowseState();
 
@@ -188,6 +188,14 @@ namespace Timekeeper.Forms
                         Browser_EnableCloseStartGap(false);
                     } else {
                         Browser_EnableCloseStartGap(true);
+
+                        if (isBrowsing) { // && (InlineEditing != TimeBox.StopTime)) {
+                            if (PreviousEndTime.Value.DateTime.CompareTo(StartTimeSelector.Value) < 0) {
+                                Browser_AlertCloseStartGap(false);
+                            } else {
+                                Browser_AlertCloseStartGap(true);
+                            }
+                        }
                     }
                 }
             }
@@ -211,6 +219,14 @@ namespace Timekeeper.Forms
                         Browser_EnableCloseStopGap(false);
                     } else {
                         Browser_EnableCloseStopGap(true);
+
+                        if (isBrowsing) { // && (InlineEditing != TimeBox.StartTime)) {
+                            if (NextStartTime.Value.DateTime.CompareTo(StopTimeSelector.Value) > 0) {
+                                Browser_AlertCloseStopGap(false);
+                            } else {
+                                Browser_AlertCloseStopGap(true);
+                            }
+                        }
                     }
                 }
             }
@@ -243,6 +259,17 @@ namespace Timekeeper.Forms
                 ToolbarStartButton.ToolTipText = "Timer cannot be started while browsing old entries. Click 'Go to New Entry' to begin timing.";
             }
         }
+
+        /*
+                            if (InlineEditing) {
+                                DateTimeOffset? PreviousEndTime = Browser_GetPreviousEndTime();
+                                if (PreviousEndTime.Value.DateTime.CompareTo(StartTimeSelector.Value) > 0) {
+                                    Browser_AlertCloseStartGap(false);
+                                } else {
+                                    Browser_AlertCloseStartGap(true);
+                                }
+                            } else {
+        */
 
         private void Browser_EnableStop(bool enabled)
         {
@@ -340,6 +367,26 @@ namespace Timekeeper.Forms
                 MemoEditor.Enable();
             } else {
                 MemoEditor.Disable();
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Browser_AlertCloseStartGap(bool alert)
+        {
+            if (alert) {
+                CloseStartGapButton.ForeColor = Color.Red;
+            } else {
+                CloseStartGapButton.ForeColor = SystemColors.ControlText;
+            }
+        }
+
+        private void Browser_AlertCloseStopGap(bool alert)
+        {
+            if (alert) {
+                CloseStopGapButton.ForeColor = Color.Red;
+            } else {
+                CloseStopGapButton.ForeColor = SystemColors.ControlText;
             }
         }
 
@@ -563,8 +610,15 @@ namespace Timekeeper.Forms
             // Copy the prior entry to our internal representation
             browserEntry = priorLoadedBrowserEntry.Copy();
 
+            // Update gap buttons
+            Browser_DetermineStartGapState();
+            Browser_DetermineStopGapState();
+
             // Turn off button
             Browser_EnableRevert(false);
+
+            // Revert inline editing
+            InlineEditing = TimeBox.None;
         }
 
         //---------------------------------------------------------------------
@@ -604,11 +658,15 @@ namespace Timekeeper.Forms
 
             // If we made it this far, save
             Timekeeper.Debug("Browser_SaveRow: Checkpoint Hotel");
-            browserEntry.Save();
+            if (browserEntry.Save()) {
+                Browser_EnableRevert(false);
+            } else {
+                Common.Warn("There was a problem saving this journal entry. A duplicate start time is possible.");
+            }
             Timekeeper.Debug("Browser_SaveRow: Checkpoint India");
 
-            // And disable reverting, just in case
-            Browser_EnableRevert(false);
+            // If we've saved, we're no longer inline editing:
+            InlineEditing = TimeBox.None;
 
             // Lastly, update the status bar with any potential time changes
             GetDimensions();
@@ -913,6 +971,12 @@ namespace Timekeeper.Forms
                         Browser_EnableRevert(true);
                     }
 
+                    // Set close gap buttons
+                    if (isBrowsing) {
+                        Browser_DetermineStartGapState();
+                        Browser_DetermineStopGapState();
+                    }
+
                     // reformat duration before leaving
                     Browser_UpdateDurationBox();
                 }
@@ -948,7 +1012,12 @@ namespace Timekeeper.Forms
                 if (browserEntry.AtBeginning()) {
                     return null;
                 } else {
-                    Classes.JournalEntry copy = browserEntry.Copy();
+                    Classes.JournalEntry copy;
+                    if (InlineEditing == TimeBox.StartTime) {
+                        copy = priorLoadedBrowserEntry.Copy();
+                    } else {
+                        copy = browserEntry.Copy();
+                    }
                     copy.LoadPrevious();
                     return copy.StopTime;
                 }
@@ -966,7 +1035,12 @@ namespace Timekeeper.Forms
                 if (browserEntry.AtEnd()) {
                     return null;
                 } else {
-                    Classes.JournalEntry copy = browserEntry.Copy();
+                    Classes.JournalEntry copy;
+                    if (InlineEditing == TimeBox.StopTime) {
+                        copy = priorLoadedBrowserEntry.Copy();
+                    } else {
+                        copy = browserEntry.Copy();
+                    }
                     copy.LoadNext();
                     return copy.StartTime;
                 }
