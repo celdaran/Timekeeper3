@@ -84,20 +84,20 @@
             // 
             // Console
             // 
-            this.Console.BackColor = System.Drawing.SystemColors.WindowText;
+            this.Console.BackColor = System.Drawing.SystemColors.Window;
             this.Console.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Console.ForeColor = System.Drawing.Color.Lime;
-            this.Console.Location = new System.Drawing.Point(18, 71);
+            this.Console.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.Console.Location = new System.Drawing.Point(18, 85);
             this.Console.Name = "Console";
             this.Console.ReadOnly = true;
-            this.Console.Size = new System.Drawing.Size(315, 189);
+            this.Console.Size = new System.Drawing.Size(315, 175);
             this.Console.TabIndex = 1;
             this.Console.Text = "";
             this.Console.WordWrap = false;
             // 
             // ImportProgress
             // 
-            this.ImportProgress.Location = new System.Drawing.Point(18, 42);
+            this.ImportProgress.Location = new System.Drawing.Point(18, 56);
             this.ImportProgress.Name = "ImportProgress";
             this.ImportProgress.Size = new System.Drawing.Size(315, 23);
             this.ImportProgress.TabIndex = 1;
@@ -289,12 +289,12 @@
             // 
             // EndLabel
             // 
-            this.EndLabel.AutoSize = true;
             this.EndLabel.Location = new System.Drawing.Point(15, 13);
             this.EndLabel.Name = "EndLabel";
-            this.EndLabel.Size = new System.Drawing.Size(141, 13);
+            this.EndLabel.Size = new System.Drawing.Size(318, 33);
             this.EndLabel.TabIndex = 3;
-            this.EndLabel.Text = "Click \"Import Now\" to begin.";
+            this.EndLabel.Text = "Click \"Import Now\" to begin. Note, depending on the size of your file, this opera" +
+    "tion could take several minutes.";
             // 
             // Tab4
             // 
@@ -312,20 +312,18 @@
             this.WizardReviewInstructions.Location = new System.Drawing.Point(15, 13);
             this.WizardReviewInstructions.MaximumSize = new System.Drawing.Size(336, 0);
             this.WizardReviewInstructions.Name = "WizardReviewInstructions";
-            this.WizardReviewInstructions.Size = new System.Drawing.Size(324, 39);
+            this.WizardReviewInstructions.Size = new System.Drawing.Size(137, 13);
             this.WizardReviewInstructions.TabIndex = 27;
-            this.WizardReviewInstructions.Text = "Please review your upgrade options and click Import Now to import your data. Note" +
-    ", depending on the size of your database, this operation could take several minu" +
-    "tes.";
+            this.WizardReviewInstructions.Text = "Review your import options.";
             // 
             // WizardReview
             // 
-            this.WizardReview.Location = new System.Drawing.Point(18, 64);
+            this.WizardReview.Location = new System.Drawing.Point(18, 42);
             this.WizardReview.Multiline = true;
             this.WizardReview.Name = "WizardReview";
             this.WizardReview.ReadOnly = true;
             this.WizardReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.WizardReview.Size = new System.Drawing.Size(319, 196);
+            this.WizardReview.Size = new System.Drawing.Size(319, 218);
             this.WizardReview.TabIndex = 1;
             // 
             // Import
@@ -361,7 +359,6 @@
             this.Tab3.ResumeLayout(false);
             this.Tab3.PerformLayout();
             this.Tab5.ResumeLayout(false);
-            this.Tab5.PerformLayout();
             this.Tab4.ResumeLayout(false);
             this.Tab4.PerformLayout();
             this.ResumeLayout(false);

@@ -81,23 +81,34 @@ namespace Timekeeper.Forms
 
             EnsureSelections();
 
-            Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
-            Project = new Classes.TreeAttribute(Project.ItemId, "Project", "ProjectId"); // Note: Must reinstantiate to pick up attribute changes
-            AutoFollow(Project.LastActivityId, ActivityTreeDropdown, Options.Behavior_Annoy_ActivityFollowsProject);
+            try {
+                if (ProjectTreeDropdown.SelectedNode != null) {
+                    // Note, the SelectedNode might still be null after EnsureSelections, if
+                    // the list is completely empty and there are no nodes to select.
 
-            Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
-            AutoFollow(Project.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
+                    Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+                    Project = new Classes.TreeAttribute(Project.ItemId, "Project", "ProjectId"); // Note: Must reinstantiate to pick up attribute changes
+                    AutoFollow(Project.LastActivityId, ActivityTreeDropdown, Options.Behavior_Annoy_ActivityFollowsProject);
 
-            Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
-            AutoFollow(Project.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
+                    Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
+                    AutoFollow(Project.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
 
-            UpdateStatusBar();
+                    Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+                    AutoFollow(Project.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
 
-            MenuBar_ShowHideProject(!Project.IsHidden);
-            MenuBar_ShowMergeProject(Project.IsFolder);
-            MenuBar_ShowDeleteProject(Project.IsDeleted);
+                    UpdateStatusBar();
 
-            SetDirtyBit(Project, browserEntry.ProjectId);
+                    MenuBar_ShowHideProject(!Project.IsHidden);
+                    MenuBar_ShowMergeProject(Project.IsFolder);
+                    MenuBar_ShowDeleteProject(Project.IsDeleted);
+
+                    SetDirtyBit(Project, browserEntry.ProjectId);
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+
         }
 
         //---------------------------------------------------------------------

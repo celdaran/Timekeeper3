@@ -18,6 +18,7 @@ namespace Timekeeper.Classes
         //----------------------------------------------------------------------
 
         private DBI Database;
+        private Classes.Audit Audit;
         private string ImportFileName;
 
         private Dictionary<long, long> FoundProjects = new Dictionary<long,long>();
@@ -35,6 +36,7 @@ namespace Timekeeper.Classes
         public Import(string importFieleName)
         {
             this.Database = Timekeeper.Database;
+            this.Audit = new Classes.Audit();
             this.ImportFileName = importFieleName;
         }
 
@@ -44,6 +46,8 @@ namespace Timekeeper.Classes
 
         public bool Timekeeper1x(bool importProjects, bool importEntries)
         {
+            long RowCount = 0;
+
             try {
                 FileStream ADLfile = new FileStream(ImportFileName + ".adl", FileMode.Open);
 
@@ -133,6 +137,7 @@ namespace Timekeeper.Classes
                             Console.AppendText("Could not parse line " + LineNo.ToString() + "\n");
                         }
                         LineNo++;
+                        RowCount++;
                     }
                 }
             }
@@ -141,6 +146,8 @@ namespace Timekeeper.Classes
                 Timekeeper.Exception(x);
                 return false;
             }
+
+            this.Audit.FileImported("Timekeeper 1.x", this.ImportFileName, RowCount);
 
             return true;
         }
@@ -340,6 +347,8 @@ namespace Timekeeper.Classes
             Message = String.Format("\nImport completed at {0}.\n", Timekeeper.DateForDisplay());
             Console.AppendText(Message);
 
+            this.Audit.FileImported("CSV", this.ImportFileName, ImportedRows);
+
             return Imported;
         }
 
@@ -443,6 +452,8 @@ namespace Timekeeper.Classes
                 Item.Dimension = dimension;
                 Item.IsFolder = false;
                 Item.ParentId = null;
+                if (dimension == Timekeeper.Dimension.Location)
+                    Item.RefTimeZoneId = 35; // UTC
                 Item.Create();
                 if (Item.ItemId > 0) {
                     string Message = String.Format("  Created {0} \"{1}\"\n", dimension, Item.Name);

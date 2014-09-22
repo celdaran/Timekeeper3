@@ -69,6 +69,18 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
+        public void FileImported(string fileType, string fileName, long rowsProcessed)
+        {
+            string AuditMessage =
+                String.Format("{0} file {1} imported, {2} rows processed",
+                    fileType, fileName, rowsProcessed);
+            Log("FileImported", AuditMessage);
+        }
+
+        //----------------------------------------------------------------------
+        // Internal logger
+        //----------------------------------------------------------------------
+
         private void Log(string actionText, string eventText)
         {
             Row Audit = new Row();

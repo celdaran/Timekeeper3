@@ -81,8 +81,8 @@ namespace Timekeeper.Forms.Wizards
                     this.ImportType = Import.ImportTypes.CSV;
                     this.OpenFile.Filter = "CSV files|*.csv|All files|*.*";
                     ImportProjects.Enabled = false;
-                    ImportProjects.Checked = false;
-                    ImportEntries.Enabled = true;
+                    ImportProjects.Checked = true;
+                    ImportEntries.Enabled = false;
                     ImportEntries.Checked = true;
                 }
             }
@@ -105,7 +105,7 @@ namespace Timekeeper.Forms.Wizards
             Widgets.GoBack();
 
             if (!Widgets.AtEnd()) {
-                NextButton.Left = ImportButton.Left;
+                //NextButton.Left = ImportButton.Left;
                 NextButton.Visible = true;
                 ImportButton.Visible = false;
             }
@@ -124,8 +124,8 @@ namespace Timekeeper.Forms.Wizards
             AddReviewLine("Import File", FileName);
             AddReviewLine("Import File Folder", FileFolder);
 
-            AddReviewLine("Import Projects", ImportProjects.Checked ? "Yes" : "No");
             AddReviewLine("Import Entries", ImportEntries.Checked ? "Yes" : "No");
+            AddReviewLine("Import Projects", ImportProjects.Enabled ? "N/A" : ImportProjects.Checked ? "Yes" : "No");
         }
 
         //----------------------------------------------------------------------

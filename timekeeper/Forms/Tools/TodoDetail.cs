@@ -234,13 +234,17 @@ namespace Timekeeper.Forms.Tools
             Classes.TreeAttribute Item = Widgets.CreateTreeItemDialog(
                 ProjectTreeDropdown, Timekeeper.Dimension.Project, false);
 
-            ComboTreeNode NodeToSelect = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, Item.ItemId);
-            if (NodeToSelect == null)
-                Widgets.SetDefaultNode(ProjectTreeDropdown);
-            else
-                ProjectTreeDropdown.SelectedNode = NodeToSelect;
+            if (Item != null)
+            {
+                ComboTreeNode NodeToSelect = Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, Item.ItemId);
 
-            Timekeeper.Mailbox.AddMessage("ReloadProjectTreeDropdown");
+                if (NodeToSelect == null)
+                    Widgets.SetDefaultNode(ProjectTreeDropdown);
+                else
+                    ProjectTreeDropdown.SelectedNode = NodeToSelect;
+
+                Timekeeper.Mailbox.AddMessage("ReloadProjectTreeDropdown");
+            }
         }
 
         private void PopupMenuDimensionManageItems_Click(object sender, EventArgs e)

@@ -1606,8 +1606,6 @@ namespace Timekeeper.Forms
             this.ProjectTreeDropdown.TabIndex = 9;
             this.ProjectTreeDropdown.Tag = "0";
             this.ProjectTreeDropdown.SelectedNodeChanged += new System.EventHandler(this.ProjectTreeDropdown_SelectedNodeChanged);
-            this.ProjectTreeDropdown.AfterCollapse += new System.EventHandler<ComboTreeNodeEventArgs>(this.ProjectTreeDropdown_AfterCollapse);
-            this.ProjectTreeDropdown.AfterExpand += new System.EventHandler<ComboTreeNodeEventArgs>(this.ProjectTreeDropdown_AfterExpand);
             // 
             // StopTimeSelector
             // 
