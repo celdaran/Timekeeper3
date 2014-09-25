@@ -100,6 +100,7 @@ namespace Timekeeper
             // 
             // ItemDescription
             // 
+            this.ItemDescription.DetectUrls = false;
             this.ItemDescription.Location = new System.Drawing.Point(78, 40);
             this.ItemDescription.Name = "ItemDescription";
             this.ItemDescription.Size = new System.Drawing.Size(310, 57);
@@ -190,7 +191,6 @@ namespace Timekeeper
             // 
             // ItemEditor
             // 
-            this.AcceptButton = this.AcceptDialog;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelDialog;

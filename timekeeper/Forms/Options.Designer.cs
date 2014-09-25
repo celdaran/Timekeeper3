@@ -192,19 +192,19 @@
             this.label16 = new System.Windows.Forms.Label();
             this.Advanced_BreakTemplate = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.Advanced_MarkupLanguage = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.OtherAdvancedGroup = new System.Windows.Forms.GroupBox();
             this.Advanced_Other_MidnightOffset = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.Advanced_Other_DimensionWidth = new System.Windows.Forms.NumericUpDown();
             this.Advanced_Other_DimensionWidthLabel = new System.Windows.Forms.Label();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.Advanced_Other_MarkupLanguage = new System.Windows.Forms.ComboBox();
-            this.label12 = new System.Windows.Forms.Label();
+            this.Advanced_Other_EnableScheduler = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.Advanced_Other_SortExProjectAsNumber = new System.Windows.Forms.CheckBox();
+            this.Advanced_Other_SortExtProjectAsNumber = new System.Windows.Forms.CheckBox();
             this.LoggingGroup = new System.Windows.Forms.GroupBox();
             this.label17 = new System.Windows.Forms.Label();
             this.ViewLog = new System.Windows.Forms.Button();
@@ -213,6 +213,7 @@
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
+            this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -1564,25 +1565,26 @@
             // 
             // Report_LayoutFileChooser
             // 
-            this.Report_LayoutFileChooser.Location = new System.Drawing.Point(319, 221);
+            this.Report_LayoutFileChooser.Location = new System.Drawing.Point(323, 233);
             this.Report_LayoutFileChooser.Name = "Report_LayoutFileChooser";
             this.Report_LayoutFileChooser.Size = new System.Drawing.Size(27, 20);
-            this.Report_LayoutFileChooser.TabIndex = 17;
+            this.Report_LayoutFileChooser.TabIndex = 6;
             this.Report_LayoutFileChooser.Text = "···";
             this.Report_LayoutFileChooser.UseVisualStyleBackColor = true;
+            this.Report_LayoutFileChooser.Click += new System.EventHandler(this.Report_LayoutFileChooser_Click);
             // 
             // Report_LayoutFile
             // 
-            this.Report_LayoutFile.Location = new System.Drawing.Point(109, 221);
+            this.Report_LayoutFile.Location = new System.Drawing.Point(111, 233);
             this.Report_LayoutFile.Name = "Report_LayoutFile";
             this.Report_LayoutFile.Size = new System.Drawing.Size(204, 20);
-            this.Report_LayoutFile.TabIndex = 16;
+            this.Report_LayoutFile.TabIndex = 5;
             this.Report_LayoutFile.Text = "Files\\JournalEntryReport.html";
             // 
             // Report_LayoutFileLabel
             // 
             this.Report_LayoutFileLabel.AutoSize = true;
-            this.Report_LayoutFileLabel.Location = new System.Drawing.Point(14, 225);
+            this.Report_LayoutFileLabel.Location = new System.Drawing.Point(17, 236);
             this.Report_LayoutFileLabel.Name = "Report_LayoutFileLabel";
             this.Report_LayoutFileLabel.Size = new System.Drawing.Size(77, 13);
             this.Report_LayoutFileLabel.TabIndex = 15;
@@ -1590,12 +1592,13 @@
             // 
             // Report_StyleSheetFileChooser
             // 
-            this.Report_StyleSheetFileChooser.Location = new System.Drawing.Point(319, 195);
+            this.Report_StyleSheetFileChooser.Location = new System.Drawing.Point(323, 207);
             this.Report_StyleSheetFileChooser.Name = "Report_StyleSheetFileChooser";
             this.Report_StyleSheetFileChooser.Size = new System.Drawing.Size(27, 20);
-            this.Report_StyleSheetFileChooser.TabIndex = 14;
+            this.Report_StyleSheetFileChooser.TabIndex = 4;
             this.Report_StyleSheetFileChooser.Text = "···";
             this.Report_StyleSheetFileChooser.UseVisualStyleBackColor = true;
+            this.Report_StyleSheetFileChooser.Click += new System.EventHandler(this.Report_StyleSheetFileChooser_Click);
             // 
             // label19
             // 
@@ -1603,10 +1606,11 @@
             this.label19.Location = new System.Drawing.Point(17, 142);
             this.label19.MaximumSize = new System.Drawing.Size(340, 95);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(338, 26);
+            this.label19.Size = new System.Drawing.Size(338, 52);
             this.label19.TabIndex = 13;
             this.label19.Text = "Advanced. For complete control over the report layout, you can create your own st" +
-    "yle sheet or even an entirely new layout.";
+    "yle sheet or replace the document wrapper HTML.\r\n\r\nPaths here are relative to th" +
+    "e Timekeeper executable.";
             // 
             // label18
             // 
@@ -1626,30 +1630,30 @@
             this.Report_Font.Name = "Report_Font";
             this.Report_Font.ReadOnly = true;
             this.Report_Font.Size = new System.Drawing.Size(236, 20);
-            this.Report_Font.TabIndex = 11;
+            this.Report_Font.TabIndex = 2;
             // 
             // Report_FontButton
             // 
             this.Report_FontButton.Location = new System.Drawing.Point(17, 93);
             this.Report_FontButton.Name = "Report_FontButton";
             this.Report_FontButton.Size = new System.Drawing.Size(86, 23);
-            this.Report_FontButton.TabIndex = 10;
+            this.Report_FontButton.TabIndex = 1;
             this.Report_FontButton.Text = "Choose Font...";
             this.Report_FontButton.UseVisualStyleBackColor = true;
             this.Report_FontButton.Click += new System.EventHandler(this.Report_FontButton_Click);
             // 
             // Report_StyleSheetFile
             // 
-            this.Report_StyleSheetFile.Location = new System.Drawing.Point(109, 195);
+            this.Report_StyleSheetFile.Location = new System.Drawing.Point(111, 207);
             this.Report_StyleSheetFile.Name = "Report_StyleSheetFile";
             this.Report_StyleSheetFile.Size = new System.Drawing.Size(204, 20);
-            this.Report_StyleSheetFile.TabIndex = 9;
+            this.Report_StyleSheetFile.TabIndex = 3;
             this.Report_StyleSheetFile.Text = "Files\\JournalEntryReport.css";
             // 
             // Report_StyleSheetFileLabel
             // 
             this.Report_StyleSheetFileLabel.AutoSize = true;
-            this.Report_StyleSheetFileLabel.Location = new System.Drawing.Point(14, 198);
+            this.Report_StyleSheetFileLabel.Location = new System.Drawing.Point(17, 210);
             this.Report_StyleSheetFileLabel.Name = "Report_StyleSheetFileLabel";
             this.Report_StyleSheetFileLabel.Size = new System.Drawing.Size(64, 13);
             this.Report_StyleSheetFileLabel.TabIndex = 5;
@@ -2068,7 +2072,7 @@
             // AdvancedSpacerBox
             // 
             this.AdvancedSpacerBox.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
-            this.AdvancedSpacerBox.Location = new System.Drawing.Point(17, 475);
+            this.AdvancedSpacerBox.Location = new System.Drawing.Point(17, 427);
             this.AdvancedSpacerBox.Name = "AdvancedSpacerBox";
             this.AdvancedSpacerBox.Size = new System.Drawing.Size(16, 16);
             this.AdvancedSpacerBox.TabIndex = 23;
@@ -2080,9 +2084,11 @@
             this.AdvancedFormattingGroup.Controls.Add(this.label16);
             this.AdvancedFormattingGroup.Controls.Add(this.Advanced_BreakTemplate);
             this.AdvancedFormattingGroup.Controls.Add(this.label1);
-            this.AdvancedFormattingGroup.Location = new System.Drawing.Point(17, 131);
+            this.AdvancedFormattingGroup.Controls.Add(this.Advanced_MarkupLanguage);
+            this.AdvancedFormattingGroup.Controls.Add(this.label12);
+            this.AdvancedFormattingGroup.Location = new System.Drawing.Point(17, 137);
             this.AdvancedFormattingGroup.Name = "AdvancedFormattingGroup";
-            this.AdvancedFormattingGroup.Size = new System.Drawing.Size(345, 88);
+            this.AdvancedFormattingGroup.Size = new System.Drawing.Size(345, 115);
             this.AdvancedFormattingGroup.TabIndex = 4;
             this.AdvancedFormattingGroup.TabStop = false;
             this.AdvancedFormattingGroup.Text = "Formatting";
@@ -2105,9 +2111,9 @@
             this.label16.AutoSize = true;
             this.label16.Location = new System.Drawing.Point(16, 56);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(85, 13);
+            this.label16.Size = new System.Drawing.Size(106, 13);
             this.label16.TabIndex = 22;
-            this.label16.Text = "Break Template:";
+            this.label16.Text = "Memo <hr> template:";
             // 
             // Advanced_BreakTemplate
             // 
@@ -2122,9 +2128,30 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(16, 30);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 13);
+            this.label1.Size = new System.Drawing.Size(65, 13);
             this.label1.TabIndex = 20;
-            this.label1.Text = "Date/Time Format:";
+            this.label1.Text = "Date format:";
+            // 
+            // Advanced_MarkupLanguage
+            // 
+            this.Advanced_MarkupLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Advanced_MarkupLanguage.FormattingEnabled = true;
+            this.Advanced_MarkupLanguage.Items.AddRange(new object[] {
+            "HTML",
+            "Markdown"});
+            this.Advanced_MarkupLanguage.Location = new System.Drawing.Point(127, 79);
+            this.Advanced_MarkupLanguage.Name = "Advanced_MarkupLanguage";
+            this.Advanced_MarkupLanguage.Size = new System.Drawing.Size(202, 21);
+            this.Advanced_MarkupLanguage.TabIndex = 9;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(16, 82);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(77, 13);
+            this.label12.TabIndex = 8;
+            this.label12.Text = "Memo markup:";
             // 
             // OtherAdvancedGroup
             // 
@@ -2133,16 +2160,14 @@
             this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_DimensionWidth);
             this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_DimensionWidthLabel);
             this.OtherAdvancedGroup.Controls.Add(this.checkBox5);
-            this.OtherAdvancedGroup.Controls.Add(this.checkBox4);
-            this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_MarkupLanguage);
-            this.OtherAdvancedGroup.Controls.Add(this.label12);
+            this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_EnableScheduler);
             this.OtherAdvancedGroup.Controls.Add(this.label3);
             this.OtherAdvancedGroup.Controls.Add(this.numericUpDown1);
             this.OtherAdvancedGroup.Controls.Add(this.label2);
-            this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_SortExProjectAsNumber);
-            this.OtherAdvancedGroup.Location = new System.Drawing.Point(17, 231);
+            this.OtherAdvancedGroup.Controls.Add(this.Advanced_Other_SortExtProjectAsNumber);
+            this.OtherAdvancedGroup.Location = new System.Drawing.Point(17, 258);
             this.OtherAdvancedGroup.Name = "OtherAdvancedGroup";
-            this.OtherAdvancedGroup.Size = new System.Drawing.Size(345, 236);
+            this.OtherAdvancedGroup.Size = new System.Drawing.Size(345, 163);
             this.OtherAdvancedGroup.TabIndex = 3;
             this.OtherAdvancedGroup.TabStop = false;
             this.OtherAdvancedGroup.Text = "Other";
@@ -2176,7 +2201,7 @@
             "09:00 AM",
             "10:00 AM",
             "11:00 AM"});
-            this.Advanced_Other_MidnightOffset.Location = new System.Drawing.Point(198, 201);
+            this.Advanced_Other_MidnightOffset.Location = new System.Drawing.Point(198, 129);
             this.Advanced_Other_MidnightOffset.Name = "Advanced_Other_MidnightOffset";
             this.Advanced_Other_MidnightOffset.Size = new System.Drawing.Size(121, 21);
             this.Advanced_Other_MidnightOffset.TabIndex = 16;
@@ -2184,7 +2209,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(33, 204);
+            this.label15.Location = new System.Drawing.Point(33, 132);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(94, 13);
             this.label15.TabIndex = 15;
@@ -2192,7 +2217,7 @@
             // 
             // Advanced_Other_DimensionWidth
             // 
-            this.Advanced_Other_DimensionWidth.Location = new System.Drawing.Point(198, 175);
+            this.Advanced_Other_DimensionWidth.Location = new System.Drawing.Point(198, 103);
             this.Advanced_Other_DimensionWidth.Maximum = new decimal(new int[] {
             500,
             0,
@@ -2215,7 +2240,7 @@
             // Advanced_Other_DimensionWidthLabel
             // 
             this.Advanced_Other_DimensionWidthLabel.AutoSize = true;
-            this.Advanced_Other_DimensionWidthLabel.Location = new System.Drawing.Point(33, 177);
+            this.Advanced_Other_DimensionWidthLabel.Location = new System.Drawing.Point(33, 105);
             this.Advanced_Other_DimensionWidthLabel.Name = "Advanced_Other_DimensionWidthLabel";
             this.Advanced_Other_DimensionWidthLabel.Size = new System.Drawing.Size(121, 13);
             this.Advanced_Other_DimensionWidthLabel.TabIndex = 13;
@@ -2225,51 +2250,29 @@
             // 
             this.checkBox5.AutoSize = true;
             this.checkBox5.Enabled = false;
-            this.checkBox5.Location = new System.Drawing.Point(17, 73);
+            this.checkBox5.Location = new System.Drawing.Point(260, 27);
             this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(122, 17);
+            this.checkBox5.Size = new System.Drawing.Size(78, 17);
             this.checkBox5.TabIndex = 11;
-            this.checkBox5.Text = "Enable Stacktracing";
+            this.checkBox5.Text = "Stacktrace";
             this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.Visible = false;
             // 
-            // checkBox4
+            // Advanced_Other_EnableScheduler
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Checked = true;
-            this.checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox4.Enabled = false;
-            this.checkBox4.Location = new System.Drawing.Point(17, 50);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(189, 17);
-            this.checkBox4.TabIndex = 10;
-            this.checkBox4.Text = "Disable Event && Scheduler System";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // Advanced_Other_MarkupLanguage
-            // 
-            this.Advanced_Other_MarkupLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Advanced_Other_MarkupLanguage.FormattingEnabled = true;
-            this.Advanced_Other_MarkupLanguage.Items.AddRange(new object[] {
-            "HTML",
-            "Markdown"});
-            this.Advanced_Other_MarkupLanguage.Location = new System.Drawing.Point(198, 148);
-            this.Advanced_Other_MarkupLanguage.Name = "Advanced_Other_MarkupLanguage";
-            this.Advanced_Other_MarkupLanguage.Size = new System.Drawing.Size(121, 21);
-            this.Advanced_Other_MarkupLanguage.TabIndex = 9;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(33, 151);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(153, 13);
-            this.label12.TabIndex = 8;
-            this.label12.Text = "Memo editor markup language:";
+            this.Advanced_Other_EnableScheduler.AutoSize = true;
+            this.Advanced_Other_EnableScheduler.Location = new System.Drawing.Point(17, 50);
+            this.Advanced_Other_EnableScheduler.Name = "Advanced_Other_EnableScheduler";
+            this.Advanced_Other_EnableScheduler.Size = new System.Drawing.Size(187, 17);
+            this.Advanced_Other_EnableScheduler.TabIndex = 10;
+            this.Advanced_Other_EnableScheduler.Text = "Enable Event && Scheduler System";
+            this.Advanced_Other_EnableScheduler.UseVisualStyleBackColor = true;
+            this.Advanced_Other_EnableScheduler.CheckedChanged += new System.EventHandler(this.Advanced_Other_EnableScheduler_CheckedChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(257, 124);
+            this.label3.Location = new System.Drawing.Point(257, 79);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 5;
@@ -2277,7 +2280,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(198, 122);
+            this.numericUpDown1.Location = new System.Drawing.Point(198, 77);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             120,
             0,
@@ -2300,21 +2303,21 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(33, 124);
+            this.label2.Location = new System.Drawing.Point(33, 79);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(165, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Warn if splitting an entry less than";
             // 
-            // Advanced_Other_SortExProjectAsNumber
+            // Advanced_Other_SortExtProjectAsNumber
             // 
-            this.Advanced_Other_SortExProjectAsNumber.AutoSize = true;
-            this.Advanced_Other_SortExProjectAsNumber.Location = new System.Drawing.Point(17, 27);
-            this.Advanced_Other_SortExProjectAsNumber.Name = "Advanced_Other_SortExProjectAsNumber";
-            this.Advanced_Other_SortExProjectAsNumber.Size = new System.Drawing.Size(229, 17);
-            this.Advanced_Other_SortExProjectAsNumber.TabIndex = 2;
-            this.Advanced_Other_SortExProjectAsNumber.Text = "Treat External Project Number as a number";
-            this.Advanced_Other_SortExProjectAsNumber.UseVisualStyleBackColor = true;
+            this.Advanced_Other_SortExtProjectAsNumber.AutoSize = true;
+            this.Advanced_Other_SortExtProjectAsNumber.Location = new System.Drawing.Point(17, 27);
+            this.Advanced_Other_SortExtProjectAsNumber.Name = "Advanced_Other_SortExtProjectAsNumber";
+            this.Advanced_Other_SortExtProjectAsNumber.Size = new System.Drawing.Size(229, 17);
+            this.Advanced_Other_SortExtProjectAsNumber.TabIndex = 2;
+            this.Advanced_Other_SortExtProjectAsNumber.Text = "Treat External Project Number as a number";
+            this.Advanced_Other_SortExtProjectAsNumber.UseVisualStyleBackColor = true;
             // 
             // LoggingGroup
             // 
@@ -2326,7 +2329,7 @@
             this.LoggingGroup.Controls.Add(this.LoggingApplicationLabel);
             this.LoggingGroup.Location = new System.Drawing.Point(17, 16);
             this.LoggingGroup.Name = "LoggingGroup";
-            this.LoggingGroup.Size = new System.Drawing.Size(345, 109);
+            this.LoggingGroup.Size = new System.Drawing.Size(345, 115);
             this.LoggingGroup.TabIndex = 2;
             this.LoggingGroup.TabStop = false;
             this.LoggingGroup.Text = "Logging";
@@ -2334,7 +2337,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(14, 83);
+            this.label17.Location = new System.Drawing.Point(14, 89);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(304, 13);
             this.label17.TabIndex = 5;
@@ -2346,7 +2349,7 @@
             this.ViewLog.Name = "ViewLog";
             this.ViewLog.Size = new System.Drawing.Size(75, 23);
             this.ViewLog.TabIndex = 4;
-            this.ViewLog.Text = "View Log";
+            this.ViewLog.Text = "View Log...";
             this.ViewLog.UseVisualStyleBackColor = true;
             this.ViewLog.Click += new System.EventHandler(this.ViewLog_Click);
             // 
@@ -2397,6 +2400,10 @@
             this.LoggingApplicationLabel.Size = new System.Drawing.Size(62, 13);
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
+            // 
+            // OpenFileDialog
+            // 
+            this.OpenFileDialog.FileName = "SET AT RUN TIME";
             // 
             // Options
             // 
@@ -2604,7 +2611,7 @@
         private System.Windows.Forms.Label DisplayLabel;
         private System.Windows.Forms.ComboBox Behavior_TitleBar_Time;
         private System.Windows.Forms.Label DimensionsInstructionsLabel;
-        private System.Windows.Forms.CheckBox Advanced_Other_SortExProjectAsNumber;
+        private System.Windows.Forms.CheckBox Advanced_Other_SortExtProjectAsNumber;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
@@ -2630,9 +2637,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown Mail_SmtpTimeout;
-        private System.Windows.Forms.ComboBox Advanced_Other_MarkupLanguage;
+        private System.Windows.Forms.ComboBox Advanced_MarkupLanguage;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox Advanced_Other_EnableScheduler;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.GroupBox BrowsingGroup;
         private System.Windows.Forms.ComboBox Behavior_BrowseNextBy;
@@ -2700,6 +2707,7 @@
         private System.Windows.Forms.CheckBox View_MemoEditor_ShowRuler;
         private System.Windows.Forms.ComboBox Advanced_DateTimeFormat;
         private System.Windows.Forms.RadioButton Layout_Preset_Minimal;
+        private System.Windows.Forms.OpenFileDialog OpenFileDialog;
 
     }
 }

@@ -510,13 +510,13 @@ namespace Timekeeper.Forms
                 Action_SetBrowserOptions();
 
                 // Is the scheduler subsystem enabled?
-                if (Options.Advanced_Other_DisableScheduler) {
-                    // Remove from UI
-                    MenuToolEvents.Visible = false;
-                } else {
+                if (Options.Advanced_Other_EnableScheduler) {
                     // Schedule events and reminders
                     Action_Schedule();
                     MenuToolEvents.Visible = true;
+                } else {
+                    // Remove from UI
+                    MenuToolEvents.Visible = false;
                 }
 
                 // Not until TK 3.1. Sorry...

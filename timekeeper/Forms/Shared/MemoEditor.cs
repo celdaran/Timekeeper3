@@ -133,7 +133,7 @@ namespace Timekeeper.Forms.Shared
             FormatRulerVisible(Timekeeper.Options.View_MemoEditor_ShowRuler);
 
             // Adjust interface based on markup language
-            SwitchMarkdown(Timekeeper.Options.Advanced_Other_MarkupLanguage);
+            SwitchMarkdown(Timekeeper.Options.Advanced_MarkupLanguage);
         }
 
         //---------------------------------------------------------------------
@@ -259,7 +259,7 @@ namespace Timekeeper.Forms.Shared
             FormatStrikethroughButton.Visible = (language == 0);
             PopupMenuHTML.Checked = (language == 0);
             PopupMenuMarkdown.Checked = (language == 1);
-            Timekeeper.Options.Advanced_Other_MarkupLanguage = language;
+            Timekeeper.Options.Advanced_MarkupLanguage = language;
         }
 
         //---------------------------------------------------------------------
@@ -281,7 +281,7 @@ namespace Timekeeper.Forms.Shared
 
         internal void FormatBoldButton_Click(object sender, EventArgs e)
         {
-            if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+            if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                 FormatBasicHTML(FormatBoldButton, "b");
             } else {
                 FormatBasicMarkup(FormatBoldButton, "**");
@@ -292,7 +292,7 @@ namespace Timekeeper.Forms.Shared
 
         internal void FormatItalicButton_Click(object sender, EventArgs e)
         {
-            if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+            if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                 FormatBasicHTML(FormatItalicButton, "i");
             } else {
                 FormatBasicMarkup(FormatItalicButton, "*");
@@ -303,7 +303,7 @@ namespace Timekeeper.Forms.Shared
 
         internal void FormatUnderlineButton_Click(object sender, EventArgs e)
         {
-            if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+            if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                 FormatBasicHTML(FormatUnderlineButton, "u");
             }
         }
@@ -312,7 +312,7 @@ namespace Timekeeper.Forms.Shared
 
         internal void FormatStrikethroughButton_Click(object sender, EventArgs e)
         {
-            if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+            if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                 FormatBasicHTML(FormatStrikethroughButton, "s");
             }
         }
@@ -322,7 +322,7 @@ namespace Timekeeper.Forms.Shared
         internal void FormatBulletedListButton_Click(object sender, EventArgs e)
         {
             if (MemoEntry.SelectedText.Length > 0) {
-                if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+                if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                     FormatListHTML("ul");
                 } else {
                     FormatListMarkdown("*");
@@ -335,7 +335,7 @@ namespace Timekeeper.Forms.Shared
         internal void FormatNumberedListButton_Click(object sender, EventArgs e)
         {
             if (MemoEntry.SelectedText.Length > 0) {
-                if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+                if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                     FormatListHTML("ol");
                 } else {
                     FormatListMarkdown(1);
@@ -347,7 +347,7 @@ namespace Timekeeper.Forms.Shared
 
         internal void FormatHeading1Button_Click(object sender, EventArgs e)
         {
-            if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+            if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                 FormatBasicHTML(FormatHeading1Button, "h1");
             } else {
                 FormatLeadTag("#");
@@ -358,7 +358,7 @@ namespace Timekeeper.Forms.Shared
 
         internal void FormatHeading2Button_Click(object sender, EventArgs e)
         {
-            if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+            if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                 FormatBasicHTML(FormatHeading2Button, "h2");
             } else {
                 FormatLeadTag("##");
@@ -369,7 +369,7 @@ namespace Timekeeper.Forms.Shared
 
         internal void FormatHeading3Button_Click(object sender, EventArgs e)
         {
-            if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+            if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                 FormatBasicHTML(FormatHeading3Button, "h3");
             } else {
                 FormatLeadTag("###");
@@ -380,7 +380,7 @@ namespace Timekeeper.Forms.Shared
 
         internal void FormatCodeButton_Click(object sender, EventArgs e)
         {
-            if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+            if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                 FormatBasicHTML(FormatCodeButton, "pre");
             } else {
                 FormatBasicMarkup(FormatCodeButton, "```");
@@ -391,7 +391,7 @@ namespace Timekeeper.Forms.Shared
 
         internal void FormatBlockquoteButton_Click(object sender, EventArgs e)
         {
-            if (Timekeeper.Options.Advanced_Other_MarkupLanguage == 0) {
+            if (Timekeeper.Options.Advanced_MarkupLanguage == 0) {
                 FormatBasicHTML(FormatBlockquoteButton, "blockquote");
             } else {
                 FormatLeadTag(">");

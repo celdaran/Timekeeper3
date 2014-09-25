@@ -116,13 +116,13 @@ namespace Timekeeper.Classes
         public int Advanced_Logging_Database { get; set; }
         public string Advanced_DateTimeFormat { get; set; }
         public string Advanced_BreakTemplate { get; set; }
-        public int Advanced_Other_MarkupLanguage { get; set; }
-        public bool Advanced_Other_DisableScheduler { get; set; }
+        public int Advanced_MarkupLanguage { get; set; }
+        public bool Advanced_Other_EnableScheduler { get; set; }
         public bool Advanced_Other_EnableStackTracing { get; set; }
         public int Advanced_Other_DimensionWidth { get; set; }
         public int Advanced_Other_MidnightOffset { get; set; }
         public bool Advanced_Other_WarnOpeningLockedDatabase { get; set; }
-        public bool Advanced_Other_SortExProjectAsNumber { get; set; }
+        public bool Advanced_Other_SortExtProjectAsNumber { get; set; }
 
         //----------------------------------------------------------------------
         // Public Properties (Registry/Metrics)
@@ -460,13 +460,13 @@ namespace Timekeeper.Classes
                 CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern + " " +
                 CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern);
             Advanced_BreakTemplate = (string)Key.GetValue("BreakTemplate", "\\n<hr class=\"memo-break-manual\" title=\"%timestamp\" />\\n");
-            Advanced_Other_MarkupLanguage = (int)Key.GetValue("Other_MarkupLanguage", 1);
-            Advanced_Other_DisableScheduler = ((int)Key.GetValue("Other_DisableScheduler", 0)) == 1;
+            Advanced_MarkupLanguage = (int)Key.GetValue("MarkupLanguage", 1);
+            Advanced_Other_EnableScheduler = ((int)Key.GetValue("Other_EnableScheduler", 0)) == 1;
             Advanced_Other_EnableStackTracing = ((int)Key.GetValue("Other_EnableStackTracing", 0)) == 1;
             Advanced_Other_DimensionWidth = (int)Key.GetValue("Other_DimensionWidth", 250);
             Advanced_Other_MidnightOffset = (int)Key.GetValue("Other_MidnightOffset", 0);
             Advanced_Other_WarnOpeningLockedDatabase = ((int)Key.GetValue("Other_WarnOpeningLockedDatabase", 1)) == 1;
-            Advanced_Other_SortExProjectAsNumber = ((int)Key.GetValue("Other_SortExProjectAsNumber", 1)) == 1;
+            Advanced_Other_SortExtProjectAsNumber = ((int)Key.GetValue("Other_SortExtProjectAsNumber", 1)) == 1;
 
             //----------------------------------------------------------------------
 
@@ -853,13 +853,13 @@ namespace Timekeeper.Classes
             Key.SetValue("Logging_Database", Advanced_Logging_Database, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("DateTimeFormat", Advanced_DateTimeFormat, Microsoft.Win32.RegistryValueKind.String);
             Key.SetValue("BreakTemplate", Advanced_BreakTemplate, Microsoft.Win32.RegistryValueKind.String);
-            Key.SetValue("Other_MarkupLanguage", Advanced_Other_MarkupLanguage, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Other_DisableScheduler", Advanced_Other_DisableScheduler, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("MarkupLanguage", Advanced_MarkupLanguage, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Other_EnableScheduler", Advanced_Other_EnableScheduler, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_EnableStackTracing", Advanced_Other_EnableStackTracing, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_DimensionWidth", Advanced_Other_DimensionWidth, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_MidnightOffset", unchecked((int)Advanced_Other_MidnightOffset), Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Other_WarnOpeningLockedDatabase", Advanced_Other_WarnOpeningLockedDatabase, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Other_SortExProjectAsNumber", Advanced_Other_SortExProjectAsNumber, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Other_SortExtProjectAsNumber", Advanced_Other_SortExtProjectAsNumber, Microsoft.Win32.RegistryValueKind.DWord);
 
             //----------------------------------------------------------------------
 

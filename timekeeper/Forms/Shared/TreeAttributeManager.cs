@@ -45,22 +45,22 @@ namespace Timekeeper.Forms.Shared
                 case Timekeeper.Dimension.Project:
                     this.Text = "Manage Projects";
                     this.EditDialogTitle = "Edit Project";
-                    this.MenuNew.Text = "New Project";
+                    //this.MenuNew.Text = "New Project";
                     break;
                 case Timekeeper.Dimension.Activity:
                     this.Text = "Manage Activities";
                     this.EditDialogTitle = "Edit Activity";
-                    this.MenuNew.Text = "New Activity";
+                    //this.MenuNew.Text = "New Activity";
                     break;
                 case Timekeeper.Dimension.Location:
                     this.Text = "Manage Locations";
                     this.EditDialogTitle = "Edit Location";
-                    this.MenuNew.Text = "New Location";
+                    //this.MenuNew.Text = "New Location";
                     break;
                 case Timekeeper.Dimension.Category:
                     this.Text = "Manage Categories";
                     this.EditDialogTitle = "Edit Category";
-                    this.MenuNew.Text = "New Category";
+                    //this.MenuNew.Text = "New Category";
                     break;
             }
 

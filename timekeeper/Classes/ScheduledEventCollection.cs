@@ -28,7 +28,7 @@ namespace Timekeeper.Classes
         {
             List<Classes.ScheduledEvent> ReturnList = new List<ScheduledEvent>();
 
-            if (Options.Advanced_Other_DisableScheduler) {
+            if (!Options.Advanced_Other_EnableScheduler) {
                 return ReturnList;
             }
 
@@ -70,7 +70,7 @@ namespace Timekeeper.Classes
 
         private void SetNextOccurrenceTime(Classes.ScheduledEvent scheduledEvent)
         {
-            if (Options.Advanced_Other_DisableScheduler) {
+            if (!Options.Advanced_Other_EnableScheduler) {
                 return;
             }
 

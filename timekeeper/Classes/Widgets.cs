@@ -108,7 +108,7 @@ namespace Timekeeper.Classes
             // Set description
             string Description;
             if (item.Description.Length > 0) {
-                Description = Common.Abbreviate(item.Description, 42);
+                Description = item.Description.Replace("\n", Environment.NewLine);
                 Dialog.wDescription.Enabled = true;
             } else {
                 Description = "None";
@@ -133,35 +133,7 @@ namespace Timekeeper.Classes
                 Dialog.wHiddenTime.Text = Timekeeper.NullableDateForDisplay(item.HiddenTime);
             if (item.IsDeleted)
                 Dialog.wDeletedTime.Text = Timekeeper.NullableDateForDisplay(item.DeletedTime);
-
-            Timekeeper.Warn("FIXME: Last Dimension Id issue in Properties dialog not properly handled");
-
-            if (item.Dimension == Timekeeper.Dimension.Project) {
-                if (item.LastActivityId > 0) {
-                    Classes.Activity Activity = new Classes.Activity(item.LastActivityId);
-                    Dialog.wLastItemName.Enabled = true;
-                    Dialog.wLastItemName.Text = Activity.Name;
-                    Dialog.wLastItemLabel.Text = "Last Activity:";
-                } else {
-                    Dialog.wLastItemName.Enabled = false;
-                    Dialog.wLastItemName.Text = "None";
-                }
-                Dialog.wExternalProjectNo.Text = item.ExternalProjectNo;
-                Dialog.wExternalProjectNoLabel.Visible = true;
-                Dialog.wExternalProjectNo.Visible = true;
-            } else {
-                if (item.LastLocationId > 0) {
-                    Classes.Project Project = new Classes.Project(item.LastLocationId);
-                    Dialog.wLastItemLabel.Text = "Last Project:";
-                    Dialog.wLastItemName.Enabled = true;
-                    Dialog.wLastItemName.Text = Project.Name;
-                } else {
-                    Dialog.wLastItemName.Enabled = false;
-                    Dialog.wLastItemName.Text = "None";
-                }
-                Dialog.wExternalProjectNoLabel.Visible = false;
-                Dialog.wExternalProjectNo.Visible = false;
-            }
+            Dialog.wExternalProjectNo.Text = item.ExternalProjectNo != null ? item.ExternalProjectNo : "n/a";
 
             return Dialog;
         }

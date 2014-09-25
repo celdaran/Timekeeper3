@@ -230,6 +230,7 @@ namespace Timekeeper.Forms
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.IdleTimer = new System.Windows.Forms.Timer(this.components);
+            this.PopupMenuDimensionEditItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -1421,6 +1422,7 @@ namespace Timekeeper.Forms
             // 
             this.PopupMenuDimension.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PopupMenuDimensionNewItem,
+            this.PopupMenuDimensionEditItem,
             this.PopupMenuDimensionManageItems,
             this.PopupMenuDimensionSep1,
             this.PopupMenuDimensionUseProjects,
@@ -1430,7 +1432,7 @@ namespace Timekeeper.Forms
             this.PopupMenuDimensionSep2,
             this.PopupMenuDimensionProperties});
             this.PopupMenuDimension.Name = "menuTask";
-            this.PopupMenuDimension.Size = new System.Drawing.Size(159, 170);
+            this.PopupMenuDimension.Size = new System.Drawing.Size(159, 214);
             this.PopupMenuDimension.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenuDimension_Opening);
             // 
             // PopupMenuDimensionNewItem
@@ -2073,6 +2075,13 @@ namespace Timekeeper.Forms
             this.IdleTimer.Interval = 1200000;
             this.IdleTimer.Tick += new System.EventHandler(this.IdleTimer_Tick);
             // 
+            // PopupMenuDimensionEditItem
+            // 
+            this.PopupMenuDimensionEditItem.Name = "PopupMenuDimensionEditItem";
+            this.PopupMenuDimensionEditItem.Size = new System.Drawing.Size(158, 22);
+            this.PopupMenuDimensionEditItem.Text = "Edit Item...";
+            this.PopupMenuDimensionEditItem.Visible = false;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2317,5 +2326,6 @@ namespace Timekeeper.Forms
         internal System.Windows.Forms.Button CloseStopGapButton;
         private System.Windows.Forms.ToolStripMenuItem MenuHelpCheckForUpdates;
         private System.Windows.Forms.Timer IdleTimer;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuDimensionEditItem;
     }
 }

@@ -444,12 +444,14 @@ namespace Timekeeper.Forms.Reports
                 FontConverter fc = new FontConverter();
                 Font ReportFont = (Font)fc.ConvertFromString(Options.Report_Font);
 
-                string Styles = System.IO.File.ReadAllText(@"Files\JournalEntryReport.css");
+                string CssPath = Timekeeper.GetFilePath(this.Options.Report_StyleSheetFile);
+                string Styles = System.IO.File.ReadAllText(CssPath);
 
                 Styles = Styles.Replace("%fontname", ReportFont.Name);
                 Styles = Styles.Replace("%fontsize", ReportFont.SizeInPoints.ToString() + "pt");
 
-                string Document = System.IO.File.ReadAllText(@"Files\JournalEntryReport.html");
+                string HtmlPath = Timekeeper.GetFilePath(this.Options.Report_LayoutFile);
+                string Document = System.IO.File.ReadAllText(HtmlPath);
 
                 Document = Document.Replace("%title", "Timekeeper Report");
                 Document = Document.Replace("%style", Styles);

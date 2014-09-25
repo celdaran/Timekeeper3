@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO;
 
 using Technitivity.Toolbox;
 
@@ -59,6 +60,8 @@ namespace Timekeeper.Forms
             View_MemoEditor_CheckedChanged(sender, e);
             View_StatusBar_CheckedChanged(sender, e);
             View_MemoEditor_ShowToolbar_CheckedChanged(sender, e);
+
+            HandleMailTab();
         }
 
         //----------------------------------------------------------------------
@@ -399,7 +402,9 @@ namespace Timekeeper.Forms
             Advanced_Logging_Database.SelectedIndex = Values.Advanced_Logging_Database;
             Advanced_DateTimeFormat.Text = Values.Advanced_DateTimeFormat;
             Advanced_BreakTemplate.Text = Values.Advanced_BreakTemplate;
-            Advanced_Other_MarkupLanguage.SelectedIndex = Values.Advanced_Other_MarkupLanguage;
+            Advanced_MarkupLanguage.SelectedIndex = Values.Advanced_MarkupLanguage;
+            Advanced_Other_SortExtProjectAsNumber.Checked = Values.Advanced_Other_SortExtProjectAsNumber;
+            Advanced_Other_EnableScheduler.Checked = Values.Advanced_Other_EnableScheduler;
             Advanced_Other_DimensionWidth.Value = Values.Advanced_Other_DimensionWidth;
             Advanced_Other_MidnightOffset.SelectedIndex = Values.Advanced_Other_MidnightOffset + 12;
         }
@@ -513,7 +518,9 @@ namespace Timekeeper.Forms
             Values.Advanced_Logging_Database = Advanced_Logging_Database.SelectedIndex;
             Values.Advanced_DateTimeFormat = Advanced_DateTimeFormat.Text;
             Values.Advanced_BreakTemplate = Advanced_BreakTemplate.Text;
-            Values.Advanced_Other_MarkupLanguage = Advanced_Other_MarkupLanguage.SelectedIndex;
+            Values.Advanced_MarkupLanguage = Advanced_MarkupLanguage.SelectedIndex;
+            Values.Advanced_Other_SortExtProjectAsNumber = Advanced_Other_SortExtProjectAsNumber.Checked;
+            Values.Advanced_Other_EnableScheduler = Advanced_Other_EnableScheduler.Checked;
             Values.Advanced_Other_DimensionWidth = (int)Advanced_Other_DimensionWidth.Value;
             Values.Advanced_Other_MidnightOffset = Advanced_Other_MidnightOffset.SelectedIndex - 12;
         }
@@ -1075,8 +1082,56 @@ namespace Timekeeper.Forms
             }
         }
 
+        //----------------------------------------------------------------------
 
+        private void Report_StyleSheetFileChooser_Click(object sender, EventArgs e)
+        {
+            SetupOpenFileDialog(Report_StyleSheetFile.Text);
+            if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                Report_StyleSheetFile.Text = OpenFileDialog.FileName;
+        }
 
+        //----------------------------------------------------------------------
+
+        private void Report_LayoutFileChooser_Click(object sender, EventArgs e)
+        {
+            SetupOpenFileDialog(Report_LayoutFile.Text);
+            if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                Report_LayoutFile.Text = OpenFileDialog.FileName;
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SetupOpenFileDialog(string filePath)
+        {
+            // Set dialog directory
+            if (Path.IsPathRooted(filePath)) {
+                OpenFileDialog.InitialDirectory = Path.GetDirectoryName(filePath);
+            } else {
+                OpenFileDialog.InitialDirectory = Timekeeper.CWD;
+            }
+
+            // Set dialog filename
+            OpenFileDialog.FileName = filePath;
+
+        }
+
+        private void Advanced_Other_EnableScheduler_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Advanced_Other_EnableScheduler.Checked) {
+                Common.Warn("You are enabling the Event & Scheduler System.\n\nThis system is currently in alpha mode and, as such, is a bit flaky. It is being made available for field testing and for you to use at your own discretion.\n\nProblems have to do with multi-threaded access to your database, so it may fail if too many events are scheduled to fire around the same time. Data loss is NOT an issue, but you may miss notifications or see errors pop up.");
+            }
+
+            HandleMailTab();
+        }
+
+        private void HandleMailTab()
+        {
+            if (Advanced_Other_EnableScheduler.Checked)
+                OptionsPanelCollection.TabPages.Add(MailSettingsPage);
+            else
+                OptionsPanelCollection.TabPages.Remove(MailSettingsPage);
+        }
         //----------------------------------------------------------------------
 
     }

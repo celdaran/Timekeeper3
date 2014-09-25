@@ -22,8 +22,10 @@ namespace Timekeeper
         public const string TITLE = "Timekeeper";
         public const string IDENTIFIER = "7EFF6E35-2448-4AA8-BBB0-441536BE592F";
 
-        public static readonly string VERSION = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public static readonly string VERSION = Assembly.GetEntryAssembly().GetName().Version.ToString();
         public static readonly string SHORT_VERSION = VERSION.Substring(0, 3);
+
+        public static readonly string CWD = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         public const int SUCCESS = 1;
         public const int FAILURE = 0;
@@ -117,12 +119,12 @@ namespace Timekeeper
 
         public static void OpenScheduler()
         {
-            if (Options.Advanced_Other_DisableScheduler) {
-                Scheduler = null;
-            } else {
+            if (Options.Advanced_Other_EnableScheduler) {
                 ISchedulerFactory ScheduleFactory = new StdSchedulerFactory();
                 Scheduler = ScheduleFactory.GetScheduler();
                 Scheduler.Start();
+            } else {
+                Scheduler = null;
             }
         }
 
@@ -130,7 +132,7 @@ namespace Timekeeper
 
         public static void Schedule(Classes.ScheduledEvent scheduledEvent, Forms.Main mainForm)
         {
-            if (Options.Advanced_Other_DisableScheduler) {
+            if (!Options.Advanced_Other_EnableScheduler) {
                 return;
             }
 
@@ -165,7 +167,7 @@ namespace Timekeeper
 
         public static ITrigger CreateTrigger(Classes.ScheduledEvent scheduledEvent, DateTimeOffset reminderTime, IJobDetail job)
         {
-            if (Options.Advanced_Other_DisableScheduler) {
+            if (!Options.Advanced_Other_EnableScheduler) {
                 return null;
             }
 
@@ -545,8 +547,6 @@ namespace Timekeeper
         // directly. See Classes.Datatypes for more info.
         //---------------------------------------------------------------------
 
-        //---------------------------------------------------------------------
-
         public static void Bench(Stopwatch t)
         {
             t.Start();
@@ -728,6 +728,13 @@ namespace Timekeeper
             } else {
                 return value;
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        public static string GetFilePath(string fileName)
+        {
+            return Path.IsPathRooted(fileName) ? fileName : Timekeeper.CWD + Path.DirectorySeparatorChar + fileName;
         }
 
         //----------------------------------------------------------------------

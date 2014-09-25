@@ -169,7 +169,7 @@ namespace Timekeeper.Forms
 
             MemoEditor.FormatToolbarVisible(Options.View_MemoEditor_ShowToolbar);
             MemoEditor.FormatRulerVisible(Options.View_MemoEditor_ShowRuler);
-            MemoEditor.SwitchMarkdown(Options.Advanced_Other_MarkupLanguage);
+            MemoEditor.SwitchMarkdown(Options.Advanced_MarkupLanguage);
             MemoEditor.ShowGutter = Options.View_MemoEditor_ShowGutter;
             MemoEditor.EditorFont = Options.View_MemoEditor_Font;
 
@@ -187,6 +187,16 @@ namespace Timekeeper.Forms
 
             // Set idle time
             this.IdleTimer.Interval = this.Options.Behavior_Annoy_NoRunningPromptAmount * 60 * 1000;
+
+            // Enable or disable scheduler
+            if (Options.Advanced_Other_EnableScheduler) {
+                // Schedule events and reminders
+                Action_Schedule();
+                MenuToolEvents.Visible = true;
+            } else {
+                // Remove from UI
+                MenuToolEvents.Visible = false;
+            }
 
             // Set form dimensions
             if (interfaceChanged) {

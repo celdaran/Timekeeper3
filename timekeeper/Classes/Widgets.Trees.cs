@@ -553,7 +553,7 @@ namespace Timekeeper.Classes
 
                 // Supported for just projects
                 case 4:
-                    if (this.Options.Advanced_Other_SortExProjectAsNumber)
+                    if (this.Options.Advanced_Other_SortExtProjectAsNumber)
                         OrderBy = "cast(ExternalProjectNo as int)";
                     else
                         OrderBy = "ExternalProjectNo";
