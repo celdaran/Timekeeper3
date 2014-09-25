@@ -119,6 +119,7 @@ namespace Timekeeper.Forms.Tools
             this.FilterResultsGrid.RowHeadersVisible = false;
             this.FilterResultsGrid.Size = new System.Drawing.Size(497, 224);
             this.FilterResultsGrid.TabIndex = 2;
+            this.FilterResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FilterResultsGrid_CellDoubleClick);
             // 
             // StartTime
             // 

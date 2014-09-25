@@ -41,6 +41,8 @@ namespace Timekeeper.Forms.Tools
             this.CurrentViewEmpty = new Classes.CalendarView();
             this.AutoSavedViewEmpty = new Classes.CalendarView("Unsaved View");
 
+            this.Browser_GotoEntry = f;
+
             // Then initialize the base class
             this.Initialize();
         }
@@ -236,6 +238,17 @@ namespace Timekeeper.Forms.Tools
                 Timekeeper.Pluralize(EntryCount, "entry", "entries"));
 
             ResultCount.Text = StatusBarText;
+        }
+
+        private void FilterResultsGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) {
+                DataGridViewRow Row = FilterResultsGrid.Rows[e.RowIndex];
+                long JournalId = Convert.ToInt64(Row.Cells["JournalId"].Value);
+                // Browser_GotoEntry() is a callback. The call you see here is
+                // not the same as the call you see below.
+                this.Browser_GotoEntry(JournalId);
+            }
         }
 
         //---------------------------------------------------------------------
