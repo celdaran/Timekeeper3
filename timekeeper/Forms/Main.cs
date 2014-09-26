@@ -480,6 +480,12 @@ namespace Timekeeper.Forms
             this.MemoEditor.FormatNumberedListButton_Click(sender, e);
         }
 
+        // Toolbar Functions | Format | Checkbox List
+        private void MenuToolbarFormatCheckboxList_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatCheckboxListButton_Click(sender, e);
+        }
+
         // Toolbar Functions | Format | Heading 1
         private void MenuToolbarFormatHeading1_Click(object sender, EventArgs e)
         {
@@ -496,6 +502,12 @@ namespace Timekeeper.Forms
         private void MenuToolbarFormatHeading3_Click(object sender, EventArgs e)
         {
             this.MemoEditor.FormatHeading3Button_Click(sender, e);
+        }
+
+        // Toolbar Functions | Format | Checkbox
+        private void MenuToolbarFormatCheckbox_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatCheckboxButton_Click(sender, e);
         }
 
         // Toolbar Functions | Format | Code

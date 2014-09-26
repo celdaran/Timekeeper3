@@ -108,7 +108,7 @@ namespace Timekeeper.Classes
                                 Timekeeper.Debug("This event has no next time!");
                                 Continue = false;
                             } else {
-                                if (NextEventTime.Value.LocalDateTime.CompareTo(Timekeeper.LocalNow) > 0) {
+                                if (NextEventTime.Value.LocalDateTime.CompareTo(Timekeeper.LocalNow.LocalDateTime) > 0) {
                                     Timekeeper.Debug("Found the next time!");
                                     Continue = false;
                                 }

@@ -622,6 +622,7 @@
     <None Include="Resources\SQL\3.0\PunchCardView.Create.sql" />
     <None Include="Resources\Images\Icons\LongRuler.png" />
     <None Include="Resources\Images\Icons\Gutter.png" />
+    <None Include="Resources\Images\Buttons\BallotBoxList.png" />
     <Content Include="tk3.icon.ico" />
     <None Include="Resources\Images\Icons\Speaker.png" />
     <None Include="Resources\Images\Icons\Warning.png" />

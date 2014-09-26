@@ -189,6 +189,9 @@ namespace Timekeeper.Forms
             this.IdleTimer.Interval = this.Options.Behavior_Annoy_NoRunningPromptAmount * 60 * 1000;
 
             // Enable or disable scheduler
+            /*
+              ** DON'T DO THIS YET **
+              ** Enabling the Scheduler Requires a Reset **
             if (Options.Advanced_Other_EnableScheduler) {
                 // Schedule events and reminders
                 Action_Schedule();
@@ -197,6 +200,7 @@ namespace Timekeeper.Forms
                 // Remove from UI
                 MenuToolEvents.Visible = false;
             }
+            */
 
             // Set form dimensions
             if (interfaceChanged) {

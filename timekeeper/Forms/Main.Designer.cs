@@ -163,6 +163,7 @@ namespace Timekeeper.Forms
             this.CategoryTreeDropdown = new ComboTreeBox();
             this.PopupMenuDimension = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuDimensionNewItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuDimensionEditItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuDimensionManageItems = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuDimensionSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuDimensionUseProjects = new System.Windows.Forms.ToolStripMenuItem();
@@ -230,7 +231,8 @@ namespace Timekeeper.Forms
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.IdleTimer = new System.Windows.Forms.Timer(this.components);
-            this.PopupMenuDimensionEditItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarFormatCheckboxList = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuToolbarFormatCheckbox = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -669,7 +671,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowserRevert,
             this.MenuToolbarBrowserUnlock});
             this.MenuToolbarBrowser.Name = "MenuToolbarBrowser";
-            this.MenuToolbarBrowser.Size = new System.Drawing.Size(116, 22);
+            this.MenuToolbarBrowser.Size = new System.Drawing.Size(152, 22);
             this.MenuToolbarBrowser.Text = "&Browser";
             // 
             // MenuToolbarBrowserFirst
@@ -907,16 +909,18 @@ namespace Timekeeper.Forms
             this.MenuToolbarFormatSep1,
             this.MenuToolbarFormatBulletedList,
             this.MenuToolbarFormatNumberedList,
+            this.MenuToolbarFormatCheckboxList,
             this.MenuToolbarFormatSep2,
             this.MenuToolbarFormatHeading1,
             this.MenuToolbarFormatHeading2,
             this.MenuToolbarFormatHeading3,
             this.MenuToolbarFormatSep3,
+            this.MenuToolbarFormatCheckbox,
             this.MenuToolbarFormatCode,
             this.MenuToolbarFormatBlockquote,
             this.MenuToolbarFormatHorizontalRule});
             this.MenuToolbarFormat.Name = "MenuToolbarFormat";
-            this.MenuToolbarFormat.Size = new System.Drawing.Size(116, 22);
+            this.MenuToolbarFormat.Size = new System.Drawing.Size(152, 22);
             this.MenuToolbarFormat.Text = "&Format";
             // 
             // MenuToolbarFormatBold
@@ -1432,7 +1436,7 @@ namespace Timekeeper.Forms
             this.PopupMenuDimensionSep2,
             this.PopupMenuDimensionProperties});
             this.PopupMenuDimension.Name = "menuTask";
-            this.PopupMenuDimension.Size = new System.Drawing.Size(159, 214);
+            this.PopupMenuDimension.Size = new System.Drawing.Size(159, 192);
             this.PopupMenuDimension.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenuDimension_Opening);
             // 
             // PopupMenuDimensionNewItem
@@ -1442,6 +1446,13 @@ namespace Timekeeper.Forms
             this.PopupMenuDimensionNewItem.Size = new System.Drawing.Size(158, 22);
             this.PopupMenuDimensionNewItem.Text = "&New Item...";
             this.PopupMenuDimensionNewItem.Click += new System.EventHandler(this.PopupMenuDimensionNewItem_Click);
+            // 
+            // PopupMenuDimensionEditItem
+            // 
+            this.PopupMenuDimensionEditItem.Name = "PopupMenuDimensionEditItem";
+            this.PopupMenuDimensionEditItem.Size = new System.Drawing.Size(158, 22);
+            this.PopupMenuDimensionEditItem.Text = "Edit Item...";
+            this.PopupMenuDimensionEditItem.Visible = false;
             // 
             // PopupMenuDimensionManageItems
             // 
@@ -2075,12 +2086,21 @@ namespace Timekeeper.Forms
             this.IdleTimer.Interval = 1200000;
             this.IdleTimer.Tick += new System.EventHandler(this.IdleTimer_Tick);
             // 
-            // PopupMenuDimensionEditItem
+            // MenuToolbarFormatCheckboxList
             // 
-            this.PopupMenuDimensionEditItem.Name = "PopupMenuDimensionEditItem";
-            this.PopupMenuDimensionEditItem.Size = new System.Drawing.Size(158, 22);
-            this.PopupMenuDimensionEditItem.Text = "Edit Item...";
-            this.PopupMenuDimensionEditItem.Visible = false;
+            this.MenuToolbarFormatCheckboxList.Name = "MenuToolbarFormatCheckboxList";
+            this.MenuToolbarFormatCheckboxList.Size = new System.Drawing.Size(187, 22);
+            this.MenuToolbarFormatCheckboxList.Text = "Checkbox List";
+            this.MenuToolbarFormatCheckboxList.Click += new System.EventHandler(this.MenuToolbarFormatCheckboxList_Click);
+            // 
+            // MenuToolbarFormatCheckbox
+            // 
+            this.MenuToolbarFormatCheckbox.Name = "MenuToolbarFormatCheckbox";
+            this.MenuToolbarFormatCheckbox.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.C)));
+            this.MenuToolbarFormatCheckbox.Size = new System.Drawing.Size(200, 22);
+            this.MenuToolbarFormatCheckbox.Text = "Checkbox";
+            this.MenuToolbarFormatCheckbox.Click += new System.EventHandler(this.MenuToolbarFormatCheckbox_Click);
             // 
             // Main
             // 
@@ -2327,5 +2347,7 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuHelpCheckForUpdates;
         private System.Windows.Forms.Timer IdleTimer;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuDimensionEditItem;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarFormatCheckboxList;
+        private System.Windows.Forms.ToolStripMenuItem MenuToolbarFormatCheckbox;
     }
 }

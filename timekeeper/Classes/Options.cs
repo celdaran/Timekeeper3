@@ -105,6 +105,7 @@ namespace Timekeeper.Classes
 
         public string Mail_FromAddress { get; set; }
         public string Mail_FromDisplayAddress { get; set; }
+        public string Mail_Subject { get; set; }
         public string Mail_SmtpServer { get; set; }
         public int Mail_SmtpPort { get; set; }
         public bool Mail_SmtpServerRequiresSSL { get; set; }
@@ -443,6 +444,7 @@ namespace Timekeeper.Classes
 
             Mail_FromAddress = (string)Key.GetValue("FromAddress", "from@example.com");
             Mail_FromDisplayAddress = (string)Key.GetValue("FromDisplayAddress", "Timekeeper Notification");
+            Mail_Subject = (string)Key.GetValue("Subject", "Reminder");
             Mail_SmtpServer = (string)Key.GetValue("SmtpServer", "smtp.example.com");
             Mail_SmtpPort = (int)Key.GetValue("SmtpPort", 25);
             Mail_SmtpServerRequiresSSL = ((int)Key.GetValue("SmtpServerRequiresSSL", 0) == 1);
@@ -838,6 +840,7 @@ namespace Timekeeper.Classes
 
             Key.SetValue("FromAddress", Mail_FromAddress, Microsoft.Win32.RegistryValueKind.String);
             Key.SetValue("FromDisplayAddress", Mail_FromDisplayAddress, Microsoft.Win32.RegistryValueKind.String);
+            Key.SetValue("Subject", Mail_Subject, Microsoft.Win32.RegistryValueKind.String);
             Key.SetValue("SmtpServer", Mail_SmtpServer, Microsoft.Win32.RegistryValueKind.String);
             Key.SetValue("SmtpPort", Mail_SmtpPort, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("SmtpServerRequiresSSL", Mail_SmtpServerRequiresSSL, Microsoft.Win32.RegistryValueKind.DWord);

@@ -166,25 +166,6 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SmallImages = new System.Windows.Forms.ImageList(this.components);
-            this.MailSettingsPage = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.Mail_FromAddress = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.Mail_FromDisplayAddress = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.Mail_SmtpTimeout = new System.Windows.Forms.NumericUpDown();
-            this.Mail_SmtpServerPassword = new System.Windows.Forms.TextBox();
-            this.Mail_SmtpServerUsername = new System.Windows.Forms.TextBox();
-            this.Mail_SmtpServerRequiresSSL = new System.Windows.Forms.CheckBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.Mail_SmtpPort = new System.Windows.Forms.TextBox();
-            this.Mail_SmtpServer = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.AdvancedPage = new System.Windows.Forms.TabPage();
             this.AdvancedSpacerBox = new System.Windows.Forms.PictureBox();
             this.AdvancedFormattingGroup = new System.Windows.Forms.GroupBox();
@@ -212,8 +193,29 @@
             this.LoggingDatabaseLabel = new System.Windows.Forms.Label();
             this.Advanced_Logging_Application = new System.Windows.Forms.ComboBox();
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
+            this.MailSettingsPage = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.Mail_FromAddress = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.Mail_FromDisplayAddress = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.Mail_SmtpTimeout = new System.Windows.Forms.NumericUpDown();
+            this.Mail_SmtpServerPassword = new System.Windows.Forms.TextBox();
+            this.Mail_SmtpServerUsername = new System.Windows.Forms.TextBox();
+            this.Mail_SmtpServerRequiresSSL = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.Mail_SmtpPort = new System.Windows.Forms.TextBox();
+            this.Mail_SmtpServer = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.Mail_Subject = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -258,10 +260,6 @@
             this.ReportGroup.SuspendLayout();
             this.KeyboardPage.SuspendLayout();
             this.ShortcutGroup.SuspendLayout();
-            this.MailSettingsPage.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).BeginInit();
             this.AdvancedPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AdvancedSpacerBox)).BeginInit();
             this.AdvancedFormattingGroup.SuspendLayout();
@@ -269,6 +267,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.Advanced_Other_DimensionWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.LoggingGroup.SuspendLayout();
+            this.MailSettingsPage.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).BeginInit();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -299,8 +301,8 @@
             this.OptionsPanelCollection.Controls.Add(this.BehaviorPage);
             this.OptionsPanelCollection.Controls.Add(this.ReportPage);
             this.OptionsPanelCollection.Controls.Add(this.KeyboardPage);
-            this.OptionsPanelCollection.Controls.Add(this.MailSettingsPage);
             this.OptionsPanelCollection.Controls.Add(this.AdvancedPage);
+            this.OptionsPanelCollection.Controls.Add(this.MailSettingsPage);
             this.OptionsPanelCollection.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.OptionsPanelCollection.ItemSize = new System.Drawing.Size(26, 94);
             this.OptionsPanelCollection.Location = new System.Drawing.Point(12, 9);
@@ -1865,195 +1867,6 @@
             this.SmallImages.Images.SetKeyName(0, "ImageIconMenu");
             this.SmallImages.Images.SetKeyName(1, "ImageIconToolbar");
             // 
-            // MailSettingsPage
-            // 
-            this.MailSettingsPage.Controls.Add(this.groupBox2);
-            this.MailSettingsPage.Controls.Add(this.groupBox1);
-            this.MailSettingsPage.Location = new System.Drawing.Point(98, 4);
-            this.MailSettingsPage.Name = "MailSettingsPage";
-            this.MailSettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.MailSettingsPage.Size = new System.Drawing.Size(393, 412);
-            this.MailSettingsPage.TabIndex = 6;
-            this.MailSettingsPage.Text = "Mail Settings";
-            this.MailSettingsPage.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.Mail_FromAddress);
-            this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Controls.Add(this.Mail_FromDisplayAddress);
-            this.groupBox2.Location = new System.Drawing.Point(17, 16);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(345, 89);
-            this.groupBox2.TabIndex = 2;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Send Mail && SMS From";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(14, 54);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 13);
-            this.label10.TabIndex = 20;
-            this.label10.Text = "Display As:";
-            // 
-            // Mail_FromAddress
-            // 
-            this.Mail_FromAddress.Location = new System.Drawing.Point(111, 25);
-            this.Mail_FromAddress.Name = "Mail_FromAddress";
-            this.Mail_FromAddress.Size = new System.Drawing.Size(215, 20);
-            this.Mail_FromAddress.TabIndex = 1;
-            this.Mail_FromAddress.Text = "from@example.com";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(14, 28);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(48, 13);
-            this.label11.TabIndex = 19;
-            this.label11.Text = "Address:";
-            // 
-            // Mail_FromDisplayAddress
-            // 
-            this.Mail_FromDisplayAddress.Location = new System.Drawing.Point(111, 51);
-            this.Mail_FromDisplayAddress.Name = "Mail_FromDisplayAddress";
-            this.Mail_FromDisplayAddress.Size = new System.Drawing.Size(215, 20);
-            this.Mail_FromDisplayAddress.TabIndex = 2;
-            this.Mail_FromDisplayAddress.Text = "Timekeeper Notification";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.Mail_SmtpTimeout);
-            this.groupBox1.Controls.Add(this.Mail_SmtpServerPassword);
-            this.groupBox1.Controls.Add(this.Mail_SmtpServerUsername);
-            this.groupBox1.Controls.Add(this.Mail_SmtpServerRequiresSSL);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.Mail_SmtpPort);
-            this.groupBox1.Controls.Add(this.Mail_SmtpServer);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Location = new System.Drawing.Point(17, 121);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(345, 179);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Server Settings";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(161, 79);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(49, 13);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "Seconds";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(14, 146);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(56, 13);
-            this.label9.TabIndex = 16;
-            this.label9.Text = "Password:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(14, 79);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(81, 13);
-            this.label6.TabIndex = 17;
-            this.label6.Text = "SMTP Timeout:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(14, 120);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(58, 13);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "Username:";
-            // 
-            // Mail_SmtpTimeout
-            // 
-            this.Mail_SmtpTimeout.Location = new System.Drawing.Point(111, 77);
-            this.Mail_SmtpTimeout.Name = "Mail_SmtpTimeout";
-            this.Mail_SmtpTimeout.Size = new System.Drawing.Size(47, 20);
-            this.Mail_SmtpTimeout.TabIndex = 6;
-            this.Mail_SmtpTimeout.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // Mail_SmtpServerPassword
-            // 
-            this.Mail_SmtpServerPassword.Location = new System.Drawing.Point(111, 143);
-            this.Mail_SmtpServerPassword.Name = "Mail_SmtpServerPassword";
-            this.Mail_SmtpServerPassword.Size = new System.Drawing.Size(215, 20);
-            this.Mail_SmtpServerPassword.TabIndex = 8;
-            this.Mail_SmtpServerPassword.Text = "password";
-            this.Mail_SmtpServerPassword.UseSystemPasswordChar = true;
-            // 
-            // Mail_SmtpServerUsername
-            // 
-            this.Mail_SmtpServerUsername.Location = new System.Drawing.Point(111, 117);
-            this.Mail_SmtpServerUsername.Name = "Mail_SmtpServerUsername";
-            this.Mail_SmtpServerUsername.Size = new System.Drawing.Size(215, 20);
-            this.Mail_SmtpServerUsername.TabIndex = 7;
-            this.Mail_SmtpServerUsername.Text = "username";
-            // 
-            // Mail_SmtpServerRequiresSSL
-            // 
-            this.Mail_SmtpServerRequiresSSL.AutoSize = true;
-            this.Mail_SmtpServerRequiresSSL.Location = new System.Drawing.Point(164, 54);
-            this.Mail_SmtpServerRequiresSSL.Name = "Mail_SmtpServerRequiresSSL";
-            this.Mail_SmtpServerRequiresSSL.Size = new System.Drawing.Size(91, 17);
-            this.Mail_SmtpServerRequiresSSL.TabIndex = 5;
-            this.Mail_SmtpServerRequiresSSL.Text = "Requires SSL";
-            this.Mail_SmtpServerRequiresSSL.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(14, 54);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(62, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "SMTP Port:";
-            // 
-            // Mail_SmtpPort
-            // 
-            this.Mail_SmtpPort.Location = new System.Drawing.Point(111, 51);
-            this.Mail_SmtpPort.Name = "Mail_SmtpPort";
-            this.Mail_SmtpPort.Size = new System.Drawing.Size(47, 20);
-            this.Mail_SmtpPort.TabIndex = 4;
-            this.Mail_SmtpPort.Text = "25";
-            // 
-            // Mail_SmtpServer
-            // 
-            this.Mail_SmtpServer.Location = new System.Drawing.Point(111, 25);
-            this.Mail_SmtpServer.Name = "Mail_SmtpServer";
-            this.Mail_SmtpServer.Size = new System.Drawing.Size(215, 20);
-            this.Mail_SmtpServer.TabIndex = 3;
-            this.Mail_SmtpServer.Text = "smtp.example.com";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(14, 28);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(74, 13);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "SMTP Server:";
-            // 
             // AdvancedPage
             // 
             this.AdvancedPage.AutoScroll = true;
@@ -2401,9 +2214,217 @@
             this.LoggingApplicationLabel.TabIndex = 0;
             this.LoggingApplicationLabel.Text = "Application:";
             // 
+            // MailSettingsPage
+            // 
+            this.MailSettingsPage.Controls.Add(this.groupBox2);
+            this.MailSettingsPage.Controls.Add(this.groupBox1);
+            this.MailSettingsPage.Location = new System.Drawing.Point(98, 4);
+            this.MailSettingsPage.Name = "MailSettingsPage";
+            this.MailSettingsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.MailSettingsPage.Size = new System.Drawing.Size(393, 412);
+            this.MailSettingsPage.TabIndex = 6;
+            this.MailSettingsPage.Text = "Mail Settings";
+            this.MailSettingsPage.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label21);
+            this.groupBox2.Controls.Add(this.Mail_Subject);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.Mail_FromAddress);
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Controls.Add(this.Mail_FromDisplayAddress);
+            this.groupBox2.Location = new System.Drawing.Point(17, 16);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(345, 115);
+            this.groupBox2.TabIndex = 2;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Mail && SMS Message";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(14, 54);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(70, 13);
+            this.label10.TabIndex = 20;
+            this.label10.Text = "From Display:";
+            // 
+            // Mail_FromAddress
+            // 
+            this.Mail_FromAddress.Location = new System.Drawing.Point(111, 25);
+            this.Mail_FromAddress.Name = "Mail_FromAddress";
+            this.Mail_FromAddress.Size = new System.Drawing.Size(215, 20);
+            this.Mail_FromAddress.TabIndex = 1;
+            this.Mail_FromAddress.Text = "from@example.com";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(14, 28);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(74, 13);
+            this.label11.TabIndex = 19;
+            this.label11.Text = "From Address:";
+            // 
+            // Mail_FromDisplayAddress
+            // 
+            this.Mail_FromDisplayAddress.Location = new System.Drawing.Point(111, 51);
+            this.Mail_FromDisplayAddress.Name = "Mail_FromDisplayAddress";
+            this.Mail_FromDisplayAddress.Size = new System.Drawing.Size(215, 20);
+            this.Mail_FromDisplayAddress.TabIndex = 2;
+            this.Mail_FromDisplayAddress.Text = "Timekeeper Notification";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.Mail_SmtpTimeout);
+            this.groupBox1.Controls.Add(this.Mail_SmtpServerPassword);
+            this.groupBox1.Controls.Add(this.Mail_SmtpServerUsername);
+            this.groupBox1.Controls.Add(this.Mail_SmtpServerRequiresSSL);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.Mail_SmtpPort);
+            this.groupBox1.Controls.Add(this.Mail_SmtpServer);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Location = new System.Drawing.Point(17, 137);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(345, 179);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Server Settings";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(161, 79);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(49, 13);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "Seconds";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(14, 146);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(56, 13);
+            this.label9.TabIndex = 16;
+            this.label9.Text = "Password:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(14, 79);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(81, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "SMTP Timeout:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(14, 120);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(58, 13);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Username:";
+            // 
+            // Mail_SmtpTimeout
+            // 
+            this.Mail_SmtpTimeout.Location = new System.Drawing.Point(111, 77);
+            this.Mail_SmtpTimeout.Name = "Mail_SmtpTimeout";
+            this.Mail_SmtpTimeout.Size = new System.Drawing.Size(47, 20);
+            this.Mail_SmtpTimeout.TabIndex = 7;
+            this.Mail_SmtpTimeout.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // Mail_SmtpServerPassword
+            // 
+            this.Mail_SmtpServerPassword.Location = new System.Drawing.Point(111, 143);
+            this.Mail_SmtpServerPassword.Name = "Mail_SmtpServerPassword";
+            this.Mail_SmtpServerPassword.Size = new System.Drawing.Size(215, 20);
+            this.Mail_SmtpServerPassword.TabIndex = 9;
+            this.Mail_SmtpServerPassword.Text = "password";
+            this.Mail_SmtpServerPassword.UseSystemPasswordChar = true;
+            // 
+            // Mail_SmtpServerUsername
+            // 
+            this.Mail_SmtpServerUsername.Location = new System.Drawing.Point(111, 117);
+            this.Mail_SmtpServerUsername.Name = "Mail_SmtpServerUsername";
+            this.Mail_SmtpServerUsername.Size = new System.Drawing.Size(215, 20);
+            this.Mail_SmtpServerUsername.TabIndex = 8;
+            this.Mail_SmtpServerUsername.Text = "username";
+            // 
+            // Mail_SmtpServerRequiresSSL
+            // 
+            this.Mail_SmtpServerRequiresSSL.AutoSize = true;
+            this.Mail_SmtpServerRequiresSSL.Location = new System.Drawing.Point(164, 54);
+            this.Mail_SmtpServerRequiresSSL.Name = "Mail_SmtpServerRequiresSSL";
+            this.Mail_SmtpServerRequiresSSL.Size = new System.Drawing.Size(91, 17);
+            this.Mail_SmtpServerRequiresSSL.TabIndex = 6;
+            this.Mail_SmtpServerRequiresSSL.Text = "Requires SSL";
+            this.Mail_SmtpServerRequiresSSL.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(14, 54);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(62, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "SMTP Port:";
+            // 
+            // Mail_SmtpPort
+            // 
+            this.Mail_SmtpPort.Location = new System.Drawing.Point(111, 51);
+            this.Mail_SmtpPort.Name = "Mail_SmtpPort";
+            this.Mail_SmtpPort.Size = new System.Drawing.Size(47, 20);
+            this.Mail_SmtpPort.TabIndex = 5;
+            this.Mail_SmtpPort.Text = "25";
+            // 
+            // Mail_SmtpServer
+            // 
+            this.Mail_SmtpServer.Location = new System.Drawing.Point(111, 25);
+            this.Mail_SmtpServer.Name = "Mail_SmtpServer";
+            this.Mail_SmtpServer.Size = new System.Drawing.Size(215, 20);
+            this.Mail_SmtpServer.TabIndex = 4;
+            this.Mail_SmtpServer.Text = "smtp.example.com";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(14, 28);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(74, 13);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "SMTP Server:";
+            // 
             // OpenFileDialog
             // 
             this.OpenFileDialog.FileName = "SET AT RUN TIME";
+            // 
+            // Mail_Subject
+            // 
+            this.Mail_Subject.Location = new System.Drawing.Point(111, 77);
+            this.Mail_Subject.Name = "Mail_Subject";
+            this.Mail_Subject.Size = new System.Drawing.Size(215, 20);
+            this.Mail_Subject.TabIndex = 3;
+            this.Mail_Subject.Text = "Reminder";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(14, 80);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(69, 13);
+            this.label21.TabIndex = 22;
+            this.label21.Text = "Subject Line:";
             // 
             // Options
             // 
@@ -2500,12 +2521,6 @@
             this.KeyboardPage.ResumeLayout(false);
             this.ShortcutGroup.ResumeLayout(false);
             this.ShortcutGroup.PerformLayout();
-            this.MailSettingsPage.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).EndInit();
             this.AdvancedPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AdvancedSpacerBox)).EndInit();
             this.AdvancedFormattingGroup.ResumeLayout(false);
@@ -2516,6 +2531,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.LoggingGroup.ResumeLayout(false);
             this.LoggingGroup.PerformLayout();
+            this.MailSettingsPage.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2708,6 +2729,8 @@
         private System.Windows.Forms.ComboBox Advanced_DateTimeFormat;
         private System.Windows.Forms.RadioButton Layout_Preset_Minimal;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox Mail_Subject;
 
     }
 }

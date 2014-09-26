@@ -80,22 +80,30 @@ namespace Timekeeper.Forms.Shared
                 if (NotifyViaTrayCheckbox.Checked) {
                     CurrentReminder.NotifyViaTray = true;
                     CurrentReminder.NotifyTrayMessage = NotifyTrayMessageInput.Text;
+                } else {
+                    CurrentReminder.NotifyViaTray = false;
                 }
 
                 if (NotifyViaAudioCheckbox.Checked) {
                     CurrentReminder.NotifyViaAudio = true;
                     CurrentReminder.NotifyAudioFile = NotifyAudioFileList.Text;
+                } else {
+                    CurrentReminder.NotifyViaAudio = false;
                 }
 
                 if (NotifyViaEmailCheckbox.Checked) {
                     CurrentReminder.NotifyViaEmail = true;
                     CurrentReminder.NotifyEmailAddress = NotifyEmailAddressInput.Text;
+                } else {
+                    CurrentReminder.NotifyViaEmail = false;
                 }
 
                 if (NotifyViaTextCheckbox.Checked) {
                     CurrentReminder.NotifyViaText = true;
                     CurrentReminder.NotifyPhoneNumber = NotifyPhoneNumberInput.Text;
                     CurrentReminder.NotifyCarrierListId = NotifyCarrierList.SelectedIndex + 1;
+                } else {
+                    CurrentReminder.NotifyViaText = false;
                 }
 
                 CurrentReminder.Save();
@@ -133,14 +141,14 @@ namespace Timekeeper.Forms.Shared
                     RemindMeRadioButton.Checked = true;
                 }
 
-                // Directory relative to exe
-                DirectoryInfo SoundsDirectory = new DirectoryInfo("Sounds");
+                string SoundsDirectoryPath = Timekeeper.CWD + Path.DirectorySeparatorChar + "Sounds";
+                DirectoryInfo SoundsDirectory = new DirectoryInfo(SoundsDirectoryPath);
                 if (SoundsDirectory.Exists) {
                     foreach (FileInfo SoundFile in SoundsDirectory.GetFiles("*.wav")) {
-                        NotifyAudioFileList.Items.Add(SoundFile.Name);
+                        NotifyAudioFileList.Items.Add(Path.GetFileNameWithoutExtension(SoundFile.Name));
                     }
                 } else {
-                    Timekeeper.Warn("Could not find Sounds Directory: " + SoundsDirectory.FullName);
+                    Timekeeper.DoubleWarn("Could not find Sounds Directory: " + SoundsDirectory.FullName);
                 }
 
                 // Now the normal population
@@ -154,7 +162,7 @@ namespace Timekeeper.Forms.Shared
                 NotifyTrayMessageInput.Text = CurrentReminder.NotifyTrayMessage;
                 NotifyEmailAddressInput.Text = CurrentReminder.NotifyEmailAddress;
                 NotifyPhoneNumberInput.Text = CurrentReminder.NotifyPhoneNumber;
-                NotifyCarrierList.SelectedIndex = (int)CurrentReminder.NotifyCarrierListId;
+                NotifyCarrierList.SelectedIndex = (int)CurrentReminder.NotifyCarrierListId - 1;
 
                 if (CurrentReminder.TimeAmount == 0) {
                     DontRemindMeRadioButton.Checked = true;
@@ -264,7 +272,7 @@ namespace Timekeeper.Forms.Shared
             try {
                 if (NotifyViaAudioCheckbox.Checked && NotifyViaAudioCheckbox.Enabled) {
                     SoundPlayer simpleSound =
-                        new SoundPlayer(@"Sounds/" + NotifyAudioFileList.SelectedItem.ToString());
+                        new SoundPlayer(@"Sounds/" + NotifyAudioFileList.SelectedItem.ToString() + ".wav");
                     simpleSound.Play();
                 }
             }

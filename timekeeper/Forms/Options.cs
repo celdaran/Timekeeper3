@@ -21,6 +21,7 @@ namespace Timekeeper.Forms
         //----------------------------------------------------------------------
 
         private MenuStrip MainMenu;
+        private bool FormLoading;
 
         public Classes.Options Values { get; set; }
         public bool InterfaceChanged { get; set; }
@@ -40,6 +41,7 @@ namespace Timekeeper.Forms
 
             this.Values = optionValues;
             this.MainMenu = mainMenu;
+            this.FormLoading = false;
         }
 
         //----------------------------------------------------------------------
@@ -48,8 +50,10 @@ namespace Timekeeper.Forms
 
         private void Options_Load(object sender, EventArgs e)
         {
+            this.FormLoading = true;
             PopulateForm();
             OptionsToForm();
+            this.FormLoading = false;
 
             // Last pass: dynamic interface changes
             Layout_UseProjects_CheckedChanged(sender, e);
@@ -389,6 +393,7 @@ namespace Timekeeper.Forms
 
             Mail_FromAddress.Text = Values.Mail_FromAddress;
             Mail_FromDisplayAddress.Text = Values.Mail_FromDisplayAddress;
+            Mail_Subject.Text = Values.Mail_Subject;
             Mail_SmtpServer.Text = Values.Mail_SmtpServer;
             Mail_SmtpPort.Text = Values.Mail_SmtpPort.ToString();
             Mail_SmtpServerRequiresSSL.Checked = Values.Mail_SmtpServerRequiresSSL;
@@ -505,6 +510,7 @@ namespace Timekeeper.Forms
 
             Values.Mail_FromAddress = Mail_FromAddress.Text;
             Values.Mail_FromDisplayAddress = Mail_FromDisplayAddress.Text;
+            Values.Mail_Subject = Mail_Subject.Text;
             Values.Mail_SmtpServer = Mail_SmtpServer.Text;
             Values.Mail_SmtpPort = Convert.ToInt32(Mail_SmtpPort.Text);
             Values.Mail_SmtpServerRequiresSSL = Mail_SmtpServerRequiresSSL.Checked;
@@ -603,25 +609,31 @@ namespace Timekeeper.Forms
 
         private void AssignKey_Click(object sender, EventArgs e)
         {
-            ListViewItem Item = SelectedItem();
+            try {
+                ListViewItem Item = SelectedItem();
 
-            Keys Keys = 0;
+                Keys Keys = 0;
 
-            if (ControlKey.Checked)
-                Keys += (int)Keys.Control;
-            if (AltKey.Checked)
-                Keys += (int)Keys.Alt;
-            if (ShiftKey.Checked)
-                Keys += (int)Keys.Shift;
+                if (ControlKey.Checked)
+                    Keys += (int)Keys.Control;
+                if (AltKey.Checked)
+                    Keys += (int)Keys.Alt;
+                if (ShiftKey.Checked)
+                    Keys += (int)Keys.Shift;
 
-            KeysConverter Converter = new KeysConverter();
-            Keys += (int)Converter.ConvertFromString((string)KeyCode.SelectedItem);
+                KeysConverter Converter = new KeysConverter();
+                Keys += (int)Converter.ConvertFromString((string)KeyCode.SelectedItem);
 
-            // Assign new keystroke
-            Item.Tag = Keys;
+                // Assign new keystroke
+                Item.Tag = Keys;
 
-            // Reset visible attribute
-            Item.SubItems[1].Text = Converter.ConvertToString(Keys);
+                // Reset visible attribute
+                Item.SubItems[1].Text = Converter.ConvertToString(Keys);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                Common.Warn("Could not assign that key combination.");
+            }
 
         }
 
@@ -1118,8 +1130,19 @@ namespace Timekeeper.Forms
 
         private void Advanced_Other_EnableScheduler_CheckedChanged(object sender, EventArgs e)
         {
+            // Only do this in response to user UI events
+            if (this.FormLoading)
+                return;
+
             if (Advanced_Other_EnableScheduler.Checked) {
-                Common.Warn("You are enabling the Event & Scheduler System.\n\nThis system is currently in alpha mode and, as such, is a bit flaky. It is being made available for field testing and for you to use at your own discretion.\n\nProblems have to do with multi-threaded access to your database, so it may fail if too many events are scheduled to fire around the same time. Data loss is NOT an issue, but you may miss notifications or see errors pop up.");
+                Common.Warn(
+@"You are enabling the Event & Scheduler System.
+
+This system is currently in alpha mode and, as such, is a bit flaky. It is being made available for field testing and for you to use at your own discretion.
+
+Problems have to do with multi-threaded access to your database, so it may fail if too many events are scheduled to fire around the same time. Data loss is NOT an issue, but you may miss notifications or see errors pop up.
+
+Note: After enabling this feature, you need to restart Timekeeper to get your events to fire.");
             }
 
             HandleMailTab();
@@ -1127,10 +1150,12 @@ namespace Timekeeper.Forms
 
         private void HandleMailTab()
         {
-            if (Advanced_Other_EnableScheduler.Checked)
-                OptionsPanelCollection.TabPages.Add(MailSettingsPage);
-            else
+            if (Advanced_Other_EnableScheduler.Checked) {
+                if (!OptionsPanelCollection.TabPages.Contains(MailSettingsPage))
+                    OptionsPanelCollection.TabPages.Add(MailSettingsPage);
+            } else {
                 OptionsPanelCollection.TabPages.Remove(MailSettingsPage);
+            }
         }
         //----------------------------------------------------------------------
 

@@ -63,6 +63,16 @@ namespace Timekeeper.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ImageButtonBallotBoxList {
+            get {
+                object obj = ResourceManager.GetObject("ImageButtonBallotBoxList", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ImageButtonBold {
             get {
                 object obj = ResourceManager.GetObject("ImageButtonBold", resourceCulture);
