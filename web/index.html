@@ -17,6 +17,9 @@
     <!-- Custom CSS -->
     <link href="css/agency.css" rel="stylesheet">
 
+    <!-- Photo Gallery -->
+    <link href="css/fearlessflyer.css" rel="stylesheet">
+
     <!-- Custom Fonts -->
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href='http://fonts.googleapis.com/css?family=Segoe UI' rel='stylesheet' type='text/css'>
@@ -27,6 +30,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+
 
 </head>
 
@@ -97,7 +102,7 @@
     </header>
 
     <!-- Features Section -->
-    <section id="features">
+    <section id="features" class="bg-light-gray">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -107,48 +112,48 @@
             </div>
 
 
-            <div class="row text-center">
+            <div class="row">
                 <div class="col-md-4">
-                    <h4 class="feature-header">Time Tracking</h4>
-                    <p class="text-muted">Timekeeper's primary function is to track time. Start the timer, stop the timer, and, if you feel like it, add a few notes.</p>
+                    <h4 class="feature-header text-center">Time Tracking</h4>
+                    <p class="text-muted text-justify">Timekeeper's primary function is to track time. Start the timer, stop the timer, and, if you feel like it, add a few notes.</p>
                 </div>
                 <div class="col-md-4">
-                    <h4 class="feature-header">Multiple Dimensions</h4>
-                    <p class="text-muted">Track your time against Projects, Activities, Locations, and user-defined Categories. Or none of these. It's up to you.</p>
+                    <h4 class="feature-header text-center">Multiple Dimensions</h4>
+                    <p class="text-muted text-justify">Track your time against Projects, Activities, Locations, and user-defined Categories. Or none of these. It's up to you.</p>
                 </div>
                 <div class="col-md-4">
-                    <h4 class="feature-header">Reports</h4>
-                    <p class="text-muted">Timekeeper offers a Journal Entry Report, a Time Grid, and a Punch Card Report to help you see where your time is spent.</p>
-                </div>
-            </div>
-
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <h4 class="feature-header">To Do List</h4>
-                    <p class="text-muted">Add any Project to a To Do list. Keep track of todo item notes, status, start date, due date, and even time estimates.</p>
-                </div>
-                <div class="col-md-4">
-                    <h4 class="feature-header">Notebook</h4>
-                    <p class="text-muted">Write daily notes or jot down random thoughts not bound to a specific start or end time. Track notes against time tracking dimensions.</p>
-                </div>
-                <div class="col-md-4">
-                    <h4 class="feature-header">Calendar View</h4>
-                    <p class="text-muted">A familiar overview of your tracked data. Highlights days where you've recorded time. Click to view or edit the tracked details.</p>
+                    <h4 class="feature-header text-center">Reports</h4>
+                    <p class="text-muted text-justify">Timekeeper offers a Journal Entry Report, a Time Grid, and a Punch Card Report to help you see where your time is spent.</p>
                 </div>
             </div>
 
-            <div class="row text-center">
+            <div class="row">
                 <div class="col-md-4">
-                    <h4 class="feature-header">Countdown</h4>
-                    <p class="text-muted">Display a countdown timer based on an ad-hoc, user-entered time or count down to a pre-defined event. Resize it for easy viewing.</p>
+                    <h4 class="feature-header text-center">To Do List</h4>
+                    <p class="text-muted text-justify">Add any Project to a To Do list. Keep track of todo item notes, status, start date, due date, and even time estimates.</p>
                 </div>
                 <div class="col-md-4">
-                    <h4 class="feature-header">Stopwatch</h4>
-                    <p class="text-muted">Count up time with hundredth of a second resolution. Standard lap and reset functions. Supports multiple simultaneous stopwatches.</p>
+                    <h4 class="feature-header text-center">Notebook</h4>
+                    <p class="text-muted text-justify">Write daily notes or jot down random thoughts not bound to a specific start or end time. Track notes against time tracking dimensions.</p>
                 </div>
                 <div class="col-md-4">
-                    <h4 class="feature-header">And More...</h4>
-                    <p class="text-muted">Flexible find function for both Journal entries and Notebook entries. Advanced filtering for reports and grids. CSV import and more...</p>
+                    <h4 class="feature-header text-center">Calendar View</h4>
+                    <p class="text-muted text-justify">A familiar overview of your tracked data. Highlights days where you've recorded time. Click to view or edit the tracked details.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <h4 class="feature-header text-center">Countdown</h4>
+                    <p class="text-muted text-justify">Display a countdown timer based on an ad-hoc, user-entered time or count down to a pre-defined event. Resize it for easy viewing.</p>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="feature-header text-center">Stopwatch</h4>
+                    <p class="text-muted text-justify">Count up time with hundredth of a second resolution. Standard lap and reset functions. Supports multiple simultaneous stopwatches.</p>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="feature-header text-center">And More...</h4>
+                    <p class="text-muted text-justify">Flexible find function for both Journal entries and Notebook entries. Advanced filtering for reports and grids. CSV import and more...</p>
                 </div>
             </div>
 
@@ -156,8 +161,9 @@
     </section>
 
     <!-- Screenshots Grid Section -->
-    <section id="screenshots" class="bg-light-gray">
+    <section id="screenshots">
         <div class="container">
+
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Screenshots</h2>
@@ -165,68 +171,72 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <img src="img/screenshots/bare-bones.png" class="img-responsive" alt="">
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Bare Bones</p>
-                    </div>
-                </div>
+            <ul class="row">
 
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <img src="img/screenshots/simple-layout.png" class="img-responsive" alt="">
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Simple Layout</p>
-                    </div>
-                </div>
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <img class="img-responsive"
+                      title="Minimal layout. Just hit Ctrl+T to start and stop the timer. Now is the time for all good men to come to the aid of their country. That was just wide enough. But leave it to the jackdaws to make it even wider."
+                      src="img/screenshots/layout-minimal.png">
+                </li>
 
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <img src="img/screenshots/typical-layout.png" class="img-responsive" alt="">
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Typical Layout</p>
-                    </div>
-                </div>
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <img class="img-responsive"
+                      title="Simple Layout. Everything you need for annotated, one-dimensional time tracking."
+                      src="img/screenshots/layout-simple.png">
+                </li>
 
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <img class="img-responsive"
+                      title="Typical Layout. Access to the Start Time, Stop Time, and Duration entries, plus two-dimensional time tracking."
+                      src="img/screenshots/layout-typical.png">
+                </li>
+
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <img class="img-responsive"
+                      title="Full Layout. The memo editor toolbars are displayed, all four dimensions in use."
+                      src="img/screenshots/layout-the-works.png">
+                </li>
+
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <img class="img-responsive"
+                      title="A wizard interface walks you through the database creation process."
+                      src="img/screenshots/wizard-new-database.png">
+                </li>
+
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <img class="img-responsive"
+                      title="Go back and find Timekeeper journal entries using a full array of search criteria."
+                      src="img/screenshots/find.png">
+                </li>
+
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <img class="img-responsive"
+                      title="Go back and find Timekeeper journal entries using a full array of search criteria."
+                      src="img/screenshots/manage-projects.png">
+                </li>
+
+                <li class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <img class="img-responsive"
+                      title="Go back and find Timekeeper journal entries using a full array of search criteria."
+                      src="img/screenshots/test.png">
+                </li>
+
+            </ul>
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-body">
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <img src="img/screenshots/full-layout.png" class="img-responsive" alt="">
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Full Layout</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <img src="img/screenshots/new-database-wizard.png" class="img-responsive" alt="">
-                    <div class="portfolio-caption">
-                        <p class="text-muted">New Database</p>
-                    </div>
-                </div>
-
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <img src="img/screenshots/bare-bones.png" class="img-responsive" alt="">
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Bare Bones</p>
-                    </div>
-                </div>
-
-                <div class="col-md-4 col-sm-6 portfolio-item">
-                    <img src="img/screenshots/bare-bones.png" class="img-responsive" alt="">
-                    <div class="portfolio-caption">
-                        <p class="text-muted">Bare Bones</p>
-                    </div>
-                </div>
-
-
-            </div>
         </div>
     </section>
 
     <!-- Download Section -->
-    <section id="download">
+    <section id="download" class="bg-light-gray">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -244,16 +254,16 @@
                     <p><a href=""><b>32-bit, With Installer</b></a></p>
                     <p><a href=""><b>32-bit, Without Installer</b></a></p>
                     <h4 class="feature-header">Agreement</h4>
-                    <p class="text-muted">By downloading this software you understand that this software is provided AS IS without warranty of any kind, express or implied. To the maximum extent permitted by applicable law, in no event shall Lockshire Media LLC or Charlie Hills be liable for any lost profits, revenue, sales, data, or costs of procurement of substitute goods or services, property damage, personal injury, interruption of business, loss of business information, or for any special, direct, indirect, incidental, economic, cover, punitive, special, or consequential damages, however caused and whether arising under contract, tort, negligence, or other theory of liability arising out of the use of or inability to use the software. </p>
+                    <p class="text-muted text-justify">By downloading this software you understand that this software is provided AS IS without warranty of any kind, express or implied. To the maximum extent permitted by applicable law, in no event shall Lockshire Media LLC or Charlie Hills be liable for any lost profits, revenue, sales, data, or costs of procurement of substitute goods or services, property damage, personal injury, interruption of business, loss of business information, or for any special, direct, indirect, incidental, economic, cover, punitive, special, or consequential damages, however caused and whether arising under contract, tort, negligence, or other theory of liability arising out of the use of or inability to use the software. </p>
                     <h4 class="feature-header">Installation Notes</h4>
-                    <p class="text-muted">If you use the installer, the Timekeeper database file type (.tkdb) will be registered and a Start Menu folder will be created. You can easily uninstall it from the Windows Control Panel. If you prefer to be less integrated, download the "Without Installer" option and place the files in a folder of your choice.</p>
+                    <p class="text-muted text-justify">If you use the installer, the Timekeeper database file type (.tkdb) will be registered and a Start Menu folder will be created. You can easily uninstall it from the Windows Control Panel. If you prefer to be less integrated, download the "Without Installer" option and place the files in a folder of your choice.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Documentation Section -->
-    <section id="documentation" class="bg-light-gray">
+    <section id="documentation">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -317,7 +327,7 @@
         </div>
     </section>
 
-    <section id="support">
+    <section id="support" class="bg-light-gray">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -325,29 +335,39 @@
                     <h3 class="section-subheading text-muted">Or lack thereof.</h3>
                 </div>
             </div>
-            <div class="row text-center">
-                <div class="col-lg-12">
-                    <p>This software is the hobby of a single developer, and as such, I cannot provide individual support nor can I make any guarantees about bug fixes or any new features.</p>
-                    <p>That being said, I've been developing Timekeeper since 1999 and I have no plans to quit any time soon. Time tracking is a bit of a compulsion of mine, so I plan to keep at this for as long as I still have this brain.</p>
-                    <p>&nbsp;</p>
-                    <p>For support, the application itself contains a basic help system. Full documentation can be found online <a href="">here</a>.</p>
-                    <p>If you're still having trouble, email me at <span class="bg-light-gray">&nbsp;get-help&lt;at&gt; technitivity &lt;dot&gt; com&nbsp;</span>.</p>
-                    <p>I can't promise a response, but I'll do my best.</p>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <p class="text-muted text-justify">This software is the hobby of a single developer, and as such, I cannot provide individual support nor can I make any guarantees about bug fixes or any new features.</p>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-muted text-justify">That being said, I have been developing Timekeeper since 1999 and I have no plans to quit any time soon. Time tracking is a bit of a compulsion of mine, so I plan to keep at this for as long as I still have this brain.</p>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-muted text-justify">Full documentation can be found online <a href="">here</a>. If you're still having trouble, email me at <span class="bg-light-gray">&nbsp;get-help&lt;at&gt; technitivity &lt;dot&gt; com&nbsp;</span>. I can't promise a response, but I'll do my best.</p>
                 </div>
             </div>
+
+            <div class="row">
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+              <p>&nbsp;</p>
+            </div>
+
+            <div class="row">
+              <footer>
+                <div class="container">
+                  <p class="text-muted">
+                    Copyright &copy; 1999-2014 by Charlie Hills. All Rights Reserved.
+                    Technitivity is a Very Tiny Division of Lockshire Media, LLC.
+                  </p>
+                </div>
+              </footer>
+            </div>
+
         </div>
     </section>
 
-    <footer>
-        <div class="container">
-            <div class="row">
-                <p>
-                Copyright &copy; 1999-2014 by Charlie Hills. All Rights Reserved.
-                Technitivity is a Very Tiny Division of Lockshire Media, LLC.
-                </p>
-            </div>
-        </div>
-    </footer>
 
     <!-- jQuery Version 1.11.0 -->
     <script src="js/jquery-1.11.0.js"></script>
@@ -366,6 +386,9 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/agency.js"></script>
+
+    <!-- Photo Gallery -->
+    <script src="js/fearlessflyer.js"></script>
 
 </body>
 
