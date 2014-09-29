@@ -366,7 +366,14 @@ namespace Timekeeper.Classes
         public TimeSpan Elapsed()
         {
             DateTimeOffset Now = Timekeeper.LocalNow;
-            return new TimeSpan(Now.Ticks - TimerStartedTime.Ticks);
+            TimeSpan ts = new TimeSpan(Now.Ticks - TimerStartedTime.Ticks);
+            if (ts.TotalSeconds > (60 * 60 * 24 * 7)) {
+                string Message = String.Format("Elapsed time is greater than a week. Something's not right. Now is {0}, TimerStartedTime is {1}.",
+                    Timekeeper.DateForDatabase(Now),
+                    Timekeeper.DateForDatabase(TimerStartedTime));
+                Timekeeper.Warn(Message);
+            }
+            return ts;
         }
 
         //---------------------------------------------------------------------

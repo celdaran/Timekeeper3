@@ -326,9 +326,21 @@ namespace Timekeeper.Forms
         //---------------------------------------------------------------------
 
         // Help | Contents
-        private void menuHelpContents_Click(object sender, EventArgs e)
+        private void MenuHelpContents_Click(object sender, EventArgs e)
         {
             Help.ShowHelpIndex(this, "timekeeper.chm");
+        }
+
+        // Help | Web Support
+        private void MenuHelpDocumentation_Click(object sender, EventArgs e)
+        {
+            Help.ShowHelp(this, "http://www.technitivity.com/timekeeper/documentation/" + Timekeeper.SHORT_VERSION + "/");
+        }
+
+        // Help | Web Site
+        private void MenuHelpWebSite_Click(object sender, EventArgs e)
+        {
+            Help.ShowHelp(this, "http://www.technitivity.com/timekeeper/");
         }
 
         // Help | Check for Updates
@@ -337,14 +349,8 @@ namespace Timekeeper.Forms
             Action_CheckForUpdates();
         }
 
-        // Help | Web Support
-        private void menuHelpWeb_Click(object sender, EventArgs e)
-        {
-            Help.ShowHelp(this, "http://www.technitivity.com/timekeeper/help/" + Timekeeper.SHORT_VERSION + "/");
-        }
-
         // Help | About
-        private void menuHelpAbout_Click(object sender, EventArgs e)
+        private void MenuHelpAbout_Click(object sender, EventArgs e)
         {
             File db = new File();
             Row dbinfo = db.Info();

@@ -1354,12 +1354,17 @@ namespace Timekeeper.Forms
             timerLastRun = Timekeeper.LocalNow;
 
             // Grab times (this is a database hit)
-            ElapsedSinceStart = (long)TimedActivity.Elapsed().TotalSeconds; // WTF? FIXME: TimedActivity???
-            ElapsedProjectToday = (long)TimedProject.ElapsedToday().TotalSeconds;
-            ElapsedActivityToday = (long)TimedActivity.ElapsedToday().TotalSeconds;
-            ElapsedLocationToday = (long)TimedLocation.ElapsedToday().TotalSeconds;
-            ElapsedCategoryToday = (long)TimedCategory.ElapsedToday().TotalSeconds;
-            ElapsedAllToday = (long)Entries.ElapsedToday() + ElapsedSinceStart;
+            try {
+                ElapsedSinceStart = (long)TimedActivity.Elapsed().TotalSeconds; // WTF? FIXME: TimedActivity???
+                ElapsedProjectToday = (long)TimedProject.ElapsedToday().TotalSeconds;
+                ElapsedActivityToday = (long)TimedActivity.ElapsedToday().TotalSeconds;
+                ElapsedLocationToday = (long)TimedLocation.ElapsedToday().TotalSeconds;
+                ElapsedCategoryToday = (long)TimedCategory.ElapsedToday().TotalSeconds;
+                ElapsedAllToday = (long)Entries.ElapsedToday() + ElapsedSinceStart;
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
 
             // Make any UI changes based on the timer starting
             MenuActionStartTimer.Visible = false;
