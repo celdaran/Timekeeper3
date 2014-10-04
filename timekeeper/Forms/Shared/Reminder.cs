@@ -134,13 +134,6 @@ namespace Timekeeper.Forms.Shared
             try {
                 // FIXME: move to widgets | experimental right now
 
-                if (this.ReminderId == 0) {
-                    DontRemindMeRadioButton.Checked = true;
-                    return;
-                } else {
-                    RemindMeRadioButton.Checked = true;
-                }
-
                 string SoundsDirectoryPath = Timekeeper.CWD + Path.DirectorySeparatorChar + "Sounds";
                 DirectoryInfo SoundsDirectory = new DirectoryInfo(SoundsDirectoryPath);
                 if (SoundsDirectory.Exists) {
@@ -149,6 +142,14 @@ namespace Timekeeper.Forms.Shared
                     }
                 } else {
                     Timekeeper.DoubleWarn("Could not find Sounds Directory: " + SoundsDirectory.FullName);
+                }
+
+                // Bail if we're not loading a reminder
+                if (this.ReminderId == 0) {
+                    DontRemindMeRadioButton.Checked = true;
+                    return;
+                } else {
+                    RemindMeRadioButton.Checked = true;
                 }
 
                 // Now the normal population
