@@ -140,7 +140,7 @@ namespace Timekeeper
                     UpgradeProject(PriorVersion);
                     UpgradeNotebook(PriorVersion);
                     UpgradeGridView(PriorVersion);
-                    //UpgradeJournal(PriorVersion); <-- WARNING WARNING DO NOT SUBMIT LIKE THIS WARNING WARNING
+                    UpgradeJournal(PriorVersion);
 
                     // Create 3.0 tables
                     CreateNewTable("Todo", CurrentSchemaVersion, false);

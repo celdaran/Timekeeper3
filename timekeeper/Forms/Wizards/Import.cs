@@ -20,6 +20,8 @@ namespace Timekeeper.Forms.Wizards
         //----------------------------------------------------------------------
 
         private Classes.Widgets Widgets;
+        private Classes.Options Options;
+
         private enum ImportTypes { Timekeeper1x, CSV };
         private ImportTypes ImportType;
 
@@ -39,6 +41,7 @@ namespace Timekeeper.Forms.Wizards
         private void ImportWizard_Load(object sender, EventArgs e)
         {
             Widgets = new Classes.Widgets();
+            Options = Timekeeper.Options;
 
             Width = 525;
 
@@ -57,6 +60,7 @@ namespace Timekeeper.Forms.Wizards
             Widgets.GoToFirstTab();
 
             ImportDataTypeList.SelectedIndex = 0;
+            ImportFileName.Text = Options.State_LastImportedFile;
         }
 
         //----------------------------------------------------------------------
@@ -116,7 +120,7 @@ namespace Timekeeper.Forms.Wizards
         private void UpdateReviewText()
         {
             string FileName = Path.GetFileName(ImportFileName.Text);
-            string FileFolder = Path.GetDirectoryName(ImportFileName.Text);
+            string FileFolder = ImportFileName.Text == "" ? "" : Path.GetDirectoryName(ImportFileName.Text);
 
             WizardReview.Text = "";
 
@@ -185,6 +189,7 @@ namespace Timekeeper.Forms.Wizards
             if (OpenFile.ShowDialog(this) == DialogResult.OK) {
                 ImportFileName.Text = OpenFile.FileName;
                 ImportFileName.Select(ImportFileName.Text.Length, 0);
+                Options.State_LastImportedFile = ImportFileName.Text;
             }
         }
 

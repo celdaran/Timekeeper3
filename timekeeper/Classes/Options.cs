@@ -250,6 +250,12 @@ namespace Timekeeper.Classes
         public List<string> MRU_List { get; set; }
 
         //----------------------------------------------------------------------
+        // Public Properties (Registry/State)
+        //----------------------------------------------------------------------
+
+        public string State_LastImportedFile { get; set; }
+
+        //----------------------------------------------------------------------
         // Public Properties (Database)
         //----------------------------------------------------------------------
 
@@ -296,6 +302,13 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
+        public void LoadState()
+        {
+            this.LoadStateFromRegistry();
+        }
+
+        //----------------------------------------------------------------------
+
         public void LoadLocal()
         {
             this.LoadFromDatabase();
@@ -322,6 +335,13 @@ namespace Timekeeper.Classes
         public void SaveMRU(ToolStripItemCollection items)
         {
             this.SaveMRUToRegistry(items);
+        }
+
+        //----------------------------------------------------------------------
+
+        public void SaveState()
+        {
+            this.SaveStateToRegistry();
         }
 
         //----------------------------------------------------------------------
@@ -656,6 +676,23 @@ namespace Timekeeper.Classes
             //----------------------------------------------------------------------
 
             Timekeeper.Debug("MRU Loaded from Registry");
+        }
+
+        private void LoadStateFromRegistry()
+        {
+            //----------------------------------------------------------------------
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"State");
+
+            State_LastImportedFile = (string)Key.GetValue("LastImportedFile", "");
+
+            //----------------------------------------------------------------------
+
+            Key.Close();
+
+            //----------------------------------------------------------------------
+
+            Timekeeper.Debug("State Loaded from Registry");
         }
 
         //-----------------------------------------------------------------------
@@ -1040,6 +1077,19 @@ namespace Timekeeper.Classes
             // FIXME: this leaves stray entries above "i". We should probably
             // clean those up along the way.
             Key.SetValue("Count", i, Microsoft.Win32.RegistryValueKind.DWord);
+
+            Key.Close();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SaveStateToRegistry()
+        {
+            Timekeeper.Debug("Saving Sate to Registry");
+
+            Key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(REGKEY + @"State");
+
+            Key.SetValue("LastImportedFile", State_LastImportedFile, Microsoft.Win32.RegistryValueKind.String);
 
             Key.Close();
         }

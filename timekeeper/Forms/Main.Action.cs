@@ -675,6 +675,7 @@ namespace Timekeeper.Forms
             Options.LoadOptions();
             Options.LoadMetrics();
             Options.LoadMRU();
+            Options.LoadState();
 
             Timekeeper.Info("Timekeeper Version " + Timekeeper.VERSION + " Started");
         }
@@ -1135,6 +1136,7 @@ namespace Timekeeper.Forms
             Options.SaveOptions();
             Options.SaveMetrics();
             Options.SaveMRU(MenuFileRecent.DropDownItems);
+            Options.SaveState();
         }
 
         //---------------------------------------------------------------------

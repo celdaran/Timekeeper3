@@ -69,7 +69,6 @@
             this.ImportFileName.Name = "ImportFileName";
             this.ImportFileName.Size = new System.Drawing.Size(282, 20);
             this.ImportFileName.TabIndex = 1;
-            this.ImportFileName.Text = "C:\\Users\\hillsc\\Google Drive\\Timekeeper\\Import-Test-1.csv";
             // 
             // ImportButton
             // 
