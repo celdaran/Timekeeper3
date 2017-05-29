@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 using Quartz;
 using Quartz.Impl;
 
@@ -793,7 +793,7 @@ namespace Timekeeper
         private static Log GetLog()
         {
             if (Log == null) {
-                Log = new Technitivity.Toolbox.Log(GetLogPath(), Timekeeper.UTC_DATETIME_FORMAT);
+                Log = new Classes.Toolbox.Log(GetLogPath(), Timekeeper.UTC_DATETIME_FORMAT);
                 Log.Level = GetLogLevel(Options.Advanced_Logging_Application);
                 Log.Debug("Log File Opened");
             }

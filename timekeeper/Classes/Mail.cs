@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using System.Net.Mail;
+
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -60,7 +61,7 @@ namespace Timekeeper.Classes
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
-                Technitivity.Toolbox.Common.Warn("Error sending email or text. Check log file for more information.");
+                Common.Warn("Error sending email or text. Check log file for more information.");
                 return false;
             }
         }

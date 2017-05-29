@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -74,7 +74,7 @@ namespace Timekeeper.Classes
                 order by {1}",
                 this.FilterOptions.WhereClause, "j.JournalId");
 
-            Table FindResults = Database.Select(Query);
+            Table FindResults = Timekeeper.Database.Select(Query);
 
             return FindResults;
         }

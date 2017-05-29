@@ -12,13 +12,13 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading;
 
-using Technitivity.Toolbox;
-
 //FIXME: wrong place for this
 using Quartz;
 using Quartz.Impl;
 using Quartz.Simpl;
 //Move(d) to Classes.Schedule (?)
+
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms
 {

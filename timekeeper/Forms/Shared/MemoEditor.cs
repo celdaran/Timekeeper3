@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Resources;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Shared
 {

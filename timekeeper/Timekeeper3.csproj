@@ -138,6 +138,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.92.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -153,6 +157,8 @@
     <Compile Include="Classes\CategoryCollection.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Datatypes.cs" />
+    <Compile Include="Classes\Toolbox\Common.cs" />
+    <Compile Include="Classes\Toolbox\DBI.cs" />
     <Compile Include="Classes\Event.cs" />
     <Compile Include="Classes\EventCollection.cs" />
     <Compile Include="Classes\EventGroup.cs" />
@@ -187,6 +193,8 @@
     <Compile Include="Classes\SortableItemCollection.cs" />
     <Compile Include="Classes\TodoItem.cs" />
     <Compile Include="Classes\TodoItemCollection.cs" />
+    <Compile Include="Classes\Toolbox\Log.cs" />
+    <Compile Include="Classes\Toolbox\UUID.cs" />
     <Compile Include="Classes\Widgets.cs" />
     <Compile Include="Classes\Widgets.Trees.cs" />
     <Compile Include="Classes\Widgets.Views.cs" />
