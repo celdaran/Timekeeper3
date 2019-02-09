@@ -68,6 +68,7 @@ namespace Timekeeper
 
         public static DBI CloseDatabase()
         {
+            Database.EndWork();
             Database = null;
             return Database;
         }
@@ -78,6 +79,8 @@ namespace Timekeeper
         {
             if (Database == null) {
                 Database = new DBI(dataFile, logLevel, GetLogPath());
+                // We'll see... can I keep the file open ALL the time!?
+                Database.BeginWork();
             }
             return Database;
         }
