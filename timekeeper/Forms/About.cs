@@ -30,8 +30,8 @@ namespace Timekeeper
                 //----------------------------------------------
 
                 ApplicationName.Text = Timekeeper.TITLE + " " + Timekeeper.SHORT_VERSION;
-                ApplicationRelease.Text = "Version " + Timekeeper.VERSION; // +", Beta Release 1, May 29, 2017";
-                ApplicationCopyright.Text = "Copyright © 1999-2017 by Charlie Hills";
+                ApplicationRelease.Text = "Version " + Timekeeper.VERSION + " (Released " + Timekeeper.RELEASE_DATE + ")";
+                ApplicationCopyright.Text = Timekeeper.COPYRIGHT;
 
                 //----------------------------------------------
                 // View or Hide Statistics

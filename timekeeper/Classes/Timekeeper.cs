@@ -24,6 +24,9 @@ namespace Timekeeper
 
         public static readonly string VERSION = Assembly.GetEntryAssembly().GetName().Version.ToString();
         public static readonly string SHORT_VERSION = VERSION.Substring(0, 3);
+        public static readonly object[] ATTRIBS = Assembly.GetEntryAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
+        public static readonly string COPYRIGHT = ((AssemblyCopyrightAttribute)ATTRIBS[0]).Copyright;
+        public static readonly string RELEASE_DATE = "May 31, 2019";
 
         public static readonly string CWD = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
