@@ -366,6 +366,8 @@ namespace Timekeeper.Forms
 
         private void Action_CloseFile()
         {
+            this.Browser_SaveRow();
+
             this.MemoEditor.Text = "";
             this.MemoEditor.Enabled = false;
             this.PanelControls.Enabled = false;
