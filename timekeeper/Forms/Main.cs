@@ -282,9 +282,13 @@ namespace Timekeeper.Forms
         // Tools | Calendar
         private void MenuToolCalendar_Click(object sender, EventArgs e)
         {
-            Forms.Tools.Calendar Calendar = new Forms.Tools.Calendar(Browser_GotoEntry);
-            Calendar.Show();
-            OpenForms.Add(Calendar);
+            try {
+                Forms.Tools.Calendar Calendar = new Forms.Tools.Calendar(Browser_GotoEntry);
+                Calendar.Show();
+                OpenForms.Add(Calendar);
+            } catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
         }
 
         // Tools | Stopwatch
