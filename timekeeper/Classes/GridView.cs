@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -77,47 +77,35 @@ namespace Timekeeper.Classes
 
         new public bool Save(bool filterOptionsChanged, long filterOptionsId)
         {
-            bool Saved = false;
+            Row View = new Row();
 
-            try {
-                Saved = base.Save(filterOptionsChanged, filterOptionsId);
+            View["RefDimensionId"] = this.RefDimensionId;
+            View["RefGroupById"] = this.RefGroupById;
+            View["RefTimeDisplayId"] = this.RefTimeDisplayId;
 
-                if (Saved) {
-                    Row View = new Row();
-
-                    View["RefDimensionId"] = this.RefDimensionId;
-                    View["RefGroupById"] = this.RefGroupById;
-                    View["RefTimeDisplayId"] = this.RefTimeDisplayId;
-
-                    if (this.Database.Update(ViewTableName, View, ViewTableName + "Id", this.Id) == 1) {
-                        Saved = true;
-                    } else {
-                        Saved = false;
-                    }
-                }
-            }
-            catch (Exception x) {
-                Timekeeper.Exception(x);
-            }
-
-            return Saved;
+            return base.Save(filterOptionsChanged, filterOptionsId, View);
         }
 
         //----------------------------------------------------------------------
 
         public Table Results(string sGroupBy, string tableName)
         {
+            string Offset = "";
+            if (this.Options.Advanced_Other_MidnightOffset != 0) {
+                Offset = String.Format(", '-{0} hours'", this.Options.Advanced_Other_MidnightOffset);
+            }
+
             string Query = String.Format(@"
                 select
                     i.Name as Name, 
-                    strftime('{0}', j.StartTime) as Grouping, 
+                    strftime('{0}', j.StartTime{3}) as Grouping, 
                     sum(j.Seconds) as Seconds
                 from Journal j
                 join {1} i on i.{1}Id = j.{1}Id
                 where {2}
                 group by i.Name, Grouping
                 order by i.Name, Grouping",
-                sGroupBy, tableName, this.FilterOptions.WhereClause);
+                sGroupBy, tableName, this.FilterOptions.WhereClause, Offset);
 
             Table FindResults = Database.Select(Query);
 

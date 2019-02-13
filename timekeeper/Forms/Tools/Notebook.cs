@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Tools
 {
@@ -20,6 +20,7 @@ namespace Timekeeper.Forms.Tools
         private Classes.Widgets Widgets;
 
         private Classes.NotebookEntry CurrentEntry;
+        //private Classes.NotebookEntry PreviousEntry;
         private Classes.NotebookEntryCollection AllEntries;
 
         private bool IsBrowsing;
@@ -37,6 +38,7 @@ namespace Timekeeper.Forms.Tools
         {
             InitializeComponent();
             this.Options = Timekeeper.Options;
+            this.Widgets = new Classes.Widgets();
         }
 
         //----------------------------------------------------------------------
@@ -50,10 +52,11 @@ namespace Timekeeper.Forms.Tools
 
                 // Instantiate any run-time only controls
                 this.MemoEditor = new Forms.Shared.MemoEditor();
-                this.MemoEditor.Parent = EditPanel;
+                this.MemoEditor.Parent = this.MainPanel;
                 this.MemoEditor.BringToFront();
                 this.MemoEditor.Dock = DockStyle.Fill;
                 this.MemoEditor.TabIndex = 1;
+                this.MemoEditor.RightMargin = Options.View_MemoEditor_RightMargin_Notebook;
                 this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.MemoEditor_TextChanged);
 
                 /*
@@ -61,23 +64,20 @@ namespace Timekeeper.Forms.Tools
                 */
 
                 // Set up UI bits
-                LocationPanel.Visible = Options.Layout_UseLocations;
-                CategoryPanel.Visible = Options.Layout_UseCategories;
-                EntryDateTime.CustomFormat = Options.Advanced_DateTimeFormat;
-
-                ControlPanel.Height = LocationPanel.Visible && CategoryPanel.Visible ? 64 : (64 - 27);
+                //LocationPanel.Visible = Options.Layout_UseLocations;
+                //CategoryPanel.Visible = Options.Layout_UseCategories;
+                Widgets.SetDatePickerFormat(EntryDateTime);
+                //.CustomFormat = Options.Advanced_DateTimeFormat;
+                //ControlPanel.Height = LocationPanel.Visible && CategoryPanel.Visible ? 64 : (64 - 27);
 
                 this.Height = Options.Notebook_Height;
                 this.Width = Options.Notebook_Width;
                 this.Top = Options.Notebook_Top;
                 this.Left = Options.Notebook_Left;
 
-                Widgets = new Classes.Widgets();
-                Widgets.PopulateLocationComboBox(wLocation);
-                Widgets.PopulateCategoryComboBox(wCategory);
-
                 // Create in-memory entries
                 CurrentEntry = new Classes.NotebookEntry();
+                //PreviousEntry = new Classes.NotebookEntry();
                 AllEntries = new Classes.NotebookEntryCollection();
 
                 IsBrowsing = false;
@@ -85,10 +85,31 @@ namespace Timekeeper.Forms.Tools
                 // Clear this out for starters
                 ToolbarNotebookEntryId.Text = "";
 
+                // Set up keyboard shortcuts.
+                Action_SetShortcuts();
+
                 // Now set toolbar state
                 PaintToolbar();
 
                 IgnoreTextChanges = false;
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_SetShortcuts()
+        {
+            try {
+                foreach (NameObjectPair Pair in Options.Keyboard_FunctionList) {
+                    ToolStripItem[] Items = NotebookMenu.Items.Find("Notebook" + Pair.Name, true);
+                    if (Items.Length > 0) {
+                        ToolStripMenuItem Item = (ToolStripMenuItem)Items[0];
+                        Item.ShortcutKeys = (Keys)Pair.Object;
+                    }
+                }
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -117,14 +138,25 @@ namespace Timekeeper.Forms.Tools
             Options.Notebook_Width = this.Width;
             Options.Notebook_Top = this.Top;
             Options.Notebook_Left = this.Left;
+            Options.View_MemoEditor_RightMargin_Notebook = this.MemoEditor.RightMargin;
         }
 
         //----------------------------------------------------------------------
 
         private void MemoEditor_TextChanged(object sender, EventArgs e)
         {
+            //int i = 0;
             if (!IgnoreTextChanges) {
-                EnableToolbar(true);
+                EnableSaveButton(true);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void EntryDateTime_ValueChanged(object sender, EventArgs e)
+        {
+            if (!IgnoreTextChanges) {
+                EnableSaveButton(true);
             }
         }
 
@@ -132,9 +164,11 @@ namespace Timekeeper.Forms.Tools
         // Menu (and Toolbar) Events
         //----------------------------------------------------------------------
 
-        private void ToolbarFirstEntry_Click(object sender, EventArgs e)
+        private void MenuToolbarBrowserFirst_Click(object sender, EventArgs e)
         {
             IsBrowsing = true;
+
+            SaveEntry();
 
             Row FirstEntryRow = AllEntries.FirstEntry();
             CurrentEntry = new Classes.NotebookEntry(FirstEntryRow["NotebookId"]);
@@ -146,37 +180,45 @@ namespace Timekeeper.Forms.Tools
 
         //----------------------------------------------------------------------
 
-        private void ToolbarPreviousEntry_Click(object sender, EventArgs e)
+        private void MenuToolbarBrowserPrev_Click(object sender, EventArgs e)
         {
             IsBrowsing = true;
+
+            SaveEntry();
 
             Row PreviousEntryRow = AllEntries.PreviousEntry(CurrentEntry);
-            CurrentEntry = new Classes.NotebookEntry(PreviousEntryRow["NotebookId"]);
-
-            EntryToForm(CurrentEntry);
+            if (PreviousEntryRow["NotebookId"] != null) {
+                CurrentEntry = new Classes.NotebookEntry(PreviousEntryRow["NotebookId"]);
+                EntryToForm(CurrentEntry);
+            }
 
             PaintToolbar();
         }
 
         //----------------------------------------------------------------------
 
-        private void ToolbarNextEntry_Click(object sender, EventArgs e)
+        private void MenuToolbarBrowserNext_Click(object sender, EventArgs e)
         {
             IsBrowsing = true;
+
+            SaveEntry();
 
             Row NextEntryRow = AllEntries.NextEntry(CurrentEntry);
-            CurrentEntry = new Classes.NotebookEntry(NextEntryRow["NotebookId"]);
-
-            EntryToForm(CurrentEntry);
+            if (NextEntryRow["NotebookId"] != null) {
+                CurrentEntry = new Classes.NotebookEntry(NextEntryRow["NotebookId"]);
+                EntryToForm(CurrentEntry);
+            }
 
             PaintToolbar();
         }
 
         //----------------------------------------------------------------------
 
-        private void ToolbarLastEntry_Click(object sender, EventArgs e)
+        private void MenuToolbarBrowserLast_Click(object sender, EventArgs e)
         {
             IsBrowsing = true;
+
+            SaveEntry();
 
             Row LastEntryRow = AllEntries.LastEntry();
             CurrentEntry = new Classes.NotebookEntry(LastEntryRow["NotebookId"]);
@@ -188,9 +230,11 @@ namespace Timekeeper.Forms.Tools
 
         //----------------------------------------------------------------------
 
-        private void ToolbarNewEntry_Click(object sender, EventArgs e)
+        private void MenuToolbarBrowserNew_Click(object sender, EventArgs e)
         {
             IsBrowsing = false;
+
+            SaveEntry();
 
             CurrentEntry = new Classes.NotebookEntry();
             EntryToForm(CurrentEntry);
@@ -200,27 +244,23 @@ namespace Timekeeper.Forms.Tools
 
         //----------------------------------------------------------------------
 
-        private void MenuToolbarSave_Click(object sender, EventArgs e)
+        private void MenuToolbarBrowserFind_Click(object sender, EventArgs e)
         {
-            FormToEntry();
+            Forms.Find FindDialog = new Forms.Find(Browser_GotoEntry, Find.FindDataSources.Notebook);
+            FindDialog.Show();
+        }
 
-            if (CurrentEntry.Save()) {
-                string Message = String.Format("Notebook entry saved.\n\nid={0}\ncreated={1}\nmodified={2}\nguid={3}",
-                    CurrentEntry.NotebookId,
-                    CurrentEntry.CreateTime,
-                    CurrentEntry.ModifyTime,
-                    CurrentEntry.NotebookGuid);
-                Common.Info(Message);
-            } else {
-                Common.Warn("Problem saving Notebook entry");
-            }
-            EnableToolbar(false);
+        //----------------------------------------------------------------------
+
+        private void MenuToolbarBrowserSave_Click(object sender, EventArgs e)
+        {
+            SaveEntry();
             PaintToolbar();
         }
 
         //----------------------------------------------------------------------
 
-        private void ToolbarRevert_Click(object sender, EventArgs e)
+        private void MenuToolbarBrowserRevert_Click(object sender, EventArgs e)
         {
             if (this.ToolbarSave.Enabled) {
                 if (Common.WarnPrompt("Notebook Entry has changed. Continue reverting?") != DialogResult.Yes) {
@@ -228,35 +268,118 @@ namespace Timekeeper.Forms.Tools
                 }
             }
             EntryToForm(CurrentEntry);
-            EnableToolbar(false);
+            EnableSaveButton(false);
         }
 
         //----------------------------------------------------------------------
 
-        private void MenuFormatBold_Click(object sender, EventArgs e)
+        private void SaveEntry()
+        {
+            FormToEntry();
+
+            if (!ToolbarSave.Enabled)
+                return;
+
+            if (CurrentEntry.Save()) {
+                /*
+                string Message = String.Format("Notebook entry saved.\n\nid={0}\ncreated={1}\nmodified={2}\nguid={3}",
+                    CurrentEntry.NotebookId,
+                    CurrentEntry.CreateTime,
+                    CurrentEntry.ModifyTime,
+                    CurrentEntry.NotebookGuid);
+                Common.Info(Message);
+                */
+                IsBrowsing = true;
+            } else {
+                Common.Warn("Problem saving Notebook entry");
+            }
+
+            EnableSaveButton(false);
+            EntryToForm();
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuToolbarFormatBold_Click(object sender, EventArgs e)
         {
             this.MemoEditor.FormatBoldButton_Click(sender, e);
         }
 
         //----------------------------------------------------------------------
 
-        private void MenuFormatItalic_Click(object sender, EventArgs e)
+        private void MenuToolbarFormatItalic_Click(object sender, EventArgs e)
         {
             this.MemoEditor.FormatItalicButton_Click(sender, e);
         }
 
         //----------------------------------------------------------------------
 
-        private void MenuFormatUnderline_Click(object sender, EventArgs e)
+        private void MenuToolbarFormatUnderline_Click(object sender, EventArgs e)
         {
             this.MemoEditor.FormatUnderlineButton_Click(sender, e);
         }
 
         //----------------------------------------------------------------------
 
-        private void MenuFormatStrikethrough_Click(object sender, EventArgs e)
+        private void MenuToolbarFormatStrikethrough_Click(object sender, EventArgs e)
         {
             this.MemoEditor.FormatStrikethroughButton_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuToolbarFormatBulletedList_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatBulletedListButton_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuToolbarFormatNumberedList_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatNumberedListButton_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuToolbarFormatHeading1_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatHeading1Button_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuToolbarFormatHeading2_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatHeading2Button_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuToolbarFormatHeading3_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatHeading3Button_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuToolbarFormatCode_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatCodeButton_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuToolbarFormatBlockquote_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatBlockquoteButton_Click(sender, e);
+        }
+
+        //----------------------------------------------------------------------
+
+        private void MenuToolbarFormatHorizontalRule_Click(object sender, EventArgs e)
+        {
+            this.MemoEditor.FormatHorizontalRuleButton_Click(sender, e);
         }
 
         //----------------------------------------------------------------------
@@ -275,39 +398,14 @@ namespace Timekeeper.Forms.Tools
             IgnoreTextChanges = true;
 
             try {
+                // Save state
+                //PreviousEntry.Copy(entry);
+
+                // Update form
                 this.MemoEditor.Text = entry.Memo;
-                this.EntryDateTime.Value = entry.EntryTime.DateTime == DateTime.MinValue ? DateTime.Now : entry.EntryTime.DateTime;
+                this.EntryDateTime.Value = entry.EntryTime ==
+                    DateTimeOffset.MinValue ? Timekeeper.LocalNow.DateTime : entry.EntryTime.DateTime;
                 this.ToolbarNotebookEntryId.Text = entry.NotebookId.ToString();
-
-                // FIXME: Serious copy/paste problems here.
-                // You really need to fix that. This was
-                // lifted directly from Main.Browser.cs.
-                // Let's move this to the Widgets class
-
-                if (entry.LocationId > 0) {
-                    Classes.Location Location = new Classes.Location(entry.LocationId);
-                    if (Location.Name != null) {
-                        int LocationIndex = wLocation.FindString(Location.Name);
-                        wLocation.SelectedIndex = LocationIndex;
-                    } else {
-                        wLocation.SelectedIndex = -1;
-                    }
-                } else {
-                    wLocation.SelectedIndex = -1;
-                }
-
-                if (entry.CategoryId > 0) {
-                    Classes.Category Category = new Classes.Category(entry.CategoryId);
-                    if (Category.Name != null) {
-                        int CategoryIndex = wCategory.FindString(Category.Name);
-                        wCategory.SelectedIndex = CategoryIndex;
-                    } else {
-                        wCategory.SelectedIndex = -1;
-                    }
-                } else {
-                    wCategory.SelectedIndex = -1;
-                }
-
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -325,14 +423,21 @@ namespace Timekeeper.Forms.Tools
                 CurrentEntry.EntryTime = this.EntryDateTime.Value;
 
                 // Location & Category support
+                /*
                 if (wLocation.SelectedIndex > -1) {
                     Classes.Location Location = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
-                    CurrentEntry.LocationId = Location.Id;
+                    CurrentEntry.LocationId = Location.ItemId;
                 }
                 if (wCategory.SelectedIndex > -1) {
                     Classes.Category Category = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
-                    CurrentEntry.CategoryId = Category.Id;
+                    CurrentEntry.CategoryId = Category.ItemId;
                 }
+                */
+
+                CurrentEntry.ProjectId = 1;
+                CurrentEntry.ActivityId = 1;
+                CurrentEntry.LocationId = 1;
+                CurrentEntry.CategoryId = 1;
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -395,7 +500,7 @@ namespace Timekeeper.Forms.Tools
 
         //---------------------------------------------------------------------
 
-        private void EnableToolbar(bool enabled)
+        private void EnableSaveButton(bool enabled)
             // FIXME: WRONG NAME, just not sure where this one is heading yet
         {
             ToolbarSave.Enabled = enabled;
@@ -407,6 +512,8 @@ namespace Timekeeper.Forms.Tools
         public void Browser_GotoEntry(long notebookId)
         {
             IsBrowsing = true;
+
+            SaveEntry();
 
             CurrentEntry = new Classes.NotebookEntry(notebookId);
             EntryToForm(CurrentEntry);
@@ -423,13 +530,6 @@ namespace Timekeeper.Forms.Tools
             Control c = (Control)sender;
             string topic = String.Format("html\\context\\fToolJournal\\{0}.html", c.Name);
             Help.ShowHelp(this, "timekeeper.chm", HelpNavigator.Topic, topic);
-        }
-
-        private void ToolbarFind_Click(object sender, EventArgs e)
-        {
-            Forms.Find FindDialog = new Forms.Find(Browser_GotoEntry, Find.FindDataSources.Notebook);
-            FindDialog.Show(this); // FIXME: why does this get flaky when "this" isn't specified?
-            //OpenForms.Add(FindDialog);
         }
 
         //---------------------------------------------------------------------

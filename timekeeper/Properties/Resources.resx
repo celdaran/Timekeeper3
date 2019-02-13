@@ -196,42 +196,16 @@
   <data name="ImageButtonRefresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\Buttons\Refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ReportCssTemplate" xml:space="preserve">
-    <value>body, table {{
-    font-family: {0}, Tahoma, Verdana, Arial, Helv, sans-serif;
-    margin: 1em;
-    font-size: {1}pt;
-    border-collapse: collapse;
-    empty-cells: show;
-}}
-.memo {{
-    margin-left: 2em;
-}}</value>
-  </data>
-  <data name="ReportTemplate" xml:space="preserve">
-    <value>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;title&gt;{0}&lt;/title&gt;
-  &lt;style&gt;
-    {1}
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  {2}
-&lt;/body&gt;
-&lt;/html&gt;</value>
-  </data>
-  <data name="SQL_3072_Activity_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Activity_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Activity.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Category_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Category_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Category.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Notebook_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Notebook_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Notebook.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_FilterOptions_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_FilterOptions_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\FilterOptions.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="SQL_2100_Notebook_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -240,7 +214,7 @@
   <data name="SQL_2204_Notebook_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\2.2\Notebook.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Location_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Location_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Location.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="SQL_2000_Meta_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -252,7 +226,7 @@
   <data name="SQL_2204_Meta_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\2.2\Meta.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Meta_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Meta_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Meta.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="SQL_2000_Meta_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -264,13 +238,13 @@
   <data name="SQL_2204_Meta_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\2.2\Meta.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Meta_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Meta_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Meta.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Options_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Options_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Options.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Options_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Options_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Options.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="SQL_2000_Project_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -291,16 +265,16 @@
   <data name="SQL_2204_Project_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\2.2\Project.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Project_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Project_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Project.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefDatePreset_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefDatePreset_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefDatePreset.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefGroupBy_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefGroupBy_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefGroupBy.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefTimeDisplay_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefTimeDisplay_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefTimeDisplay.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="SQL_2000_Activity_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -330,25 +304,25 @@
   <data name="SQL_2204_Journal_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\2.2\Journal.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Category_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Category_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Category.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Journal_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Journal_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Journal.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefTimeZone_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefTimeZone_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefTimeZone.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="PictureSetup" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\Pictures\setup.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SQL_3072_RefDatePreset_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefDatePreset_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefDatePreset.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefGroupBy_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefGroupBy_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefGroupBy.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefTimeDisplay_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefTimeDisplay_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefTimeDisplay.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="Item_Presets" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -378,13 +352,13 @@
   <data name="ImageIconToolbar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\Icons\Toolbar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SQL_3072_RefTodoStatus_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefTodoStatus_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefTodoStatus.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefTodoStatus_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefTodoStatus_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefTodoStatus.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Todo_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Todo_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Todo.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="ImageButtonViewDetails" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -408,40 +382,40 @@
   <data name="SQL_2204_GridView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\2.2\GridView.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_FindView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_FindView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\FindView.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_GridView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_GridView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\GridView.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_ReportView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_ReportView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\ReportView.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefDimension_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefDimension_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\sql\3.0\RefDimension.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefDimension_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefDimension_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\sql\3.0\RefDimension.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Event_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Event_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Event.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_EventGroup_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_EventGroup_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\EventGroup.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefScheduleType_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefScheduleType_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefScheduleType.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_RefScheduleType_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_RefScheduleType_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\RefScheduleType.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_EventGroup_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_EventGroup_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\EventGroup.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Reminder_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Reminder_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Reminder.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="SQL_3072_Schedule_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="SQL_3095_Schedule_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SQL\3.0\Schedule.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="ImageIconSpeaker" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -449,5 +423,41 @@
   </data>
   <data name="ImageIconWarning" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Images\Icons\Warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageIconSmallCategory" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\SmallCategory.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageIconSmallLocation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\SmallLocation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SQL_3095_Schedule_Insert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\3.0\Schedule.Insert.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="ImageIconRuler" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\Ruler.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageIconSquareDot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\SquareDot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageIconBlank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\Blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SQL_3095_Audit_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\3.0\Audit.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SQL_3095_CalendarView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\3.0\CalendarView.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="SQL_3095_PunchCardView_Create" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQL\3.0\PunchCardView.Create.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="ImageIconGutter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\Gutter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageIconLongRuler" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Icons\LongRuler.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ImageButtonBallotBoxList" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Images\Buttons\BallotBoxList.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

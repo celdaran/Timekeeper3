@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Tools
 {
@@ -18,7 +18,7 @@ namespace Timekeeper.Forms.Tools
         //----------------------------------------------------------------------
 
         private string EventName;
-        private DateTime TargetTime;
+        private DateTimeOffset TargetTime;
         private Classes.Widgets Widgets;
         private Forms.Main MainForm;
 
@@ -41,8 +41,17 @@ namespace Timekeeper.Forms.Tools
         private void EventsButton_Click(object sender, EventArgs e)
         {
             Forms.Tools.Event EventDialog = new Forms.Tools.Event(this.MainForm);
-            EventDialog.Show(this);
+            EventDialog.Show();
             // If we modify events, we need to rebuild the menu list here
+        }
+
+        //----------------------------------------------------------------------
+
+        private void TodoButton_Click(object sender, EventArgs e)
+        {
+            Forms.Tools.Todo TodoWindow = new Forms.Tools.Todo();
+            TodoWindow.Show();
+            // If we modify the todo list, we need to rebuild the menu list here
         }
 
         //----------------------------------------------------------------------
@@ -59,7 +68,7 @@ namespace Timekeeper.Forms.Tools
 
         private void SecondTimer_Tick(object sender, EventArgs e)
         {
-            DateTime Now = DateTime.Now;
+            DateTimeOffset Now = Timekeeper.LocalNow;
             TimeSpan Delta;
 
             if (TargetTime.CompareTo(Now) > 0) {
@@ -167,7 +176,7 @@ namespace Timekeeper.Forms.Tools
                 Delta = new TimeSpan(Hours, Minutes, Seconds);
             }
 
-            TargetTime = DateTime.Now.Add(Delta);
+            TargetTime = Timekeeper.LocalNow.Add(Delta);
 
             Display.BackColor = SystemColors.Control;
             ToolStrip.Focus();
@@ -263,7 +272,7 @@ namespace Timekeeper.Forms.Tools
             //Common.Info("You clicked " + Event.Name);
             this.EventName = Event.Name;
 
-            TimeSpan TimeSpan = Event.NextOccurrenceTime.Subtract(DateTime.Now);
+            TimeSpan TimeSpan = Event.NextOccurrenceTime.Subtract(Timekeeper.LocalNow);
             Display.Text = String.Format("{0} {1:00}:{2:00}:{3:00}", 
                 TimeSpan.Days,
                 TimeSpan.Hours,
@@ -294,7 +303,7 @@ namespace Timekeeper.Forms.Tools
                         ToolStripMenuItem NewSubItem = (ToolStripMenuItem)NewMenu.DropDownItems.Add(Event.Name);
                         NewSubItem.Click += new System.EventHandler(this.thing);
                         NewSubItem.Tag = Event;
-                        if (Event.NextOccurrenceTime < DateTime.Now) {
+                        if (Event.NextOccurrenceTime < Timekeeper.LocalNow) {
                             // Disable if date has passed
                             NewSubItem.Enabled = false;
                         }

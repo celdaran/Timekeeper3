@@ -40,11 +40,12 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.AlwaysOnTopButton = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.EventsButton = new System.Windows.Forms.ToolStripButton();
             this.LoadEventMenu = new System.Windows.Forms.ToolStripDropDownButton();
+            this.EventsButton = new System.Windows.Forms.ToolStripButton();
             this.SecondTimer = new System.Windows.Forms.Timer(this.components);
             this.TrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.TodoButton = new System.Windows.Forms.ToolStripButton();
             this.ToolStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -72,7 +73,8 @@
             this.DisplayMenuButton,
             this.toolStripSeparator2,
             this.LoadEventMenu,
-            this.EventsButton});
+            this.EventsButton,
+            this.TodoButton});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
             this.ToolStrip.Size = new System.Drawing.Size(292, 25);
@@ -143,6 +145,15 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
+            // LoadEventMenu
+            // 
+            this.LoadEventMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.LoadEventMenu.Image = ((System.Drawing.Image)(resources.GetObject("LoadEventMenu.Image")));
+            this.LoadEventMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.LoadEventMenu.Name = "LoadEventMenu";
+            this.LoadEventMenu.Size = new System.Drawing.Size(43, 22);
+            this.LoadEventMenu.Text = "Load";
+            // 
             // EventsButton
             // 
             this.EventsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -152,15 +163,6 @@
             this.EventsButton.Size = new System.Drawing.Size(56, 22);
             this.EventsButton.Text = "Events...";
             this.EventsButton.Click += new System.EventHandler(this.EventsButton_Click);
-            // 
-            // LoadEventMenu
-            // 
-            this.LoadEventMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.LoadEventMenu.Image = ((System.Drawing.Image)(resources.GetObject("LoadEventMenu.Image")));
-            this.LoadEventMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LoadEventMenu.Name = "LoadEventMenu";
-            this.LoadEventMenu.Size = new System.Drawing.Size(43, 22);
-            this.LoadEventMenu.Text = "Load";
             // 
             // SecondTimer
             // 
@@ -183,6 +185,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(292, 33);
             this.panel1.TabIndex = 8;
+            // 
+            // TodoButton
+            // 
+            this.TodoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.TodoButton.Image = ((System.Drawing.Image)(resources.GetObject("TodoButton.Image")));
+            this.TodoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.TodoButton.Name = "TodoButton";
+            this.TodoButton.Size = new System.Drawing.Size(47, 22);
+            this.TodoButton.Text = "Todo...";
+            this.TodoButton.Click += new System.EventHandler(this.TodoButton_Click);
             // 
             // Countdown
             // 
@@ -224,5 +236,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem AlwaysOnTopButton;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ToolStripButton TodoButton;
     }
 }

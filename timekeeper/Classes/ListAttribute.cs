@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -30,8 +30,8 @@ namespace Timekeeper.Classes
         public long SortOrderNo { get; set; }
         public bool IsHidden { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTimeOffset HiddenTime { get; set; }
-        public DateTimeOffset DeletedTime { get; set; }
+        public DateTimeOffset? HiddenTime { get; set; }
+        public DateTimeOffset? DeletedTime { get; set; }
 
         private enum Mode { Insert, Update };
 
@@ -74,7 +74,7 @@ namespace Timekeeper.Classes
         {
             Row ListAttribute = new Row();
 
-            string Now = Common.Now();
+            string Now = Timekeeper.DateForDatabase();
 
             ListAttribute["ModifyTime"] = Now;
             ListAttribute["DeletedTime"] = Now;
@@ -82,8 +82,8 @@ namespace Timekeeper.Classes
 
             if (Database.Update(this.TableName, ListAttribute, this.IdColumnName, this.Id) > 0) {
 
-                this.ModifyTime = DateTimeOffset.Parse(Now);
-                this.DeletedTime = DateTimeOffset.Parse(Now);
+                this.ModifyTime = Timekeeper.StringToDate(Now);
+                this.DeletedTime = Timekeeper.StringToDate(Now);
                 this.IsDeleted = true;
 
                 return true;
@@ -144,11 +144,8 @@ namespace Timekeeper.Classes
                 this.SortOrderNo = ListAttribute["SortOrderNo"];
                 this.IsHidden = ListAttribute["IsHidden"];
                 this.IsDeleted = ListAttribute["IsDeleted"];
-
-                if (ListAttribute["HiddenTime"] != null)
-                    this.HiddenTime = ListAttribute["HiddenTime"];
-                if (ListAttribute["DeletedTime"] != null)
-                    this.DeletedTime = ListAttribute["DeletedTime"];
+                this.HiddenTime = ListAttribute["HiddenTime"];
+                this.DeletedTime = ListAttribute["DeletedTime"];
             }
         }
 
@@ -186,7 +183,7 @@ namespace Timekeeper.Classes
                 // System-generated Values
                 //--------------------------------
 
-                string Now = Common.Now();
+                string Now = Timekeeper.DateForDatabase();
 
                 ListAttribute["ModifyTime"] = Now;
 
@@ -224,7 +221,7 @@ namespace Timekeeper.Classes
                     }
 
                     // Backfill instance with system-generated values
-                    this.CreateTime = DateTimeOffset.Parse(ListAttribute["CreateTime"]);
+                    this.CreateTime = Timekeeper.StringToDate(ListAttribute["CreateTime"]);
                     this.Guid = ListAttribute[this.TableName + "Guid"];
 
                 } else {
@@ -236,12 +233,9 @@ namespace Timekeeper.Classes
                 }
 
                 // More backfilling
-                this.ModifyTime = DateTimeOffset.Parse(ListAttribute["ModifyTime"]);
-
-                if (ListAttribute["HiddenTime"] != null)
-                    this.HiddenTime = DateTimeOffset.Parse(ListAttribute["HiddenTime"]);
-                if (ListAttribute["DeletedTime"] != null)
-                    this.DeletedTime = DateTimeOffset.Parse(ListAttribute["DeletedTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(ListAttribute["ModifyTime"]);
+                this.HiddenTime = Timekeeper.StringToNullableDate(ListAttribute["HiddenTime"]);
+                this.DeletedTime = Timekeeper.StringToNullableDate(ListAttribute["DeletedTime"]);
 
                 return true;
             }

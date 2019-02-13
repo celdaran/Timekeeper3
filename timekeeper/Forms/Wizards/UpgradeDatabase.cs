@@ -11,7 +11,7 @@ using System.IO;
 using System.Globalization;
 using System.Collections.ObjectModel;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Wizards
 {
@@ -25,6 +25,10 @@ namespace Timekeeper.Forms.Wizards
         private File File;
         private bool UpgradeSucceeded;
         private int MemoMergeOptionsId;
+
+        //----------------------------------------------------------------------
+
+        public File FileToUpgrade { get; set; }
 
         //----------------------------------------------------------------------
 
@@ -52,6 +56,9 @@ namespace Timekeeper.Forms.Wizards
             Widgets.PopulateTimeZoneComboBox(LocationTimeZone);
 
             Width = 525;
+
+            this.Location = Timekeeper.CenterInParent(this.Owner, this.Width, this.Height);
+
             Widgets.WizardWidth = Width;
             Widgets.BackButton = BackButton;
             Widgets.NextButton = NextButton;
@@ -82,12 +89,22 @@ namespace Timekeeper.Forms.Wizards
                     IsDirty = true;
                 }
 
+                if (this.Widgets.CurrentTab() == 2) {
+                    // If they've just entered their file name, find out 
+                    // what version it is. The selected file can affect
+                    // the wizard flow from here on out.
+                    Version FoundSchemaVersion = FileToUpgrade.GetSchemaVersion();
+                    if (FoundSchemaVersion.Major == 3) {
+                        this.Widgets.GoForward();
+                        this.Widgets.GoForward();
+                    }
+                }
+
                 // Move to next tab
                 this.Widgets.GoForward();
 
                 // Advance buttons
                 if (this.Widgets.AtEnd()) {
-                //if (tablessControl1.SelectedIndex == tablessControl1.TabCount - 1) {
                     StartButton.Visible = true;
                     StartButton.Location = NextButton.Location;
                     StartButton.Size = NextButton.Size;
@@ -146,6 +163,9 @@ namespace Timekeeper.Forms.Wizards
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            // Issue #1317: We need to give something focus other than the review box.
+            UpgradeProgress.Focus();
+
             // Change button state
             StartButton.Enabled = false;
             LaterButton.Enabled = false;

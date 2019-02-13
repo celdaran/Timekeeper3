@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
     class ActivityCollection : Classes.TreeAttributeCollection
     {
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // Constructor
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         public ActivityCollection(string orderByClause)
             : base("Activity", orderByClause)
@@ -20,11 +20,11 @@ namespace Timekeeper.Classes
             : this ("CreateTime")
         {}
 
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
         // Public Methods
-        //---------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
-        public List<Classes.Activity> Fetch(long parentId, bool showHidden, DateTime showHiddenSince)
+        new public List<Classes.Activity> Fetch(long? parentId, bool showHidden, DateTimeOffset showHiddenSince)
         {
             Table Table = base.GetItems(parentId, showHidden, showHiddenSince);
 

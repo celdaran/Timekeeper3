@@ -21,8 +21,8 @@ CREATE TABLE Event
 
     EventGroupId                    INTEGER     NOT NULL,
     NextOccurrenceTime              DATETIME    NOT NULL,
-    ReminderId                      INTEGER     NOT NULL,
-    ScheduleId                      INTEGER     NOT NULL,
+    ReminderId                      INTEGER         NULL,
+    ScheduleId                      INTEGER         NULL,
 
     IsHidden                        BOOLEAN     NOT NULL,
     IsDeleted                       BOOLEAN     NOT NULL,

@@ -21,8 +21,7 @@ CREATE TABLE Project
     Description         TEXT            NULL,
 
     ParentId            INTEGER         NULL,
-    SortOrderNo         INTEGER         NULL,
-    LastActivityId      INTEGER         NULL,
+    SortOrderNo         INTEGER     NOT NULL,
     IsFolder            BOOLEAN     NOT NULL,
     IsFolderOpened      BOOLEAN     NOT NULL,
     IsHidden            BOOLEAN     NOT NULL,
@@ -30,10 +29,19 @@ CREATE TABLE Project
     HiddenTime          DATETIME        NULL,
     DeletedTime         DATETIME        NULL,
 
+    LastActivityId      INTEGER         NULL,
+    LastLocationId      INTEGER         NULL,
+    LastCategoryId      INTEGER         NULL,
+
     ExternalProjectNo   TEXT            NULL,
+    StartTime           DATETIME        NULL,
+    DueTime             DATETIME        NULL,
+    Estimate            INTEGER         NULL,
 
     FOREIGN KEY(ParentId)           REFERENCES Project(ProjectId)
     FOREIGN KEY(LastActivityId)     REFERENCES Activity(ActivityId)
+    FOREIGN KEY(LastLocationId)     REFERENCES Location(LocationId)
+    FOREIGN KEY(LastCategoryId)     REFERENCES Category(CategoryId)
 );
 
 CREATE UNIQUE INDEX idx_Project_ProjectId ON Project(ProjectId);

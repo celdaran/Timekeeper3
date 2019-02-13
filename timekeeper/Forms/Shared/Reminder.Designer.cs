@@ -275,7 +275,6 @@
             this.Controls.Add(this.TimeUnitList);
             this.Controls.Add(this.TimeAmountInput);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Reminder";

@@ -11,7 +11,7 @@ using System.IO;
 using System.Media;
 using System.Text.RegularExpressions;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 using Quartz;
 
 namespace Timekeeper.Forms.Shared
@@ -34,10 +34,10 @@ namespace Timekeeper.Forms.Shared
         // Constructor
         //----------------------------------------------------------------------
 
-        public Schedule(long scheduleId, DateTime eventNextOccurrence)
+        public Schedule(long? scheduleId, DateTime eventNextOccurrence)
         {
             InitializeComponent();
-            this.ScheduleId = scheduleId;
+            this.ScheduleId = scheduleId == null ? 0 : (long)scheduleId;
             this.ExternalEventNextOccurrence = eventNextOccurrence;
         }
 
@@ -294,7 +294,7 @@ namespace Timekeeper.Forms.Shared
                         break;
                     case 3:
                         StopAfterTimeRadioButton.Checked = true;
-                        StopAfterTimeValue.Value = CurrentSchedule.StopAfterTime.LocalDateTime;
+                        StopAfterTimeValue.Value = CurrentSchedule.StopAfterTime.Value.DateTime;
                         break;
                 }
 
@@ -768,7 +768,6 @@ namespace Timekeeper.Forms.Shared
 
                 SchedulePreview.Text += NextEvent.Value.LocalDateTime.ToString(DateTimeFormat) + "\n";
                 CurrentEvent = (DateTimeOffset)NextEvent;
-
             }
         }
 
@@ -796,13 +795,13 @@ namespace Timekeeper.Forms.Shared
             DateTime StartTime = EventNextOccurrence.Value;
 
             // Stub in the starting value
-            SchedulePreview.Text = EventNextOccurrence.Value.ToString(Common.LOCAL_DATETIME_FORMAT) + "\n";
+            SchedulePreview.Text = Timekeeper.DateForDisplay(EventNextOccurrence.Value) + "\n";
 
             // Then loop through more (perhaps all) subsequently scheduled timers
             DateTimeOffset CurrentEvent = new DateTimeOffset(StartTime);
             for (int i = 0; i < PreviewCount.Value; i++) {
                 DateTimeOffset? NextEvent = CronExpression.GetNextValidTimeAfter(CurrentEvent);
-                SchedulePreview.Text += NextEvent.Value.LocalDateTime.ToString(Common.LOCAL_DATETIME_FORMAT) + "\n";
+                SchedulePreview.Text += Timekeeper.NullableDateForDisplay(NextEvent) + "\n";
                 CurrentEvent = (DateTimeOffset)NextEvent;
             }
 

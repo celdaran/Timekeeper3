@@ -8,8 +8,7 @@ using System.Windows.Forms;
 //using System.Timers;
 using System.Diagnostics;
 
-
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms
 {
@@ -25,36 +24,26 @@ namespace Timekeeper.Forms
         private Classes.JournalEntry newBrowserEntry;
         private bool isBrowsing = false;
 
+        private Classes.JournalEntry.BrowseByMode PrevBrowseBy;
+        private Classes.JournalEntry.BrowseByMode NextBrowseBy;
+
         //---------------------------------------------------------------------
         // Methods
-        //---------------------------------------------------------------------
-
-        private void Browser_Close()
-        {
-            // Save row, just in case
-            Browser_SaveRow(false);
-
-            // Kill any existing "new" entry
-            newBrowserEntry = null;
-
-            Browser_Show(false);
-        }
-
         //---------------------------------------------------------------------
 
         private void Browser_CloseStartGap()
         {
             try {
                 // Update the control with previous end time
-                DateTime PreviousEndTime = Browser_GetPreviousEndTime();
-                if (PreviousEndTime == DateTime.MinValue) {
+                DateTimeOffset? PreviousEndTime = Browser_GetPreviousEndTime();
+                if (PreviousEndTime == null) {
                     // something went wrong, do nothing
                 } else {
-                    wStartTime.Value = PreviousEndTime;
+                    StartTimeSelector.Value = PreviousEndTime.Value.DateTime;
                 }
 
                 // Recalculate duration
-                wDuration.Text = Browser_CalculateDuration();
+                Browser_UpdateDurationBox();
 
                 // Disable button (already done)
                 Browser_EnableCloseStartGap(false);
@@ -68,6 +57,9 @@ namespace Timekeeper.Forms
                 if (!isBrowsing) {
                     StartTimeManuallySet = true;
                 }
+
+                // Remove alert
+                Browser_AlertCloseStartGap(false);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -80,18 +72,25 @@ namespace Timekeeper.Forms
         {
             try {
                 // Set next start date
-                DateTime NextStartTime = Browser_GetNextStartTime();
-                if (NextStartTime == DateTime.MaxValue) {
-                    wStopTime.Value = DateTime.Now;
+                DateTimeOffset? NextStartTime = Browser_GetNextStartTime();
+                if (NextStartTime == null) {
+                    StopTimeSelector.Value = Timekeeper.LocalNow.DateTime;
                 } else {
-                    wStopTime.Value = NextStartTime;
+                    StopTimeSelector.Value = NextStartTime.Value.DateTime;
                 }
 
                 // And recalculate duration
-                wDuration.Text = Browser_CalculateDuration();
+                Browser_UpdateDurationBox();
+
+                // But don't disable the button.
+                // Time continues to move forward and the CloseStopGap
+                // button can be clicked multiple times.
 
                 // Enable revert
                 Browser_EnableRevert(true);
+
+                // Remove alert
+                Browser_AlertCloseStopGap(false);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -102,7 +101,6 @@ namespace Timekeeper.Forms
 
         private void Browser_Disable()
         {
-            splitMain.Panel2Collapsed = true;
             Action_SetMenuAvailability(MenuToolbar, false);
             browserEntry = null;
             priorLoadedBrowserEntry = null;
@@ -119,7 +117,7 @@ namespace Timekeeper.Forms
             Browser_EnableLast(false);
             Browser_EnableNext(false);
             Browser_EnableCloseStartGap(false);
-            Browser_EnableCloseEndGap(false);
+            Browser_EnableCloseStopGap(false);
             Browser_EnableSplit(false);
         }
 
@@ -127,12 +125,6 @@ namespace Timekeeper.Forms
 
         private void Browser_DisplayRow()
         {
-            /*
-             * Run just this part for performance testing purposes.
-            Browser_EntryToForm(browserEntry);
-            return;
-            */
-
             try {
                 Browser_SetBrowseState();
 
@@ -141,61 +133,36 @@ namespace Timekeeper.Forms
                 Browser_EntryToForm(browserEntry);
 
                 if (browserEntry.IsLocked) {
-                    Browser_EnableCloseStartGap(false);
-                    Browser_EnableCloseEndGap(false);
                     Browser_EnableStartEntry(false);
                     Browser_EnableStopEntry(false);
                     Browser_EnableDurationEntry(false);
-                    Browser_EnableLocationEntry(false);
-                    Browser_EnableCategoryEntry(false);
                     if (timerRunning) {
                         Browser_EnableMemoEntry(true);
                         Browser_ShowUnlock(false);
                     } else {
-                        ProjectTree.Enabled = false;
-                        ActivityTree.Enabled = false;
+                        ProjectTreeDropdown.Enabled = false;
+                        ActivityTreeDropdown.Enabled = false;
+                        LocationTreeDropdown.Enabled = false;
+                        CategoryTreeDropdown.Enabled = false;
                         Browser_EnableMemoEntry(false);
                         Browser_ShowUnlock(true);
                     }
                     Browser_EnableSplit(false);
                 } else {
-                    ProjectTree.Enabled = true;
-                    ActivityTree.Enabled = true;
-                    Browser_EnableCloseStartGap(true);
-                    Browser_EnableCloseEndGap(true);
+                    ProjectTreeDropdown.Enabled = true;
+                    ActivityTreeDropdown.Enabled = true;
+                    LocationTreeDropdown.Enabled = true;
+                    CategoryTreeDropdown.Enabled = true;
                     Browser_EnableStartEntry(true);
                     Browser_EnableStopEntry(true);
                     Browser_EnableDurationEntry(true);
-                    Browser_EnableLocationEntry(true);
-                    Browser_EnableCategoryEntry(true);
                     Browser_EnableMemoEntry(true);
                     Browser_ShowUnlock(false);
                     Browser_EnableSplit(true);
                 }
 
-                // Enable/disable start gap button
-                if (browserEntry.AtBeginning()) {
-                    Browser_EnableCloseStartGap(false);
-                } else {
-                    DateTime PreviousEndTime = Browser_GetPreviousEndTime();
-                    if (PreviousEndTime == wStartTime.Value) {
-                        Browser_EnableCloseStartGap(false);
-                    } else {
-                        Browser_EnableCloseStartGap(true);
-                    }
-                }
-
-                // Enable/disable stop gap button
-                if (browserEntry.AtEnd()) {
-                    Browser_EnableCloseEndGap(true);
-                } else {
-                    DateTime NextStartTime = Browser_GetNextStartTime();
-                    if (NextStartTime == wStopTime.Value) {
-                        Browser_EnableCloseEndGap(false);
-                    } else {
-                        Browser_EnableCloseEndGap(true);
-                    }
-                }
+                Browser_DetermineStartGapState();
+                Browser_DetermineStopGapState();
 
                 // Set focus
                 MemoEditor.Focus();
@@ -204,6 +171,68 @@ namespace Timekeeper.Forms
                 //Common.Warn(x.ToString());
                 Timekeeper.Exception(x);
             }
+        }
+
+        private void Browser_DetermineStartGapState()
+        {
+            // Enable/disable start gap button
+            if (browserEntry.AtBeginning()) {
+                Browser_EnableCloseStartGap(false);
+            } else {
+                DateTimeOffset? PreviousEndTime = Browser_GetPreviousEndTime();
+                if (PreviousEndTime == null) {
+                    Browser_EnableCloseStartGap(false);
+                } else {
+                    if (PreviousEndTime.Value.DateTime.CompareTo(StartTimeSelector.Value) == 0) {
+                        Browser_EnableCloseStartGap(false);
+                    } else {
+                        Browser_EnableCloseStartGap(true);
+
+                        if (isBrowsing) { // && (InlineEditing != TimeBox.StopTime)) {
+                            if (PreviousEndTime.Value.DateTime.CompareTo(StartTimeSelector.Value) < 0) {
+                                Browser_AlertCloseStartGap(false);
+                            } else {
+                                Browser_AlertCloseStartGap(true);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Oh, one last shot at disabling
+            if (browserEntry.IsLocked)
+                Browser_EnableCloseStartGap(false);
+        }
+
+        private void Browser_DetermineStopGapState()
+        {
+            // Enable/disable stop gap button
+            if (browserEntry.AtEnd()) {
+                Browser_EnableCloseStopGap(true);
+            } else {
+                DateTimeOffset? NextStartTime = Browser_GetNextStartTime();
+                if (NextStartTime == null) {
+                    Browser_EnableCloseStopGap(true);
+                } else {
+                    if (NextStartTime.Value.DateTime.CompareTo(StopTimeSelector.Value) == 0) {
+                        Browser_EnableCloseStopGap(false);
+                    } else {
+                        Browser_EnableCloseStopGap(true);
+
+                        if (isBrowsing) { // && (InlineEditing != TimeBox.StartTime)) {
+                            if (NextStartTime.Value.DateTime.CompareTo(StopTimeSelector.Value) > 0) {
+                                Browser_AlertCloseStopGap(false);
+                            } else {
+                                Browser_AlertCloseStopGap(true);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Oh, one last shot at disabling
+            if (browserEntry.IsLocked)
+                Browser_EnableCloseStopGap(false);
         }
 
         //---------------------------------------------------------------------
@@ -219,125 +248,149 @@ namespace Timekeeper.Forms
 
         private void Browser_EnableStart(bool enabled)
         {
-            toolControlStart.Enabled = enabled;
+            ToolbarStartButton.Enabled = enabled;
             MenuActionStartTimer.Enabled = enabled;
             //menuToolControlStart.Enabled = enabled;
             if (enabled) {
                 var kc = new KeysConverter();
-                toolControlStart.ToolTipText = "Start the Timer (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
+                ToolbarStartButton.ToolTipText = "Start the Timer (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
             } else {
-                toolControlStart.ToolTipText = "Timer cannot be started while browsing old entries. Click 'Go to New Entry' to begin timing.";
+                ToolbarStartButton.ToolTipText = "Timer cannot be started while browsing old entries. Click 'Go to New Entry' to begin timing.";
             }
         }
 
+        /*
+                            if (InlineEditing) {
+                                DateTimeOffset? PreviousEndTime = Browser_GetPreviousEndTime();
+                                if (PreviousEndTime.Value.DateTime.CompareTo(StartTimeSelector.Value) > 0) {
+                                    Browser_AlertCloseStartGap(false);
+                                } else {
+                                    Browser_AlertCloseStartGap(true);
+                                }
+                            } else {
+        */
+
         private void Browser_EnableStop(bool enabled)
         {
-            toolControlStop.Enabled = enabled;
+            ToolbarStopButton.Enabled = enabled;
             MenuActionStopTimer.Enabled = enabled;
             //menuToolControlStop.Enabled = enabled;
         }
 
-        private void Browser_EnableClose(bool enabled)
-        {
-            toolControlClose.Enabled = enabled;
-            //menuToolControlClose.Enabled = enabled;
-        }
-
         private void Browser_EnableFirst(bool enabled)
         {
-            toolControlFirstEntry.Enabled = enabled;
+            ToolbarFirstEntry.Enabled = enabled;
             MenuToolbarBrowserFirst.Enabled = enabled;
         }
 
         private void Browser_EnablePrev(bool enabled)
         {
-            toolControlPrevEntry.Enabled = enabled;
+            ToolbarPrevEntry.Enabled = enabled;
             MenuToolbarBrowserPrev.Enabled = enabled;
         }
 
         private void Browser_EnableNext(bool enabled)
         {
-            toolControlNextEntry.Enabled = enabled;
+            ToolbarNextEntry.Enabled = enabled;
             MenuToolbarBrowserNext.Enabled = enabled;
         }
 
         private void Browser_EnableLast(bool enabled)
         {
-            toolControlLastEntry.Enabled = enabled;
+            ToolbarLastEntry.Enabled = enabled;
             MenuToolbarBrowserLast.Enabled = enabled;
         }
 
         private void Browser_EnableNew(bool enabled)
         {
-            toolControlNewEntry.Enabled = enabled;
+            ToolbarNewEntry.Enabled = enabled;
             MenuToolbarBrowserNew.Enabled = enabled;
         }
 
         private void Browser_EnableCloseStartGap(bool enabled)
         {
-            toolControlCloseStartGap.Enabled = enabled;
             MenuToolbarBrowserCloseStartGap.Enabled = enabled;
+            CloseStartGapButton.Enabled = enabled;
         }
 
-        private void Browser_EnableCloseEndGap(bool enabled)
+        private void Browser_EnableCloseStopGap(bool enabled)
         {
-            toolControlCloseEndGap.Enabled = enabled;
             MenuToolbarBrowserCloseEndGap.Enabled = enabled;
+            CloseStopGapButton.Enabled = enabled;
         }
 
         private void Browser_EnableRevert(bool enabled)
         {
-            toolControlRevert.Enabled = enabled;
+            ToolbarRevert.Enabled = enabled;
             MenuToolbarBrowserRevert.Enabled = enabled;
-            toolControlSave.Enabled = enabled;
+            // Revert is locked to Save
+            Browser_EnableSave(enabled);
+        }
+
+        private void Browser_EnableSave(bool enabled)
+        {
+            // Save is not locked to Revert
+            ToolbarSave.Enabled = enabled;
             MenuToolbarBrowserSave.Enabled = enabled;
         }
 
         private void Browser_EnableSplit(bool enabled)
         {
-            toolControlSplitEntry.Enabled = enabled;
+            ToolbarSplitEntry.Enabled = enabled;
             MenuToolbarBrowserSplitEntry.Enabled = enabled;
         }
 
         private void Browser_EnableStartEntry(bool enabled)
         {
-            wStartTime.Enabled = enabled;
-            labelStartTime.Enabled = enabled;
+            StartTimeSelector.Enabled = enabled;
+            StartLabel.Enabled = enabled;
+            //CloseStartGapButton.Enabled = enabled;
         }
 
         private void Browser_EnableStopEntry(bool enabled)
         {
-            wStopTime.Enabled = enabled;
-            labelStopTime.Enabled = enabled;
+            StopTimeSelector.Enabled = enabled;
+            StopLabel.Enabled = enabled;
+            //CloseStopGapButton.Enabled = enabled;
         }
 
         private void Browser_EnableDurationEntry(bool enabled)
         {
-            wDuration.Enabled = enabled;
-            labelDuration.Enabled = enabled;
-        }
-
-        private void Browser_EnableLocationEntry(bool enabled)
-        {
-            wLocation.Enabled = enabled;
-            labelLocation.Enabled = enabled;
-        }
-
-        private void Browser_EnableCategoryEntry(bool enabled)
-        {
-            wCategory.Enabled = enabled;
-            labelCategory.Enabled = enabled;
+            DurationBox.Enabled = enabled;
+            DurationLabel.Enabled = enabled;
         }
 
         private void Browser_EnableMemoEntry(bool enabled)
         {
-            // FIXME: Make "MemoEntry" private again then add
-            // appropriate methods for all this direct access
-            // that we're doing.
             if (enabled) {
-            	MemoEditor.Enable();
+                MemoEditor.Enable();
             } else {
                 MemoEditor.Disable();
+            }
+        }
+
+        private void Browser_EnableProperties(bool enabled)
+        {
+            ToolbarEntryProperties.Enabled = enabled;
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Browser_AlertCloseStartGap(bool alert)
+        {
+            if (alert) {
+                CloseStartGapButton.ForeColor = Color.Red;
+            } else {
+                CloseStartGapButton.ForeColor = SystemColors.ControlText;
+            }
+        }
+
+        private void Browser_AlertCloseStopGap(bool alert)
+        {
+            if (alert) {
+                CloseStopGapButton.ForeColor = Color.Red;
+            } else {
+                CloseStopGapButton.ForeColor = SystemColors.ControlText;
             }
         }
 
@@ -346,116 +399,74 @@ namespace Timekeeper.Forms
         private void Browser_FormToEntry(ref Classes.JournalEntry entry, long entryId)
         {
             // Don't update the browser entry if nothing is selected
-            if ((ProjectTree.SelectedNode == null) || (ActivityTree.SelectedNode == null)) {
+            if ((ProjectTreeDropdown.SelectedNode == null) ||
+                (ActivityTreeDropdown.SelectedNode == null) ||
+                (LocationTreeDropdown.SelectedNode == null) ||
+                (CategoryTreeDropdown.SelectedNode == null)) {
                 return;
             }
 
-            // First translate some necessary data from the form 
-            Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-            Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
-            TimeSpan Delta = wStopTime.Value.Subtract(wStartTime.Value);
+            // First translate some necessary data from the form
+            Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+            Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
+            Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+            Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
+
+            TimeSpan Delta = StopTimeSelector.Value.Subtract(StartTimeSelector.Value);
 
             // Update browserEntry with current form data
             entry.JournalId = entryId;
             entry.ProjectId = Project.ItemId;
             entry.ActivityId = Activity.ItemId;
-            entry.StartTime = wStartTime.Value;
-            entry.StopTime = wStopTime.Value;
+            entry.LocationId = Location.ItemId;
+            entry.CategoryId = Category.ItemId;
+            entry.StartTime = StartTimeSelector.Value;
+            entry.StopTime = StopTimeSelector.Value;
             entry.Seconds = (long)Delta.TotalSeconds;
             //entry.Memo = wMemo.Text;
             entry.Memo = MemoEditor.Text;
             entry.ProjectName = Project.Name;
             entry.ActivityName = Activity.Name;
+        }
 
-            // Location & Category support
-            if (wLocation.SelectedIndex > -1) {
-                Classes.Location Location = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
-                entry.LocationId = Location.Id;
-            }
-            if (wCategory.SelectedIndex > -1) {
-                Classes.Category Category = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
-                entry.CategoryId = Category.Id;
+        private void Foo(ComboTreeBox treebox, long itemId, string itemName, string tableName)
+        {
+            if (itemId == 0)
+                return;
+
+            ComboTreeNode Node = Widgets.FindTreeNode(treebox.Nodes, itemId);
+            if (Node != null) {
+                treebox.SelectedNode = Node;
+            } else {
+                Classes.TreeAttribute HiddenItem = new Classes.TreeAttribute(itemName, tableName, tableName + "Id");
+                ComboTreeNode HiddenNode = Widgets.AddHiddenItemToTree(treebox.Nodes, HiddenItem);
+                treebox.SelectedNode = HiddenNode;
             }
         }
 
         private void Browser_EntryToForm(Classes.JournalEntry entry)
         {
-            // Now select projects and activities while browsing.
-            TreeNode ProjectNode = Widgets.FindTreeNode(ProjectTree.Nodes, entry.ProjectId);
-            if (ProjectNode != null) {
-                ProjectTree.SelectedNode = ProjectNode;
-                ProjectTree.SelectedNode.Expand();
-            }
-            if ((ProjectNode == null) && (entry.JournalId != 0)) {
-
-                Classes.Project HiddenProject = new Classes.Project(entry.ProjectName);
-                TreeNode HiddenNode = Widgets.AddHiddenProjectToTree(ProjectTree.Nodes, HiddenProject);
-
-                ProjectTree.SelectedNode = HiddenNode;
-                ProjectTree.SelectedNode.Expand();
-            }
-
-            // Yes, this is a nice copy/paste job from above.
-            TreeNode ActivityNode = Widgets.FindTreeNode(ActivityTree.Nodes, entry.ActivityId);
-            if (ActivityNode != null) {
-                ActivityTree.SelectedNode = ActivityNode;
-                ActivityTree.SelectedNode.Expand();
-            }
-            if ((ActivityNode == null) && (entry.JournalId != 0)) {
-                // If we didn't find the node, it's been hidden. So
-                // load it from the database and display it as hidden.
-
-                Classes.Activity HiddenActivity = new Classes.Activity(entry.ActivityName);
-                TreeNode HiddenNode = Widgets.AddHiddenActivityToTree(ActivityTree.Nodes, HiddenActivity);
-
-                ActivityTree.SelectedNode = HiddenNode;
-                ActivityTree.SelectedNode.Expand();
-            }
+            Foo(ProjectTreeDropdown, entry.ProjectId, entry.ProjectName, "Project");
+            Foo(ActivityTreeDropdown, entry.ActivityId, entry.ActivityName, "Activity");
+            Foo(LocationTreeDropdown, entry.LocationId, entry.LocationName, "Location");
+            Foo(CategoryTreeDropdown, entry.CategoryId, entry.CategoryName, "Category");
 
             // Display entry
-            wStartTime.Value = entry.StartTime.LocalDateTime;
-            wStopTime.Value = entry.StopTime.LocalDateTime;
-            wDuration.Text = entry.Seconds > 0 ? Timekeeper.FormatSeconds(entry.Seconds) : "";
-            //wMemo.Text = entry.Memo;
+            StartTimeSelector.Value = entry.StartTime.DateTime;
+            StopTimeSelector.Value = entry.StopTime.DateTime;
+            Browser_UpdateDurationBox(Timekeeper.FormatSeconds(entry.Seconds));
             MemoEditor.Text = entry.Memo;
 
-            // Handle Location
-            if (entry.LocationId > 0) {
-                Classes.Location Location = new Classes.Location(entry.LocationId);
-                if (Location.Name != null) {
-                    int LocationIndex = wLocation.FindString(Location.Name);
-                    wLocation.SelectedIndex = LocationIndex;
-                } else {
-                    wLocation.SelectedIndex = 0;
-                }
-            } else {
-                wLocation.SelectedIndex = 0;
-            }
-
-            // FIXME: MORE COPY/PASTE CODE.  :(
-            if (entry.CategoryId > 0) {
-                Classes.Category Category = new Classes.Category(entry.CategoryId);
-                if (Category.Name != null) {
-                    int CategoryIndex = wCategory.FindString(Category.Name);
-                    wCategory.SelectedIndex = CategoryIndex;
-                } else {
-                    wCategory.SelectedIndex = 0;
-                }
-            } else {
-                wCategory.SelectedIndex = 0;
-            }
-
             // And any other relevant values
-            toolControlEntryId.Text = entry.JournalId > 0 ? entry.JournalId.ToString() : "";
-            toolControlEntryIndex.Text = entry.JournalIndex > 0 ? entry.JournalIndex.ToString() : "";
+            ToolbarJournalId.Text = entry.JournalId > 0 ? entry.JournalId.ToString() : "";
         }
 
         //----------------------------------------------------------------------
 
-        public void Browser_GotoEntry(long journalIndex)
+        public void Browser_GotoEntry(long journalId)
         {
             try {
-                if (journalIndex == 0) {
+                if (journalId == 0) {
                     // Degenerate case
                     Browser_DisableNavigation();
                     return;
@@ -464,12 +475,9 @@ namespace Timekeeper.Forms
                 if (!isBrowsing)
                     Browser_FormToEntry(ref newBrowserEntry, 0);
 
-                Browser_SaveRow(false);
-                browserEntry.LoadByNewIndex(journalIndex);
-                long LastJournalIndex = priorLoadedBrowserEntry.JournalIndex;
-                priorLoadedBrowserEntry = browserEntry.Copy();
+                Browser_LockAndLoad(journalId);
 
-                if (browserEntry.JournalIndex > 0) {
+                if (browserEntry.JournalId > 0) {
 
                     Browser_DisplayRow();
 
@@ -500,7 +508,7 @@ namespace Timekeeper.Forms
                         Browser_EnableLast(true);
                     }
                 } else {
-                    Common.Warn("browserEntry.JournalIndex <= 0");
+                    Common.Warn("browserEntry.JournalId <= 0");
 
                     /* wait, what is this code? When is the JournalId
                        or JournalIndex ever going to be zero?
@@ -523,39 +531,30 @@ namespace Timekeeper.Forms
 
         private void Browser_GotoFirstEntry()
         {
-            browserEntry.SetFirstIndex();
-            Browser_GotoEntry(browserEntry.JournalIndex);
+            Browser_GotoEntry(browserEntry.GetFirstId());
         }
 
         //---------------------------------------------------------------------
 
         private void Browser_GotoLastEntry()
         {
-            browserEntry.SetLastIndex();
-            Browser_GotoEntry(browserEntry.JournalIndex);
+            Browser_GotoEntry(browserEntry.GetLastId());
         }
 
         //---------------------------------------------------------------------
 
         private void Browser_GotoNextEntry()
         {
-            browserEntry.SetNextIndex();
-            Browser_GotoEntry(browserEntry.JournalIndex);
+            Application.DoEvents();
+            Browser_GotoEntry(browserEntry.GetNextId(this.NextBrowseBy));
         }
 
         //---------------------------------------------------------------------
 
         private void Browser_GotoPreviousEntry()
         {
-            browserEntry.SetPreviousIndex();
-            Browser_GotoEntry(browserEntry.JournalIndex);
-        }
-
-        //---------------------------------------------------------------------
-
-        private bool IsBrowserOpen()
-        {
-            return !splitMain.Panel2Collapsed;
+            Application.DoEvents();
+            Browser_GotoEntry(browserEntry.GetPreviousId(this.PrevBrowseBy));
         }
 
         //---------------------------------------------------------------------
@@ -564,11 +563,20 @@ namespace Timekeeper.Forms
         {
             try {
                 Browser_SetShortcuts();
-                Browser_ViewOtherAttributes();
             }
             catch (Exception x) {
                 Common.Info("Error loading Browser.\n\n" + x.ToString());
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        public void Browser_LockAndLoad(long journalId)
+        {
+            Browser_SaveRow();
+            browserEntry.Load(journalId);
+            long LastJournalId = priorLoadedBrowserEntry.JournalId;
+            priorLoadedBrowserEntry = browserEntry.Copy();
         }
 
         //---------------------------------------------------------------------
@@ -577,67 +585,18 @@ namespace Timekeeper.Forms
         {
             var kc = new KeysConverter();
 
-            toolControlStart.ToolTipText = "Start Timer (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
-            toolControlStop.ToolTipText = "Stop Timer (" + kc.ConvertToString(MenuActionStopTimer.ShortcutKeys) + ")";
+            ToolbarStartButton.ToolTipText = "Start Timer (" + kc.ConvertToString(MenuActionStartTimer.ShortcutKeys) + ")";
+            ToolbarStopButton.ToolTipText = "Stop Timer (" + kc.ConvertToString(MenuActionStopTimer.ShortcutKeys) + ")";
 
-            toolControlFirstEntry.ToolTipText = "Go to First Entry (" + kc.ConvertToString(MenuToolbarBrowserFirst.ShortcutKeys) + ")";
-            toolControlLastEntry.ToolTipText = "Go to Last Entry (" + kc.ConvertToString(MenuToolbarBrowserLast.ShortcutKeys) + ")";
-            toolControlNextEntry.ToolTipText = "Go to Next Entry (" + kc.ConvertToString(MenuToolbarBrowserNext.ShortcutKeys) + ")";
-            toolControlPrevEntry.ToolTipText = "Go to Previous Entry (" + kc.ConvertToString(MenuToolbarBrowserPrev.ShortcutKeys) + ")";
+            ToolbarFirstEntry.ToolTipText = "Go to First Entry (" + kc.ConvertToString(MenuToolbarBrowserFirst.ShortcutKeys) + ")";
+            ToolbarLastEntry.ToolTipText = "Go to Last Entry (" + kc.ConvertToString(MenuToolbarBrowserLast.ShortcutKeys) + ")";
+            ToolbarNextEntry.ToolTipText = "Go to Next Entry (" + kc.ConvertToString(MenuToolbarBrowserNext.ShortcutKeys) + ")";
+            ToolbarPrevEntry.ToolTipText = "Go to Previous Entry (" + kc.ConvertToString(MenuToolbarBrowserPrev.ShortcutKeys) + ")";
 
-            toolControlNewEntry.ToolTipText = "Go to New Entry (" + kc.ConvertToString(MenuToolbarBrowserNew.ShortcutKeys) + ")";
-            toolControlCloseStartGap.ToolTipText = "Close Start Gap (" + kc.ConvertToString(MenuToolbarBrowserCloseStartGap.ShortcutKeys) + ")";
-            toolControlCloseEndGap.ToolTipText = "Close End Gap (" + kc.ConvertToString(MenuToolbarBrowserCloseEndGap.ShortcutKeys) + ")";
+            ToolbarNewEntry.ToolTipText = "Go to New Entry (" + kc.ConvertToString(MenuToolbarBrowserNew.ShortcutKeys) + ")";
 
-            toolControlSave.ToolTipText = "Save Changes to Database (" + kc.ConvertToString(MenuToolbarBrowserSave.ShortcutKeys) + ")";
-            toolControlRevert.ToolTipText = "Revert Changes to Last Saved State (" + kc.ConvertToString(MenuToolbarBrowserRevert.ShortcutKeys) + ")";
-
-            toolControlClose.ToolTipText = "Close Browser (Esc)";
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Browser_ViewOtherAttributes()
-        {
-            LocationPanel.Height = Options.Layout_UseLocations ? 27 : 0;
-            CategoryPanel.Height = Options.Layout_UseCategories ? 27 : 0;
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Browser_Open()
-        {
-            // Set a fallback height, if we're manually opening the browser window
-            bool hack = false;
-            if (LastBrowserHeight == 0) {
-                // If browser hasn't been opened, set a default browser height.
-                // But this won't work because splitMain.Height is not my current height.
-                // I need to know what it was before... I should be saving this somewhere
-                // if I can't easily calculate it.
-                // Wait a sec. I figured this out in the car after struggling with this
-                // all morning: don't do anything except set a default. If the user closes
-                // the browser then closes the app with that state, they've effectively
-                // reset themselves to a state where it was never open. In short: just
-                // set a reasonable default here and be done with it.
-                //LastBrowserHeight = splitMain.Height - Options.Main_MainSplitterDistance;
-                LastBrowserHeight = 340; // nothing magic: just a reasonable, default browser height
-                hack = true;
-            }
-
-            Browser_Show(true);
-
-            if (hack) {
-                // Next line needed only when the BrowserOpen saved state was 0
-                // and we then open up the browser for the first time *after*
-                // TK has been started and the file loaded. We're doing this
-                // now, rather than before, because the .NET code being called
-                // in Browser_Show will whomp this.
-                Action_CenterSplitter(splitMain);
-            }
-
-            if (timerRunning && TimedEntry.AtEnd()) {
-                Browser_SetupForStopping();
-            }
+            ToolbarSave.ToolTipText = "Save Changes to Database (" + kc.ConvertToString(MenuToolbarBrowserSave.ShortcutKeys) + ")";
+            ToolbarRevert.ToolTipText = "Revert Changes to Last Saved State (" + kc.ConvertToString(MenuToolbarBrowserRevert.ShortcutKeys) + ")";
         }
 
         //---------------------------------------------------------------------
@@ -655,83 +614,160 @@ namespace Timekeeper.Forms
             // Copy the prior entry to our internal representation
             browserEntry = priorLoadedBrowserEntry.Copy();
 
+            // Update gap buttons
+            Browser_DetermineStartGapState();
+            Browser_DetermineStopGapState();
+
             // Turn off button
             Browser_EnableRevert(false);
+
+            // Revert inline editing
+            InlineEditing = TimeBox.None;
         }
 
         //---------------------------------------------------------------------
 
-        public void Browser_SaveRow(bool forceSave)
+        public void Browser_SaveRow()
         {
+            Timekeeper.Debug("Browser_SaveRow: Checkpoint Alpha");
             // Bail if we have no entry
             if ((browserEntry == null) || (browserEntry.JournalId == 0)) {
+                Timekeeper.Debug("Browser_SaveRow: Checkpoint Bravo");
                 return;
             }
 
             // Copy form values to browser entry
             Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
+            Timekeeper.Debug("Browser_SaveRow: Checkpoint Charlie");
 
-            // Now bail if nothing's changed
-            if (!forceSave) {
-                /*
-                if (browserEntry.Equals(priorLoadedBrowserEntry)) {
+            // Bail if nothing changed
+            if (ToolbarRevert.Enabled == false) {
+                Timekeeper.Debug("Browser_SaveRow: Checkpoint Delta");
+
+                if (timerRunning) {
+                    if (browserEntry.Memo == priorLoadedBrowserEntry.Memo) {
+                        Timekeeper.Debug("Browser_SaveRow: Checkpoint Echo");
+                        return;
+                    } else {
+                        Timekeeper.Debug("Browser_SaveRow: Checkpoint Foxtrot");
+                        // The timer is running and the memo has changed, so
+                        // please proceed to the save code below
+                    }
+                } else {
+                    Timekeeper.Debug("Browser_SaveRow: Checkpoint Golf");
                     return;
                 }
-                */
 
-                if (toolControlRevert.Enabled == false) {
-                    // Instead of comparing the current to previous browser
-                    // entry, let's just check the revert button, which
-                    // is a user-facing visual indication that something
-                    // has changed. This should prevent the problem where
-                    // setting a hidden Project or Activity automatically
-                    // resets the value. (Still not sure what to do about
-                    // that in general: it's still an issue.)
-                    //return;
+            }
 
-                    // wait, one more test: special handling for the memo
-                    // block while the timer is running.
-                    if (timerRunning) {
-                        if (browserEntry.Memo == priorLoadedBrowserEntry.Memo) {
-                            return;
-                        } else {
-                            // The timer is running and the memo has changed, so
-                            // please proceed to the save code below
-                        }
-                    } else {
-                        return;
-                    }
+            // If we made it this far, save
+            Timekeeper.Debug("Browser_SaveRow: Checkpoint Hotel");
+            if (browserEntry.Save()) {
+                Browser_EnableRevert(false);
+            } else {
+                Common.Warn("There was a problem saving this journal entry. A duplicate start time is possible.");
+            }
+            Timekeeper.Debug("Browser_SaveRow: Checkpoint India");
+
+            // If we've saved, we're no longer inline editing:
+            InlineEditing = TimeBox.None;
+
+            // Lastly, update the status bar with any potential time changes
+            GetDimensions();
+            TimedProject.ChangedTime();
+            TimedActivity.ChangedTime();
+            TimedLocation.ChangedTime();
+            TimedCategory.ChangedTime();
+            StatusBar_Update(TimedProject, TimedActivity, TimedLocation, TimedCategory);
+            ReleaseDimensions();
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_SetBrowseModePrev(ToolStripMenuItem item)
+        {
+            // Uncheck all
+            ToolbarPrevEntryBrowseByEntry.Checked = false;
+            ToolbarPrevEntryBrowseByDay.Checked = false;
+            ToolbarPrevEntryBrowseByWeek.Checked = false;
+            ToolbarPrevEntryBrowseByMonth.Checked = false;
+            ToolbarPrevEntryBrowseByYear.Checked = false;
+
+            // Set mode
+            int EnumValue = Convert.ToInt32(item.Tag);
+            PrevBrowseBy = (Classes.JournalEntry.BrowseByMode)EnumValue;
+
+            if (item.Name.Substring(0, 4) == "Menu") {
+                // HACK -- need to sync toolbar with menubar
+                // This means we got here due to a keyboard shortcut
+                // (which is tied to the invisible menu items and not
+                // the visible toolbar dropdown). In this case, we
+                // need to check the corresponding visible item and
+                // not the invisible one that got us here
+                switch (PrevBrowseBy) {
+                    case Classes.JournalEntry.BrowseByMode.Entry: item = ToolbarPrevEntryBrowseByEntry; break;
+                    case Classes.JournalEntry.BrowseByMode.Day: item = ToolbarPrevEntryBrowseByDay; break;
+                    case Classes.JournalEntry.BrowseByMode.Week: item = ToolbarPrevEntryBrowseByWeek; break;
+                    case Classes.JournalEntry.BrowseByMode.Month: item = ToolbarPrevEntryBrowseByMonth; break;
+                    case Classes.JournalEntry.BrowseByMode.Year: item = ToolbarPrevEntryBrowseByYear; break;
                 }
             }
 
-            // FIXME: is this still needed?
-            /*
-            if ((wStartTime.Text == "") && (wStopTime.Text == "")) {
-                // Bail if there's obviously no work to do
-                return;
+            // Check currently selected item
+            item.Checked = true;
+
+            // Set parent's tooltip
+            var kc = new KeysConverter();
+            ToolbarPrevEntry.ToolTipText =
+                "Go to Previous " + PrevBrowseBy.ToString() +
+                " (" + kc.ConvertToString(MenuToolbarBrowserPrev.ShortcutKeys) + ")";
+
+            // Update options
+            Options.Behavior_BrowsePrevBy = EnumValue;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_SetBrowseModeNext(ToolStripMenuItem item)
+        {
+            // Uncheck all
+            ToolbarNextEntryBrowseByEntry.Checked = false;
+            ToolbarNextEntryBrowseByDay.Checked = false;
+            ToolbarNextEntryBrowseByWeek.Checked = false;
+            ToolbarNextEntryBrowseByMonth.Checked = false;
+            ToolbarNextEntryBrowseByYear.Checked = false;
+
+            // Set mode
+            int EnumValue = Convert.ToInt32(item.Tag);
+            NextBrowseBy = (Classes.JournalEntry.BrowseByMode)EnumValue;
+
+            // HACK -- need to sync toolbar with menubar
+            if (item.Name.Substring(0, 4) == "Menu") {
+                // This means we got hear due to a keyboard shortcut
+                // (which is tied to the invisible menu items and not
+                // the visible toolbar dropdown). In this case, we
+                // need to check the corresponding visible item and
+                // not the invisible one that got us here
+                switch (NextBrowseBy) {
+                    case Classes.JournalEntry.BrowseByMode.Entry: item = ToolbarNextEntryBrowseByEntry; break;
+                    case Classes.JournalEntry.BrowseByMode.Day: item = ToolbarNextEntryBrowseByDay; break;
+                    case Classes.JournalEntry.BrowseByMode.Week: item = ToolbarNextEntryBrowseByWeek; break;
+                    case Classes.JournalEntry.BrowseByMode.Month: item = ToolbarNextEntryBrowseByMonth; break;
+                    case Classes.JournalEntry.BrowseByMode.Year: item = ToolbarNextEntryBrowseByYear; break;
+                }
             }
-            */
 
-            // If we've made it this far, save the row
-            /*
-            string Message = String.Format("Entry.Save(). Id = {0}, Memo = \"{1}\", Prior Memo = \"{2}\"",
-                browserEntry.JournalId, 
-                Common.Abbreviate(browserEntry.Memo, 30), 
-                Common.Abbreviate(priorLoadedBrowserEntry.Memo, 30)
-                );
-            Timekeeper.Warn(Message);
-            */
-            browserEntry.Save();
+            // Check currently selected item
+            item.Checked = true;
 
-            // Once the entry has been saved, we may need to reindex
-            if (browserEntry.StartTime != priorLoadedBrowserEntry.StartTime) {
-                Entries.Reindex(browserEntry.StartTime);
-                browserEntry.RefreshIndex();
-                Timekeeper.Info("Reindexed Journal table starting at " + browserEntry.StartTime.ToString(Common.DATETIME_FORMAT));
-            }
+            // Set tooltip
+            var kc = new KeysConverter();
+            ToolbarNextEntry.ToolTipText =
+                "Go to Next " + NextBrowseBy.ToString() +
+                " (" + kc.ConvertToString(MenuToolbarBrowserNext.ShortcutKeys) + ")";
 
-            // And disable reverting, just in case
-            Browser_EnableRevert(false);
+            // Update options
+            Options.Behavior_BrowseNextBy = EnumValue;
         }
 
         //---------------------------------------------------------------------
@@ -740,11 +776,9 @@ namespace Timekeeper.Forms
         {
             Browser_ShowStart(true);
             Browser_ShowStop(false);
-            Browser_ShowClose(true);
 
             Browser_EnableStart(true);
             Browser_EnableStop(false);
-            Browser_EnableClose(true);
 
             Browser_EnableFirst(true);
             Browser_EnablePrev(true);
@@ -753,14 +787,14 @@ namespace Timekeeper.Forms
             Browser_EnableNew(false);
 
             Browser_EnableCloseStartGap(true);
-            Browser_EnableCloseEndGap(false);
+            Browser_EnableCloseStopGap(false);
             Browser_EnableSplit(false);
 
             Browser_EnableStartEntry(true);
             Browser_EnableStopEntry(false);
             Browser_EnableDurationEntry(false);
-            Browser_EnableLocationEntry(true);
-            Browser_EnableCategoryEntry(true);
+
+            Browser_EnableProperties(false);
         }
 
         private void Browser_SetBrowseState()
@@ -769,41 +803,32 @@ namespace Timekeeper.Forms
             if (timerRunning) {
                 Browser_ShowStart(false);
                 Browser_ShowStop(true);
-                Browser_ShowClose(true);
 
                 Browser_EnableStart(false);
                 Browser_EnableStop(false);
-                Browser_EnableClose(true);
 
                 Browser_EnableNew(false);
 
-                Browser_EnableCloseStartGap(true);
-                Browser_EnableCloseEndGap(true);
-
                 Browser_EnableStartEntry(true);
                 Browser_EnableStopEntry(true);
                 Browser_EnableDurationEntry(true);
-                Browser_EnableLocationEntry(true);
-                Browser_EnableCategoryEntry(true);
-            } else {
+
+                Browser_EnableProperties(false);
+            }
+            else {
                 Browser_ShowStart(true);
                 Browser_ShowStop(false);
-                Browser_ShowClose(true);
 
                 Browser_EnableStart(false);
                 Browser_EnableStop(false);
-                Browser_EnableClose(true);
 
                 Browser_EnableNew(true);
-
-                Browser_EnableCloseStartGap(true);
-                Browser_EnableCloseEndGap(true);
 
                 Browser_EnableStartEntry(true);
                 Browser_EnableStopEntry(true);
                 Browser_EnableDurationEntry(true);
-                Browser_EnableLocationEntry(true);
-                Browser_EnableCategoryEntry(true);
+
+                Browser_EnableProperties(true);
             }
         }
 
@@ -811,11 +836,9 @@ namespace Timekeeper.Forms
         {
             Browser_ShowStart(false);
             Browser_ShowStop(true);
-            Browser_ShowClose(true);
 
             Browser_EnableStart(false);
             Browser_EnableStop(true);
-            Browser_EnableClose(true);
 
             Browser_EnableFirst(true);
             Browser_EnablePrev(true);
@@ -824,22 +847,23 @@ namespace Timekeeper.Forms
             Browser_EnableNew(false);
 
             Browser_EnableCloseStartGap(false);
-            Browser_EnableCloseEndGap(false);
+            Browser_EnableCloseStopGap(false);
 
             Browser_EnableStartEntry(false);
             Browser_EnableStopEntry(false);
             Browser_EnableDurationEntry(false);
-            Browser_EnableLocationEntry(false);
-            Browser_EnableCategoryEntry(false);
+
+            Browser_EnableProperties(false);
         }
 
         //---------------------------------------------------------------------
 
-        private void Browser_SetupForStarting()
+        private void Browser_SetupForStarting(bool saveRow)
         {
             try {
                 // Just in case
-                Browser_SaveRow(false);
+                if (saveRow)
+                    Browser_SaveRow();
 
                 // Set UI accordingly
                 Browser_SetCreateState();
@@ -851,9 +875,6 @@ namespace Timekeeper.Forms
                 }
 
                 // Create browser objects
-                //browserEntry = new Classes.Journal(Database);
-                //browserEntry = new Classes.JournalEntry();
-                //browserEntry = TimedEntry;
                 browserEntry = TimedEntry.Copy();
 
                 priorLoadedBrowserEntry = new Classes.JournalEntry();
@@ -893,58 +914,25 @@ namespace Timekeeper.Forms
             MemoEditor.Focus();
         }
 
-        //----------------------------------------------------------------------
-
-        private int LastBrowserHeight = 0;
-
-        //----------------------------------------------------------------------
-
-        private void Browser_Show(bool show)
-        {
-            MenuActionOpenBrowser.Visible = !show;
-            MenuActionCloseBrowser.Visible = show;
-            Options.Main_BrowserOpen = show;
-
-            if (show) {
-                this.Height += LastBrowserHeight;
-                // For some reason, setting Panel2Collapsed = false is adding 22 pixels
-                // to the SplitterDistance. I haven't figured this out, so I'm just going
-                // to save the value, un-Collapse the panel, then set it back.
-                int Voodoo = splitMain.SplitterDistance;
-                splitMain.Panel2Collapsed = false;
-                splitMain.SplitterDistance = Voodoo;
-            } else {
-                LastBrowserHeight = splitMain.Panel2.Height;
-                splitMain.Panel2Collapsed = true;
-                this.Height -= LastBrowserHeight;
-            }
-        }
-
         //---------------------------------------------------------------------
         // Are these types of things candidates for fMain.MenuBar?
         //---------------------------------------------------------------------
 
         private void Browser_ShowStart(bool show)
         {
-            toolControlStart.Visible = show;
+            ToolbarStartButton.Visible = show;
             //menuToolControlStart.Visible = show;
         }
 
         private void Browser_ShowStop(bool show)
         {
-            toolControlStop.Visible = show;
+            ToolbarStopButton.Visible = show;
             //menuToolControlStop.Visible = show;
-        }
-
-        private void Browser_ShowClose(bool show)
-        {
-            toolControlClose.Visible = show;
-            //menuToolControlClose.Visible = show;
         }
 
         private void Browser_ShowUnlock(bool show)
         {
-            toolControlUnlock.Visible = show;
+            ToolbarUnlock.Visible = show;
             MenuToolbarBrowserUnlock.Visible = show;
         }
 
@@ -959,30 +947,51 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Browser_UpdateDurationBox()
+        {
+            string DurationText = Browser_CalculateDuration();
+            Browser_UpdateDurationBox(DurationText);
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Browser_UpdateDurationBox(string value)
+        {
+            DurationBox.Text = value;
+            DurationBox.ForeColor = 
+                browserEntry.Seconds == 0 ? Color.Red : SystemColors.ControlText;
+        }
+
+        //---------------------------------------------------------------------
+
         private void Browser_UpdateTimes()
         {
             if (isBrowsing) {
-                long seconds = ConvertToSeconds(wDuration.Text);
+                long seconds = Timekeeper.UnformatSeconds(DurationBox.Text);
 
                 if (seconds != priorLoadedBrowserEntry.Seconds) {
                     if (seconds < 0) {
                         // either set the start time backwards
                         browserEntry.Seconds = -seconds;
                         browserEntry.StartTime = browserEntry.StopTime.AddSeconds(Convert.ToDouble(seconds));
-                        wStartTime.Value = browserEntry.StartTime.LocalDateTime;
-                        Browser_EnableRevert(true);
-                    } else if (seconds > 0) {
-                        // or the end time forward
-                        browserEntry.Seconds = seconds;
-                        browserEntry.StopTime = browserEntry.StartTime.AddSeconds(Convert.ToDouble(seconds));
-                        wStopTime.Value = browserEntry.StopTime.LocalDateTime;
+                        StartTimeSelector.Value = browserEntry.StartTime.DateTime;
                         Browser_EnableRevert(true);
                     } else {
-                        // duration is zero, do nothing
+                        // or the end time forward (or not at all: zero is fine)
+                        browserEntry.Seconds = seconds;
+                        browserEntry.StopTime = browserEntry.StartTime.AddSeconds(Convert.ToDouble(seconds));
+                        StopTimeSelector.Value = browserEntry.StopTime.DateTime;
+                        Browser_EnableRevert(true);
+                    }
+
+                    // Set close gap buttons
+                    if (isBrowsing) {
+                        Browser_DetermineStartGapState();
+                        Browser_DetermineStopGapState();
                     }
 
                     // reformat duration before leaving
-                    wDuration.Text = Timekeeper.FormatSeconds(browserEntry.Seconds);
+                    Browser_UpdateDurationBox();
                 }
             }
         }
@@ -994,10 +1003,8 @@ namespace Timekeeper.Forms
         private string Browser_CalculateDuration()
         {
             try {
-                browserEntry.StartTime = wStartTime.Value;
-                browserEntry.StopTime = wStopTime.Value;
-                //timestamp_s = Convert.ToDateTime(wStartTime.Text);
-                //timestamp_e = Convert.ToDateTime(wStopTime.Text);
+                browserEntry.StartTime = StartTimeSelector.Value;
+                browserEntry.StopTime = StopTimeSelector.Value;
                 TimeSpan ts = browserEntry.StopTime.Subtract(browserEntry.StartTime);
                 browserEntry.Seconds = (long)ts.TotalSeconds;
                 return Timekeeper.FormatSeconds(browserEntry.Seconds);
@@ -1008,101 +1015,51 @@ namespace Timekeeper.Forms
             }
         }
 
-        // FIXME: where should this live?
-        private long ConvertToSeconds(string time)
-        {
-            long seconds = 0;
-            long h = 0;
-            long m = 0;
-            long s = 0;
-            bool negative = false;
 
-            try {
-                if (time.Substring(0, 1) == "-") {
-                    // user going back in time
-                    negative = true;
-                    // strip minus sign from text
-                    time = time.Substring(1);
-                }
-
-                string[] parts = time.Split(':');
-
-                switch (parts.Length) {
-                    case 1:
-                        // one part => minutes
-                        h = 0;
-                        m = Convert.ToInt32(parts[0]) * 60;
-                        s = 0;
-                        break;
-                    case 2:
-                        // two parts => hours minutes
-                        h = Convert.ToInt32(parts[0]) * 3600;
-                        m = Convert.ToInt32(parts[1]) * 60;
-                        s = 0;
-                        if ((m < 0) || (m > 3599)) {
-                            throw new System.ApplicationException("invalid minutes");
-                        }
-                        break;
-                    case 3:
-                        // three parts => hours minutes seconds
-                        h = Convert.ToInt32(parts[0]) * 3600;
-                        m = Convert.ToInt32(parts[1]) * 60;
-                        s = Convert.ToInt32(parts[2]);
-                        if ((m < 0) || (m > 3599)) {
-                            throw new System.ApplicationException("invalid minutes");
-                        }
-                        if ((s < 0) || (s > 59)) {
-                            throw new System.ApplicationException("invalid seconds");
-                        }
-                        break;
-                    default:
-                        // if it's not 1, 2, or three, do nothing
-                        break;
-                }
-
-                seconds = h + m + s;
-            }
-            catch {
-                // do anything? -- probably not, just ignore it and 
-                // return the default value of 0
-            }
-
-            return negative ? -seconds : seconds;
-        }
 
         //---------------------------------------------------------------------
 
-        private DateTime Browser_GetPreviousEndTime()
+        private DateTimeOffset? Browser_GetPreviousEndTime()
         {
             try {
                 if (browserEntry.AtBeginning()) {
-                    return DateTime.MinValue;
+                    return null;
                 } else {
-                    Classes.JournalEntry copy = browserEntry.Copy();
+                    Classes.JournalEntry copy;
+                    if (InlineEditing == TimeBox.StartTime) {
+                        copy = priorLoadedBrowserEntry.Copy();
+                    } else {
+                        copy = browserEntry.Copy();
+                    }
                     copy.LoadPrevious();
-                    return copy.StopTime.LocalDateTime;
+                    return copy.StopTime;
                 }
             }
             catch {
-                return DateTime.MinValue;
+                return null;
             }
         }
 
         //---------------------------------------------------------------------
 
-        private DateTime Browser_GetNextStartTime()
+        private DateTimeOffset? Browser_GetNextStartTime()
         {
             try {
                 if (browserEntry.AtEnd()) {
-                    return DateTime.MaxValue;
+                    return null;
                 } else {
-                    Classes.JournalEntry copy = browserEntry.Copy();
+                    Classes.JournalEntry copy;
+                    if (InlineEditing == TimeBox.StopTime) {
+                        copy = priorLoadedBrowserEntry.Copy();
+                    } else {
+                        copy = browserEntry.Copy();
+                    }
                     copy.LoadNext();
-                    return copy.StartTime.LocalDateTime;
+                    return copy.StartTime;
                 }
             }
             catch {
-                return DateTime.MinValue;
+                return null;
             }
         }
 

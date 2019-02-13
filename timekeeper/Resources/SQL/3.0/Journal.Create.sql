@@ -17,22 +17,16 @@ CREATE TABLE Journal
     JournalGuid             TEXT        NOT NULL,
 
     StartTime               DATETIME    NOT NULL,
-    StopTime                DATETIME        NULL,
+    StopTime                DATETIME    NOT NULL,
     Seconds                 INTEGER     NOT NULL,
     Memo                    TEXT            NULL,
+
     ProjectId               INTEGER     NOT NULL,
     ActivityId              INTEGER     NOT NULL,
-    LocationId              INTEGER         NULL,
-    CategoryId              INTEGER         NULL,
+    LocationId              INTEGER     NOT NULL,
+    CategoryId              INTEGER     NOT NULL,
 
     IsLocked                BOOLEAN     NOT NULL,
-    JournalIndex            INTEGER     NOT NULL,
-
-    -- Thinking about a 'natural' flag: was this entry timed naturally? or otherwise subject to human intervention?
-    
-    -- NOT PERMANENT COLUMNS, ONLY HERE DURING UTC TRANSITION DEVELOPMENT
-    OriginalStartTime       DATETIME        NULL,
-    OriginalStopTime        DATETIME        NULL,
 
     FOREIGN KEY(ProjectId)              REFERENCES Project(ProjectId)
     FOREIGN KEY(ActivityId)             REFERENCES Activity(ActivityId)
@@ -43,6 +37,7 @@ CREATE TABLE Journal
 CREATE UNIQUE INDEX idx_Journal_JournalId           ON Journal(JournalId);
 CREATE UNIQUE INDEX idx_Journal_JournalGuid         ON Journal(JournalGuid);
 CREATE UNIQUE INDEX idx_Journal_StartTime           ON Journal(StartTime);
-CREATE UNIQUE INDEX idx_Journal_JournalIndex        ON Journal(JournalIndex);
 CREATE        INDEX idx_Journal_ProjectId           ON Journal(ProjectId);
 CREATE        INDEX idx_Journal_ActivityId          ON Journal(ActivityId);
+CREATE        INDEX idx_Journal_LocationId          ON Journal(LocationId);
+CREATE        INDEX idx_Journal_CategoryId          ON Journal(CategoryId);

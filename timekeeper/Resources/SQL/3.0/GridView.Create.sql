@@ -20,7 +20,7 @@ CREATE TABLE GridView
 
     FilterOptionsId     INTEGER         NULL,
 
-    RefDimensionId       INTEGER        NULL,
+    RefDimensionId      INTEGER         NULL,
     RefGroupById        INTEGER         NULL,
     RefTimeDisplayId    INTEGER         NULL,
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -27,8 +27,10 @@ namespace Timekeeper.Classes
 
         public DateTimeOffset EntryTime { get; set; }
         public string Memo { get; set; }
-        public long LocationId { get; set; }
-        public long CategoryId { get; set; }
+        public long? ProjectId { get; set; }
+        public long? ActivityId { get; set; }
+        public long? LocationId { get; set; }
+        public long? CategoryId { get; set; }
 
         //---------------------------------------------------------------------
         // Constructor
@@ -99,12 +101,12 @@ namespace Timekeeper.Classes
             try {
                 if (this.NotebookId == 0) {
                     // Create
-                    Row["CreateTime"] = Common.Now();
+                    Row["CreateTime"] = Timekeeper.DateForDatabase();
                     Row["NotebookGuid"] = UUID.Get();
                 } else {
                     // Update
                 }
-                Row["ModifyTime"] = Common.Now();
+                Row["ModifyTime"] = Timekeeper.DateForDatabase();
 
                 // FIXME: sweep the codebase for this stuff
                 // Seems to be any time we take a string, but
@@ -121,23 +123,29 @@ namespace Timekeeper.Classes
                 // everything in UTC. Still experimenting, but it feels like this is
                 // the direction things are heading...
 
-                Row["EntryTime"] = this.EntryTime.ToString(Common.UTC_DATETIME_FORMAT);
+                // FOLLOWUP EPIPHANY: It's 2014-07-14 and I'm ditching UTC and changing
+                // everything back to DateTime *BUT* with a standard set of handling,
+                // formatting, and conversion routines built into Timekeeper.cs.
+
+                Row["EntryTime"] = Timekeeper.DateForDatabase(this.EntryTime);
                 Row["Memo"] = this.Memo;
+                Row["ProjectId"] = this.ProjectId;
+                Row["ActivityId"] = this.ActivityId;
                 Row["LocationId"] = this.LocationId;
                 Row["CategoryId"] = this.CategoryId;
 
                 if (this.NotebookId == 0) {
                     this.NotebookId = Database.Insert("Notebook", Row);
                     if (this.NotebookId > 0) {
-                        this.CreateTime = DateTimeOffset.Parse(Row["CreateTime"]);
-                        this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                        this.CreateTime = Timekeeper.StringToDate(Row["CreateTime"]);
+                        this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                         this.NotebookGuid = Row["NotebookGuid"];
                     } else {
                         throw new Exception("Could not create Notebook entry");
                     }
                 } else {
                     if (Database.Update("Notebook", Row, "NotebookId", this.NotebookId) > 0) {
-                        this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                        this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                     } else {
                         throw new Exception("Could not update Notebook entry: " + this.NotebookId.ToString());
                     }
@@ -150,6 +158,24 @@ namespace Timekeeper.Classes
 
             return true;
 
+        }
+
+        //---------------------------------------------------------------------
+        // Helpers
+        //---------------------------------------------------------------------
+
+        public void Copy(Classes.NotebookEntry that)
+        {
+            this.NotebookId = that.NotebookId;
+            this.CreateTime = that.CreateTime;
+            this.ModifyTime = that.ModifyTime;
+            this.NotebookGuid = that.NotebookGuid;
+            this.EntryTime = that.EntryTime;
+            this.Memo = that.Memo;
+            this.ProjectId = that.ProjectId;
+            this.ActivityId = that.ActivityId;
+            this.LocationId = that.LocationId;
+            this.CategoryId = that.CategoryId;
         }
 
         //---------------------------------------------------------------------

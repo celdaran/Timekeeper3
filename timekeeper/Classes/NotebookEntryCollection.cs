@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -30,7 +30,7 @@ namespace Timekeeper.Classes
         public long Count()
         {
             // FIXME: WHAT ABOUT DELETING ITEMS? This would need IsDeleted = 0
-            string Query = "SELECT COUNT(*) AS Count FROM Notebook"; // WHERE datetime(CreateTime) > datetime('2014-04-18T07:55:00-05:00')";
+            string Query = "SELECT COUNT(*) AS Count FROM Notebook";
             Row Row = Database.SelectRow(Query);
             return (long)Row["Count"];
         }
@@ -63,8 +63,8 @@ namespace Timekeeper.Classes
                 return this.LastEntry();
             } else {
                 string SubQuery = String.Format(
-                    "SELECT MAX(EntryTime) FROM Notebook WHERE datetime(EntryTime) < datetime('{0}')",
-                    entry.EntryTime.ToString(Common.UTC_DATETIME_FORMAT));
+                    "SELECT MAX(EntryTime) FROM Notebook WHERE EntryTime < '{0}'",
+                    entry.EntryTime.ToString(Timekeeper.LOCAL_DATETIME_FORMAT));
                 return FetchEntry(SubQuery);
             }
         }
@@ -74,8 +74,8 @@ namespace Timekeeper.Classes
         public Row NextEntry(Classes.NotebookEntry entry)
         {
             string SubQuery = String.Format(
-                "SELECT MIN(EntryTime) FROM Notebook WHERE datetime(EntryTime) > datetime('{0}')",
-                entry.EntryTime.ToString(Common.UTC_DATETIME_FORMAT));
+                "SELECT MIN(EntryTime) FROM Notebook WHERE EntryTime > '{0}'",
+                entry.EntryTime.ToString(Timekeeper.LOCAL_DATETIME_FORMAT));
             return FetchEntry(SubQuery);
         }
 
@@ -85,6 +85,44 @@ namespace Timekeeper.Classes
         {
             string SubQuery = "SELECT MAX(EntryTime) FROM Notebook";
             return FetchEntry(SubQuery);
+        }
+
+        //----------------------------------------------------------------------
+
+        public DateTimeOffset FirstDay()
+        {
+            DateTimeOffset FirstDay;
+
+            string Query = @"
+                select min(EntryTime) as FirstDate 
+                from Notebook";
+            Row Row = Timekeeper.Database.SelectRow(Query);
+            if (Row["FirstDate"] == null) {
+                FirstDay = Timekeeper.LocalNow;
+            } else {
+                FirstDay = DateTimeOffset.Parse(Row["FirstDate"]);
+            }
+
+            return FirstDay;
+        }
+
+        //----------------------------------------------------------------------
+
+        public DateTimeOffset LastDay()
+        {
+            DateTimeOffset LastDay;
+
+            string Query = @"
+                select max(EntryTime) as LastDate 
+                from Notebook";
+            Row Row = Timekeeper.Database.SelectRow(Query);
+            if (Row["LastDate"] == null) {
+                LastDay = Timekeeper.LocalNow;
+            } else {
+                LastDay = DateTimeOffset.Parse(Row["LastDate"]);
+            }
+
+            return LastDay;
         }
 
         //---------------------------------------------------------------------

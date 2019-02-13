@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 using Quartz;
 using Quartz.Impl;
 
@@ -74,9 +75,14 @@ namespace Timekeeper.Classes
 
         private void AudioNotification(Classes.ScheduledEvent scheduledEvent)
         {
-            Timekeeper.Debug("  Audio: " + scheduledEvent.Reminder.NotifyAudioFile);
-            SoundPlayer simpleSound =
-                new SoundPlayer(@"Sounds/" + scheduledEvent.Reminder.NotifyAudioFile);
+            string SoundFile =
+                Timekeeper.CWD + Path.DirectorySeparatorChar +
+                "Sounds" + Path.DirectorySeparatorChar +
+                scheduledEvent.Reminder.NotifyAudioFile + ".wav";
+
+            Timekeeper.Debug("  Audio: " + SoundFile);
+
+            SoundPlayer simpleSound = new SoundPlayer(SoundFile);
             simpleSound.Play();
         }
 
@@ -86,7 +92,12 @@ namespace Timekeeper.Classes
         {
             Timekeeper.Debug("  Email: " + scheduledEvent.Reminder.NotifyEmailAddress);
             Classes.Mail Mail = new Classes.Mail();
-            Mail.Send(scheduledEvent.Reminder.NotifyEmailAddress, "Actually, what SHOULD I mail?");
+            string Message = String.Format("Your Timekeeper event fired.\n\nEvent: {0}\nDescription: {1}\nGroup: {2}\nTime: {3}",
+                scheduledEvent.Event.Name,
+                scheduledEvent.Event.Description,
+                scheduledEvent.Event.Group.Name,
+                Timekeeper.DateForDisplay(scheduledEvent.Event.NextOccurrenceTime));
+            Mail.Send(scheduledEvent.Reminder.NotifyEmailAddress, Message);
         }
 
         //----------------------------------------------------------------------
@@ -123,7 +134,7 @@ namespace Timekeeper.Classes
 
             if (EmailDomain != null) {
                 string NotifyEmailAddress = scheduledEvent.Reminder.NotifyPhoneNumber + "@" + EmailDomain;
-                Mail.Send(NotifyEmailAddress, "Actually, what SHOULD I text?");
+                Mail.Send(NotifyEmailAddress, scheduledEvent.Event.Name);
             } else {
                 Timekeeper.Warn("Domain could not be found.");
             }
@@ -155,7 +166,7 @@ namespace Timekeeper.Classes
                    -(int)scheduledEvent.Reminder.TimeAmount);
                 scheduledEvent.Event.Save();
 
-                Timekeeper.Debug("context.NextFireItemUtc: " + NextFire.Value.DateTime.ToString(Common.DATETIME_FORMAT));
+                Timekeeper.Debug("context.NextFireItemUtc: " + NextFire.Value.DateTime.ToString(Common.UTC_DATETIME_FORMAT));
             }
 
             //------------------------------------
@@ -170,7 +181,7 @@ namespace Timekeeper.Classes
             }
 
             if (scheduledEvent.Schedule.DurationTypeId == 3) {
-                if (DateTimeOffset.Now >= scheduledEvent.Schedule.StopAfterTime) {
+                if (Timekeeper.LocalNow >= scheduledEvent.Schedule.StopAfterTime) {
                     Timekeeper.Scheduler.UnscheduleJob(context.Trigger.Key);
                     Timekeeper.Debug("End date/time passed. Job " + scheduledEvent.Event.Id.ToString() + " cancelled.");
                 }

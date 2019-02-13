@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,7 @@ using System.Text;
 using Quartz;
 using Quartz.Impl;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -74,7 +74,7 @@ namespace Timekeeper.Classes
 
         public long DurationTypeId { get; set; }
         public long StopAfterCount { get; set; }
-        public DateTimeOffset StopAfterTime { get; set; }
+        public DateTimeOffset? StopAfterTime { get; set; }
 
         // Event Metadata
         public long TriggerCount { get; set; }
@@ -160,7 +160,7 @@ namespace Timekeeper.Classes
             // Duration
             this.DurationTypeId = row["DurationTypeId"];
             this.StopAfterCount = (long)Timekeeper.GetValue(row["StopAfterCount"], 10);
-            this.StopAfterTime = (DateTimeOffset)Timekeeper.GetValue(row["StopAfterTime"], Timekeeper.MaxDateTime());
+            this.StopAfterTime = (DateTimeOffset?)Timekeeper.GetValue(row["StopAfterTime"], null);
 
             // Event Metadata
             this.TriggerCount = row["TriggerCount"];
@@ -171,7 +171,7 @@ namespace Timekeeper.Classes
         public bool Save()
         {
             bool Saved = false;
-            string DbTimeStamp = Common.Now();
+            string DbTimeStamp = Timekeeper.DateForDatabase();
 
             try
             {
@@ -213,7 +213,7 @@ namespace Timekeeper.Classes
                 // Duration
                 Schedule["DurationTypeId"] = this.DurationTypeId;
                 Schedule["StopAfterCount"] = this.StopAfterCount;
-                Schedule["StopAfterTime"] = this.StopAfterTime.ToString(Common.UTC_DATETIME_FORMAT);
+                Schedule["StopAfterTime"] = Timekeeper.NullableDateForDatabase(this.StopAfterTime);
 
                 // Event Metadata
                 Schedule["TriggerCount"] = this.TriggerCount;
@@ -224,13 +224,13 @@ namespace Timekeeper.Classes
                     this.ScheduleId = this.Database.Insert("Schedule", Schedule);
                     if (this.ScheduleId > 0) {
                         Saved = true;
-                        this.CreateTime = DateTimeOffset.Parse(DbTimeStamp);
+                        this.CreateTime = Timekeeper.StringToDate(DbTimeStamp);
                         this.ModifyTime = this.CreateTime;
                     }
                 } else {
                     if (this.Database.Update("Schedule", Schedule, "ScheduleId", this.ScheduleId) == 1) {
                         Saved = true;
-                        this.ModifyTime = DateTimeOffset.Parse(DbTimeStamp);
+                        this.ModifyTime = Timekeeper.StringToDate(DbTimeStamp);
                     }
                 }
             }
@@ -245,9 +245,9 @@ namespace Timekeeper.Classes
         // Trigger Builders
         //----------------------------------------------------------------------
 
-        public DateTime ReminderTime(DateTime nextOccurrence, int unit, int amount)
+        public DateTimeOffset ReminderTime(DateTimeOffset nextOccurrence, int unit, int amount)
         {
-            DateTime ReminderTime = nextOccurrence;
+            DateTimeOffset ReminderTime = nextOccurrence;
 
             switch (unit) {
                 case 1: // minutes
@@ -272,7 +272,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger OneTimeTrigger(string triggerName, DateTime startAt)
+        public ITrigger OneTimeTrigger(string triggerName, DateTimeOffset startAt)
         {
             string Debug = String.Format("Created one time trigger for schedule {0}, starting at {1}",
                 this.ScheduleId, startAt.ToString(Common.UTC_DATETIME_FORMAT));
@@ -290,7 +290,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger FixedTrigger(string triggerName, DateTime startAt, int unit, int amount)
+        public ITrigger FixedTrigger(string triggerName, DateTimeOffset startAt, int unit, int amount)
         {
             ITrigger FixedTrigger;
             string Debug;
@@ -362,7 +362,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger DailyTrigger(string triggerName, DateTime startAt, int dailyTypeId, int interval)
+        public ITrigger DailyTrigger(string triggerName, DateTimeOffset startAt, int dailyTypeId, int interval)
         {
             ITrigger DailyTrigger;
 
@@ -387,7 +387,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger WeeklyTrigger(string triggerName, DateTime startAt)
+        public ITrigger WeeklyTrigger(string triggerName, DateTimeOffset startAt)
         {
             List<string> Weekdays = new List<string>();
 
@@ -411,7 +411,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger WeeklyTrigger(string triggerName, DateTime startAt, List<string> weekdays)
+        public ITrigger WeeklyTrigger(string triggerName, DateTimeOffset startAt, List<string> weekdays)
         {
             ITrigger WeeklyTrigger;
 
@@ -452,7 +452,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger MonthlyTrigger(string triggerName, DateTime startAt)
+        public ITrigger MonthlyTrigger(string triggerName, DateTimeOffset startAt)
         {
             if (this.MonthlyTypeId == 1) {
                 return this.MonthlyTrigger(triggerName, startAt,
@@ -465,7 +465,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger MonthlyTrigger(string triggerName, DateTime startAt, int dateValue, int interval)
+        public ITrigger MonthlyTrigger(string triggerName, DateTimeOffset startAt, int dateValue, int interval)
         {
             // 0 0 12 7 1/3 ? *
             string CronExpressionString =
@@ -481,7 +481,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger MonthlyTrigger(string triggerName, DateTime startAt, int ordinalDay, int dayOfWeek, int interval)
+        public ITrigger MonthlyTrigger(string triggerName, DateTimeOffset startAt, int ordinalDay, int dayOfWeek, int interval)
         {
             // Day of week
             string DayOfWeek = "";
@@ -521,7 +521,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger YearlyTrigger(string triggerName, DateTime startAt)
+        public ITrigger YearlyTrigger(string triggerName, DateTimeOffset startAt)
         {
             if (this.YearlyTypeId == 1) {
                 return this.YearlyTrigger(triggerName, startAt,
@@ -534,7 +534,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger YearlyTrigger(string triggerName, DateTime startAt, int dateValue, int monthValue)
+        public ITrigger YearlyTrigger(string triggerName, DateTimeOffset startAt, int dateValue, int monthValue)
         {
             string CronExpressionString =
                 String.Format("{0} {1} {2} {3} {4} ? *",
@@ -549,7 +549,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger YearlyTrigger(string triggerName, DateTime startAt, int dayOfWeek, int ordinalWeek, int month)
+        public ITrigger YearlyTrigger(string triggerName, DateTimeOffset startAt, int dayOfWeek, int ordinalWeek, int month)
         {
             // FIXME: fix this copy/paste code (see MonthlyTrigger above)
             // TODO:  consider the Calendar scheduler too, instead of turning everything over to cron
@@ -592,7 +592,7 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ITrigger CronTrigger(string triggerName, DateTime startAt, string cronTabExpression, string debugTriggerType)
+        public ITrigger CronTrigger(string triggerName, DateTimeOffset startAt, string cronTabExpression, string debugTriggerType)
         {
             ITrigger CronTrigger;
             string Debug;

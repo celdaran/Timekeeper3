@@ -19,6 +19,9 @@ CREATE TABLE Notebook
 
     EntryTime           DATETIME    NOT NULL,
     Memo                TEXT        NOT NULL,
+
+    ProjectId           INTEGER         NULL,
+    ActivityId          INTEGER         NULL,
     LocationId          INTEGER         NULL,
     CategoryId          INTEGER         NULL,
 

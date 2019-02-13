@@ -21,8 +21,7 @@ CREATE TABLE Activity
     Description         TEXT            NULL,
 
     ParentId            INTEGER         NULL,
-    SortOrderNo         INTEGER         NULL,
-    LastProjectId       INTEGER         NULL,
+    SortOrderNo         INTEGER     NOT NULL,
     IsFolder            BOOLEAN     NOT NULL,
     IsFolderOpened      BOOLEAN     NOT NULL,
     IsHidden            BOOLEAN     NOT NULL,
@@ -31,7 +30,6 @@ CREATE TABLE Activity
     DeletedTime         DATETIME        NULL,
 
     FOREIGN KEY(ParentId)           REFERENCES Activity(ActivityId)
-    FOREIGN KEY(LastProjectId)      REFERENCES Project(ProjectId)
 );
 
 CREATE UNIQUE INDEX idx_Activity_ActivityId ON Activity(ActivityId);

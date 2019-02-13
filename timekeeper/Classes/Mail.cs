@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using System.Net.Mail;
+
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -40,15 +41,17 @@ namespace Timekeeper.Classes
                 MailAddress ToAddress = new MailAddress(toAddress, toAddress);
                 MailMessage Message = new System.Net.Mail.MailMessage(FromAddress, ToAddress);
 
-                Message.Subject = "Timekeeper Reminder";
+                Message.Subject = Options.Mail_Subject;
                 Message.SubjectEncoding = System.Text.Encoding.UTF8;
 
                 // set body-message and encoding
                 Message.Body = messageBody;
+                /*
                 Message.Body += String.Format("\n\nThis message connected to {0} and sent from {1} to {2}",
                     Client.Host + ":" + Client.Port.ToString(),
                     FromAddress.DisplayName + " <" + FromAddress.Address + ">",
                     ToAddress.DisplayName + " <" + ToAddress.Address + ">");
+                */
                 Message.BodyEncoding = System.Text.Encoding.UTF8;
                 Message.IsBodyHtml = false;
 
@@ -58,7 +61,7 @@ namespace Timekeeper.Classes
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
-                Technitivity.Toolbox.Common.Warn("Error sending email\n\n" + x.ToString());
+                Common.Warn("Error sending email or text. Check log file for more information.");
                 return false;
             }
         }

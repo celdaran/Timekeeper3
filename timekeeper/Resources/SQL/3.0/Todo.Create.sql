@@ -14,12 +14,9 @@ CREATE TABLE Todo
     CreateTime              DATETIME    NOT NULL,
     ModifyTime              DATETIME    NOT NULL,
 
-    ProjectId               INTEGER     NOT NULL,
-
+    Memo                    TEXT        NOT NULL,
+    ProjectId               INTEGER     NOT NULL UNIQUE,
     RefTodoStatusId         INTEGER     NOT NULL,
-    StartTime               DATETIME        NULL,
-    DueTime                 DATETIME        NULL,
-    Memo                    TEXT            NULL,
 
     IsHidden                BOOLEAN     NOT NULL,
     IsDeleted               BOOLEAN     NOT NULL,

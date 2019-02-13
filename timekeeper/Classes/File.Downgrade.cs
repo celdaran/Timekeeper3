@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper
 {
@@ -22,6 +22,35 @@ namespace Timekeeper
         // Downgrading Functions
         //---------------------------------------------------------------------
 
+        public void SaveAs30(File newFile)
+        {
+            //--------------------------------------------------------
+            // Define database
+            //--------------------------------------------------------
+
+            // For performance
+            newFile.Database.BeginWork();
+
+            // Create the new database
+            Version Version = new System.Version(SCHEMA_VERSION);
+            newFile.Create(Version, false);
+
+            // Drop and recreate Meta table
+            newFile.Database.Exec("drop table meta");
+            newFile.CreateTable("Meta", Version, true);
+
+            // FIXME: 3.1 issue, when downgrading to a schema version
+            // that actually supports Auditing is introduced.
+            this.Audit.DatabaseDowngraded(
+                new System.Version(SCHEMA_VERSION), 
+                new System.Version("3.0.something"));
+
+            // For performance
+            newFile.Database.EndWork();
+        }
+
+        //---------------------------------------------------------------------
+
         public void SaveAs23(File newFile)
         {
             // TK2.3's schema was identical to TK2.2
@@ -32,7 +61,6 @@ namespace Timekeeper
 
         public void SaveAs22(File newFile)
         {
-
             //--------------------------------------------------------
             // Define database
             //--------------------------------------------------------
@@ -307,6 +335,92 @@ namespace Timekeeper
                 };
 
                 newFile.Database.Insert("grid_views", NewRow);
+
+                ProcessEvents();
+            }
+
+            // For performance
+            newFile.Database.EndWork();
+        }
+
+        //---------------------------------------------------------------------
+
+        public void SaveAs20(File newFile)
+        {
+            // For performance
+            newFile.Database.BeginWork();
+
+            //--------------------------------------------------------
+            // Define database
+            //--------------------------------------------------------
+
+            // Create the new database
+            Version Version = new System.Version(2, 0, 0, 0);
+            newFile.Create(Version, false);
+
+            // Drop and recreate Meta table
+            newFile.Database.Exec("drop table meta");
+            newFile.CreateTable("Meta", Version, true);
+
+            //--------------------------------------------------------
+            // Data copy
+            //--------------------------------------------------------
+
+            // Activity table
+            Table Activity = this.Database.Select("select * from Activity");
+            foreach (Row Row in Activity) {
+
+                Row NewRow = new Row() {
+                    {"id", Row["ActivityId"]},
+                    {"name", Row["Name"]},
+                    {"descr", Row["Description"]},
+                    {"parent_id", Row["ParentId"]},
+                    {"is_folder", Row["IsFolder"] ? 1 : 0},
+                    {"is_deleted", Row["IsDeleted"] ? 1 : 0},
+                    {"timestamp_c", Row["CreateTime"].ToString(DOWNGRADE_DATETIME_FORMAT)}
+                };
+
+                newFile.Database.Insert("tasks", NewRow);
+
+                ProcessEvents();
+            }
+
+            // Project table
+            Table Project = this.Database.Select("select * from Project");
+            foreach (Row Row in Project) {
+
+                Row NewRow = new Row() {
+                    {"id", Row["ProjectId"]},
+                    {"name", Row["Name"]},
+                    {"descr", Row["Description"]},
+                    {"parent_id", Row["ParentId"]},
+                    {"is_folder", Row["IsFolder"] ? 1 : 0},
+                    {"is_deleted", Row["IsDeleted"] ? 1 : 0},
+                    {"timestamp_c", Row["CreateTime"].ToString(DOWNGRADE_DATETIME_FORMAT)}
+                };
+
+                newFile.Database.Insert("projects", NewRow);
+
+                ProcessEvents();
+            }
+
+            // Journal table
+            Table Journal = this.Database.Select("select * from Journal");
+            foreach (Row Row in Journal) {
+
+                Row NewRow = new Row() {
+                    {"id", Row["JournalId"]},
+                    {"task_id", Row["ActivityId"]},
+                    {"project_id", Row["ProjectId"]},
+                    {"timestamp_s", Row["StartTime"].ToString(DOWNGRADE_DATETIME_FORMAT)},
+                    {"timestamp_e", Row["StopTime"].ToString(DOWNGRADE_DATETIME_FORMAT)},
+                    {"seconds", Row["Seconds"]},
+                    {"pre_log", ""},
+                    {"post_log", Row["Memo"]},
+                    {"is_locked", Row["IsLocked"] ? 1 : 0},
+                };
+
+                newFile.Database.Insert("timekeeper", NewRow);
 
                 ProcessEvents();
             }

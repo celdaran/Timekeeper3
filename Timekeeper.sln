@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "timekeeper", "timekeeper\timekeeper.csproj", "{C55F6F8B-81BF-44A9-AA0A-859C0A66116E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timekeeper3", "timekeeper\Timekeeper3.csproj", "{C55F6F8B-81BF-44A9-AA0A-859C0A66116E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

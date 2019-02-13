@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 using Microsoft.VisualBasic.FileIO;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -18,6 +18,7 @@ namespace Timekeeper.Classes
         //----------------------------------------------------------------------
 
         private DBI Database;
+        private Classes.Audit Audit;
         private string ImportFileName;
 
         private Dictionary<long, long> FoundProjects = new Dictionary<long,long>();
@@ -29,19 +30,36 @@ namespace Timekeeper.Classes
         public ProgressBar ImportProgress { get; set; }
 
         //----------------------------------------------------------------------
+        // Constructor
+        //----------------------------------------------------------------------
 
         public Import(string importFieleName)
         {
             this.Database = Timekeeper.Database;
+            this.Audit = new Classes.Audit();
             this.ImportFileName = importFieleName;
         }
 
         //----------------------------------------------------------------------
+        // TK1 Importer
+        //----------------------------------------------------------------------
 
         public bool Timekeeper1x(bool importProjects, bool importEntries)
         {
+            long RowCount = 0;
+
             try {
+
+                // Since Timekeeper 1x files use multiple file types,
+                // strip the extension from the ImportFileName.
+                ImportFileName =
+                    Path.GetDirectoryName(ImportFileName) +
+                    Path.DirectorySeparatorChar +
+                    Path.GetFileNameWithoutExtension(ImportFileName);
+
                 FileStream ADLfile = new FileStream(ImportFileName + ".adl", FileMode.Open);
+
+                Database.BeginWork();
 
                 if (importProjects) {
                     while (ADLfile.Position < ADLfile.Length) {
@@ -62,10 +80,12 @@ namespace Timekeeper.Classes
                         // date that reflects the time this project
                         // was actually created.
                         Row Row = new Row();
-                        Row["CreateTime"] = Task.CreateTime.ToString(Common.UTC_DATETIME_FORMAT);
+                        Row["CreateTime"] = Timekeeper.DateForDatabase(Task.CreateTime);
                         Database.Update("Project", Row, "ProjectId", ProjectId);
                     }
                 }
+
+                ADLfile.Close();
 
                 FileStream ADTFile = new FileStream(ImportFileName + ".adt", FileMode.Open);
 
@@ -75,6 +95,8 @@ namespace Timekeeper.Classes
                         Bucket.TaskDate.ToString(), Bucket.TaskId.ToString(), Bucket.TotalTime.ToString());
                     //Common.Info(Message);
                 }
+
+                ADTFile.Close();
 
                 if (importEntries) {
                     String ADBFileName = ImportFileName + ".adb";
@@ -96,44 +118,60 @@ namespace Timekeeper.Classes
 
                         Timekeeper1Entry Entry = ReadEntry(Line);
                         if (Entry.Succeeded) {
-                            Console.AppendText(Entry.StartTime + "\t'" + Entry.TaskName + "'\t" + Entry.Memo + "\n");
+                            if (Entry.IsComment) {
+                                Console.AppendText("Found comment on line " + LineNo.ToString() + "\n");
+                            } else {
+                                string ConsoleMessage = String.Format("{0}\t{1}\t{2}\t{3}\n",
+                                    LineNo, Timekeeper.DateForDisplay(Entry.StartTime), 
+                                    Entry.TaskName, Common.Abbreviate(Entry.Memo, 40));
+                                Console.AppendText(ConsoleMessage);
 
-                            // A couple data conversions
-                            TimeSpan ts = Entry.EndTime.Subtract(Entry.StartTime);
-                            Classes.Project Project = new Classes.Project(Entry.TaskName);
+                                // A couple data conversions
+                                TimeSpan ts = Entry.EndTime.Subtract(Entry.StartTime);
+                                Classes.Project Project = new Classes.Project(Entry.TaskName);
 
-                            // Keep track of this value for reindexing purposes.
-                            // We'll only want to reindex from the earliest imported
-                            // entry forward, and not the entire file
-                            if (Entry.StartTime.CompareTo(EarliestImportedEntryDate) < 0) {
-                                EarliestImportedEntryDate = Entry.StartTime;
-                            }
+                                // Bail if we couldn't match a project
+                                if (Project.ItemId == 0) {
+                                    Console.AppendText("Unknown project found: " + Entry.TaskName + "\n");
+                                    // Hack...
+                                    LineNo++;
+                                    continue;
+                                }
 
-                            // Now create the Journal Entry
-                            Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
-                            JournalEntry.StartTime = Entry.StartTime;
-                            JournalEntry.StopTime = Entry.EndTime;
-                            JournalEntry.Seconds = (long)ts.TotalSeconds;
-                            JournalEntry.Memo = Entry.Memo;
-                            JournalEntry.ProjectId = Project.ItemId;
-                            JournalEntry.ActivityId = 1; // Default Activity
-                            // TODO: prompt for an Activity, Location, and/or Category to
-                            // assign the new journal entry to.
-                            JournalEntry.LocationId = 1; // Default Location
-                            JournalEntry.CategoryId = 1; // Default Category
-                            JournalEntry.IsLocked = false;
-                            if (!JournalEntry.Create()) {
-                                throw new Exception("There was an error creating the journal entry.");
+                                // Keep track of this value for reindexing purposes.
+                                // We'll only want to reindex from the earliest imported
+                                // entry forward, and not the entire file
+                                if (Entry.StartTime.CompareTo(EarliestImportedEntryDate) < 0) {
+                                    EarliestImportedEntryDate = Entry.StartTime;
+                                }
+
+                                // Now create the Journal Entry
+                                Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
+                                JournalEntry.StartTime = Entry.StartTime;
+                                JournalEntry.StopTime = Entry.EndTime;
+                                JournalEntry.Seconds = (long)ts.TotalSeconds;
+                                JournalEntry.Memo = Entry.Memo;
+                                JournalEntry.ProjectId = Project.ItemId;
+                                JournalEntry.ActivityId = 1; // Default Activity
+                                // TODO: prompt for an Activity, Location, and/or Category to
+                                // assign the new journal entry to.
+                                JournalEntry.LocationId = 1; // Default Location
+                                JournalEntry.CategoryId = 1; // Default Category
+                                JournalEntry.IsLocked = false;
+                                if (!JournalEntry.Create()) {
+                                    Console.AppendText("Could not create journal entry.\n");
+                                    //throw new Exception("There was an error creating the journal entry.");
+                                }
                             }
                         } else {
                             Console.AppendText("Could not parse line " + LineNo.ToString() + "\n");
                         }
                         LineNo++;
+                        RowCount++;
                     }
 
-                    // Now reindex the Journal table
-                    Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
-                    Entries.Reindex(EarliestImportedEntryDate);
+                    ADBFile.Close();
+
                 }
             }
             catch (Exception x)
@@ -141,10 +179,17 @@ namespace Timekeeper.Classes
                 Timekeeper.Exception(x);
                 return false;
             }
+            finally {
+                Database.EndWork();
+            }
+
+            this.Audit.FileImported("Timekeeper 1.x", this.ImportFileName, RowCount);
 
             return true;
         }
 
+        //----------------------------------------------------------------------
+        // CSV Importer
         //----------------------------------------------------------------------
 
         public bool CommaSeparatedValues()
@@ -182,7 +227,7 @@ namespace Timekeeper.Classes
                 var TotalLines = System.IO.File.ReadLines(this.ImportFileName).Count();
                 ImportProgress.Maximum = TotalLines;
 
-                Message = String.Format("Import started at {0}.\n\n", Common.Now());
+                Message = String.Format("Import started at {0}.\n\n", Timekeeper.DateForDisplay());
                 Console.AppendText(Message);
 
                 using (TextFieldParser parser = new TextFieldParser(this.ImportFileName)) {
@@ -240,7 +285,7 @@ namespace Timekeeper.Classes
                             Classes.JournalEntry JournalEntry = new Classes.JournalEntry();
 
                             // StartTime is our key
-                            DateTimeOffset StartTime = DateTimeOffset.Parse(Fields[StartTimePos]);
+                            DateTimeOffset StartTime = Timekeeper.StringToDate(Fields[StartTimePos]);
 
                             if (CsvRowExists(StartTime)) {
                                 Message = String.Format("Row {0}. Journal entry already exists: {1}\n",
@@ -251,7 +296,7 @@ namespace Timekeeper.Classes
                             else {
                                 // If StartTime is okay, continue
 
-                                DateTimeOffset StopTime = DateTimeOffset.Parse(Fields[StopTimePos]);
+                                DateTimeOffset StopTime = Timekeeper.StringToDate(Fields[StopTimePos]);
                                 TimeSpan ts = StopTime.Subtract(StartTime);
 
                                 // Keep track of this value for reindexing purposes.
@@ -305,10 +350,6 @@ namespace Timekeeper.Classes
                 // Correct row number
                 RowNo--;
 
-                // Now reindex the Journal table
-                Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
-                Entries.Reindex(EarliestImportedEntryDate);
-
                 // If we made it this far, we're good.
                 Imported = true;
             }
@@ -339,8 +380,10 @@ namespace Timekeeper.Classes
             Console.AppendText("Categories created..: " + CategoriesCreated.ToString() + "\n\n");
             Console.AppendText("Rows imported.......: " + ImportedRows.ToString() + "\n");
 
-            Message = String.Format("\nImport completed at {0}.\n", Common.Now());
+            Message = String.Format("\nImport completed at {0}.\n", Timekeeper.DateForDisplay());
             Console.AppendText(Message);
+
+            this.Audit.FileImported("CSV", this.ImportFileName, ImportedRows);
 
             return Imported;
         }
@@ -519,6 +562,124 @@ namespace Timekeeper.Classes
         //----------------------------------------------------------------------
 
         //----------------------------------------------------------------------
+
+        private bool CsvRowExists(DateTimeOffset StartTime)
+        {
+            Classes.JournalEntryCollection JournalEntryCollection = new Classes.JournalEntryCollection();
+            if (JournalEntryCollection.Exists(StartTime)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private string CsvRowIsValid(Classes.JournalEntry JournalEntry)
+        {
+            string Message = "";
+
+            if (JournalEntry.Seconds < 0) {
+                Message += "Stop time cannot be before start time. ";
+            }
+
+            if (FoundProjects.ContainsKey(JournalEntry.ProjectId)) {
+                FoundProjects[JournalEntry.ProjectId]++;
+            } else {
+                FoundProjects.Add(JournalEntry.ProjectId, 1);
+                Classes.Project Project = new Classes.Project(JournalEntry.ProjectId);
+                if (!Project.Exists()) {
+                    Message += "ProjectId " + JournalEntry.ProjectId.ToString() + " could not be found. ";
+                }
+            }
+
+            if (FoundActivities.ContainsKey(JournalEntry.ActivityId)) {
+                FoundActivities[JournalEntry.ActivityId]++;
+            } else {
+                FoundActivities.Add(JournalEntry.ActivityId, 1);
+                Classes.Activity Activity = new Classes.Activity(JournalEntry.ActivityId);
+                if (!Activity.Exists()) {
+                    Message += "ActivityId " + JournalEntry.ActivityId.ToString() + " could not be found. ";
+                }
+            }
+
+            if (FoundLocations.ContainsKey(JournalEntry.LocationId)) {
+                FoundLocations[JournalEntry.LocationId]++;
+            } else {
+                FoundLocations.Add(JournalEntry.LocationId, 1);
+                Classes.Location Location = new Classes.Location(JournalEntry.LocationId);
+                if (!Location.Exists(Location.Name)) {
+                    Message += "LocationId " + JournalEntry.LocationId.ToString() + " could not be found. ";
+                }
+            }
+
+            if (FoundCategories.ContainsKey(JournalEntry.CategoryId)) {
+                FoundCategories[JournalEntry.CategoryId]++;
+            } else {
+                FoundCategories.Add(JournalEntry.CategoryId, 1);
+                Classes.Category Category = new Classes.Category(JournalEntry.CategoryId);
+                if (!Category.Exists(Category.Name)) {
+                    Message += "CategoryId " + JournalEntry.CategoryId.ToString() + " could not be found. ";
+                }
+            }
+
+            return Message;
+        }
+
+        //----------------------------------------------------------------------
+
+        private long DetermineDimension(Timekeeper.Dimension dimension, int idPos, int namePos, string[] fields, ref int createdCount)
+        {
+            long returnId = -1;
+
+            try {
+                if (idPos == -1)
+                    if (namePos == -1)
+                        returnId = 1;
+                    else
+                        returnId = CheckItemName(dimension, namePos, fields, ref createdCount);
+                else
+                    returnId = Convert.ToInt32(fields[idPos]);
+            }
+            catch (Exception x) {
+                throw new Exception("Could not read " + dimension.ToString() + ". " + x.Message);
+            }
+
+            return returnId;
+        }
+
+        //----------------------------------------------------------------------
+
+        private long CheckItemName(Timekeeper.Dimension dimension, int namePos, string[] fields, ref int createdCount)
+        {
+            long returnId = 0;
+
+            Classes.TreeAttribute Item = new Classes.TreeAttribute(fields[namePos], dimension.ToString(), dimension.ToString() + "Id");
+            if (Item.ItemId == 0) {
+                Item.Name = fields[namePos];
+                Item.Description = "Item created automatically during Import process.";
+                Item.Dimension = dimension;
+                Item.IsFolder = false;
+                Item.ParentId = null;
+                if (dimension == Timekeeper.Dimension.Location)
+                    Item.RefTimeZoneId = 35; // UTC
+                Item.Create();
+                if (Item.ItemId > 0) {
+                    string Message = String.Format("  Created {0} \"{1}\"\n", dimension, Item.Name);
+                    Console.AppendText(Message);
+                    createdCount++;
+                }
+            }
+            if (Item.ItemId == 0) {
+                throw new Exception("The non-existent " + dimension.ToString() + " \"" + Item.Name + "\" could not be created.");
+            } else {
+                returnId = Item.ItemId;
+            }
+
+            return returnId;
+        }
+
+        //----------------------------------------------------------------------
         // File Readers
         //----------------------------------------------------------------------
 
@@ -580,8 +741,8 @@ namespace Timekeeper.Classes
             Line.TaskId = BitConverter.ToInt64(TaskId, 0);
 
             double RawTotalTime = BitConverter.ToDouble(TotalTime, 0);
-            DateTime ConvertedTotalTime = DateTime.FromOADate(RawTotalTime);
-            DateTime ZeroDate = DateTime.Parse("1899-12-30 00:00:00");
+            DateTimeOffset ConvertedTotalTime = DateTime.FromOADate(RawTotalTime);
+            DateTimeOffset ZeroDate = Timekeeper.StringToDate("1899-12-30 00:00:00");
             Line.TotalTime = ConvertedTotalTime.Subtract(ZeroDate);
 
             return Line;
@@ -597,7 +758,26 @@ namespace Timekeeper.Classes
 
             try {
                 //------------------------------------------
-                // First, read in the raw text
+                // First, has this line been commented out?
+                //------------------------------------------
+
+                if (line.Length < 2) {
+                    // How should I handle "blank" rows?
+                    Entry.Succeeded = true;
+                    Entry.IsComment = true;
+                    return Entry;
+                } else {
+                    if (line.Substring(0, 2) == "--") {
+                        Entry.Succeeded = true;
+                        Entry.IsComment = true;
+                        return Entry;
+                    } else {
+                        Entry.IsComment = false;
+                    }
+                }
+
+                //------------------------------------------
+                // Next, read in the raw text
                 //------------------------------------------
 
                 // Guaranteed data
@@ -614,11 +794,20 @@ namespace Timekeeper.Classes
                 int ParenPosition = -1;
                 if (line.Length > 40) {
                     ParenPosition = line.IndexOf("(", 40);
-                    EntryTaskName = line.Substring(40, ParenPosition - 40 - 1);
+                    if (ParenPosition < 0) {
+                        // No parens, meaning the entire line is the task name
+                        EntryTaskName = line.Substring(40);
+                    } else {
+                        EntryTaskName = line.Substring(40, ParenPosition - 40 - 1);
+                    }
                 }
                 string EntryMemo = "";
                 if (line.Length > ParenPosition) {
-                    EntryMemo = line.Substring(ParenPosition + 1, line.Length - ParenPosition - 2);
+                    if (ParenPosition < 0) {
+                        EntryMemo = "";
+                    } else {
+                        EntryMemo = line.Substring(ParenPosition + 1, line.Length - ParenPosition - 2);
+                    }
                 }
 
                 //------------------------------------------
@@ -626,17 +815,17 @@ namespace Timekeeper.Classes
                 //------------------------------------------
 
                 //DateTime Entry
-                DateTime BaseDate = DateTime.Parse(EntryDate);
-                Entry.StartTime = DateTime.Parse(EntryDate + " " + EntryStartTime);
+                DateTimeOffset BaseDate = Timekeeper.StringToDate(EntryDate);
+                Entry.StartTime = Timekeeper.StringToDate(EntryDate + " " + EntryStartTime);
                 if (EntryEndTime != "") {
                     if (EntryEndTime.CompareTo(EntryStartTime) < 0) {
                         // Our end time went into the next day, 
                         // so bump the base date by one, then
                         // calculate end time from there...
                         BaseDate.AddDays(1);
-                        Entry.EndTime = DateTime.Parse(BaseDate.ToShortDateString() + " " + EntryEndTime);
+                        Entry.EndTime = Timekeeper.StringToDate(BaseDate.DateTime.ToShortDateString() + " " + EntryEndTime);
                     } else {
-                        Entry.EndTime = DateTime.Parse(EntryDate + " " + EntryEndTime);
+                        Entry.EndTime = Timekeeper.StringToDate(EntryDate + " " + EntryEndTime);
                     }
                 } else {
                     Entry.EndTime = Entry.StartTime;
@@ -689,14 +878,14 @@ namespace Timekeeper.Classes
         public string TaskName;
         public bool IsOfficial;
         public bool isActive;
-        public DateTime CreateTime;
+        public DateTimeOffset CreateTime;
     }
 
     //----------------------------------------------------------------------
 
     public struct Timekeeper1Bucket
     {
-        public DateTime TaskDate;
+        public DateTimeOffset TaskDate;
         public long TaskId;
         public TimeSpan TotalTime;
     }
@@ -705,11 +894,12 @@ namespace Timekeeper.Classes
 
     public struct Timekeeper1Entry
     {
-        public DateTime StartTime;
-        public DateTime EndTime;
+        public DateTimeOffset StartTime;
+        public DateTimeOffset EndTime;
         public string TaskName;
         public string Memo;
         public bool Succeeded;
+        public bool IsComment;
     }
 
     //----------------------------------------------------------------------

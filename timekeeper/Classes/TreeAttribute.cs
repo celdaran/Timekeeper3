@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -12,29 +12,36 @@ namespace Timekeeper.Classes
         // Public Properties
         //---------------------------------------------------------------------
 
+        // Common properties
         public long ItemId { get; set; }
         public DateTimeOffset CreateTime { get; set; }
         public DateTimeOffset ModifyTime { get; set; }
         public string ItemGuid { get; set; }
-
         public string Name { get; set; }
         public string Description { get; set; }
-        public long ParentId { get; set; }
+        public long? ParentId { get; set; }
         public long SortOrderNo { get; set; }
-        public long FollowedItemId { get; set; }
         public bool IsFolder { get; set; }
         public bool IsFolderOpened { get; set; }
         public bool IsHidden { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTimeOffset HiddenTime { get; set; }
-        public DateTimeOffset DeletedTime { get; set; }
+        public DateTimeOffset? HiddenTime { get; set; }
+        public DateTimeOffset? DeletedTime { get; set; }
 
-        public string ExternalProjectNo { get; set; }
+        // Table-specific properties
+        public long? LastActivityId { get; set; }        // used by Project
+        public long? LastLocationId { get; set; }        // used by Project
+        public long? LastCategoryId { get; set; }        // used by Project
+        public string ExternalProjectNo { get; set; }    // used by Project
+        public DateTimeOffset? StartTime { get; set; }   // used by Project
+        public DateTimeOffset? DueTime { get; set; }     // used by Project
+        public long? Estimate { get; set; }              // used by Project
+        public long? RefTimeZoneId { get; set; }         // used by Location
 
-        public Timekeeper.Dimension Type { get; set; }
+        public Timekeeper.Dimension Dimension { get; set; }
 
         // In-memory only
-        public DateTimeOffset StartTime;
+        public DateTimeOffset TimerStartedTime;
 
         //---------------------------------------------------------------------
         // Protected Properties
@@ -48,7 +55,6 @@ namespace Timekeeper.Classes
         // Private Properties
         //---------------------------------------------------------------------
 
-        private string OtherTableName;
         private long SecondsElapsedToday = 0;
 
         //---------------------------------------------------------------------
@@ -60,10 +66,9 @@ namespace Timekeeper.Classes
             this.Database = Timekeeper.Database;
             this.TableName = tableName;
             this.IdColumnName = idColumnName;
-            this.OtherTableName = this.TableName == "Project" ? "Activity" : "Project";
 
             // Convert the table name into the enumerated dimension
-            this.Type = (Timekeeper.Dimension)Enum.Parse(typeof(Timekeeper.Dimension), tableName);
+            this.Dimension = (Timekeeper.Dimension)Enum.Parse(typeof(Timekeeper.Dimension), tableName);
         }
 
         //---------------------------------------------------------------------
@@ -72,6 +77,16 @@ namespace Timekeeper.Classes
             : this(tableName, idColumnName)
         {
             Load(itemId);
+        }
+
+        //---------------------------------------------------------------------
+
+        public TreeAttribute(long? itemId, string tableName, string idColumnName)
+            : this(tableName, idColumnName)
+        {
+            // Convert nulls to 0.
+            long ItemId = itemId.HasValue ? itemId.Value : 0;
+            Load(ItemId);
         }
 
         //---------------------------------------------------------------------
@@ -117,7 +132,7 @@ namespace Timekeeper.Classes
         // Property-Like Methods
         //---------------------------------------------------------------------
 
-        public DateTime DateLastUsed()
+        public DateTimeOffset DateLastUsed()
         {
             string Query = String.Format(@"
                 select max(StopTime) as DateLastUsed
@@ -126,9 +141,9 @@ namespace Timekeeper.Classes
                 this.IdColumnName, this.ItemId);
             Row Row = Database.SelectRow(Query);
             if (Row["DateLastUsed"] != null) {
-                return DateTime.Parse(Row["DateLastUsed"]);
+                return Timekeeper.StringToDate(Row["DateLastUsed"]);
             } else {
-                return DateTime.Now;
+                return Timekeeper.LocalNow;
             }
         }
 
@@ -143,7 +158,7 @@ namespace Timekeeper.Classes
             // not sure how to get UI options at this layer of
             // the codebase.  :-/
 
-            if (this.TableName == "Project") {
+            if (this.Dimension == Timekeeper.Dimension.Project) {
                 if (1 == 1) { // Option check here
                     if (this.ExternalProjectNo != null) {
                         DisplayName = this.ExternalProjectNo + " - " + this.Name;
@@ -164,13 +179,13 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public List<DateTime> DaysUsed()
+        public List<DateTimeOffset> DaysUsed()
         {
             Table Rows = FetchDatesUsed();
 
-            List<DateTime> Days = new List<DateTime>();
+            List<DateTimeOffset> Days = new List<DateTimeOffset>();
             foreach (Row Row in Rows) {
-                Days.Add(DateTime.Parse(Row["StartDate"]));
+                Days.Add(DateTimeOffset.Parse(Row["StartDate"]));
             }
 
             return Days;
@@ -185,10 +200,10 @@ namespace Timekeeper.Classes
                 this.TableName, this.IdColumnName, itemId);
             Row row = Database.SelectRow(Query);
 
-            if (row["ParentId"] == 0) {
+            if (row["ParentId"] == null) {
                 return false;
             } else {
-                long ParentId = row["ParentId"];
+                long ParentId = row["ParentId"].Value;
                 if (this.ItemId == ParentId) {
                     return true;
                 } else {
@@ -205,10 +220,11 @@ namespace Timekeeper.Classes
             string Query = String.Format(@"
                 select sum(Seconds) as Seconds
                 from Journal
-                where StartTime >= '{0}'
-                  and StopTime < '{1}'
+                where StartTime >= datetime('{0}', '{4} hours')
+                  and StartTime < datetime('{1}', '{4} hours')
                   and {2} = {3}",
-                fromDate, toDate, this.IdColumnName, itemId);
+                fromDate, toDate, this.IdColumnName, itemId,
+                Timekeeper.Options.Advanced_Other_MidnightOffset);
             Row Row = this.Database.SelectRow(Query);
 
             long Seconds = Row["Seconds"] == null ? 0 : Row["Seconds"];
@@ -230,9 +246,11 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public Classes.TreeAttribute Parent()
+        public Classes.TreeAttribute Parent
         {
-            return new Classes.TreeAttribute(this.ParentId, this.TableName, this.IdColumnName);
+            get {
+                return new Classes.TreeAttribute(this.ParentId, this.TableName, this.IdColumnName);
+            }
         }
 
         //---------------------------------------------------------------------
@@ -253,17 +271,36 @@ namespace Timekeeper.Classes
             this.Description = source.Description;
             this.ParentId = source.ParentId;
             this.SortOrderNo = source.SortOrderNo;
-            this.FollowedItemId = source.FollowedItemId;
             this.IsFolder = source.IsFolder;
             this.IsFolderOpened = source.IsFolderOpened;
             this.IsHidden = source.IsHidden;
             this.HiddenTime = source.HiddenTime;
             this.IsDeleted = source.IsDeleted;
             this.DeletedTime = source.DeletedTime;
+
+            this.LastActivityId = source.LastActivityId;
+            this.LastLocationId = source.LastLocationId;
+            this.LastCategoryId = source.LastCategoryId;
             this.ExternalProjectNo = source.ExternalProjectNo;
+            this.StartTime = source.StartTime;
+            this.DueTime = source.DueTime;
+            this.Estimate = source.Estimate;
+            this.RefTimeZoneId = source.RefTimeZoneId;
         }
 
         //---------------------------------------------------------------------
+
+        // convert a null to 0 in a nullable value
+        private long? FixMe(long? value)
+        {
+            if (value.HasValue)
+                if (value.Value != 0)
+                    return value.Value;
+                else
+                    return null;
+            else
+                return null;
+        }
 
         public long Create()
         {
@@ -273,15 +310,14 @@ namespace Timekeeper.Classes
 
             Row Row = new Row();
 
-            Row["CreateTime"] = Common.Now();
-            Row["ModifyTime"] = Common.Now();
+            Row["CreateTime"] = Timekeeper.DateForDatabase();
+            Row["ModifyTime"] = Timekeeper.DateForDatabase();
             Row[this.TableName + "Guid"] = UUID.Get();
 
             Row["Name"] = this.Name;
             Row["Description"] = this.Description;
-            Row["ParentId"] = this.ParentId;
+            Row["ParentId"] = FixMe(this.ParentId);
             Row["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName, this.ParentId);
-            Row["Last" + OtherTableName + "Id"] = this.FollowedItemId;
             Row["IsFolder"] = this.IsFolder ? 1 : 0;
             Row["IsFolderOpened"] = this.IsFolder ? 1 : 0;
             Row["IsHidden"] = 0;
@@ -289,8 +325,22 @@ namespace Timekeeper.Classes
             Row["HiddenTime"] = null;
             Row["DeletedTime"] = null;
 
-            if (this.TableName == "Project") {
+            if (this.Dimension == Timekeeper.Dimension.Project) {
+                Row["LastActivityId"] = this.LastActivityId;
+                Row["LastLocationId"] = this.LastLocationId;
+                Row["LastCategoryId"] = this.LastCategoryId;
                 Row["ExternalProjectNo"] = this.ExternalProjectNo;
+                Row["StartTime"] = this.StartTime;
+                Row["DueTime"] = this.DueTime;
+                Row["Estimate"] = this.Estimate;
+            }
+
+            if (this.Dimension == Timekeeper.Dimension.Activity) {
+                // None at the moment
+            }
+
+            if (this.Dimension == Timekeeper.Dimension.Location) {
+                Row["RefTimeZoneId"] = this.RefTimeZoneId;
             }
 
             this.ItemId = this.Database.Insert(this.TableName, Row);
@@ -315,27 +365,37 @@ namespace Timekeeper.Classes
 
         public TimeSpan Elapsed()
         {
-            DateTime Now = DateTime.Now;
-            return new TimeSpan(Now.Ticks - StartTime.Ticks);
+            DateTimeOffset Now = Timekeeper.LocalNow;
+            TimeSpan ts = new TimeSpan(Now.Ticks - TimerStartedTime.Ticks);
+            if (ts.TotalSeconds > (60 * 60 * 24 * 7)) {
+                string Message = String.Format("Elapsed time is greater than a week. Something's not right. Now is {0}, TimerStartedTime is {1}.",
+                    Timekeeper.DateForDatabase(Now),
+                    Timekeeper.DateForDatabase(TimerStartedTime));
+                Timekeeper.Warn(Message);
+            }
+            return ts;
         }
 
         //---------------------------------------------------------------------
 
         public TimeSpan ElapsedToday()
         {
-            DateTime Now = DateTime.Now;
+            DateTimeOffset Now = Timekeeper.LocalNow;
             Now = Now.AddSeconds(this.SecondsElapsedToday);
-            return new TimeSpan(Now.Ticks - StartTime.Ticks);
+            return new TimeSpan(Now.Ticks - TimerStartedTime.Ticks);
         }
 
         //---------------------------------------------------------------------
 
         public string ElapsedTodayFormatted()
         {
-            DateTime midnight = DateTime.Parse("00:00:00");
+            /*
+            DateTimeOffset midnight = DateTimeOffset.Parse("00:00:00"); // FIXME: MIDNIGHT ISSUE AGAIN
             midnight = midnight.AddSeconds(this.SecondsElapsedToday);
             TimeSpan ts = new TimeSpan(midnight.Ticks - 0);
             return Timekeeper.FormatTimeSpan(ts);
+            */
+            return Timekeeper.FormatSeconds(this.SecondsElapsedToday);
         }
 
         //---------------------------------------------------------------------
@@ -411,19 +471,29 @@ namespace Timekeeper.Classes
             this.Description = row["Description"];
             this.ParentId = row["ParentId"];
             this.SortOrderNo = row["SortOrderNo"];
-            this.FollowedItemId = row["Last" + this.OtherTableName + "Id"];
             this.IsFolder = row["IsFolder"];
             this.IsFolderOpened = row["IsFolderOpened"];
             this.IsHidden = row["IsHidden"];
             this.IsDeleted = row["IsDeleted"];
+            this.HiddenTime = row["HiddenTime"];
+            this.DeletedTime = row["DeletedTime"];
 
-            if (row["HiddenTime"] != null)
-                this.HiddenTime = row["HiddenTime"];
-            if (row["DeletedTime"] != null)
-                this.DeletedTime = row["DeletedTime"];
-
-            if (this.TableName == "Project") {
+            if (this.Dimension == Timekeeper.Dimension.Project) {
+                this.LastActivityId = row["LastActivityId"];
+                this.LastLocationId = row["LastLocationId"];
+                this.LastCategoryId = row["LastCategoryId"];
                 this.ExternalProjectNo = row["ExternalProjectNo"];
+                this.StartTime = row["StartTime"];
+                this.DueTime = row["DueTime"];
+                this.Estimate = row["Estimate"];
+            }
+
+            if (this.Dimension == Timekeeper.Dimension.Activity) {
+                // None at the moment
+            }
+
+            if (this.Dimension == Timekeeper.Dimension.Location) {
+                this.RefTimeZoneId = row["RefTimeZoneId"];
             }
 
             // Initialize times
@@ -443,7 +513,7 @@ namespace Timekeeper.Classes
         {
             Row Row = new Row();
             Row["Description"] = newDescription;
-            Row["ModifyTime"] = Common.Now();
+            Row["ModifyTime"] = Timekeeper.DateForDatabase();
             long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
@@ -453,7 +523,7 @@ namespace Timekeeper.Classes
                 // more than bothering me. This is likely a Timekeeper 4.0
                 // type project, but I'd really like to figure out a better
                 // ORM for Timekeeper. This method is fraught with issues.
-                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 return Timekeeper.FAILURE;
@@ -487,12 +557,12 @@ namespace Timekeeper.Classes
 
             Row Row = new Row();
             Row["Name"] = newName;
-            Row["ModifyTime"] = Common.Now();
+            Row["ModifyTime"] = Timekeeper.DateForDatabase();
             long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 this.Name = newName;
-                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 return Timekeeper.FAILURE;
@@ -506,13 +576,13 @@ namespace Timekeeper.Classes
             // Update database
             Row Row = new Row();
             Row["SortOrderNo"] = sortOrderNo;
-            Row["ModifyTime"] = Common.Now();
+            Row["ModifyTime"] = Timekeeper.DateForDatabase();
             long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 // Update instance
                 this.SortOrderNo = sortOrderNo;
-                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                 return Timekeeper.SUCCESS;
             } else {
                 // Otherwise, failure
@@ -526,15 +596,18 @@ namespace Timekeeper.Classes
         {
             // Update database
             Row Row = new Row();
-            Row["ParentId"] = itemId;
-            Row["ModifyTime"] = Common.Now();
+            if (itemId == 0)
+                Row["ParentId"] = null;
+            else
+                Row["ParentId"] = itemId;
+            Row["ModifyTime"] = Timekeeper.DateForDatabase();
             Row["SortOrderNo"] = Timekeeper.GetNextSortOrderNo(this.TableName, itemId);
             long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
             if (Count == 1) {
                 // Update instance
                 this.ParentId = itemId;
-                this.ModifyTime = DateTimeOffset.Parse(Row["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                 this.SortOrderNo = Row["SortOrderNo"];
                 return Timekeeper.SUCCESS;
             } else {
@@ -555,7 +628,7 @@ namespace Timekeeper.Classes
         public void StartTiming(DateTimeOffset setStartTime)
         {
             // Simply record the time we start
-            this.StartTime = setStartTime;
+            this.TimerStartedTime = setStartTime;
 
             // Update (in memory) elapsed seconds for today
             this.SetSecondsElapsedToday();
@@ -573,7 +646,7 @@ namespace Timekeeper.Classes
             */
              
             // Calculate elapsed seconds
-            TimeSpan Delta = setStopTime.Subtract(this.StartTime);
+            TimeSpan Delta = setStopTime.Subtract(this.TimerStartedTime);
             int ElapsedSeconds = Convert.ToInt32(Delta.TotalSeconds);
 
             // Update (in memory) elapsed seconds for today
@@ -585,10 +658,28 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        public void ChangedTime()
+        {
+            this.SetSecondsElapsedToday();
+        }
+
+        //---------------------------------------------------------------------
+
         public long Unhide()
         {
             this.IsHidden = false;
             return SetStatus("Hidden", this.IsHidden);
+        }
+
+        //---------------------------------------------------------------------
+
+        public int SaveTask()
+        {
+            Row Project = new Row();
+            Project["StartTime"] = Timekeeper.NullableDateForDatabase(this.StartTime);
+            Project["DueTime"] = Timekeeper.NullableDateForDatabase(this.DueTime);
+            Project["Estimate"] = this.Estimate;
+            return (int)this.Database.Update("Project", Project, "ProjectId", this.ItemId);
         }
 
         //---------------------------------------------------------------------
@@ -616,15 +707,18 @@ namespace Timekeeper.Classes
                 }
 
                 // fetch seconds from the db for this node
-                string today = DateTime.Today.ToString(Common.DATE_FORMAT);
-                string midnight = "00:00:00";
+                DateTime Today = Timekeeper.AdjustedToday;
 
                 string query = String.Format(@"
                     select sum(Seconds) as Seconds
                     from Journal
-                    where StartTime > '{0} {1}'
-                      and {2} = {3}",
-                    today, midnight, this.IdColumnName, this.ItemId);
+                    where StartTime >= datetime('{0}', '{3} hours')
+                      and StartTime < datetime('{0}', '{4} hours')
+                      and {1} = {2}",
+                    Today.ToString(Timekeeper.LOCAL_DATETIME_FORMAT), 
+                    this.IdColumnName, this.ItemId,
+                    Timekeeper.Options.Advanced_Other_MidnightOffset,
+                    (24 - Timekeeper.Options.Advanced_Other_MidnightOffset));
                 Row row = this.Database.SelectRow(query);
 
                 if (row["Seconds"] > 0) {
@@ -651,11 +745,12 @@ namespace Timekeeper.Classes
             if (this.IsFolder) {
                 Row Row = new Row();
                 Row["IsFolderOpened"] = opened ? 1 : 0;
-                Row["ModifyTime"] = Common.Now();
+                Row["ModifyTime"] = Timekeeper.DateForDatabase();
                 long Count = Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
 
                 if (Count == 1) {
                     this.IsFolderOpened = opened;
+                     this.ModifyTime = Timekeeper.StringToDate(Row["ModifyTime"]);
                 }
             }
         }
@@ -705,7 +800,7 @@ namespace Timekeeper.Classes
             Row Row = new Row();
             Row[BooleanColumnName] = isSet ? 1 : 0;
             if (isSet) {
-                Row[TimeColumnName] = Common.Now();
+                Row[TimeColumnName] = Timekeeper.DateForDatabase();
             } else {
                 Row[TimeColumnName] = null;
             }

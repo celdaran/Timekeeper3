@@ -9,8 +9,8 @@ using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Diagnostics;
-
-using Technitivity.Toolbox;
+using System.Net;
+using System.Threading;
 
 //FIXME: wrong place for this
 using Quartz;
@@ -18,144 +18,162 @@ using Quartz.Impl;
 using Quartz.Simpl;
 //Move(d) to Classes.Schedule (?)
 
+using Timekeeper.Classes.Toolbox;
+
 namespace Timekeeper.Forms
 {
     partial class Main
     {
-        // These prevent potentially infinite following
-        private bool DontChangeProject = false;
-        private bool DontChangeActivity = false;
-
         // Deferred keyboard shortcut setting
         private bool DeferShortcutAssignment = false;
+        private bool IgnoreDimensionChanges = false;
 
         //---------------------------------------------------------------------
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
 
-        private void Action_ChangedProject()
+        private void AutoFollow(long? lastId, ComboTreeBox dropdown, bool allowed)
         {
-            // Get current project
-            Classes.Project Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-            Options.State_LastProjectId = Project.ItemId;
-
-            // Update status bar
-            if (timerRunning == false) {
-                Classes.Activity Activity;
-                if (ActivityTree.SelectedNode != null) {
-                    Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
-                } else {
-                    Activity = new Classes.Activity();
-                }
-                StatusBar_Update(Project, Activity);
-            }
-
-            // Auto-follow
-            if (!isBrowsing) {
-                if (Options.Behavior_Annoy_ActivityFollowsProject) {
-                    if (Project.FollowedItemId > 0) {
-                        TreeNode node = Widgets.FindTreeNode(ActivityTree.Nodes, Project.FollowedItemId);
-                        if ((node != null) && (!DontChangeProject)) {
-                            DontChangeActivity = true;
-                            ActivityTree.SelectedNode = node;
-                            DontChangeActivity = false;
+            if (allowed) {
+                if (!isBrowsing) {
+                    if ((lastId != null) && (lastId.Value > 0)) {
+                        ComboTreeNode Node = Widgets.FindTreeNode(dropdown.Nodes, lastId.Value);
+                        if (Node != null) {
+                            dropdown.SelectedNode = Node;
                         }
                     }
                 }
             }
+        }
 
-            // TODO: Implement auto-follow the other direction
+        private void EnsureSelections()
+        {
+            this.Widgets.SetDefaultNode(ProjectTreeDropdown);
+            this.Widgets.SetDefaultNode(ActivityTreeDropdown);
+            this.Widgets.SetDefaultNode(LocationTreeDropdown);
+            this.Widgets.SetDefaultNode(CategoryTreeDropdown);
+        }
 
-            // Set hide mode based on projects's IsHidden property
-            MenuBar_ShowHideProject(!Project.IsHidden);
-            MenuBar_ShowMergeProject(Project.IsFolder);
-            MenuBar_ShowDeleteProject(Project.IsDeleted);
-
-            // Update calendar to reflect change
-            Action_UpdateCalendar(ProjectTree);
-
-            // Set our dirty bit
-            if ((isBrowsing) && (Project.ItemId != browserEntry.ProjectId)) {
-                toolControlRevert.Enabled = true;
+        private void UpdateStatusBar()
+        {
+            if (timerRunning == false) {
+                if (ProjectTreeDropdown.SelectedNode != null ) {
+                    Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+                    Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
+                    Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+                    Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
+                    StatusBar_Update(Project, Activity, Location, Category);
+                }
             }
+        }
+
+        private void SetDirtyBit(Classes.TreeAttribute item, long browserItemId)
+        {
+            if ((isBrowsing) && (item.ItemId != browserItemId)) {
+                Browser_EnableRevert(true);
+            }
+        }
+
+        private void Action_ChangedProject()
+        {
+            if (IgnoreDimensionChanges)
+                return;
+
+            EnsureSelections();
+
+            try {
+                if (ProjectTreeDropdown.SelectedNode != null) {
+                    // Note, the SelectedNode might still be null after EnsureSelections, if
+                    // the list is completely empty and there are no nodes to select.
+
+                    Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+                    Project = new Classes.TreeAttribute(Project.ItemId, "Project", "ProjectId"); // Note: Must reinstantiate to pick up attribute changes
+                    AutoFollow(Project.LastActivityId, ActivityTreeDropdown, Options.Behavior_Annoy_ActivityFollowsProject);
+
+                    Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
+                    AutoFollow(Project.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
+
+                    Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+                    AutoFollow(Project.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
+
+                    UpdateStatusBar();
+
+                    MenuBar_ShowHideProject(!Project.IsHidden);
+                    MenuBar_ShowMergeProject(Project.IsFolder);
+                    MenuBar_ShowDeleteProject(Project.IsDeleted);
+
+                    SetDirtyBit(Project, browserEntry.ProjectId);
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+
         }
 
         //---------------------------------------------------------------------
 
         private void Action_ChangedActivity()
         {
-            // Get current items
-            Classes.Activity Activity = (Classes.Activity)ActivityTree.SelectedNode.Tag;
-            Options.State_LastActivityId = Activity.ItemId;
+            if (IgnoreDimensionChanges)
+                return;
 
-            // Update status bar
-            if (timerRunning == false) {
-                Classes.Project Project;
-                if (ProjectTree.SelectedNode != null) {
-                    Project = (Classes.Project)ProjectTree.SelectedNode.Tag;
-                } else {
-                    Project = new Classes.Project();
-                }
-                StatusBar_Update(Project, Activity);
-            }
+            EnsureSelections();
 
-            if (!isBrowsing) {
-                if (Options.Behavior_Annoy_ProjectFollowsActivity) {
-                    if (Activity.FollowedItemId > 0) {
-                        TreeNode node = Widgets.FindTreeNode(ProjectTree.Nodes, Activity.FollowedItemId);
-                        if ((node != null) && (!DontChangeActivity)) {
-                            DontChangeProject = true;
-                            ProjectTree.SelectedNode = node;
-                            DontChangeProject = false;
-                        }
-                    }
-                }
-            }
+            Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
 
-            // Set hide mode based on Activity's IsHidden property
+            UpdateStatusBar();
+
             MenuBar_ShowHideActivity(!Activity.IsHidden);
+            // FIXME: Activity equiv? What about our other two dimensions?
+            // FIXME: Update 2014-07-23 something's definitely incomplete here...
+            // It appears (at first glance) that only Projects can be merged or deleted or something.
+            // Look into this.
+            /*
+            MenuBar_ShowMergeProject(Project.IsFolder);
+            MenuBar_ShowDeleteProject(Project.IsDeleted);
+            */
 
-            // Update calendar to reflect change
-            Action_UpdateCalendar(ActivityTree);
-
-            // Set our dirty bit
-            if ((isBrowsing) && (Activity.ItemId != browserEntry.ActivityId)) {
-                toolControlRevert.Enabled = true;
-            }
+            SetDirtyBit(Activity, browserEntry.ActivityId);
         }
 
         //---------------------------------------------------------------------
 
         private void Action_ChangedLocation()
         {
-            // First make sure an item has been selected
-            if (Action_ItemSelected(wLocation)) {
-                IdObjectPair CurrentItem = Dialog_LocationManager();
-                Action_SelectItem(wLocation, CurrentItem);
-            }
+            if (IgnoreDimensionChanges)
+                return;
+
+            EnsureSelections();
+
+            Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+
+            UpdateStatusBar();
+
+            SetDirtyBit(Location, browserEntry.LocationId);
         }
 
         //---------------------------------------------------------------------
 
         private void Action_ChangedCategory()
         {
-            // First make sure an item has been selected
-            if (Action_ItemSelected(wCategory)) {
+            if (IgnoreDimensionChanges)
+                return;
 
-                // Display the Category Manager dialog box
-                Forms.CategoryManager Dialog = new Forms.CategoryManager();
-                Dialog.ShowDialog(this);
+            EnsureSelections();
 
-                // Rebuild the list
-                wCategory.Items.Clear();
-                Widgets.PopulateCategoryComboBox(wCategory);
+            Classes.TreeAttribute Category = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
 
-                // Select whatever item was selected on the dialog box
-                Action_SelectItem(wCategory, Dialog.CurrentItem);
+            UpdateStatusBar();
 
-                // All done
-                Dialog.Dispose();
-            }
+            SetDirtyBit(Category, browserEntry.CategoryId);
+        }
+
+        public void Action_CheckForUpdates()
+        {
+            ThreadClass workerObject = new ThreadClass();
+            Thread workerThread = new Thread(workerObject.CheckForUpdate);
+            workerThread.Start();
         }
 
         //----------------------------------------------------------------------
@@ -231,6 +249,7 @@ namespace Timekeeper.Forms
 
                 Timekeeper.Info("Opening Database: " + DatabaseFileName);
                 Timekeeper.OpenDatabase(DatabaseFileName, LogLevel);
+                Timekeeper.Database.BeginWork();
 
                 if (!Timekeeper.Database.FileExists) {
                     Timekeeper.DoubleWarn("File " + DatabaseFileName + " not found");
@@ -238,52 +257,56 @@ namespace Timekeeper.Forms
                 }
 
                 File File = new File();
+                int FileCheckResult = File.Check();
+                bool FileUpgraded = false;
 
-                switch (File.Check()) {
+                switch (FileCheckResult) {
                     case File.ERROR_UNEXPECTED:
                         Timekeeper.DoubleWarn("An error occurred during the database check. Cannot open file.");
-                        return false;
+                        break;
 
                     case File.ERROR_NEWER_VERSION_DETECTED:
                         Timekeeper.DoubleWarn("This database is from a newer version of Timekeeper. Cannot open file.");
-                        return false;
+                        break;
 
                     case File.ERROR_NOT_TKDB:
                         Timekeeper.DoubleWarn("This is not a Timekeeper database. File not opened.");
-                        return false;
+                        break;
 
                     case File.ERROR_EMPTY_DB:
                         Timekeeper.DoubleWarn("This is not a Timekeeper database. File not opened.");
-                        return false;
+                        break;
 
                     case File.ERROR_REQUIRES_UPGRADE:
-                        if (Action_ConvertPriorVersion()) {
-                            return true;
-                        } else {
-                            return false;
+                        if (Action_ConvertPriorVersion(File)) {
+                            FileUpgraded = true;
+                            Options.Layout_UseProjects = true;
+                            Options.Layout_UseActivities = true;
                         }
+                        break;
                 }
 
-                // Instantiate Meta class. This is used here
-                // and globally throughout the Main object realm.
-                Meta = new Classes.Meta();
+                // Instantiate Meta data, if we're reasonably sure the meta table exists
+                if ((FileCheckResult == 0) || ((FileCheckResult == File.ERROR_REQUIRES_UPGRADE) && FileUpgraded))
+                    Meta = new Classes.Meta();
 
-                if (Meta.ProcessId > 0) {
+                // And bail if anything went wrong.
+                if (FileCheckResult != 0) {
+                    if (FileUpgraded) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+
+                // Check for database already opened
+                if ((Meta.ProcessId > 0) && (Options.Advanced_Other_WarnOpeningLockedDatabase)) {
 
                     string Message;
-                    string ProcessName = "Unknown";
-
-                    try {
-                        Process OpenProcess = Process.GetProcessById(Meta.ProcessId);
-                        ProcessName = OpenProcess.ProcessName;
-                    }
-                    catch {
-                        // Safe to ignore
-                    }
 
                     Message = String.Format(
-                            "This database appears to be in use by another program (Name=\"{0}\", PID={1}). Continue opening?",
-                            ProcessName, Meta.ProcessId);
+                            "This database appears to be in use by another program (PID={0}). Continue opening?",
+                            Meta.ProcessId);
 
                     if (Common.WarnPrompt(Message) == DialogResult.Yes) {
                         Meta.MarkFree();
@@ -298,6 +321,23 @@ namespace Timekeeper.Forms
             }
 
             return true;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_CheckStartTime()
+        {
+            if (StartTimeSelector.Value != priorLoadedBrowserEntry.StartTime) {
+                // First, flag that we've manually set the time if we're leaving and the value has changed
+                StartTimeManuallySet = true;
+
+                // Next, flag a warning if this time already exists in the database
+                if (Entries.Exists(StartTimeSelector.Value)) {
+                    Common.Warn("This is a duplicate start time");
+                }
+            } else {
+                StartTimeManuallySet = false;
+            }
         }
 
         //---------------------------------------------------------------------
@@ -326,85 +366,98 @@ namespace Timekeeper.Forms
 
         private void Action_CloseFile()
         {
+            this.Browser_SaveRow();
+
+            this.MemoEditor.Text = "";
+            this.MemoEditor.Enabled = false;
+            this.PanelControls.Enabled = false;
+            this.BrowserToolbar.Enabled = false;
+
             if (Timekeeper.Database != null) {
 
-                ProjectTree.Nodes.Clear();
-                ActivityTree.Nodes.Clear();
+                this.IgnoreDimensionChanges = true;
 
+                Timekeeper.Database.BeginWork();
+
+                Stopwatch OverallTimer = new Stopwatch();
+                Timekeeper.Bench(OverallTimer);
+
+                Stopwatch StepTimer = new Stopwatch();
+
+                Timekeeper.Bench(StepTimer);
+                ProjectTreeDropdown.Nodes.Clear();
+                Timekeeper.Bench(StepTimer, "ProjectTreeDropdown.Nodes.Clear()");
+
+                Timekeeper.Bench(StepTimer);
+                ActivityTreeDropdown.Nodes.Clear();
+                Timekeeper.Bench(StepTimer, "ActivityTreeDropdown.Nodes.Clear()");
+
+                Timekeeper.Bench(StepTimer);
+                LocationTreeDropdown.Nodes.Clear();
+                Timekeeper.Bench(StepTimer, "LocationTreeDropdown.Nodes.Clear()");
+
+                Timekeeper.Bench(StepTimer);
+                CategoryTreeDropdown.Nodes.Clear();
+                Timekeeper.Bench(StepTimer, "CategoryTreeDropdown.Nodes.Clear()");
+
+
+                Timekeeper.Bench(StepTimer);
                 StatusBar_FileClosed();
-                MenuBar_FileClosed();
-                Browser_Disable();
+                Timekeeper.Bench(StepTimer, "StatusBar_FileClosed()");
 
+                Timekeeper.Bench(StepTimer);
+                MenuBar_FileClosed();
+                Timekeeper.Bench(StepTimer, "MenuBar_FileClosed()");
+
+                Timekeeper.Bench(StepTimer);
+                Browser_Disable();
+                Timekeeper.Bench(StepTimer, "Browser_Disable()");
+
+                Timekeeper.Bench(StepTimer);
                 Options.SaveLocal();
+                Timekeeper.Bench(StepTimer, "Options.SaveLocal()");
 
                 if (Meta != null) {
                     if (Process.GetCurrentProcess().Id == Meta.ProcessId) {
                         // Free up the file if this is the current process
                         // attempting to do the freeing.
+                        Timekeeper.Bench(StepTimer);
                         Meta.MarkFree();
+                        Timekeeper.Bench(StepTimer, "Meta.MarkFree()");
                     }
                 }
 
                 Timekeeper.Info("Closing Database: " + DatabaseFileName);
+                Timekeeper.Bench(StepTimer);
+                Timekeeper.Database.EndWork();
                 Timekeeper.CloseDatabase();
+                Timekeeper.Bench(StepTimer, "CloseDatabase");
 
                 foreach (Form Form in OpenForms) {
+                    Timekeeper.Bench(StepTimer);
                     Form.Close();
+                    Timekeeper.Bench(StepTimer, "Form.Close() [Form Name: " + Form.Name + "]");
                 }
+
+                Timekeeper.Bench(OverallTimer, "Close Complete");
+
+                this.IgnoreDimensionChanges = false;
             }
-        }
-
-        //---------------------------------------------------------------------
-
-        public void Action_DeleteItem(TreeView tree)
-        {
-            // Confirm
-            if (Common.Prompt("Delete this item?") != DialogResult.Yes) {
-                return;
-            }
-
-            // Instantiate item
-            Classes.TreeAttribute SourceItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-
-            // See if it's in use
-            var JournalEntries = new Classes.JournalEntryCollection();
-            int Count = JournalEntries.Count(SourceItem.Type, SourceItem.ItemId);
-
-            if (Count > 0) {
-                string Prompt = String.Format(
-                    "You have {0} journal entries logged against this item. Would you like to merge them with another item?",
-                    Count);
-                if (Common.Prompt(Prompt) == DialogResult.Yes) {
-                    if (!Action_MergeItem(SourceItem)) {
-                        return;
-                    }
-                }
-            }
-
-            // Remove item from the database
-            long result = SourceItem.Delete();
-            if (result == 0) {
-                Common.Warn("There was a problem deleting the item.");
-                return;
-            }
-
-            // Now remove from the UI
-            tree.SelectedNode.Remove();
-
-            // Display root lines?
-            Action_TreeView_ShowRootLines();
-
-            //tree.ShowRootLines = Activities.HasParents();
         }
 
         //---------------------------------------------------------------------
 
         private void Action_EnableRevert(string currentText, string previousText)
         {
-//            if ((isBrowsing) || (!isBrowsing && timerRunning)) {
             if (isBrowsing) {
                 if (currentText != previousText) {
                     Browser_EnableRevert(true);
+                }
+            } else if (timerRunning) {
+                if (currentText != previousText) {
+                    // Issue #1369 starts here
+                    // But it gets complicated. Passing on this until later...
+                    //Browser_EnableSave(true);
                 }
             }
         }
@@ -413,7 +466,9 @@ namespace Timekeeper.Forms
 
         private void Action_FormClose()
         {
-            Browser_SaveRow(false);
+            this.IgnoreDimensionChanges = true;
+
+            Browser_SaveRow();
 
             Action_GetMetrics();
             Action_SaveOptions();
@@ -434,19 +489,8 @@ namespace Timekeeper.Forms
                 // Load options from the Registry & TKDB
                 Action_LoadOptions();
 
-                // Next, instantiate any run-time only controls
-                this.MemoEditor = new Forms.Shared.MemoEditor();
-                this.MemoEditor.Parent = splitMain.Panel2;
-                this.MemoEditor.BringToFront();
-                this.MemoEditor.Dock = DockStyle.Fill;
-                this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
-                this.MemoEditor.MemoEntry.KeyDown += new System.Windows.Forms.KeyEventHandler(this.wMemo_KeyDown);
-
-                // Instantiate persistent dialog boxes
-                properties = new Forms.Properties();
-
                 // Initialize timer
-                timerLastRun = DateTime.Now;
+                timerLastRun = Timekeeper.LocalNow;
 
                 // Any system-wide (i.e., not file-based) UI options
                 Action_InitializeUI();
@@ -459,70 +503,38 @@ namespace Timekeeper.Forms
                     }
                 }
 
+                // Now load a file
                 if (DatabaseFileName != null) {
                     Action_LoadFile();
                 }
 
-                // Initialize drag drop operations
-                this.ProjectTree.ItemDrag += new ItemDragEventHandler(ProjectTree_ItemDrag);
-                this.ActivityTree.ItemDrag += new ItemDragEventHandler(ActivityTree_ItemDrag);
+                // Set browser options
+                Action_SetBrowserOptions();
 
                 // Is the scheduler subsystem enabled?
-                if (Options.Advanced_Other_DisableScheduler) {
-                    // Remove from UI
-                    MenuToolEvents.Visible = false;
-                } else {
+                if (Options.Advanced_Other_EnableScheduler) {
                     // Schedule events and reminders
                     Action_Schedule();
                     MenuToolEvents.Visible = true;
-                }
-
-                // SHORTCUTS
-                /*
-                Forms.Shared.Schedule DialogBox = new Forms.Shared.Schedule();
-                DialogBox.ShowDialog(this);
-                Application.Exit();
-                */
-
-                /*
-                Forms.Tools.Event DialogBox = new Forms.Tools.Event();
-                DialogBox.Show(this);
-                //Application.Exit();
-                */
-
-                /*
-                Forms.Shared.Schedule ScheduleDialog = new Forms.Shared.Schedule(9, DateTime.Now);
-                ScheduleDialog.ShowDialog(this);
-                Application.Exit();
-                */
-
-                /*
-                Forms.Tools.EventDetail EventDetail = new Forms.Tools.EventDetail();
-                EventDetail.ShowDialog(this);
-                if (EventDetail.DialogResult == DialogResult.OK) {
-                    Common.Info("Creating a new event");
                 } else {
-                    Common.Info("Not OK");
+                    // Remove from UI
+                    MenuToolEvents.Visible = false;
                 }
-                Application.Exit();
-                */
+
+                // Not until TK 3.1. Sorry...
+                //Action_LoadPlugins();
+
+                // Will this work here?
+                MemoEditor.Focus();
+
+                // Subscribe to the message event. This will allow the form to be notified whenever there's a new message.
+                Timekeeper.Mailbox.HandleMessage += new EventHandler(OnHandleMessage);
+
+                // Specific-Window Testing
 
                 /*
-                Forms.Tools.Event EventWindow = new Forms.Tools.Event();
-                EventWindow.ShowDialog(this);
-                Application.Exit();
-                */
-
-                /*
-                Forms.Tools.Notebook NotebookWindow = new Forms.Tools.Notebook();
-                NotebookWindow.ShowDialog(this);
-                Application.Exit();
-                */
-
-                //Forms.Find FindDialog = new Forms.Find(Browser_GotoEntry, Find.FindDataSources.Journal);
-                /*
-                var DatabaseCheckWindow = new Reports.DatabaseCheck(Browser_GotoEntry);
-                DatabaseCheckWindow.ShowDialog(this);
+                Forms.Tools.Todo DialogBox = new Forms.Tools.Todo();
+                DialogBox.ShowDialog(this);
                 Application.Exit();
                 */
             }
@@ -543,39 +555,81 @@ namespace Timekeeper.Forms
             Options.Main_Width = Width;
             Options.Main_Top = Top;
             Options.Main_Left = Left;
-            Options.Main_MainSplitterDistance = splitMain.SplitterDistance;
-            Options.Main_TreeSplitterDistance = splitTrees.SplitterDistance;
+            Options.View_MemoEditor_RightMargin_Journal = this.MemoEditor.RightMargin;
         }
 
         //---------------------------------------------------------------------
 
+        private void Action_AdjustControlPanel()
+        {
+            int Count = 0;
+
+            if (Options.Layout_UseProjects) Count++;
+            if (Options.Layout_UseActivities) Count++;
+            if (Options.Layout_UseLocations) Count++;
+            if (Options.Layout_UseCategories) Count++;
+
+            if (Count < 4)
+                PanelControls.Height = 122 - 27;
+            else
+                PanelControls.Height = 122;
+        }
+
         private void Action_InitializeUI()
         {
+            Widgets = new Classes.Widgets();
+
             // NOTE/TODO: Some of my "Actions" are user-initiated and
             // some are system-initiated. Consider splitting these
             // into two parts so that Action always implies a user-
             // initiated action and that "XYZ" is the other. I don't
             // have a name for it yet, obviously.
 
+            // Instantiate any run-time only controls
+            // FIXME (OR TODO): Move this (or most of this) to Classes.Widgets
+            this.MemoEditor = new Forms.Shared.MemoEditor();
+            this.MemoEditor.Parent = MainPanel;
+            this.MemoEditor.BringToFront();
+            this.MemoEditor.Dock = DockStyle.Fill;
+            this.MemoEditor.MemoEntry.TextChanged += new System.EventHandler(this.wMemo_TextChanged);
+            this.MemoEditor.TabIndex = 2; // grasping at straws here
+            this.MemoEditor.RightMargin = Options.View_MemoEditor_RightMargin_Journal;
+            this.MemoEditor.Enabled = false;
+
+            // Set viewability of primary components
+            // FIXME: this code is repeated twice. See Main.Dialog.cs
+            BrowserToolbar.Visible = Options.View_BrowserToolbar;
+            PanelControls.Visible = Options.View_ControlPanel;
+            MemoEditor.Visible = Options.View_MemoEditor;
+            if (!MemoEditor.Visible)
+                PanelControls.Dock = DockStyle.Fill;
+            else
+                PanelControls.Dock = DockStyle.Bottom;
+            StatusBar_SetVisibility();
+
             // Set Main window metrics
             Left = Options.Main_Left;
             Top = Options.Main_Top;
             Width = Options.Main_Width;
             Height = Options.Main_Height;
-            splitTrees.SplitterDistance = Options.Main_TreeSplitterDistance;
-            splitMain.SplitterDistance = Options.Main_MainSplitterDistance;
 
-            // Hide browser panel until file is opened
-            splitMain.Panel2Collapsed = true;
+            // Set dimension widget width
+            DimensionPanel.Width = Options.Advanced_Other_DimensionWidth + 60;
+            ProjectTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
+            ActivityTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
+            LocationTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
+            CategoryTreeDropdown.Width = Options.Advanced_Other_DimensionWidth;
 
             // Until a file is opened, treat it as closed
             MenuBar_FileClosed();
             StatusBar_FileClosed();
-            StatusBar_SetVisibility();
 
             // Using Projects and/or Activities?
             Action_UseProjects(Options.Layout_UseProjects);
             Action_UseActivities(Options.Layout_UseActivities);
+            Action_UseLocations(Options.Layout_UseLocations);
+            Action_UseCategories(Options.Layout_UseCategories);
+            Action_AdjustControlPanel();
 
             // Populate MRU List
             foreach (string FileName in Options.MRU_List) {
@@ -601,25 +655,15 @@ namespace Timekeeper.Forms
                 TrayIcon.Visible = false;
             }
 
+            // Visual tweak
+            Action_SetActionSepVisibility();
+
             // Set date/time formats
-            wStartTime.CustomFormat = Options.Advanced_DateTimeFormat;
-            wStopTime.CustomFormat = Options.Advanced_DateTimeFormat;
+            this.Widgets.SetMainFormDatePickerFormats(this);
 
-            // Adjust Start/Stop time widths and LocationAndCategoryPanel location
-            wStartTime.Value = DateTime.Parse("1970-01-01T00:00:00.00-00:00");
-            Size DateSize = TextRenderer.MeasureText(wStartTime.Text, wStartTime.Font);
-            int DateTimeWidth = DateSize.Width;
-            int DropDownButtonWidth = 33;
-
-            StatusBarDebug1.Text = "Width: " + DateTimeWidth.ToString();
-
-            wStartTime.Width = DateTimeWidth + DropDownButtonWidth;
-            wStopTime.Width = DateTimeWidth + DropDownButtonWidth;
-
-            CloseStartGapButton.Left = Math.Max(wStartTime.Width + 73, 142);
-            CloseStopGapButton.Left = Math.Max(wStartTime.Width + 73, 142);
-
-            LocationAndCategoryPanel.Left = CloseStartGapButton.Left + DropDownButtonWidth;
+            // Set idle time (and enable by default; it gets disabled when we start the timer)
+            this.IdleTimer.Interval = this.Options.Behavior_Annoy_NoRunningPromptAmount * 60 * 1000;
+            this.IdleTimer.Enabled = true;
         }
 
         //---------------------------------------------------------------------
@@ -633,92 +677,27 @@ namespace Timekeeper.Forms
             Options.LoadOptions();
             Options.LoadMetrics();
             Options.LoadMRU();
+            Options.LoadState();
 
-            // TODO: should this itself be an option?
             Timekeeper.Info("Timekeeper Version " + Timekeeper.VERSION + " Started");
         }
 
         //---------------------------------------------------------------------
 
-        private bool Action_MergeItem(Classes.TreeAttribute item)
+        private void Action_ManageTree(Timekeeper.Dimension dimension, ComboTreeBox tree)
         {
-            Forms.Shared.Merge DialogBox = new Forms.Shared.Merge(item);
-            if (DialogBox.ShowDialog(this) == DialogResult.Cancel) {
-                return false;
-            } else {
-                Classes.TreeAttribute TargetItem = DialogBox.TargetItem;
-                string Message = String.Format("You just merged all of the entries for {0} into {1}", item.Name, TargetItem.Name);
-                Common.Info(Message);
-                return true;
-            }
+            IgnoreDimensionChanges = true;
+            this.Widgets.ManageTreeDialog(dimension, tree, this);
+            IgnoreDimensionChanges = false;
         }
 
         //---------------------------------------------------------------------
 
-        private void Action_OpenFile(string fileName)
+        private bool Action_OpenFile(string fileName)
         {
             Action_CloseFile();
             DatabaseFileName = fileName;
-            Action_LoadFile();
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_HideItem(TreeView tree, bool viewingHiddenItems)
-        {
-            // Hide in the database
-            Classes.TreeAttribute Item = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-
-            if (Item.Hide() == 0) {
-                Common.Warn("There was a problem hiding the item.");
-                return;
-            }
-
-            // Now handle the UI
-            if (viewingHiddenItems) {
-                tree.SelectedNode.ForeColor = Color.Gray;
-                if (Item.IsFolder) {
-                    tree.SelectedNode.ImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
-                    tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;
-                } else {
-                    tree.SelectedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                    tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                }
-            } else {
-                tree.SelectedNode.Remove();
-            }
-
-            Action_TreeView_ShowRootLines();
-        }
-
-        //----------------------------------------------------------------------
-
-        private void Action_UnhideItem(TreeView tree)
-        {
-            // Unhide in the database
-            Classes.TreeAttribute item = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-            long result = item.Unhide();
-
-            if (result == 0) {
-                Common.Warn("There was a problem unhiding the item.");
-                return;
-            }
-
-            // Update the UI
-            tree.SelectedNode.ForeColor = Color.Black;
-            if (item.IsFolder) {
-                tree.SelectedNode.ImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
-                tree.SelectedNode.SelectedImageIndex = Timekeeper.IMG_FOLDER_CLOSED;
-            } else {
-                int Icon = Timekeeper.IMG_PROJECT;
-                if (item.Type == Timekeeper.Dimension.Activity) {
-                    Icon = Timekeeper.IMG_ACTIVITY;
-                }
-                tree.SelectedNode.ImageIndex = Icon;
-                tree.SelectedNode.SelectedImageIndex = Icon;
-            }
-
-            Action_TreeView_ShowRootLines();
+            return Action_LoadFile();
         }
 
         //----------------------------------------------------------------------
@@ -727,12 +706,29 @@ namespace Timekeeper.Forms
         {
             try {
                 //------------------------------------------
+                // Enable UI elements
+                //------------------------------------------
+
+                this.MemoEditor.Enabled = true;
+                this.PanelControls.Enabled = true;
+                this.BrowserToolbar.Enabled = true;
+
+                //------------------------------------------
                 // Perform database sanity check
                 //------------------------------------------
 
                 if (Action_CheckDatabase()) {
                     OpenFileDialog.FileName = DatabaseFileName;
                 } else {
+                    // This looks weird. But then again Issue #1364 was weird.
+                    // In short, the MessageBox (potentially) shown during the
+                    // check database call caused the MemoEditor to *appear*
+                    // disabled (but not actually be disabled) if the MemoEditor
+                    // wasn't enabled before the MessageBox popup. I still can't
+                    // explain it, but this fixes it.
+                    this.MemoEditor.Enabled = false;
+                    this.PanelControls.Enabled = false;
+                    this.BrowserToolbar.Enabled = false;
                     return false;
                 }
 
@@ -753,13 +749,10 @@ namespace Timekeeper.Forms
                 // Prepare UI elements
                 //------------------------------------------
 
-                Widgets = new Classes.Widgets();
-                Widgets.BuildProjectTree(ProjectTree.Nodes);
-                Widgets.BuildActivityTree(ActivityTree.Nodes);
-                Widgets.PopulateLocationComboBox(wLocation);
-                Widgets.PopulateCategoryComboBox(wCategory);
-
-                Action_TreeView_ShowRootLines();
+                Widgets.BuildProjectTree(ProjectTreeDropdown.Nodes);
+                Widgets.BuildActivityTree(ActivityTreeDropdown.Nodes);
+                Widgets.BuildLocationTree(LocationTreeDropdown.Nodes);
+                Widgets.BuildCategoryTree(CategoryTreeDropdown.Nodes);
 
                 MenuBar_FileOpened();
                 StatusBar_FileOpened();
@@ -767,32 +760,44 @@ namespace Timekeeper.Forms
 
                 Action_UseProjects(Options.Layout_UseProjects);
                 Action_UseActivities(Options.Layout_UseActivities);
+                Action_UseLocations(Options.Layout_UseLocations);
+                Action_UseCategories(Options.Layout_UseCategories);
+                Action_AdjustControlPanel();
 
                 //------------------------------------------
                 // Prepare Browser
                 //------------------------------------------
 
                 Browser_Load();
-                Browser_SetupForStarting();
+                Browser_SetupForStarting(false);
                 Browser_Enable();
-                Browser_Show(Options.Main_BrowserOpen);
 
                 //------------------------------------------
                 // Restore Prior State
                 //------------------------------------------
 
-                // Re-select last selected project
-                TreeNode LastNode = Widgets.FindTreeNode(ProjectTree.Nodes, Options.State_LastProjectId);
-                if (LastNode != null) {
-                    ProjectTree.SelectedNode = LastNode;
-                    ProjectTree.SelectedNode.Expand();
+                // Re-select last used project
+                ComboTreeNode LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(ProjectTreeDropdown.Nodes, Options.State_LastProjectId);
+                if (LastComboTreeNode != null) {
+                    ProjectTreeDropdown.SelectedNode = LastComboTreeNode;
                 }
 
-                // Re-select last selected activity
-                LastNode = Widgets.FindTreeNode(ActivityTree.Nodes, Options.State_LastActivityId);
-                if (LastNode != null) {
-                    ActivityTree.SelectedNode = LastNode;
-                    ActivityTree.SelectedNode.Expand();
+                // Re-select last used activity
+                LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(ActivityTreeDropdown.Nodes, Options.State_LastActivityId);
+                if (LastComboTreeNode != null) {
+                    ActivityTreeDropdown.SelectedNode = LastComboTreeNode;
+                }
+
+                // Re-select last used location
+                LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(LocationTreeDropdown.Nodes, Options.State_LastLocationId);
+                if (LastComboTreeNode != null) {
+                    LocationTreeDropdown.SelectedNode = LastComboTreeNode;
+                }
+
+                // Re-select last used category
+                LastComboTreeNode = (ComboTreeNode)Widgets.FindTreeNode(CategoryTreeDropdown.Nodes, Options.State_LastCategoryId);
+                if (LastComboTreeNode != null) {
+                    CategoryTreeDropdown.SelectedNode = LastComboTreeNode;
                 }
 
                 //------------------------------------------
@@ -800,6 +805,9 @@ namespace Timekeeper.Forms
                 //------------------------------------------
 
                 Meta.MarkInUse();
+
+                // This unit of work was started in Action_CheckDatabase
+                Timekeeper.Database.EndWork();
 
                 return true;
             }
@@ -811,16 +819,105 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
-        private void Action_Reindex()
+        private List<string> PluginList = new List<string>();
+
+        private void DirSearch(string DirectoryName)
+        {
+            foreach (string d in Directory.GetDirectories(DirectoryName)) {
+                foreach (string f in Directory.GetFiles(d)) {
+                    string Extension = Path.GetExtension(f);
+                    if (String.Equals(Extension, ".tkplugin", StringComparison.OrdinalIgnoreCase))
+                        PluginList.Add(f);
+                }
+                DirSearch(d);
+            }
+        }
+
+        private void Action_LoadPlugins()
+        {
+            // EXPERIMENTAL - NOT FOR TK 3.0 - EXPERIMENTAL
+
+            DirectoryInfo PluginDirectory = new DirectoryInfo("Plugins");
+
+            if (PluginDirectory.Exists)
+            {
+                DirSearch(PluginDirectory.FullName);
+
+                foreach (string PluginFileName in PluginList) 
+                {
+                    try {
+                        // Load the plugin assembly
+                        Assembly PluginAssembly = Assembly.LoadFrom(PluginFileName);
+                        string PluginName = Path.GetFileNameWithoutExtension(PluginFileName);
+                        Type PluginType = PluginAssembly.GetType("Timekeeper.Plugins." + PluginName);
+                        if (PluginType == null)
+                            throw new Exception("Could not load " + PluginName);
+
+                        // Create an instance of the plugin and add to the internal list
+                        object Plugin = Activator.CreateInstance(PluginType, "en-US");
+                        LoadedPlugins.Add(PluginType, Plugin);
+
+                        // Get the user-visible (and possibly localized) plugin name
+                        PropertyInfo Property = PluginType.GetProperty("Name");
+                        MethodInfo NameMethod = Property.GetGetMethod();
+                        string PluginUserVisibleName = (string)NameMethod.Invoke(Plugin, null);
+
+                        // Now add to the menu
+                        ToolStripMenuItem PluginMenuItem = new ToolStripMenuItem(PluginUserVisibleName);
+                        PluginMenuItem.Click += new EventHandler(PluginMenuItem_Click);
+                        PluginMenuItem.Tag = PluginType;
+                        MenuTool.DropDownItems.Add(PluginMenuItem);
+
+                        // All done!
+                        Timekeeper.Info("Plugin " + PluginName + " loaded");
+                    }
+                    catch (Exception x) {
+                        // Just log it and move on.
+                        // Failure to load a plugin should not prevent TK from launching.
+                        Timekeeper.Exception(x);
+                    }
+                }
+            }
+            else
+            {
+                Timekeeper.Warn("Could not find Plugin Directory: " + PluginDirectory.FullName);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        void PluginMenuItem_Click(object sender, EventArgs e)
         {
             try {
-                Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
-                Entries.Reindex();
-                Common.Info("Journal entries have been successfully reindexed.");
+                ToolStripMenuItem PluginMenuItem = (ToolStripMenuItem)sender;
+                Type PluginType = (Type)PluginMenuItem.Tag;
+                MethodInfo RunMethod = PluginType.GetMethod("Run");
+                RunMethod.Invoke(LoadedPlugins[PluginType], null);
             }
             catch (Exception x) {
-                Common.Warn(x.Message);
                 Timekeeper.Exception(x);
+            }
+
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Action_SetBrowserOptions()
+        {
+            switch (Options.Behavior_BrowsePrevBy) {
+                case 0: Browser_SetBrowseModePrev(ToolbarPrevEntryBrowseByEntry); break;
+                case 1: Browser_SetBrowseModePrev(ToolbarPrevEntryBrowseByDay); break;
+                case 2: Browser_SetBrowseModePrev(ToolbarPrevEntryBrowseByWeek); break;
+                case 3: Browser_SetBrowseModePrev(ToolbarPrevEntryBrowseByMonth); break;
+                case 4: Browser_SetBrowseModePrev(ToolbarPrevEntryBrowseByYear); break;
+            }
+
+            switch (Options.Behavior_BrowseNextBy) {
+                case 0: Browser_SetBrowseModeNext(ToolbarNextEntryBrowseByEntry); break;
+                case 1: Browser_SetBrowseModeNext(ToolbarNextEntryBrowseByDay); break;
+                case 2: Browser_SetBrowseModeNext(ToolbarNextEntryBrowseByWeek); break;
+                case 3: Browser_SetBrowseModeNext(ToolbarNextEntryBrowseByMonth); break;
+                case 4: Browser_SetBrowseModeNext(ToolbarNextEntryBrowseByYear); break;
             }
         }
 
@@ -830,6 +927,8 @@ namespace Timekeeper.Forms
         {
             try
             {
+                Timekeeper.Database.BeginWork();
+
                 // Open a scheduler
                 Timekeeper.OpenScheduler();
 
@@ -839,9 +938,12 @@ namespace Timekeeper.Forms
                 // Then loop through them
                 foreach (Classes.ScheduledEvent ScheduledEvent in ScheduledEvents.Fetch()) {
                     // And schedule
+                    Timekeeper.Database.BeginWork();
                     Timekeeper.Schedule(ScheduledEvent, this);
+                    Timekeeper.Database.EndWork();
                 }
 
+                Timekeeper.Database.EndWork();
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -870,73 +972,60 @@ namespace Timekeeper.Forms
 
         //----------------------------------------------------------------------
 
+        private void Action_SetActionSepVisibility()
+        {
+            MenuActionSep2.Visible =
+                MenuActionManageProjects.Visible ||
+                MenuActionManageActivities.Visible ||
+                MenuActionManageLocations.Visible ||
+                MenuActionManageCategories.Visible;
+        }
+
         private void Action_UseProjects(bool show)
         {
-            // Hide or Show the Project Pane
-            if (splitTrees.Panel1.Contains(this.ProjectTree)) {
-                splitTrees.Panel1Collapsed = !show;
-            } else {
-                splitTrees.Panel2Collapsed = !show;
-            }
             Options.Layout_UseProjects = show;
-
-            // Update the action menu accordingly
-            MenuActionSep1.Visible = show;
-            MenuActionNewProject.Visible = show;
-            MenuActionNewProjectFolder.Visible = show;
-            MenuActionEditProject.Visible = show;
-            MenuActionHideProject.Visible = show;
-            MenuActionDeleteProject.Visible = show;
-
-            // Update the popup menu state accordingly
-            PopupMenuProjectUseProjects.Checked = show;
-            PopupMenuProjectUseActivities.Enabled = show;
-
-            // Mirror update the other popup menu accordingly
-            PopupMenuActivityUseProjects.Checked = show;
-            PopupMenuActivityUseActivities.Enabled = show;
-
-            // Swap menu handling is a bit different
-            PopupMenuProjectSwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
-            PopupMenuActivitySwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
+            ProjectPanel.Visible = show;
+            ProjectTreeDropdown.Enabled = show;
+            MenuActionManageProjects.Visible = show;
+            StatusBar_SetVisibility();
         }
 
         //----------------------------------------------------------------------
 
         private void Action_UseActivities(bool show)
         {
-            // Hide or Show the Activity Pane
-            if (splitTrees.Panel1.Contains(this.ActivityTree)) {
-                splitTrees.Panel1Collapsed = !show;
-            } else {
-                splitTrees.Panel2Collapsed = !show;
-            }
             Options.Layout_UseActivities = show;
+            ActivityPanel.Visible = show;
+            ActivityTreeDropdown.Enabled = show;
+            MenuActionManageActivities.Visible = show;
+            StatusBar_SetVisibility();
+        }
 
-            // Update the action menu accordingly
-            MenuActionSep2.Visible = show;
-            MenuActionNewActivity.Visible = show;
-            MenuActionNewActivityFolder.Visible = show;
-            MenuActionEditActivity.Visible = show;
-            MenuActionHideActivity.Visible = show;
-            MenuActionDeleteActivity.Visible = show;
+        //----------------------------------------------------------------------
 
-            // Update the popup menu state accordingly
-            PopupMenuActivityUseActivities.Checked = show;
-            PopupMenuActivityUseProjects.Enabled = show;
+        private void Action_UseLocations(bool show)
+        {
+            Options.Layout_UseLocations = show;
+            LocationPanel.Visible = show;
+            LocationTreeDropdown.Enabled = show;
+            MenuActionManageLocations.Visible = show;
+            StatusBar_SetVisibility();
+        }
 
-            // Mirror update the other popup menu accordingly
-            PopupMenuProjectUseActivities.Checked = show;
-            PopupMenuProjectUseProjects.Enabled = show;
+        //----------------------------------------------------------------------
 
-            // Swap menu handling is a bit different
-            PopupMenuProjectSwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
-            PopupMenuActivitySwapPanes.Enabled = Options.Layout_UseProjects && Options.Layout_UseActivities;
+        private void Action_UseCategories(bool show)
+        {
+            Options.Layout_UseCategories = show;
+            CategoryPanel.Visible = show;
+            CategoryTreeDropdown.Enabled = show;
+            MenuActionManageCategories.Visible = show;
+            StatusBar_SetVisibility();
         }
 
         //---------------------------------------------------------------------
 
-        private bool Action_ConvertPriorVersion()
+        private bool Action_ConvertPriorVersion(File file)
         {
             bool status = false;
 
@@ -949,6 +1038,7 @@ namespace Timekeeper.Forms
                 // Open dialog box
                 Forms.Wizards.UpgradeDatabase Dialog = new Forms.Wizards.UpgradeDatabase();
                 Dialog.BackUpFileLabel.Text = NewDataFile;
+                Dialog.FileToUpgrade = file;
                 //Dialog.StepLabel.Text = "Click the Start button to begin the database upgrade...";
                 if (Dialog.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
                     status = true;
@@ -958,7 +1048,7 @@ namespace Timekeeper.Forms
                 Timekeeper.Exception(x);
             }
             finally {
-                Timekeeper.Info("Database Upgrade Completed");
+                Timekeeper.Info("Database Upgrade Completed (Status: " + status.ToString() + ")");
             }
 
             return status;
@@ -995,80 +1085,6 @@ namespace Timekeeper.Forms
             return BackupFileName;
         }
 
-        //---------------------------------------------------------------------
-
-        private void Action_RedescribeItem(TreeNode node, Classes.TreeAttribute item, string newDescription)
-        {
-            int result = item.Redescribe(newDescription);
-            if (result == Timekeeper.SUCCESS) {
-                node.ToolTipText = item.Description;
-            } else {
-                Common.Warn("Error updating item description.");
-                return;
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private bool Action_RenameItem(TreeNode node, Classes.TreeAttribute item, string newName)
-        {
-            int result = item.Rename(newName);
-            if (result == Timekeeper.SUCCESS) {
-                return true;
-            } else if (result == Classes.TreeAttribute.ERR_RENAME_EXISTS) {
-                Common.Warn("An item with that name already exists.");
-                return false;
-            } else if (result == Timekeeper.FAILURE) {
-                Common.Warn("Error renaming item.");
-                return false;
-            } else {
-                // Don't care
-                return false;
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_ReparentItem(TreeView tree, Classes.TreeAttribute item, long parentId)
-        {
-            TreeNode ParentNode = Widgets.FindTreeNode(tree.Nodes, parentId);
-
-            if (ParentNode == null) {
-                item.Reparent(0);
-            } else {
-                Classes.TreeAttribute parentItem = (Classes.TreeAttribute)ParentNode.Tag;
-                if (item.IsDescendentOf(parentItem.ItemId)) {
-                    Common.Warn("Item renamed, but not reparented. Cannot reparent to a descendent.");
-                    return;
-                }
-                item.Reparent((Classes.TreeAttribute)ParentNode.Tag);
-            }
-
-            // and reload
-            // FIXME! BEGIN WTF: this sucks...
-            tree.Nodes.Clear();
-            // FIXME: bit of a hack, here (okay, more than a bit)
-            if (tree.Name == "ProjectTree") {
-                Widgets.BuildProjectTree(ProjectTree.Nodes);
-            } else {
-                Widgets.BuildActivityTree(ActivityTree.Nodes);
-            }
-            // END WTF
-
-            // display root lines?
-            Action_TreeView_ShowRootLines();
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_RepointItem(TreeNode node, Classes.Project project, string newExternalProjectNo)
-        {
-            int result = project.Repoint(newExternalProjectNo);
-
-            if (result == 0) {
-                Common.Warn("Error updating External Project Number.");
-            }
-        }
 
         //---------------------------------------------------------------------
 
@@ -1087,10 +1103,32 @@ namespace Timekeeper.Forms
             File NewFile = new File(NewDatabase);
 
             Cursor.Current = Cursors.WaitCursor;
-            CurrentFile.SaveAs22(NewFile);
-            Cursor.Current = Cursors.Default;
 
-            Common.Info("You selected Save As Type: " + fileType.ToString());
+            //Common.Info("You selected Save As Type: " + fileType.ToString());
+            switch (fileType) {
+                case 1: 
+                    // Save as Version 3.0
+                    CurrentFile.SaveAs30(NewFile);
+                    break;
+                case 2:
+                    // Save as Version 2.3
+                    CurrentFile.SaveAs23(NewFile);
+                    break;
+                case 3:
+                    // Save as Version 2.2
+                    CurrentFile.SaveAs22(NewFile);
+                    break;
+                case 4:
+                    // Save as Version 2.1
+                    CurrentFile.SaveAs21(NewFile);
+                    break;
+                case 5:
+                    // Save as Version 2.0
+                    CurrentFile.SaveAs20(NewFile);
+                    break;
+            }
+
+            Cursor.Current = Cursors.Default;
         }
 
         //---------------------------------------------------------------------
@@ -1100,6 +1138,7 @@ namespace Timekeeper.Forms
             Options.SaveOptions();
             Options.SaveMetrics();
             Options.SaveMRU(MenuFileRecent.DropDownItems);
+            Options.SaveState();
         }
 
         //---------------------------------------------------------------------
@@ -1139,13 +1178,15 @@ namespace Timekeeper.Forms
                 ElapsedSinceStart++;
                 ElapsedProjectToday++;
                 ElapsedActivityToday++;
+                ElapsedLocationToday++;
+                ElapsedCategoryToday++;
                 ElapsedAllToday++;
 
                 StatusBar_Update();
 
                 if (!isBrowsing) {
-                    wDuration.Text = StatusBarElapsedSinceStart.Text;
-                    wStopTime.Value = DateTime.Now;
+                    DurationBox.Text = StatusBarElapsedSinceStart.Text;
+                    StopTimeSelector.Value = Timekeeper.LocalNow.DateTime;
                 }
 
                 // FIXME: More Options Overhaul
@@ -1154,21 +1195,25 @@ namespace Timekeeper.Forms
                     case 0: timeToShow = StatusBarElapsedSinceStart.Text; break;
                     case 1: timeToShow = StatusBarElapsedProjectToday.Text; break;
                     case 2: timeToShow = StatusBarElapsedActivityToday.Text; break;
-                    case 3: timeToShow = StatusBarElapsedAllToday.Text; break;
+                    case 3: timeToShow = StatusBarElapsedLocationToday.Text; break;
+                    case 4: timeToShow = StatusBarElapsedCategoryToday.Text; break;
+                    case 5: timeToShow = StatusBarElapsedAllToday.Text; break;
                 }
 
                 // FIXME: add this to Widgets?
                 // FIXME: I liked this updating-in-real-time feature (when it was directly accessing: options.wTitleBarTemplate.Text)
                 string tmp = Options.Behavior_TitleBar_Template;
-                tmp = tmp.Replace("%activity", "{0}");
-                tmp = tmp.Replace("%project", "{1}");
-                tmp = tmp.Replace("%time", "{2}");
-                Text = String.Format(tmp, currentActivityNode.Text, currentProjectNode.Text, timeToShow);
-                //wNotifyIcon.Text = Text;
+                tmp = tmp.Replace("%project", "{0}");
+                tmp = tmp.Replace("%activity", "{1}");
+                tmp = tmp.Replace("%location", "{2}");
+                tmp = tmp.Replace("%category", "{3}");
+                tmp = tmp.Replace("%time", "{4}");
+                Text = String.Format(tmp, TimedProject.Name, TimedActivity.Name, TimedLocation.Name, TimedCategory.Name, timeToShow);
                 TrayIcon.Text = Common.Abbreviate(Text, 63);
             }
 
             // Animate the selected item icons
+            /*
             if (timerRunning == true) {
                 int currentIndex = currentActivityNode.SelectedImageIndex;
                 if (currentIndex > Timekeeper.IMG_TIMER_END - 1) {
@@ -1181,16 +1226,17 @@ namespace Timekeeper.Forms
                 currentProjectNode.ImageIndex = currentActivityNode.ImageIndex;
                 currentProjectNode.SelectedImageIndex = currentActivityNode.SelectedImageIndex;
             }
+            */
 
             if (timerRunning == false) {
                 if (!isBrowsing && (browserEntry != null)) {
                     if (!StartTimeManuallySet) {
-                        wStartTime.Value = DateTime.Now;
-                        wStopTime.Value = DateTime.Now;
+                        StartTimeSelector.Value = Timekeeper.LocalNow.DateTime;
+                        StopTimeSelector.Value = Timekeeper.LocalNow.DateTime;
                     } else {
-                        wStopTime.Value = DateTime.Now;
+                        StopTimeSelector.Value = Timekeeper.LocalNow.DateTime;
                     }
-                    wDuration.Text = Browser_CalculateDuration();
+                    DurationBox.Text = Browser_CalculateDuration();
                 }
             }
         }
@@ -1199,29 +1245,72 @@ namespace Timekeeper.Forms
 
         private void Action_LongTick()
         {
-            if (timerRunning) {
+            try {
                 // Refresh actual time values from database to correct for drift
-                ElapsedSinceStart = Convert.ToInt32(TimedActivity.Elapsed().TotalSeconds); // FIXME: CURRENT ACTIVITY?
-                ElapsedProjectToday = Convert.ToInt32(TimedProject.ElapsedToday().TotalSeconds);
-                ElapsedActivityToday = Convert.ToInt32(TimedActivity.ElapsedToday().TotalSeconds);
-                ElapsedAllToday = Convert.ToInt32(Entries.ElapsedToday());
-            }
+                if (timerRunning) {
+                    // Trying to track down Issue #1395
+                    Timekeeper.Debug("TotalSeconds: " + TimedProject.Elapsed().TotalSeconds.ToString());
+                    Timekeeper.Debug("ElapsedToday: " + Entries.ElapsedToday().ToString());
 
-            // Annoyance support: if so desired, bug the user that the timer isn't running
-            DateTime now = DateTime.Now;
-            TimeSpan ts = new TimeSpan(now.Ticks - timerLastRun.Ticks);
-            if (Options.Behavior_Annoy_NoRunningPrompt) {
-                if (ts.TotalMinutes > (double)Options.Behavior_Annoy_NoRunningPromptAmount) {
-                    if (timerRunning == false) {
-                        if (TrayIcon.Visible) {
-                            TrayIcon.ShowBalloonTip(30000,
-                                Timekeeper.TITLE,
-                                "No timer is currently running.\n\nYou can change the frequency of this notification (or disable it completely) in the Options dialog box.",
-                                ToolTipIcon.Info);
-                        }
-                    }
+                    // Carry on...
+                    ElapsedSinceStart = Convert.ToInt32(TimedProject.Elapsed().TotalSeconds);
+                    ElapsedProjectToday = Convert.ToInt32(TimedProject.ElapsedToday().TotalSeconds);
+                    ElapsedActivityToday = Convert.ToInt32(TimedActivity.ElapsedToday().TotalSeconds);
+                    ElapsedLocationToday = Convert.ToInt32(TimedLocation.ElapsedToday().TotalSeconds);
+                    ElapsedCategoryToday = Convert.ToInt32(TimedCategory.ElapsedToday().TotalSeconds);
+                    ElapsedAllToday = Convert.ToInt32(Entries.ElapsedToday());
                 }
             }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        private void GetDimensions()
+            // experimental helper
+        {
+            // Ensure we have items selected
+            EnsureSelections();
+
+            // Grab instances of currently selected objects
+            TimedProject = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
+            TimedActivity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
+            TimedLocation = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
+            TimedCategory = (Classes.TreeAttribute)CategoryTreeDropdown.SelectedNode.Tag;
+
+            // Set the "Last" versions of each
+            Options.State_LastProjectId = TimedProject.ItemId;
+            Options.State_LastActivityId = TimedActivity.ItemId;
+            Options.State_LastLocationId = TimedLocation.ItemId;
+            Options.State_LastCategoryId = TimedCategory.ItemId;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void ReleaseDimensions()
+        {
+            if (timerRunning)
+                return;
+
+            TimedProject = null;
+            TimedActivity = null;
+            TimedLocation = null;
+            TimedCategory = null;
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_IdleTick()
+        {
+            string Message = String.Format(
+                "No timer is currently running.\n\n" +
+                "You can change the frequency of this notification (or disable it completely) in the Options dialog box.");
+
+            if (Options.Behavior_Annoy_NoRunningPrompt)
+                if (TrayIcon.Visible)
+                    TrayIcon.ShowBalloonTip(30000, Timekeeper.TITLE, Message, ToolTipIcon.Info);
         }
 
         //---------------------------------------------------------------------
@@ -1237,101 +1326,53 @@ namespace Timekeeper.Forms
                 return;
             }
 
-            // Find the currently selected project
-            if (ProjectTree.SelectedNode == null) {
-                if (ProjectTree.Nodes.Count == 1) {
-                    ProjectTree.SelectedNode = ProjectTree.Nodes[0];
-                } else {
-                    if (Options.Layout_UseProjects) {
-                        Common.Warn("No Project selected.");
-                        return;
-                    } else {
-                        ProjectTree.SelectedNode = GetFirstNonFolder(ProjectTree.Nodes);
-                    }
-                }
-            }
-
-            // Check for a currently selected activity
-            if (ActivityTree.SelectedNode == null) {
-                if (ActivityTree.Nodes.Count == 1) {
-                    // If there's only one, just select it. If it turns
-                    // out this is a folder, then the user can fix this
-                    // manually. But it's highly likely we're here 
-                    // because they're not using Activities and only
-                    // the default activity is present.
-                    ActivityTree.SelectedNode = ActivityTree.Nodes[0];
-                } else {
-                    if (Options.Layout_UseActivities) {
-                        // If there's more than one, and we're supposed
-                        // to be using activities at this point, then 
-                        // this is an error. Make them select one.
-                        Common.Warn("No Activity selected.");
-                        return;
-                    } else {
-                        // If activities aren't in use, just find the
-                        // first activity that isn't a folder and
-                        // select it.
-                        ActivityTree.SelectedNode = GetFirstNonFolder(ActivityTree.Nodes);
-                    }
-                }
-            }
-
-            // Grab instances of currently selected objects
-            currentProjectNode = ProjectTree.SelectedNode;
-            currentActivityNode = ActivityTree.SelectedNode;
-            TimedProject = (Classes.Project)currentProjectNode.Tag;
-            TimedActivity = (Classes.Activity)currentActivityNode.Tag;
-
-            if (wLocation.SelectedItem != null)
-                TimedLocation = (Classes.Location)((IdObjectPair)wLocation.SelectedItem).Object;
-            if (wCategory.SelectedItem != null)
-                TimedCategory = (Classes.Category)((IdObjectPair)wCategory.SelectedItem).Object;
-
-            if ((TimedProject.IsFolder == true) || (TimedActivity.IsFolder)) {
-                Common.Warn("Folders cannot be timed. Please select an item before starting the timer.");
-                return;
-            }
+            // Get current dimension selections
+            GetDimensions();
 
             // Now start timing
-            DateTime StartTime = IsBrowserOpen() ? wStartTime.Value : DateTime.Now;
-            TimedActivity.StartTiming(StartTime);
-            TimedActivity.FollowedItemId = TimedProject.ItemId;
+            DateTime StartTime = StartTimeSelector.Value;
 
             TimedProject.StartTiming(StartTime);
-            TimedProject.FollowedItemId = TimedActivity.ItemId;
+            TimedActivity.StartTiming(StartTime);
+            TimedLocation.StartTiming(StartTime);
+            TimedCategory.StartTiming(StartTime);
 
             TimedEntry = new Classes.JournalEntry(); // reinstantiate this entry upon timer start
-            TimedEntry.ProjectId = TimedProject.ItemId;
-            TimedEntry.ActivityId = TimedActivity.ItemId;
             TimedEntry.StartTime = StartTime;
             TimedEntry.StopTime = StartTime;
-            TimedEntry.Seconds = 0; // default to zero
-            //Entry.Memo = wMemo.Text;
+            TimedEntry.Seconds = 0;
             TimedEntry.Memo = MemoEditor.Text;
+            TimedEntry.ProjectId = TimedProject.ItemId;
+            TimedEntry.ActivityId = TimedActivity.ItemId;
+            TimedEntry.LocationId = TimedLocation.ItemId;
+            TimedEntry.CategoryId = TimedCategory.ItemId;
             TimedEntry.IsLocked = true;
-            TimedEntry.LocationId = TimedLocation == null ? 0 : TimedLocation.Id; // FIXME: Location should be not null.
-            TimedEntry.CategoryId = TimedCategory == null ? 0 : TimedCategory.Id;
-            if (!TimedEntry.Create()) {
+            if (TimedEntry.Create()) {
+                browserEntry.JournalId = TimedEntry.JournalId;
+            } else {
                 Common.Warn("There was an error starting the timer.");
                 return;
             }
 
-            //ShortTimer.Enabled = true; // Are this line and the next line the same thing?
             timerRunning = true;
-            timerLastRun = DateTime.Now;
+            timerLastRun = Timekeeper.LocalNow;
 
             // Grab times (this is a database hit)
-            ElapsedSinceStart = (long)TimedActivity.Elapsed().TotalSeconds;
-            ElapsedProjectToday = (long)TimedProject.ElapsedToday().TotalSeconds;
-            ElapsedActivityToday = (long)TimedActivity.ElapsedToday().TotalSeconds;
-            ElapsedAllToday = (long)Entries.ElapsedToday() + ElapsedSinceStart;
+            try {
+                ElapsedSinceStart = (long)TimedActivity.Elapsed().TotalSeconds; // WTF? FIXME: TimedActivity???
+                ElapsedProjectToday = (long)TimedProject.ElapsedToday().TotalSeconds;
+                ElapsedActivityToday = (long)TimedActivity.ElapsedToday().TotalSeconds;
+                ElapsedLocationToday = (long)TimedLocation.ElapsedToday().TotalSeconds;
+                ElapsedCategoryToday = (long)TimedCategory.ElapsedToday().TotalSeconds;
+                ElapsedAllToday = (long)Entries.ElapsedToday() + ElapsedSinceStart;
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+            }
 
             // Make any UI changes based on the timer starting
             MenuActionStartTimer.Visible = false;
-            //menuActionStartAdvanced.Visible = false;
             MenuActionStopTimer.Visible = true;
-            //menuActionStopAdvanced.Visible = true;
-            //Browser_EnableRevert(false);
 
             // swap start/stop keystrokes
             // FIXME: this is a mess
@@ -1345,17 +1386,9 @@ namespace Timekeeper.Forms
             //MenuActionCloseBrowser.ShortcutKeys = saveKeysAdvanced;
             Browser_SetShortcuts();
 
-            /*
-            saveKeys = menuToolControlStart.ShortcutKeys;
-            menuToolControlStart.ShortcutKeys = Keys.None;
-            menuToolControlStop.ShortcutKeys = saveKeys;
-            */
-
-            StatusBar_TimerStarted(currentProjectNode.Text, currentActivityNode.Text);
-
-            Text = TimedActivity.Name;
-
-            TrayIcon.Text = Common.Abbreviate(Text, 63);
+            StatusBar_TimerStarted(
+                TimedProject.Name, TimedActivity.Name,
+                TimedLocation.Name, TimedCategory.Name);
 
             Action_SetMenuAvailability(MenuFile, false);
 
@@ -1367,29 +1400,11 @@ namespace Timekeeper.Forms
                 }
             }
 
-            // Don't display while the timer is running (FIXME: make this an option)
-            //CloseBrowser();
+            // We're not idle if the timer is running
+            IdleTimer.Enabled = false;
 
             // As soon as the timer has started, we have to paint "stop" mode.
             Browser_SetupForStopping();
-        }
-
-        private TreeNode GetFirstNonFolder(TreeNodeCollection nodes)
-        {
-            TreeNode ReturnValue = null;
-
-            foreach (TreeNode Node in nodes) {
-                Classes.TreeAttribute Temp = (Classes.TreeAttribute)Node.Tag;
-                if (Temp.IsFolder) {
-                    ReturnValue = GetFirstNonFolder(Node.Nodes);
-                    break;
-                } else {
-                    ReturnValue = Node;
-                    break;
-                }
-            }
-
-            return ReturnValue;
         }
 
         //---------------------------------------------------------------------
@@ -1397,68 +1412,62 @@ namespace Timekeeper.Forms
         private void Action_StopTimer()
         {
             // Close off the timer for both objects
-            long Seconds = TimedActivity.StopTiming(wStopTime.Value);
-                           TimedProject.StopTiming(wStopTime.Value);
+            DateTime StartTime = StartTimeSelector.Value;
+            DateTime StopTime = StopTimeSelector.Value;
+
+            long Seconds =
+                TimedProject.StopTiming(StopTime);
+                TimedActivity.StopTiming(StopTime);
+                TimedLocation.StopTiming(StopTime);
+                TimedCategory.StopTiming(StopTime);
+
+            // Get current dimension selections
+            // Note: they may have changed while the timer was running,
+            // that's why we're getting them again
+            GetDimensions();
 
             // Close off timer
+            TimedEntry.StartTime = StartTime;
+            TimedEntry.StopTime = StopTime;
+            TimedEntry.Seconds = Seconds;
+            TimedEntry.Memo = MemoEditor.Text;
             TimedEntry.ProjectId = TimedProject.ItemId;
             TimedEntry.ActivityId = TimedActivity.ItemId;
-            TimedEntry.StartTime = wStartTime.Value;
-            TimedEntry.StopTime = IsBrowserOpen() ? wStopTime.Value : DateTime.Now;
-            TimedEntry.Seconds = Seconds;
-            //Entry.Memo = wMemo.Text;
-            TimedEntry.Memo = MemoEditor.Text;
+            TimedEntry.LocationId = TimedLocation.ItemId;
+            TimedEntry.CategoryId = TimedCategory.ItemId;
             TimedEntry.IsLocked = false;
-//            Entry.LocationId = currentLocation.Id;
-//            Entry.CategoryId = currentCategory.Id;
             TimedEntry.Save();
+
             timerRunning = false;
-            //ShortTimer.Enabled = false;
-            //timerLastRunNotified = false;
 
             // Clear instances of current object
-            TimedProject = null;
-            TimedActivity = null;
-            //currentEntry = null;
+            ReleaseDimensions();
 
             // Make any UI changes 
             Text = Timekeeper.TITLE;
 
             MenuActionStartTimer.Visible = true;
-            //menuActionStartAdvanced.Visible = true;
             MenuActionStopTimer.Visible = false;
-            //menuActionStopAdvanced.Visible = false;
 
             StatusBar_TimerStopped();
 
             // swap start/stop keystrokes
             // FIXME: this is a mess
             Keys saveKeys = new Keys();
-            Keys saveKeysAdvanced = new Keys();
             saveKeys = MenuActionStopTimer.ShortcutKeys;
-            saveKeysAdvanced = MenuActionCloseBrowser.ShortcutKeys;
             MenuActionStopTimer.ShortcutKeys = Keys.None;
-            MenuActionCloseBrowser.ShortcutKeys = Keys.None;
             MenuActionStartTimer.ShortcutKeys = saveKeys;
-            MenuActionOpenBrowser.ShortcutKeys = saveKeysAdvanced;
-            /*
-            saveKeys = menuToolControlStop.ShortcutKeys;
-            menuToolControlStop.ShortcutKeys = Keys.None;
-            menuToolControlStart.ShortcutKeys = saveKeys;
-            */
-            currentProjectNode.ImageIndex = Timekeeper.IMG_PROJECT;
-            currentProjectNode.SelectedImageIndex = Timekeeper.IMG_PROJECT;
-            currentActivityNode.ImageIndex = Timekeeper.IMG_ACTIVITY;
-            currentActivityNode.SelectedImageIndex = Timekeeper.IMG_ACTIVITY;
 
             Action_SetMenuAvailability(MenuFile, true);
 
             // As soon as the timer has stopped, we have to paint "start" mode.
             newBrowserEntry = null;
 
+            // Start the clock
+            IdleTimer.Enabled = true;
+
             // FIXME: stopping the timer != opening the browser
-            Browser_SetupForStarting();
-            TimedEntry.AdvanceIndex();
+            Browser_SetupForStarting(false);
 
             // In case any keyboard shortcuts were set while the timer
             // was running, take care of those now.
@@ -1467,7 +1476,6 @@ namespace Timekeeper.Forms
                 Browser_SetShortcuts();
                 DeferShortcutAssignment = false;
             }
-
         }
 
         //----------------------------------------------------------------------
@@ -1492,10 +1500,10 @@ namespace Timekeeper.Forms
                 }
 
                 // Next, adjust the current entry
+                Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
                 browserEntry.StopTime = browserEntry.StartTime.AddTicks(ChunkSize);
                 browserEntry.Seconds = ChunkSizeInSeconds;
-                browserEntry.Save(); // FIXME: rethink a global "save" and support specific updates
-                                     // TODO: I swear I typed stuff in, hit Split, and it didn't save my current edits
+                browserEntry.Save();
                 DateTimeOffset LastChunkTime = browserEntry.StopTime;
 
                 // Clone the current entry
@@ -1517,12 +1525,8 @@ namespace Timekeeper.Forms
                     }
                 }
 
-                // Reindex the Journal table
-                Entries.Reindex(browserEntry.StartTime);
-
                 // Copy the last-created split entry back to the browser
                 browserEntry = SplitEntry.Copy();
-                browserEntry.RefreshIndex();
                 Browser_EntryToForm(browserEntry);
             }
             catch (Exception x) {
@@ -1531,251 +1535,68 @@ namespace Timekeeper.Forms
             }
         }
 
-        //----------------------------------------------------------------------
-
-        private void Action_SwapPanes()
-        {
-            if (splitTrees.Panel1.Contains(this.ActivityTree)) {
-                splitTrees.Panel1.Controls.Remove(this.ActivityTree);
-                splitTrees.Panel2.Controls.Remove(this.ProjectTree);
-
-                splitTrees.Panel1.Controls.Add(this.ProjectTree);
-                splitTrees.Panel2.Controls.Add(this.ActivityTree);
-            } else {
-                splitTrees.Panel1.Controls.Remove(this.ProjectTree);
-                splitTrees.Panel2.Controls.Remove(this.ActivityTree);
-
-                splitTrees.Panel1.Controls.Add(this.ActivityTree);
-                splitTrees.Panel2.Controls.Add(this.ProjectTree);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_TreeView_DragDrop(TreeView tree, object sender, DragEventArgs e)
-        {
-            // Retrieve the client coordinates of the drop location.
-            Point targetPoint = tree.PointToClient(new Point(e.X, e.Y));
-
-            // Retrieve the node at the drop location.
-            TreeNode targetNode = tree.GetNodeAt(targetPoint);
-
-            // Retrieve the node that was dragged.
-            TreeNode draggedNode = (TreeNode)e.Data.GetData(typeof(TreeNode));
-
-            // Get the Timekeeper Item of the node that was dragged.
-            Classes.TreeAttribute draggedItem = (Classes.TreeAttribute)draggedNode.Tag;
-
-            // Cross-tree dragging warning
-            bool CrossDragAccepted = false;
-            if (tree.Name != draggedNode.TreeView.Name) {
-                // TODO: Allow conversion via drag and drop. This means that once confirmed
-                string ToItem = (string)tree.Tag;
-                string FromItem = (ToItem == "Project") ? "Activity" : "Project";
-                string Message;
-                if (draggedItem.IsFolder) {
-                    Message = String.Format("You cannot drag this {0} folder to the {1} tree.", FromItem, ToItem);
-                    Common.Warn(Message);
-                    return;
-                } else {
-                    Message = "You are dragging an item to a different tree. ";
-                    Message += String.Format("Do you wish to convert this {0} to a {1}?", FromItem, ToItem);
-                    if (draggedItem.GetType() == typeof(Classes.Project)) {
-                        Message += Environment.NewLine + Environment.NewLine + 
-                            "Note that any External Project Number associated with this Project will be lost. This action cannot be undone.";
-                    }
-                    if (Common.WarnPrompt(Message) == DialogResult.Yes) {
-                        CrossDragAccepted = true;
-                    } else {
-                        return;
-                    }
-                }
-            }
-
-            // Confirm that the node at the drop location is not 
-            // the dragged node or a descendant of the dragged node.
-            // Also confirm that a folder isn't being dropped on top
-            // of an item: items can only go into folders.
-            bool DropAllowed = false;
-
-            if (targetNode == null) {
-                DropAllowed = true;
-            } else {
-                Classes.TreeAttribute targetItem = (Classes.TreeAttribute)targetNode.Tag;
-                if (targetItem.IsFolder) {
-                    DropAllowed = true;
-                }
-            }
-
-            if (!draggedNode.Equals(targetNode) && !Action_TreeView_ContainsNode(draggedNode, targetNode) && (DropAllowed)) {
-                if (e.Effect == DragDropEffects.Move) {
-                    draggedNode.Remove();
-                    if (targetNode == null) {
-                        // Move to the root
-                        tree.Nodes.Add(draggedNode);
-                        // Update the database
-                        draggedItem.Reparent(0);
-                    } else {
-                        // Otherwise, drop it on the target
-                        targetNode.Nodes.Add(draggedNode);
-
-                        // Update the database
-                        Classes.TreeAttribute targetItem = (Classes.TreeAttribute)targetNode.Tag;
-                        draggedItem.Reparent(targetItem.ItemId);
-
-                        // Expand the node at the location 
-                        // to show the dropped node.
-                        targetNode.Expand();
-                    }
-                }
-            }
-            else if (!draggedNode.Equals(targetNode) && Action_TreeView_IsSibling(draggedNode, targetNode)) {
-
-                int OldIndex = targetNode.Index;
-                TreeNode Parent = targetNode.Parent;
-
-                draggedNode.Remove();
-                targetNode.Parent.Nodes.Insert(targetNode.Index + 1, draggedNode);
-                targetNode.Remove();
-                Parent.Nodes.Insert(OldIndex + 1, targetNode);
-
-                long Index = 1;
-                foreach (TreeNode node in Parent.Nodes) {
-                    Classes.TreeAttribute Item = (Classes.TreeAttribute)node.Tag;
-                    Item.Reorder(Index);
-                    Index++;
-                }
-
-            }
-
-            if (CrossDragAccepted) {
-
-                // Conversion
-                if (draggedItem.GetType() == typeof(Classes.Project)) {
-
-                    // Create an Activity in the database
-                    Classes.Activity Activity = new Classes.Activity();
-                    Activity.Copy(draggedItem);
-                    Activity.Create();
-
-                    draggedNode.Tag = (Classes.TreeAttribute)Activity;
-
-                    // Update the UI
-                    if (Activity.IsHidden) {
-                        draggedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                    } else {
-                        draggedNode.ImageIndex = Timekeeper.IMG_ACTIVITY;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ACTIVITY;
-                    }
-                } else {
-                    // Create a Project in the database
-                    Classes.Project Project = new Classes.Project();
-                    Project.Copy(draggedItem);
-                    Project.Create();
-
-                    draggedNode.Tag = (Classes.TreeAttribute)Project;
-
-                    // Update the UI
-                    if (Project.IsHidden) {
-                        draggedNode.ImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_ITEM_HIDDEN;
-                    } else {
-                        draggedNode.ImageIndex = Timekeeper.IMG_PROJECT;
-                        draggedNode.SelectedImageIndex = Timekeeper.IMG_PROJECT;
-                    }
-                }
-
-                // Removal
-                draggedItem.Delete();
-                //draggedItem.Rename(draggedItem.ItemGuid);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private bool Action_TreeView_ContainsNode(TreeNode node1, TreeNode node2)
-        {
-            // A TreeView Drag-and-Drop Helper method
-            if (node2 == null) {
-                // We're moving it to the top level
-                return false;
-            } else {
-                // Check the parent node of the second node.
-                if (node2.Parent == null) return false;
-                if (node2.Parent.Equals(node1)) return true;
-
-                // If the parent node is not null or equal to the first node, 
-                // call the ContainsNode method recursively using the parent of 
-                // the second node.
-                return Action_TreeView_ContainsNode(node1, node2.Parent);
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private bool Action_TreeView_IsSibling(TreeNode node1, TreeNode node2)
-        {
-            // A TreeView Drag-and-Drop Helper method
-            if (node2 == null) {
-                return false;
-            } else {
-                Classes.TreeAttribute draggedItem = (Classes.TreeAttribute)node1.Tag;
-                Classes.TreeAttribute targetItem = (Classes.TreeAttribute)node2.Tag;
-                if (draggedItem.ParentId == targetItem.ParentId) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_TreeView_ShowRootLines()
-        {
-            Classes.ProjectCollection Projects = new Classes.ProjectCollection();
-            ProjectTree.ShowRootLines = Projects.HasParents();
-
-            Classes.ActivityCollection Activities = new Classes.ActivityCollection();
-            ActivityTree.ShowRootLines = Activities.HasParents();
-        }
-
-        //---------------------------------------------------------------------
-
-        private void Action_UpdateCalendar(TreeView tree)
-        {
-            // unified
-            if (calendar != null) {
-                Classes.TreeAttribute CurrentItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
-                DateTime LastUsed = CurrentItem.DateLastUsed();
-
-                calendar.wCalendar.TodayDate = LastUsed;
-
-                // Bold all dates where item has been used
-                int Count = CurrentItem.NumberOfDaysUsed();
-                DateTime[] Array = new DateTime[Count];
-
-                List<DateTime> DaysUsed = CurrentItem.DaysUsed();
-                Array = DaysUsed.ToArray();
-
-                calendar.wCalendar.BoldedDates = Array;
-            }
-        }
-
         //---------------------------------------------------------------------
 
         private void Action_UpdateDuration(DateTimeOffset currentTime, DateTimeOffset previousTime)
         {
             if (isBrowsing) {
-                if (currentTime != previousTime) {
-                    wDuration.Text = Browser_CalculateDuration();
+                if ((currentTime != previousTime) || (ToolbarRevert.Enabled)) {
+                    Browser_UpdateDurationBox();
                     Browser_EnableRevert(true);
+                    if (InlineEditing == TimeBox.StartTime)
+                        Browser_DetermineStartGapState();
+                    if (InlineEditing == TimeBox.StopTime)
+                        Browser_DetermineStopGapState();
                 }
             }
         }
 
         //---------------------------------------------------------------------
+
+    }
+
+    //--------------------------------------------------------------------------
+    // Worker class for Update Checks
+    //--------------------------------------------------------------------------
+
+    class ThreadClass
+    {
+        public void CheckForUpdate()
+        {
+            try {
+                // Would like to use Cursors.AppStarting, but can't seem to get it to work
+                Application.UseWaitCursor = true;
+
+                WebRequest Request = WebRequest.Create("http://www.technitivity.com/timekeeper/currentversion.txt");
+                HttpWebResponse Response = (HttpWebResponse)Request.GetResponse();
+
+                Stream DataStream = Response.GetResponseStream();
+                StreamReader Reader = new StreamReader(DataStream);
+                string Content = Reader.ReadToEnd();
+
+                Version FoundVersion = new Version(Content);
+                Version CurrentVersion = new Version(Timekeeper.VERSION);
+
+                string Message;
+                if (CurrentVersion.CompareTo(FoundVersion) < 0) {
+                    Message = String.Format("A new version of Timekeeper is available.\n\nFound version: {0}\nCurrent version: {1}",
+                        FoundVersion, CurrentVersion);
+                    Common.Info(Message);
+                } else {
+                    Message = String.Format("Timekeeper Version {0} is up to date.", CurrentVersion);
+                    Common.Info(Message);
+                }
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                Common.Warn("Update check failed.");
+            }
+            finally {
+                Application.UseWaitCursor = false;
+            }
+        }
+
+        //--------------------------------------------------------------------------
 
     }
 }

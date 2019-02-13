@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -41,24 +41,17 @@ namespace Timekeeper.Classes
         public int Count(Timekeeper.Dimension dimension, long id)
         {
             string ColumnName = dimension.ToString() + "Id";
-            /*
-            switch (dimension) {
-                case Timekeeper.Dimension.Project:
-                    ColumnName = "ProjectId";
-                    break;
-                case Timekeeper.Dimension.Activity:
-                    ColumnName = "ActivityId";
-                    break;
-                case Timekeeper.Dimension.Location:
-                    ColumnName = "LocationId";
-                    break;
-                case Timekeeper.Dimension.Category:
-                    ColumnName = "CategoryId";
-                    break;
-            }
-            */
             string Query = String.Format("SELECT count(*) AS Count FROM Journal WHERE {0} = {1}",
                 ColumnName, id);
+            Row Row = Database.SelectRow(Query);
+            return (int)Row["Count"];
+        }
+
+        //---------------------------------------------------------------------
+
+        public int Count(string whereClause)
+        {
+            string Query = "SELECT count(*) AS Count FROM Journal J WHERE " + whereClause;
             Row Row = Database.SelectRow(Query);
             return (int)Row["Count"];
         }
@@ -74,10 +67,25 @@ namespace Timekeeper.Classes
 
         public string ElapsedTodayFormatted()
         {
+            /*
             DateTimeOffset Midnight = DateTimeOffset.Parse("00:00:00");
             Midnight = Midnight.AddSeconds(this.TodaySeconds());
             TimeSpan TimeSpan = new TimeSpan(Midnight.Ticks - 0);
             return Timekeeper.FormatTimeSpan(TimeSpan);
+            */
+            return Timekeeper.FormatSeconds(this.TodaySeconds());
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool Exists(DateTimeOffset dateTime)
+        {
+            string query = String.Format(@"
+                select count(*) as Count
+                from Journal
+                where StartTime = '{0}'", Timekeeper.DateForDatabase(dateTime));
+            Row Row = this.Database.SelectRow(query);
+            return Row["Count"] > 0;
         }
 
         //---------------------------------------------------------------------
@@ -97,14 +105,17 @@ namespace Timekeeper.Classes
 
         private long TodaySeconds()
         {
-            string Today = DateTime.Today.ToString(Common.DATE_FORMAT);
-            string Midnight = "00:00:00"; // TKT #1255 here?
+            DateTime Today = Timekeeper.AdjustedToday;
 
             string query = String.Format(@"
                 select sum(Seconds) as TodaySeconds
                 from Journal
-                where StartTime > '{0} {1}'",
-                Today, Midnight);
+                where StartTime >= datetime('{0}', '{1} hours')
+                  and StartTime < datetime('{0}', '{2} hours')",
+                Today.ToString(Timekeeper.LOCAL_DATETIME_FORMAT),
+                Timekeeper.Options.Advanced_Other_MidnightOffset,
+                (24 - Timekeeper.Options.Advanced_Other_MidnightOffset));
+
             Row Row = this.Database.SelectRow(query);
             return Row["TodaySeconds"] == null ? 0 : Row["TodaySeconds"];
         }
@@ -122,7 +133,7 @@ namespace Timekeeper.Classes
 
         public Table FetchRaw()
         {
-            string Query = "SELECT * FROM Journal ORDER BY JournalIndex";
+            string Query = "SELECT * FROM Journal ORDER BY StartTime";
             Table Table = Database.Select(Query);
             return Table;
         }
@@ -133,69 +144,8 @@ namespace Timekeeper.Classes
         {
             Row Row = new Row();
             Row[columnName] = columnValue;
-            long UpdateCount = Database.Update("Journal j", Row, whereClause);
+            long UpdateCount = Database.Update("Journal", Row, whereClause);
             return (UpdateCount > 0);
-        }
-
-        //---------------------------------------------------------------------
-
-        public void Reindex()
-        {
-            Reindex(new DateTime(1, 1, 1));
-        }
-
-        //---------------------------------------------------------------------
-
-        public long Reindex(DateTimeOffset since)
-        {
-            var t = new Stopwatch();
-
-            // FIXME: How about some error handling?
-            // FIXME2: This is brute-force and horribly inefficent. Come up with something better.
-
-            // First, get every row we need to update
-            Bench(t);
-            string Query = String.Format(
-                "select JournalId, JournalIndex from Journal where datetime(StartTime) >= datetime('{0}') order by StartTime",
-                since.ToString(Common.UTC_DATETIME_FORMAT));
-            Table Table = Database.Select(Query);
-            Bench(t, "[Reindex] " + Table.Count.ToString() + " Rows fetched");
-
-            if (Table.Count <= 1)
-                return 0;
-
-            // Then get our starting index
-            Bench(t);
-            Query = String.Format(
-                "select JournalIndex from Journal where datetime(StartTime) < datetime('{0}') order by StartTime desc limit 1",
-                since.ToString(Common.UTC_DATETIME_FORMAT));
-            Row LastGoodRow = Database.SelectRow(Query);
-            Bench(t, "[Reindex] Starting Index fetched");
-
-            // Drop the current database index
-            Bench(t);
-            Database.Exec("DROP INDEX idx_Journal_JournalIndex");
-            Bench(t, "[Reindex] Dropped database index");
-
-            // Rebuild JournalIndex
-            Bench(t);
-            long Index = LastGoodRow["JournalIndex"] == null ? 1 : LastGoodRow["JournalIndex"] + 1;
-            foreach (Row Row in Table) {
-                Row UpdatedRow = new Row();
-                UpdatedRow["JournalIndex"] = Index;
-                Database.Update("Journal", UpdatedRow, "JournalId", Row["JournalId"]);
-                Timekeeper.Info("UPDATE Journal SET JournalIndex " + Index.ToString() + " WHERE JournalId = " + Row["JournalId"]);
-                Index++;
-            }
-            Bench(t, "[Reindex] Updated JournalIndex values");
-
-            // Recreate database index
-            Bench(t);
-            Database.Exec("CREATE UNIQUE INDEX idx_Journal_JournalIndex ON Journal(JournalIndex);");
-            Bench(t, "[Reindex] Re-created database index");
-
-            // Return the next index
-            return Index;
         }
 
         //---------------------------------------------------------------------
@@ -214,20 +164,35 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public DateTime PreviousDay()
+        public DateTimeOffset PreviousDay()
         {
-            DateTime PreviousDay;
+            DateTimeOffset PreviousDay;
+            DateTimeOffset Today = DateTimeOffset.Now;
+            string Midnight = "";
 
-            string Query = @"
-                select distinct strftime('%Y-%m-%d', datetime(StartTime, 'localtime')) as Date 
+            // TODO: if this logic is fairly common, how about 
+            // putting it in class Timekeeper?
+            if (Timekeeper.Options.Advanced_Other_MidnightOffset != 0) {
+                Midnight = String.Format(@"datetime('{0} 00:00:00', '{1} hours')",
+                    Today.Date.ToString(Timekeeper.DATE_FORMAT),
+                    Timekeeper.Options.Advanced_Other_MidnightOffset);
+            } else {
+                Midnight = String.Format(@"'{0} 00:00:00'",
+                    Today.Date.ToString(Timekeeper.DATE_FORMAT));
+            }
+
+            string Query = String.Format(@"
+                select distinct strftime('%Y-%m-%d', StartTime) as Date 
                 from Journal 
-                order by Date desc";
+                where StartTime < {0}
+                order by Date desc
+                limit 1", Midnight);
             Table Rows = Timekeeper.Database.Select(Query);
 
-            if (Rows.Count > 1) {
-                PreviousDay = DateTime.Parse(Rows[1]["Date"]);
+            if (Rows.Count > 0) {
+                PreviousDay = DateTimeOffset.Parse(Rows[0]["Date"]);
             } else {
-                PreviousDay = DateTime.Now;
+                PreviousDay = Timekeeper.LocalNow;
             }
 
             return PreviousDay;
@@ -235,18 +200,18 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public DateTime FirstDay()
+        public DateTimeOffset FirstDay()
         {
-            DateTime FirstDay;
+            DateTimeOffset FirstDay;
 
             string Query = @"
-                select min(datetime(StartTime, 'localtime')) as FirstDate 
+                select min(StartTime) as FirstDate 
                 from Journal";
             Row Row = Timekeeper.Database.SelectRow(Query);
             if (Row["FirstDate"] == null) {
-                FirstDay = DateTime.Now;
+                FirstDay = Timekeeper.LocalNow;
             } else {
-                FirstDay = DateTime.Parse(Row["FirstDate"]);
+                FirstDay = DateTimeOffset.Parse(Row["FirstDate"]);
             }
 
             return FirstDay;
@@ -254,18 +219,18 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public DateTime LastDay()
+        public DateTimeOffset LastDay()
         {
-            DateTime LastDay;
+            DateTimeOffset LastDay;
 
             string Query = @"
-                select max(datetime(StartTime, 'localtime')) as LastDate 
+                select max(StartTime) as LastDate 
                 from Journal";
             Row Row = Timekeeper.Database.SelectRow(Query);
             if (Row["LastDate"] == null) {
-                LastDay = DateTime.Now;
+                LastDay = Timekeeper.LocalNow;
             } else {
-                LastDay = DateTime.Parse(Row["LastDate"]);
+                LastDay = DateTimeOffset.Parse(Row["LastDate"]);
             }
 
             return LastDay;

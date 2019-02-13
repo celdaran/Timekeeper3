@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Reports
 {
@@ -18,6 +18,7 @@ namespace Timekeeper.Forms.Reports
         //----------------------------------------------------------------------
 
         private Classes.Options Options;
+        private Classes.Audit Audit;
         private int IssueCounter = 0;
 
         public delegate void BrowserCallback(long entryId);
@@ -32,6 +33,7 @@ namespace Timekeeper.Forms.Reports
             InitializeComponent();
             this.Browser_GotoEntry = f;
             this.Options = Timekeeper.Options;
+            this.Audit = new Classes.Audit();
         }
 
         //----------------------------------------------------------------------
@@ -42,10 +44,9 @@ namespace Timekeeper.Forms.Reports
         {
             if (e.RowIndex >= 0) {
                 DataGridViewRow Row = DatabaseCheckResultsGrid.Rows[e.RowIndex];
-                long JournalIndex = Convert.ToInt64(Row.Cells["JournalIndex"].Value);
                 long JournalId = Convert.ToInt64(Row.Cells["JournalId"].Value);
                 if (JournalId > 0) {
-                    this.Browser_GotoEntry(JournalIndex);
+                    this.Browser_GotoEntry(JournalId);
                 }
             }
         }
@@ -66,27 +67,26 @@ namespace Timekeeper.Forms.Reports
                 ProgressBar.Minimum = 1;
                 ProgressBar.Maximum = EntryCount;
                 ProgressBar.Visible = true;
-                long ExpectedJournalIndex = 1;
 
                 Classes.JournalEntry PriorEntry = new Classes.JournalEntry();
-                PriorEntry.StartTime = DateTimeOffset.MinValue;
-                PriorEntry.StopTime = DateTimeOffset.MinValue;
+                PriorEntry.StartTime = DateTime.MinValue;
+                PriorEntry.StopTime = DateTime.MinValue;
 
                 IssueCounter = 0;
                 DatabaseCheckResultsGrid.Rows.Clear();
 
                 foreach (Row EntryRow in EntryRows)
                 {
-                    Classes.JournalEntry CurrentEntry = new Classes.JournalEntry(EntryRow["JournalIndex"]);
+                    Classes.JournalEntry CurrentEntry = new Classes.JournalEntry(EntryRow["JournalId"]);
 
                     // If JournalId is 0, we couldn't instantiate a JournalEntry
-                    // based on the known-good JournalIndex value. This means a
+                    // based on the known-good JournalId value. This means a
                     // lookup failed (perhaps a failed join) and we'll make a last-
                     // ditched attempt to look up *only* the JournalEntry row,
                     // without any joins.
 
                     if (CurrentEntry.JournalId == 0) {
-                        CurrentEntry.LoadLite(EntryRow["JournalIndex"]);
+                        CurrentEntry.LoadLite(EntryRow["JournalId"]);
                     }
 
                     // Integrity checks
@@ -97,7 +97,6 @@ namespace Timekeeper.Forms.Reports
                         CheckTimestamps(CurrentEntry);
                         CheckForOverlaps(CurrentEntry, PriorEntry);
                         CheckDuration(CurrentEntry);
-                        CheckJournalIndex(CurrentEntry, ExpectedJournalIndex);
                         CheckDimensions(CurrentEntry);
                         CheckForLocks(CurrentEntry);
                     }
@@ -105,13 +104,12 @@ namespace Timekeeper.Forms.Reports
                     // Set Prior Entry
                     PriorEntry = CurrentEntry.Copy();
 
-                    // Move to next Journal Index
-                    ExpectedJournalIndex++;
-
                     // Lastly, update progress
                     Counter++;
                     ProgressBar.Value = Counter;
                 }
+
+                this.Audit.DatabaseChecked(IssueCounter);
 
                 ProgressBar.Visible = false;
                 StatusBox.Text = IssueCounter == 0 ? "No issues found." :
@@ -157,16 +155,6 @@ namespace Timekeeper.Forms.Reports
 
         //----------------------------------------------------------------------
 
-        private void CheckJournalIndex(Classes.JournalEntry currentEntry, long expectedJournalIndex)
-        {
-            if (currentEntry.JournalIndex != expectedJournalIndex) {
-                this.IssueCounter++;
-                AddToGrid(currentEntry, "Journal index " + currentEntry.JournalIndex.ToString() + " is unexpected.");
-            }
-        }
-
-        //----------------------------------------------------------------------
-
         private void CheckDuration(Classes.JournalEntry currentEntry)
         {
             TimeSpan Delta = currentEntry.StopTime.Subtract(currentEntry.StartTime);
@@ -198,13 +186,13 @@ namespace Timekeeper.Forms.Reports
             }
 
             Classes.Location Location = new Classes.Location(currentEntry.LocationId);
-            if (Location.Id != currentEntry.LocationId) {
+            if (!Location.Exists()) {
                 this.IssueCounter++;
                 AddToGrid(currentEntry, "Location does not exist.");
             }
 
             Classes.Category Category = new Classes.Category(currentEntry.CategoryId);
-            if (Category.Id != currentEntry.CategoryId) {
+            if (!Category.Exists()) {
                 this.IssueCounter++;
                 AddToGrid(currentEntry, "Category does not exist.");
             }
@@ -227,7 +215,6 @@ namespace Timekeeper.Forms.Reports
         private void AddToGrid(Classes.JournalEntry entry, string issueText)
         {
             DatabaseCheckResultsGrid.Rows.Add(
-                entry.JournalIndex,
                 entry.JournalId,
                 issueText,
                 entry.StartTime.ToString(Options.Advanced_DateTimeFormat),

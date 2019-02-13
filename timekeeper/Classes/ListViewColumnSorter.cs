@@ -3,6 +3,7 @@
 // But modified to support numeric column sorting.   //
 //---------------------------------------------------//
 
+using System;
 using System.Collections;
 using System.Windows.Forms;
 
@@ -65,7 +66,16 @@ public class ListViewColumnSorter : IComparer
                 doubleX == doubleY ? 0 :
                 doubleX < doubleY ? 1 : -1;
         } else {
-            compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+            DateTime datetimeX;
+            DateTime datetimeY;
+            bool isDateTimeX = DateTime.TryParse(listviewX.SubItems[ColumnToSort].Text, out datetimeX);
+            bool isDateTimeY = DateTime.TryParse(listviewY.SubItems[ColumnToSort].Text, out datetimeY);
+
+            if (isDateTimeX && isDateTimeY) {
+                compareResult = datetimeX.CompareTo(datetimeY);
+            } else {
+                compareResult = ObjectCompare.Compare(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+            }
         }
 
         // Calculate correct return value based on object comparison

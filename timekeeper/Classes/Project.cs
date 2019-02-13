@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -21,6 +21,11 @@ namespace Timekeeper.Classes
             : base(projectId, ProjectTableName, ProjectIdColumnName)
         {}
 
+        // constructor, by nullable id
+        public Project(long? projectId)
+            : base(projectId, ProjectTableName, ProjectIdColumnName)
+        { }
+
         // constructor, by name
         public Project(string projectName)
             : base(projectName, ProjectTableName, ProjectIdColumnName)
@@ -38,7 +43,7 @@ namespace Timekeeper.Classes
             } else {
                 Row Project = new Row();
                 Project["ExternalProjectNo"] = externalProjectNo;
-                Project["ModifyTime"] = Common.Now();
+                Project["ModifyTime"] = Timekeeper.DateForDatabase();
                 long Count = Database.Update(this.TableName, Project, this.IdColumnName, this.ItemId);
 
                 if (Count == 1) {

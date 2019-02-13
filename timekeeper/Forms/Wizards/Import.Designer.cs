@@ -1,4 +1,4 @@
-﻿namespace Timekeeper.Forms.Wizards
+namespace Timekeeper.Forms.Wizards
 {
     partial class Import
     {
@@ -27,6 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Import));
             this.ImportFileName = new System.Windows.Forms.TextBox();
             this.ImportButton = new System.Windows.Forms.Button();
             this.Console = new System.Windows.Forms.RichTextBox();
@@ -68,11 +69,10 @@
             this.ImportFileName.Name = "ImportFileName";
             this.ImportFileName.Size = new System.Drawing.Size(282, 20);
             this.ImportFileName.TabIndex = 1;
-            this.ImportFileName.Text = "C:\\Users\\hillsc\\Google Drive\\Timekeeper\\Import-Test-1.csv";
             // 
             // ImportButton
             // 
-            this.ImportButton.Location = new System.Drawing.Point(12, 9);
+            this.ImportButton.Location = new System.Drawing.Point(533, 9);
             this.ImportButton.Name = "ImportButton";
             this.ImportButton.Size = new System.Drawing.Size(75, 23);
             this.ImportButton.TabIndex = 2;
@@ -83,40 +83,41 @@
             // 
             // Console
             // 
-            this.Console.BackColor = System.Drawing.SystemColors.WindowText;
+            this.Console.BackColor = System.Drawing.SystemColors.Window;
             this.Console.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Console.ForeColor = System.Drawing.Color.Lime;
-            this.Console.Location = new System.Drawing.Point(18, 71);
+            this.Console.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.Console.Location = new System.Drawing.Point(18, 85);
             this.Console.Name = "Console";
-            this.Console.Size = new System.Drawing.Size(315, 189);
-            this.Console.TabIndex = 3;
+            this.Console.ReadOnly = true;
+            this.Console.Size = new System.Drawing.Size(315, 175);
+            this.Console.TabIndex = 1;
             this.Console.Text = "";
             this.Console.WordWrap = false;
             // 
             // ImportProgress
             // 
-            this.ImportProgress.Location = new System.Drawing.Point(18, 42);
+            this.ImportProgress.Location = new System.Drawing.Point(18, 56);
             this.ImportProgress.Name = "ImportProgress";
             this.ImportProgress.Size = new System.Drawing.Size(315, 23);
-            this.ImportProgress.TabIndex = 4;
+            this.ImportProgress.TabIndex = 1;
             // 
             // ImportProjects
             // 
             this.ImportProjects.AutoSize = true;
-            this.ImportProjects.Location = new System.Drawing.Point(30, 43);
+            this.ImportProjects.Location = new System.Drawing.Point(30, 66);
             this.ImportProjects.Name = "ImportProjects";
             this.ImportProjects.Size = new System.Drawing.Size(96, 17);
-            this.ImportProjects.TabIndex = 5;
+            this.ImportProjects.TabIndex = 1;
             this.ImportProjects.Text = "Import Projects";
             this.ImportProjects.UseVisualStyleBackColor = true;
             // 
             // ImportEntries
             // 
             this.ImportEntries.AutoSize = true;
-            this.ImportEntries.Location = new System.Drawing.Point(30, 66);
+            this.ImportEntries.Location = new System.Drawing.Point(30, 43);
             this.ImportEntries.Name = "ImportEntries";
             this.ImportEntries.Size = new System.Drawing.Size(90, 17);
-            this.ImportEntries.TabIndex = 6;
+            this.ImportEntries.TabIndex = 1;
             this.ImportEntries.Text = "Import Entries";
             this.ImportEntries.UseVisualStyleBackColor = true;
             // 
@@ -135,10 +136,10 @@
             // 
             // CloseButton
             // 
-            this.CloseButton.Location = new System.Drawing.Point(93, 9);
+            this.CloseButton.Location = new System.Drawing.Point(614, 9);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(75, 23);
-            this.CloseButton.TabIndex = 4;
+            this.CloseButton.TabIndex = 2;
             this.CloseButton.Text = "Close";
             this.CloseButton.UseVisualStyleBackColor = true;
             this.CloseButton.Visible = false;
@@ -287,12 +288,12 @@
             // 
             // EndLabel
             // 
-            this.EndLabel.AutoSize = true;
             this.EndLabel.Location = new System.Drawing.Point(15, 13);
             this.EndLabel.Name = "EndLabel";
-            this.EndLabel.Size = new System.Drawing.Size(141, 13);
+            this.EndLabel.Size = new System.Drawing.Size(318, 33);
             this.EndLabel.TabIndex = 3;
-            this.EndLabel.Text = "Click \"Import Now\" to begin.";
+            this.EndLabel.Text = "Click \"Import Now\" to begin. Note, depending on the size of your file, this opera" +
+    "tion could take several minutes.";
             // 
             // Tab4
             // 
@@ -310,26 +311,25 @@
             this.WizardReviewInstructions.Location = new System.Drawing.Point(15, 13);
             this.WizardReviewInstructions.MaximumSize = new System.Drawing.Size(336, 0);
             this.WizardReviewInstructions.Name = "WizardReviewInstructions";
-            this.WizardReviewInstructions.Size = new System.Drawing.Size(324, 39);
+            this.WizardReviewInstructions.Size = new System.Drawing.Size(137, 13);
             this.WizardReviewInstructions.TabIndex = 27;
-            this.WizardReviewInstructions.Text = "Please review your upgrade options and click Import Now to import your data. Note" +
-    ", depending on the size of your database, this operation could take several minu" +
-    "tes.";
+            this.WizardReviewInstructions.Text = "Review your import options.";
             // 
             // WizardReview
             // 
-            this.WizardReview.Location = new System.Drawing.Point(18, 64);
+            this.WizardReview.Location = new System.Drawing.Point(18, 42);
             this.WizardReview.Multiline = true;
             this.WizardReview.Name = "WizardReview";
             this.WizardReview.ReadOnly = true;
             this.WizardReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.WizardReview.Size = new System.Drawing.Size(319, 196);
-            this.WizardReview.TabIndex = 26;
+            this.WizardReview.Size = new System.Drawing.Size(319, 218);
+            this.WizardReview.TabIndex = 1;
             // 
             // Import
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.CancelDialogButton;
             this.ClientSize = new System.Drawing.Size(2001, 323);
             this.Controls.Add(this.Tab4);
             this.Controls.Add(this.Tab5);
@@ -339,12 +339,14 @@
             this.Controls.Add(this.WizardPicture);
             this.Controls.Add(this.ButtonPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(1000, 400);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Import";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Import Wizard";
             this.Load += new System.EventHandler(this.ImportWizard_Load);
             this.ButtonPanel.ResumeLayout(false);
@@ -356,7 +358,6 @@
             this.Tab3.ResumeLayout(false);
             this.Tab3.PerformLayout();
             this.Tab5.ResumeLayout(false);
-            this.Tab5.PerformLayout();
             this.Tab4.ResumeLayout(false);
             this.Tab4.PerformLayout();
             this.ResumeLayout(false);

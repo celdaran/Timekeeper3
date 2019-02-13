@@ -5,8 +5,6 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
-
 namespace Timekeeper.Forms
 {
     partial class Main

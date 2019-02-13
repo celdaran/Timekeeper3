@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 // FIXME: I shouldn't need these here
 using Quartz;
 using Quartz.Impl;
@@ -22,7 +22,7 @@ namespace Timekeeper.Forms.Tools
         private Classes.Options Options;
         private ListViewColumnSorter ColumnSorter;
 
-        private DateTime LastAutoRefreshTime;
+        private DateTimeOffset LastAutoRefreshTime;
 
         private Forms.Main MainForm;
 
@@ -217,7 +217,7 @@ namespace Timekeeper.Forms.Tools
         public void AddItem(Classes.Event currentEvent, ListViewGroup group)
         {
             try {
-                if ((currentEvent.NextOccurrenceTime.CompareTo(DateTime.Now) < 0) && !MenuEventsShowPastEvents.Checked) {
+                if ((currentEvent.NextOccurrenceTime.CompareTo(Timekeeper.LocalNow) < 0) && !MenuEventsShowPastEvents.Checked) {
                     // Don't add past items if we're hiding past items
                     return;
                 }
@@ -233,7 +233,7 @@ namespace Timekeeper.Forms.Tools
                 NewItem.ImageIndex = 0;
                 NewItem.ToolTipText = currentEvent.Description;
 
-                if (currentEvent.NextOccurrenceTime.CompareTo(DateTime.Now) < 0) {
+                if (currentEvent.NextOccurrenceTime.CompareTo(Timekeeper.LocalNow) < 0) {
                     NewItem.ForeColor = Color.Red;
                 }
 
@@ -267,7 +267,7 @@ namespace Timekeeper.Forms.Tools
         public void UpdateItem(ListViewItem item, Classes.Event currentEvent, ListViewGroup group)
         {
             try {
-                if ((currentEvent.NextOccurrenceTime.CompareTo(DateTime.Now) < 0) && !MenuEventsShowPastEvents.Checked) {
+                if ((currentEvent.NextOccurrenceTime.CompareTo(Timekeeper.LocalNow) < 0) && !MenuEventsShowPastEvents.Checked) {
                     // If we're updating an item, and it's since expired, remove it
                     // as long as the user has also decided to hide past items.
                     EventList.Items.Remove(item);
@@ -293,7 +293,7 @@ namespace Timekeeper.Forms.Tools
                 item.ToolTipText = currentEvent.Description;
                 item.Group = group;
 
-                if (currentEvent.NextOccurrenceTime.CompareTo(DateTime.Now) < 0) {
+                if (currentEvent.NextOccurrenceTime.CompareTo(Timekeeper.LocalNow) < 0) {
                     item.ForeColor = Color.Red;
                 }
 
@@ -306,7 +306,7 @@ namespace Timekeeper.Forms.Tools
                 ListViewItem.ListViewSubItem i;
                 i = item.SubItems[0]; i.Text = currentEvent.Name;
                 i = item.SubItems[1]; i.Text = currentEvent.Description;
-                i = item.SubItems[2]; i.Text = currentEvent.NextOccurrenceTime.ToString(Common.LOCAL_DATETIME_FORMAT);
+                i = item.SubItems[2]; i.Text = Timekeeper.NullableDateForDisplay(currentEvent.NextOccurrenceTime);
 
                 // yeah, copy/pasted from above
                 string TriggerCountText = currentEvent.Schedule == null ? "" : currentEvent.Schedule.TriggerCount.ToString();
@@ -360,7 +360,7 @@ namespace Timekeeper.Forms.Tools
                 // TODO: (NOTE TO SELF: Application always deals with Local Time; Database Layer takes care of Local Time -> UTC handling)
                 // Just marking that here since that's when it became apparent to me.
                 // Also, highly related, things like this should be SelectedEvent.Hide(), and not exposing these weaknesses to the app.
-                SelectedEvent.HiddenTime = DateTime.Now;
+                SelectedEvent.HiddenTime = Timekeeper.LocalNow;
                 SelectedEvent.Save();
                 RefreshEvent((ListViewItem)EventList.SelectedItems[0], SelectedEvent);
             }
@@ -381,7 +381,7 @@ namespace Timekeeper.Forms.Tools
             Classes.Event SelectedEvent = GetCurrentEvent();
             if (SelectedEvent != null) {
                 SelectedEvent.IsDeleted = true;
-                SelectedEvent.DeletedTime = DateTime.Now;
+                SelectedEvent.DeletedTime = Timekeeper.LocalNow;
                 SelectedEvent.Save();
                 RefreshEvent((ListViewItem)EventList.SelectedItems[0], SelectedEvent);
             }
@@ -554,18 +554,18 @@ namespace Timekeeper.Forms.Tools
             */
 
             // First time through, just seed the value
-            if (LastAutoRefreshTime == DateTime.MinValue) {
-                LastAutoRefreshTime = DateTime.Now;
+            if (LastAutoRefreshTime == DateTimeOffset.MinValue) {
+                LastAutoRefreshTime = Timekeeper.LocalNow;
                 return;
             }
 
             Classes.ScheduledEventCollection AllEvents = new Classes.ScheduledEventCollection();
-            DateTime MostRecentModification = AllEvents.MostRecentModification();
+            DateTimeOffset MostRecentModification = AllEvents.MostRecentModification();
 
             if (MostRecentModification.CompareTo(LastAutoRefreshTime) > 0) {
                 PopulateEventList();
-                LastAutoRefreshTime = DateTime.Now;
-                StatusBarItemCount.Text = EventList.Items.Count + " item(s), refreshed at " + Common.Now();
+                LastAutoRefreshTime = Timekeeper.LocalNow;
+                StatusBarItemCount.Text = EventList.Items.Count + " item(s), refreshed at " + Timekeeper.DateForDisplay();
             }
         }
 

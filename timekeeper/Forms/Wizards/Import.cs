@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 
 using System.Runtime.InteropServices;
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Wizards
 {
@@ -20,6 +20,8 @@ namespace Timekeeper.Forms.Wizards
         //----------------------------------------------------------------------
 
         private Classes.Widgets Widgets;
+        private Classes.Options Options;
+
         private enum ImportTypes { Timekeeper1x, CSV };
         private ImportTypes ImportType;
 
@@ -39,8 +41,12 @@ namespace Timekeeper.Forms.Wizards
         private void ImportWizard_Load(object sender, EventArgs e)
         {
             Widgets = new Classes.Widgets();
+            Options = Timekeeper.Options;
 
             Width = 525;
+
+            this.Location = Timekeeper.CenterInParent(this.Owner, this.Width, this.Height);
+
             Widgets.WizardWidth = Width;
             Widgets.BackButton = BackButton;
             Widgets.NextButton = NextButton;
@@ -54,6 +60,7 @@ namespace Timekeeper.Forms.Wizards
             Widgets.GoToFirstTab();
 
             ImportDataTypeList.SelectedIndex = 0;
+            ImportFileName.Text = Options.State_LastImportedFile;
         }
 
         //----------------------------------------------------------------------
@@ -78,8 +85,8 @@ namespace Timekeeper.Forms.Wizards
                     this.ImportType = Import.ImportTypes.CSV;
                     this.OpenFile.Filter = "CSV files|*.csv|All files|*.*";
                     ImportProjects.Enabled = false;
-                    ImportProjects.Checked = false;
-                    ImportEntries.Enabled = true;
+                    ImportProjects.Checked = true;
+                    ImportEntries.Enabled = false;
                     ImportEntries.Checked = true;
                 }
             }
@@ -102,7 +109,7 @@ namespace Timekeeper.Forms.Wizards
             Widgets.GoBack();
 
             if (!Widgets.AtEnd()) {
-                NextButton.Left = ImportButton.Left;
+                //NextButton.Left = ImportButton.Left;
                 NextButton.Visible = true;
                 ImportButton.Visible = false;
             }
@@ -113,7 +120,7 @@ namespace Timekeeper.Forms.Wizards
         private void UpdateReviewText()
         {
             string FileName = Path.GetFileName(ImportFileName.Text);
-            string FileFolder = Path.GetDirectoryName(ImportFileName.Text);
+            string FileFolder = ImportFileName.Text == "" ? "" : Path.GetDirectoryName(ImportFileName.Text);
 
             WizardReview.Text = "";
 
@@ -121,8 +128,8 @@ namespace Timekeeper.Forms.Wizards
             AddReviewLine("Import File", FileName);
             AddReviewLine("Import File Folder", FileFolder);
 
-            AddReviewLine("Import Projects", ImportProjects.Checked ? "Yes" : "No");
             AddReviewLine("Import Entries", ImportEntries.Checked ? "Yes" : "No");
+            AddReviewLine("Import Projects", ImportProjects.Enabled ? "N/A" : ImportProjects.Checked ? "Yes" : "No");
         }
 
         //----------------------------------------------------------------------
@@ -182,6 +189,7 @@ namespace Timekeeper.Forms.Wizards
             if (OpenFile.ShowDialog(this) == DialogResult.OK) {
                 ImportFileName.Text = OpenFile.FileName;
                 ImportFileName.Select(ImportFileName.Text.Length, 0);
+                Options.State_LastImportedFile = ImportFileName.Text;
             }
         }
 

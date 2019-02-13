@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper
 {
@@ -16,31 +16,59 @@ namespace Timekeeper
         // Properties
         //----------------------------------------------------------------------
 
-        private string TableName;
+        private Timekeeper.Dimension Dimension;
 
-        private bool ClickedCancel = false;
+        private bool ClickedCancel = true;
         private string PreviousItemName = "";
         private string PreviousExternalProjectNo = null;
+        private Classes.TreeAttribute Item;
 
         //----------------------------------------------------------------------
         // Constructor
         //----------------------------------------------------------------------
 
-        public ItemEditor(string tableName)
+        public ItemEditor(Timekeeper.Dimension dimension, bool isFolder)
         {
             InitializeComponent();
 
-            this.TableName = tableName;
+            this.Dimension = dimension;
             this.PopulateParents();
 
-            if (tableName == "Project") {
-                //this.Project = new Project(database);
-            } else {
-                //this.Activity = new Activity(database);
-                ExternalProjectNoLabel.Visible = false;
-                ItemExternalProjectNo.Visible = false;
-                this.Height -= 30;
+            switch (this.Dimension) {
+
+                case Timekeeper.Dimension.Project:
+                    ExternalProjectNoLabel.Visible = true;
+                    ExternalProjectNoLabel.Top = FolderLabel.Top + 104;
+                    ItemExternalProjectNo.Visible = true;
+                    ItemExternalProjectNo.Top = ItemParent.Top + 104;
+                    this.Height += 30;
+                    break;
+
+                case Timekeeper.Dimension.Location:
+                    Classes.Widgets Widgets = new Classes.Widgets();
+                    Widgets.PopulateTimeZoneComboBox(ItemRefTimeZone);
+                    if (!isFolder) {
+                        TimeZoneLabel.Visible = true;
+                        TimeZoneLabel.Top = FolderLabel.Top + 104;
+                        ItemRefTimeZone.Visible = true;
+                        ItemRefTimeZone.Top = ItemParent.Top + 104;
+                        this.Height += 30;
+                    } else {
+                        // Folders don't have time zones.
+                        ItemRefTimeZone.SelectedIndex = -1;
+                    }
+                    break;
             }
+        }
+
+        //---------------------------------------------------------------------
+        // Public Property
+        //---------------------------------------------------------------------
+
+        public Classes.TreeAttribute CreatedItem
+        {
+            get { return this.Item; }
+            set { this.Item = value; }
         }
 
         //---------------------------------------------------------------------
@@ -69,11 +97,11 @@ namespace Timekeeper
 
             string Messages = "";
 
-            if (this.TableName == "Project") {
+            if (this.Dimension == Timekeeper.Dimension.Project) {
                 if (PreviousItemName != ItemName.Text) {
                     Classes.Project Project = new Classes.Project(ItemName.Text);
                     if (ItemName.Text == Project.Name) {
-                        Messages += this.TableName + " '" + ItemName.Text + "' already exists." + Environment.NewLine;
+                        Messages += this.Dimension.ToString() + " '" + ItemName.Text + "' already exists." + Environment.NewLine;
                     }
                 }
 
@@ -89,11 +117,11 @@ namespace Timekeeper
                 }
             }
 
-            if (this.TableName == "Activity") {
+            if (this.Dimension == Timekeeper.Dimension.Activity) {
                 if (PreviousItemName != ItemName.Text) {
                     Classes.Activity Activity = new Classes.Activity(ItemName.Text);
                     if (ItemName.Text == Activity.Name) {
-                        Messages += this.TableName + " already exists." + Environment.NewLine;
+                        Messages += this.Dimension.ToString() + " already exists." + Environment.NewLine;
                     }
                 }
             }
@@ -125,7 +153,7 @@ namespace Timekeeper
 
         private void PopulateParents()
         {
-            Table ParentList = new Classes.TreeAttributeCollection(this.TableName, "CreateTime").GetFolders();
+            Table ParentList = new Classes.TreeAttributeCollection(this.Dimension.ToString(), "CreateTime").GetFolders();
             IdValuePair Pair = new IdValuePair(-1, "(Top Level)");
 
             ItemParent.Items.Add(Pair);

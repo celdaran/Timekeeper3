@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Media;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Tools
 {
@@ -103,12 +103,12 @@ namespace Timekeeper.Forms.Tools
 
                 if (CurrentEvent.Id == 0) {
                     EventGroupList.SelectedIndex = 0;
-                    EventNextOccurrence.Value = DateTime.Now;
+                    EventNextOccurrence.Value = Timekeeper.LocalNow.DateTime;
                 } else {
                     EventName.Text = CurrentEvent.Name;
                     EventDescription.Text = CurrentEvent.Description;
                     EventGroupList.SelectedIndex = EventGroupList.FindStringExact(CurrentEvent.Group.Name);
-                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime.LocalDateTime;
+                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime.DateTime;
                 }
             }
             catch (Exception x) {
@@ -131,14 +131,14 @@ namespace Timekeeper.Forms.Tools
 
                     // CAREFUL: This may whomp things in a way we do not want them whomped
                     CurrentEvent.ReminderId = 0;
-                    CurrentEvent.Reminder = new Classes.Reminder(CurrentEvent.ReminderId);
+                    CurrentEvent.Reminder = new Classes.Reminder((long)CurrentEvent.ReminderId);
                     //Common.Info("User don't want no reminder"); 
                     break;
 
                 case DialogResult.OK:
                     // CAREFUL: This may whomp things in a way we do not want them whomped
                     CurrentEvent.ReminderId = ReminderForm.CurrentReminder.ReminderId;
-                    CurrentEvent.Reminder = new Classes.Reminder(CurrentEvent.ReminderId);
+                    CurrentEvent.Reminder = new Classes.Reminder((long)CurrentEvent.ReminderId);
                     //Common.Info("User want reminder!"); 
                     break;
 
@@ -160,9 +160,9 @@ namespace Timekeeper.Forms.Tools
             switch (ScheduleForm.DialogResult) {
                 case DialogResult.OK:
                     CurrentEvent.ScheduleId = ScheduleForm.CurrentSchedule.ScheduleId;
-                    CurrentEvent.Schedule = new Classes.Schedule(CurrentEvent.ScheduleId);
+                    CurrentEvent.Schedule = new Classes.Schedule((long)CurrentEvent.ScheduleId);
                     CurrentEvent.NextOccurrenceTime = ScheduleForm.ExternalEventNextOccurrence;
-                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime.LocalDateTime;
+                    EventNextOccurrence.Value = CurrentEvent.NextOccurrenceTime.DateTime;
                     break;
                 case DialogResult.Cancel:
                     // Ingore this

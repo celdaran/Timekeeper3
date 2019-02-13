@@ -7,13 +7,14 @@ using System.Resources;
 using System.Collections.ObjectModel;
 using System.Xml;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper
 {
-    partial class File
+    public partial class File
     {
         public DBI Database;
+        public Classes.Audit Audit;
 
         public readonly string Name;
         public readonly string FullPath;
@@ -23,8 +24,10 @@ namespace Timekeeper
         //
         //   MAJOR: Matches the major version of TK which created this schema.
         //   MINOR: Matches the minor version of TK which created this schema.
+        //          Note: this doesn't necessarily have to match the *current*
+        //          version of Timekeeper.
         //   BUILD: Increments whenever the schema changes in a way that 
-        //          would case code incompatabilities. This would mean a new 
+        //          would cause code incompatabilities. This would mean a new 
         //          table, a new column, or an object rename.
         //   REV'N: Increments whenever the schema changes in a way that
         //          does NOT cause any code incompatabilities. This would be
@@ -33,9 +36,10 @@ namespace Timekeeper
         //
         // If the schema version changes, then the SQL file resources must also
         // be updated. Note that prior to 3.0, this convention was not followed 
-        // (nor were the DDL statements stored as resources or tracked in p4).
+        // (nor were the DDL statements stored as resources or under version 
+        // control).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.7.2";
+        public const string SCHEMA_VERSION = "3.0.9.5";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
@@ -62,6 +66,7 @@ namespace Timekeeper
         public File(DBI database)
         {
             this.Database = database;
+            this.Audit = new Classes.Audit();
             if ((Database != null) && (Database.FileName != null)) {
                 FileInfo = new FileInfo(this.Database.FileName);
                 this.Name = FileInfo.Name;
@@ -133,42 +138,14 @@ namespace Timekeeper
         // Database Creation & Population
         //---------------------------------------------------------------------
 
-        /*
-        public bool Create(Version version)
-        {
-            return Create(VersionToString(version), true);
-        }
-
-        //---------------------------------------------------------------------
-
-        public bool Create(Version version, bool populate)
-        {
-            return Create(VersionToString(version), populate);
-        }
-        */
-
-        //---------------------------------------------------------------------
-
-        // TRANSITIONAL
-
-        /*
-        public bool Create(Version desiredVersion, bool populate)
-        {
-            FileCreateOptions Options = new FileCreateOptions();
-            return Create(desiredVersion, Options, populate);
-        }
-        */
-
-        //---------------------------------------------------------------------
-
-        public bool Create(Version desiredVersion) //string version)
+        public bool Create(Version desiredVersion)
         {
             return Create(desiredVersion, true);
         }
 
         //---------------------------------------------------------------------
 
-        public bool Create(Version desiredVersion, bool populate) //string version, bool populate)
+        public bool Create(Version desiredVersion, bool populate)
         {
             try {
                 string version = VersionToString(desiredVersion);
@@ -176,8 +153,9 @@ namespace Timekeeper
                 // Note: due to FK constraints, the order
                 // of table creation below matters.
 
-                // Schema Metadata
+                // System tables
                 CreateTable("Meta", version, populate);
+                CreateTable("Audit", version, false);
 
                 // System Reference tables
                 // FIXME: not FALSE for populate. wtf?
@@ -216,7 +194,11 @@ namespace Timekeeper
                 CreateTable("FindView", version, false);
                 CreateTable("GridView", version, false);
                 CreateTable("ReportView", version, false);
+                CreateTable("CalendarView", version, false);
+                CreateTable("PunchCardView", version, false);
 
+                // Record it
+                this.Audit.DatabaseCreated(desiredVersion);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -273,7 +255,7 @@ namespace Timekeeper
             if (Query != null) {
                 // FIXME: Consider removing positional arguments with named arguments
                 // The below implementation gets us by, but doesn't feel right at all.
-                Query = String.Format(Query, Common.Now(), UUID.Get(), UUID.Get(), SCHEMA_VERSION);
+                Query = String.Format(Query, Timekeeper.DateForDatabase(), UUID.Get(), UUID.Get(), SCHEMA_VERSION);
                 long status = Database.Exec(Query);
                 Timekeeper.Debug(ResourceName + " status was " + status.ToString());
             } else {
@@ -322,17 +304,20 @@ namespace Timekeeper
 
             Row Location = new Row();
 
-            Location["CreateTime"] = Common.Now();
-            Location["ModifyTime"] = Common.Now();
+            Location["CreateTime"] = Timekeeper.DateForDatabase();
+            Location["ModifyTime"] = Timekeeper.DateForDatabase();
             Location["LocationGuid"] = UUID.Get();
             Location["Name"] = options.LocationName;
             Location["Description"] = options.LocationDescription;
-            Location["RefTimeZoneId"] = options.LocationTimeZoneId;
+            Location["ParentId"] = null;
             Location["SortOrderNo"] = 0;
+            Location["IsFolder"] = false;
+            Location["IsFolderOpened"] = false;
             Location["IsHidden"] = 0;
             Location["IsDeleted"] = 0;
             Location["HiddenTime"] = null;
             Location["DeletedTime"] = null;
+            Location["RefTimeZoneId"] = options.LocationTimeZoneId;
 
             this.InsertedRowId = Database.Insert("Location", Location);
             if (InsertedRowId == 0) throw new Exception("Insert failed");
@@ -397,50 +382,6 @@ namespace Timekeeper
                 Timekeeper.Exception(x);
                 throw;
             }
-
-            /*
-            // Create Projects
-            foreach (XmlNode ProjectNode in Projects.ChildNodes) {
-
-                Project Project = new Project(Database);
-
-                Project.Name = ProjectNode["name"].InnerText;
-                Project.Description = ProjectNode["description"].InnerText;
-                Project.IsFolder = ProjectNode["isfolder"].InnerText == "true";
-
-                if (ProjectNode["parent"].InnerText != "") {
-                    Project ParentProject = new Project(Database, ProjectNode["parent"].InnerText);
-                    if (ParentProject.ItemId == 0) {
-                        Timekeeper.Warn("Could not find parent item: '" + ProjectNode["parent"].InnerText + "'");
-                    } else {
-                        Project.ParentId = ParentProject.ItemId;
-                    }
-                }
-
-                Project.Create();
-            }
-
-            // Create Activities
-            foreach (XmlNode ActivityNode in Activities.ChildNodes) {
-
-                Activity Activity = new Activity(Database);
-
-                Activity.Name = ActivityNode["name"].InnerText;
-                Activity.Description = ActivityNode["description"].InnerText;
-                Activity.IsFolder = ActivityNode["isfolder"].InnerText == "true";
-
-                if (ActivityNode["parent"].InnerText != "") {
-                    Activity ParentActivity = new Activity(Database, ActivityNode["parent"].InnerText);
-                    if (ParentActivity.ItemId == 0) {
-                        Timekeeper.Warn("Could not find parent item: '" + ActivityNode["parent"].InnerText + "'");
-                    } else {
-                        Activity.ParentId = ParentActivity.ItemId;
-                    }
-                }
-
-                Activity.Create();
-            }
-            */
         }
 
         //----------------------------------------------------------------------
@@ -489,6 +430,8 @@ namespace Timekeeper
                 // Grab a few handy objects
                 Classes.ProjectCollection Projects = new Classes.ProjectCollection();
                 Classes.ActivityCollection Activities = new Classes.ActivityCollection();
+                Classes.LocationCollection Locations = new Classes.LocationCollection();
+                Classes.CategoryCollection Categories = new Classes.CategoryCollection();
                 Classes.NotebookEntryCollection Notebook = new Classes.NotebookEntryCollection();
                 Classes.JournalEntryCollection Entries = new Classes.JournalEntryCollection();
 
@@ -506,6 +449,8 @@ namespace Timekeeper
                 Info.Add("NotebookCount", Notebook.Count());
                 Info.Add("ProjectCount", Projects.Count());
                 Info.Add("ActivityCount", Activities.Count());
+                Info.Add("LocationCount", Locations.Count());
+                Info.Add("CategoryCount", Categories.Count());
                 Info.Add("TotalTime", Timekeeper.FormatSeconds(Entries.TotalSeconds()));
 
                 // Flag that we're good
@@ -556,8 +501,11 @@ namespace Timekeeper
             Version FoundSchemaVersion = null;
 
             try {
+                bool NewMetaTableExists = Database.TableExists(Timekeeper.MetaTableName());
+                bool OldMetaTableExists = Database.TableExists("meta");
+
                 // Universal (i.e., all TK 2.x and above) meta table detection.
-                if (Database.TableExists(Timekeeper.MetaTableName()) || Database.TableExists("meta"))
+                if (NewMetaTableExists || OldMetaTableExists)
                 {
                     // Determine table name and column names
                     string TableName;
@@ -565,7 +513,7 @@ namespace Timekeeper
                     string KeyColumnName;
                     string KeyColumnValue;
 
-                    if (Database.TableExists(Timekeeper.MetaTableName())) {
+                    if (NewMetaTableExists) {
                         TableName = Timekeeper.MetaTableName();
                         ValueColumnName = "Value";
                         KeyColumnName = "Key";

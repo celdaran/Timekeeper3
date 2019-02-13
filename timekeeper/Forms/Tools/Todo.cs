@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Tools
 {
@@ -19,6 +19,7 @@ namespace Timekeeper.Forms.Tools
 
         private Classes.Options Options;
         private ListViewColumnSorter ColumnSorter;
+        private int GroupBy = 1;
 
         //----------------------------------------------------------------------
         // Constructor
@@ -60,20 +61,106 @@ namespace Timekeeper.Forms.Tools
 
         private void PopulateTodoList()
         {
+            System.Diagnostics.Stopwatch t = new System.Diagnostics.Stopwatch();
+            Timekeeper.Bench(t);
+
+            Timekeeper.Database.BeginWork();
+
             // Populate Groups
-            CreateGroups(1);
+            CreateGroups();
+
+            // Clear list
+            TodoList.Items.Clear();
+            ColumnSorter.SortColumn = 0;
 
             // Populate items
-            TodoList.Items.Clear();
             Classes.TodoItemCollection Collection = new Classes.TodoItemCollection();
             List<Classes.TodoItem> Items = Collection.Fetch(!MenuTodoShowCompletedItems.Checked);
 
             foreach (Classes.TodoItem TodoItem in Items) {
                 Classes.Project Project = new Classes.Project(TodoItem.ProjectId);
-                this.AddItem(Project.DisplayName(), TodoItem, TodoList.Groups[TodoItem.StatusName]);
+                string GroupName = GetGroupName(TodoItem);
+                this.AddItem(Project.DisplayName(), TodoItem, TodoList.Groups[GroupName]);
             }
 
+            Timekeeper.Database.EndWork();
+
+            Timekeeper.Bench(t, "PopulateTodoList (" + this.GroupBy.ToString() + ")");
+
             StatusBarItemCount.Text = TodoList.Items.Count + " item(s)";
+        }
+
+        private string GetTodoItemText(string text, int id)
+        {
+            int NewlineLocation = text.IndexOf("\n");
+            bool NewlineExistsWithinReason = (NewlineLocation > -1) && (NewlineLocation < 50);
+
+            string Display = ""; // id.ToString() + ". ";
+
+            if (NewlineExistsWithinReason) {
+                Display += text.Substring(0, NewlineLocation);
+            } else {
+                Display += Common.Abbreviate(text, 50);
+            }
+
+            return Display;
+        }
+
+        private string GetGroupName(Classes.TodoItem TodoItem)
+        {
+            string GroupName = "Default";
+            switch (this.GroupBy) {
+                case 1:
+                    GroupName = TodoItem.StatusName;
+                    break;
+                case 2:
+                    GroupName = GetProjectFolder(TodoItem.ProjectId);
+                    break;
+                case 3:
+                    GroupName = GetDueDateTimeframe(TodoItem.DueTime);
+                    break;
+            }
+            return GroupName;
+        }
+
+        private string GetProjectFolder(long projectId)
+        {
+            Classes.Project Project = new Classes.Project(projectId);
+            return Project.Parent.Name;
+        }
+
+        private string GetDueDateTimeframe(DateTimeOffset? duedate)
+        {
+            if (duedate == null)
+                return "None";
+
+            DateTime DueDate = duedate.Value.LocalDateTime;
+            DateTime TimeframeEndDate;
+
+            DateTimeOffset Today = DateTimeOffset.Now;
+            TimeframeEndDate = DateTime.Parse(Today.ToString(Timekeeper.DATE_FORMAT) + " 23:59:59");
+            //Timekeeper.Info(String.Format("Alpha: Comparing {0} to {1}", DueDate, TimeframeEndDate));
+            if (DueDate.CompareTo(TimeframeEndDate) < 1)
+                return "Today";
+
+            int SundayDelta = DayOfWeek.Sunday - Today.DayOfWeek;
+            DateTimeOffset EndOfWeek = Today.Add(new TimeSpan((SundayDelta + 7) * 24, 0, 0));
+            TimeframeEndDate = DateTime.Parse(EndOfWeek.Date.ToString(Timekeeper.DATE_FORMAT) + " 23:59:59");
+            if (DueDate.CompareTo(TimeframeEndDate) < 1)
+                return "This Week";
+
+            string EndOfMonthString = String.Format("{0}-{1}-{2}", 
+                Today.Year, Today.Month, DateTime.DaysInMonth(Today.Year, Today.Month));
+            DateTimeOffset EndOfMonth = Timekeeper.StringToDate(EndOfMonthString);
+            TimeframeEndDate = DateTime.Parse(EndOfWeek.Date.ToString(Timekeeper.DATE_FORMAT) + " 23:59:59");
+            if (DueDate.CompareTo(TimeframeEndDate) < 1)
+                return "This Month";
+
+            TimeframeEndDate = DateTime.Parse(Today.Year.ToString() + "-12-31 23:59:59");
+            if (DueDate.CompareTo(TimeframeEndDate) < 1)
+                return "This Year";
+
+            return "Beyond";
         }
 
         private void RestoreWindowMetrics()
@@ -102,15 +189,12 @@ namespace Timekeeper.Forms.Tools
             TodoList.Columns[3].DisplayIndex = Options.Todo_StatusDisplayIndex;
         }
 
-        private void CreateGroups(int groupType)
+        private void CreateGroups()
         {
-            // First, get the group type
-            // TODO: insert switch statement to group by Status, Start Date, or Due Date
-
             ListViewGroup Group;
             TodoList.Groups.Clear();
 
-            switch (groupType) {
+            switch (this.GroupBy) {
                 // Hardcoding Status for now
                 case 1:
                     // Get status values
@@ -124,11 +208,27 @@ namespace Timekeeper.Forms.Tools
                     }
                     break;
                 case 2 :
+                    // Get project folders
+                    Classes.ProjectCollection ProjectCollection = new Classes.ProjectCollection();
+                    List<Classes.Project> Projects = ProjectCollection.FetchAll();
+                    foreach (Classes.Project Project in Projects) {
+                        Group = new ListViewGroup(Project.Parent.Name ?? "None", Project.Parent.Name ?? "None");
+                        TodoList.Groups.Add(Group);
+                    }
+                    break;
+                case 3:
+                    // Get timeframes
                     Group = new ListViewGroup("Today", "Today");
                     TodoList.Groups.Add(Group);
                     Group = new ListViewGroup("This Week", "This Week");
                     TodoList.Groups.Add(Group);
                     Group = new ListViewGroup("This Month", "This Month");
+                    TodoList.Groups.Add(Group);
+                    Group = new ListViewGroup("This Year", "This Year");
+                    TodoList.Groups.Add(Group);
+                    Group = new ListViewGroup("Beyond", "Beyond");
+                    TodoList.Groups.Add(Group);
+                    Group = new ListViewGroup("None", "None");
                     TodoList.Groups.Add(Group);
                     break;
             }
@@ -155,17 +255,18 @@ namespace Timekeeper.Forms.Tools
                     NewItem.ImageIndex = 1;
                 }
 
-                if (todoItem.DueTime.CompareTo(DateTime.UtcNow) < 0) {
-                    NewItem.ForeColor = Color.Red;
+                string StartDate = Timekeeper.NullableDateForDisplay(todoItem.StartTime);
+                string DueDate = Timekeeper.NullableDateForDisplay(todoItem.DueTime);
+
+                if (DueDate != "None") {
+                    DateTimeOffset Converted = (DateTimeOffset)todoItem.DueTime;
+                    if (Converted.CompareTo(DateTime.UtcNow) < 0) {
+                        NewItem.ForeColor = Color.Red;
+                    }
                 }
 
-                string StartDate = todoItem.StartTime == DateTime.MinValue
-                    ? "None"
-                    : todoItem.StartTime.ToString(Options.Advanced_DateTimeFormat);
-                string DueDate = todoItem.DueTime == DateTime.MinValue
-                    ? "None"
-                    : todoItem.DueTime.ToString(Options.Advanced_DateTimeFormat);
-
+                NewItem.SubItems.Add(GetTodoItemText(todoItem.Memo, (int)todoItem.TodoId));
+                NewItem.SubItems.Add(todoItem.ProjectFolderName ?? "None");
                 NewItem.SubItems.Add(StartDate);
                 NewItem.SubItems.Add(DueDate);
                 NewItem.SubItems.Add(todoItem.StatusName);
@@ -184,8 +285,10 @@ namespace Timekeeper.Forms.Tools
             Forms.Tools.TodoDetail DialogBox = new Forms.Tools.TodoDetail();
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
                 Classes.TodoItem TodoItem = DialogBox.TodoItem;
-                TodoItem.Create();
-                this.AddItem(TodoItem.ProjectName, TodoItem, TodoList.Groups[TodoItem.StatusName]);
+                if (TodoItem.Create()) {
+                    string GroupName = GetGroupName(TodoItem);
+                    this.AddItem(TodoItem.ProjectName, TodoItem, TodoList.Groups[GroupName]);
+                }
             }
         }
 
@@ -337,6 +440,51 @@ namespace Timekeeper.Forms.Tools
             MenuTodoViewDetails.Checked = PopupMenuTodoViewDetails.Checked;
         }
 
+        private void MenuTodoGroupByStatus_Click(object sender, EventArgs e)
+        {
+            this.GroupBy = 1;
+
+            MenuTodoGroupByStatus.Checked = true;
+            MenuTodoGroupByProject.Checked = false;
+            MenuTodoGroupByDueDate.Checked = false;
+
+            PopupMenuTodoGroupByStatus.Checked = true;
+            PopupMenuTodoGroupByProject.Checked = false;
+            PopupMenuTodoGroupByDueDate.Checked = false;
+
+            PopulateTodoList();
+        }
+
+        private void MenuTodoGroupByProject_Click(object sender, EventArgs e)
+        {
+            this.GroupBy = 2;
+
+            MenuTodoGroupByStatus.Checked = false;
+            MenuTodoGroupByProject.Checked = true;
+            MenuTodoGroupByDueDate.Checked = false;
+
+            PopupMenuTodoGroupByStatus.Checked = false;
+            PopupMenuTodoGroupByProject.Checked = true;
+            PopupMenuTodoGroupByDueDate.Checked = false;
+
+            PopulateTodoList();
+        }
+
+        private void MenuTodoGroupByDueDate_Click(object sender, EventArgs e)
+        {
+            this.GroupBy = 3;
+
+            MenuTodoGroupByStatus.Checked = false;
+            MenuTodoGroupByProject.Checked = false;
+            MenuTodoGroupByDueDate.Checked = true;
+
+            PopupMenuTodoGroupByStatus.Checked = false;
+            PopupMenuTodoGroupByProject.Checked = false;
+            PopupMenuTodoGroupByDueDate.Checked = true;
+
+            PopulateTodoList();
+        }
+
         //----------------------------------------------------------------------
         // Helpers
         //----------------------------------------------------------------------
@@ -355,9 +503,14 @@ namespace Timekeeper.Forms.Tools
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
                 Classes.TodoItem TodoItem = DialogBox.TodoItem;
                 TodoItem.Save();
-                // Brute-force remove/re-add
-                TodoList.Items.Remove(SelectedItem);
-                this.AddItem(TodoItem.ProjectName, TodoItem, TodoList.Groups[TodoItem.StatusName]);
+
+                SelectedItem.SubItems[0].Text = TodoItem.ProjectName;
+                SelectedItem.SubItems[1].Text = GetTodoItemText(TodoItem.Memo, (int)TodoItem.TodoId);
+                SelectedItem.SubItems[2].Text = TodoItem.ProjectFolderName ?? "None";
+                SelectedItem.SubItems[3].Text = Timekeeper.NullableDateForDisplay(TodoItem.StartTime);
+                SelectedItem.SubItems[4].Text = Timekeeper.NullableDateForDisplay(TodoItem.DueTime);
+                SelectedItem.SubItems[5].Text = TodoItem.StatusName;
+                SelectedItem.Group = TodoList.Groups[GetGroupName(TodoItem)];
             }
         }
 
@@ -449,7 +602,8 @@ namespace Timekeeper.Forms.Tools
                 TodoItem.UpdateStatus(refTodoStatusId);
                 // Brute-force remove/re-add
                 TodoList.Items.Remove(Item);
-                this.AddItem(TodoItem.ProjectName, TodoItem, TodoList.Groups[TodoItem.StatusName]);
+                string GroupName = GetGroupName(TodoItem);
+                this.AddItem(TodoItem.ProjectName, TodoItem, TodoList.Groups[GroupName]);
             }
         }
 
@@ -476,6 +630,8 @@ namespace Timekeeper.Forms.Tools
 
         private void TodoList_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            // Translate date columns for proper date/time sorting
+
             // Determine if clicked column is already the column that is being sorted.
             if (e.Column == ColumnSorter.SortColumn) {
                 // Reverse the current sort direction for this column.
@@ -536,6 +692,11 @@ namespace Timekeeper.Forms.Tools
             catch (Exception x) {
                 Timekeeper.Exception(x);
             }
+        }
+
+        private void MenuTodoRefresh_Click(object sender, EventArgs e)
+        {
+            PopulateTodoList();
         }
 
         //----------------------------------------------------------------------

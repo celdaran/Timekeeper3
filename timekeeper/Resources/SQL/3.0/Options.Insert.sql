@@ -13,6 +13,20 @@ INSERT INTO Options
 ) VALUES (
     '{0}',
     '{0}',
+    'LastProjectId',
+    null
+);
+
+INSERT INTO Options
+(
+    CreateTime,
+    ModifyTime,
+    Key,
+    Value
+
+) VALUES (
+    '{0}',
+    '{0}',
     'LastActivityId',
     null
 );
@@ -27,7 +41,21 @@ INSERT INTO Options
 ) VALUES (
     '{0}',
     '{0}',
-    'LastProjectId',
+    'LastLocationId',
+    null
+);
+
+INSERT INTO Options
+(
+    CreateTime,
+    ModifyTime,
+    Key,
+    Value
+
+) VALUES (
+    '{0}',
+    '{0}',
+    'LastCategoryId',
     null
 );
 
@@ -70,5 +98,33 @@ INSERT INTO Options
     '{0}',
     '{0}',
     'LastReportViewId',
+    null
+);
+
+INSERT INTO Options
+(
+    CreateTime,
+    ModifyTime,
+    Key,
+    Value
+
+) VALUES (
+    '{0}',
+    '{0}',
+    'LastCalendarViewId',
+    null
+);
+
+INSERT INTO Options
+(
+    CreateTime,
+    ModifyTime,
+    Key,
+    Value
+
+) VALUES (
+    '{0}',
+    '{0}',
+    'LastPunchCardViewId',
     null
 );

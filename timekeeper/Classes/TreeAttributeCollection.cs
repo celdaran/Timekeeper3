@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -25,6 +25,23 @@ namespace Timekeeper.Classes
             this.Database = Timekeeper.Database;
             this.TableName = tableName;
             this.OrderByClause = orderByClause;
+        }
+
+        //---------------------------------------------------------------------
+
+        public List<Classes.TreeAttribute> Fetch(long? parentId, bool showHidden, DateTimeOffset showHiddenSince)
+        {
+            Table Table = this.GetItems(parentId, showHidden, showHiddenSince);
+
+            List<Classes.TreeAttribute> TreeAttributes = new List<Classes.TreeAttribute>();
+
+            foreach (Row Row in Table) {
+                var KeyColumnName = this.TableName + "Id";
+                var TreeAttribute = new Classes.TreeAttribute(Row[KeyColumnName], this.TableName, KeyColumnName);
+                TreeAttributes.Add(TreeAttribute);
+            }
+
+            return TreeAttributes;
         }
 
         //---------------------------------------------------------------------
@@ -74,7 +91,7 @@ namespace Timekeeper.Classes
         // Protected Methods
         //---------------------------------------------------------------------
 
-        protected Table GetItems(long parentId, bool showHidden, DateTime showHiddenSince)
+        protected Table GetItems(long? parentId, bool showHidden, DateTimeOffset showHiddenSince)
         {
             if (OrderByClause == "") {
                 OrderByClause = "CreateTime";
@@ -83,7 +100,7 @@ namespace Timekeeper.Classes
             string HiddenQualifier = "";
             if (showHidden) {
                 string HiddenSince = showHiddenSince.ToString(Common.UTC_DATETIME_FORMAT);
-                HiddenQualifier = "and ((IsHidden = 0) or (IsHidden = 1 and HiddenTime > datetime('" + HiddenSince + "')))";
+                HiddenQualifier = "and ((IsHidden = 0) or (IsHidden = 1 and HiddenTime > '" + HiddenSince + "'))";
             } else {
                 HiddenQualifier = "and IsHidden = 0";
             }
@@ -92,9 +109,12 @@ namespace Timekeeper.Classes
                 select * from {0}
                 where IsDeleted = 0
                   {1}
-                  and ParentId = {2}
+                  and ParentId {2}
                 order by {3}",
-                this.TableName, HiddenQualifier, parentId, OrderByClause);
+            this.TableName, 
+            HiddenQualifier, 
+            parentId.HasValue ? ("= " + parentId.Value.ToString()) : "is null", 
+            OrderByClause);
 
             Table Rows = Database.Select(Query);
 

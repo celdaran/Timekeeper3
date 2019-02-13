@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 using Quartz;
 using Quartz.Impl;
 
@@ -28,7 +28,7 @@ namespace Timekeeper.Classes
         {
             List<Classes.ScheduledEvent> ReturnList = new List<ScheduledEvent>();
 
-            if (Options.Advanced_Other_DisableScheduler) {
+            if (!Options.Advanced_Other_EnableScheduler) {
                 return ReturnList;
             }
 
@@ -58,7 +58,7 @@ namespace Timekeeper.Classes
 
                 // With that, if it's in the future, then it's okay to add it to the
                 // list of fetched ScheduledEvents for further processing
-                if (ScheduledEvent.Event.NextOccurrenceTime.CompareTo(DateTimeOffset.Now) > 0) {
+                if (ScheduledEvent.Event.NextOccurrenceTime.CompareTo(Timekeeper.LocalNow) > 0) {
                     ReturnList.Add(ScheduledEvent);
                 }
             }
@@ -70,7 +70,7 @@ namespace Timekeeper.Classes
 
         private void SetNextOccurrenceTime(Classes.ScheduledEvent scheduledEvent)
         {
-            if (Options.Advanced_Other_DisableScheduler) {
+            if (!Options.Advanced_Other_EnableScheduler) {
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace Timekeeper.Classes
                 // reality. e.g., an event that fires every two hours indefinitely
                 // has to pick things back up after the laptop was off for a weekend.
 
-                if (scheduledEvent.Event.NextOccurrenceTime.CompareTo(DateTimeOffset.Now) > 0) {
+                if (scheduledEvent.Event.NextOccurrenceTime.CompareTo(Timekeeper.LocalNow) > 0) {
                     // Already in the future, do nothing
                     return;
                 }
@@ -87,7 +87,7 @@ namespace Timekeeper.Classes
                 // Create trigger (but do not schedule a job)
                 ITrigger Trigger = Timekeeper.CreateTrigger(
                     scheduledEvent,
-                    scheduledEvent.Event.NextOccurrenceTime.LocalDateTime,
+                    scheduledEvent.Event.NextOccurrenceTime,
                     null);
 
                 // Set up some helper variables
@@ -108,7 +108,7 @@ namespace Timekeeper.Classes
                                 Timekeeper.Debug("This event has no next time!");
                                 Continue = false;
                             } else {
-                                if (NextEventTime.Value.LocalDateTime.CompareTo(DateTime.Now) > 0) {
+                                if (NextEventTime.Value.LocalDateTime.CompareTo(Timekeeper.LocalNow.LocalDateTime) > 0) {
                                     Timekeeper.Debug("Found the next time!");
                                     Continue = false;
                                 }
@@ -142,7 +142,7 @@ namespace Timekeeper.Classes
                 }
 
                 if (CurrentEventTime != null) {
-                    scheduledEvent.Event.NextOccurrenceTime = CurrentEventTime.Value;
+                    scheduledEvent.Event.NextOccurrenceTime = CurrentEventTime.Value.DateTime;
                     scheduledEvent.Event.Save();
                     scheduledEvent.Schedule.TriggerCount = TriggerCount;
                     scheduledEvent.Schedule.Save();
@@ -155,22 +155,28 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public DateTime MostRecentModification()
+        public DateTimeOffset MostRecentModification()
         {
             this.Database.BeginWork();
 
             try {
-                string Query = String.Format(@"SELECT max(ModifyTime) as EventModifyTime FROM Event WHERE IsDeleted = 0");
+                string Query = String.Format(@"SELECT COUNT(*) AS Count FROM Event WHERE IsDeleted = 0");
                 Row Row = this.Database.SelectRow(Query);
-                DateTime EventModifyTime = DateTime.Parse(Row["EventModifyTime"]);
+                // If there are no events at all, just return a placeholder value
+                if (Row["Count"] == 0)
+                    return DateTimeOffset.MinValue;
+
+                Query = String.Format(@"SELECT max(ModifyTime) as EventModifyTime FROM Event WHERE IsDeleted = 0");
+                Row = this.Database.SelectRow(Query);
+                DateTimeOffset EventModifyTime = Timekeeper.StringToDate(Row["EventModifyTime"]);
 
                 Query = String.Format(@"SELECT max(ModifyTime) as ReminderModifyTime FROM Reminder");
                 Row = this.Database.SelectRow(Query);
-                DateTime ReminderModifyTime = DateTime.Parse(Row["ReminderModifyTime"]);
+                DateTimeOffset ReminderModifyTime = Timekeeper.StringToDate(Row["ReminderModifyTime"]);
 
                 Query = String.Format(@"SELECT max(ModifyTime) as ScheduleModifyTime FROM Schedule");
                 Row = this.Database.SelectRow(Query);
-                DateTime ScheduleModifyTime = DateTime.Parse(Row["ScheduleModifyTime"]);
+                DateTimeOffset ScheduleModifyTime = Timekeeper.StringToDate(Row["ScheduleModifyTime"]);
 
                 this.Database.EndWork();
 
@@ -192,7 +198,7 @@ namespace Timekeeper.Classes
                 Timekeeper.Exception(x);
                 // Just in case (safe to call twice)
                 this.Database.EndWork();
-                return DateTime.Now;
+                return Timekeeper.LocalNow;
             }
         }
 

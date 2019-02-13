@@ -91,7 +91,7 @@ namespace Timekeeper.Forms.Shared
             this.wInstructions.TabIndex = 4;
             this.wInstructions.TabStop = false;
             // 
-            // fPrompt
+            // Prompt
             // 
             this.AcceptButton = this.btnYes;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -103,10 +103,9 @@ namespace Timekeeper.Forms.Shared
             this.Controls.Add(this.btnYes);
             this.Controls.Add(this.wDontShowAgain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.HelpButton = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "fPrompt";
+            this.Name = "Prompt";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

@@ -10,7 +10,7 @@ using System.Linq;
 
 using System.Diagnostics;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Reports
 {
@@ -113,6 +113,13 @@ namespace Timekeeper.Forms.Reports
 
         private void Grid_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (GridView.Changed) {
+                if (Common.WarnPrompt("View has not been saved. Continue closing?") == DialogResult.No) {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
             Options.Grid_Height = Height;
             Options.Grid_Width = Width;
             Options.Grid_Top = Top;
@@ -145,11 +152,30 @@ namespace Timekeeper.Forms.Reports
             DialogBox.Dimension.SelectedIndex = DimensionComboBox.SelectedIndex;
             DialogBox.TimeDisplay.SelectedIndex = TimeDisplayComboBox.SelectedIndex;
 
+            // Save prior options
+            int SavedGroupBy = GroupByComboBox.SelectedIndex;
+            int SavedDimension = DimensionComboBox.SelectedIndex;
+            int SavedTimeDisplay = TimeDisplayComboBox.SelectedIndex;
+
             if (DialogBox.ShowDialog(this) == DialogResult.OK) {
-                GroupByComboBox.SelectedIndex = DialogBox.GroupDataBy.SelectedIndex;
-                DimensionComboBox.SelectedIndex = DialogBox.Dimension.SelectedIndex;
-                TimeDisplayComboBox.SelectedIndex = DialogBox.TimeDisplay.SelectedIndex;
-                GroupBySelect(GroupByComboBox.SelectedIndex);
+                if ((DialogBox.GroupDataBy.SelectedIndex != SavedGroupBy) ||
+                    (DialogBox.Dimension.SelectedIndex != SavedDimension) ||
+                    (DialogBox.TimeDisplay.SelectedIndex != SavedTimeDisplay))
+                {
+                    GroupByComboBox.SelectedIndex = DialogBox.GroupDataBy.SelectedIndex;
+                    DimensionComboBox.SelectedIndex = DialogBox.Dimension.SelectedIndex;
+                    TimeDisplayComboBox.SelectedIndex = DialogBox.TimeDisplay.SelectedIndex;
+
+                    // FIXME: this is a bit of a hack, but the Options dialog box doesn't
+                    // actually dive into filter options, except that values on the Options
+                    // dialog box do affect the current view, and we'll have to force an
+                    // upsert of the underlying filteroptions to make this all work. That
+                    // force happens when you tell it the filteroptions have changed.
+                    GridView.FilterOptions.Changed = true;
+
+                    // Now run the update
+                    GroupBySelect(GroupByComboBox.SelectedIndex);
+                }
             }
         }
 
@@ -314,6 +340,17 @@ namespace Timekeeper.Forms.Reports
                 // This is the first time; so seed the new view
                 AutoSavedGridView.Name = "Unsaved View";
                 AutoSavedGridView.Description = "Unnamed, last-applied view";
+
+                // PICK IT UP HERE: I ALREADY KNOW THIS IS WORKING
+                // BUT I DON'T KNOW HOW, BECAUSE THIS IS THE SAME LOGIC
+                // IN JournalEntry.AutoSaveView AND IT'S BROKEN OVER
+                // THERE. HERE'S THE DEAL: The very first time we come
+                // in, we don't have a view and (more importantly) we
+                // don't have a FilterOptions object (its id is -1).
+                // What I want to do is in this section of code, create
+                // one and attach it to the new view. Somehow this is
+                // automagically happening here at some point in the flow
+                // but it's not on the Journal side.
                 NewView = true;
             }
 
@@ -511,6 +548,12 @@ namespace Timekeeper.Forms.Reports
                     case 1 :
                         TableName = "Activity";
                         break;
+                    case 2 :
+                        TableName = "Location";
+                        break;
+                    case 3:
+                        TableName = "Category";
+                        break;
                     default :
                         TableName = "Project";
                         break;
@@ -557,7 +600,7 @@ namespace Timekeeper.Forms.Reports
 
                 // Add one column for the item
                 CreateNewColumn("item",
-                    DimensionComboBox.Text.Substring(0, DimensionComboBox.Text.Length - 1),
+                    DimensionComboBox.Text,
                     DataGridViewContentAlignment.MiddleLeft,
                     true);
 

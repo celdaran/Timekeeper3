@@ -28,8 +28,8 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DatabaseCheck));
             this.DatabaseCheckResultsGrid = new System.Windows.Forms.DataGridView();
-            this.JournalIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Issue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,7 +56,6 @@
             this.DatabaseCheckResultsGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.DatabaseCheckResultsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DatabaseCheckResultsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.JournalIndex,
             this.JournalId,
             this.Issue,
             this.StartTime,
@@ -71,13 +70,6 @@
             this.DatabaseCheckResultsGrid.Size = new System.Drawing.Size(774, 245);
             this.DatabaseCheckResultsGrid.TabIndex = 4;
             this.DatabaseCheckResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DatabaseCheckResultsGrid_CellDoubleClick);
-            // 
-            // JournalIndex
-            // 
-            this.JournalIndex.HeaderText = "JournalIndex";
-            this.JournalIndex.Name = "JournalIndex";
-            this.JournalIndex.ReadOnly = true;
-            this.JournalIndex.Visible = false;
             // 
             // JournalId
             // 
@@ -169,8 +161,8 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.HelpButton = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DatabaseCheck";
-            this.ShowIcon = false;
             this.Text = "Database Check";
             ((System.ComponentModel.ISupportInitialize)(this.DatabaseCheckResultsGrid)).EndInit();
             this.toolStrip1.ResumeLayout(false);
@@ -190,7 +182,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar ProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel StatusBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JournalIndex;
         private System.Windows.Forms.DataGridViewTextBoxColumn JournalId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Issue;
         private System.Windows.Forms.DataGridViewTextBoxColumn StartTime;

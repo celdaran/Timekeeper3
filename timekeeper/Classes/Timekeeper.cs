@@ -1,10 +1,13 @@
 using System;
 using System.IO;
 using System.Diagnostics;
+using System.Windows.Forms;
+using System.Drawing;
 using System.Reflection;
 using System.Collections.ObjectModel;
+using System.Linq;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 using Quartz;
 using Quartz.Impl;
 
@@ -19,22 +22,33 @@ namespace Timekeeper
         public const string TITLE = "Timekeeper";
         public const string IDENTIFIER = "7EFF6E35-2448-4AA8-BBB0-441536BE592F";
 
-        public static readonly string VERSION = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public static readonly string VERSION = Assembly.GetEntryAssembly().GetName().Version.ToString();
         public static readonly string SHORT_VERSION = VERSION.Substring(0, 3);
+        public static readonly object[] ATTRIBS = Assembly.GetEntryAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
+        public static readonly string COPYRIGHT = ((AssemblyCopyrightAttribute)ATTRIBS[0]).Copyright;
+        public static readonly string RELEASE_DATE = "May 31, 2019";
+
+        public static readonly string CWD = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         public const int SUCCESS = 1;
         public const int FAILURE = 0;
 
-        public const int IMG_FOLDER_OPEN = 0;
-        public const int IMG_FOLDER_CLOSED = 1;
-        public const int IMG_PROJECT = 2;
-        public const int IMG_ACTIVITY = 3;
-        public const int IMG_TIMER_START = 4;
-        public const int IMG_TIMER_END = 7;
-        public const int IMG_ITEM_HIDDEN = 8;
-        public const int IMG_FOLDER_HIDDEN = 9;
+        public const int IMG_FOLDER = 0;
+        public const int IMG_PROJECT = 1;
+        public const int IMG_ACTIVITY = 2;
+        public const int IMG_LOCATION = 3;
+        public const int IMG_CATEGORY = 4;
+        public const int IMG_ITEM_HIDDEN = 5;
+        public const int IMG_FOLDER_HIDDEN = 6;
+
+        public const char CHAR_UNCHECKEDBOX = '\u2610';
+        public const char CHAR_CHECKEDBOX = '\u2611';
 
         public enum Dimension { Project, Activity, Location, Category };
+
+        public const string DATE_FORMAT = "yyyy-MM-dd";
+        public const string LOCAL_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+        public const string UTC_DATETIME_FORMAT = "yyyy-MM-ddTHH:mm:sszzz";
 
         //---------------------------------------------------------------------
         // Properties
@@ -42,7 +56,13 @@ namespace Timekeeper
 
         public static DBI Database;
         public static Classes.Options Options;
+
         public static IScheduler Scheduler;
+        public static Classes.Messages Mailbox = Classes.Messages.Instance;
+
+        public static string Checkedbox { get { return CHAR_CHECKEDBOX.ToString(); } }
+        public static string Uncheckedbox { get { return CHAR_UNCHECKEDBOX.ToString(); } }
+
         private static Log Log;
 
         //---------------------------------------------------------------------
@@ -51,6 +71,7 @@ namespace Timekeeper
 
         public static DBI CloseDatabase()
         {
+            Database.EndWork();
             Database = null;
             return Database;
         }
@@ -61,6 +82,8 @@ namespace Timekeeper
         {
             if (Database == null) {
                 Database = new DBI(dataFile, logLevel, GetLogPath());
+                // We'll see... can I keep the file open ALL the time!?
+                Database.BeginWork();
             }
             return Database;
         }
@@ -102,12 +125,12 @@ namespace Timekeeper
 
         public static void OpenScheduler()
         {
-            if (Options.Advanced_Other_DisableScheduler) {
-                Scheduler = null;
-            } else {
+            if (Options.Advanced_Other_EnableScheduler) {
                 ISchedulerFactory ScheduleFactory = new StdSchedulerFactory();
                 Scheduler = ScheduleFactory.GetScheduler();
                 Scheduler.Start();
+            } else {
+                Scheduler = null;
             }
         }
 
@@ -115,7 +138,7 @@ namespace Timekeeper
 
         public static void Schedule(Classes.ScheduledEvent scheduledEvent, Forms.Main mainForm)
         {
-            if (Options.Advanced_Other_DisableScheduler) {
+            if (!Options.Advanced_Other_EnableScheduler) {
                 return;
             }
 
@@ -131,15 +154,15 @@ namespace Timekeeper
             Job.JobDataMap.Add("MainForm", mainForm);
 
             // Determine reminder time
-            DateTime ReminderTime = scheduledEvent.Schedule.ReminderTime(
-                scheduledEvent.Event.NextOccurrenceTime.LocalDateTime,
+            DateTimeOffset ReminderTime = scheduledEvent.Schedule.ReminderTime(
+                scheduledEvent.Event.NextOccurrenceTime,
                 (int)scheduledEvent.Reminder.TimeUnit,
                 (int)scheduledEvent.Reminder.TimeAmount);
 
             string Debug =
                 "Created Job \"" + Job.Key.ToString() + "\"" +
                 " for Event \"" + scheduledEvent.Event.Name + "\"" + 
-                " to be Reminded at \"" + ReminderTime.ToString(Common.LOCAL_DATETIME_FORMAT) + "\"";
+                " to be Reminded at \"" + Timekeeper.DateForDisplay(ReminderTime) + "\"";
             Timekeeper.Debug(Debug);
 
             // Create trigger
@@ -148,9 +171,9 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public static ITrigger CreateTrigger(Classes.ScheduledEvent scheduledEvent, DateTime reminderTime, IJobDetail job)
+        public static ITrigger CreateTrigger(Classes.ScheduledEvent scheduledEvent, DateTimeOffset reminderTime, IJobDetail job)
         {
-            if (Options.Advanced_Other_DisableScheduler) {
+            if (!Options.Advanced_Other_EnableScheduler) {
                 return null;
             }
 
@@ -223,32 +246,270 @@ namespace Timekeeper
         }
 
         //---------------------------------------------------------------------
-        // Standard Exception Handling
+        // DateTime Helpers
+        //---------------------------------------------------------------------
+        // IMPORTANT NOTE: Timekeeper very purposefully only uses local time
+        // values. There are no UTC dates and (more importantly) no unspecified
+        // DateTime values. This was not a light decision.
+        //---------------------------------------------------------------------
+        // I'm officially abandoning TBX's datetime helper methods in favor of
+        // what you see below. While these are very thin and simple one-liners,
+        // the point is I now have an abstraction layer which: 1) is under 
+        // completely control of the Timekeeper database (i.e., no external
+        // dependency upon TBX, and 2) can easily be modified later should I
+        // choose to convert from LocalTime to UTC in the future.
         //---------------------------------------------------------------------
 
-        public static void Exception(Exception x)
+        public static string DateForDatabase()
         {
-            Log = GetLog();
-            string msg = Common.Exception(x, 2);
-            Log.Warn(msg);
-            if (Options.Advanced_Other_EnableStackTracing) {
-                Log.Warn(Environment.StackTrace);
+            return DatabaseDateTimeString(Timekeeper.LocalNow);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string DateForDatabase(DateTimeOffset datetime)
+        {
+            return DatabaseDateTimeString(datetime);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string NullableDateForDatabase(DateTimeOffset? datetime)
+        {
+            return NullableDatabaseDateTimeString(datetime);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string DateForDisplay()
+        {
+            return UserDateTimeString(Timekeeper.LocalNow);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string DateForDisplay(DateTimeOffset datetime)
+        {
+            return UserDateTimeString(datetime);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string NullableDateForDisplay(DateTimeOffset? datetime)
+        {
+            return NullableUserDateTimeString(datetime);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string TimeForDisplay(DateTimeOffset datetime)
+        {
+            return UserTimeString(datetime);
+        }
+
+        //---------------------------------------------------------------------
+
+        private static string DatabaseDateTimeString(DateTimeOffset datetime)
+        {
+            return datetime.ToLocalTime().ToString(Timekeeper.LOCAL_DATETIME_FORMAT);
+        }
+
+        //---------------------------------------------------------------------
+
+        private static string NullableDatabaseDateTimeString(DateTimeOffset? datetime)
+        {
+            if ((datetime == null) || (datetime == DateTimeOffset.MinValue)) {
+                return null;
+            } else {
+                DateTimeOffset Converted = (DateTimeOffset)datetime;
+                return Converted.ToLocalTime().ToString(Timekeeper.LOCAL_DATETIME_FORMAT);
             }
         }
 
         //---------------------------------------------------------------------
 
-        public static string MetaTableName()
+        private static string UserDateTimeString(DateTimeOffset datetime)
         {
-            return "[" + IDENTIFIER + "]";
+            return datetime.ToLocalTime().ToString(Options.Advanced_DateTimeFormat);
         }
+
+        //---------------------------------------------------------------------
+
+        private static string UserTimeString(DateTimeOffset datetime)
+        {
+            // TODO/FIXME: implement this: Options.Advanced_TimeFormat);
+            return datetime.ToLocalTime().ToString("hh:mm:ss"); 
+        }
+
+        //---------------------------------------------------------------------
+
+        private static string NullableUserDateTimeString(DateTimeOffset? datetime)
+        {
+            if ((datetime == null) || (datetime == DateTimeOffset.MinValue)) {
+                return "None";
+            } else {
+                DateTimeOffset Converted = (DateTimeOffset)datetime;
+                return Converted.ToLocalTime().ToString(Options.Advanced_DateTimeFormat);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public static DateTimeOffset StringToDate(string datetime)
+        {
+            return datetime == null ? DateTimeOffset.MinValue : DateTimeOffset.Parse(datetime).ToLocalTime();
+        }
+
+        //---------------------------------------------------------------------
+
+        public static DateTimeOffset? StringToNullableDate(string datetime)
+        {
+            if (datetime == null)
+                return null;
+            else
+                return DateTimeOffset.Parse(datetime).ToLocalTime();
+        }
+
+        //---------------------------------------------------------------------
+
+        public static DateTimeOffset LocalNow
+        {
+            get {
+                return DateTimeOffset.Now;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public static DateTime AdjustedToday
+        {
+            get {
+                // 2014-07-22 23:29 + (-3) ==> 7/22
+                // 2014-07-23 12:29 + (-3) ==> 7/22
+                // 2014-07-23 04:29 + (-3) ==> 7/23
+                DateTime AdjustedNow = DateTime.Now.AddHours(-Timekeeper.Options.Advanced_Other_MidnightOffset);
+                return AdjustedNow.Date;
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // DateTime Converters
+        //---------------------------------------------------------------------
+        // 2014-07-14 update: I'm officially ditching the UTC internal datetime
+        // storage idea. It's too much work for too little benefit. I'll take
+        // it on later when this thing goes a bit more global. For now, it's
+        // sucking up too much time. I'm leaving these methods below for later
+        // because I would like a standard set of DateTime<-->String methods
+        // designed just for TK that take Location.TimeZone into account.
+        //---------------------------------------------------------------------
+
+        // If you're wondering where these all went, I backedpeddled from my
+        // statements, moved the methods above, and made some modifications.
 
         //---------------------------------------------------------------------
         // Format Helpers
         //---------------------------------------------------------------------
 
+        public static string ReformatSeconds(string time)
+        {
+            long Seconds = Timekeeper.UnformatSeconds(time);
+            return Timekeeper.FormatSeconds(Seconds);
+        }
+
+        //---------------------------------------------------------------------
+
+        public static long UnformatSeconds(string time)
+        {
+            long seconds = 0;
+            long h = 0;
+            long m = 0;
+            long s = 0;
+            bool negative = false;
+            char[] units = new char[] {'h', 'H', 'm', 'M', 's', 'S'};
+
+            try {
+                if (time.Substring(0, 1) == "-") {
+                    // user going back in time
+                    negative = true;
+                    // strip minus sign from text
+                    time = time.Substring(1);
+                }
+
+                string[] parts = time.Split(':');
+
+                switch (parts.Length) {
+                    case 1:
+                        // one part => either minutes or a number with a unit
+                        char PossibleUnit = parts[0][parts[0].Length - 1];
+                        if (units.Contains(PossibleUnit)) {
+                            long value = Convert.ToInt64(parts[0].Substring(0, parts[0].Length - 1));
+                            switch (PossibleUnit) {
+                                case 'h':
+                                case 'H':
+                                    h = value * 60 * 60;
+                                    break;
+                                case 'm':
+                                case 'M':
+                                    m = value * 60;
+                                    break;
+                                default:
+                                    s = value;
+                                    break;
+                            }
+                        } else {
+                            bool AppearsNumeric = long.TryParse(PossibleUnit.ToString(), out m);
+                            if (AppearsNumeric) {
+                                h = 0;
+                                m = Convert.ToInt64(parts[0]) * 60;
+                                s = 0;
+                            } else {
+                                throw new System.ApplicationException("invalid time unit specifier");
+                            }
+                        }
+                        break;
+                    case 2:
+                        // two parts => minutes seconds
+                        h = 0;
+                        m = Convert.ToInt64(parts[0]) * 60;
+                        s = Convert.ToInt64(parts[1]);
+                        if ((m < 0) || (m > 3599)) {
+                            throw new System.ApplicationException("invalid minutes");
+                        }
+                        break;
+                    case 3:
+                        // three parts => hours minutes seconds
+                        h = Convert.ToInt64(parts[0]) * 3600;
+                        m = Convert.ToInt64(parts[1]) * 60;
+                        s = Convert.ToInt64(parts[2]);
+                        if ((m < 0) || (m > 3599)) {
+                            throw new System.ApplicationException("invalid minutes");
+                        }
+                        if ((s < 0) || (s > 59)) {
+                            throw new System.ApplicationException("invalid seconds");
+                        }
+                        break;
+                    default:
+                        // if it's not 1, 2, or three, do nothing
+                        break;
+                }
+
+                seconds = h + m + s;
+            }
+            catch {
+                // do anything? -- probably not, just ignore it and 
+                // return the default value of 0
+            }
+
+            return negative ? -seconds : seconds;
+        }
+
+        //---------------------------------------------------------------------
+
         public static string FormatSeconds(long seconds)
         {
+            if (seconds > (9999*60*60 + 59*60 + 59)) {
+                Common.Info("Duration greater than 10,000 hours detected.");
+            }
             TimeSpan t = TimeSpan.FromSeconds(seconds);
             return string.Format("{0:D2}:{1:D2}:{2:D2}",
                                     (t.Days * 24) + t.Hours,
@@ -274,6 +535,78 @@ namespace Timekeeper
                                     (days * 24) + t.Hours,
                                     t.Minutes,
                                     t.Seconds);
+        }
+
+        //---------------------------------------------------------------------
+        // Benchmarking
+        //---------------------------------------------------------------------
+
+        public static Stopwatch Bench()
+        {
+            Stopwatch t = new Stopwatch();
+            t.Start();
+            return t;
+        }
+
+        //---------------------------------------------------------------------
+        // TODO: Use my own Stopwatch wrapper class instead of Stopwatch 
+        // directly. See Classes.Datatypes for more info.
+        //---------------------------------------------------------------------
+
+        public static void Bench(Stopwatch t)
+        {
+            t.Start();
+        }
+
+        //---------------------------------------------------------------------
+
+        public static void Bench(Stopwatch t, string message)
+        {
+            t.Stop();
+            Timekeeper.Debug("BENCH: " + message + ": " + t.ElapsedMilliseconds.ToString() + "ms");
+            t.Reset();
+            t.Start();
+        }
+
+        //---------------------------------------------------------------------
+        // Standard Exception Handling
+        //---------------------------------------------------------------------
+
+        public static void Exception(Exception x)
+        {
+            // Get exception text
+            string Message = Common.Exception(x, 2);
+
+            // Build message
+            Message = String.Format("{0} {1}.", Message, x.StackTrace);
+
+            // Sent output to log
+            Log = GetLog();
+            Log.Warn(Message);
+
+            // Dump full stack trace, if requested
+            if (Options.Advanced_Other_EnableStackTracing) {
+                string StackTraceOutput = "Stack trace:";
+                var StackTrace = new StackTrace(1, true);
+                StackFrame[] Frames = StackTrace.GetFrames();
+                foreach (StackFrame f in Frames) {
+                    string SourceFileName = f.GetFileName();
+                    if (SourceFileName != null) {
+                        // Only add to the stack trace if we got a file name back.
+                        string StackTraceLine = String.Format("\n  at {0} in {1}:line {2}",
+                            f.GetMethod().Name, SourceFileName, f.GetFileLineNumber());
+                        StackTraceOutput += StackTraceLine;
+                    }
+                }
+                Log.Warn(StackTraceOutput);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public static string MetaTableName()
+        {
+            return "[" + IDENTIFIER + "]";
         }
 
         //---------------------------------------------------------------------
@@ -356,6 +689,22 @@ namespace Timekeeper
         // Random Things
         //---------------------------------------------------------------------
 
+        public static Point CenterInParent(Form parentForm, int width, int height)
+        {
+            // A manual "CenterParent" function, due to the way I'm
+            // managing the wizard forms (sans tabs). These forms, in
+            // spite of their visible width, are thousands of pixels
+            // wide, and that's what .NET uses to "center" it, which 
+            // always puts it to the far left of the monitor. This gets
+            // a point which represents the Center in the parent after
+            // the width has been visually adjusted.
+            int x = parentForm.Location.X + ((parentForm.Width - width) / 2);
+            int y = parentForm.Location.Y + ((parentForm.Height - height) / 2);
+            return new Point(x, y);
+        }
+
+        //---------------------------------------------------------------------
+
         public static long CurrentTimeZoneId()
         {
             ReadOnlyCollection<TimeZoneInfo> TimeZones = TimeZoneInfo.GetSystemTimeZones();
@@ -389,16 +738,40 @@ namespace Timekeeper
 
         //----------------------------------------------------------------------
 
-        public static long GetNextSortOrderNo(string tableName)
+        public static string GetFilePath(string fileName)
         {
-            return GetNextSortOrderNo(tableName, -1);
+            return Path.IsPathRooted(fileName) ? fileName : Timekeeper.CWD + Path.DirectorySeparatorChar + fileName;
         }
 
         //----------------------------------------------------------------------
 
-        public static long GetNextSortOrderNo(string tableName, long parentId)
+        // TODO: TBX helper?
+        public static string Pluralize(int count, string singluar, string plural)
         {
-            string WhereClause = parentId > -1 ? "WHERE ParentId = " + parentId : "";
+            if (count == 0)
+                // TODO: I'm not 100% sold on "0 ==> No"
+                // Just trying it on for size at this point.
+                return String.Format(@"No {0}", plural);
+            else if (count == 1)
+                // I could add an "English" mode which would
+                // substitute "No" for 0 and "One" for 1...?
+                return String.Format(@"{0} {1}", count, singluar);
+            else
+                return String.Format(@"{0} {1}", count, plural);
+        }
+
+        //----------------------------------------------------------------------
+
+        public static long GetNextSortOrderNo(string tableName)
+        {
+            return GetNextSortOrderNo(tableName, null);
+        }
+
+        //----------------------------------------------------------------------
+
+        public static long GetNextSortOrderNo(string tableName, long? parentId)
+        {
+            string WhereClause = parentId.HasValue ? "WHERE ParentId = " + parentId.Value : "";
 
             string Query = String.Format(@"
                 SELECT max(SortOrderNo) as HighestSortOrderNo
@@ -419,20 +792,6 @@ namespace Timekeeper
             }
         }
 
-        //----------------------------------------------------------------------
-
-        public static DateTimeOffset MaxDateTime()
-        {
-            // Why not just use DateTime.MaxValue? Well, I'll tell you. For
-            // some reason when I do, and I store it in the database, it
-            // ends up being '9999-12-31T23:59:59.99-06:00', which is fine
-            // except that this value represents a UTC value in the year
-            // 10000, which is suddenly an invalid date/time. I'm making up
-            // my own MaxDateTime value, because I simply don't have time
-            // to figure out this peculiarity.
-            return DateTimeOffset.Parse("2999-12-31T23:59:59.99-00:00");
-        }
-
         //---------------------------------------------------------------------
         // Private helpers
         //---------------------------------------------------------------------
@@ -440,7 +799,7 @@ namespace Timekeeper
         private static Log GetLog()
         {
             if (Log == null) {
-                Log = new Technitivity.Toolbox.Log(GetLogPath());
+                Log = new Classes.Toolbox.Log(GetLogPath(), Timekeeper.UTC_DATETIME_FORMAT);
                 Log.Level = GetLogLevel(Options.Advanced_Logging_Application);
                 Log.Debug("Log File Opened");
             }

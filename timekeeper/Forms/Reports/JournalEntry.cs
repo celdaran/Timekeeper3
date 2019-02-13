@@ -7,10 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Resources;
 
 using MarkdownSharp;
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Reports
 {
@@ -69,13 +68,20 @@ namespace Timekeeper.Forms.Reports
 
         private void Report_Activated(object sender, EventArgs e)
         {
-            UpdateToolbar();
+            if (Timekeeper.Database != null)
+                UpdateToolbar();
         }
 
         //----------------------------------------------------------------------
 
         private void Report_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (ReportView.Changed) {
+                if (Common.WarnPrompt("View has not been saved. Continue closing?") == DialogResult.No) {
+                    e.Cancel = true;
+                    return;
+                }
+            }
             // Save window metrics
             Options.Report_Height = Height;
             Options.Report_Width = Width;
@@ -341,127 +347,123 @@ namespace Timekeeper.Forms.Reports
             long nTotalSeconds = 0;
             long nDailySeconds = 0;
 
-            String Body = "";
+            Markdown MarkdownEngine = new Markdown();
 
-            foreach (Row row in FindResults) {
-                long seconds = row["Seconds"];
-                DateTime start = row["StartTime"];
-                DateTime end = row["StopTime"];
+            //----------------------------------------------
+            // Build report body
+            //----------------------------------------------
 
-                // Markup support
-                /*
-                string post = row["Memo"].Replace("\n", "<br/>");
-                post = post.Replace("<br/>*", "<br/><li>");
-                */
+            String Body = "<div class=\"report-header\">";
+//            Body += "  <p>Timekeeper Journal Entry Report</p>";
+            Body += "</div>\n\n";
+            Body += "<div class=\"report-body\">";
 
-                Markdown MarkdownEngine = new Markdown();
-                string post = MarkdownEngine.Transform(row["Memo"]);
+            foreach (Row Entry in FindResults)
+            {
+                long Seconds = Entry["Seconds"];
+                DateTime StartTime = DateTime.Parse(Entry["StartTime"]);
+                DateTime StopTime = DateTime.Parse(Entry["StopTime"]);
+                string Memo = MarkdownEngine.Transform(Entry["Memo"]);
 
-                string[] MemoParts = post.Split(new string[] { "<br/><br/><!--SEPARATOR--><br/><br/>" }, StringSplitOptions.RemoveEmptyEntries);
-                string MemoArea = "";
-                int index = 1;
-                if (MemoParts.Count() > 1) {
-                    foreach (string MemoPart in MemoParts) {
-                        MemoArea += String.Format(@"<p class=""memo""><b>Part {0}</b>: {1}</p>", index++, MemoPart);
-                    }
-                } else if (MemoParts.Count() > 0) {
-                    MemoArea = String.Format(@"<p class=""memo"">{0}</p>", MemoParts[0]);
-                } else {
-                    MemoArea = String.Format(@"<p class=""memo"">{0}</p>", MemoArea);
-                }
+                // Special checkbox handling
+                Memo = Memo.Replace(Timekeeper.Uncheckedbox, "<br>" + Timekeeper.Uncheckedbox);
+                Memo = Memo.Replace(Timekeeper.Checkedbox, "<br>" + Timekeeper.Checkedbox);
 
-                /*
-                string Pre = post.Substring(0, post.IndexOf("<br/><br/><!--SEPARATOR--><br/><br/>"));
-                string Post = post.Substring(post.IndexOf("<br/><br/><!--SEPARATOR--><br/><br/>") + 36);
-                Common.Info(MemoParts[0]);
-                if (MemoParts.Count() > 1) {
-                    Common.Info(MemoParts[1]);
-                }
-                */
+                string EntryHeader = "";
 
-                string hr = "";
-
-                if (nPrevDay == start.DayOfYear) {
+                if (nPrevDay == StartTime.DayOfYear) {
                     // no header if this entry is the same day as the previous
                 } else {
                     if (nPrevDay != 0) {
-                        hr += "<p><b>Daily Total</b>: " + Timekeeper.FormatSeconds(nDailySeconds) + "</p>";
+                        // FIXME: This doesn't get triggered on the last day of the report
+                        // Figure out a better way to do this.
+                        EntryHeader += "<p><b>Daily Total</b>: " + Timekeeper.FormatSeconds(nDailySeconds) + "</p>";
                     }
-                    hr += "<hr /> <b>";
-                    hr += start.ToString("dddd, MMMM dd, yyyy") + "</b>";
+                    EntryHeader += String.Format(@"<div class=""entry-date"">{0}</div>", StartTime.ToString("dddd, MMMM dd, yyyy"));
                     nDailySeconds = 0;
                 }
 
-                nPrevDay = start.DayOfYear;
+                nPrevDay = StartTime.DayOfYear;
 
-                string rpt = String.Format(@"
-                    {5}
-                    <p>{0} - {1} (<b>{2}</b>): {3}</p>
-                    <p>{4}</p>",
-                    start.ToString("HH:mm:ss"), end.ToString("HH:mm:ss"),
-                    Timekeeper.FormatSeconds(seconds), row["ActivityName"] + " / " + row["ProjectName"],
-                    MemoArea, hr);
-                Body += rpt;
+                // FIXME: duplicated code from Main.Action.cs
+                string Dimension = Options.Behavior_TitleBar_Template;
+                Dimension = Dimension.Replace("%project", "{0}");
+                Dimension = Dimension.Replace("%activity", "{1}");
+                Dimension = Dimension.Replace("%location", "{2}");
+                Dimension = Dimension.Replace("%category", "{3}");
+                Dimension = Dimension.Replace("%time", "{4}");
+                Dimension = String.Format(Dimension, 
+                    Entry["ProjectName"], Entry["ActivityName"], 
+                    Entry["LocationName"], Entry["CategoryName"],
+                    Timekeeper.FormatSeconds(Seconds));
 
-                nTotalSeconds += seconds;
-                nDailySeconds += seconds;
+                // FIXME: should this template go in a resource or something? Might be cleaner.
+                // OR should this be part of the template stored externally, like CSS and HTML?
+                // That would allow the user full customization
+                string EntryBlock = String.Format(@"
+    {4}
+
+    <div class=""entry"">
+
+      <div class=""entry-header"">
+        <span class=""entry-timespan"">{0} - {1}</span>: <span class=""entry-dimension"">{2}</span>
+      </div>
+
+      <div class=""entry-memo"">
+        {3}
+      </div>
+
+    </div>
+",
+                    StartTime.AddHours(Options.Advanced_Other_MidnightOffset).ToString("HH:mm:ss"),
+                    StopTime.AddHours(Options.Advanced_Other_MidnightOffset).ToString("HH:mm:ss"),
+//                    Timekeeper.FormatSeconds(Seconds),
+                    Dimension,
+                    Memo,
+                    EntryHeader);
+                Body += EntryBlock;
+
+                nTotalSeconds += Seconds;
+                nDailySeconds += Seconds;
             }
 
             if (FindResults.Count > 0) {
-                Body += "<hr/><b>Total Time</b>: " + Timekeeper.FormatSeconds(nTotalSeconds);
+                Body += "<div class=\"report-footer\">";
+                Body += "  <span class\"report-total-time-label\">Total Time:</span>";
+                Body += "  <span class\"report-total-time\">" + Timekeeper.FormatSeconds(nTotalSeconds) + "</span>";
+                Body += "</div>";
             } else {
-                Body += "<p>No data matches reporting criteria.</p>";
+                Body += "<div class=\"no-data\">No data matches reporting criteria.</div>";
             }
 
+            //----------------------------------------------
+            // Generate final HTML report
+            //----------------------------------------------
+
             try {
-                //ResourceManager Resources = new ResourceManager(typeof(string));
-                //ResourceManager Resources = new ResourceManager(typeof(Timekeeper));
-                ResourceManager Resources = new ResourceManager("Timekeeper.Properties.Resources", typeof(JournalEntry).Assembly);
+                FontConverter fc = new FontConverter();
+                Font ReportFont = (Font)fc.ConvertFromString(Options.Report_Font);
 
-                //var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
-                //var farewell = loader.GetString("Farewell");
+                string CssPath = Timekeeper.GetFilePath(this.Options.Report_StyleSheetFile);
+                string Styles = System.IO.File.ReadAllText(CssPath);
 
-                string Styles = Resources.GetString("ReportCssTemplate");
-                string Document = Resources.GetString("ReportTemplate");
-                string TextFileTest = Resources.GetString("TextFileTest");
-                string MetaTableName = Resources.GetString(Timekeeper.MetaTableName());
+                Styles = Styles.Replace("%fontname", ReportFont.Name);
+                Styles = Styles.Replace("%fontsize", ReportFont.SizeInPoints.ToString() + "pt");
 
-                //Common.Info(Styles);
-                //Common.Info(Document);
-                //Common.Info(TextFileTest);
-                //Common.Info(MetaTableName);
+                string HtmlPath = Timekeeper.GetFilePath(this.Options.Report_LayoutFile);
+                string Document = System.IO.File.ReadAllText(HtmlPath);
 
-                Styles = String.Format(Styles, "Tahoma", "10");
-                Document = String.Format(Document, "Timekeeper Report", Styles, Body);
+                Document = Document.Replace("%title", "Timekeeper Report");
+                Document = Document.Replace("%style", Styles);
+                Document = Document.Replace("%body", Body);
 
-                string filename = System.IO.Path.GetTempPath() + Timekeeper.IDENTIFIER + @".html";
+                string ReportFileName = System.IO.Path.GetTempPath() + Timekeeper.IDENTIFIER + @".html";
 
-                StreamWriter writer = new StreamWriter(filename);
-                writer.Write(Document);
-                writer.Close();
+                StreamWriter Writer = new StreamWriter(ReportFileName);
+                Writer.Write(Document);
+                Writer.Close();
 
-                ReportWindow.Navigate("file://" + filename);
-                //ReportWindow.DocumentText = "<html><body>Hello</body></html>";
-                //ReportWindow.DocumentText = doc;
-
-                //ReportWindow.Document.OpenNew(true);
-                //ReportWindow.Document.Write(doc);
-                /*
-                HtmlElement Html = ReportWindow.Document.CreateElement("html");
-                HtmlElement Body = ReportWindow.Document.CreateElement("body");
-                Html.AppendChild(Body);
-
-                HtmlDocument Document = ReportWindow.Document;
-                foreach (HtmlElement Element in Document.All) {
-                    Common.Info(Element.InnerHtml);
-                }
-                */
-
-                /*
-                ReportWindow.Document.OpenNew(true);
-                ReportWindow.DocumentText = "<html><body>Hello</body></html>";
-                ReportWindow.Document.Write(doc);
-                */
+                ReportWindow.Navigate("file://" + ReportFileName);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -471,7 +473,6 @@ namespace Timekeeper.Forms.Reports
             // UI Updates
             //----------------------------------------------
 
-            //ResultCount.Text = FindResultsGrid.Rows.Count.ToString() + " entries found.";
             UpdateViewState(autoSaveView);
 
         }
@@ -520,6 +521,7 @@ namespace Timekeeper.Forms.Reports
 
             return OrderBy;
         }
+
 
         //---------------------------------------------------------------------
 

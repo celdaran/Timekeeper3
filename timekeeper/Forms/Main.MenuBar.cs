@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms
 {
@@ -22,8 +22,10 @@ namespace Timekeeper.Forms
             Action_SetMenuAvailability(MenuReport, true);
             Action_SetMenuAvailability(MenuTool, true);
 
-            PopupMenuProject.Enabled = true;
+            /*
+            OldPopupMenuProject.Enabled = true;
             PopupMenuActivity.Enabled = true;
+            */
 
             MenuFileSaveAs.Enabled = true;
             MenuFileClose.Enabled = true;
@@ -61,8 +63,10 @@ namespace Timekeeper.Forms
             Action_SetMenuAvailability(MenuReport, false);
             Action_SetMenuAvailability(MenuTool, false);
 
-            PopupMenuProject.Enabled = false;
+            /*
+            OldPopupMenuProject.Enabled = false;
             PopupMenuActivity.Enabled = false;
+            */
 
             MenuFileSaveAs.Enabled = false;
             MenuFileClose.Enabled = false;
@@ -74,12 +78,12 @@ namespace Timekeeper.Forms
         {
             if (Options.View_HiddenProjects) {
                 // set main menu items
-                MenuActionHideProject.Visible = visible;
-                MenuActionUnhideProject.Visible = !visible;
+                //MenuActionHideProject.Visible = visible;
+                //MenuActionUnhideProject.Visible = !visible;
 
                 // mirror popup menu items
-                PopupMenuProjectHide.Visible = visible;
-                PopupMenuProjectUnhide.Visible = !visible;
+                //PopupMenuProjectHide.Visible = visible;
+                //PopupMenuProjectUnhide.Visible = !visible;
             }
         }
 
@@ -87,22 +91,22 @@ namespace Timekeeper.Forms
 
         private void MenuBar_ShowMergeProject(bool isFolder)
         {
-            MenuActionMergeProject.Enabled = !isFolder;
-            PopupMenuProjectMerge.Enabled = !isFolder;
+            //MenuActionMergeProject.Enabled = !isFolder;
+            //PopupMenuProjectMerge.Enabled = !isFolder;
         }
 
         //---------------------------------------------------------------------
 
         private void MenuBar_ShowDeleteProject(bool isDeleted)
         {
-            MenuActionEditProject.Enabled = !isDeleted;
-            MenuActionHideProject.Enabled = !isDeleted;
-            MenuActionDeleteProject.Enabled = !isDeleted;
+            //MenuActionEditProject.Enabled = !isDeleted;
+            //MenuActionHideProject.Enabled = !isDeleted;
+            //MenuActionDeleteProject.Enabled = !isDeleted;
 
-            PopupMenuProjectEdit.Enabled = !isDeleted;
-            PopupMenuProjectRename.Enabled = !isDeleted;
-            PopupMenuProjectHide.Enabled = !isDeleted;
-            PopupMenuProjectDelete.Enabled = !isDeleted;
+            //PopupMenuProjectEdit.Enabled = !isDeleted;
+            //PopupMenuProjectRename.Enabled = !isDeleted;
+            //PopupMenuProjectHide.Enabled = !isDeleted;
+            //PopupMenuProjectDelete.Enabled = !isDeleted;
         }
 
         //---------------------------------------------------------------------
@@ -111,12 +115,12 @@ namespace Timekeeper.Forms
         {
             if (Options.View_HiddenActivities) {
                 // Set main menu items
-                MenuActionHideActivity.Visible = visible;
-                MenuActionUnhideActivity.Visible = !visible;
+                //MenuActionHideActivity.Visible = visible;
+                //MenuActionUnhideActivity.Visible = !visible;
 
                 // Mirror popup menu items
-                PopupMenuActivityHide.Visible = visible;
-                PopupMenuActivityUnhide.Visible = !visible;
+                //PopupMenuActivityHide.Visible = visible;
+                //PopupMenuActivityUnhide.Visible = !visible;
             }
         }
 

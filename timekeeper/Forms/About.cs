@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper
 {
@@ -30,8 +30,8 @@ namespace Timekeeper
                 //----------------------------------------------
 
                 ApplicationName.Text = Timekeeper.TITLE + " " + Timekeeper.SHORT_VERSION;
-                ApplicationRelease.Text = "Unreleased Development Version (" + Timekeeper.VERSION + ")";
-                ApplicationCopyright.Text = "Copyright © 1999-2013 by Charlie Hills";
+                ApplicationRelease.Text = "Version " + Timekeeper.VERSION + " (Released " + Timekeeper.RELEASE_DATE + ")";
+                ApplicationCopyright.Text = Timekeeper.COPYRIGHT;
 
                 //----------------------------------------------
                 // View or Hide Statistics
@@ -39,11 +39,12 @@ namespace Timekeeper
 
                 if (Info["FileOpened"]) {
                     string Upgraded;
-                    DateTimeOffset t = Info["Upgraded"];
-                    if (t.Year == 1) {
+                    DateTimeOffset UpgradedTime = Info["Upgraded"];
+                    DateTimeOffset CreatedTime = Info["Created"];
+                    if (CreatedTime.CompareTo(UpgradedTime) == 0) {
                         Upgraded = "Never";
                     } else {
-                        Upgraded = t.ToString(Options.Advanced_DateTimeFormat);
+                        Upgraded = UpgradedTime.ToString(Options.Advanced_DateTimeFormat);
                     }
 
                     FileStatsPanel.Visible = true;
@@ -59,6 +60,8 @@ namespace Timekeeper
                     FileStats.Rows.Add("Number of Notebook Entries", Info["NotebookCount"]);
                     FileStats.Rows.Add("Number of Projects", Info["ProjectCount"]);
                     FileStats.Rows.Add("Number of Activities", Info["ActivityCount"]);
+                    FileStats.Rows.Add("Number of Locations", Info["LocationCount"]);
+                    FileStats.Rows.Add("Number of Categories", Info["CategoryCount"]);
                     FileStats.Rows.Add("Total Time Logged", Info["TotalTime"]);
                 } else {
                     FileStatsPanel.Visible = false;

@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Technitivity.Toolbox;
-
 namespace Timekeeper.Classes
 {
     class Activity : Classes.TreeAttribute
@@ -20,6 +18,11 @@ namespace Timekeeper.Classes
         public Activity(long activityId)
             : base(activityId, ActivityTableName, ActivityIdColumnName)
         {}
+
+        // constructor, by nullable id
+        public Activity(long? activityId)
+            : base(activityId, ActivityTableName, ActivityIdColumnName)
+        { }
 
         // constructor, by name
         public Activity(string activityName)

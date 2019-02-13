@@ -7,8 +7,10 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.IO;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms
 {
@@ -19,6 +21,7 @@ namespace Timekeeper.Forms
         //----------------------------------------------------------------------
 
         private MenuStrip MainMenu;
+        private bool FormLoading;
 
         public Classes.Options Values { get; set; }
         public bool InterfaceChanged { get; set; }
@@ -38,6 +41,7 @@ namespace Timekeeper.Forms
 
             this.Values = optionValues;
             this.MainMenu = mainMenu;
+            this.FormLoading = false;
         }
 
         //----------------------------------------------------------------------
@@ -46,14 +50,22 @@ namespace Timekeeper.Forms
 
         private void Options_Load(object sender, EventArgs e)
         {
+            this.FormLoading = true;
             PopulateForm();
             OptionsToForm();
+            this.FormLoading = false;
 
             // Last pass: dynamic interface changes
             Layout_UseProjects_CheckedChanged(sender, e);
             Layout_UseActivities_CheckedChanged(sender, e);
             Layout_UseLocations_CheckedChanged(sender, e);
             Layout_UseCategories_CheckedChanged(sender, e);
+
+            View_MemoEditor_CheckedChanged(sender, e);
+            View_StatusBar_CheckedChanged(sender, e);
+            View_MemoEditor_ShowToolbar_CheckedChanged(sender, e);
+
+            HandleMailTab();
         }
 
         //----------------------------------------------------------------------
@@ -63,9 +75,11 @@ namespace Timekeeper.Forms
             if (DialogResult == DialogResult.OK) {
                 FormToOptions();
             } else {
+                /*
                 if (Common.WarnPrompt("Are you sure?") != DialogResult.Yes) {
                     e.Cancel = true;
                 }
+                */
             }
         }
 
@@ -86,23 +100,56 @@ namespace Timekeeper.Forms
             }
         }
 
+        private void SelectItem(ComboBox box, int value)
+        {
+            // This selects an item on a combo box based on an
+            // internal value (where the list was populated with
+            // IdValuePair objects.
+            for (int i = 0; i < box.Items.Count; i++) {
+                IdValuePair Pair = (IdValuePair)box.Items[i];
+                if (Pair.Id == value) {
+                    box.SelectedIndex = i;
+                    return;
+                }
+            }
+
+            // fallback
+            box.SelectedIndex = (box.Items.Count > 0) ? 0 : -1;
+        }
+
+        private int GetSelectedItem(ComboBox box)
+        {
+            // This fetches the value of an item on a combo box 
+            // based on an internal value (where the list was 
+            // populated with IdValuePair objects.
+            if (box.SelectedItem == null)
+                return -1;
+            else {
+                IdValuePair Pair = (IdValuePair)box.SelectedItem;
+                return Pair.Id;
+            }
+        }
+
         private void PopulateForm()
         {
             //----------------------------------------------
             // Populate various dropdowns
             //----------------------------------------------
 
-            string[] Entries = new string[5] { 
-                "Alphabetically",
+            string[] Entries = new string[7] { 
                 "as Placed",
+                "Alphabetically",
                 "by Created Date",
                 "by Modified Date",
-                "by External Project Number" };
+                "by External Project Number",
+                "by Todo Start Date",
+                "by Todo Due Date"};
             AddItems(Behavior_SortProjectsBy, Entries);
+            AddItems(Behavior_SortProjectsThenBy, Entries);
 
             Entries = new string[4] { 
-                "Alphabetically",
                 "as Placed",
+                "Alphabetically",
                 "by Created Date",
                 "by Modified Date"};
             AddItems(Behavior_SortItemsBy, Entries);
@@ -117,9 +164,11 @@ namespace Timekeeper.Forms
             AddItems(View_HiddenActivitiesSince, Entries);
             AddItems(View_HiddenLocationsSince, Entries);
             AddItems(View_HiddenCategoriesSince, Entries);
+            AddItems(View_HiddenTodoItemsSince, Entries);
+            AddItems(View_HiddenEventsSince, Entries);
 
             try {
-                PopulateFontList();
+                //PopulateFontList();
                 PopulateFunctionList(MainMenu.Items, "");
             }
             catch (Exception x) {
@@ -128,6 +177,7 @@ namespace Timekeeper.Forms
 
         }
 
+        /*
         private void PopulateFontList()
         {
             InstalledFontCollection fonts = new InstalledFontCollection();
@@ -137,6 +187,7 @@ namespace Timekeeper.Forms
                 Report_FontList.Items.Add(font.Name);
             }
         }
+        */
 
         private void PopulateFunctionList(ToolStripItemCollection items, string parentText)
         {
@@ -157,15 +208,25 @@ namespace Timekeeper.Forms
 
         private void PopulateTitleBarTimeList()
         {
+            // Attempt to save prior value
+            int PriorSelection = GetSelectedItem(Behavior_TitleBar_Time);
+
             Behavior_TitleBar_Time.Items.Clear();
             List<IdValuePair> TitleBarTimes = new List<IdValuePair>();
-            TitleBarTimes.Add(new IdValuePair(0, "Elapsed time since timer last started"));
-            TitleBarTimes.Add(new IdValuePair(1, "Elapsed time today for current project"));
-            TitleBarTimes.Add(new IdValuePair(2, "Elapsed time today for current activity"));
-            TitleBarTimes.Add(new IdValuePair(3, "Total elapsed time today"));
-            AddItems(Behavior_TitleBar_Time, TitleBarTimes);
 
-            Behavior_TitleBar_Time.SelectedIndex = Values.Behavior_TitleBar_Time;
+            TitleBarTimes.Add(new IdValuePair(0, "Elapsed time since timer started"));
+            if (Layout_UseProjects.Checked)
+                TitleBarTimes.Add(new IdValuePair(1, "Elapsed time today for current Project"));
+            if (Layout_UseActivities.Checked)
+                TitleBarTimes.Add(new IdValuePair(2, "Elapsed time today for current Activity"));
+            if (Layout_UseLocations.Checked)
+                TitleBarTimes.Add(new IdValuePair(3, "Elapsed time today for current Location"));
+            if (Layout_UseCategories.Checked)
+                TitleBarTimes.Add(new IdValuePair(4, "Elapsed time today for current Category"));
+            TitleBarTimes.Add(new IdValuePair(5, "Total elapsed time today"));
+
+            AddItems(Behavior_TitleBar_Time, TitleBarTimes);
+            SelectItem(Behavior_TitleBar_Time, PriorSelection == -1 ? Values.Behavior_TitleBar_Time : PriorSelection);
         }
 
         private void AddKeyboardMapping(ToolStripMenuItem MenuItem, string MenuItemName)
@@ -255,12 +316,20 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
+            View_BrowserToolbar.Checked = Values.View_BrowserToolbar;
+            View_MemoEditor.Checked = Values.View_MemoEditor;
+            View_ControlPanel.Checked = Values.View_ControlPanel;
             View_StatusBar.Checked = Values.View_StatusBar;
+
             View_StatusBar_ProjectName.Checked = Values.View_StatusBar_ProjectName;
             View_StatusBar_ActivityName.Checked = Values.View_StatusBar_ActivityName;
+            View_StatusBar_LocationName.Checked = Values.View_StatusBar_LocationName;
+            View_StatusBar_CategoryName.Checked = Values.View_StatusBar_CategoryName;
             View_StatusBar_ElapsedSinceStart.Checked = Values.View_StatusBar_ElapsedSinceStart;
             View_StatusBar_ElapsedProjectToday.Checked = Values.View_StatusBar_ElapsedProjectToday;
             View_StatusBar_ElapsedActivityToday.Checked = Values.View_StatusBar_ElapsedActivityToday;
+            View_StatusBar_ElapsedLocationToday.Checked = Values.View_StatusBar_ElapsedLocationToday;
+            View_StatusBar_ElapsedCategoryToday.Checked = Values.View_StatusBar_ElapsedCategoryToday;
             View_StatusBar_ElapsedAllToday.Checked = Values.View_StatusBar_ElapsedAllToday;
             View_StatusBar_FileName.Checked = Values.View_StatusBar_FileName;
 
@@ -268,25 +337,38 @@ namespace Timekeeper.Forms
             View_HiddenActivities.Checked = Values.View_HiddenActivities;
             View_HiddenLocations.Checked = Values.View_HiddenLocations;
             View_HiddenCategories.Checked = Values.View_HiddenCategories;
+            View_HiddenTodoItems.Checked = Values.View_HiddenTodoItems;
+            View_HiddenEvents.Checked = Values.View_HiddenEvents;
 
             View_HiddenProjectsSince.SelectedIndex = Values.View_HiddenProjectsSince;
             View_HiddenActivitiesSince.SelectedIndex = Values.View_HiddenActivitiesSince;
             View_HiddenLocationsSince.SelectedIndex = Values.View_HiddenLocationsSince;
             View_HiddenCategoriesSince.SelectedIndex = Values.View_HiddenCategoriesSince;
-            
-            View_Other_MemoEditorToolbar.Checked = Values.View_Other_MemoEditorToolbar;
+            View_HiddenTodoItemsSince.SelectedIndex = Values.View_HiddenTodoItemsSince;
+            View_HiddenEventsSince.SelectedIndex = Values.View_HiddenEventsSince;
+
+            View_MemoEditor_ShowToolbar.Checked = Values.View_MemoEditor_ShowToolbar;
+            View_MemoEditor_ShowRuler.Checked = Values.View_MemoEditor_ShowRuler;
+            View_MemoEditor_ShowGutter.Checked = Values.View_MemoEditor_ShowGutter;
+            View_MemoEditor_Font.Text = Values.View_MemoEditor_Font;
+            /* NOT SUPPORTED IN UI
+            View_MemoEditor_RightMargin_Journal.Value = Values.View_MemoEditor_RightMargin_Journal;
+            View_MemoEditor_RightMargin_Notebook.Value = Values.View_MemoEditor_RightMargin_Notebook;
+            View_MemoEditor_RightMargin_Todo.Value = Values.View_MemoEditor_RightMargin_Todo;
+            */
 
             //----------------------------------------------------------------------
 
             Behavior_TitleBar_Template.Text = Values.Behavior_TitleBar_Template;
-            Behavior_TitleBar_Time.SelectedIndex = Values.Behavior_TitleBar_Time;
+            SelectItem(Behavior_TitleBar_Time, Values.Behavior_TitleBar_Time);
 
             Behavior_Window_ShowInTray.Checked = Values.Behavior_Window_ShowInTray;
             Behavior_Window_MinimizeToTray.Checked = Values.Behavior_Window_MinimizeToTray;
             Behavior_Window_MinimizeOnUse.Checked = Values.Behavior_Window_MinimizeOnUse;
 
             Behavior_Annoy_ActivityFollowsProject.Checked = Values.Behavior_Annoy_ActivityFollowsProject;
-            Behavior_Annoy_ProjectFollowsActivity.Checked = Values.Behavior_Annoy_ProjectFollowsActivity;
+            Behavior_Annoy_LocationFollowsProject.Checked = Values.Behavior_Annoy_LocationFollowsProject;
+            Behavior_Annoy_CategoryFollowsProject.Checked = Values.Behavior_Annoy_CategoryFollowsProject;
             Behavior_Annoy_PromptBeforeHiding.Checked = Values.Behavior_Annoy_PromptBeforeHiding;
             Behavior_Annoy_NoRunningPrompt.Checked = Values.Behavior_Annoy_NoRunningPrompt;
             Behavior_Annoy_NoRunningPromptAmount.Value = Values.Behavior_Annoy_NoRunningPromptAmount;
@@ -294,19 +376,24 @@ namespace Timekeeper.Forms
 
             Behavior_SortProjectsBy.SelectedIndex = Values.Behavior_SortProjectsBy;
             Behavior_SortProjectsByDirection.SelectedIndex = Values.Behavior_SortProjectsByDirection;
+            Behavior_SortProjectsThenBy.SelectedIndex = Values.Behavior_SortProjectsThenBy;
+            Behavior_SortProjectsThenByDirection.SelectedIndex = Values.Behavior_SortProjectsThenByDirection;
             Behavior_SortItemsBy.SelectedIndex = Values.Behavior_SortItemsBy;
             Behavior_SortItemsByDirection.SelectedIndex = Values.Behavior_SortItemsByDirection;
+            Behavior_BrowsePrevBy.SelectedIndex = Values.Behavior_BrowsePrevBy;
+            Behavior_BrowseNextBy.SelectedIndex = Values.Behavior_BrowseNextBy;
 
             //----------------------------------------------------------------------
 
-            Report_FontList.SelectedIndex = Report_FontList.FindString(Values.Report_FontName);
-            Report_FontSize.Value = Values.Report_FontSize;
-            // TODO: Report_StyleSheet.Text = // probably read from a file, unless it's small enough for the registry?
+            Report_Font.Text = Values.Report_Font;
+            Report_StyleSheetFile.Text = Values.Report_StyleSheetFile;
+            Report_LayoutFile.Text = Values.Report_LayoutFile;
 
             //----------------------------------------------------------------------
 
             Mail_FromAddress.Text = Values.Mail_FromAddress;
             Mail_FromDisplayAddress.Text = Values.Mail_FromDisplayAddress;
+            Mail_Subject.Text = Values.Mail_Subject;
             Mail_SmtpServer.Text = Values.Mail_SmtpServer;
             Mail_SmtpPort.Text = Values.Mail_SmtpPort.ToString();
             Mail_SmtpServerRequiresSSL.Checked = Values.Mail_SmtpServerRequiresSSL;
@@ -318,7 +405,13 @@ namespace Timekeeper.Forms
 
             Advanced_Logging_Application.SelectedIndex = Values.Advanced_Logging_Application;
             Advanced_Logging_Database.SelectedIndex = Values.Advanced_Logging_Database;
-            Advanced_Other_MarkupLanguage.SelectedIndex = Values.Advanced_Other_MarkupLanguage;
+            Advanced_DateTimeFormat.Text = Values.Advanced_DateTimeFormat;
+            Advanced_BreakTemplate.Text = Values.Advanced_BreakTemplate;
+            Advanced_MarkupLanguage.SelectedIndex = Values.Advanced_MarkupLanguage;
+            Advanced_Other_SortExtProjectAsNumber.Checked = Values.Advanced_Other_SortExtProjectAsNumber;
+            Advanced_Other_EnableScheduler.Checked = Values.Advanced_Other_EnableScheduler;
+            Advanced_Other_DimensionWidth.Value = Values.Advanced_Other_DimensionWidth;
+            Advanced_Other_MidnightOffset.SelectedIndex = Values.Advanced_Other_MidnightOffset + 12;
         }
 
         //----------------------------------------------------------------------
@@ -336,12 +429,20 @@ namespace Timekeeper.Forms
 
             //----------------------------------------------------------------------
 
+            Values.View_BrowserToolbar = View_BrowserToolbar.Checked;
+            Values.View_MemoEditor = View_MemoEditor.Checked;
+            Values.View_ControlPanel = View_ControlPanel.Checked;
             Values.View_StatusBar = View_StatusBar.Checked;
+
             Values.View_StatusBar_ProjectName = View_StatusBar_ProjectName.Checked;
             Values.View_StatusBar_ActivityName = View_StatusBar_ActivityName.Checked;
+            Values.View_StatusBar_LocationName = View_StatusBar_LocationName.Checked;
+            Values.View_StatusBar_CategoryName = View_StatusBar_CategoryName.Checked;
             Values.View_StatusBar_ElapsedSinceStart = View_StatusBar_ElapsedSinceStart.Checked;
             Values.View_StatusBar_ElapsedProjectToday = View_StatusBar_ElapsedProjectToday.Checked;
             Values.View_StatusBar_ElapsedActivityToday = View_StatusBar_ElapsedActivityToday.Checked;
+            Values.View_StatusBar_ElapsedLocationToday = View_StatusBar_ElapsedLocationToday.Checked;
+            Values.View_StatusBar_ElapsedCategoryToday = View_StatusBar_ElapsedCategoryToday.Checked;
             Values.View_StatusBar_ElapsedAllToday = View_StatusBar_ElapsedAllToday.Checked;
             Values.View_StatusBar_FileName = View_StatusBar_FileName.Checked;
 
@@ -349,17 +450,29 @@ namespace Timekeeper.Forms
             Values.View_HiddenActivities = View_HiddenActivities.Checked;
             Values.View_HiddenLocations = View_HiddenLocations.Checked;
             Values.View_HiddenCategories = View_HiddenCategories.Checked;
+            Values.View_HiddenTodoItems = View_HiddenTodoItems.Checked;
+            Values.View_HiddenEvents = View_HiddenEvents.Checked;
 
             Values.View_HiddenProjectsSince = View_HiddenProjectsSince.SelectedIndex;
             Values.View_HiddenActivitiesSince = View_HiddenActivitiesSince.SelectedIndex;
             Values.View_HiddenLocationsSince = View_HiddenLocationsSince.SelectedIndex;
             Values.View_HiddenCategoriesSince = View_HiddenCategoriesSince.SelectedIndex;
+            Values.View_HiddenTodoItemsSince = View_HiddenTodoItemsSince.SelectedIndex;
+            Values.View_HiddenEventsSince = View_HiddenEventsSince.SelectedIndex;
 
-            Values.View_Other_MemoEditorToolbar = View_Other_MemoEditorToolbar.Checked;
+            Values.View_MemoEditor_ShowToolbar = View_MemoEditor_ShowToolbar.Checked;
+            Values.View_MemoEditor_ShowRuler = View_MemoEditor_ShowRuler.Checked;
+            Values.View_MemoEditor_ShowGutter = View_MemoEditor_ShowGutter.Checked;
+            Values.View_MemoEditor_Font = View_MemoEditor_Font.Text;
+            /* NOT SUPPORTED IN UI
+            Values.View_MemoEditor_RightMargin_Journal = (int)View_MemoEditor_RightMargin_Journal.Value;
+            Values.View_MemoEditor_RightMargin_Notebook = (int)View_MemoEditor_RightMargin_Notebook.Value;
+            Values.View_MemoEditor_RightMargin_Todo = (int)View_MemoEditor_RightMargin_Todo.Value;
+            */
 
             //----------------------------------------------------------------------
 
-            Values.Behavior_TitleBar_Time = Behavior_TitleBar_Time.SelectedIndex;
+            Values.Behavior_TitleBar_Time = GetSelectedItem(Behavior_TitleBar_Time);
             Values.Behavior_TitleBar_Template = Behavior_TitleBar_Template.Text;
 
             Values.Behavior_Window_ShowInTray = Behavior_Window_ShowInTray.Checked;
@@ -367,7 +480,8 @@ namespace Timekeeper.Forms
             Values.Behavior_Window_MinimizeOnUse = Behavior_Window_MinimizeOnUse.Checked;
 
             Values.Behavior_Annoy_ActivityFollowsProject = Behavior_Annoy_ActivityFollowsProject.Checked;
-            Values.Behavior_Annoy_ProjectFollowsActivity = Behavior_Annoy_ProjectFollowsActivity.Checked;
+            Values.Behavior_Annoy_LocationFollowsProject = Behavior_Annoy_LocationFollowsProject.Checked;
+            Values.Behavior_Annoy_CategoryFollowsProject = Behavior_Annoy_CategoryFollowsProject.Checked;
             Values.Behavior_Annoy_PromptBeforeHiding = Behavior_Annoy_PromptBeforeHiding.Checked;
             Values.Behavior_Annoy_NoRunningPrompt = Behavior_Annoy_NoRunningPrompt.Checked;
             Values.Behavior_Annoy_NoRunningPromptAmount = (int)Behavior_Annoy_NoRunningPromptAmount.Value;
@@ -375,8 +489,18 @@ namespace Timekeeper.Forms
 
             Values.Behavior_SortProjectsBy = Behavior_SortProjectsBy.SelectedIndex;
             Values.Behavior_SortProjectsByDirection = Behavior_SortProjectsByDirection.SelectedIndex;
+            Values.Behavior_SortProjectsThenBy = Behavior_SortProjectsThenBy.SelectedIndex;
+            Values.Behavior_SortProjectsThenByDirection = Behavior_SortProjectsThenByDirection.SelectedIndex;
             Values.Behavior_SortItemsBy = Behavior_SortItemsBy.SelectedIndex;
             Values.Behavior_SortItemsByDirection = Behavior_SortItemsByDirection.SelectedIndex;
+            Values.Behavior_BrowsePrevBy = Behavior_BrowsePrevBy.SelectedIndex;
+            Values.Behavior_BrowseNextBy = Behavior_BrowseNextBy.SelectedIndex;
+
+            //----------------------------------------------------------------------
+
+            Values.Report_Font = Report_Font.Text;
+            Values.Report_StyleSheetFile = Report_StyleSheetFile.Text;
+            Values.Report_LayoutFile = Report_LayoutFile.Text;
 
             //----------------------------------------------------------------------
 
@@ -386,6 +510,7 @@ namespace Timekeeper.Forms
 
             Values.Mail_FromAddress = Mail_FromAddress.Text;
             Values.Mail_FromDisplayAddress = Mail_FromDisplayAddress.Text;
+            Values.Mail_Subject = Mail_Subject.Text;
             Values.Mail_SmtpServer = Mail_SmtpServer.Text;
             Values.Mail_SmtpPort = Convert.ToInt32(Mail_SmtpPort.Text);
             Values.Mail_SmtpServerRequiresSSL = Mail_SmtpServerRequiresSSL.Checked;
@@ -397,7 +522,13 @@ namespace Timekeeper.Forms
 
             Values.Advanced_Logging_Application = Advanced_Logging_Application.SelectedIndex;
             Values.Advanced_Logging_Database = Advanced_Logging_Database.SelectedIndex;
-            Values.Advanced_Other_MarkupLanguage = Advanced_Other_MarkupLanguage.SelectedIndex;
+            Values.Advanced_DateTimeFormat = Advanced_DateTimeFormat.Text;
+            Values.Advanced_BreakTemplate = Advanced_BreakTemplate.Text;
+            Values.Advanced_MarkupLanguage = Advanced_MarkupLanguage.SelectedIndex;
+            Values.Advanced_Other_SortExtProjectAsNumber = Advanced_Other_SortExtProjectAsNumber.Checked;
+            Values.Advanced_Other_EnableScheduler = Advanced_Other_EnableScheduler.Checked;
+            Values.Advanced_Other_DimensionWidth = (int)Advanced_Other_DimensionWidth.Value;
+            Values.Advanced_Other_MidnightOffset = Advanced_Other_MidnightOffset.SelectedIndex - 12;
         }
 
         //----------------------------------------------------------------------
@@ -478,25 +609,31 @@ namespace Timekeeper.Forms
 
         private void AssignKey_Click(object sender, EventArgs e)
         {
-            ListViewItem Item = SelectedItem();
+            try {
+                ListViewItem Item = SelectedItem();
 
-            Keys Keys = 0;
+                Keys Keys = 0;
 
-            if (ControlKey.Checked)
-                Keys += (int)Keys.Control;
-            if (AltKey.Checked)
-                Keys += (int)Keys.Alt;
-            if (ShiftKey.Checked)
-                Keys += (int)Keys.Shift;
+                if (ControlKey.Checked)
+                    Keys += (int)Keys.Control;
+                if (AltKey.Checked)
+                    Keys += (int)Keys.Alt;
+                if (ShiftKey.Checked)
+                    Keys += (int)Keys.Shift;
 
-            KeysConverter Converter = new KeysConverter();
-            Keys += (int)Converter.ConvertFromString((string)KeyCode.SelectedItem);
+                KeysConverter Converter = new KeysConverter();
+                Keys += (int)Converter.ConvertFromString((string)KeyCode.SelectedItem);
 
-            // Assign new keystroke
-            Item.Tag = Keys;
+                // Assign new keystroke
+                Item.Tag = Keys;
 
-            // Reset visible attribute
-            Item.SubItems[1].Text = Converter.ConvertToString(Keys);
+                // Reset visible attribute
+                Item.SubItems[1].Text = Converter.ConvertToString(Keys);
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                Common.Warn("Could not assign that key combination.");
+            }
 
         }
 
@@ -507,6 +644,29 @@ namespace Timekeeper.Forms
             } else {
                 return null;
             }
+        }
+
+        private void View_MemoEditor_ShowToolbar_CheckedChanged(object sender, EventArgs e)
+        {
+            /*
+            View_MemoEditor_RightMarginLabel.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            View_MemoEditor_RightMargin.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            View_MemoEditor_ShowGutter.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            */
+
+            /*
+            View_MemoEditor_FontButton.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            View_MemoEditor_Font.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            */
+        }
+
+        //----------------------------------------------------------------------
+
+        private void View_MemoEditor_ShowRuler_CheckedChanged(object sender, EventArgs e)
+        {
+            /*
+            View_MemoEditor_ShowGutter.Enabled = View_MemoEditor_ShowToolbar.Checked;
+            */
         }
 
         //----------------------------------------------------------------------
@@ -557,29 +717,13 @@ namespace Timekeeper.Forms
             Graphics.DrawString(Page.Text, TabFont, TextBrush, TabBounds, TextFormat);
         }
 
-        private bool LeaveItAlone;
-
         private void Layout_UseProjects_CheckedChanged(object sender, EventArgs e)
         {
-            if (!Layout_UseProjects.Checked && !Layout_UseActivities.Checked) {
-                if (!LeaveItAlone) {
-                    LeaveItAlone = true;
-                    Layout_UseActivities.Checked = true;
-                    LeaveItAlone = false;
-                }
-            }
             _SetProjectVisibility();
         }
 
         private void Layout_UseActivities_CheckedChanged(object sender, EventArgs e)
         {
-            if (!Layout_UseProjects.Checked && !Layout_UseActivities.Checked) {
-                if (!LeaveItAlone) {
-                    LeaveItAlone = true;
-                    Layout_UseProjects.Checked = true;
-                    LeaveItAlone = false;
-                }
-            }
             _DisableSortOther();
             _SetActivityVisibility();
         }
@@ -589,7 +733,7 @@ namespace Timekeeper.Forms
             int TallHeight = Layout_UseLocations.Checked ? 27 : 0;
             HiddenGroup_LocationPanel.Height = TallHeight;
             _DisableSortOther();
-            _Pizza();
+            _SetLocationVisibility();
         }
 
         private void Layout_UseCategories_CheckedChanged(object sender, EventArgs e)
@@ -597,7 +741,7 @@ namespace Timekeeper.Forms
             int TallHeight = Layout_UseCategories.Checked ? 27 : 0;
             HiddenGroup_CategoryPanel.Height = TallHeight;
             _DisableSortOther();
-            _Pizza();
+            _SetCategoryVisibility();
         }
 
         private void _DisableSortOther()
@@ -613,21 +757,21 @@ namespace Timekeeper.Forms
         {
             // Define Standard Heights
             int TallHeight = Layout_UseProjects.Checked ? 27 : 0;
+            int DoubleTallHeight = Layout_UseProjects.Checked ? 57 : 0;
             int ShortHeight = Layout_UseProjects.Checked ? 23 : 0;
 
             // Set Heights
-            SortingGroup_ProjectPanel.Height = TallHeight;
+            SortingGroup_ProjectPanel.Height = DoubleTallHeight;
             StatusBarGroup_ProjectNamePanel.Height = ShortHeight;
             StatusBarGroup_ProjectElapsedPanel.Height = ShortHeight;
             HiddenGroup_ProjectPanel.Height = TallHeight;
+            AnnoyGroup_ActivityFollowPanel.Height = ShortHeight;
 
-            if (Layout_UseProjects.Checked) {
-                PopulateTitleBarTimeList();
-            } else {
-                Behavior_TitleBar_Time.Items.RemoveAt(1);
-            }
+            _SetActivityVisibility();
+            _SetLocationVisibility();
+            _SetCategoryVisibility();
 
-            AnnoyGroup_BottomPanel.Height = Layout_UseProjects.Checked ? 46 : 0;
+            PopulateTitleBarTimeList();
 
             _Pizza();
         }
@@ -636,18 +780,46 @@ namespace Timekeeper.Forms
         {
             int TallHeight = Layout_UseActivities.Checked ? 27 : 0;
             int ShortHeight = Layout_UseActivities.Checked ? 23 : 0;
+            int ShortHeight2 = (Layout_UseProjects.Checked && Layout_UseActivities.Checked) ? 23 : 0;
 
             StatusBarGroup_ActivityNamePanel.Height = ShortHeight;
             StatusBarGroup_ActivityElapsedPanel.Height = ShortHeight;
             HiddenGroup_ActivityPanel.Height = TallHeight;
+            AnnoyGroup_ActivityFollowPanel.Height = ShortHeight2;
 
-            if (Layout_UseActivities.Checked) {
-                PopulateTitleBarTimeList();
-            } else {
-                Behavior_TitleBar_Time.Items.RemoveAt(2);
-            }
+            PopulateTitleBarTimeList();
 
-            AnnoyGroup_BottomPanel.Height = Layout_UseActivities.Checked ? 46 : 0;
+            _Pizza();
+        }
+
+        private void _SetLocationVisibility()
+        {
+            int TallHeight = Layout_UseLocations.Checked ? 27 : 0;
+            int ShortHeight = Layout_UseLocations.Checked ? 23 : 0;
+            int ShortHeight2 = (Layout_UseProjects.Checked && Layout_UseLocations.Checked) ? 23 : 0;
+
+            StatusBarGroup_LocationNamePanel.Height = ShortHeight;
+            StatusBarGroup_LocationElapsedPanel.Height = ShortHeight;
+            HiddenGroup_LocationPanel.Height = TallHeight;
+            AnnoyGroup_LocationFollowPanel.Height = ShortHeight2;
+
+            PopulateTitleBarTimeList();
+
+            _Pizza();
+        }
+
+        private void _SetCategoryVisibility()
+        {
+            int TallHeight = Layout_UseCategories.Checked ? 27 : 0;
+            int ShortHeight = Layout_UseCategories.Checked ? 23 : 0;
+            int ShortHeight2 = (Layout_UseProjects.Checked && Layout_UseCategories.Checked) ? 23 : 0;
+
+            StatusBarGroup_CategoryNamePanel.Height = ShortHeight;
+            StatusBarGroup_CategoryElapsedPanel.Height = ShortHeight;
+            HiddenGroup_CategoryPanel.Height = TallHeight;
+            AnnoyGroup_CategoryFollowPanel.Height = ShortHeight2;
+
+            PopulateTitleBarTimeList();
 
             _Pizza();
         }
@@ -661,9 +833,11 @@ namespace Timekeeper.Forms
             AnnoyGroup.Height = GetGroupHeight(AnnoyGroup);
 
             // One-off Adjustments
-            HiddenGroup.Top = StatusBarGroup.Height + 23;
-            OtherViewGroup.Top = HiddenGroup.Bottom + 7;
+            HiddenGroup.Top = StatusBarGroup.Bottom + 7;
             SortingGroup.Top = AnnoyGroup.Bottom + 7;
+            BrowsingGroup.Top = SortingGroup.Bottom + 7;
+            ViewSpacerBox.Top = HiddenGroup.Bottom + 7;
+            BehaviorSpacingBox.Top = BrowsingGroup.Bottom + 7;
         }
 
         private int GetGroupHeight(GroupBox box)
@@ -677,6 +851,8 @@ namespace Timekeeper.Forms
 
         private void View_StatusBar_CheckedChanged(object sender, EventArgs e)
         {
+            StatusBarGroup.Enabled = View_StatusBar.Checked;
+            /*
             View_StatusBar_ProjectName.Enabled = View_StatusBar.Checked;
             View_StatusBar_ActivityName.Enabled = View_StatusBar.Checked;
             View_StatusBar_ElapsedSinceStart.Enabled = View_StatusBar.Checked;
@@ -684,7 +860,8 @@ namespace Timekeeper.Forms
             View_StatusBar_ElapsedActivityToday.Enabled = View_StatusBar.Checked;
             View_StatusBar_ElapsedAllToday.Enabled = View_StatusBar.Checked;
             View_StatusBar_FileName.Enabled = View_StatusBar.Checked;
-            View_StatusBar_AddLabels.Enabled = View_StatusBar.Checked;
+            //View_StatusBar_AddLabels.Enabled = View_StatusBar.Checked;
+            */
         }
 
         private void View_HiddenProjects_CheckedChanged(object sender, EventArgs e)
@@ -695,7 +872,6 @@ namespace Timekeeper.Forms
         private void View_HiddenActivities_CheckedChanged(object sender, EventArgs e)
         {
             View_HiddenActivitiesSince.Enabled = View_HiddenActivities.Checked;
-
         }
 
         private void View_HiddenLocations_CheckedChanged(object sender, EventArgs e)
@@ -708,6 +884,16 @@ namespace Timekeeper.Forms
             View_HiddenCategoriesSince.Enabled = View_HiddenCategories.Checked;
         }
 
+        private void View_HiddenTodoItems_CheckedChanged(object sender, EventArgs e)
+        {
+            View_HiddenTodoItemsSince.Enabled = View_HiddenTodoItems.Checked;
+        }
+
+        private void View_HiddenEvents_CheckedChanged(object sender, EventArgs e)
+        {
+            View_HiddenEventsSince.Enabled = View_HiddenEvents.Checked;
+        }
+        
         private void Behavior_Window_ShowInTray_CheckedChanged(object sender, EventArgs e)
         {
             Behavior_Window_MinimizeToTray.Enabled = Behavior_Window_ShowInTray.Checked;
@@ -718,6 +904,42 @@ namespace Timekeeper.Forms
             Behavior_Annoy_NoRunningPromptAmount.Enabled = Behavior_Annoy_NoRunningPrompt.Checked;
         }
 
+        private void Behavior_SortProjectsBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Behavior_SortProjectsByDirection.Enabled = Behavior_SortProjectsBy.SelectedIndex > 0;
+            Behavior_SortProjectsThenBy.Enabled = Behavior_SortProjectsBy.SelectedIndex > 3;
+            Behavior_SortProjectsThenByDirection.Enabled = Behavior_SortProjectsBy.SelectedIndex > 3;
+        }
+
+        private void Behavior_SortProjectsThenBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Behavior_SortProjectsThenByDirection.Enabled = Behavior_SortProjectsThenBy.SelectedIndex > 0;
+        }
+
+        private void Behavior_SortItemsBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Behavior_SortItemsByDirection.Enabled = Behavior_SortItemsBy.SelectedIndex > 0;
+        }
+
+        private void Layout_Preset_Minimal_Click(object sender, EventArgs e)
+        {
+            Layout_UseProjects.Checked = false;
+            Layout_UseActivities.Checked = false;
+            Layout_UseLocations.Checked = false;
+            Layout_UseCategories.Checked = false;
+
+            View_BrowserToolbar.Checked = false;
+            View_MemoEditor.Checked = false;
+            View_ControlPanel.Checked = false;
+            View_StatusBar.Checked = false;
+
+            Behavior_TitleBar_Template.Text = "%time";
+            Behavior_TitleBar_Time.SelectedIndex = 0;
+
+            Values.Layout_InterfacePreset = 0;
+            InterfaceChanged = true;
+        }
+
         private void Layout_Preset_Simple_Click(object sender, EventArgs e)
         {
             Layout_UseProjects.Checked = true;
@@ -725,12 +947,21 @@ namespace Timekeeper.Forms
             Layout_UseLocations.Checked = false;
             Layout_UseCategories.Checked = false;
 
+            View_BrowserToolbar.Checked = true;
+            View_MemoEditor.Checked = true;
+            View_ControlPanel.Checked = false;
             View_StatusBar.Checked = false;
+            //View_MemoEditor_RightMargin.Value = 250;
+
             View_StatusBar_ProjectName.Checked = false;
             View_StatusBar_ActivityName.Checked = false;
+            View_StatusBar_LocationName.Checked = false;
+            View_StatusBar_CategoryName.Checked = false;
             View_StatusBar_ElapsedSinceStart.Checked = false;
             View_StatusBar_ElapsedProjectToday.Checked = false;
             View_StatusBar_ElapsedActivityToday.Checked = false;
+            View_StatusBar_ElapsedLocationToday.Checked = false;
+            View_StatusBar_ElapsedCategoryToday.Checked = false;
             View_StatusBar_ElapsedAllToday.Checked = false;
             View_StatusBar_FileName.Checked = false;
 
@@ -739,12 +970,15 @@ namespace Timekeeper.Forms
             View_HiddenLocations.Checked = false;
             View_HiddenCategories.Checked = false;
 
-            View_Other_MemoEditorToolbar.Checked = false;
+            View_MemoEditor_ShowToolbar.Checked = false;
+            View_MemoEditor_ShowRuler.Checked = false;
 
             Behavior_TitleBar_Template.Text = "%time - %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
-            Values.InterfacePreset = 0;
+            Advanced_Other_DimensionWidth.Value = 150;
+
+            Values.Layout_InterfacePreset = 1;
             InterfaceChanged = true;
         }
 
@@ -755,12 +989,21 @@ namespace Timekeeper.Forms
             Layout_UseLocations.Checked = false;
             Layout_UseCategories.Checked = false;
 
+            View_BrowserToolbar.Checked = true;
+            View_MemoEditor.Checked = true;
+            View_ControlPanel.Checked = true;
             View_StatusBar.Checked = true;
+            //View_MemoEditor_RightMargin.Value = 420;
+
             View_StatusBar_ProjectName.Checked = true;
             View_StatusBar_ActivityName.Checked = false;
+            View_StatusBar_LocationName.Checked = false;
+            View_StatusBar_CategoryName.Checked = false;
             View_StatusBar_ElapsedSinceStart.Checked = true;
             View_StatusBar_ElapsedProjectToday.Checked = true;
             View_StatusBar_ElapsedActivityToday.Checked = false;
+            View_StatusBar_ElapsedLocationToday.Checked = false;
+            View_StatusBar_ElapsedCategoryToday.Checked = false;
             View_StatusBar_ElapsedAllToday.Checked = true;
             View_StatusBar_FileName.Checked = true;
 
@@ -769,12 +1012,15 @@ namespace Timekeeper.Forms
             View_HiddenLocations.Checked = false;
             View_HiddenCategories.Checked = false;
 
-            View_Other_MemoEditorToolbar.Checked = false;
+            View_MemoEditor_ShowToolbar.Checked = false;
+            View_MemoEditor_ShowRuler.Checked = false;
 
             Behavior_TitleBar_Template.Text = "%time - %activity for %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
-            Values.InterfacePreset = 1;
+            Advanced_Other_DimensionWidth.Value = 150;
+
+            Values.Layout_InterfacePreset = 2;
             InterfaceChanged = true;
         }
 
@@ -785,12 +1031,21 @@ namespace Timekeeper.Forms
             Layout_UseLocations.Checked = true;
             Layout_UseCategories.Checked = true;
 
+            View_BrowserToolbar.Checked = true;
+            View_MemoEditor.Checked = true;
+            View_ControlPanel.Checked = true;
             View_StatusBar.Checked = true;
+            //View_MemoEditor_RightMargin.Value = 520;
+
             View_StatusBar_ProjectName.Checked = true;
             View_StatusBar_ActivityName.Checked = true;
+            View_StatusBar_LocationName.Checked = true;
+            View_StatusBar_CategoryName.Checked = true;
             View_StatusBar_ElapsedSinceStart.Checked = true;
             View_StatusBar_ElapsedProjectToday.Checked = true;
-            View_StatusBar_ElapsedActivityToday.Checked = true;
+            View_StatusBar_ElapsedActivityToday.Checked = false;
+            View_StatusBar_ElapsedLocationToday.Checked = false;
+            View_StatusBar_ElapsedCategoryToday.Checked = false;
             View_StatusBar_ElapsedAllToday.Checked = true;
             View_StatusBar_FileName.Checked = true;
 
@@ -799,15 +1054,109 @@ namespace Timekeeper.Forms
             View_HiddenLocations.Checked = true;
             View_HiddenCategories.Checked = true;
 
-            View_Other_MemoEditorToolbar.Checked = true;
+            View_MemoEditor_ShowToolbar.Checked = true;
+            View_MemoEditor_ShowRuler.Checked = true;
 
             Behavior_TitleBar_Template.Text = "%time - %activity for %project";
             Behavior_TitleBar_Time.SelectedIndex = 0;
 
-            Values.InterfacePreset = 2;
+            Advanced_Other_DimensionWidth.Value = 250;
+
+            Values.Layout_InterfacePreset = 3;
             InterfaceChanged = true;
         }
 
+        private void View_MemoEditor_FontButton_Click(object sender, EventArgs e)
+        {
+            FontConverter fc = new FontConverter();
+            FontDialog.Font = (Font)fc.ConvertFromString(View_MemoEditor_Font.Text);
+            if (FontDialog.ShowDialog(this) == DialogResult.OK) {
+                View_MemoEditor_Font.Text = (string)fc.ConvertToString(FontDialog.Font);
+            }
+        }
+
+        private void View_MemoEditor_CheckedChanged(object sender, EventArgs e)
+        {
+            MemoEditorGroup.Enabled = View_MemoEditor.Checked;
+        }
+
+        private void ViewLog_Click(object sender, EventArgs e)
+        {
+            Process.Start("notepad.exe", Timekeeper.GetLogPath());
+        }
+
+        private void Report_FontButton_Click(object sender, EventArgs e)
+        {
+            FontConverter fc = new FontConverter();
+            FontDialog.Font = (Font)fc.ConvertFromString(Report_Font.Text);
+            if (FontDialog.ShowDialog(this) == DialogResult.OK) {
+                Report_Font.Text = (string)fc.ConvertToString(FontDialog.Font);
+            }
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Report_StyleSheetFileChooser_Click(object sender, EventArgs e)
+        {
+            SetupOpenFileDialog(Report_StyleSheetFile.Text);
+            if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                Report_StyleSheetFile.Text = OpenFileDialog.FileName;
+        }
+
+        //----------------------------------------------------------------------
+
+        private void Report_LayoutFileChooser_Click(object sender, EventArgs e)
+        {
+            SetupOpenFileDialog(Report_LayoutFile.Text);
+            if (OpenFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                Report_LayoutFile.Text = OpenFileDialog.FileName;
+        }
+
+        //----------------------------------------------------------------------
+
+        private void SetupOpenFileDialog(string filePath)
+        {
+            // Set dialog directory
+            if (Path.IsPathRooted(filePath)) {
+                OpenFileDialog.InitialDirectory = Path.GetDirectoryName(filePath);
+            } else {
+                OpenFileDialog.InitialDirectory = Timekeeper.CWD;
+            }
+
+            // Set dialog filename
+            OpenFileDialog.FileName = filePath;
+
+        }
+
+        private void Advanced_Other_EnableScheduler_CheckedChanged(object sender, EventArgs e)
+        {
+            // Only do this in response to user UI events
+            if (this.FormLoading)
+                return;
+
+            if (Advanced_Other_EnableScheduler.Checked) {
+                Common.Warn(
+@"You are enabling the Event & Scheduler System.
+
+This system is currently in alpha mode and, as such, is a bit flaky. It is being made available for field testing and for you to use at your own discretion.
+
+Problems have to do with multi-threaded access to your database, so it may fail if too many events are scheduled to fire around the same time. Data loss is NOT an issue, but you may miss notifications or see errors pop up.
+
+Note: After enabling this feature, you need to restart Timekeeper to get your events to fire.");
+            }
+
+            HandleMailTab();
+        }
+
+        private void HandleMailTab()
+        {
+            if (Advanced_Other_EnableScheduler.Checked) {
+                if (!OptionsPanelCollection.TabPages.Contains(MailSettingsPage))
+                    OptionsPanelCollection.TabPages.Add(MailSettingsPage);
+            } else {
+                OptionsPanelCollection.TabPages.Remove(MailSettingsPage);
+            }
+        }
         //----------------------------------------------------------------------
 
     }

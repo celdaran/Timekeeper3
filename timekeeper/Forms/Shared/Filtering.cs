@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Shared
 {
@@ -72,8 +72,6 @@ namespace Timekeeper.Forms.Shared
 
         private void Filtering_Load(object sender, EventArgs e)
         {
-            ProjectTree.ExpandAll();
-            ActivityTree.ExpandAll();
         }
 
         //----------------------------------------------------------------------
@@ -116,11 +114,13 @@ namespace Timekeeper.Forms.Shared
             }
 
             if ((!Options.Layout_UseLocations) ||
+                (this.FilterOptions.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook) ||
                 (this.FilterOptions.FilterMergeType == Timekeeper.Dimension.Location)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("LocationTab");
             }
 
             if ((!Options.Layout_UseCategories) ||
+                (this.FilterOptions.FilterOptionsType == Classes.FilterOptions.OptionsType.Notebook) ||
                 (this.FilterOptions.FilterMergeType == Timekeeper.Dimension.Category)) {
                 FilterOptionsTabControl.TabPages.RemoveByKey("CategoryTab");
             }
@@ -174,18 +174,18 @@ namespace Timekeeper.Forms.Shared
             }
 
             if (FilterOptions.Locations != null) {
-                SetSelectedValues(LocationFilter, FilterOptions.Locations);
+                SetSelectedValues(LocationTree.Nodes, FilterOptions.Locations);
             }
 
             if (FilterOptions.Categories != null) {
-                SetSelectedValues(CategoryFilter, FilterOptions.Categories);
+                SetSelectedValues(CategoryTree.Nodes, FilterOptions.Categories);
             }
 
             // With the above four set, populate self with selections
             FilterOptions.Activities = GetActuallySelectedValues(ActivityTree.Nodes);
             FilterOptions.Projects = GetActuallySelectedValues(ProjectTree.Nodes);
-            FilterOptions.Locations = GetActuallySelectedValues(LocationFilter);
-            FilterOptions.Categories = GetActuallySelectedValues(CategoryFilter);
+            FilterOptions.Locations = GetActuallySelectedValues(LocationTree.Nodes);
+            FilterOptions.Categories = GetActuallySelectedValues(CategoryTree.Nodes);
             FilterOptions.ImpliedActivities = GetImpliedSelectedValues(ActivityTree.Nodes, false);
             FilterOptions.ImpliedProjects = GetImpliedSelectedValues(ProjectTree.Nodes, false);
             // End populate self
@@ -198,23 +198,13 @@ namespace Timekeeper.Forms.Shared
         {
             ProjectTree.Nodes.Clear();
             ActivityTree.Nodes.Clear();
-            LocationFilter.Items.Clear();
-            CategoryFilter.Items.Clear();
+            LocationTree.Nodes.Clear();
+            CategoryTree.Nodes.Clear();
 
             Widgets.BuildProjectTree(ProjectTree.Nodes);
             Widgets.BuildActivityTree(ActivityTree.Nodes);
-
-            Classes.LocationCollection Locations = new Classes.LocationCollection();
-            List<IdObjectPair> FetchedLocations = Locations.Fetch();
-            foreach (IdObjectPair Location in FetchedLocations) {
-                LocationFilter.Items.Add(Location);
-            }
-
-            Classes.CategoryCollection Categories = new Classes.CategoryCollection();
-            List<IdObjectPair> FetchedCategories = Categories.Fetch();
-            foreach (IdObjectPair Category in FetchedCategories) {
-                CategoryFilter.Items.Add(Category);
-            }
+            Widgets.BuildLocationTree(LocationTree.Nodes);
+            Widgets.BuildCategoryTree(CategoryTree.Nodes);
         }
 
         //----------------------------------------------------------------------
@@ -254,30 +244,6 @@ namespace Timekeeper.Forms.Shared
 
         //---------------------------------------------------------------------
 
-        private void CheckedListBoxMenuSelectAll_Click(object sender, EventArgs e)
-        {
-            CheckedListBox Box = GetCheckedListBox(sender);
-            Select(Box, 1);
-        }
-
-        //---------------------------------------------------------------------
-
-        private void CheckedListBoxMenuSelectNone_Click(object sender, EventArgs e)
-        {
-            CheckedListBox Box = GetCheckedListBox(sender);
-            Select(Box, 0);
-        }
-
-        //---------------------------------------------------------------------
-
-        private void CheckedListBoxMenuInvertSelection_Click(object sender, EventArgs e)
-        {
-            CheckedListBox Box = GetCheckedListBox(sender);
-            Select(Box, -1);
-        }
-
-        //---------------------------------------------------------------------
-
         private void MemoOperator_SelectedIndexChanged(object sender, EventArgs e)
         {
             ChangeMemoValue();
@@ -296,15 +262,18 @@ namespace Timekeeper.Forms.Shared
 
         private void ChangeMemoValue()
         {
-            // -1: not selected
-            //  0 : contains
-            //  1 : does not contain
-            //  2 : empty
-            //  3 : not empty
-            if ((MemoOperator.SelectedIndex < 0) || (MemoOperator.SelectedIndex > 1)) {
-                MemoValue.Enabled = false;
-            } else {
+            // -1 : not selected
+            //  0 : any
+            //  1 : contains
+            //  2 : does not contain
+            //  3 : begins with
+            //  4 : ends with
+            //  5 : empty
+            //  6 : not empty
+            if ((MemoOperator.SelectedIndex >= 1) && (MemoOperator.SelectedIndex <= 4)) {
                 MemoValue.Enabled = true;
+            } else {
+                MemoValue.Enabled = false;
             }
         }
 
@@ -364,8 +333,8 @@ namespace Timekeeper.Forms.Shared
             FilterOptions.DurationUnit = DurationUnit.SelectedIndex;
             FilterOptions.Activities = GetActuallySelectedValues(ActivityTree.Nodes);
             FilterOptions.Projects = GetActuallySelectedValues(ProjectTree.Nodes);
-            FilterOptions.Locations = GetActuallySelectedValues(LocationFilter);
-            FilterOptions.Categories = GetActuallySelectedValues(CategoryFilter);
+            FilterOptions.Locations = GetActuallySelectedValues(LocationTree.Nodes);
+            FilterOptions.Categories = GetActuallySelectedValues(CategoryTree.Nodes);
             FilterOptions.ImpliedActivities = GetImpliedSelectedValues(ActivityTree.Nodes, false);
             FilterOptions.ImpliedProjects = GetImpliedSelectedValues(ProjectTree.Nodes, false);
 
@@ -457,21 +426,6 @@ namespace Timekeeper.Forms.Shared
 
         //---------------------------------------------------------------------
 
-        private List<long> GetActuallySelectedValues(CheckedListBox list)
-        {
-            List<long> CheckedItems = new List<long>();
-
-            for (int i = 0; i < list.Items.Count; i++) {
-                if (list.GetItemChecked(i)) {
-                    CheckedItems.Add(i);
-                }
-            }
-
-            return CheckedItems;
-        }
-
-        //---------------------------------------------------------------------
-
         private void SetSelectedValues(TreeNodeCollection nodes, List<long> checkedNodes)
         {
             foreach (TreeNode Node in nodes) {
@@ -483,17 +437,6 @@ namespace Timekeeper.Forms.Shared
 
                 if (Node.Nodes.Count > 0) {
                     SetSelectedValues(Node.Nodes, checkedNodes);
-                }
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        private void SetSelectedValues(CheckedListBox list, List<long> checkedItems)
-        {
-            for (int i = 0; i < list.Items.Count; i++) {
-                if (checkedItems.IndexOf(i) >= 0) {
-                    list.SetItemChecked(i, true);
                 }
             }
         }
@@ -519,29 +462,6 @@ namespace Timekeeper.Forms.Shared
 
         //---------------------------------------------------------------------
 
-        private void Select(CheckedListBox checkedListBox, int state)
-        {
-
-            for (int i = 0; i < checkedListBox.Items.Count; i++) {
-
-                if (state == 0) {
-                    checkedListBox.SetItemCheckState(i, CheckState.Unchecked);
-                } else if (state == 1) {
-                    checkedListBox.SetItemCheckState(i, CheckState.Checked);
-                } else if (state == -1) {
-                    CheckState CurrentState = checkedListBox.GetItemCheckState(i);
-                    if (CurrentState == CheckState.Checked) {
-                        checkedListBox.SetItemCheckState(i, CheckState.Unchecked);
-                    } else {
-                        checkedListBox.SetItemCheckState(i, CheckState.Checked);
-                    }
-                }
-            }
-
-        }
-
-        //---------------------------------------------------------------------
-
         private TreeView GetTreeView(object sender)
         {
             TreeView Result = null;
@@ -551,23 +471,6 @@ namespace Timekeeper.Forms.Shared
                 ContextMenuStrip Owner = MenuItem.Owner as ContextMenuStrip;
                 if (Owner != null) {
                     Result = Owner.SourceControl as TreeView;
-                }
-            }
-
-            return Result;
-        }
-
-        //---------------------------------------------------------------------
-
-        private CheckedListBox GetCheckedListBox(object sender)
-        {
-            CheckedListBox Result = null;
-
-            ToolStripItem MenuItem = sender as ToolStripItem;
-            if (MenuItem != null) {
-                ContextMenuStrip Owner = MenuItem.Owner as ContextMenuStrip;
-                if (Owner != null) {
-                    Result = Owner.SourceControl as CheckedListBox;
                 }
             }
 
@@ -584,8 +487,8 @@ namespace Timekeeper.Forms.Shared
                 FilterOptions.SetDateRange();
             }
             if (ChangeDateRange) {
-                FromDate.Value = FilterOptions.FromTime.Date;
-                ToDate.Value = FilterOptions.ToTime.Date;
+                FromDate.Value = FilterOptions.FromTime.Value.Date;
+                ToDate.Value = FilterOptions.ToTime.Value.Date;
             }
         }
 
@@ -639,6 +542,79 @@ namespace Timekeeper.Forms.Shared
                 ChangeDateRange = false;
                 Presets.SelectedIndex = Classes.FilterOptions.DATE_PRESET_CUSTOM - 1;
                 ChangeDateRange = true;
+            }
+        }
+
+        // Date Picker Popup Menus
+        // FIXME: Code stolen from Main.cs
+        // Also, SetTimeToMidnight not needed here. Look to Events and Todo items.
+
+        private void Action_CopyDate(DateTimePicker picker)
+        {
+            Clipboard.SetData(DataFormats.StringFormat, picker.Value.ToString(Options.Advanced_DateTimeFormat));
+        }
+
+        private void Action_PasteDate(DateTimePicker picker)
+        {
+            string ClipboardTime = (string)Clipboard.GetData(DataFormats.StringFormat);
+            try {
+                picker.Value = Convert.ToDateTime(ClipboardTime);
+            }
+            catch {
+                Timekeeper.Debug("Invalid date/time format: " + ClipboardTime);
+            }
+        }
+
+        private void Action_SetTimeToMidnight(DateTimePicker picker)
+        {
+            DateTime CurrentValue = picker.Value;
+            CurrentValue = DateTime.Parse(CurrentValue.Date.ToString(Timekeeper.DATE_FORMAT) + " 00:00:00");
+            CurrentValue = CurrentValue.AddHours(Timekeeper.Options.Advanced_Other_MidnightOffset);
+            picker.Value = CurrentValue;
+        }
+
+        private void PopupMenuDatesCopy_Click(object sender, EventArgs e)
+        {
+            // Maybe have next two lines be some sort of Classes.Widget thing? GetSourceDatePicker() or something?
+            ToolStripDropDownItem PopupItem = (ToolStripDropDownItem)sender;
+            DateTimePicker Picker = (DateTimePicker)((ContextMenuStrip)PopupItem.Owner).SourceControl;
+            Action_CopyDate((DateTimePicker)Picker);
+        }
+
+        private void PopupMenuDatesPaste_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem PopupItem = (ToolStripDropDownItem)sender;
+            DateTimePicker Picker = (DateTimePicker)((ContextMenuStrip)PopupItem.Owner).SourceControl;
+            Action_PasteDate((DateTimePicker)Picker);
+        }
+
+        private void PopupMenuDatesSetTimeToMidnight_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem PopupItem = (ToolStripDropDownItem)sender;
+            DateTimePicker Picker = (DateTimePicker)((ContextMenuStrip)PopupItem.Owner).SourceControl;
+            Action_SetTimeToMidnight((DateTimePicker)Picker);
+        }
+
+        // FIXME: duplicated code from TreeAttributeManager. Move to Widgets class...
+        private void Tree_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)SelectedNode.Tag;
+                if (Item.IsFolderOpened) {
+                    Item.CloseFolder();
+                }
+            }
+        }
+
+        private void Tree_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            TreeNode SelectedNode = e.Node;
+            if (SelectedNode != null) {
+                Classes.TreeAttribute Item = (Classes.TreeAttribute)SelectedNode.Tag;
+                if (!Item.IsFolderOpened) {
+                    Item.OpenFolder();
+                }
             }
         }
 

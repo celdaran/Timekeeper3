@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms.Wizards
 {
@@ -44,6 +44,9 @@ namespace Timekeeper.Forms.Wizards
             ItemPreset.SelectedIndex = 0;
 
             Width = 525;
+
+            this.Location = Timekeeper.CenterInParent(this.Owner, this.Width, this.Height);
+
             Widgets.WizardWidth = Width;
             Widgets.BackButton = BackButton;
             Widgets.NextButton = NextButton;
@@ -155,10 +158,12 @@ namespace Timekeeper.Forms.Wizards
                 // Item Type validation
                 if (this.Widgets.CurrentTab() == 3) {
                 //if (tablessControl1.SelectedIndex == 2) {
+                    /*
                     if (UseProjects.Checked == false && UseActivities.Checked == false) {
                         Common.Warn("You must track at least one dimension: Projects or Activities");
                         return;
                     }
+                    */
                 }
 
                 // Location validation
@@ -191,6 +196,8 @@ namespace Timekeeper.Forms.Wizards
                     Options.FileName = NewDatabaseFileName.Text;
                     Options.UseProjects = UseProjects.Checked;
                     Options.UseActivities = UseActivities.Checked;
+                    Options.UseLocations = UseLocations.Checked;
+                    Options.UseCategories = UseCategories.Checked;
                     Options.ItemPreset = ItemPreset.SelectedIndex;
                     Options.LocationName = LocationName.Text;
                     Options.LocationDescription = LocationDescription.Text;
@@ -218,6 +225,14 @@ namespace Timekeeper.Forms.Wizards
 
             WizardReview.Text += "Use Activities:" + Environment.NewLine + "  ";
             WizardReview.Text += UseActivities.Checked ? "Yes" : "No";
+            WizardReview.Text += Environment.NewLine + Environment.NewLine;
+
+            WizardReview.Text += "Use Locations:" + Environment.NewLine + "  ";
+            WizardReview.Text += UseLocations.Checked ? "Yes" : "No";
+            WizardReview.Text += Environment.NewLine + Environment.NewLine;
+
+            WizardReview.Text += "Use Categories:" + Environment.NewLine + "  ";
+            WizardReview.Text += UseCategories.Checked ? "Yes" : "No";
             WizardReview.Text += Environment.NewLine + Environment.NewLine;
 
             WizardReview.Text += "Preset Job Template:" + Environment.NewLine + "  ";
@@ -256,13 +271,19 @@ namespace Timekeeper.Forms.Wizards
 
         private void SelectFileButton_Click(object sender, EventArgs e)
         {
+            Timekeeper.Debug("Issue #1356, Checkpoint Alpha");
             if (NewFileDialog.FileName == "") {
+                Timekeeper.Debug("Issue #1356, Checkpoint Bravo");
                 NewFileDialog.FileName = (Environment.UserName ?? "Timekeeper") + ".tkdb";
+                Timekeeper.Debug("Issue #1356, Checkpoint Charlie" + NewFileDialog.FileName);
             }
 
             if (NewFileDialog.ShowDialog(this) == DialogResult.OK) {
+                Timekeeper.Debug("Issue #1356, Checkpoint Delta");
                 NewDatabaseFileName.Text = NewFileDialog.FileName;
+                Timekeeper.Debug("Issue #1356, Checkpoint Echo");
             }
+            Timekeeper.Debug("Issue #1356, Checkpoint Foxtrot");
         }
 
         //----------------------------------------------------------------------

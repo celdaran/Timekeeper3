@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -60,10 +60,10 @@ namespace Timekeeper.Classes
                     j.LocationId, l.Name as LocationName,
                     j.CategoryId, c.Name as CategoryName,
                     j.StartTime, j.StopTime, j.Seconds,
-                    j.Memo, j.IsLocked, j.JournalIndex
+                    j.Memo, j.IsLocked
                 from Journal j
-                join Activity a on a.ActivityId = j.ActivityId
                 join Project p on p.ProjectId = j.ProjectId
+                join Activity a on a.ActivityId = j.ActivityId
                 join Location l on l.LocationId = j.LocationId
                 join Category c on c.CategoryId = j.CategoryId
                 where {0}
@@ -82,12 +82,16 @@ namespace Timekeeper.Classes
             string Query = String.Format(@"
                 select
                     j.NotebookId, j.CreateTime, j.ModifyTime,
+                    j.ProjectId as NotebookProjectId, p.Name as NotebookProjectName,
+                    j.ActivityId as NotebookActivityId, a.Name as NotebookActivityName,
                     j.LocationId as NotebookLocationId, l.Name as NotebookLocationName,
                     j.CategoryId as NotebookCategoryId, c.Name as NotebookCategoryName,
                     j.EntryTime as NotebookEntryTime, j.Memo as NotebookMemo
                 from Notebook j
-                left join Location l on l.LocationId = j.LocationId
-                left join Category c on c.CategoryId = j.CategoryId
+                join Project p on p.ProjectId = j.ProjectId
+                join Activity a on a.ActivityId = j.ActivityId
+                join Location l on l.LocationId = j.LocationId
+                join Category c on c.CategoryId = j.CategoryId
                 where {0}
                 order by {1}",
                 this.FilterOptions.WhereClause, "j.NotebookId");

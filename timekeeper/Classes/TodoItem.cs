@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Technitivity.Toolbox;
+using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
@@ -18,19 +18,25 @@ namespace Timekeeper.Classes
         public long TodoId { get; private set; }
         public DateTimeOffset CreateTime { get; private set; }
         public DateTimeOffset ModifyTime { get; private set; }
+        public string Memo { get; set; }
         public long ProjectId { get; set; }
         public long RefTodoStatusId { get; set; }
-        public DateTimeOffset StartTime { get; set; }
-        public DateTimeOffset DueTime { get; set; }
-        public string Memo { get; set; }
         public bool IsHidden { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTimeOffset HiddenTime { get; set; }
-        public DateTimeOffset DeletedTime { get; set; }
+        public DateTimeOffset? HiddenTime { get; set; }
+        public DateTimeOffset? DeletedTime { get; set; }
 
         public string ProjectName { get; private set; }
         public string StatusName { get; private set; }
         public string StatusDescription { get; private set; }
+        public string ProjectFolderName { get; private set; }
+
+        // These attributes are persisted with the Project, but 
+        // exposed as properties here for convenience. The methods
+        // sort out the underlying table implementation.
+        public DateTimeOffset? StartTime { get; set; }
+        public DateTimeOffset? DueTime { get; set; }
+        public long? Estimate { get; set; }
 
         //----------------------------------------------------------------------
 
@@ -55,9 +61,11 @@ namespace Timekeeper.Classes
             string Query = String.Format(@"
                 SELECT
                     t.TodoId, t.CreateTime, t.ModifyTime,
+                    t.Memo,
                     p.ProjectId, p.Name as ProjectName,
+                    p.StartTime, p.DueTime, 
+                    p.Estimate,
                     r.RefTodoStatusId, r.Name as StatusName , r.Description as StatusDescription,
-                    t.StartTime, t.DueTime, t.Memo,
                     t.IsHidden, t.HiddenTime,
                     t.IsDeleted, t.DeletedTime
                 FROM Todo t
@@ -74,26 +82,23 @@ namespace Timekeeper.Classes
                 this.CreateTime = TodoItem["CreateTime"];
                 this.ModifyTime = TodoItem["ModifyTime"];
 
+                this.Memo = TodoItem["Memo"];
                 this.ProjectId = TodoItem["ProjectId"];
                 this.ProjectName = TodoItem["ProjectName"];
                 this.RefTodoStatusId = TodoItem["RefTodoStatusId"];
                 this.StatusName = TodoItem["StatusName"];
                 this.StatusDescription = TodoItem["StatusDescription"];
-
-                if (TodoItem["StartTime"] != null)
-                    this.StartTime = TodoItem["StartTime"];
-                if (TodoItem["DueTime"] != null)
-                    this.DueTime = TodoItem["DueTime"];
-                if (TodoItem["Memo"] != null)
-                    this.Memo = TodoItem["Memo"];
+                this.StartTime = TodoItem["StartTime"];
+                this.DueTime = TodoItem["DueTime"];
+                this.Estimate = TodoItem["Estimate"];
 
                 this.IsHidden = TodoItem["IsHidden"];
                 this.IsDeleted = TodoItem["IsDeleted"];
+                this.HiddenTime = TodoItem["HiddenTime"];
+                this.DeletedTime = TodoItem["DeletedTime"];
 
-                if (TodoItem["HiddenTime"] != null)
-                    this.HiddenTime = TodoItem["HiddenTime"];
-                if (TodoItem["DeletedTime"] != null)
-                    this.DeletedTime = TodoItem["DeletedTime"];
+                Classes.Project Project = new Classes.Project(this.ProjectId);
+                this.ProjectFolderName = Project.Parent.Name;
             }
         }
 
@@ -102,19 +107,18 @@ namespace Timekeeper.Classes
         public bool Create()
         {
             try {
+                // Update Todo table
+
                 Row TodoItem = new Row();
 
-                string Now = Common.Now();
+                string Now = Timekeeper.DateForDatabase();
+
                 TodoItem["CreateTime"] = Now;
                 TodoItem["ModifyTime"] = Now;
 
+                TodoItem["Memo"] = this.Memo;
                 TodoItem["ProjectId"] = this.ProjectId;
                 TodoItem["RefTodoStatusId"] = this.RefTodoStatusId;
-
-                TodoItem["StartTime"] = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
-                TodoItem["DueTime"] = this.DueTime.ToString(Common.UTC_DATETIME_FORMAT);
-                TodoItem["Memo"] = this.Memo;
-
                 TodoItem["IsHidden"] = 0;
                 TodoItem["IsDeleted"] = 0;
 
@@ -124,9 +128,16 @@ namespace Timekeeper.Classes
                     throw new Exception("Could not create Todo item.");
                 }
 
+                // Update Project
+                Classes.Project RelatedProject = new Classes.Project(this.ProjectId);
+                RelatedProject.StartTime = this.StartTime;
+                RelatedProject.DueTime = this.DueTime;
+                RelatedProject.Estimate = this.Estimate;
+                RelatedProject.SaveTask();
+
                 // Backfill instance with system-generated values
-                this.CreateTime = DateTimeOffset.Parse(TodoItem["CreateTime"]);
-                this.ModifyTime = DateTimeOffset.Parse(TodoItem["ModifyTime"]);
+                this.CreateTime = Timekeeper.StringToDate(TodoItem["CreateTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(TodoItem["ModifyTime"]);
 
                 // And with foreign table information
                 this.ProjectName = (new Classes.Project(this.ProjectId)).DisplayName();
@@ -150,21 +161,25 @@ namespace Timekeeper.Classes
             try {
                 Row TodoItem = new Row();
 
-                TodoItem["ModifyTime"] = Common.Now();
+                TodoItem["ModifyTime"] = Timekeeper.DateForDatabase();
 
+                TodoItem["Memo"] = this.Memo;
                 TodoItem["ProjectId"] = this.ProjectId;
                 TodoItem["RefTodoStatusId"] = this.RefTodoStatusId;
-
-                TodoItem["StartTime"] = this.StartTime.ToString(Common.UTC_DATETIME_FORMAT);
-                TodoItem["DueTime"] = this.DueTime.ToString(Common.UTC_DATETIME_FORMAT);
-                TodoItem["Memo"] = this.Memo;
 
                 if (Database.Update("Todo", TodoItem, "TodoId", this.TodoId) != 1) {
                     throw new Exception("Could not save Todo item.");
                 }
 
+                // Update Project
+                Classes.Project RelatedProject = new Classes.Project(this.ProjectId);
+                RelatedProject.StartTime = this.StartTime;
+                RelatedProject.DueTime = this.DueTime;
+                RelatedProject.Estimate = this.Estimate;
+                RelatedProject.SaveTask();
+
                 // Backfill instance with system-generated values
-                this.ModifyTime = DateTimeOffset.Parse(TodoItem["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(TodoItem["ModifyTime"]);
 
                 // And with foreign table information
                 this.ProjectName = (new Classes.Project(this.ProjectId)).DisplayName();
@@ -185,20 +200,22 @@ namespace Timekeeper.Classes
 
         public void Delete()
         {
+            DateTimeOffset Now = Timekeeper.LocalNow;
             Update("IsDeleted", 1);
-            Update("DeletedTime", Common.Now());
+            Update("DeletedTime", Now);
             this.IsDeleted = true;
-            this.DeletedTime = DateTime.Now; // FIXME: this isn't right  :(
+            this.DeletedTime = Now;
         }
 
         //----------------------------------------------------------------------
 
         public void Hide()
         {
+            DateTimeOffset Now = Timekeeper.LocalNow;
             Update("IsHidden", 1);
-            Update("HiddenTime", Common.Now());
+            Update("HiddenTime", Now);
             this.IsHidden = true;
-            this.HiddenTime = DateTime.Now; // FIXME: this isn't right  :(
+            this.HiddenTime = Now;
         }
 
         //----------------------------------------------------------------------
@@ -208,7 +225,7 @@ namespace Timekeeper.Classes
             Update("IsHidden", 0);
             Update("HiddenTime", null);
             this.IsHidden = false;
-            this.HiddenTime = DateTime.MinValue;
+            this.HiddenTime = null;
         }
 
         //----------------------------------------------------------------------
@@ -243,7 +260,7 @@ namespace Timekeeper.Classes
             try {
                 Row TodoItem = new Row();
 
-                TodoItem["ModifyTime"] = Common.Now();
+                TodoItem["ModifyTime"] = Timekeeper.DateForDatabase();
 
                 TodoItem[columnName] = columnValue;
 
@@ -251,7 +268,7 @@ namespace Timekeeper.Classes
                     throw new Exception("Could not update Todo column " + columnName);
                 }
 
-                this.ModifyTime = DateTimeOffset.Parse(TodoItem["ModifyTime"]);
+                this.ModifyTime = Timekeeper.StringToDate(TodoItem["ModifyTime"]);
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);

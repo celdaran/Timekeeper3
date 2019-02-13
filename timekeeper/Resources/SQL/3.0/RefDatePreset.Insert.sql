@@ -69,6 +69,20 @@ INSERT INTO RefDatePreset
 ) VALUES (
     '{0}',
     '{0}',
+    'Last Week',
+    'Last Week'
+);
+
+INSERT INTO RefDatePreset
+(
+    CreateTime,
+    ModifyTime,
+    Name,
+    Description
+
+) VALUES (
+    '{0}',
+    '{0}',
     'This Month',
     'This Month'
 );
