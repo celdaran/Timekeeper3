@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Technitivity")]
 [assembly: AssemblyProduct("Timekeeper")]
-[assembly: AssemblyCopyright("Copyright © 1999-2019 by Technitivity (20 years!)")]
+[assembly: AssemblyCopyright("Copyright © 1999-2019 by Technitivity")]
 [assembly: AssemblyTrademark("Technitivity is a Division of Lockshire Media, LLC")]
 [assembly: AssemblyCulture("")]
 
