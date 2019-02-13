@@ -164,7 +164,7 @@ namespace Timekeeper.Classes
             mainForm.CloseStartGapButton.Left = Math.Max(mainForm.StartTimeSelector.Width + 73, 142);
             mainForm.CloseStopGapButton.Left = Math.Max(mainForm.StartTimeSelector.Width + 73, 142);
 
-            mainForm.DimensionPanel.Left = mainForm.CloseStartGapButton.Left + (SystemInformation.VerticalScrollBarWidth * 2 + 1);
+            // mainForm.DimensionPanel.Left = mainForm.CloseStartGapButton.Left + (SystemInformation.VerticalScrollBarWidth * 2 + 1);
         }
 
         //----------------------------------------------------------------------
