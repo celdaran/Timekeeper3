@@ -369,6 +369,11 @@ namespace Timekeeper.Forms
             }
         }
 
+        private void Browser_EnableProperties(bool enabled)
+        {
+            ToolbarEntryProperties.Enabled = enabled;
+        }
+
         //----------------------------------------------------------------------
 
         private void Browser_AlertCloseStartGap(bool alert)
@@ -788,6 +793,8 @@ namespace Timekeeper.Forms
             Browser_EnableStartEntry(true);
             Browser_EnableStopEntry(false);
             Browser_EnableDurationEntry(false);
+
+            Browser_EnableProperties(false);
         }
 
         private void Browser_SetBrowseState()
@@ -805,7 +812,10 @@ namespace Timekeeper.Forms
                 Browser_EnableStartEntry(true);
                 Browser_EnableStopEntry(true);
                 Browser_EnableDurationEntry(true);
-            } else {
+
+                Browser_EnableProperties(false);
+            }
+            else {
                 Browser_ShowStart(true);
                 Browser_ShowStop(false);
 
@@ -817,6 +827,8 @@ namespace Timekeeper.Forms
                 Browser_EnableStartEntry(true);
                 Browser_EnableStopEntry(true);
                 Browser_EnableDurationEntry(true);
+
+                Browser_EnableProperties(true);
             }
         }
 
@@ -840,6 +852,8 @@ namespace Timekeeper.Forms
             Browser_EnableStartEntry(false);
             Browser_EnableStopEntry(false);
             Browser_EnableDurationEntry(false);
+
+            Browser_EnableProperties(false);
         }
 
         //---------------------------------------------------------------------

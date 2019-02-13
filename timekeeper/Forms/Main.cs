@@ -1124,6 +1124,12 @@ namespace Timekeeper.Forms
             this.MemoEditor.Text += "\n";
         }
 
+        private void ToolbarEntryProperties_Click(object sender, EventArgs e)
+        {
+            var Dialog = new Shared.EntryProperties(browserEntry, Options);
+            Dialog.Show();
+        }
+
         //---------------------------------------------------------------------
         // FIXME - EXPERIMENTAL - NOT READY FOR PRIME TIME
         //---------------------------------------------------------------------

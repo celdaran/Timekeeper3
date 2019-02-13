@@ -6,7 +6,7 @@ using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
 {
-    class JournalEntry
+    public class JournalEntry
     {
         //---------------------------------------------------------------------
         // Properties

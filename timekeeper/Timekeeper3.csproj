@@ -199,6 +199,12 @@
     <Compile Include="Classes\Widgets.Trees.cs" />
     <Compile Include="Classes\Widgets.Views.cs" />
     <Compile Include="Classes\Widgets.Wizard.cs" />
+    <Compile Include="Forms\Shared\EntryProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Shared\EntryProperties.Designer.cs">
+      <DependentUpon>EntryProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Reports\DatabaseCheck.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -468,6 +474,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Shared\BaseView.resx">
       <DependentUpon>BaseView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Shared\EntryProperties.resx">
+      <DependentUpon>EntryProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Shared\MemoEditor.resx">
       <DependentUpon>MemoEditor.cs</DependentUpon>
