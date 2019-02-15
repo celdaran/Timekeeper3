@@ -55,14 +55,6 @@ namespace Timekeeper.Classes
 
         //----------------------------------------------------------------------
 
-        public ListAttribute(string tableName, string name)
-            : this(tableName)
-        {
-            this.Load(name);
-        }
-
-        //----------------------------------------------------------------------
-
         public bool Create()
         {
             return Upsert(Mode.Insert);
@@ -112,21 +104,7 @@ namespace Timekeeper.Classes
 
         public void Load(long id)
         {
-            _Load(this.IdColumnName, id.ToString());
-        }
-
-        //----------------------------------------------------------------------
-
-        public void Load(string name)
-        {
-            _Load("Name", name);
-        }
-
-        //----------------------------------------------------------------------
-
-        private void _Load(string columnName, string columnValue)
-        {
-            string Query = String.Format(@"SELECT * FROM {0} WHERE {1} = '{2}'", this.TableName, columnName, columnValue);
+            string Query = String.Format(@"SELECT * FROM {0} WHERE {1} = {2}", this.TableName, this.IdColumnName, id);
             Row ListAttribute = Database.SelectRow(Query);
 
             if (ListAttribute[this.IdColumnName] != null) {

@@ -90,19 +90,6 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
-        public bool Exists(DateTimeOffset dateTime)
-        {
-            string query = String.Format(@"
-                select count(*) as Count
-                from Journal
-                where datetime(StartTime, 'utc') = datetime('{0}', 'utc')",
-            dateTime.DateTime.ToString(Common.UTC_DATETIME_FORMAT));
-            Row Row = this.Database.SelectRow(query);
-            return Row["Count"] > 0;
-        }
-
-        //---------------------------------------------------------------------
-
         private long TodaySeconds()
         {
             DateTime Today = Timekeeper.AdjustedToday;

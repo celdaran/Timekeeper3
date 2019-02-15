@@ -1,4 +1,4 @@
-namespace Timekeeper.Forms.Wizards
+﻿namespace Timekeeper.Forms.Wizards
 {
     partial class Import
     {
