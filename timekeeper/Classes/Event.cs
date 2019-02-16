@@ -193,7 +193,7 @@ namespace Timekeeper.Classes
         protected long NameToId(string eventName)
         {
             string QuotedName = eventName.Replace("'", "''");
-            string Query = String.Format(@"SELECT EventId AS Id FROM Event WHERE Name = '{1}'",
+            string Query = String.Format(@"SELECT EventId AS Id FROM Event WHERE Name = '{}'",
                 QuotedName);
             Row Row = Database.SelectRow(Query);
             if (Row["Id"] != null) {
