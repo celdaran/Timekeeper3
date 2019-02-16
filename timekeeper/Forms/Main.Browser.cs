@@ -501,11 +501,18 @@ namespace Timekeeper.Forms
                         if (timerRunning) {
                             Browser_SetupForStopping();
                         }
-                    } else {
+                        MemoEditor.MemoEntry.BackColor = SystemColors.Window;
+                    }
+                    else {
                         Browser_EnableFirst(true);
                         Browser_EnablePrev(true);
                         Browser_EnableNext(true);
                         Browser_EnableLast(true);
+                        if (timerRunning) {
+                            MemoEditor.MemoEntry.BackColor = SystemColors.ControlLight;
+                        } else {
+                            MemoEditor.MemoEntry.BackColor = SystemColors.Window;
+                        }
                     }
                 } else {
                     Common.Warn("browserEntry.JournalId <= 0");
