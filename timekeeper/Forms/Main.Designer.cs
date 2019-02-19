@@ -226,6 +226,7 @@ namespace Timekeeper.Forms
             this.ToolbarSave = new System.Windows.Forms.ToolStripButton();
             this.ToolbarRevert = new System.Windows.Forms.ToolStripButton();
             this.ToolbarUnlock = new System.Windows.Forms.ToolStripButton();
+            this.ToolbarEntryProperties = new System.Windows.Forms.ToolStripButton();
             this.PopupMenuMemo = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuMemoCut = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuMemoCopy = new System.Windows.Forms.ToolStripMenuItem();
@@ -235,7 +236,6 @@ namespace Timekeeper.Forms
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.IdleTimer = new System.Windows.Forms.Timer(this.components);
-            this.ToolbarEntryProperties = new System.Windows.Forms.ToolStripButton();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -287,7 +287,7 @@ namespace Timekeeper.Forms
             // MenuFileNew
             // 
             this.MenuFileNew.Name = "MenuFileNew";
-            this.MenuFileNew.Size = new System.Drawing.Size(180, 22);
+            this.MenuFileNew.Size = new System.Drawing.Size(155, 22);
             this.MenuFileNew.Text = "&New...";
             this.MenuFileNew.Click += new System.EventHandler(this.MenuFileNew_Click);
             // 
@@ -535,14 +535,14 @@ namespace Timekeeper.Forms
             // MenuToolTodo
             // 
             this.MenuToolTodo.Name = "MenuToolTodo";
-            this.MenuToolTodo.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolTodo.Size = new System.Drawing.Size(164, 22);
             this.MenuToolTodo.Text = "To Do...";
             this.MenuToolTodo.Click += new System.EventHandler(this.MenuToolTodo_Click);
             // 
             // MenuToolEvents
             // 
             this.MenuToolEvents.Name = "MenuToolEvents";
-            this.MenuToolEvents.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolEvents.Size = new System.Drawing.Size(164, 22);
             this.MenuToolEvents.Text = "&Events...";
             this.MenuToolEvents.Visible = false;
             this.MenuToolEvents.Click += new System.EventHandler(this.MenuToolReminders_Click);
@@ -550,28 +550,28 @@ namespace Timekeeper.Forms
             // MenuToolNotebook
             // 
             this.MenuToolNotebook.Name = "MenuToolNotebook";
-            this.MenuToolNotebook.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolNotebook.Size = new System.Drawing.Size(164, 22);
             this.MenuToolNotebook.Text = "&Notebook...";
             this.MenuToolNotebook.Click += new System.EventHandler(this.MenuToolNotebook_Click);
             // 
             // MenuToolCalendar
             // 
             this.MenuToolCalendar.Name = "MenuToolCalendar";
-            this.MenuToolCalendar.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolCalendar.Size = new System.Drawing.Size(164, 22);
             this.MenuToolCalendar.Text = "&Calendar...";
             this.MenuToolCalendar.Click += new System.EventHandler(this.MenuToolCalendar_Click);
             // 
             // MenuToolStopwatch
             // 
             this.MenuToolStopwatch.Name = "MenuToolStopwatch";
-            this.MenuToolStopwatch.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolStopwatch.Size = new System.Drawing.Size(164, 22);
             this.MenuToolStopwatch.Text = "Stopwatch...";
             this.MenuToolStopwatch.Click += new System.EventHandler(this.MenuToolStopwatch_Click);
             // 
             // MenuToolCountdown
             // 
             this.MenuToolCountdown.Name = "MenuToolCountdown";
-            this.MenuToolCountdown.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolCountdown.Size = new System.Drawing.Size(164, 22);
             this.MenuToolCountdown.Text = "C&ountdown...";
             this.MenuToolCountdown.Click += new System.EventHandler(this.MenuToolCountdown_Click);
             // 
@@ -579,7 +579,7 @@ namespace Timekeeper.Forms
             // 
             this.MenuToolDatecalc.Enabled = false;
             this.MenuToolDatecalc.Name = "MenuToolDatecalc";
-            this.MenuToolDatecalc.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolDatecalc.Size = new System.Drawing.Size(164, 22);
             this.MenuToolDatecalc.Text = "&Date Calculator...";
             this.MenuToolDatecalc.Visible = false;
             this.MenuToolDatecalc.Click += new System.EventHandler(this.menuToolsDatecalc_Click);
@@ -587,13 +587,13 @@ namespace Timekeeper.Forms
             // MenuToolSep2
             // 
             this.MenuToolSep2.Name = "MenuToolSep2";
-            this.MenuToolSep2.Size = new System.Drawing.Size(177, 6);
+            this.MenuToolSep2.Size = new System.Drawing.Size(161, 6);
             // 
             // MenuToolOptions
             // 
             this.MenuToolOptions.Name = "MenuToolOptions";
             this.MenuToolOptions.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.MenuToolOptions.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolOptions.Size = new System.Drawing.Size(164, 22);
             this.MenuToolOptions.Text = "Options";
             this.MenuToolOptions.Click += new System.EventHandler(this.MenuToolOptions_Click);
             // 
@@ -2059,6 +2059,16 @@ namespace Timekeeper.Forms
             this.ToolbarUnlock.Visible = false;
             this.ToolbarUnlock.Click += new System.EventHandler(this.MenuToolbarBrowserUnlock_Click);
             // 
+            // ToolbarEntryProperties
+            // 
+            this.ToolbarEntryProperties.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ToolbarEntryProperties.Image = global::Timekeeper.Properties.Resources.ImageButtonProperties;
+            this.ToolbarEntryProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolbarEntryProperties.Name = "ToolbarEntryProperties";
+            this.ToolbarEntryProperties.Size = new System.Drawing.Size(23, 22);
+            this.ToolbarEntryProperties.Text = "Properties";
+            this.ToolbarEntryProperties.Click += new System.EventHandler(this.ToolbarEntryProperties_Click);
+            // 
             // PopupMenuMemo
             // 
             this.PopupMenuMemo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -2120,16 +2130,6 @@ namespace Timekeeper.Forms
             // 
             this.IdleTimer.Interval = 1200000;
             this.IdleTimer.Tick += new System.EventHandler(this.IdleTimer_Tick);
-            // 
-            // ToolbarEntryProperties
-            // 
-            this.ToolbarEntryProperties.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ToolbarEntryProperties.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarEntryProperties.Image")));
-            this.ToolbarEntryProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ToolbarEntryProperties.Name = "ToolbarEntryProperties";
-            this.ToolbarEntryProperties.Size = new System.Drawing.Size(23, 22);
-            this.ToolbarEntryProperties.Text = "toolStripButton1";
-            this.ToolbarEntryProperties.Click += new System.EventHandler(this.ToolbarEntryProperties_Click);
             // 
             // Main
             // 

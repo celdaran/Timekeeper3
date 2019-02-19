@@ -1131,7 +1131,7 @@ namespace Timekeeper.Forms
         private void ToolbarEntryProperties_Click(object sender, EventArgs e)
         {
             var Dialog = new Shared.EntryProperties(browserEntry, Options);
-            Dialog.Show();
+            Dialog.ShowDialog(this);
         }
 
         //---------------------------------------------------------------------

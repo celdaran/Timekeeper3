@@ -640,6 +640,7 @@
     <None Include="Resources\Images\Icons\LongRuler.png" />
     <None Include="Resources\Images\Icons\Gutter.png" />
     <None Include="Resources\Images\Buttons\BallotBoxList.png" />
+    <None Include="Resources\Images\Icons\Properties.png" />
     <Content Include="tk3.icon.ico" />
     <None Include="Resources\Images\Icons\Speaker.png" />
     <None Include="Resources\Images\Icons\Warning.png" />
