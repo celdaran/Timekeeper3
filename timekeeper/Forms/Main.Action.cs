@@ -1259,6 +1259,10 @@ namespace Timekeeper.Forms
                     ElapsedLocationToday = Convert.ToInt32(TimedLocation.ElapsedToday().TotalSeconds);
                     ElapsedCategoryToday = Convert.ToInt32(TimedCategory.ElapsedToday().TotalSeconds);
                     ElapsedAllToday = Convert.ToInt32(Entries.ElapsedToday());
+
+                    // Auto-save current entry
+                    if (!isBrowsing)
+                        Browser_SaveRow();
                 }
             }
             catch (Exception x) {

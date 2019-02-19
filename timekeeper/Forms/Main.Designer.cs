@@ -1245,7 +1245,7 @@ namespace Timekeeper.Forms
             // LongTimer
             // 
             this.LongTimer.Enabled = true;
-            this.LongTimer.Interval = 600000;
+            this.LongTimer.Interval = 300000;
             this.LongTimer.Tick += new System.EventHandler(this.LongTimer_Tick);
             // 
             // NewFileDialog
