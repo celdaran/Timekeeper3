@@ -287,8 +287,7 @@ namespace Timekeeper.Forms
             // MenuFileNew
             // 
             this.MenuFileNew.Name = "MenuFileNew";
-            this.MenuFileNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.MenuFileNew.Size = new System.Drawing.Size(155, 22);
+            this.MenuFileNew.Size = new System.Drawing.Size(180, 22);
             this.MenuFileNew.Text = "&New...";
             this.MenuFileNew.Click += new System.EventHandler(this.MenuFileNew_Click);
             // 
@@ -825,8 +824,7 @@ namespace Timekeeper.Forms
             // MenuToolbarBrowserNew
             // 
             this.MenuToolbarBrowserNew.Name = "MenuToolbarBrowserNew";
-            this.MenuToolbarBrowserNew.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.N)));
+            this.MenuToolbarBrowserNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.MenuToolbarBrowserNew.Size = new System.Drawing.Size(206, 22);
             this.MenuToolbarBrowserNew.Text = "&New Entry";
             this.MenuToolbarBrowserNew.Click += new System.EventHandler(this.MenuToolbarBrowserNew_Click);
