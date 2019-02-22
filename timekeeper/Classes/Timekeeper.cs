@@ -508,7 +508,7 @@ namespace Timekeeper
         public static string FormatSeconds(long seconds)
         {
             if (seconds > (9999*60*60 + 59*60 + 59)) {
-                Common.Info("Duration greater than 10,000 hours detected.");
+                // Common.Info("Duration greater than 10,000 hours detected.");
             }
             TimeSpan t = TimeSpan.FromSeconds(seconds);
             return string.Format("{0:D2}:{1:D2}:{2:D2}",
