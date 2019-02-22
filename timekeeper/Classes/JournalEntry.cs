@@ -90,6 +90,20 @@ namespace Timekeeper.Classes
 
         //---------------------------------------------------------------------
 
+        public bool Delete(long JournalId)
+        {
+            try {
+                var result = Database.Delete("Journal", "JournalId", JournalId);
+                return true;
+            }
+            catch (Exception x) {
+                Timekeeper.Exception(x);
+                return false;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         public JournalEntry Copy()
         {
             JournalEntry copy = new JournalEntry();

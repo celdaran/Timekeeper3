@@ -1541,6 +1541,41 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private void Action_JoinEntries()
+        {
+            try
+            {
+                Common.Warn("Joining entries is not yet available. Check back later!");
+                return;
+
+                // Join always joins the current entry with the previous entry
+                // The use case is: I just split an entry and now I want to unsplit it
+                string Message = String.Format("This will join the current entry with the previous entry. Are you sure?");
+                if (Common.WarnPrompt(Message) == DialogResult.No) {
+                    return;
+                }
+
+                // TODO: this is not what you think it is
+                // FIX LATER, I'M OUT OF TIME
+
+                // Set previous entry's stop time to current entry's stop time
+                priorLoadedBrowserEntry.StopTime = browserEntry.StopTime;
+
+                // Delete current entry
+                browserEntry.Delete(browserEntry.JournalId);
+
+                // Load the previous entry back to the browser
+                Browser_EntryToForm(priorLoadedBrowserEntry);
+            }
+            catch (Exception x)
+            {
+                Common.Warn("There was a problem joining the entries");
+                Timekeeper.Exception(x);
+            }
+        }
+
+        //---------------------------------------------------------------------
+
         private void Action_UpdateDuration(DateTimeOffset currentTime, DateTimeOffset previousTime)
         {
             if (isBrowsing) {
