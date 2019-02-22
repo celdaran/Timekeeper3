@@ -30,7 +30,7 @@ namespace Timekeeper
                 //----------------------------------------------
 
                 ApplicationName.Text = Timekeeper.TITLE + " " + Timekeeper.SHORT_VERSION;
-                ApplicationRelease.Text = "Version " + Timekeeper.VERSION + " (Released " + Timekeeper.RELEASE_DATE + ")";
+                ApplicationRelease.Text = "Version " + Timekeeper.VERSION + " (Alpha Released " + Timekeeper.RELEASE_DATE + ")";
                 ApplicationCopyright.Text = Timekeeper.COPYRIGHT;
 
                 //----------------------------------------------
