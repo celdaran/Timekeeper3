@@ -309,6 +309,13 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
+        public static string ShortTimeForDisplay()
+        {
+            return UserShortTimeString(Timekeeper.LocalNow);
+        }
+
+        //---------------------------------------------------------------------
+
         private static string DatabaseDateTimeString(DateTimeOffset datetime)
         {
             return datetime.ToLocalTime().ToString(Timekeeper.LOCAL_DATETIME_FORMAT);
@@ -338,8 +345,17 @@ namespace Timekeeper
         private static string UserTimeString(DateTimeOffset datetime)
         {
             // TODO/FIXME: implement this: Options.Advanced_TimeFormat);
-            return datetime.ToLocalTime().ToString("hh:mm:ss"); 
+            return datetime.ToLocalTime().ToString("HH:mm:ss"); 
         }
+
+        //---------------------------------------------------------------------
+
+        private static string UserShortTimeString(DateTimeOffset datetime)
+        {
+            // TODO/FIXME: see above
+            return datetime.ToLocalTime().ToString("HH:mm");
+        }
+
 
         //---------------------------------------------------------------------
 

@@ -420,12 +420,25 @@ namespace Timekeeper.Forms.Shared
         {
             // Get our template and current timestamp
             string Template = Options.Advanced_BreakTemplate;
-            string Timestamp = Timekeeper.DateForDisplay();
 
-            // Substitute timestamp, if present
-            Template = Template.Replace("%timestamp", "{0}");
+            // Defaults
+            string BreakText = "";
+            string Timestamp = "";
+
+            // Handy substitutions (TODO: come up with something better than this)
             Template = Template.Replace("\\n", "\n");
-            string BreakText = String.Format(Template, Timestamp);
+            // Substitute time variables, if present
+            if (Template.Contains("%datetimestamp"))
+            {
+                Template = Template.Replace("%datetimestamp", "{0}");
+                Timestamp = Timekeeper.DateForDisplay();
+            }
+            if (Template.Contains("%timestamp")) {
+                Template = Template.Replace("%timestamp", "{0}");
+                Timestamp = Timekeeper.ShortTimeForDisplay();
+            }
+
+            BreakText = String.Format(Template, Timestamp);
 
             // Send output to the memo box
             FormatSimpleTextInsert(BreakText);
