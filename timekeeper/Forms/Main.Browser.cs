@@ -501,7 +501,7 @@ namespace Timekeeper.Forms
                         if (timerRunning) {
                             Browser_SetupForStopping();
                         }
-                        MemoEditor.MemoEntry.BackColor = SystemColors.Window;
+                        MemoEditor.MemoEntry.BackColor = Color.White;
                     }
                     else {
                         Browser_EnableFirst(true);
@@ -511,7 +511,7 @@ namespace Timekeeper.Forms
                         if (timerRunning) {
                             MemoEditor.MemoEntry.BackColor = SystemColors.ControlLight;
                         } else {
-                            MemoEditor.MemoEntry.BackColor = SystemColors.Window;
+                            MemoEditor.MemoEntry.BackColor = Color.White;
                         }
                     }
                 } else {
@@ -644,8 +644,17 @@ namespace Timekeeper.Forms
             }
 
             // Copy form values to browser entry
+            Timekeeper.Debug("Browser_SaveRow: Checkpoint Charlie (1)");
+            Timekeeper.Debug("  StartTime: " + browserEntry.StartTime);
+            Timekeeper.Debug("  StopTime.: " + browserEntry.StopTime);
+            Timekeeper.Debug("  Seconds..: " + browserEntry.Seconds);
+            Timekeeper.Debug("  Memo.....: " + browserEntry.Memo);
             Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
-            Timekeeper.Debug("Browser_SaveRow: Checkpoint Charlie");
+            Timekeeper.Debug("Browser_SaveRow: Checkpoint Charlie (2)");
+            Timekeeper.Debug("  StartTime: " + browserEntry.StartTime);
+            Timekeeper.Debug("  StopTime.: " + browserEntry.StopTime);
+            Timekeeper.Debug("  Seconds..: " + browserEntry.Seconds);
+            Timekeeper.Debug("  Memo.....: " + browserEntry.Memo);
 
             // Bail if nothing changed
             if (ToolbarRevert.Enabled == false) {
@@ -669,6 +678,10 @@ namespace Timekeeper.Forms
 
             // If we made it this far, save
             Timekeeper.Debug("Browser_SaveRow: Checkpoint Hotel");
+            Timekeeper.Debug("  StartTime: " + browserEntry.StartTime);
+            Timekeeper.Debug("  StopTime.: " + browserEntry.StopTime);
+            Timekeeper.Debug("  Seconds..: " + browserEntry.Seconds);
+            Timekeeper.Debug("  Memo.....: " + browserEntry.Memo);
             if (browserEntry.Save()) {
                 Browser_EnableRevert(false);
             } else {

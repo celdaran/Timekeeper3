@@ -195,6 +195,8 @@
             this.LoggingApplicationLabel = new System.Windows.Forms.Label();
             this.MailSettingsPage = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.Mail_Subject = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.Mail_FromAddress = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -214,8 +216,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.Mail_Subject = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -295,7 +295,6 @@
             // 
             // OptionsPanelCollection
             // 
-            this.OptionsPanelCollection.Alignment = System.Windows.Forms.TabAlignment.Left;
             this.OptionsPanelCollection.Controls.Add(this.LayoutPage);
             this.OptionsPanelCollection.Controls.Add(this.ViewPage);
             this.OptionsPanelCollection.Controls.Add(this.BehaviorPage);
@@ -303,27 +302,24 @@
             this.OptionsPanelCollection.Controls.Add(this.KeyboardPage);
             this.OptionsPanelCollection.Controls.Add(this.AdvancedPage);
             this.OptionsPanelCollection.Controls.Add(this.MailSettingsPage);
-            this.OptionsPanelCollection.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.OptionsPanelCollection.ItemSize = new System.Drawing.Size(26, 94);
+            this.OptionsPanelCollection.ItemSize = new System.Drawing.Size(26, 25);
             this.OptionsPanelCollection.Location = new System.Drawing.Point(12, 9);
-            this.OptionsPanelCollection.Multiline = true;
             this.OptionsPanelCollection.Name = "OptionsPanelCollection";
             this.OptionsPanelCollection.SelectedIndex = 0;
             this.OptionsPanelCollection.Size = new System.Drawing.Size(495, 420);
-            this.OptionsPanelCollection.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.OptionsPanelCollection.TabIndex = 0;
             // 
             // LayoutPage
             // 
+            this.LayoutPage.BackColor = System.Drawing.SystemColors.Menu;
             this.LayoutPage.Controls.Add(this.PresetGroup);
             this.LayoutPage.Controls.Add(this.DimensionGroup);
-            this.LayoutPage.Location = new System.Drawing.Point(98, 4);
+            this.LayoutPage.Location = new System.Drawing.Point(4, 29);
             this.LayoutPage.Name = "LayoutPage";
             this.LayoutPage.Padding = new System.Windows.Forms.Padding(3);
-            this.LayoutPage.Size = new System.Drawing.Size(393, 412);
+            this.LayoutPage.Size = new System.Drawing.Size(487, 387);
             this.LayoutPage.TabIndex = 2;
             this.LayoutPage.Text = "Layout";
-            this.LayoutPage.UseVisualStyleBackColor = true;
             // 
             // PresetGroup
             // 
@@ -475,18 +471,18 @@
             // ViewPage
             // 
             this.ViewPage.AutoScroll = true;
+            this.ViewPage.BackColor = System.Drawing.SystemColors.Menu;
             this.ViewPage.Controls.Add(this.MainViewGroup);
             this.ViewPage.Controls.Add(this.ViewSpacerBox);
             this.ViewPage.Controls.Add(this.MemoEditorGroup);
             this.ViewPage.Controls.Add(this.StatusBarGroup);
             this.ViewPage.Controls.Add(this.HiddenGroup);
-            this.ViewPage.Location = new System.Drawing.Point(98, 4);
+            this.ViewPage.Location = new System.Drawing.Point(4, 29);
             this.ViewPage.Name = "ViewPage";
             this.ViewPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ViewPage.Size = new System.Drawing.Size(393, 412);
+            this.ViewPage.Size = new System.Drawing.Size(487, 387);
             this.ViewPage.TabIndex = 0;
             this.ViewPage.Text = "View";
-            this.ViewPage.UseVisualStyleBackColor = true;
             // 
             // MainViewGroup
             // 
@@ -1060,19 +1056,19 @@
             // BehaviorPage
             // 
             this.BehaviorPage.AutoScroll = true;
+            this.BehaviorPage.BackColor = System.Drawing.SystemColors.Menu;
             this.BehaviorPage.Controls.Add(this.AnnoyGroup);
             this.BehaviorPage.Controls.Add(this.BehaviorSpacingBox);
             this.BehaviorPage.Controls.Add(this.BrowsingGroup);
             this.BehaviorPage.Controls.Add(this.SortingGroup);
             this.BehaviorPage.Controls.Add(this.WindowControlGroup);
             this.BehaviorPage.Controls.Add(this.TitleBarGroup);
-            this.BehaviorPage.Location = new System.Drawing.Point(98, 4);
+            this.BehaviorPage.Location = new System.Drawing.Point(4, 29);
             this.BehaviorPage.Name = "BehaviorPage";
             this.BehaviorPage.Padding = new System.Windows.Forms.Padding(3);
-            this.BehaviorPage.Size = new System.Drawing.Size(393, 412);
+            this.BehaviorPage.Size = new System.Drawing.Size(487, 387);
             this.BehaviorPage.TabIndex = 3;
             this.BehaviorPage.Text = "Behavior";
-            this.BehaviorPage.UseVisualStyleBackColor = true;
             // 
             // AnnoyGroup
             // 
@@ -1120,10 +1116,11 @@
             this.Behavior_Annoy_LocationFollowsProject.AutoSize = true;
             this.Behavior_Annoy_LocationFollowsProject.Location = new System.Drawing.Point(14, 4);
             this.Behavior_Annoy_LocationFollowsProject.Name = "Behavior_Annoy_LocationFollowsProject";
-            this.Behavior_Annoy_LocationFollowsProject.Size = new System.Drawing.Size(138, 17);
+            this.Behavior_Annoy_LocationFollowsProject.Size = new System.Drawing.Size(173, 17);
             this.Behavior_Annoy_LocationFollowsProject.TabIndex = 0;
-            this.Behavior_Annoy_LocationFollowsProject.Text = "Location follows Project";
+            this.Behavior_Annoy_LocationFollowsProject.Text = "Location uses Current Location";
             this.Behavior_Annoy_LocationFollowsProject.UseVisualStyleBackColor = true;
+            this.Behavior_Annoy_LocationFollowsProject.CheckedChanged += new System.EventHandler(this.Behavior_Annoy_LocationFollowsProject_CheckedChanged);
             // 
             // AnnoyGroup_ActivityFollowPanel
             // 
@@ -1537,14 +1534,14 @@
             // 
             // ReportPage
             // 
+            this.ReportPage.BackColor = System.Drawing.SystemColors.Menu;
             this.ReportPage.Controls.Add(this.ReportGroup);
-            this.ReportPage.Location = new System.Drawing.Point(98, 4);
+            this.ReportPage.Location = new System.Drawing.Point(4, 29);
             this.ReportPage.Name = "ReportPage";
             this.ReportPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ReportPage.Size = new System.Drawing.Size(393, 412);
+            this.ReportPage.Size = new System.Drawing.Size(487, 387);
             this.ReportPage.TabIndex = 1;
             this.ReportPage.Text = "Report";
-            this.ReportPage.UseVisualStyleBackColor = true;
             // 
             // ReportGroup
             // 
@@ -1663,15 +1660,15 @@
             // 
             // KeyboardPage
             // 
+            this.KeyboardPage.BackColor = System.Drawing.SystemColors.Menu;
             this.KeyboardPage.Controls.Add(this.ShortcutGroup);
             this.KeyboardPage.Controls.Add(this.FunctionList);
-            this.KeyboardPage.Location = new System.Drawing.Point(98, 4);
+            this.KeyboardPage.Location = new System.Drawing.Point(4, 29);
             this.KeyboardPage.Name = "KeyboardPage";
             this.KeyboardPage.Padding = new System.Windows.Forms.Padding(3);
-            this.KeyboardPage.Size = new System.Drawing.Size(393, 412);
+            this.KeyboardPage.Size = new System.Drawing.Size(487, 387);
             this.KeyboardPage.TabIndex = 4;
             this.KeyboardPage.Text = "Keyboard";
-            this.KeyboardPage.UseVisualStyleBackColor = true;
             // 
             // ShortcutGroup
             // 
@@ -1870,17 +1867,17 @@
             // AdvancedPage
             // 
             this.AdvancedPage.AutoScroll = true;
+            this.AdvancedPage.BackColor = System.Drawing.SystemColors.Menu;
             this.AdvancedPage.Controls.Add(this.AdvancedSpacerBox);
             this.AdvancedPage.Controls.Add(this.AdvancedFormattingGroup);
             this.AdvancedPage.Controls.Add(this.OtherAdvancedGroup);
             this.AdvancedPage.Controls.Add(this.LoggingGroup);
-            this.AdvancedPage.Location = new System.Drawing.Point(98, 4);
+            this.AdvancedPage.Location = new System.Drawing.Point(4, 29);
             this.AdvancedPage.Name = "AdvancedPage";
             this.AdvancedPage.Padding = new System.Windows.Forms.Padding(3);
-            this.AdvancedPage.Size = new System.Drawing.Size(393, 412);
+            this.AdvancedPage.Size = new System.Drawing.Size(487, 387);
             this.AdvancedPage.TabIndex = 5;
             this.AdvancedPage.Text = "Advanced";
-            this.AdvancedPage.UseVisualStyleBackColor = true;
             // 
             // AdvancedSpacerBox
             // 
@@ -2216,15 +2213,15 @@
             // 
             // MailSettingsPage
             // 
+            this.MailSettingsPage.BackColor = System.Drawing.SystemColors.Menu;
             this.MailSettingsPage.Controls.Add(this.groupBox2);
             this.MailSettingsPage.Controls.Add(this.groupBox1);
-            this.MailSettingsPage.Location = new System.Drawing.Point(98, 4);
+            this.MailSettingsPage.Location = new System.Drawing.Point(4, 29);
             this.MailSettingsPage.Name = "MailSettingsPage";
             this.MailSettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.MailSettingsPage.Size = new System.Drawing.Size(393, 412);
+            this.MailSettingsPage.Size = new System.Drawing.Size(487, 387);
             this.MailSettingsPage.TabIndex = 6;
             this.MailSettingsPage.Text = "Mail Settings";
-            this.MailSettingsPage.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
@@ -2240,6 +2237,23 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Mail && SMS Message";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(14, 80);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(69, 13);
+            this.label21.TabIndex = 22;
+            this.label21.Text = "Subject Line:";
+            // 
+            // Mail_Subject
+            // 
+            this.Mail_Subject.Location = new System.Drawing.Point(111, 77);
+            this.Mail_Subject.Name = "Mail_Subject";
+            this.Mail_Subject.Size = new System.Drawing.Size(215, 20);
+            this.Mail_Subject.TabIndex = 3;
+            this.Mail_Subject.Text = "Reminder";
             // 
             // label10
             // 
@@ -2408,23 +2422,6 @@
             // OpenFileDialog
             // 
             this.OpenFileDialog.FileName = "SET AT RUN TIME";
-            // 
-            // Mail_Subject
-            // 
-            this.Mail_Subject.Location = new System.Drawing.Point(111, 77);
-            this.Mail_Subject.Name = "Mail_Subject";
-            this.Mail_Subject.Size = new System.Drawing.Size(215, 20);
-            this.Mail_Subject.TabIndex = 3;
-            this.Mail_Subject.Text = "Reminder";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(14, 80);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(69, 13);
-            this.label21.TabIndex = 22;
-            this.label21.Text = "Subject Line:";
             // 
             // Options
             // 
@@ -2731,6 +2728,5 @@
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.TextBox Mail_Subject;
-
     }
 }

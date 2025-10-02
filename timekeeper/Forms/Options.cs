@@ -1157,7 +1157,11 @@ Note: After enabling this feature, you need to restart Timekeeper to get your ev
                 OptionsPanelCollection.TabPages.Remove(MailSettingsPage);
             }
         }
-        //----------------------------------------------------------------------
+
+        private void Behavior_Annoy_LocationFollowsProject_CheckedChanged(object sender, EventArgs e)
+        {
+            Behavior_Annoy_LocationFollowsProject.Enabled = Behavior_Annoy_LocationFollowsProject.Checked;
+        }
 
     }
 }

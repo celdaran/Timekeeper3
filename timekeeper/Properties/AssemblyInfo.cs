@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Technitivity")]
 [assembly: AssemblyProduct("Timekeeper")]
-[assembly: AssemblyCopyright("Copyright © 1999-2020 by Technitivity")]
+[assembly: AssemblyCopyright("Copyright © 1999-2024 by Technitivity")]
 [assembly: AssemblyTrademark("Technitivity is a Division of Lockshire Media, LLC")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.2.102.1")]
-[assembly: AssemblyFileVersion("3.2.102.1")]
+[assembly: AssemblyVersion("3.2.103.1")]
+[assembly: AssemblyFileVersion("3.2.103.1")]

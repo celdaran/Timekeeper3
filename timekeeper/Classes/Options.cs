@@ -268,6 +268,7 @@ namespace Timekeeper.Classes
         public long State_LastReportViewId { get; set; }
         public long State_LastCalendarViewId { get; set; }
         public long State_LastPunchCardViewId { get; set; }
+        public long State_CurrentLocationId { get; set; }
 
         //----------------------------------------------------------------------
         // Constructor
@@ -757,6 +758,13 @@ namespace Timekeeper.Classes
                 Option = this.Database.SelectRow(Query);
                 if (Option.Count > 0) {
                     State_LastPunchCardViewId = Convert.ToInt64(Option["Value"]);
+                }
+
+                Query = String.Format(@"select Value from Options where Key = '{0}'", "CurrentLocationId");
+                Option = this.Database.SelectRow(Query);
+                if (Option.Count > 0)
+                {
+                    State_LastLocationId = Convert.ToInt64(Option["Value"]);
                 }
 
                 Timekeeper.Debug("Options Loaded from Database");

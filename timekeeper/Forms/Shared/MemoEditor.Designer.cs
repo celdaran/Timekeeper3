@@ -122,14 +122,14 @@
             this.PopupMenuSep3,
             this.PopupMenuMarkupLanguage});
             this.PopupMenu.Name = "PopupMenu";
-            this.PopupMenu.Size = new System.Drawing.Size(210, 264);
+            this.PopupMenu.Size = new System.Drawing.Size(208, 264);
             this.PopupMenu.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenu_Opening);
             // 
             // PopupMenuCut
             // 
             this.PopupMenuCut.Name = "PopupMenuCut";
             this.PopupMenuCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.PopupMenuCut.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuCut.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuCut.Text = "Cut";
             this.PopupMenuCut.Click += new System.EventHandler(this.PopupMenuCut_Click);
             // 
@@ -137,7 +137,7 @@
             // 
             this.PopupMenuCopy.Name = "PopupMenuCopy";
             this.PopupMenuCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.PopupMenuCopy.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuCopy.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuCopy.Text = "Copy";
             this.PopupMenuCopy.Click += new System.EventHandler(this.PopupMenuCopy_Click);
             // 
@@ -145,38 +145,38 @@
             // 
             this.PopupMenuPaste.Name = "PopupMenuPaste";
             this.PopupMenuPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.PopupMenuPaste.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuPaste.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuPaste.Text = "Paste";
             this.PopupMenuPaste.Click += new System.EventHandler(this.PopupMenuPaste_Click);
             // 
             // PopupMenuSep1
             // 
             this.PopupMenuSep1.Name = "PopupMenuSep1";
-            this.PopupMenuSep1.Size = new System.Drawing.Size(206, 6);
+            this.PopupMenuSep1.Size = new System.Drawing.Size(204, 6);
             // 
             // PopupMenuToggleCheckbox
             // 
             this.PopupMenuToggleCheckbox.Name = "PopupMenuToggleCheckbox";
-            this.PopupMenuToggleCheckbox.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuToggleCheckbox.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuToggleCheckbox.Text = "Toggle Checkbox";
             this.PopupMenuToggleCheckbox.Click += new System.EventHandler(this.PopupMenuToggleCheckbox_Click);
             // 
             // PopupMenuSep2
             // 
             this.PopupMenuSep2.Name = "PopupMenuSep2";
-            this.PopupMenuSep2.Size = new System.Drawing.Size(206, 6);
+            this.PopupMenuSep2.Size = new System.Drawing.Size(204, 6);
             // 
             // PopupMenuHideToolbar
             // 
             this.PopupMenuHideToolbar.Name = "PopupMenuHideToolbar";
-            this.PopupMenuHideToolbar.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuHideToolbar.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuHideToolbar.Text = "Hide Formatting Toolbar";
             this.PopupMenuHideToolbar.Click += new System.EventHandler(this.PopupMenuHideToolbar_Click);
             // 
             // PopupMenuShowToolbar
             // 
             this.PopupMenuShowToolbar.Name = "PopupMenuShowToolbar";
-            this.PopupMenuShowToolbar.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuShowToolbar.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuShowToolbar.Text = "Show Formatting Toolbar";
             this.PopupMenuShowToolbar.Visible = false;
             this.PopupMenuShowToolbar.Click += new System.EventHandler(this.PopupMenuShowToolbar_Click);
@@ -184,14 +184,14 @@
             // PopupMenuHideRuler
             // 
             this.PopupMenuHideRuler.Name = "PopupMenuHideRuler";
-            this.PopupMenuHideRuler.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuHideRuler.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuHideRuler.Text = "Hide Ruler";
             this.PopupMenuHideRuler.Click += new System.EventHandler(this.PopupMenuHideRuler_Click);
             // 
             // PopupMenuShowRuler
             // 
             this.PopupMenuShowRuler.Name = "PopupMenuShowRuler";
-            this.PopupMenuShowRuler.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuShowRuler.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuShowRuler.Text = "Show Ruler";
             this.PopupMenuShowRuler.Visible = false;
             this.PopupMenuShowRuler.Click += new System.EventHandler(this.PopupMenuShowRuler_Click);
@@ -199,21 +199,21 @@
             // PopupMenuHideGutter
             // 
             this.PopupMenuHideGutter.Name = "PopupMenuHideGutter";
-            this.PopupMenuHideGutter.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuHideGutter.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuHideGutter.Text = "Hide Left Gutter";
             this.PopupMenuHideGutter.Click += new System.EventHandler(this.PopupMenuHideGutter_Click);
             // 
             // PopupMenuShowGutter
             // 
             this.PopupMenuShowGutter.Name = "PopupMenuShowGutter";
-            this.PopupMenuShowGutter.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuShowGutter.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuShowGutter.Text = "Show Left Gutter";
             this.PopupMenuShowGutter.Click += new System.EventHandler(this.PopupMenuShowGutter_Click);
             // 
             // PopupMenuSep3
             // 
             this.PopupMenuSep3.Name = "PopupMenuSep3";
-            this.PopupMenuSep3.Size = new System.Drawing.Size(206, 6);
+            this.PopupMenuSep3.Size = new System.Drawing.Size(204, 6);
             // 
             // PopupMenuMarkupLanguage
             // 
@@ -221,7 +221,7 @@
             this.PopupMenuHTML,
             this.PopupMenuMarkdown});
             this.PopupMenuMarkupLanguage.Name = "PopupMenuMarkupLanguage";
-            this.PopupMenuMarkupLanguage.Size = new System.Drawing.Size(209, 22);
+            this.PopupMenuMarkupLanguage.Size = new System.Drawing.Size(207, 22);
             this.PopupMenuMarkupLanguage.Text = "Markup Language";
             // 
             // PopupMenuHTML
@@ -404,10 +404,11 @@
             // FormatHeading3Button
             // 
             this.FormatHeading3Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.FormatHeading3Button.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormatHeading3Button.Image = ((System.Drawing.Image)(resources.GetObject("FormatHeading3Button.Image")));
             this.FormatHeading3Button.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatHeading3Button.Name = "FormatHeading3Button";
-            this.FormatHeading3Button.Size = new System.Drawing.Size(26, 22);
+            this.FormatHeading3Button.Size = new System.Drawing.Size(25, 22);
             this.FormatHeading3Button.Text = "H3";
             this.FormatHeading3Button.ToolTipText = "Heading 3";
             this.FormatHeading3Button.Click += new System.EventHandler(this.FormatHeading3Button_Click);
@@ -485,7 +486,7 @@
             this.FormatTestButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatTestButton.Image")));
             this.FormatTestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatTestButton.Name = "FormatTestButton";
-            this.FormatTestButton.Size = new System.Drawing.Size(33, 22);
+            this.FormatTestButton.Size = new System.Drawing.Size(31, 22);
             this.FormatTestButton.Text = "Test";
             this.FormatTestButton.Visible = false;
             this.FormatTestButton.Click += new System.EventHandler(this.FormatTestButton_Click);

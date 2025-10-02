@@ -367,6 +367,9 @@ namespace Timekeeper.Classes
         {
             DateTimeOffset Now = Timekeeper.LocalNow;
             TimeSpan ts = new TimeSpan(Now.Ticks - TimerStartedTime.Ticks);
+            // Trying to track down Issue #1395
+            Timekeeper.Debug("Now.............: " + Now);
+            Timekeeper.Debug("TimerStartedTime: " + TimerStartedTime);
             if (ts.TotalSeconds > (60 * 60 * 24 * 7)) {
                 string Message = String.Format("Elapsed time is greater than a week. Something's not right. Now is {0}, TimerStartedTime is {1}.",
                     Timekeeper.DateForDatabase(Now),
@@ -628,7 +631,15 @@ namespace Timekeeper.Classes
         public void StartTiming(DateTimeOffset setStartTime)
         {
             // Simply record the time we start
+            Timekeeper.Debug("TimerStartedTime in StartTiming(): " + TimerStartedTime);
             this.TimerStartedTime = setStartTime;
+
+            /* so this happened:
+            2021-02-13T00:13:04-06:00 [DEBUG]: TimerStartedTime in StartTiming(): 0001-01-01 00:00:00 +00:00 (ThreadId: 1)
+            2021-02-13T00:13:04-06:00 [DEBUG]: TimerStartedTime in StartTiming(): 0001-01-01 00:00:00 +00:00 (ThreadId: 1)
+            2021-02-13T00:13:04-06:00 [DEBUG]: TimerStartedTime in StartTiming(): 2021-02-12 16:58:16 -06:00 (ThreadId: 1)
+            2021-02-13T00:13:04-06:00 [DEBUG]: TimerStartedTime in StartTiming(): 2021-02-12 16:58:16 -06:00 (ThreadId: 1)
+            */
 
             // Update (in memory) elapsed seconds for today
             this.SetSecondsElapsedToday();
@@ -644,10 +655,21 @@ namespace Timekeeper.Classes
             TimeSpan Delta = StopTime.Subtract(StartTime);
             int DeltaSeconds = Convert.ToInt32(Delta.TotalSeconds);
             */
-             
+
             // Calculate elapsed seconds
-            TimeSpan Delta = setStopTime.Subtract(this.TimerStartedTime);
-            int ElapsedSeconds = Convert.ToInt32(Delta.TotalSeconds);
+            int ElapsedSeconds = 0;
+            try
+            {
+                TimeSpan Delta = setStopTime.Subtract(this.TimerStartedTime);
+                ElapsedSeconds = Convert.ToInt32(Delta.TotalSeconds);
+            }
+            catch (Exception e)
+            {
+                string msg = "There was an error calculating Elapsed Seconds. Double check the entry and check logs for additional details";
+                Timekeeper.Error(msg);
+                Timekeeper.Error(e.Message);
+                Common.Warn(msg);
+            }
 
             // Update (in memory) elapsed seconds for today
             this.SetSecondsElapsedToday(ElapsedSeconds);

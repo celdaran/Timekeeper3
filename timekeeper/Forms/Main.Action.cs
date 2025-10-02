@@ -90,8 +90,10 @@ namespace Timekeeper.Forms
                     Project = new Classes.TreeAttribute(Project.ItemId, "Project", "ProjectId"); // Note: Must reinstantiate to pick up attribute changes
                     AutoFollow(Project.LastActivityId, ActivityTreeDropdown, Options.Behavior_Annoy_ActivityFollowsProject);
 
-                    Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
-                    AutoFollow(Project.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
+                    //Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
+                    //if (Options.Behavior_Annoy_LocationType == 1) {
+                    //    AutoFollow(Project.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
+                    //}
 
                     Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
                     AutoFollow(Project.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
@@ -570,9 +572,9 @@ namespace Timekeeper.Forms
             if (Options.Layout_UseCategories) Count++;
 
             if (Count < 4)
-                PanelControls.Height = 122 - 27;
+                PanelControls.Height = 137 - 27;
             else
-                PanelControls.Height = 122;
+                PanelControls.Height = 137;
         }
 
         private void Action_InitializeUI()
@@ -1335,6 +1337,8 @@ namespace Timekeeper.Forms
 
             // Now start timing
             DateTime StartTime = StartTimeSelector.Value;
+
+            Timekeeper.Debug("StartTime in Action_StartTimer(): " + StartTime);
 
             TimedProject.StartTiming(StartTime);
             TimedActivity.StartTiming(StartTime);
