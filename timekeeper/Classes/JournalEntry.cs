@@ -36,6 +36,8 @@ namespace Timekeeper.Classes
         public long LocationId { get; set; }
         public long CategoryId { get; set; }
         public bool IsLocked { get; set; }
+        public bool IsIgnored { get; set; }
+        public bool IsReconciled { get; set; }
 
         public string ProjectName { get; set; }
         public string ActivityName { get; set; }
@@ -124,6 +126,8 @@ namespace Timekeeper.Classes
             copy.LocationId = this.LocationId;
             copy.CategoryId = this.CategoryId;
             copy.IsLocked = this.IsLocked;
+            copy.IsIgnored = this.IsIgnored;
+            copy.IsReconciled = this.IsReconciled;
 
             copy.ActivityName = this.ActivityName;
             copy.ProjectName = this.ProjectName;
@@ -151,8 +155,11 @@ namespace Timekeeper.Classes
                 (copy.ActivityId == this.ActivityId) &&
                 (copy.LocationId == this.LocationId) &&
                 (copy.CategoryId == this.CategoryId) &&
-                (copy.IsLocked == this.IsLocked)
-               ) {
+                (copy.IsLocked == this.IsLocked) &&
+                (copy.IsIgnored == this.IsIgnored) &&
+                (copy.IsReconciled == this.IsReconciled)
+               )
+            {
                 return true;
             } else {
                 return false;
@@ -178,7 +185,7 @@ namespace Timekeeper.Classes
                             j.ActivityId, a.Name as ActivityName,
                             j.LocationId, l.Name as LocationName,
                             j.CategoryId, c.Name as CategoryName,
-                            j.IsLocked,
+                            j.IsLocked, j.IsIgnored, j.IsReconciled,
                             j.CreateTime, j.ModifyTime, j.JournalGuid
                         from Journal j
                         join Activity a on a.ActivityId  = j.ActivityId
@@ -213,7 +220,7 @@ namespace Timekeeper.Classes
                         j.ActivityId, 'No Activity' as ActivityName,
                         j.LocationId, 'No Locaiton' as LocationName,
                         j.CategoryId, 'No Category' as CategoryName,
-                        j.IsLocked,
+                        j.IsLocked, j.IsIngored, j.IsReconciled,
                         j.CreateTime, j.ModifyTime, j.JournalGuid
                     from Journal j
                     where j.JournalId = " + journalId;
@@ -484,6 +491,8 @@ namespace Timekeeper.Classes
                 Journal["CategoryId"] = CategoryId;
 
                 Journal["IsLocked"] = IsLocked ? 1 : 0;
+                Journal["IsIgnored"] = IsIgnored ? 1 : 0;
+                Journal["IsReconciled"] = IsReconciled ? 1 : 0;
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -512,6 +521,8 @@ namespace Timekeeper.Classes
                 Journal["LocationId"] = 0;
                 Journal["CategoryId"] = 0;
                 Journal["IsLocked"] = false;
+                Journal["IsIgnored"] = false;
+                Journal["IsReconciled"] = false;
 
                 Journal["ActivityName"] = "";
                 Journal["ProjectName"] = "";
@@ -558,6 +569,8 @@ namespace Timekeeper.Classes
                 LocationId = Journal["LocationId"] ?? 0;
                 CategoryId = Journal["CategoryId"] ?? 0;
                 IsLocked = Journal["IsLocked"];
+                IsIgnored = Journal["IsIgnored"];
+                IsReconciled = Journal["IsReconciled"];
 
                 ActivityName = Journal["ActivityName"];
                 ProjectName = Journal["ProjectName"];

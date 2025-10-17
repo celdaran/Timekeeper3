@@ -759,6 +759,16 @@ namespace Timekeeper.Forms
             Action_ChangedCategory();
         }
 
+        private void IgnoreCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Action_ChangedCheckedIgnore();
+        }
+
+        private void ReconciledCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Action_ChangedCheckedReconciled();
+        }
+
         //---------------------------------------------------------------------
         // Random bits
         //---------------------------------------------------------------------

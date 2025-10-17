@@ -178,7 +178,8 @@ namespace Timekeeper.Forms
             this.StopTimeSelector = new System.Windows.Forms.DateTimePicker();
             this.DimensionPanel = new System.Windows.Forms.Panel();
             this.IgnorePanel = new System.Windows.Forms.Panel();
-            this.IgnoreCheckbox = new System.Windows.Forms.CheckBox();
+            this.ReconciledCheckBox = new System.Windows.Forms.CheckBox();
+            this.IgnoreCheckBox = new System.Windows.Forms.CheckBox();
             this.CategoryPanel = new System.Windows.Forms.Panel();
             this.CategoryTreeDropdown = new ComboTreeBox();
             this.PopupMenuDimension = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -1566,23 +1567,37 @@ namespace Timekeeper.Forms
             // 
             // IgnorePanel
             // 
-            this.IgnorePanel.Controls.Add(this.IgnoreCheckbox);
+            this.IgnorePanel.Controls.Add(this.ReconciledCheckBox);
+            this.IgnorePanel.Controls.Add(this.IgnoreCheckBox);
             this.IgnorePanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.IgnorePanel.Location = new System.Drawing.Point(0, 108);
             this.IgnorePanel.Name = "IgnorePanel";
             this.IgnorePanel.Size = new System.Drawing.Size(311, 29);
             this.IgnorePanel.TabIndex = 13;
             // 
-            // IgnoreCheckbox
+            // ReconciledCheckBox
             // 
-            this.IgnoreCheckbox.AutoSize = true;
-            this.IgnoreCheckbox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.IgnoreCheckbox.Location = new System.Drawing.Point(1, 1);
-            this.IgnoreCheckbox.Name = "IgnoreCheckbox";
-            this.IgnoreCheckbox.Size = new System.Drawing.Size(71, 17);
-            this.IgnoreCheckbox.TabIndex = 13;
-            this.IgnoreCheckbox.Text = "Ignore     ";
-            this.IgnoreCheckbox.UseVisualStyleBackColor = true;
+            this.ReconciledCheckBox.AutoSize = true;
+            this.ReconciledCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ReconciledCheckBox.Location = new System.Drawing.Point(225, 1);
+            this.ReconciledCheckBox.Name = "ReconciledCheckBox";
+            this.ReconciledCheckBox.Size = new System.Drawing.Size(80, 17);
+            this.ReconciledCheckBox.TabIndex = 14;
+            this.ReconciledCheckBox.Text = "Reconciled";
+            this.ReconciledCheckBox.UseVisualStyleBackColor = true;
+            this.ReconciledCheckBox.CheckedChanged += new System.EventHandler(this.ReconciledCheckBox_CheckedChanged);
+            // 
+            // IgnoreCheckBox
+            // 
+            this.IgnoreCheckBox.AutoSize = true;
+            this.IgnoreCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.IgnoreCheckBox.Location = new System.Drawing.Point(1, 1);
+            this.IgnoreCheckBox.Name = "IgnoreCheckBox";
+            this.IgnoreCheckBox.Size = new System.Drawing.Size(71, 17);
+            this.IgnoreCheckBox.TabIndex = 13;
+            this.IgnoreCheckBox.Text = "Ignore     ";
+            this.IgnoreCheckBox.UseVisualStyleBackColor = true;
+            this.IgnoreCheckBox.CheckedChanged += new System.EventHandler(this.IgnoreCheckBox_CheckedChanged);
             // 
             // CategoryPanel
             // 
@@ -2453,8 +2468,9 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem MenuToolbarBrowserJoinEntries;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem ToolbarJoinEntries;
-        private System.Windows.Forms.CheckBox IgnoreCheckbox;
+        private System.Windows.Forms.CheckBox IgnoreCheckBox;
         private System.Windows.Forms.Panel IgnorePanel;
         private System.Windows.Forms.ToolStripMenuItem MenuActionSetLocation;
+        private System.Windows.Forms.CheckBox ReconciledCheckBox;
     }
 }

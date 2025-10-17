@@ -427,6 +427,8 @@ namespace Timekeeper.Forms
             entry.Memo = MemoEditor.Text;
             entry.ProjectName = Project.Name;
             entry.ActivityName = Activity.Name;
+            entry.IsIgnored = IgnoreCheckBox.Checked;
+            entry.IsReconciled = ReconciledCheckBox.Checked;
         }
 
         private void Foo(ComboTreeBox treebox, long itemId, string itemName, string tableName)
@@ -456,6 +458,8 @@ namespace Timekeeper.Forms
             StopTimeSelector.Value = entry.StopTime.DateTime;
             Browser_UpdateDurationBox(Timekeeper.FormatSeconds(entry.Seconds));
             MemoEditor.Text = entry.Memo;
+            IgnoreCheckBox.Checked = entry.IsIgnored;
+            ReconciledCheckBox.Checked = entry.IsReconciled;
 
             // And any other relevant values
             ToolbarJournalId.Text = entry.JournalId > 0 ? entry.JournalId.ToString() : "";

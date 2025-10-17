@@ -74,6 +74,14 @@ namespace Timekeeper.Forms
             }
         }
 
+        private void SetDirtyBitUnconditional()
+        {
+            if (isBrowsing)
+            {
+                Browser_EnableRevert(true);
+            }
+        }
+
         private void Action_ChangedProject()
         {
             if (IgnoreDimensionChanges)
@@ -170,6 +178,22 @@ namespace Timekeeper.Forms
 
             SetDirtyBit(Category, browserEntry.CategoryId);
         }
+
+        //---------------------------------------------------------------------
+
+        private void Action_ChangedCheckedIgnore()
+        {
+            SetDirtyBitUnconditional();
+        }
+
+        //---------------------------------------------------------------------
+
+        private void Action_ChangedCheckedReconciled()
+        {
+            SetDirtyBitUnconditional();
+        }
+
+        //---------------------------------------------------------------------
 
         public void Action_CheckForUpdates()
         {
@@ -1355,6 +1379,8 @@ namespace Timekeeper.Forms
             TimedEntry.LocationId = TimedLocation.ItemId;
             TimedEntry.CategoryId = TimedCategory.ItemId;
             TimedEntry.IsLocked = true;
+            TimedEntry.IsIgnored = false;
+            TimedEntry.IsReconciled = false;
             if (TimedEntry.Create()) {
                 browserEntry.JournalId = TimedEntry.JournalId;
             } else {
@@ -1444,6 +1470,8 @@ namespace Timekeeper.Forms
             TimedEntry.LocationId = TimedLocation.ItemId;
             TimedEntry.CategoryId = TimedCategory.ItemId;
             TimedEntry.IsLocked = false;
+            TimedEntry.IsIgnored = false;
+            TimedEntry.IsReconciled = false;
             TimedEntry.Save();
 
             timerRunning = false;
