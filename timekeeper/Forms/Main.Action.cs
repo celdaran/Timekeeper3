@@ -1234,7 +1234,12 @@ namespace Timekeeper.Forms
                 tmp = tmp.Replace("%location", "{2}");
                 tmp = tmp.Replace("%category", "{3}");
                 tmp = tmp.Replace("%time", "{4}");
-                Text = String.Format(tmp, TimedProject.Name, TimedActivity.Name, TimedLocation.Name, TimedCategory.Name, timeToShow);
+                Text = String.Format(tmp, 
+                    ProjectTreeDropdown.SelectedNode.Text, 
+                    ActivityTreeDropdown.SelectedNode.Text, 
+                    LocationTreeDropdown.SelectedNode.Text, 
+                    CategoryTreeDropdown.SelectedNode.Text, 
+                    timeToShow);
                 TrayIcon.Text = Common.Abbreviate(Text, 63);
             }
 
