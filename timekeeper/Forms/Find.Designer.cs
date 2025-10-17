@@ -28,12 +28,12 @@ namespace Timekeeper.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Find));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.FilterButton = new System.Windows.Forms.ToolStripButton();
             this.SortButton = new System.Windows.Forms.ToolStripButton();
@@ -54,20 +54,6 @@ namespace Timekeeper.Forms
             this.ClearViewButton = new System.Windows.Forms.ToolStripButton();
             this.ManageViewsButton = new System.Windows.Forms.ToolStripButton();
             this.JournalResultsGrid = new System.Windows.Forms.DataGridView();
-            this.StartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StopTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Seconds = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProjectId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ActivityId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ActivityName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LocationId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LocationName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CategoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CategoryName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsLocked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.ResultCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.NotebookResultsGrid = new System.Windows.Forms.DataGridView();
@@ -82,6 +68,20 @@ namespace Timekeeper.Forms
             this.NotebookCategoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotebookCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NotebookId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StopTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Seconds = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProjectId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ActivityId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ActivityName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LocationId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LocationName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CategoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CategoryName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsLocked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.JournalResultsGrid)).BeginInit();
             this.StatusBar.SuspendLayout();
@@ -115,7 +115,7 @@ namespace Timekeeper.Forms
             this.FilterButton.Image = global::Timekeeper.Properties.Resources.ImageButtonFilter;
             this.FilterButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FilterButton.Name = "FilterButton";
-            this.FilterButton.Size = new System.Drawing.Size(77, 22);
+            this.FilterButton.Size = new System.Drawing.Size(79, 22);
             this.FilterButton.Text = "Filtering...";
             this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);
             // 
@@ -125,7 +125,7 @@ namespace Timekeeper.Forms
             this.SortButton.Image = ((System.Drawing.Image)(resources.GetObject("SortButton.Image")));
             this.SortButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SortButton.Name = "SortButton";
-            this.SortButton.Size = new System.Drawing.Size(57, 22);
+            this.SortButton.Size = new System.Drawing.Size(58, 22);
             this.SortButton.Text = "Sorting...";
             this.SortButton.Visible = false;
             // 
@@ -156,7 +156,7 @@ namespace Timekeeper.Forms
             this.LoadViewMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("LoadViewMenuButton.Image")));
             this.LoadViewMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LoadViewMenuButton.Name = "LoadViewMenuButton";
-            this.LoadViewMenuButton.Size = new System.Drawing.Size(43, 22);
+            this.LoadViewMenuButton.Size = new System.Drawing.Size(46, 22);
             this.LoadViewMenuButton.Text = "Load";
             this.LoadViewMenuButton.ToolTipText = "Load a saved View";
             // 
@@ -173,45 +173,45 @@ namespace Timekeeper.Forms
             this.ActionMenuButton.Image = ((System.Drawing.Image)(resources.GetObject("ActionMenuButton.Image")));
             this.ActionMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ActionMenuButton.Name = "ActionMenuButton";
-            this.ActionMenuButton.Size = new System.Drawing.Size(42, 22);
+            this.ActionMenuButton.Size = new System.Drawing.Size(45, 22);
             this.ActionMenuButton.Text = "View";
             // 
             // SaveViewMenuItem
             // 
             this.SaveViewMenuItem.Name = "SaveViewMenuItem";
             this.SaveViewMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.SaveViewMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.SaveViewMenuItem.Size = new System.Drawing.Size(159, 22);
             this.SaveViewMenuItem.Text = "Save";
             this.SaveViewMenuItem.Click += new System.EventHandler(this.SaveViewButton_Click);
             // 
             // SaveViewAsMenuItem
             // 
             this.SaveViewAsMenuItem.Name = "SaveViewAsMenuItem";
-            this.SaveViewAsMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.SaveViewAsMenuItem.Size = new System.Drawing.Size(159, 22);
             this.SaveViewAsMenuItem.Text = "Save As...";
             this.SaveViewAsMenuItem.Click += new System.EventHandler(this.SaveViewAsButton_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(151, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(156, 6);
             // 
             // ClearViewMenuItem
             // 
             this.ClearViewMenuItem.Name = "ClearViewMenuItem";
-            this.ClearViewMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.ClearViewMenuItem.Size = new System.Drawing.Size(159, 22);
             this.ClearViewMenuItem.Text = "Clear";
             this.ClearViewMenuItem.Click += new System.EventHandler(this.ClearViewButton_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(151, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(156, 6);
             // 
             // ManageViewsMenuItem
             // 
             this.ManageViewsMenuItem.Name = "ManageViewsMenuItem";
-            this.ManageViewsMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.ManageViewsMenuItem.Size = new System.Drawing.Size(159, 22);
             this.ManageViewsMenuItem.Text = "Manage Views...";
             this.ManageViewsMenuItem.Click += new System.EventHandler(this.ManageViewsButton_Click);
             // 
@@ -227,7 +227,7 @@ namespace Timekeeper.Forms
             this.SaveViewButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewButton.Image")));
             this.SaveViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveViewButton.Name = "SaveViewButton";
-            this.SaveViewButton.Size = new System.Drawing.Size(89, 22);
+            this.SaveViewButton.Size = new System.Drawing.Size(96, 22);
             this.SaveViewButton.Text = "SaveViewButton";
             this.SaveViewButton.Visible = false;
             this.SaveViewButton.Click += new System.EventHandler(this.SaveViewButton_Click);
@@ -238,7 +238,7 @@ namespace Timekeeper.Forms
             this.SaveViewAsButton.Image = ((System.Drawing.Image)(resources.GetObject("SaveViewAsButton.Image")));
             this.SaveViewAsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveViewAsButton.Name = "SaveViewAsButton";
-            this.SaveViewAsButton.Size = new System.Drawing.Size(101, 22);
+            this.SaveViewAsButton.Size = new System.Drawing.Size(109, 22);
             this.SaveViewAsButton.Text = "SaveViewAsButton";
             this.SaveViewAsButton.ToolTipText = "SaveViewAsButton";
             this.SaveViewAsButton.Visible = false;
@@ -250,7 +250,7 @@ namespace Timekeeper.Forms
             this.ClearViewButton.Image = ((System.Drawing.Image)(resources.GetObject("ClearViewButton.Image")));
             this.ClearViewButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ClearViewButton.Name = "ClearViewButton";
-            this.ClearViewButton.Size = new System.Drawing.Size(90, 22);
+            this.ClearViewButton.Size = new System.Drawing.Size(99, 22);
             this.ClearViewButton.Text = "ClearViewButton";
             this.ClearViewButton.ToolTipText = "ClearViewButton";
             this.ClearViewButton.Visible = false;
@@ -262,7 +262,7 @@ namespace Timekeeper.Forms
             this.ManageViewsButton.Image = ((System.Drawing.Image)(resources.GetObject("ManageViewsButton.Image")));
             this.ManageViewsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ManageViewsButton.Name = "ManageViewsButton";
-            this.ManageViewsButton.Size = new System.Drawing.Size(108, 22);
+            this.ManageViewsButton.Size = new System.Drawing.Size(120, 22);
             this.ManageViewsButton.Text = "ManageViewsButton";
             this.ManageViewsButton.ToolTipText = "ManageViewsButton";
             this.ManageViewsButton.Visible = false;
@@ -282,7 +282,6 @@ namespace Timekeeper.Forms
             this.StartTime,
             this.StopTime,
             this.Seconds,
-            this.Memo,
             this.ProjectId,
             this.ProjectName,
             this.ActivityId,
@@ -291,126 +290,16 @@ namespace Timekeeper.Forms
             this.LocationName,
             this.CategoryId,
             this.CategoryName,
+            this.Memo,
             this.IsLocked,
             this.JournalId});
             this.JournalResultsGrid.Location = new System.Drawing.Point(0, 25);
             this.JournalResultsGrid.Name = "JournalResultsGrid";
             this.JournalResultsGrid.RowHeadersVisible = false;
+            this.JournalResultsGrid.ShowCellToolTips = false;
             this.JournalResultsGrid.Size = new System.Drawing.Size(893, 110);
             this.JournalResultsGrid.TabIndex = 1;
             this.JournalResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JournalFindResults_CellDoubleClick);
-            // 
-            // StartTime
-            // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.StartTime.DefaultCellStyle = dataGridViewCellStyle1;
-            this.StartTime.HeaderText = "Start Time";
-            this.StartTime.Name = "StartTime";
-            this.StartTime.ReadOnly = true;
-            this.StartTime.Width = 80;
-            // 
-            // StopTime
-            // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.StopTime.DefaultCellStyle = dataGridViewCellStyle2;
-            this.StopTime.HeaderText = "Stop Time";
-            this.StopTime.Name = "StopTime";
-            this.StopTime.ReadOnly = true;
-            this.StopTime.Width = 80;
-            // 
-            // Seconds
-            // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Seconds.DefaultCellStyle = dataGridViewCellStyle3;
-            this.Seconds.HeaderText = "Duration";
-            this.Seconds.Name = "Seconds";
-            this.Seconds.ReadOnly = true;
-            this.Seconds.Width = 72;
-            // 
-            // Memo
-            // 
-            this.Memo.HeaderText = "Memo";
-            this.Memo.Name = "Memo";
-            this.Memo.ReadOnly = true;
-            // 
-            // ProjectId
-            // 
-            this.ProjectId.HeaderText = "ProjectId";
-            this.ProjectId.Name = "ProjectId";
-            this.ProjectId.ReadOnly = true;
-            this.ProjectId.Visible = false;
-            // 
-            // ProjectName
-            // 
-            this.ProjectName.HeaderText = "Project";
-            this.ProjectName.Name = "ProjectName";
-            this.ProjectName.ReadOnly = true;
-            this.ProjectName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ProjectName.Width = 65;
-            // 
-            // ActivityId
-            // 
-            this.ActivityId.HeaderText = "ActivityId";
-            this.ActivityId.Name = "ActivityId";
-            this.ActivityId.ReadOnly = true;
-            this.ActivityId.Visible = false;
-            // 
-            // ActivityName
-            // 
-            this.ActivityName.HeaderText = "Activity";
-            this.ActivityName.Name = "ActivityName";
-            this.ActivityName.ReadOnly = true;
-            this.ActivityName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ActivityName.Width = 66;
-            // 
-            // LocationId
-            // 
-            this.LocationId.HeaderText = "LocationId";
-            this.LocationId.Name = "LocationId";
-            this.LocationId.ReadOnly = true;
-            this.LocationId.Visible = false;
-            // 
-            // LocationName
-            // 
-            this.LocationName.HeaderText = "Location";
-            this.LocationName.Name = "LocationName";
-            this.LocationName.ReadOnly = true;
-            this.LocationName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.LocationName.Width = 73;
-            // 
-            // CategoryId
-            // 
-            this.CategoryId.HeaderText = "CategoryId";
-            this.CategoryId.Name = "CategoryId";
-            this.CategoryId.ReadOnly = true;
-            this.CategoryId.Visible = false;
-            // 
-            // CategoryName
-            // 
-            this.CategoryName.HeaderText = "Category";
-            this.CategoryName.Name = "CategoryName";
-            this.CategoryName.ReadOnly = true;
-            this.CategoryName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.CategoryName.Width = 74;
-            // 
-            // IsLocked
-            // 
-            this.IsLocked.HeaderText = "Locked";
-            this.IsLocked.Name = "IsLocked";
-            this.IsLocked.ReadOnly = true;
-            this.IsLocked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.IsLocked.Width = 40;
-            // 
-            // JournalId
-            // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.JournalId.DefaultCellStyle = dataGridViewCellStyle4;
-            this.JournalId.HeaderText = "ID";
-            this.JournalId.MinimumWidth = 8;
-            this.JournalId.Name = "JournalId";
-            this.JournalId.ReadOnly = true;
-            this.JournalId.ToolTipText = "Internal Journal Entry Identifier";
-            this.JournalId.Width = 43;
             // 
             // StatusBar
             // 
@@ -458,8 +347,8 @@ namespace Timekeeper.Forms
             // 
             // NotebookEntryTime
             // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.NotebookEntryTime.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.NotebookEntryTime.DefaultCellStyle = dataGridViewCellStyle11;
             this.NotebookEntryTime.HeaderText = "Entry Time";
             this.NotebookEntryTime.Name = "NotebookEntryTime";
             this.NotebookEntryTime.ReadOnly = true;
@@ -529,14 +418,126 @@ namespace Timekeeper.Forms
             // 
             // NotebookId
             // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.NotebookId.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.NotebookId.DefaultCellStyle = dataGridViewCellStyle12;
             this.NotebookId.HeaderText = "ID";
             this.NotebookId.MinimumWidth = 8;
             this.NotebookId.Name = "NotebookId";
             this.NotebookId.ReadOnly = true;
             this.NotebookId.ToolTipText = "Internal Journal Entry Identifier";
             this.NotebookId.Width = 43;
+            // 
+            // StartTime
+            // 
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.StartTime.DefaultCellStyle = dataGridViewCellStyle7;
+            this.StartTime.HeaderText = "Start Time";
+            this.StartTime.Name = "StartTime";
+            this.StartTime.ReadOnly = true;
+            this.StartTime.Width = 80;
+            // 
+            // StopTime
+            // 
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.StopTime.DefaultCellStyle = dataGridViewCellStyle8;
+            this.StopTime.HeaderText = "Stop Time";
+            this.StopTime.Name = "StopTime";
+            this.StopTime.ReadOnly = true;
+            this.StopTime.Width = 80;
+            // 
+            // Seconds
+            // 
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Seconds.DefaultCellStyle = dataGridViewCellStyle9;
+            this.Seconds.HeaderText = "Duration";
+            this.Seconds.Name = "Seconds";
+            this.Seconds.ReadOnly = true;
+            this.Seconds.Width = 72;
+            // 
+            // ProjectId
+            // 
+            this.ProjectId.HeaderText = "ProjectId";
+            this.ProjectId.Name = "ProjectId";
+            this.ProjectId.ReadOnly = true;
+            this.ProjectId.Visible = false;
+            // 
+            // ProjectName
+            // 
+            this.ProjectName.HeaderText = "Project";
+            this.ProjectName.Name = "ProjectName";
+            this.ProjectName.ReadOnly = true;
+            this.ProjectName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ProjectName.Width = 65;
+            // 
+            // ActivityId
+            // 
+            this.ActivityId.HeaderText = "ActivityId";
+            this.ActivityId.Name = "ActivityId";
+            this.ActivityId.ReadOnly = true;
+            this.ActivityId.Visible = false;
+            // 
+            // ActivityName
+            // 
+            this.ActivityName.HeaderText = "Activity";
+            this.ActivityName.Name = "ActivityName";
+            this.ActivityName.ReadOnly = true;
+            this.ActivityName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ActivityName.Width = 66;
+            // 
+            // LocationId
+            // 
+            this.LocationId.HeaderText = "LocationId";
+            this.LocationId.Name = "LocationId";
+            this.LocationId.ReadOnly = true;
+            this.LocationId.Visible = false;
+            // 
+            // LocationName
+            // 
+            this.LocationName.HeaderText = "Location";
+            this.LocationName.Name = "LocationName";
+            this.LocationName.ReadOnly = true;
+            this.LocationName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.LocationName.Width = 73;
+            // 
+            // CategoryId
+            // 
+            this.CategoryId.HeaderText = "CategoryId";
+            this.CategoryId.Name = "CategoryId";
+            this.CategoryId.ReadOnly = true;
+            this.CategoryId.Visible = false;
+            // 
+            // CategoryName
+            // 
+            this.CategoryName.HeaderText = "Category";
+            this.CategoryName.Name = "CategoryName";
+            this.CategoryName.ReadOnly = true;
+            this.CategoryName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.CategoryName.Width = 74;
+            // 
+            // Memo
+            // 
+            this.Memo.HeaderText = "Memo";
+            this.Memo.Name = "Memo";
+            this.Memo.ReadOnly = true;
+            // 
+            // IsLocked
+            // 
+            this.IsLocked.HeaderText = "Locked";
+            this.IsLocked.Name = "IsLocked";
+            this.IsLocked.ReadOnly = true;
+            this.IsLocked.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.IsLocked.Width = 40;
+            // 
+            // JournalId
+            // 
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.JournalId.DefaultCellStyle = dataGridViewCellStyle10;
+            this.JournalId.HeaderText = "ID";
+            this.JournalId.MinimumWidth = 8;
+            this.JournalId.Name = "JournalId";
+            this.JournalId.ReadOnly = true;
+            this.JournalId.ToolTipText = "Internal Journal Entry Identifier";
+            this.JournalId.Width = 43;
             // 
             // Find
             // 
@@ -590,20 +591,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripButton SaveViewButton;
         private System.Windows.Forms.ToolStripButton SaveViewAsButton;
         private System.Windows.Forms.ToolStripButton ClearViewButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StartTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StopTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Seconds;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Memo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ActivityId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ActivityName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LocationId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LocationName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CategoryId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CategoryName;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsLocked;
-        private System.Windows.Forms.DataGridViewTextBoxColumn JournalId;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookEntryTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookMemo;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookProjectId;
@@ -615,5 +602,19 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookCategoryId;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookCategory;
         private System.Windows.Forms.DataGridViewTextBoxColumn NotebookId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StartTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StopTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Seconds;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ActivityId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ActivityName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LocationId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LocationName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CategoryId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CategoryName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Memo;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsLocked;
+        private System.Windows.Forms.DataGridViewTextBoxColumn JournalId;
     }
 }

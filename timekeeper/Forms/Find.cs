@@ -464,7 +464,6 @@ namespace Timekeeper.Forms
                     Timekeeper.DateForDisplay(JournalEntry["StartTime"]),
                     Timekeeper.DateForDisplay(JournalEntry["StopTime"]),
                     Timekeeper.FormatSeconds(JournalEntry["Seconds"]),
-                    JournalEntry["Memo"],
                     JournalEntry["ProjectId"],
                     JournalEntry["ProjectName"],
                     JournalEntry["ActivityId"],
@@ -473,6 +472,7 @@ namespace Timekeeper.Forms
                     JournalEntry["LocationName"],
                     JournalEntry["CategoryId"],
                     JournalEntry["CategoryName"],
+                    JournalEntry["Memo"],
                     JournalEntry["IsLocked"],
                     JournalEntry["JournalId"]
                     );
