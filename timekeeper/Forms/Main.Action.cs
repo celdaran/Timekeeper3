@@ -1590,6 +1590,7 @@ namespace Timekeeper.Forms
 
                 // Join always joins the current entry with the previous entry
                 // The use case is: I just split an entry and now I want to unsplit it
+                /*
                 string Message = String.Format("This will join the current entry with the previous entry. Are you sure?");
                 if (Common.WarnPrompt(Message) == DialogResult.No) {
                     return;
@@ -1606,6 +1607,7 @@ namespace Timekeeper.Forms
 
                 // Load the previous entry back to the browser
                 Browser_EntryToForm(priorLoadedBrowserEntry);
+                */
             }
             catch (Exception x)
             {
