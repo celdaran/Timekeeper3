@@ -1524,6 +1524,9 @@ namespace Timekeeper.Forms
         private void Action_SplitEntry(int parts)
         {
             try {
+                // Save any current edits first (TK-466)
+                browserEntry.Save();
+
                 // Determine the duration of each split
                 long ChunkSize = (browserEntry.StopTime.Ticks - browserEntry.StartTime.Ticks) / parts;
                 long ChunkSizeInSeconds = (long)TimeSpan.FromTicks(ChunkSize).TotalSeconds;
