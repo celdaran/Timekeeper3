@@ -199,6 +199,12 @@ namespace Timekeeper
                     UpgradeReportView();
                 }
 
+                // Specialized leap from 3.0.9.5 to 3.0.10.0)
+                if (FoundSchemaVersion.CompareTo(new Version(3, 0, 9, 5)) == 0)
+                {
+                    MigrateJournal3095();
+                }
+
             }
             catch (Exception x) {
                 Timekeeper.Warn("Database upgrade failed on Step '" + this.Step.Text + "' on Row Id " + RowId.ToString());
@@ -373,6 +379,25 @@ namespace Timekeeper
             if (UpdatedRowCount == 0) throw new Exception("Update failed");
             this.Progress.Value++;
 
+        }
+
+        //---------------------------------------------------------------------
+
+        private void MigrateMeta3095()
+        {
+            Row Row;
+
+            Row = new Row() {
+                    {"Value", SCHEMA_VERSION},
+                };
+            UpdatedRowCount = Database.Update(Timekeeper.MetaTableName(), Row, "Key", "Version");
+            if (UpdatedRowCount == 0) throw new Exception("Update failed");
+
+            Row = new Row() {
+                    {"Value", Timekeeper.DateForDatabase()}
+                };
+            UpdatedRowCount = Database.Update(Timekeeper.MetaTableName(), Row, "Key", "Upgraded");
+            if (UpdatedRowCount == 0) throw new Exception("Update failed");
         }
 
         //---------------------------------------------------------------------
@@ -989,6 +1014,17 @@ namespace Timekeeper
 
             // How'd we do?
             Timekeeper.Info(String.Format("Total time drift: {0}", CumulativeDrift));
+        }
+
+        //---------------------------------------------------------------------
+
+        private void MigrateJournal3095()
+        {
+            // Add new columns to Journal
+            this.Database.Exec("ALTER TABLE Journal ADD COLUMN IsIgnored NOT NULL DEFAULT 0");
+            this.Database.Exec("ALTER TABLE Journal ADD COLUMN IsReconciled NOT NULL DEFAULT 0");
+            // Update the meta table
+            MigrateMeta3095();
         }
 
         //---------------------------------------------------------------------

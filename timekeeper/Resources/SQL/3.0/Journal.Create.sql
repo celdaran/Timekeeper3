@@ -27,6 +27,8 @@ CREATE TABLE Journal
     CategoryId              INTEGER     NOT NULL,
 
     IsLocked                BOOLEAN     NOT NULL,
+    IsIgnored               BOOLEAN     NOT NULL DEFAULT 0,
+    IsReconciled            BOOLEAN     NOT NULL DEFAULT 0,
 
     FOREIGN KEY(ProjectId)              REFERENCES Project(ProjectId)
     FOREIGN KEY(ActivityId)             REFERENCES Activity(ActivityId)

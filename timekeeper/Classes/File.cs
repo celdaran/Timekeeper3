@@ -39,7 +39,7 @@ namespace Timekeeper
         // (nor were the DDL statements stored as resources or under version 
         // control).
         //----------------------------------------------------------------------
-        public const string SCHEMA_VERSION = "3.0.9.5";
+        public const string SCHEMA_VERSION = "3.0.10.0";
         //----------------------------------------------------------------------
 
         public const int ERROR_UNEXPECTED = -1;
