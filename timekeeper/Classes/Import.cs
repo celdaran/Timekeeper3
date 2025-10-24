@@ -157,6 +157,8 @@ namespace Timekeeper.Classes
                                 // assign the new journal entry to.
                                 JournalEntry.LocationId = 1; // Default Location
                                 JournalEntry.CategoryId = 1; // Default Category
+                                JournalEntry.IsReconciled = false; // TODO: allow pre-reconciled rows?
+                                JournalEntry.IsIgnored = false;    // TODO: allow pre-ignored rows?
                                 JournalEntry.IsLocked = false;
                                 if (!JournalEntry.Create()) {
                                     Console.AppendText("Could not create journal entry.\n");
