@@ -74,6 +74,11 @@ namespace Timekeeper.Classes
         public int DurationOperator { get; set; }
         public int DurationAmount { get; set; }
         public int DurationUnit { get; set; }
+        public bool IsReconciled { get; set; }
+        public bool IsNotReconciled { get; set; }
+        public bool IsIgnored { get; set; }
+        public bool IsNotIgnored { get; set; }
+        public bool IsLocked { get; set; }
 
         public List<long> ImpliedProjects { get; set; }
         public List<long> ImpliedActivities { get; set; }
@@ -216,6 +221,11 @@ namespace Timekeeper.Classes
             this.DurationUnit = that.DurationUnit;
             this.ImpliedProjects = that.ImpliedProjects;
             this.ImpliedActivities = that.ImpliedActivities;
+            this.IsReconciled = that.IsReconciled;
+            this.IsNotReconciled = that.IsNotReconciled;
+            this.IsIgnored = that.IsIgnored;
+            this.IsNotIgnored = that.IsNotIgnored;
+            this.IsLocked = that.IsLocked;
 
             this.Changed = false;
         }
@@ -253,7 +263,12 @@ namespace Timekeeper.Classes
                     (this.SetsEqual(this.Categories, that.Categories)) &&
                     (this.DurationOperator == that.DurationOperator) &&
                     (this.DurationAmount == that.DurationAmount) &&
-                    (this.DurationUnit == that.DurationUnit)
+                    (this.DurationUnit == that.DurationUnit) &&
+                    (this.IsReconciled == that.IsReconciled) &&
+                    (this.IsNotReconciled == that.IsNotReconciled) &&
+                    (this.IsIgnored == that.IsIgnored) &&
+                    (this.IsNotIgnored == that.IsNotIgnored) &&
+                    (this.IsLocked == that.IsLocked)
                 )
                 return true;
             else
@@ -407,6 +422,11 @@ namespace Timekeeper.Classes
             DurationOperator = -1;
             DurationAmount = 0;
             DurationUnit = 0;
+            IsReconciled = false;
+            IsNotReconciled = false;
+            IsIgnored = false;
+            IsNotIgnored = false;
+            IsLocked = false;
             ImpliedProjects = new List<long>();
             ImpliedActivities = new List<long>();
         }
@@ -559,6 +579,31 @@ namespace Timekeeper.Classes
             if ((this.Categories != null) && (this.Categories.Count > 0)) {
                 WhereClause += String.Format("and {0}CategoryId in ({1})",
                     TableAlias, this.List(this.Categories)) + System.Environment.NewLine;
+            }
+
+            if (this.IsReconciled == true)
+            {
+                WhereClause += "and IsReconciled = 1" + System.Environment.NewLine;
+            }
+
+            if (this.IsNotReconciled == true)
+            {
+                WhereClause += "and IsReconciled = 0" + System.Environment.NewLine;
+            }
+
+            if (this.IsIgnored == true)
+            {
+                WhereClause += "and IsIgnored = 1" + System.Environment.NewLine;
+            }
+
+            if (this.IsNotIgnored == true)
+            {
+                WhereClause += "and IsIgnored = 0" + System.Environment.NewLine;
+            }
+
+            if (this.IsLocked == true)
+            {
+                WhereClause += "and IsLocked = 1" + System.Environment.NewLine;
             }
 
             return WhereClause;

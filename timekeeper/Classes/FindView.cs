@@ -60,7 +60,7 @@ namespace Timekeeper.Classes
                     j.LocationId, l.Name as LocationName,
                     j.CategoryId, c.Name as CategoryName,
                     j.StartTime, j.StopTime, j.Seconds,
-                    j.Memo, j.IsLocked
+                    j.Memo, j.IsReconciled, j.IsIgnored, j.IsLocked
                 from Journal j
                 join Project p on p.ProjectId = j.ProjectId
                 join Activity a on a.ActivityId = j.ActivityId

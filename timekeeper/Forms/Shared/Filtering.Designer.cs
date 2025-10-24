@@ -78,6 +78,10 @@ namespace Timekeeper.Forms.Shared
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.ClearButton = new System.Windows.Forms.Button();
             this.ButtonPanel = new System.Windows.Forms.Panel();
+            this.IsReconciled = new System.Windows.Forms.CheckBox();
+            this.IsIgnored = new System.Windows.Forms.CheckBox();
+            this.IsNotReconciled = new System.Windows.Forms.CheckBox();
+            this.IsNotIgnored = new System.Windows.Forms.CheckBox();
             this.PopupMenuDates.SuspendLayout();
             this.TreeViewMenu.SuspendLayout();
             this.FilterOptionsTabControl.SuspendLayout();
@@ -519,11 +523,15 @@ namespace Timekeeper.Forms.Shared
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.IsNotIgnored);
+            this.groupBox3.Controls.Add(this.IsNotReconciled);
+            this.groupBox3.Controls.Add(this.IsIgnored);
+            this.groupBox3.Controls.Add(this.IsReconciled);
             this.groupBox3.Controls.Add(this.IsLocked);
             this.groupBox3.Controls.Add(this.checkBox1);
             this.groupBox3.Location = new System.Drawing.Point(6, 99);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(379, 68);
+            this.groupBox3.Size = new System.Drawing.Size(379, 122);
             this.groupBox3.TabIndex = 15;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Special Needs";
@@ -531,11 +539,10 @@ namespace Timekeeper.Forms.Shared
             // IsLocked
             // 
             this.IsLocked.AutoSize = true;
-            this.IsLocked.Enabled = false;
-            this.IsLocked.Location = new System.Drawing.Point(20, 19);
+            this.IsLocked.Location = new System.Drawing.Point(20, 65);
             this.IsLocked.Name = "IsLocked";
             this.IsLocked.Size = new System.Drawing.Size(120, 17);
-            this.IsLocked.TabIndex = 6;
+            this.IsLocked.TabIndex = 5;
             this.IsLocked.Text = "Find Locked Entries";
             this.IsLocked.UseVisualStyleBackColor = true;
             // 
@@ -543,10 +550,10 @@ namespace Timekeeper.Forms.Shared
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(20, 42);
+            this.checkBox1.Location = new System.Drawing.Point(20, 88);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(141, 17);
-            this.checkBox1.TabIndex = 7;
+            this.checkBox1.TabIndex = 6;
             this.checkBox1.Text = "Find Overlapping Entries";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
@@ -556,6 +563,7 @@ namespace Timekeeper.Forms.Shared
             this.groupBox1.Controls.Add(this.ModifyTimePresets);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.CreateTimePresets);
+            this.groupBox1.Enabled = false;
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(379, 87);
@@ -630,6 +638,46 @@ namespace Timekeeper.Forms.Shared
             this.ButtonPanel.Name = "ButtonPanel";
             this.ButtonPanel.Size = new System.Drawing.Size(164, 34);
             this.ButtonPanel.TabIndex = 0;
+            // 
+            // IsReconciled
+            // 
+            this.IsReconciled.AutoSize = true;
+            this.IsReconciled.Location = new System.Drawing.Point(20, 19);
+            this.IsReconciled.Name = "IsReconciled";
+            this.IsReconciled.Size = new System.Drawing.Size(138, 17);
+            this.IsReconciled.TabIndex = 1;
+            this.IsReconciled.Text = "Find Reconciled Entries";
+            this.IsReconciled.UseVisualStyleBackColor = true;
+            // 
+            // IsIgnored
+            // 
+            this.IsIgnored.AutoSize = true;
+            this.IsIgnored.Location = new System.Drawing.Point(20, 42);
+            this.IsIgnored.Name = "IsIgnored";
+            this.IsIgnored.Size = new System.Drawing.Size(120, 17);
+            this.IsIgnored.TabIndex = 3;
+            this.IsIgnored.Text = "Find Ignored Entries";
+            this.IsIgnored.UseVisualStyleBackColor = true;
+            // 
+            // IsNotReconciled
+            // 
+            this.IsNotReconciled.AutoSize = true;
+            this.IsNotReconciled.Location = new System.Drawing.Point(179, 19);
+            this.IsNotReconciled.Name = "IsNotReconciled";
+            this.IsNotReconciled.Size = new System.Drawing.Size(156, 17);
+            this.IsNotReconciled.TabIndex = 2;
+            this.IsNotReconciled.Text = "Exclude Reconciled Entries";
+            this.IsNotReconciled.UseVisualStyleBackColor = true;
+            // 
+            // IsNotIgnored
+            // 
+            this.IsNotIgnored.AutoSize = true;
+            this.IsNotIgnored.Location = new System.Drawing.Point(179, 42);
+            this.IsNotIgnored.Name = "IsNotIgnored";
+            this.IsNotIgnored.Size = new System.Drawing.Size(138, 17);
+            this.IsNotIgnored.TabIndex = 4;
+            this.IsNotIgnored.Text = "Exclude Ignored Entries";
+            this.IsNotIgnored.UseVisualStyleBackColor = true;
             // 
             // Filtering
             // 
@@ -724,5 +772,9 @@ namespace Timekeeper.Forms.Shared
         private System.Windows.Forms.ToolStripMenuItem PopupMenuDatesCopy;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuDatesPaste;
         private System.Windows.Forms.ToolStripSeparator PopupMenuDatesSep1;
+        private System.Windows.Forms.CheckBox IsIgnored;
+        private System.Windows.Forms.CheckBox IsReconciled;
+        private System.Windows.Forms.CheckBox IsNotIgnored;
+        private System.Windows.Forms.CheckBox IsNotReconciled;
     }
 }

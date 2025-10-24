@@ -28,12 +28,12 @@ namespace Timekeeper.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Find));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.FilterButton = new System.Windows.Forms.ToolStripButton();
             this.SortButton = new System.Windows.Forms.ToolStripButton();
@@ -80,6 +80,8 @@ namespace Timekeeper.Forms
             this.CategoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CategoryName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Memo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsReconciled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsIgnored = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.IsLocked = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToolStrip.SuspendLayout();
@@ -291,6 +293,8 @@ namespace Timekeeper.Forms
             this.CategoryId,
             this.CategoryName,
             this.Memo,
+            this.IsReconciled,
+            this.IsIgnored,
             this.IsLocked,
             this.JournalId});
             this.JournalResultsGrid.Location = new System.Drawing.Point(0, 25);
@@ -347,8 +351,8 @@ namespace Timekeeper.Forms
             // 
             // NotebookEntryTime
             // 
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.NotebookEntryTime.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.NotebookEntryTime.DefaultCellStyle = dataGridViewCellStyle5;
             this.NotebookEntryTime.HeaderText = "Entry Time";
             this.NotebookEntryTime.Name = "NotebookEntryTime";
             this.NotebookEntryTime.ReadOnly = true;
@@ -418,8 +422,8 @@ namespace Timekeeper.Forms
             // 
             // NotebookId
             // 
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.NotebookId.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.NotebookId.DefaultCellStyle = dataGridViewCellStyle6;
             this.NotebookId.HeaderText = "ID";
             this.NotebookId.MinimumWidth = 8;
             this.NotebookId.Name = "NotebookId";
@@ -429,8 +433,8 @@ namespace Timekeeper.Forms
             // 
             // StartTime
             // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.StartTime.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.StartTime.DefaultCellStyle = dataGridViewCellStyle1;
             this.StartTime.HeaderText = "Start Time";
             this.StartTime.Name = "StartTime";
             this.StartTime.ReadOnly = true;
@@ -438,8 +442,8 @@ namespace Timekeeper.Forms
             // 
             // StopTime
             // 
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.StopTime.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.StopTime.DefaultCellStyle = dataGridViewCellStyle2;
             this.StopTime.HeaderText = "Stop Time";
             this.StopTime.Name = "StopTime";
             this.StopTime.ReadOnly = true;
@@ -447,8 +451,8 @@ namespace Timekeeper.Forms
             // 
             // Seconds
             // 
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Seconds.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Seconds.DefaultCellStyle = dataGridViewCellStyle3;
             this.Seconds.HeaderText = "Duration";
             this.Seconds.Name = "Seconds";
             this.Seconds.ReadOnly = true;
@@ -520,6 +524,18 @@ namespace Timekeeper.Forms
             this.Memo.Name = "Memo";
             this.Memo.ReadOnly = true;
             // 
+            // IsReconciled
+            // 
+            this.IsReconciled.HeaderText = "Reconciled?";
+            this.IsReconciled.Name = "IsReconciled";
+            this.IsReconciled.ReadOnly = true;
+            // 
+            // IsIgnored
+            // 
+            this.IsIgnored.HeaderText = "Ignored?";
+            this.IsIgnored.Name = "IsIgnored";
+            this.IsIgnored.ReadOnly = true;
+            // 
             // IsLocked
             // 
             this.IsLocked.HeaderText = "Locked";
@@ -530,8 +546,8 @@ namespace Timekeeper.Forms
             // 
             // JournalId
             // 
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.JournalId.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.JournalId.DefaultCellStyle = dataGridViewCellStyle4;
             this.JournalId.HeaderText = "ID";
             this.JournalId.MinimumWidth = 8;
             this.JournalId.Name = "JournalId";
@@ -614,6 +630,8 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.DataGridViewTextBoxColumn CategoryId;
         private System.Windows.Forms.DataGridViewTextBoxColumn CategoryName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Memo;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsReconciled;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsIgnored;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsLocked;
         private System.Windows.Forms.DataGridViewTextBoxColumn JournalId;
     }

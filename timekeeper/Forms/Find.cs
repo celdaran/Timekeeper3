@@ -473,6 +473,8 @@ namespace Timekeeper.Forms
                     JournalEntry["CategoryId"],
                     JournalEntry["CategoryName"],
                     JournalEntry["Memo"],
+                    JournalEntry["IsReconciled"],
+                    JournalEntry["IsIgnored"],
                     JournalEntry["IsLocked"],
                     JournalEntry["JournalId"]
                     );

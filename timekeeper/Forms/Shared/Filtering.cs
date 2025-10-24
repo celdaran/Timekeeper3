@@ -190,6 +190,11 @@ namespace Timekeeper.Forms.Shared
             FilterOptions.ImpliedProjects = GetImpliedSelectedValues(ProjectTree.Nodes, false);
             // End populate self
 
+            IsReconciled.Checked = FilterOptions.IsReconciled;
+            IsNotReconciled.Checked = FilterOptions.IsNotReconciled;
+            IsIgnored.Checked = FilterOptions.IsIgnored;
+            IsNotIgnored.Checked = FilterOptions.IsNotIgnored;
+            IsLocked.Checked = FilterOptions.IsLocked;
         }
 
         //----------------------------------------------------------------------
@@ -335,6 +340,11 @@ namespace Timekeeper.Forms.Shared
             FilterOptions.Projects = GetActuallySelectedValues(ProjectTree.Nodes);
             FilterOptions.Locations = GetActuallySelectedValues(LocationTree.Nodes);
             FilterOptions.Categories = GetActuallySelectedValues(CategoryTree.Nodes);
+            FilterOptions.IsReconciled = IsReconciled.Checked;
+            FilterOptions.IsNotReconciled = IsNotReconciled.Checked;
+            FilterOptions.IsIgnored = IsIgnored.Checked;
+            FilterOptions.IsNotIgnored = IsNotIgnored.Checked;
+            FilterOptions.IsLocked = IsLocked.Checked;
             FilterOptions.ImpliedActivities = GetImpliedSelectedValues(ActivityTree.Nodes, false);
             FilterOptions.ImpliedProjects = GetImpliedSelectedValues(ProjectTree.Nodes, false);
 
@@ -365,6 +375,12 @@ namespace Timekeeper.Forms.Shared
 
             CreateTimePresets.SelectedIndex = -1;
             ModifyTimePresets.SelectedIndex = -1;
+
+            IsReconciled.Checked = false;
+            IsNotReconciled.Checked = false;
+            IsIgnored.Checked = false;
+            IsNotIgnored.Checked = false;
+            IsLocked.Checked = false;
         }
 
         //---------------------------------------------------------------------
