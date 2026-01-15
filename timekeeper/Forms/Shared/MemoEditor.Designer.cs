@@ -241,6 +241,7 @@
             // MemoToolbar
             // 
             this.MemoToolbar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.MemoToolbar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MemoToolbar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.MemoToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FormatFontButton,
@@ -278,7 +279,7 @@
             this.FormatFontButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatFontButton.Image")));
             this.FormatFontButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatFontButton.Name = "FormatFontButton";
-            this.FormatFontButton.Size = new System.Drawing.Size(44, 22);
+            this.FormatFontButton.Size = new System.Drawing.Size(41, 22);
             this.FormatFontButton.Text = "Font...";
             this.FormatFontButton.Click += new System.EventHandler(this.FormatFontButton_Click);
             // 
@@ -385,7 +386,7 @@
             this.FormatHeading1Button.Image = ((System.Drawing.Image)(resources.GetObject("FormatHeading1Button.Image")));
             this.FormatHeading1Button.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatHeading1Button.Name = "FormatHeading1Button";
-            this.FormatHeading1Button.Size = new System.Drawing.Size(26, 22);
+            this.FormatHeading1Button.Size = new System.Drawing.Size(25, 22);
             this.FormatHeading1Button.Text = "H1";
             this.FormatHeading1Button.ToolTipText = "Heading 1";
             this.FormatHeading1Button.Click += new System.EventHandler(this.FormatHeading1Button_Click);
@@ -396,7 +397,7 @@
             this.FormatHeading2Button.Image = ((System.Drawing.Image)(resources.GetObject("FormatHeading2Button.Image")));
             this.FormatHeading2Button.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatHeading2Button.Name = "FormatHeading2Button";
-            this.FormatHeading2Button.Size = new System.Drawing.Size(26, 22);
+            this.FormatHeading2Button.Size = new System.Drawing.Size(25, 22);
             this.FormatHeading2Button.Text = "H2";
             this.FormatHeading2Button.ToolTipText = "Heading 2";
             this.FormatHeading2Button.Click += new System.EventHandler(this.FormatHeading2Button_Click);
@@ -404,7 +405,6 @@
             // FormatHeading3Button
             // 
             this.FormatHeading3Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatHeading3Button.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormatHeading3Button.Image = ((System.Drawing.Image)(resources.GetObject("FormatHeading3Button.Image")));
             this.FormatHeading3Button.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatHeading3Button.Name = "FormatHeading3Button";
@@ -447,7 +447,7 @@
             this.FormatCodeButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatCodeButton.Image")));
             this.FormatCodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatCodeButton.Name = "FormatCodeButton";
-            this.FormatCodeButton.Size = new System.Drawing.Size(27, 22);
+            this.FormatCodeButton.Size = new System.Drawing.Size(23, 22);
             this.FormatCodeButton.Text = "<>";
             this.FormatCodeButton.ToolTipText = "Code or Preformatted Text";
             this.FormatCodeButton.Click += new System.EventHandler(this.FormatCodeButton_Click);
@@ -474,7 +474,7 @@
             this.FormatInsertBreakButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.FormatInsertBreakButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatInsertBreakButton.Name = "FormatInsertBreakButton";
-            this.FormatInsertBreakButton.Size = new System.Drawing.Size(40, 22);
+            this.FormatInsertBreakButton.Size = new System.Drawing.Size(39, 22);
             this.FormatInsertBreakButton.Text = "Break";
             this.FormatInsertBreakButton.ToolTipText = "Insert separator text into memo";
             this.FormatInsertBreakButton.Visible = false;
@@ -486,7 +486,7 @@
             this.FormatTestButton.Image = ((System.Drawing.Image)(resources.GetObject("FormatTestButton.Image")));
             this.FormatTestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatTestButton.Name = "FormatTestButton";
-            this.FormatTestButton.Size = new System.Drawing.Size(31, 22);
+            this.FormatTestButton.Size = new System.Drawing.Size(32, 22);
             this.FormatTestButton.Text = "Test";
             this.FormatTestButton.Visible = false;
             this.FormatTestButton.Click += new System.EventHandler(this.FormatTestButton_Click);

@@ -56,6 +56,7 @@ namespace Timekeeper.Forms
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.wDeletedTime = new System.Windows.Forms.TextBox();
             this.wHiddenTime = new System.Windows.Forms.TextBox();
+            this.wIsDefault = new System.Windows.Forms.CheckBox();
             this.wGroupProperties.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -128,7 +129,7 @@ namespace Timekeeper.Forms
             // 
             // wExternalProjectNo
             // 
-            this.wExternalProjectNo.BackColor = System.Drawing.SystemColors.Control;
+            this.wExternalProjectNo.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wExternalProjectNo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wExternalProjectNo.Location = new System.Drawing.Point(97, 198);
             this.wExternalProjectNo.Name = "wExternalProjectNo";
@@ -139,7 +140,7 @@ namespace Timekeeper.Forms
             // 
             // wGUID
             // 
-            this.wGUID.BackColor = System.Drawing.SystemColors.Control;
+            this.wGUID.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wGUID.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wGUID.Location = new System.Drawing.Point(97, 172);
             this.wGUID.Name = "wGUID";
@@ -150,7 +151,7 @@ namespace Timekeeper.Forms
             // 
             // wID
             // 
-            this.wID.BackColor = System.Drawing.SystemColors.Control;
+            this.wID.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wID.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wID.Location = new System.Drawing.Point(97, 146);
             this.wID.Name = "wID";
@@ -161,7 +162,7 @@ namespace Timekeeper.Forms
             // 
             // wType
             // 
-            this.wType.BackColor = System.Drawing.SystemColors.Control;
+            this.wType.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wType.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wType.Location = new System.Drawing.Point(97, 120);
             this.wType.Name = "wType";
@@ -173,7 +174,7 @@ namespace Timekeeper.Forms
             // wDescription
             // 
             this.wDescription.AcceptsReturn = true;
-            this.wDescription.BackColor = System.Drawing.SystemColors.Control;
+            this.wDescription.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wDescription.Location = new System.Drawing.Point(97, 42);
             this.wDescription.Multiline = true;
@@ -185,7 +186,7 @@ namespace Timekeeper.Forms
             // 
             // wName
             // 
-            this.wName.BackColor = System.Drawing.SystemColors.Control;
+            this.wName.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wName.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wName.Location = new System.Drawing.Point(97, 16);
             this.wName.Name = "wName";
@@ -233,7 +234,7 @@ namespace Timekeeper.Forms
             // CancelDialog
             // 
             this.CancelDialog.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelDialog.Location = new System.Drawing.Point(267, 435);
+            this.CancelDialog.Location = new System.Drawing.Point(267, 457);
             this.CancelDialog.Name = "CancelDialog";
             this.CancelDialog.Size = new System.Drawing.Size(75, 23);
             this.CancelDialog.TabIndex = 13;
@@ -301,7 +302,7 @@ namespace Timekeeper.Forms
             // 
             // wTimeToday
             // 
-            this.wTimeToday.BackColor = System.Drawing.SystemColors.Control;
+            this.wTimeToday.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wTimeToday.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wTimeToday.Location = new System.Drawing.Point(97, 94);
             this.wTimeToday.Name = "wTimeToday";
@@ -312,7 +313,7 @@ namespace Timekeeper.Forms
             // 
             // wTotalTime
             // 
-            this.wTotalTime.BackColor = System.Drawing.SystemColors.Control;
+            this.wTotalTime.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wTotalTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wTotalTime.Location = new System.Drawing.Point(97, 68);
             this.wTotalTime.Name = "wTotalTime";
@@ -323,7 +324,7 @@ namespace Timekeeper.Forms
             // 
             // wModified
             // 
-            this.wModified.BackColor = System.Drawing.SystemColors.Control;
+            this.wModified.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wModified.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wModified.Location = new System.Drawing.Point(97, 42);
             this.wModified.Name = "wModified";
@@ -334,7 +335,7 @@ namespace Timekeeper.Forms
             // 
             // wCreated
             // 
-            this.wCreated.BackColor = System.Drawing.SystemColors.Control;
+            this.wCreated.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wCreated.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wCreated.Location = new System.Drawing.Point(97, 16);
             this.wCreated.Name = "wCreated";
@@ -345,6 +346,7 @@ namespace Timekeeper.Forms
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.wIsDefault);
             this.groupBox2.Controls.Add(this.wDeletedTime);
             this.groupBox2.Controls.Add(this.wHiddenTime);
             this.groupBox2.Controls.Add(this.wIsHidden);
@@ -352,13 +354,13 @@ namespace Timekeeper.Forms
             this.groupBox2.Controls.Add(this.wIsDeleted);
             this.groupBox2.Location = new System.Drawing.Point(12, 363);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(330, 66);
+            this.groupBox2.Size = new System.Drawing.Size(330, 88);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             // 
             // wDeletedTime
             // 
-            this.wDeletedTime.BackColor = System.Drawing.SystemColors.Control;
+            this.wDeletedTime.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wDeletedTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wDeletedTime.Location = new System.Drawing.Point(190, 39);
             this.wDeletedTime.Name = "wDeletedTime";
@@ -369,7 +371,7 @@ namespace Timekeeper.Forms
             // 
             // wHiddenTime
             // 
-            this.wHiddenTime.BackColor = System.Drawing.SystemColors.Control;
+            this.wHiddenTime.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.wHiddenTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.wHiddenTime.Location = new System.Drawing.Point(190, 16);
             this.wHiddenTime.Name = "wHiddenTime";
@@ -378,13 +380,25 @@ namespace Timekeeper.Forms
             this.wHiddenTime.TabIndex = 32;
             this.wHiddenTime.TabStop = false;
             // 
+            // wIsDefault
+            // 
+            this.wIsDefault.AutoCheck = false;
+            this.wIsDefault.AutoSize = true;
+            this.wIsDefault.Location = new System.Drawing.Point(97, 61);
+            this.wIsDefault.Name = "wIsDefault";
+            this.wIsDefault.Size = new System.Drawing.Size(60, 17);
+            this.wIsDefault.TabIndex = 34;
+            this.wIsDefault.TabStop = false;
+            this.wIsDefault.Text = "Default";
+            this.wIsDefault.UseVisualStyleBackColor = true;
+            // 
             // Properties
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.CancelButton = this.CancelDialog;
-            this.ClientSize = new System.Drawing.Size(354, 468);
+            this.ClientSize = new System.Drawing.Size(354, 492);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.CancelDialog);
@@ -440,5 +454,6 @@ namespace Timekeeper.Forms
         internal System.Windows.Forms.TextBox wDeletedTime;
         internal System.Windows.Forms.TextBox wExternalProjectNo;
         internal System.Windows.Forms.Label wExternalProjectNoLabel;
+        internal System.Windows.Forms.CheckBox wIsDefault;
     }
 }
