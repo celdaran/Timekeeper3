@@ -95,16 +95,64 @@ namespace Timekeeper.Classes
                 Offset = String.Format(", '-{0} hours'", this.Options.Advanced_Other_MidnightOffset);
             }
 
+            /*
+
+            WITH RECURSIVE ProjectPath(ProjectId, FullPath) AS (
+            -- 1. Anchor Member: Start with Top-Level Projects (where ParentId is NULL)
+            SELECT 
+                ProjectId, 
+                Name 
+            FROM Project 
+            WHERE ParentId IS NULL
+
+            UNION ALL
+
+            -- 2. Recursive Member: Join children to their parents and append names
+            SELECT 
+                p.ProjectId, 
+                pp.FullPath || '::' || p.Name
+            FROM Project p
+            JOIN ProjectPath pp ON p.ParentId = pp.ProjectId
+            )
+            -- 3. Final Select: Join the results with your Journal table
+            SELECT 
+                pp.FullPath AS Name, 
+                SUM(j.Seconds) AS Seconds
+            FROM Journal j
+            JOIN ProjectPath pp ON j.ProjectId = pp.ProjectId
+            GROUP BY pp.FullPath
+            ORDER BY pp.FullPath;
+             * 
+             */
+
             string Query = String.Format(@"
-                select
-                    i.Name as Name, 
+                WITH RECURSIVE {1}Path({1}Id, FullPath) AS (
+                -- 1. Anchor Member: Start with Top-Level Dimensions (where ParentId is NULL)
+                SELECT 
+                    {1}Id, 
+                    Name 
+                FROM {1} 
+                WHERE ParentId IS NULL
+
+                UNION ALL
+
+                -- 2. Recursive Member: Join children to their parents and append names
+                SELECT 
+                    i.{1}Id, 
+                    ii.FullPath || '::' || i.Name
+                FROM {1} i
+                JOIN {1}Path ii ON i.ParentId = ii.{1}Id
+                )
+
+                -- 3. Final Select: Join the results with your Journal table
+                SELECT 
+                    ii.FullPath AS Name, 
                     strftime('{0}', j.StartTime{3}) as Grouping, 
-                    sum(j.Seconds) as Seconds
-                from Journal j
-                join {1} i on i.{1}Id = j.{1}Id
-                where {2}
-                group by i.Name, Grouping
-                order by i.Name, Grouping",
+                    SUM(j.Seconds) AS Seconds
+                FROM Journal j
+                JOIN {1}Path ii ON j.{1}Id = ii.{1}Id
+                GROUP BY ii.FullPath, Grouping
+                ORDER BY ii.FullPath, Grouping",
                 sGroupBy, tableName, this.FilterOptions.WhereClause, Offset);
 
             Table FindResults = Database.Select(Query);
