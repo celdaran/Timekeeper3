@@ -129,6 +129,7 @@ namespace Timekeeper.Classes
 
             Dialog.wIsHidden.Checked = item.IsHidden;
             Dialog.wIsDeleted.Checked = item.IsDeleted;
+            Dialog.wIsDefault.Checked = item.IsDefault;
             if (item.IsHidden)
                 Dialog.wHiddenTime.Text = Timekeeper.NullableDateForDisplay(item.HiddenTime);
             if (item.IsDeleted)
