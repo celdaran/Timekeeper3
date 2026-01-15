@@ -87,10 +87,10 @@ namespace Timekeeper
             // ApplicationName
             // 
             this.ApplicationName.AutoSize = true;
-            this.ApplicationName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ApplicationName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ApplicationName.Location = new System.Drawing.Point(66, 9);
             this.ApplicationName.Name = "ApplicationName";
-            this.ApplicationName.Size = new System.Drawing.Size(127, 13);
+            this.ApplicationName.Size = new System.Drawing.Size(111, 13);
             this.ApplicationName.TabIndex = 4;
             this.ApplicationName.Text = "APPLICATION NAME";
             // 
