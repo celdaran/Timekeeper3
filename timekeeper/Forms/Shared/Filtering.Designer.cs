@@ -67,10 +67,14 @@ namespace Timekeeper.Forms.Shared
             this.CategoryTab = new System.Windows.Forms.TabPage();
             this.CategoryTree = new System.Windows.Forms.TreeView();
             this.AdvancedTab = new System.Windows.Forms.TabPage();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.SpecialNeedsGroup = new System.Windows.Forms.GroupBox();
+            this.IsNotIgnored = new System.Windows.Forms.CheckBox();
+            this.IsNotReconciled = new System.Windows.Forms.CheckBox();
+            this.IsIgnored = new System.Windows.Forms.CheckBox();
+            this.IsReconciled = new System.Windows.Forms.CheckBox();
             this.IsLocked = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.EntryMetadataGroup = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ModifyTimePresets = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -78,10 +82,6 @@ namespace Timekeeper.Forms.Shared
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.ClearButton = new System.Windows.Forms.Button();
             this.ButtonPanel = new System.Windows.Forms.Panel();
-            this.IsReconciled = new System.Windows.Forms.CheckBox();
-            this.IsIgnored = new System.Windows.Forms.CheckBox();
-            this.IsNotReconciled = new System.Windows.Forms.CheckBox();
-            this.IsNotIgnored = new System.Windows.Forms.CheckBox();
             this.PopupMenuDates.SuspendLayout();
             this.TreeViewMenu.SuspendLayout();
             this.FilterOptionsTabControl.SuspendLayout();
@@ -94,8 +94,8 @@ namespace Timekeeper.Forms.Shared
             this.LocationTab.SuspendLayout();
             this.CategoryTab.SuspendLayout();
             this.AdvancedTab.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.SpecialNeedsGroup.SuspendLayout();
+            this.EntryMetadataGroup.SuspendLayout();
             this.BottomPanel.SuspendLayout();
             this.ButtonPanel.SuspendLayout();
             this.SuspendLayout();
@@ -512,8 +512,8 @@ namespace Timekeeper.Forms.Shared
             // AdvancedTab
             // 
             this.AdvancedTab.BackColor = System.Drawing.SystemColors.Control;
-            this.AdvancedTab.Controls.Add(this.groupBox3);
-            this.AdvancedTab.Controls.Add(this.groupBox1);
+            this.AdvancedTab.Controls.Add(this.SpecialNeedsGroup);
+            this.AdvancedTab.Controls.Add(this.EntryMetadataGroup);
             this.AdvancedTab.Location = new System.Drawing.Point(4, 22);
             this.AdvancedTab.Name = "AdvancedTab";
             this.AdvancedTab.Padding = new System.Windows.Forms.Padding(3);
@@ -521,20 +521,60 @@ namespace Timekeeper.Forms.Shared
             this.AdvancedTab.TabIndex = 2;
             this.AdvancedTab.Text = "Advanced";
             // 
-            // groupBox3
+            // SpecialNeedsGroup
             // 
-            this.groupBox3.Controls.Add(this.IsNotIgnored);
-            this.groupBox3.Controls.Add(this.IsNotReconciled);
-            this.groupBox3.Controls.Add(this.IsIgnored);
-            this.groupBox3.Controls.Add(this.IsReconciled);
-            this.groupBox3.Controls.Add(this.IsLocked);
-            this.groupBox3.Controls.Add(this.checkBox1);
-            this.groupBox3.Location = new System.Drawing.Point(6, 99);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(379, 122);
-            this.groupBox3.TabIndex = 15;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Special Needs";
+            this.SpecialNeedsGroup.Controls.Add(this.IsNotIgnored);
+            this.SpecialNeedsGroup.Controls.Add(this.IsNotReconciled);
+            this.SpecialNeedsGroup.Controls.Add(this.IsIgnored);
+            this.SpecialNeedsGroup.Controls.Add(this.IsReconciled);
+            this.SpecialNeedsGroup.Controls.Add(this.IsLocked);
+            this.SpecialNeedsGroup.Controls.Add(this.checkBox1);
+            this.SpecialNeedsGroup.Location = new System.Drawing.Point(6, 99);
+            this.SpecialNeedsGroup.Name = "SpecialNeedsGroup";
+            this.SpecialNeedsGroup.Size = new System.Drawing.Size(379, 122);
+            this.SpecialNeedsGroup.TabIndex = 15;
+            this.SpecialNeedsGroup.TabStop = false;
+            this.SpecialNeedsGroup.Text = "Special Needs";
+            // 
+            // IsNotIgnored
+            // 
+            this.IsNotIgnored.AutoSize = true;
+            this.IsNotIgnored.Location = new System.Drawing.Point(179, 42);
+            this.IsNotIgnored.Name = "IsNotIgnored";
+            this.IsNotIgnored.Size = new System.Drawing.Size(138, 17);
+            this.IsNotIgnored.TabIndex = 4;
+            this.IsNotIgnored.Text = "Exclude Ignored Entries";
+            this.IsNotIgnored.UseVisualStyleBackColor = true;
+            // 
+            // IsNotReconciled
+            // 
+            this.IsNotReconciled.AutoSize = true;
+            this.IsNotReconciled.Location = new System.Drawing.Point(179, 19);
+            this.IsNotReconciled.Name = "IsNotReconciled";
+            this.IsNotReconciled.Size = new System.Drawing.Size(156, 17);
+            this.IsNotReconciled.TabIndex = 2;
+            this.IsNotReconciled.Text = "Exclude Reconciled Entries";
+            this.IsNotReconciled.UseVisualStyleBackColor = true;
+            // 
+            // IsIgnored
+            // 
+            this.IsIgnored.AutoSize = true;
+            this.IsIgnored.Location = new System.Drawing.Point(20, 42);
+            this.IsIgnored.Name = "IsIgnored";
+            this.IsIgnored.Size = new System.Drawing.Size(120, 17);
+            this.IsIgnored.TabIndex = 3;
+            this.IsIgnored.Text = "Find Ignored Entries";
+            this.IsIgnored.UseVisualStyleBackColor = true;
+            // 
+            // IsReconciled
+            // 
+            this.IsReconciled.AutoSize = true;
+            this.IsReconciled.Location = new System.Drawing.Point(20, 19);
+            this.IsReconciled.Name = "IsReconciled";
+            this.IsReconciled.Size = new System.Drawing.Size(138, 17);
+            this.IsReconciled.TabIndex = 1;
+            this.IsReconciled.Text = "Find Reconciled Entries";
+            this.IsReconciled.UseVisualStyleBackColor = true;
             // 
             // IsLocked
             // 
@@ -557,19 +597,19 @@ namespace Timekeeper.Forms.Shared
             this.checkBox1.Text = "Find Overlapping Entries";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // EntryMetadataGroup
             // 
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.ModifyTimePresets);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.CreateTimePresets);
-            this.groupBox1.Enabled = false;
-            this.groupBox1.Location = new System.Drawing.Point(6, 6);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(379, 87);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Entry Meta Data";
+            this.EntryMetadataGroup.Controls.Add(this.label2);
+            this.EntryMetadataGroup.Controls.Add(this.ModifyTimePresets);
+            this.EntryMetadataGroup.Controls.Add(this.label1);
+            this.EntryMetadataGroup.Controls.Add(this.CreateTimePresets);
+            this.EntryMetadataGroup.Enabled = false;
+            this.EntryMetadataGroup.Location = new System.Drawing.Point(6, 6);
+            this.EntryMetadataGroup.Name = "EntryMetadataGroup";
+            this.EntryMetadataGroup.Size = new System.Drawing.Size(379, 87);
+            this.EntryMetadataGroup.TabIndex = 13;
+            this.EntryMetadataGroup.TabStop = false;
+            this.EntryMetadataGroup.Text = "Entry Meta Data";
             // 
             // label2
             // 
@@ -639,46 +679,6 @@ namespace Timekeeper.Forms.Shared
             this.ButtonPanel.Size = new System.Drawing.Size(164, 34);
             this.ButtonPanel.TabIndex = 0;
             // 
-            // IsReconciled
-            // 
-            this.IsReconciled.AutoSize = true;
-            this.IsReconciled.Location = new System.Drawing.Point(20, 19);
-            this.IsReconciled.Name = "IsReconciled";
-            this.IsReconciled.Size = new System.Drawing.Size(138, 17);
-            this.IsReconciled.TabIndex = 1;
-            this.IsReconciled.Text = "Find Reconciled Entries";
-            this.IsReconciled.UseVisualStyleBackColor = true;
-            // 
-            // IsIgnored
-            // 
-            this.IsIgnored.AutoSize = true;
-            this.IsIgnored.Location = new System.Drawing.Point(20, 42);
-            this.IsIgnored.Name = "IsIgnored";
-            this.IsIgnored.Size = new System.Drawing.Size(120, 17);
-            this.IsIgnored.TabIndex = 3;
-            this.IsIgnored.Text = "Find Ignored Entries";
-            this.IsIgnored.UseVisualStyleBackColor = true;
-            // 
-            // IsNotReconciled
-            // 
-            this.IsNotReconciled.AutoSize = true;
-            this.IsNotReconciled.Location = new System.Drawing.Point(179, 19);
-            this.IsNotReconciled.Name = "IsNotReconciled";
-            this.IsNotReconciled.Size = new System.Drawing.Size(156, 17);
-            this.IsNotReconciled.TabIndex = 2;
-            this.IsNotReconciled.Text = "Exclude Reconciled Entries";
-            this.IsNotReconciled.UseVisualStyleBackColor = true;
-            // 
-            // IsNotIgnored
-            // 
-            this.IsNotIgnored.AutoSize = true;
-            this.IsNotIgnored.Location = new System.Drawing.Point(179, 42);
-            this.IsNotIgnored.Name = "IsNotIgnored";
-            this.IsNotIgnored.Size = new System.Drawing.Size(138, 17);
-            this.IsNotIgnored.TabIndex = 4;
-            this.IsNotIgnored.Text = "Exclude Ignored Entries";
-            this.IsNotIgnored.UseVisualStyleBackColor = true;
-            // 
             // Filtering
             // 
             this.AcceptButton = this.OkayButton;
@@ -711,10 +711,10 @@ namespace Timekeeper.Forms.Shared
             this.LocationTab.ResumeLayout(false);
             this.CategoryTab.ResumeLayout(false);
             this.AdvancedTab.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.SpecialNeedsGroup.ResumeLayout(false);
+            this.SpecialNeedsGroup.PerformLayout();
+            this.EntryMetadataGroup.ResumeLayout(false);
+            this.EntryMetadataGroup.PerformLayout();
             this.BottomPanel.ResumeLayout(false);
             this.ButtonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -751,14 +751,14 @@ namespace Timekeeper.Forms.Shared
         private System.Windows.Forms.Panel BottomPanel;
         private System.Windows.Forms.Panel ButtonPanel;
         private System.Windows.Forms.TabPage CategoryTab;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox EntryMetadataGroup;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.ComboBox ModifyTimePresets;
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.ComboBox CreateTimePresets;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox IsLocked;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox SpecialNeedsGroup;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.Label DurationLabel;
         private System.Windows.Forms.ComboBox DurationUnit;
