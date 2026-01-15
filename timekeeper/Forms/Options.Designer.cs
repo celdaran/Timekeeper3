@@ -100,13 +100,35 @@
             this.View_HiddenProjects = new System.Windows.Forms.CheckBox();
             this.View_HiddenProjectsSince = new System.Windows.Forms.ComboBox();
             this.BehaviorPage = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.label24 = new System.Windows.Forms.Label();
+            this.Behavior_NewEntries_Category_FP = new System.Windows.Forms.RadioButton();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.radioButton13 = new System.Windows.Forms.RadioButton();
+            this.radioButton14 = new System.Windows.Forms.RadioButton();
+            this.radioButton15 = new System.Windows.Forms.RadioButton();
+            this.Behavior_NewEntries_Category_UD = new System.Windows.Forms.RadioButton();
+            this.Behavior_NewEntries_Category_DS = new System.Windows.Forms.RadioButton();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label23 = new System.Windows.Forms.Label();
+            this.Behavior_NewEntries_Location_FP = new System.Windows.Forms.RadioButton();
+            this.Behavior_NewEntries_Location_UD = new System.Windows.Forms.RadioButton();
+            this.Behavior_NewEntries_Location_DS = new System.Windows.Forms.RadioButton();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.radioButton7 = new System.Windows.Forms.RadioButton();
+            this.radioButton8 = new System.Windows.Forms.RadioButton();
+            this.radioButton9 = new System.Windows.Forms.RadioButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label22 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton5 = new System.Windows.Forms.RadioButton();
+            this.radioButton6 = new System.Windows.Forms.RadioButton();
+            this.Behavior_NewEntries_Activity_FP = new System.Windows.Forms.RadioButton();
+            this.Behavior_NewEntries_Activity_UD = new System.Windows.Forms.RadioButton();
+            this.Behavior_NewEntries_Activity_DS = new System.Windows.Forms.RadioButton();
             this.AnnoyGroup = new System.Windows.Forms.GroupBox();
-            this.AnnoyGroup_CategoryFollowPanel = new System.Windows.Forms.Panel();
-            this.Behavior_Annoy_CategoryFollowsProject = new System.Windows.Forms.CheckBox();
-            this.AnnoyGroup_LocationFollowPanel = new System.Windows.Forms.Panel();
-            this.Behavior_Annoy_LocationFollowsProject = new System.Windows.Forms.CheckBox();
-            this.AnnoyGroup_ActivityFollowPanel = new System.Windows.Forms.Panel();
-            this.Behavior_Annoy_ActivityFollowsProject = new System.Windows.Forms.CheckBox();
             this.AnnoyGroup_TopPanel = new System.Windows.Forms.Panel();
             this.Behavior_Annoy_PromptBeforeHiding = new System.Windows.Forms.CheckBox();
             this.Behavior_Annoy_UseNewDatabaseWizard = new System.Windows.Forms.CheckBox();
@@ -243,10 +265,14 @@
             this.HiddenGroup_ActivityPanel.SuspendLayout();
             this.HiddenGroup_ProjectPanel.SuspendLayout();
             this.BehaviorPage.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel6.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.AnnoyGroup.SuspendLayout();
-            this.AnnoyGroup_CategoryFollowPanel.SuspendLayout();
-            this.AnnoyGroup_LocationFollowPanel.SuspendLayout();
-            this.AnnoyGroup_ActivityFollowPanel.SuspendLayout();
             this.AnnoyGroup_TopPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Behavior_Annoy_NoRunningPromptAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BehaviorSpacingBox)).BeginInit();
@@ -311,7 +337,7 @@
             // 
             // LayoutPage
             // 
-            this.LayoutPage.BackColor = System.Drawing.SystemColors.Menu;
+            this.LayoutPage.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.LayoutPage.Controls.Add(this.PresetGroup);
             this.LayoutPage.Controls.Add(this.DimensionGroup);
             this.LayoutPage.Location = new System.Drawing.Point(4, 29);
@@ -471,7 +497,7 @@
             // ViewPage
             // 
             this.ViewPage.AutoScroll = true;
-            this.ViewPage.BackColor = System.Drawing.SystemColors.Menu;
+            this.ViewPage.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ViewPage.Controls.Add(this.MainViewGroup);
             this.ViewPage.Controls.Add(this.ViewSpacerBox);
             this.ViewPage.Controls.Add(this.MemoEditorGroup);
@@ -1056,7 +1082,8 @@
             // BehaviorPage
             // 
             this.BehaviorPage.AutoScroll = true;
-            this.BehaviorPage.BackColor = System.Drawing.SystemColors.Menu;
+            this.BehaviorPage.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.BehaviorPage.Controls.Add(this.groupBox3);
             this.BehaviorPage.Controls.Add(this.AnnoyGroup);
             this.BehaviorPage.Controls.Add(this.BehaviorSpacingBox);
             this.BehaviorPage.Controls.Add(this.BrowsingGroup);
@@ -1070,76 +1097,327 @@
             this.BehaviorPage.TabIndex = 3;
             this.BehaviorPage.Text = "Behavior";
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.panel5);
+            this.groupBox3.Controls.Add(this.panel3);
+            this.groupBox3.Controls.Add(this.panel1);
+            this.groupBox3.Location = new System.Drawing.Point(17, 300);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(345, 105);
+            this.groupBox3.TabIndex = 24;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "For New Entries";
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.label24);
+            this.panel5.Controls.Add(this.Behavior_NewEntries_Category_FP);
+            this.panel5.Controls.Add(this.panel6);
+            this.panel5.Controls.Add(this.Behavior_NewEntries_Category_UD);
+            this.panel5.Controls.Add(this.Behavior_NewEntries_Category_DS);
+            this.panel5.Location = new System.Drawing.Point(6, 70);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(327, 26);
+            this.panel5.TabIndex = 5;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(8, 6);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(49, 13);
+            this.label24.TabIndex = 12;
+            this.label24.Text = "Category";
+            // 
+            // Behavior_NewEntries_Category_FP
+            // 
+            this.Behavior_NewEntries_Category_FP.AutoSize = true;
+            this.Behavior_NewEntries_Category_FP.Location = new System.Drawing.Point(235, 4);
+            this.Behavior_NewEntries_Category_FP.Name = "Behavior_NewEntries_Category_FP";
+            this.Behavior_NewEntries_Category_FP.Size = new System.Drawing.Size(91, 17);
+            this.Behavior_NewEntries_Category_FP.TabIndex = 11;
+            this.Behavior_NewEntries_Category_FP.TabStop = true;
+            this.Behavior_NewEntries_Category_FP.Tag = "2";
+            this.Behavior_NewEntries_Category_FP.Text = "Follow Project";
+            this.Behavior_NewEntries_Category_FP.UseVisualStyleBackColor = true;
+            // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.radioButton13);
+            this.panel6.Controls.Add(this.radioButton14);
+            this.panel6.Controls.Add(this.radioButton15);
+            this.panel6.Location = new System.Drawing.Point(0, 27);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(410, 29);
+            this.panel6.TabIndex = 3;
+            // 
+            // radioButton13
+            // 
+            this.radioButton13.AutoSize = true;
+            this.radioButton13.Location = new System.Drawing.Point(245, 4);
+            this.radioButton13.Name = "radioButton13";
+            this.radioButton13.Size = new System.Drawing.Size(133, 17);
+            this.radioButton13.TabIndex = 2;
+            this.radioButton13.TabStop = true;
+            this.radioButton13.Text = "Activity Follows Project";
+            this.radioButton13.UseVisualStyleBackColor = true;
+            // 
+            // radioButton14
+            // 
+            this.radioButton14.AutoSize = true;
+            this.radioButton14.Location = new System.Drawing.Point(123, 4);
+            this.radioButton14.Name = "radioButton14";
+            this.radioButton14.Size = new System.Drawing.Size(118, 17);
+            this.radioButton14.TabIndex = 1;
+            this.radioButton14.TabStop = true;
+            this.radioButton14.Text = "Use Default Activity";
+            this.radioButton14.UseVisualStyleBackColor = true;
+            // 
+            // radioButton15
+            // 
+            this.radioButton15.AutoSize = true;
+            this.radioButton15.Location = new System.Drawing.Point(11, 4);
+            this.radioButton15.Name = "radioButton15";
+            this.radioButton15.Size = new System.Drawing.Size(106, 17);
+            this.radioButton15.TabIndex = 0;
+            this.radioButton15.TabStop = true;
+            this.radioButton15.Text = "Don\'t Set Activity";
+            this.radioButton15.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_NewEntries_Category_UD
+            // 
+            this.Behavior_NewEntries_Category_UD.AutoSize = true;
+            this.Behavior_NewEntries_Category_UD.Location = new System.Drawing.Point(148, 4);
+            this.Behavior_NewEntries_Category_UD.Name = "Behavior_NewEntries_Category_UD";
+            this.Behavior_NewEntries_Category_UD.Size = new System.Drawing.Size(81, 17);
+            this.Behavior_NewEntries_Category_UD.TabIndex = 10;
+            this.Behavior_NewEntries_Category_UD.TabStop = true;
+            this.Behavior_NewEntries_Category_UD.Tag = "1";
+            this.Behavior_NewEntries_Category_UD.Text = "Use Default";
+            this.Behavior_NewEntries_Category_UD.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_NewEntries_Category_DS
+            // 
+            this.Behavior_NewEntries_Category_DS.AutoSize = true;
+            this.Behavior_NewEntries_Category_DS.Location = new System.Drawing.Point(73, 4);
+            this.Behavior_NewEntries_Category_DS.Name = "Behavior_NewEntries_Category_DS";
+            this.Behavior_NewEntries_Category_DS.Size = new System.Drawing.Size(69, 17);
+            this.Behavior_NewEntries_Category_DS.TabIndex = 9;
+            this.Behavior_NewEntries_Category_DS.TabStop = true;
+            this.Behavior_NewEntries_Category_DS.Tag = "0";
+            this.Behavior_NewEntries_Category_DS.Text = "Don\'t Set";
+            this.Behavior_NewEntries_Category_DS.UseVisualStyleBackColor = true;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.label23);
+            this.panel3.Controls.Add(this.Behavior_NewEntries_Location_FP);
+            this.panel3.Controls.Add(this.Behavior_NewEntries_Location_UD);
+            this.panel3.Controls.Add(this.Behavior_NewEntries_Location_DS);
+            this.panel3.Controls.Add(this.panel4);
+            this.panel3.Location = new System.Drawing.Point(6, 45);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(327, 26);
+            this.panel3.TabIndex = 4;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(8, 5);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(48, 13);
+            this.label23.TabIndex = 8;
+            this.label23.Text = "Location";
+            // 
+            // Behavior_NewEntries_Location_FP
+            // 
+            this.Behavior_NewEntries_Location_FP.AutoSize = true;
+            this.Behavior_NewEntries_Location_FP.Location = new System.Drawing.Point(235, 4);
+            this.Behavior_NewEntries_Location_FP.Name = "Behavior_NewEntries_Location_FP";
+            this.Behavior_NewEntries_Location_FP.Size = new System.Drawing.Size(91, 17);
+            this.Behavior_NewEntries_Location_FP.TabIndex = 7;
+            this.Behavior_NewEntries_Location_FP.TabStop = true;
+            this.Behavior_NewEntries_Location_FP.Tag = "2";
+            this.Behavior_NewEntries_Location_FP.Text = "Follow Project";
+            this.Behavior_NewEntries_Location_FP.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_NewEntries_Location_UD
+            // 
+            this.Behavior_NewEntries_Location_UD.AutoSize = true;
+            this.Behavior_NewEntries_Location_UD.Location = new System.Drawing.Point(148, 4);
+            this.Behavior_NewEntries_Location_UD.Name = "Behavior_NewEntries_Location_UD";
+            this.Behavior_NewEntries_Location_UD.Size = new System.Drawing.Size(81, 17);
+            this.Behavior_NewEntries_Location_UD.TabIndex = 6;
+            this.Behavior_NewEntries_Location_UD.TabStop = true;
+            this.Behavior_NewEntries_Location_UD.Tag = "1";
+            this.Behavior_NewEntries_Location_UD.Text = "Use Default";
+            this.Behavior_NewEntries_Location_UD.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_NewEntries_Location_DS
+            // 
+            this.Behavior_NewEntries_Location_DS.AutoSize = true;
+            this.Behavior_NewEntries_Location_DS.Location = new System.Drawing.Point(73, 4);
+            this.Behavior_NewEntries_Location_DS.Name = "Behavior_NewEntries_Location_DS";
+            this.Behavior_NewEntries_Location_DS.Size = new System.Drawing.Size(69, 17);
+            this.Behavior_NewEntries_Location_DS.TabIndex = 5;
+            this.Behavior_NewEntries_Location_DS.TabStop = true;
+            this.Behavior_NewEntries_Location_DS.Tag = "0";
+            this.Behavior_NewEntries_Location_DS.Text = "Don\'t Set";
+            this.Behavior_NewEntries_Location_DS.UseVisualStyleBackColor = true;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.radioButton7);
+            this.panel4.Controls.Add(this.radioButton8);
+            this.panel4.Controls.Add(this.radioButton9);
+            this.panel4.Location = new System.Drawing.Point(0, 27);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(410, 29);
+            this.panel4.TabIndex = 3;
+            // 
+            // radioButton7
+            // 
+            this.radioButton7.AutoSize = true;
+            this.radioButton7.Location = new System.Drawing.Point(245, 4);
+            this.radioButton7.Name = "radioButton7";
+            this.radioButton7.Size = new System.Drawing.Size(133, 17);
+            this.radioButton7.TabIndex = 2;
+            this.radioButton7.TabStop = true;
+            this.radioButton7.Text = "Activity Follows Project";
+            this.radioButton7.UseVisualStyleBackColor = true;
+            // 
+            // radioButton8
+            // 
+            this.radioButton8.AutoSize = true;
+            this.radioButton8.Location = new System.Drawing.Point(123, 4);
+            this.radioButton8.Name = "radioButton8";
+            this.radioButton8.Size = new System.Drawing.Size(118, 17);
+            this.radioButton8.TabIndex = 1;
+            this.radioButton8.TabStop = true;
+            this.radioButton8.Text = "Use Default Activity";
+            this.radioButton8.UseVisualStyleBackColor = true;
+            // 
+            // radioButton9
+            // 
+            this.radioButton9.AutoSize = true;
+            this.radioButton9.Location = new System.Drawing.Point(11, 4);
+            this.radioButton9.Name = "radioButton9";
+            this.radioButton9.Size = new System.Drawing.Size(106, 17);
+            this.radioButton9.TabIndex = 0;
+            this.radioButton9.TabStop = true;
+            this.radioButton9.Text = "Don\'t Set Activity";
+            this.radioButton9.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label22);
+            this.panel1.Controls.Add(this.panel2);
+            this.panel1.Controls.Add(this.Behavior_NewEntries_Activity_FP);
+            this.panel1.Controls.Add(this.Behavior_NewEntries_Activity_UD);
+            this.panel1.Controls.Add(this.Behavior_NewEntries_Activity_DS);
+            this.panel1.Location = new System.Drawing.Point(6, 19);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(327, 26);
+            this.panel1.TabIndex = 0;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(8, 6);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(41, 13);
+            this.label22.TabIndex = 4;
+            this.label22.Text = "Activity";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.radioButton4);
+            this.panel2.Controls.Add(this.radioButton5);
+            this.panel2.Controls.Add(this.radioButton6);
+            this.panel2.Location = new System.Drawing.Point(0, 27);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(410, 29);
+            this.panel2.TabIndex = 3;
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(245, 4);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(133, 17);
+            this.radioButton4.TabIndex = 2;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "Activity Follows Project";
+            this.radioButton4.UseVisualStyleBackColor = true;
+            // 
+            // radioButton5
+            // 
+            this.radioButton5.AutoSize = true;
+            this.radioButton5.Location = new System.Drawing.Point(123, 4);
+            this.radioButton5.Name = "radioButton5";
+            this.radioButton5.Size = new System.Drawing.Size(118, 17);
+            this.radioButton5.TabIndex = 1;
+            this.radioButton5.TabStop = true;
+            this.radioButton5.Text = "Use Default Activity";
+            this.radioButton5.UseVisualStyleBackColor = true;
+            // 
+            // radioButton6
+            // 
+            this.radioButton6.AutoSize = true;
+            this.radioButton6.Location = new System.Drawing.Point(11, 4);
+            this.radioButton6.Name = "radioButton6";
+            this.radioButton6.Size = new System.Drawing.Size(106, 17);
+            this.radioButton6.TabIndex = 0;
+            this.radioButton6.TabStop = true;
+            this.radioButton6.Text = "Don\'t Set Activity";
+            this.radioButton6.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_NewEntries_Activity_FP
+            // 
+            this.Behavior_NewEntries_Activity_FP.AutoSize = true;
+            this.Behavior_NewEntries_Activity_FP.Location = new System.Drawing.Point(235, 4);
+            this.Behavior_NewEntries_Activity_FP.Name = "Behavior_NewEntries_Activity_FP";
+            this.Behavior_NewEntries_Activity_FP.Size = new System.Drawing.Size(91, 17);
+            this.Behavior_NewEntries_Activity_FP.TabIndex = 2;
+            this.Behavior_NewEntries_Activity_FP.TabStop = true;
+            this.Behavior_NewEntries_Activity_FP.Tag = "2";
+            this.Behavior_NewEntries_Activity_FP.Text = "Follow Project";
+            this.Behavior_NewEntries_Activity_FP.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_NewEntries_Activity_UD
+            // 
+            this.Behavior_NewEntries_Activity_UD.AutoSize = true;
+            this.Behavior_NewEntries_Activity_UD.Location = new System.Drawing.Point(148, 4);
+            this.Behavior_NewEntries_Activity_UD.Name = "Behavior_NewEntries_Activity_UD";
+            this.Behavior_NewEntries_Activity_UD.Size = new System.Drawing.Size(81, 17);
+            this.Behavior_NewEntries_Activity_UD.TabIndex = 1;
+            this.Behavior_NewEntries_Activity_UD.TabStop = true;
+            this.Behavior_NewEntries_Activity_UD.Tag = "1";
+            this.Behavior_NewEntries_Activity_UD.Text = "Use Default";
+            this.Behavior_NewEntries_Activity_UD.UseVisualStyleBackColor = true;
+            // 
+            // Behavior_NewEntries_Activity_DS
+            // 
+            this.Behavior_NewEntries_Activity_DS.AutoSize = true;
+            this.Behavior_NewEntries_Activity_DS.Location = new System.Drawing.Point(73, 4);
+            this.Behavior_NewEntries_Activity_DS.Name = "Behavior_NewEntries_Activity_DS";
+            this.Behavior_NewEntries_Activity_DS.Size = new System.Drawing.Size(69, 17);
+            this.Behavior_NewEntries_Activity_DS.TabIndex = 0;
+            this.Behavior_NewEntries_Activity_DS.TabStop = true;
+            this.Behavior_NewEntries_Activity_DS.Tag = "0";
+            this.Behavior_NewEntries_Activity_DS.Text = "Don\'t Set";
+            this.Behavior_NewEntries_Activity_DS.UseVisualStyleBackColor = true;
+            // 
             // AnnoyGroup
             // 
-            this.AnnoyGroup.Controls.Add(this.AnnoyGroup_CategoryFollowPanel);
-            this.AnnoyGroup.Controls.Add(this.AnnoyGroup_LocationFollowPanel);
-            this.AnnoyGroup.Controls.Add(this.AnnoyGroup_ActivityFollowPanel);
             this.AnnoyGroup.Controls.Add(this.AnnoyGroup_TopPanel);
             this.AnnoyGroup.Location = new System.Drawing.Point(17, 201);
             this.AnnoyGroup.Name = "AnnoyGroup";
-            this.AnnoyGroup.Size = new System.Drawing.Size(345, 158);
+            this.AnnoyGroup.Size = new System.Drawing.Size(345, 93);
             this.AnnoyGroup.TabIndex = 2;
             this.AnnoyGroup.TabStop = false;
             this.AnnoyGroup.Text = "Annoyances";
-            // 
-            // AnnoyGroup_CategoryFollowPanel
-            // 
-            this.AnnoyGroup_CategoryFollowPanel.Controls.Add(this.Behavior_Annoy_CategoryFollowsProject);
-            this.AnnoyGroup_CategoryFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnnoyGroup_CategoryFollowPanel.Location = new System.Drawing.Point(3, 128);
-            this.AnnoyGroup_CategoryFollowPanel.Name = "AnnoyGroup_CategoryFollowPanel";
-            this.AnnoyGroup_CategoryFollowPanel.Size = new System.Drawing.Size(339, 23);
-            this.AnnoyGroup_CategoryFollowPanel.TabIndex = 14;
-            // 
-            // Behavior_Annoy_CategoryFollowsProject
-            // 
-            this.Behavior_Annoy_CategoryFollowsProject.AutoSize = true;
-            this.Behavior_Annoy_CategoryFollowsProject.Location = new System.Drawing.Point(14, 4);
-            this.Behavior_Annoy_CategoryFollowsProject.Name = "Behavior_Annoy_CategoryFollowsProject";
-            this.Behavior_Annoy_CategoryFollowsProject.Size = new System.Drawing.Size(139, 17);
-            this.Behavior_Annoy_CategoryFollowsProject.TabIndex = 10;
-            this.Behavior_Annoy_CategoryFollowsProject.Text = "Category follows Project";
-            this.Behavior_Annoy_CategoryFollowsProject.UseVisualStyleBackColor = true;
-            // 
-            // AnnoyGroup_LocationFollowPanel
-            // 
-            this.AnnoyGroup_LocationFollowPanel.Controls.Add(this.Behavior_Annoy_LocationFollowsProject);
-            this.AnnoyGroup_LocationFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnnoyGroup_LocationFollowPanel.Location = new System.Drawing.Point(3, 105);
-            this.AnnoyGroup_LocationFollowPanel.Name = "AnnoyGroup_LocationFollowPanel";
-            this.AnnoyGroup_LocationFollowPanel.Size = new System.Drawing.Size(339, 23);
-            this.AnnoyGroup_LocationFollowPanel.TabIndex = 13;
-            // 
-            // Behavior_Annoy_LocationFollowsProject
-            // 
-            this.Behavior_Annoy_LocationFollowsProject.AutoSize = true;
-            this.Behavior_Annoy_LocationFollowsProject.Location = new System.Drawing.Point(14, 4);
-            this.Behavior_Annoy_LocationFollowsProject.Name = "Behavior_Annoy_LocationFollowsProject";
-            this.Behavior_Annoy_LocationFollowsProject.Size = new System.Drawing.Size(173, 17);
-            this.Behavior_Annoy_LocationFollowsProject.TabIndex = 0;
-            this.Behavior_Annoy_LocationFollowsProject.Text = "Location uses Current Location";
-            this.Behavior_Annoy_LocationFollowsProject.UseVisualStyleBackColor = true;
-            this.Behavior_Annoy_LocationFollowsProject.CheckedChanged += new System.EventHandler(this.Behavior_Annoy_LocationFollowsProject_CheckedChanged);
-            // 
-            // AnnoyGroup_ActivityFollowPanel
-            // 
-            this.AnnoyGroup_ActivityFollowPanel.Controls.Add(this.Behavior_Annoy_ActivityFollowsProject);
-            this.AnnoyGroup_ActivityFollowPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnnoyGroup_ActivityFollowPanel.Location = new System.Drawing.Point(3, 82);
-            this.AnnoyGroup_ActivityFollowPanel.Name = "AnnoyGroup_ActivityFollowPanel";
-            this.AnnoyGroup_ActivityFollowPanel.Size = new System.Drawing.Size(339, 23);
-            this.AnnoyGroup_ActivityFollowPanel.TabIndex = 12;
-            // 
-            // Behavior_Annoy_ActivityFollowsProject
-            // 
-            this.Behavior_Annoy_ActivityFollowsProject.AutoSize = true;
-            this.Behavior_Annoy_ActivityFollowsProject.Location = new System.Drawing.Point(14, 4);
-            this.Behavior_Annoy_ActivityFollowsProject.Name = "Behavior_Annoy_ActivityFollowsProject";
-            this.Behavior_Annoy_ActivityFollowsProject.Size = new System.Drawing.Size(131, 17);
-            this.Behavior_Annoy_ActivityFollowsProject.TabIndex = 7;
-            this.Behavior_Annoy_ActivityFollowsProject.Text = "Activity follows Project";
-            this.Behavior_Annoy_ActivityFollowsProject.UseVisualStyleBackColor = true;
             // 
             // AnnoyGroup_TopPanel
             // 
@@ -1151,7 +1429,7 @@
             this.AnnoyGroup_TopPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.AnnoyGroup_TopPanel.Location = new System.Drawing.Point(3, 16);
             this.AnnoyGroup_TopPanel.Name = "AnnoyGroup_TopPanel";
-            this.AnnoyGroup_TopPanel.Size = new System.Drawing.Size(339, 66);
+            this.AnnoyGroup_TopPanel.Size = new System.Drawing.Size(339, 73);
             this.AnnoyGroup_TopPanel.TabIndex = 11;
             // 
             // Behavior_Annoy_PromptBeforeHiding
@@ -1219,7 +1497,7 @@
             // BehaviorSpacingBox
             // 
             this.BehaviorSpacingBox.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
-            this.BehaviorSpacingBox.Location = new System.Drawing.Point(17, 575);
+            this.BehaviorSpacingBox.Location = new System.Drawing.Point(17, 617);
             this.BehaviorSpacingBox.Name = "BehaviorSpacingBox";
             this.BehaviorSpacingBox.Size = new System.Drawing.Size(16, 16);
             this.BehaviorSpacingBox.TabIndex = 23;
@@ -1232,7 +1510,7 @@
             this.BrowsingGroup.Controls.Add(this.Behavior_BrowsePrevBy);
             this.BrowsingGroup.Controls.Add(this.label14);
             this.BrowsingGroup.Controls.Add(this.label13);
-            this.BrowsingGroup.Location = new System.Drawing.Point(17, 473);
+            this.BrowsingGroup.Location = new System.Drawing.Point(17, 519);
             this.BrowsingGroup.Name = "BrowsingGroup";
             this.BrowsingGroup.Size = new System.Drawing.Size(345, 102);
             this.BrowsingGroup.TabIndex = 5;
@@ -1302,7 +1580,7 @@
             // 
             this.SortingGroup.Controls.Add(this.SortingGroup_BottomPanel);
             this.SortingGroup.Controls.Add(this.SortingGroup_ProjectPanel);
-            this.SortingGroup.Location = new System.Drawing.Point(17, 365);
+            this.SortingGroup.Location = new System.Drawing.Point(17, 411);
             this.SortingGroup.Name = "SortingGroup";
             this.SortingGroup.Size = new System.Drawing.Size(345, 102);
             this.SortingGroup.TabIndex = 4;
@@ -1534,7 +1812,7 @@
             // 
             // ReportPage
             // 
-            this.ReportPage.BackColor = System.Drawing.SystemColors.Menu;
+            this.ReportPage.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ReportPage.Controls.Add(this.ReportGroup);
             this.ReportPage.Location = new System.Drawing.Point(4, 29);
             this.ReportPage.Name = "ReportPage";
@@ -1660,7 +1938,7 @@
             // 
             // KeyboardPage
             // 
-            this.KeyboardPage.BackColor = System.Drawing.SystemColors.Menu;
+            this.KeyboardPage.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.KeyboardPage.Controls.Add(this.ShortcutGroup);
             this.KeyboardPage.Controls.Add(this.FunctionList);
             this.KeyboardPage.Location = new System.Drawing.Point(4, 29);
@@ -1867,7 +2145,7 @@
             // AdvancedPage
             // 
             this.AdvancedPage.AutoScroll = true;
-            this.AdvancedPage.BackColor = System.Drawing.SystemColors.Menu;
+            this.AdvancedPage.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.AdvancedPage.Controls.Add(this.AdvancedSpacerBox);
             this.AdvancedPage.Controls.Add(this.AdvancedFormattingGroup);
             this.AdvancedPage.Controls.Add(this.OtherAdvancedGroup);
@@ -2213,7 +2491,7 @@
             // 
             // MailSettingsPage
             // 
-            this.MailSettingsPage.BackColor = System.Drawing.SystemColors.Menu;
+            this.MailSettingsPage.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.MailSettingsPage.Controls.Add(this.groupBox2);
             this.MailSettingsPage.Controls.Add(this.groupBox1);
             this.MailSettingsPage.Location = new System.Drawing.Point(4, 29);
@@ -2490,13 +2768,20 @@
             this.HiddenGroup_ProjectPanel.ResumeLayout(false);
             this.HiddenGroup_ProjectPanel.PerformLayout();
             this.BehaviorPage.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.AnnoyGroup.ResumeLayout(false);
-            this.AnnoyGroup_CategoryFollowPanel.ResumeLayout(false);
-            this.AnnoyGroup_CategoryFollowPanel.PerformLayout();
-            this.AnnoyGroup_LocationFollowPanel.ResumeLayout(false);
-            this.AnnoyGroup_LocationFollowPanel.PerformLayout();
-            this.AnnoyGroup_ActivityFollowPanel.ResumeLayout(false);
-            this.AnnoyGroup_ActivityFollowPanel.PerformLayout();
             this.AnnoyGroup_TopPanel.ResumeLayout(false);
             this.AnnoyGroup_TopPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Behavior_Annoy_NoRunningPromptAmount)).EndInit();
@@ -2675,15 +2960,9 @@
         private System.Windows.Forms.CheckBox View_ControlPanel;
         private System.Windows.Forms.CheckBox View_BrowserToolbar;
         private System.Windows.Forms.CheckBox View_MemoEditor;
-        private System.Windows.Forms.CheckBox Behavior_Annoy_CategoryFollowsProject;
-        private System.Windows.Forms.CheckBox Behavior_Annoy_LocationFollowsProject;
-        private System.Windows.Forms.CheckBox Behavior_Annoy_ActivityFollowsProject;
         private System.Windows.Forms.Panel AnnoyGroup_TopPanel;
         private System.Windows.Forms.NumericUpDown Advanced_Other_DimensionWidth;
         private System.Windows.Forms.Label Advanced_Other_DimensionWidthLabel;
-        private System.Windows.Forms.Panel AnnoyGroup_CategoryFollowPanel;
-        private System.Windows.Forms.Panel AnnoyGroup_LocationFollowPanel;
-        private System.Windows.Forms.Panel AnnoyGroup_ActivityFollowPanel;
         private System.Windows.Forms.TextBox Report_StyleSheetFile;
         private System.Windows.Forms.Panel StatusBarGroup_CategoryElapsedPanel;
         private System.Windows.Forms.CheckBox View_StatusBar_ElapsedCategoryToday;
@@ -2728,5 +3007,33 @@
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.TextBox Mail_Subject;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton Behavior_NewEntries_Activity_UD;
+        private System.Windows.Forms.RadioButton Behavior_NewEntries_Activity_DS;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.RadioButton radioButton13;
+        private System.Windows.Forms.RadioButton radioButton14;
+        private System.Windows.Forms.RadioButton radioButton15;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.RadioButton radioButton7;
+        private System.Windows.Forms.RadioButton radioButton8;
+        private System.Windows.Forms.RadioButton radioButton9;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.RadioButton radioButton4;
+        private System.Windows.Forms.RadioButton radioButton5;
+        private System.Windows.Forms.RadioButton radioButton6;
+        private System.Windows.Forms.RadioButton Behavior_NewEntries_Activity_FP;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.RadioButton Behavior_NewEntries_Location_FP;
+        private System.Windows.Forms.RadioButton Behavior_NewEntries_Location_UD;
+        private System.Windows.Forms.RadioButton Behavior_NewEntries_Location_DS;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.RadioButton Behavior_NewEntries_Category_FP;
+        private System.Windows.Forms.RadioButton Behavior_NewEntries_Category_UD;
+        private System.Windows.Forms.RadioButton Behavior_NewEntries_Category_DS;
     }
 }

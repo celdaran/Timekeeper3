@@ -204,12 +204,6 @@ namespace Timekeeper.Forms
             Action_ManageTree(Timekeeper.Dimension.Category, CategoryTreeDropdown);
         }
 
-        // Action | Set My Location
-        private void MenuActionManageSetLocation_Click(object sender, EventArgs e)
-        {
-            Action_ManageTree(Timekeeper.Dimension.Category, CategoryTreeDropdown);
-        }
-
         //---------------------------------------------------------------------
 
         // Report | Grid

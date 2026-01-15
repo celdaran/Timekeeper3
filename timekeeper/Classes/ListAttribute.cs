@@ -32,6 +32,7 @@ namespace Timekeeper.Classes
         public bool IsDeleted { get; set; }
         public DateTimeOffset? HiddenTime { get; set; }
         public DateTimeOffset? DeletedTime { get; set; }
+        public bool IsDefault { get; set; }
 
         private enum Mode { Insert, Update };
 
@@ -124,6 +125,7 @@ namespace Timekeeper.Classes
                 this.IsDeleted = ListAttribute["IsDeleted"];
                 this.HiddenTime = ListAttribute["HiddenTime"];
                 this.DeletedTime = ListAttribute["DeletedTime"];
+                this.IsDefault = ListAttribute["IsDefault"];
             }
         }
 
@@ -185,6 +187,7 @@ namespace Timekeeper.Classes
                 ListAttribute["SortOrderNo"] = this.SortOrderNo;
                 ListAttribute["IsHidden"] = this.IsHidden ? 1 : 0;
                 ListAttribute["IsDeleted"] = this.IsDeleted ? 1 : 0;
+                ListAttribute["IsDefault"] = this.IsDefault ? 1 : 0;
 
                 //--------------------------------
                 // Update the database

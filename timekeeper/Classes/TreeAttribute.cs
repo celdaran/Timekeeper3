@@ -27,6 +27,7 @@ namespace Timekeeper.Classes
         public bool IsDeleted { get; set; }
         public DateTimeOffset? HiddenTime { get; set; }
         public DateTimeOffset? DeletedTime { get; set; }
+        public bool IsDefault { get; set; }
 
         // Table-specific properties
         public long? LastActivityId { get; set; }        // used by Project
@@ -128,6 +129,25 @@ namespace Timekeeper.Classes
             Load(itemId);
         }
 
+        //---------------------------------------------------------------------
+
+        public TreeAttribute(string tableName, string idColumnName, bool isDefault)
+            : this(tableName, idColumnName)
+        {
+            // fetch row from db
+            string query = String.Format(@"
+                select {0}
+                from {1}
+                where IsDefault = 1",
+                this.IdColumnName,
+                this.TableName);
+
+            Row row = this.Database.SelectRow(query);
+            long itemId = row[this.IdColumnName] == null ? 0 : row[this.IdColumnName];
+
+            Load(itemId);
+        }
+        
         //---------------------------------------------------------------------
         // Property-Like Methods
         //---------------------------------------------------------------------
@@ -277,6 +297,7 @@ namespace Timekeeper.Classes
             this.HiddenTime = source.HiddenTime;
             this.IsDeleted = source.IsDeleted;
             this.DeletedTime = source.DeletedTime;
+            this.IsDefault = source.IsDefault;
 
             this.LastActivityId = source.LastActivityId;
             this.LastLocationId = source.LastLocationId;
@@ -324,6 +345,7 @@ namespace Timekeeper.Classes
             Row["IsDeleted"] = 0;
             Row["HiddenTime"] = null;
             Row["DeletedTime"] = null;
+            Row["IsDefault"] = 0;
 
             if (this.Dimension == Timekeeper.Dimension.Project) {
                 Row["LastActivityId"] = this.LastActivityId;
@@ -359,6 +381,22 @@ namespace Timekeeper.Classes
         {
             this.IsDeleted = true;
             return SetStatus("Deleted", this.IsDeleted);
+        }
+
+        //---------------------------------------------------------------------
+
+        public long MakeDefault()
+        {
+            this.IsDefault = true;
+            return SetDefault(this.IsDefault);
+        }
+
+        //---------------------------------------------------------------------
+
+        public long ClearDefault()
+        {
+            this.IsDefault = false;
+            return SetDefault(this.IsDefault);
         }
 
         //---------------------------------------------------------------------
@@ -480,6 +518,7 @@ namespace Timekeeper.Classes
             this.IsDeleted = row["IsDeleted"];
             this.HiddenTime = row["HiddenTime"];
             this.DeletedTime = row["DeletedTime"];
+            this.IsDefault = row["IsDefault"] == null ? false : row["IsDefault"];
 
             if (this.Dimension == Timekeeper.Dimension.Project) {
                 this.LastActivityId = row["LastActivityId"];
@@ -832,6 +871,24 @@ namespace Timekeeper.Classes
                 Row["Name"] = this.Name + "\t{" + this.ItemGuid + "}";
             }
 
+            return Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
+        }
+
+        //---------------------------------------------------------------------
+
+        private long SetDefault(bool isDefault)
+        {
+            var Row = new Row();
+            Row["IsDefault"] = isDefault ? 1 : 0;
+
+            if (isDefault)
+            {
+                // If we're setting one as default then we have to get rid of any prior default(s)
+                string query = $"{this.TableName} SET IsDefault = 0 WHERE {this.IdColumnName} <> {this.ItemId}";
+                Database.Update(query);
+            }
+
+            // Finally, set the row we're on (either 0 or 1)
             return Database.Update(this.TableName, Row, this.IdColumnName, this.ItemId);
         }
 

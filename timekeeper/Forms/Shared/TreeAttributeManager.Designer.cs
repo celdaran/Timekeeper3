@@ -30,6 +30,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TreeAttributeManager));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.MenuEdit = new System.Windows.Forms.ToolStripButton();
             this.MenuNew = new System.Windows.Forms.ToolStripButton();
             this.MenuNewFolder = new System.Windows.Forms.ToolStripButton();
             this.MenuOther = new System.Windows.Forms.ToolStripDropDownButton();
@@ -39,6 +40,8 @@
             this.MenuMerge = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuSetAsDefault = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.PopupMenuNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,11 +53,12 @@
             this.PopupMenuUnhide = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.PopupMenuSetAsDefault = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.Tree = new System.Windows.Forms.TreeView();
             this.CloseDialogButton = new System.Windows.Forms.Button();
-            this.MenuEdit = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.PopupMenu.SuspendLayout();
             this.SuspendLayout();
@@ -72,6 +76,15 @@
             this.toolStrip1.Size = new System.Drawing.Size(350, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // MenuEdit
+            // 
+            this.MenuEdit.Image = global::Timekeeper.Properties.Resources.ImageIconSmallProject;
+            this.MenuEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.MenuEdit.Name = "MenuEdit";
+            this.MenuEdit.Size = new System.Drawing.Size(47, 22);
+            this.MenuEdit.Text = "Edit";
+            this.MenuEdit.Click += new System.EventHandler(this.MenuEdit_Click);
             // 
             // MenuNew
             // 
@@ -101,6 +114,8 @@
             this.MenuMerge,
             this.MenuDelete,
             this.MenuSep1,
+            this.MenuSetAsDefault,
+            this.MenuSep2,
             this.MenuProperties});
             this.MenuOther.Image = ((System.Drawing.Image)(resources.GetObject("MenuOther.Image")));
             this.MenuOther.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -111,47 +126,59 @@
             // MenuRename
             // 
             this.MenuRename.Name = "MenuRename";
-            this.MenuRename.Size = new System.Drawing.Size(152, 22);
+            this.MenuRename.Size = new System.Drawing.Size(180, 22);
             this.MenuRename.Text = "Rename";
             this.MenuRename.Click += new System.EventHandler(this.MenuRename_Click);
             // 
             // MenuHide
             // 
             this.MenuHide.Name = "MenuHide";
-            this.MenuHide.Size = new System.Drawing.Size(152, 22);
+            this.MenuHide.Size = new System.Drawing.Size(180, 22);
             this.MenuHide.Text = "Hide";
             this.MenuHide.Click += new System.EventHandler(this.MenuHide_Click);
             // 
             // MenuUnhide
             // 
             this.MenuUnhide.Name = "MenuUnhide";
-            this.MenuUnhide.Size = new System.Drawing.Size(152, 22);
+            this.MenuUnhide.Size = new System.Drawing.Size(180, 22);
             this.MenuUnhide.Text = "Unhide";
             this.MenuUnhide.Click += new System.EventHandler(this.MenuUnhide_Click);
             // 
             // MenuMerge
             // 
             this.MenuMerge.Name = "MenuMerge";
-            this.MenuMerge.Size = new System.Drawing.Size(152, 22);
+            this.MenuMerge.Size = new System.Drawing.Size(180, 22);
             this.MenuMerge.Text = "Merge...";
             this.MenuMerge.Click += new System.EventHandler(this.MenuMerge_Click);
             // 
             // MenuDelete
             // 
             this.MenuDelete.Name = "MenuDelete";
-            this.MenuDelete.Size = new System.Drawing.Size(152, 22);
+            this.MenuDelete.Size = new System.Drawing.Size(180, 22);
             this.MenuDelete.Text = "Delete...";
             this.MenuDelete.Click += new System.EventHandler(this.MenuDelete_Click);
             // 
             // MenuSep1
             // 
             this.MenuSep1.Name = "MenuSep1";
-            this.MenuSep1.Size = new System.Drawing.Size(149, 6);
+            this.MenuSep1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MenuSetAsDefault
+            // 
+            this.MenuSetAsDefault.Name = "MenuSetAsDefault";
+            this.MenuSetAsDefault.Size = new System.Drawing.Size(180, 22);
+            this.MenuSetAsDefault.Text = "Set As Default";
+            this.MenuSetAsDefault.Click += new System.EventHandler(this.MenuSetAsDefault_Click);
+            // 
+            // MenuSep2
+            // 
+            this.MenuSep2.Name = "MenuSep2";
+            this.MenuSep2.Size = new System.Drawing.Size(177, 6);
             // 
             // MenuProperties
             // 
             this.MenuProperties.Name = "MenuProperties";
-            this.MenuProperties.Size = new System.Drawing.Size(152, 22);
+            this.MenuProperties.Size = new System.Drawing.Size(180, 22);
             this.MenuProperties.Text = "Properties";
             this.MenuProperties.Click += new System.EventHandler(this.MenuProperties_Click);
             // 
@@ -167,15 +194,17 @@
             this.PopupMenuUnhide,
             this.PopupMenuDelete,
             this.PopupMenuSep1,
+            this.PopupMenuSetAsDefault,
+            this.PopupMenuSep2,
             this.PopupMenuProperties});
             this.PopupMenu.Name = "menuTask";
-            this.PopupMenu.Size = new System.Drawing.Size(144, 208);
+            this.PopupMenu.Size = new System.Drawing.Size(148, 236);
             // 
             // PopupMenuNew
             // 
             this.PopupMenuNew.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.PopupMenuNew.Name = "PopupMenuNew";
-            this.PopupMenuNew.Size = new System.Drawing.Size(143, 22);
+            this.PopupMenuNew.Size = new System.Drawing.Size(147, 22);
             this.PopupMenuNew.Text = "&New...";
             this.PopupMenuNew.Click += new System.EventHandler(this.MenuNew_Click);
             // 
@@ -184,42 +213,42 @@
             this.PopupMenuNewFolder.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.PopupMenuNewFolder.ImageTransparentColor = System.Drawing.Color.Fuchsia;
             this.PopupMenuNewFolder.Name = "PopupMenuNewFolder";
-            this.PopupMenuNewFolder.Size = new System.Drawing.Size(143, 22);
+            this.PopupMenuNewFolder.Size = new System.Drawing.Size(147, 22);
             this.PopupMenuNewFolder.Text = "New &Folder...";
             this.PopupMenuNewFolder.Click += new System.EventHandler(this.MenuNewFolder_Click);
             // 
             // PopupMenuEdit
             // 
             this.PopupMenuEdit.Name = "PopupMenuEdit";
-            this.PopupMenuEdit.Size = new System.Drawing.Size(143, 22);
+            this.PopupMenuEdit.Size = new System.Drawing.Size(147, 22);
             this.PopupMenuEdit.Text = "&Edit...";
             this.PopupMenuEdit.Click += new System.EventHandler(this.MenuEdit_Click);
             // 
             // PopupMenuRename
             // 
             this.PopupMenuRename.Name = "PopupMenuRename";
-            this.PopupMenuRename.Size = new System.Drawing.Size(143, 22);
+            this.PopupMenuRename.Size = new System.Drawing.Size(147, 22);
             this.PopupMenuRename.Text = "&Rename";
             this.PopupMenuRename.Click += new System.EventHandler(this.MenuRename_Click);
             // 
             // PopupMenuMerge
             // 
             this.PopupMenuMerge.Name = "PopupMenuMerge";
-            this.PopupMenuMerge.Size = new System.Drawing.Size(143, 22);
+            this.PopupMenuMerge.Size = new System.Drawing.Size(147, 22);
             this.PopupMenuMerge.Text = "Merge...";
             this.PopupMenuMerge.Click += new System.EventHandler(this.MenuMerge_Click);
             // 
             // PopupMenuHide
             // 
             this.PopupMenuHide.Name = "PopupMenuHide";
-            this.PopupMenuHide.Size = new System.Drawing.Size(143, 22);
+            this.PopupMenuHide.Size = new System.Drawing.Size(147, 22);
             this.PopupMenuHide.Text = "&Hide";
             this.PopupMenuHide.Click += new System.EventHandler(this.MenuHide_Click);
             // 
             // PopupMenuUnhide
             // 
             this.PopupMenuUnhide.Name = "PopupMenuUnhide";
-            this.PopupMenuUnhide.Size = new System.Drawing.Size(143, 22);
+            this.PopupMenuUnhide.Size = new System.Drawing.Size(147, 22);
             this.PopupMenuUnhide.Text = "Un&hide";
             this.PopupMenuUnhide.Visible = false;
             this.PopupMenuUnhide.Click += new System.EventHandler(this.MenuUnhide_Click);
@@ -227,19 +256,31 @@
             // PopupMenuDelete
             // 
             this.PopupMenuDelete.Name = "PopupMenuDelete";
-            this.PopupMenuDelete.Size = new System.Drawing.Size(143, 22);
+            this.PopupMenuDelete.Size = new System.Drawing.Size(147, 22);
             this.PopupMenuDelete.Text = "&Delete...";
             this.PopupMenuDelete.Click += new System.EventHandler(this.MenuDelete_Click);
             // 
             // PopupMenuSep1
             // 
             this.PopupMenuSep1.Name = "PopupMenuSep1";
-            this.PopupMenuSep1.Size = new System.Drawing.Size(140, 6);
+            this.PopupMenuSep1.Size = new System.Drawing.Size(144, 6);
+            // 
+            // PopupMenuSetAsDefault
+            // 
+            this.PopupMenuSetAsDefault.Name = "PopupMenuSetAsDefault";
+            this.PopupMenuSetAsDefault.Size = new System.Drawing.Size(147, 22);
+            this.PopupMenuSetAsDefault.Text = "&Set As Default";
+            this.PopupMenuSetAsDefault.Click += new System.EventHandler(this.MenuSetAsDefault_Click);
+            // 
+            // PopupMenuSep2
+            // 
+            this.PopupMenuSep2.Name = "PopupMenuSep2";
+            this.PopupMenuSep2.Size = new System.Drawing.Size(144, 6);
             // 
             // PopupMenuProperties
             // 
             this.PopupMenuProperties.Name = "PopupMenuProperties";
-            this.PopupMenuProperties.Size = new System.Drawing.Size(143, 22);
+            this.PopupMenuProperties.Size = new System.Drawing.Size(147, 22);
             this.PopupMenuProperties.Text = "&Properties...";
             this.PopupMenuProperties.Click += new System.EventHandler(this.MenuProperties_Click);
             // 
@@ -294,15 +335,6 @@
             this.CloseDialogButton.Text = "button1";
             this.CloseDialogButton.UseVisualStyleBackColor = true;
             // 
-            // MenuEdit
-            // 
-            this.MenuEdit.Image = global::Timekeeper.Properties.Resources.ImageIconSmallProject;
-            this.MenuEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.MenuEdit.Name = "MenuEdit";
-            this.MenuEdit.Size = new System.Drawing.Size(47, 22);
-            this.MenuEdit.Text = "Edit";
-            this.MenuEdit.Click += new System.EventHandler(this.MenuEdit_Click);
-            // 
             // TreeAttributeManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -348,14 +380,18 @@
         private System.Windows.Forms.ToolStripMenuItem PopupMenuHide;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuUnhide;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuDelete;
-        private System.Windows.Forms.ToolStripSeparator PopupMenuSep1;
+        private System.Windows.Forms.ToolStripSeparator PopupMenuSep2;
         private System.Windows.Forms.ToolStripMenuItem PopupMenuProperties;
         public System.Windows.Forms.ImageList TreeImageList;
         private System.Windows.Forms.TreeView Tree;
         private System.Windows.Forms.ToolStripMenuItem MenuRename;
-        private System.Windows.Forms.ToolStripSeparator MenuSep1;
+        private System.Windows.Forms.ToolStripSeparator MenuSep2;
         private System.Windows.Forms.ToolStripMenuItem MenuProperties;
         private System.Windows.Forms.Button CloseDialogButton;
         private System.Windows.Forms.ToolStripButton MenuEdit;
+        private System.Windows.Forms.ToolStripSeparator PopupMenuSep1;
+        private System.Windows.Forms.ToolStripMenuItem PopupMenuSetAsDefault;
+        private System.Windows.Forms.ToolStripSeparator MenuSep1;
+        private System.Windows.Forms.ToolStripMenuItem MenuSetAsDefault;
     }
 }

@@ -243,6 +243,11 @@ namespace Timekeeper.Classes
                     Node.ForeColor = Color.Gray;
                 }
 
+                if (item.IsDefault)
+                {
+                    Node.ForeColor = Color.DarkOrange;
+                }
+
                 if (item.IsFolder) {
                     if (item.IsHidden) {
                         Node.ImageIndex = Timekeeper.IMG_FOLDER_HIDDEN;

@@ -366,13 +366,20 @@ namespace Timekeeper.Forms
             Behavior_Window_MinimizeToTray.Checked = Values.Behavior_Window_MinimizeToTray;
             Behavior_Window_MinimizeOnUse.Checked = Values.Behavior_Window_MinimizeOnUse;
 
-            Behavior_Annoy_ActivityFollowsProject.Checked = Values.Behavior_Annoy_ActivityFollowsProject;
-            Behavior_Annoy_LocationFollowsProject.Checked = Values.Behavior_Annoy_LocationFollowsProject;
-            Behavior_Annoy_CategoryFollowsProject.Checked = Values.Behavior_Annoy_CategoryFollowsProject;
             Behavior_Annoy_PromptBeforeHiding.Checked = Values.Behavior_Annoy_PromptBeforeHiding;
             Behavior_Annoy_NoRunningPrompt.Checked = Values.Behavior_Annoy_NoRunningPrompt;
             Behavior_Annoy_NoRunningPromptAmount.Value = Values.Behavior_Annoy_NoRunningPromptAmount;
             Behavior_Annoy_UseNewDatabaseWizard.Checked = Values.Behavior_Annoy_UseNewDatabaseWizard;
+
+            Behavior_NewEntries_Activity_DS.Checked = (Values.Behavior_NewEntries_Activity == 0);
+            Behavior_NewEntries_Activity_UD.Checked = (Values.Behavior_NewEntries_Activity == 1);
+            Behavior_NewEntries_Activity_FP.Checked = (Values.Behavior_NewEntries_Activity == 2);
+            Behavior_NewEntries_Location_DS.Checked = (Values.Behavior_NewEntries_Location == 0);
+            Behavior_NewEntries_Location_UD.Checked = (Values.Behavior_NewEntries_Location == 1);
+            Behavior_NewEntries_Location_FP.Checked = (Values.Behavior_NewEntries_Location == 2);
+            Behavior_NewEntries_Category_DS.Checked = (Values.Behavior_NewEntries_Category == 0);
+            Behavior_NewEntries_Category_UD.Checked = (Values.Behavior_NewEntries_Category == 1);
+            Behavior_NewEntries_Category_FP.Checked = (Values.Behavior_NewEntries_Category == 2);
 
             Behavior_SortProjectsBy.SelectedIndex = Values.Behavior_SortProjectsBy;
             Behavior_SortProjectsByDirection.SelectedIndex = Values.Behavior_SortProjectsByDirection;
@@ -479,13 +486,14 @@ namespace Timekeeper.Forms
             Values.Behavior_Window_MinimizeToTray = Behavior_Window_MinimizeToTray.Checked;
             Values.Behavior_Window_MinimizeOnUse = Behavior_Window_MinimizeOnUse.Checked;
 
-            Values.Behavior_Annoy_ActivityFollowsProject = Behavior_Annoy_ActivityFollowsProject.Checked;
-            Values.Behavior_Annoy_LocationFollowsProject = Behavior_Annoy_LocationFollowsProject.Checked;
-            Values.Behavior_Annoy_CategoryFollowsProject = Behavior_Annoy_CategoryFollowsProject.Checked;
             Values.Behavior_Annoy_PromptBeforeHiding = Behavior_Annoy_PromptBeforeHiding.Checked;
             Values.Behavior_Annoy_NoRunningPrompt = Behavior_Annoy_NoRunningPrompt.Checked;
             Values.Behavior_Annoy_NoRunningPromptAmount = (int)Behavior_Annoy_NoRunningPromptAmount.Value;
             Values.Behavior_Annoy_UseNewDatabaseWizard = Behavior_Annoy_UseNewDatabaseWizard.Checked;
+
+            Values.Behavior_NewEntries_Activity = GetRadioValue(Behavior_NewEntries_Activity_DS, Behavior_NewEntries_Activity_UD, Behavior_NewEntries_Activity_FP);
+            Values.Behavior_NewEntries_Location = GetRadioValue(Behavior_NewEntries_Location_DS, Behavior_NewEntries_Location_UD, Behavior_NewEntries_Location_FP);
+            Values.Behavior_NewEntries_Category = GetRadioValue(Behavior_NewEntries_Category_DS, Behavior_NewEntries_Category_UD, Behavior_NewEntries_Category_FP);
 
             Values.Behavior_SortProjectsBy = Behavior_SortProjectsBy.SelectedIndex;
             Values.Behavior_SortProjectsByDirection = Behavior_SortProjectsByDirection.SelectedIndex;
@@ -529,6 +537,16 @@ namespace Timekeeper.Forms
             Values.Advanced_Other_EnableScheduler = Advanced_Other_EnableScheduler.Checked;
             Values.Advanced_Other_DimensionWidth = (int)Advanced_Other_DimensionWidth.Value;
             Values.Advanced_Other_MidnightOffset = Advanced_Other_MidnightOffset.SelectedIndex - 12;
+        }
+
+        //----------------------------------------------------------------------
+
+        private int GetRadioValue(RadioButton btn1, RadioButton btn2, RadioButton btn3)
+        {
+            if (btn1.Checked) return Convert.ToInt32(btn1.Tag);
+            if (btn2.Checked) return Convert.ToInt32(btn2.Tag);
+            if (btn3.Checked) return Convert.ToInt32(btn3.Tag);
+            return 0;
         }
 
         //----------------------------------------------------------------------
@@ -765,15 +783,12 @@ namespace Timekeeper.Forms
             StatusBarGroup_ProjectNamePanel.Height = ShortHeight;
             StatusBarGroup_ProjectElapsedPanel.Height = ShortHeight;
             HiddenGroup_ProjectPanel.Height = TallHeight;
-            AnnoyGroup_ActivityFollowPanel.Height = ShortHeight;
 
             _SetActivityVisibility();
             _SetLocationVisibility();
             _SetCategoryVisibility();
 
             PopulateTitleBarTimeList();
-
-            _Pizza();
         }
 
         private void _SetActivityVisibility()
@@ -785,11 +800,8 @@ namespace Timekeeper.Forms
             StatusBarGroup_ActivityNamePanel.Height = ShortHeight;
             StatusBarGroup_ActivityElapsedPanel.Height = ShortHeight;
             HiddenGroup_ActivityPanel.Height = TallHeight;
-            AnnoyGroup_ActivityFollowPanel.Height = ShortHeight2;
 
             PopulateTitleBarTimeList();
-
-            _Pizza();
         }
 
         private void _SetLocationVisibility()
@@ -801,11 +813,8 @@ namespace Timekeeper.Forms
             StatusBarGroup_LocationNamePanel.Height = ShortHeight;
             StatusBarGroup_LocationElapsedPanel.Height = ShortHeight;
             HiddenGroup_LocationPanel.Height = TallHeight;
-            AnnoyGroup_LocationFollowPanel.Height = ShortHeight2;
 
             PopulateTitleBarTimeList();
-
-            _Pizza();
         }
 
         private void _SetCategoryVisibility()
@@ -817,27 +826,8 @@ namespace Timekeeper.Forms
             StatusBarGroup_CategoryNamePanel.Height = ShortHeight;
             StatusBarGroup_CategoryElapsedPanel.Height = ShortHeight;
             HiddenGroup_CategoryPanel.Height = TallHeight;
-            AnnoyGroup_CategoryFollowPanel.Height = ShortHeight2;
 
             PopulateTitleBarTimeList();
-
-            _Pizza();
-        }
-
-        private void _Pizza()
-        {
-            // Adjust GroupBox Heights
-            SortingGroup.Height = GetGroupHeight(SortingGroup);
-            StatusBarGroup.Height = GetGroupHeight(StatusBarGroup);
-            HiddenGroup.Height = GetGroupHeight(HiddenGroup);
-            AnnoyGroup.Height = GetGroupHeight(AnnoyGroup);
-
-            // One-off Adjustments
-            HiddenGroup.Top = StatusBarGroup.Bottom + 7;
-            SortingGroup.Top = AnnoyGroup.Bottom + 7;
-            BrowsingGroup.Top = SortingGroup.Bottom + 7;
-            ViewSpacerBox.Top = HiddenGroup.Bottom + 7;
-            BehaviorSpacingBox.Top = BrowsingGroup.Bottom + 7;
         }
 
         private int GetGroupHeight(GroupBox box)
@@ -1156,11 +1146,6 @@ Note: After enabling this feature, you need to restart Timekeeper to get your ev
             } else {
                 OptionsPanelCollection.TabPages.Remove(MailSettingsPage);
             }
-        }
-
-        private void Behavior_Annoy_LocationFollowsProject_CheckedChanged(object sender, EventArgs e)
-        {
-            Behavior_Annoy_LocationFollowsProject.Enabled = Behavior_Annoy_LocationFollowsProject.Checked;
         }
 
     }

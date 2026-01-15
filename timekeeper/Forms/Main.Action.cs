@@ -32,13 +32,33 @@ namespace Timekeeper.Forms
         // Helper class to break up fMain.cs into manageable pieces
         //---------------------------------------------------------------------
 
-        private void AutoFollow(long? lastId, ComboTreeBox dropdown, bool allowed)
+        private void AutoFollow(long? lastId, long? defaultId, ComboTreeBox dropdown, long? followType)
         {
-            if (allowed) {
-                if (!isBrowsing) {
-                    if ((lastId != null) && (lastId.Value > 0)) {
-                        ComboTreeNode Node = Widgets.FindTreeNode(dropdown.Nodes, lastId.Value);
-                        if (Node != null) {
+            // followType = 0: do nothing
+            // followType = 1: use default
+            // followType = 2: use last
+
+            long? nodeId = null;
+
+            if (followType != null && followType > 0)
+            {
+                if (!isBrowsing) // Still not sure if this makes sense or just always allow this?
+                {
+                    switch (followType)
+                    {
+                        case 1:
+                            nodeId = defaultId;
+                            break;
+                        case 2:
+                            nodeId = lastId;
+                            break;
+                    };
+
+                    if ((nodeId != null) && (nodeId.Value > 0))
+                    {
+                        ComboTreeNode Node = Widgets.FindTreeNode(dropdown.Nodes, nodeId.Value);
+                        if (Node != null)
+                        {
                             dropdown.SelectedNode = Node;
                         }
                     }
@@ -96,15 +116,14 @@ namespace Timekeeper.Forms
 
                     Classes.TreeAttribute Project = (Classes.TreeAttribute)ProjectTreeDropdown.SelectedNode.Tag;
                     Project = new Classes.TreeAttribute(Project.ItemId, "Project", "ProjectId"); // Note: Must reinstantiate to pick up attribute changes
-                    AutoFollow(Project.LastActivityId, ActivityTreeDropdown, Options.Behavior_Annoy_ActivityFollowsProject);
 
-                    //Classes.TreeAttribute Activity = (Classes.TreeAttribute)ActivityTreeDropdown.SelectedNode.Tag;
-                    //if (Options.Behavior_Annoy_LocationType == 1) {
-                    //    AutoFollow(Project.LastLocationId, LocationTreeDropdown, Options.Behavior_Annoy_LocationFollowsProject);
-                    //}
+                    var DefaultActivity = new Classes.TreeAttribute("Activity", "ActivityId", true);
+                    var DefaultLocation = new Classes.TreeAttribute("Location", "LocationId", true);
+                    var DefaultCategory = new Classes.TreeAttribute("Category", "CategoryId", true);
 
-                    Classes.TreeAttribute Location = (Classes.TreeAttribute)LocationTreeDropdown.SelectedNode.Tag;
-                    AutoFollow(Project.LastCategoryId, CategoryTreeDropdown, Options.Behavior_Annoy_CategoryFollowsProject);
+                    AutoFollow(Project.LastActivityId, DefaultActivity.ItemId, ActivityTreeDropdown, Options.Behavior_NewEntries_Activity);
+                    AutoFollow(Project.LastLocationId, DefaultLocation.ItemId, LocationTreeDropdown, Options.Behavior_NewEntries_Location);
+                    AutoFollow(Project.LastCategoryId, DefaultCategory.ItemId, CategoryTreeDropdown, Options.Behavior_NewEntries_Category);
 
                     UpdateStatusBar();
 

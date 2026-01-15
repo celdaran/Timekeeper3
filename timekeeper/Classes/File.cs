@@ -315,6 +315,7 @@ namespace Timekeeper
             Location["IsFolderOpened"] = false;
             Location["IsHidden"] = 0;
             Location["IsDeleted"] = 0;
+            Location["IsDefault"] = 0;
             Location["HiddenTime"] = null;
             Location["DeletedTime"] = null;
             Location["RefTimeZoneId"] = options.LocationTimeZoneId;

@@ -80,13 +80,14 @@ namespace Timekeeper.Classes
         public bool Behavior_Window_MinimizeToTray { get; set; }
         public bool Behavior_Window_MinimizeOnUse { get; set; }
 
-        public bool Behavior_Annoy_ActivityFollowsProject { get; set; }
-        public bool Behavior_Annoy_LocationFollowsProject { get; set; }
-        public bool Behavior_Annoy_CategoryFollowsProject { get; set; }
         public bool Behavior_Annoy_PromptBeforeHiding { get; set; }
         public bool Behavior_Annoy_NoRunningPrompt { get; set; }
         public int Behavior_Annoy_NoRunningPromptAmount { get; set; }
         public bool Behavior_Annoy_UseNewDatabaseWizard { get; set; }
+
+        public int Behavior_NewEntries_Activity { get; set; }
+        public int Behavior_NewEntries_Location { get; set; }
+        public int Behavior_NewEntries_Category { get; set; }
 
         public int Behavior_SortProjectsBy { get; set; }
         public int Behavior_SortProjectsByDirection { get; set; }
@@ -422,13 +423,14 @@ namespace Timekeeper.Classes
             Behavior_Window_MinimizeToTray = ((int)Key.GetValue("Window_MinimizeToTray", 0) == 1);
             Behavior_Window_MinimizeOnUse = ((int)Key.GetValue("Window_MinimizeOnUse", 0) == 1);
 
-            Behavior_Annoy_ActivityFollowsProject = ((int)Key.GetValue("Annoy_ActivityFollowsProject", 1) == 1);
-            Behavior_Annoy_LocationFollowsProject = ((int)Key.GetValue("Annoy_LocationFollowsProject", 1) == 1);
-            Behavior_Annoy_CategoryFollowsProject = ((int)Key.GetValue("Annoy_CategoryFollowsProject", 0) == 1);
             Behavior_Annoy_PromptBeforeHiding = ((int)Key.GetValue("Annoy_PromptBeforeHiding", 1) == 1);
             Behavior_Annoy_NoRunningPrompt = ((int)Key.GetValue("Annoy_NoRunningPrompt", 1) == 1);
             Behavior_Annoy_NoRunningPromptAmount = (int)Key.GetValue("Annoy_NoRunningPromptAmount", 10);
             Behavior_Annoy_UseNewDatabaseWizard = ((int)Key.GetValue("Annoy_UseNewDatabaseWizard", 1) == 1);
+
+            Behavior_NewEntries_Activity = (int)Key.GetValue("NewEntries_Activity", 0);
+            Behavior_NewEntries_Location = (int)Key.GetValue("NewEntries_Location", 0);
+            Behavior_NewEntries_Category = (int)Key.GetValue("NewEntries_Category", 0);
 
             Behavior_SortProjectsBy = (int)Key.GetValue("SortProjectsBy", 0);
             Behavior_SortProjectsByDirection = (int)Key.GetValue("SortProjectsByDirection", 0);
@@ -846,13 +848,14 @@ namespace Timekeeper.Classes
             Key.SetValue("Window_MinimizeToTray", Behavior_Window_MinimizeToTray, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Window_MinimizeOnUse", Behavior_Window_MinimizeOnUse, Microsoft.Win32.RegistryValueKind.DWord);
 
-            Key.SetValue("Annoy_ActivityFollowsProject", Behavior_Annoy_ActivityFollowsProject, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Annoy_LocationFollowsProject", Behavior_Annoy_LocationFollowsProject, Microsoft.Win32.RegistryValueKind.DWord);
-            Key.SetValue("Annoy_CategoryFollowsProject", Behavior_Annoy_CategoryFollowsProject, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_PromptBeforeHiding", Behavior_Annoy_PromptBeforeHiding, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_NoRunningPrompt", Behavior_Annoy_NoRunningPrompt, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_NoRunningPromptAmount", Behavior_Annoy_NoRunningPromptAmount, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("Annoy_UseNewDatabaseWizard", Behavior_Annoy_UseNewDatabaseWizard, Microsoft.Win32.RegistryValueKind.DWord);
+
+            Key.SetValue("NewEntries_Activity", Behavior_NewEntries_Activity, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NewEntries_Location", Behavior_NewEntries_Location, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NewEntries_Category", Behavior_NewEntries_Category, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.SetValue("SortProjectsBy", Behavior_SortProjectsBy, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("SortProjectsByDirection", Behavior_SortProjectsByDirection, Microsoft.Win32.RegistryValueKind.DWord);

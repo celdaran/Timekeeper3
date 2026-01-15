@@ -193,6 +193,13 @@ namespace Timekeeper.Forms.Shared
 
         //----------------------------------------------------------------------
 
+        private void MenuSetAsDefault_Click(object sender, EventArgs e)
+        {
+            Action_SetAsDefaultItem(Tree);
+        }
+
+        //----------------------------------------------------------------------
+
         private void MenuProperties_Click(object sender, EventArgs e)
         {
             if (Tree.SelectedNode != null) {
@@ -588,6 +595,26 @@ namespace Timekeeper.Forms.Shared
             if (result == 0) {
                 Common.Warn("Error updating External Project Number.");
             }
+        }
+
+        //----------------------------------------------------------------------
+
+        public void Action_SetAsDefaultItem(TreeView tree)
+        {
+            // Instantiate item
+            Classes.TreeAttribute SourceItem = (Classes.TreeAttribute)tree.SelectedNode.Tag;
+
+            // Set As Current
+            long result = SourceItem.MakeDefault();
+            if (result == 0)
+            {
+                Common.Warn("There was a problem flagging the item as default.");
+                return;
+            }
+
+            // Set default color
+            // TODO: reset the color of the former default (I just don't have time for this)
+            tree.SelectedNode.ForeColor = Color.DarkOrange;
         }
 
         //----------------------------------------------------------------------
