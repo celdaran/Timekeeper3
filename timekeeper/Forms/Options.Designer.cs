@@ -100,7 +100,7 @@
             this.View_HiddenProjects = new System.Windows.Forms.CheckBox();
             this.View_HiddenProjectsSince = new System.Windows.Forms.ComboBox();
             this.BehaviorPage = new System.Windows.Forms.TabPage();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.ForNewEntriesGroup = new System.Windows.Forms.GroupBox();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label24 = new System.Windows.Forms.Label();
             this.Behavior_NewEntries_Category_FP = new System.Windows.Forms.RadioButton();
@@ -265,7 +265,7 @@
             this.HiddenGroup_ActivityPanel.SuspendLayout();
             this.HiddenGroup_ProjectPanel.SuspendLayout();
             this.BehaviorPage.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.ForNewEntriesGroup.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -1083,7 +1083,7 @@
             // 
             this.BehaviorPage.AutoScroll = true;
             this.BehaviorPage.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.BehaviorPage.Controls.Add(this.groupBox3);
+            this.BehaviorPage.Controls.Add(this.ForNewEntriesGroup);
             this.BehaviorPage.Controls.Add(this.AnnoyGroup);
             this.BehaviorPage.Controls.Add(this.BehaviorSpacingBox);
             this.BehaviorPage.Controls.Add(this.BrowsingGroup);
@@ -1097,17 +1097,17 @@
             this.BehaviorPage.TabIndex = 3;
             this.BehaviorPage.Text = "Behavior";
             // 
-            // groupBox3
+            // ForNewEntriesGroup
             // 
-            this.groupBox3.Controls.Add(this.panel5);
-            this.groupBox3.Controls.Add(this.panel3);
-            this.groupBox3.Controls.Add(this.panel1);
-            this.groupBox3.Location = new System.Drawing.Point(17, 300);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(345, 105);
-            this.groupBox3.TabIndex = 24;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "For New Entries";
+            this.ForNewEntriesGroup.Controls.Add(this.panel5);
+            this.ForNewEntriesGroup.Controls.Add(this.panel3);
+            this.ForNewEntriesGroup.Controls.Add(this.panel1);
+            this.ForNewEntriesGroup.Location = new System.Drawing.Point(17, 300);
+            this.ForNewEntriesGroup.Name = "ForNewEntriesGroup";
+            this.ForNewEntriesGroup.Size = new System.Drawing.Size(345, 105);
+            this.ForNewEntriesGroup.TabIndex = 24;
+            this.ForNewEntriesGroup.TabStop = false;
+            this.ForNewEntriesGroup.Text = "For New Entries";
             // 
             // panel5
             // 
@@ -2768,7 +2768,7 @@
             this.HiddenGroup_ProjectPanel.ResumeLayout(false);
             this.HiddenGroup_ProjectPanel.PerformLayout();
             this.BehaviorPage.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
+            this.ForNewEntriesGroup.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
@@ -3007,7 +3007,7 @@
         private System.Windows.Forms.OpenFileDialog OpenFileDialog;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.TextBox Mail_Subject;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox ForNewEntriesGroup;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton Behavior_NewEntries_Activity_UD;
         private System.Windows.Forms.RadioButton Behavior_NewEntries_Activity_DS;
