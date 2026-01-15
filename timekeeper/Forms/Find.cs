@@ -10,6 +10,7 @@ using System.IO;
 using System.Resources;
 
 using Timekeeper.Classes.Toolbox;
+using Timekeeper.Classes;
 
 namespace Timekeeper.Forms
 {
@@ -257,6 +258,41 @@ namespace Timekeeper.Forms
             }
         }
 
+        private void JournalResultsGrid_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            // This forces the checkbox change to 'commit' to the underlying 
+            // cell value immediately, which in turn triggers CellValueChanged.
+            if (JournalResultsGrid.CurrentCell is DataGridViewCheckBoxCell)
+            {
+                if (JournalResultsGrid.IsCurrentCellDirty)
+                {
+                    JournalResultsGrid.CommitEdit(DataGridViewDataErrorContexts.Commit);
+                }
+            }
+        }
+
+        private void JournalResultsGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && _isPopulating == false)
+            {
+                if (JournalResultsGrid.Columns[e.ColumnIndex].Name == "IsReconciled")
+                {
+                    DataGridViewRow Row = JournalResultsGrid.Rows[e.RowIndex];
+                    bool isChecked = Convert.ToBoolean(Row.Cells["IsReconciled"].Value);
+                    long JournalId = Convert.ToInt64(Row.Cells["JournalId"].Value);
+                    // MessageBox.Show($"Checkbox is now: {isChecked}");
+                    var JournalEntry = new JournalEntry();
+                    JournalEntry.Load(JournalId);
+                    JournalEntry.IsReconciled = isChecked;
+                    JournalEntry.Save();
+                }
+            }
+        }
+
+        private void JournalResultsGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+        }
+
         //----------------------------------------------------------------------
 
         private void NotebookFindResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -448,6 +484,8 @@ namespace Timekeeper.Forms
 
         //---------------------------------------------------------------------
 
+        private bool _isPopulating;
+
         private int RunJournalFind()
         {
             //----------------------------------------------
@@ -457,6 +495,8 @@ namespace Timekeeper.Forms
             Table FindResults = FindView.JournalResults();
 
             JournalResultsGrid.Rows.Clear();
+
+            _isPopulating = true;
 
             foreach (Row JournalEntry in FindResults) {
 
@@ -496,6 +536,8 @@ namespace Timekeeper.Forms
                 }
                 JournalResultsGrid.Sort(CurrentlySortedColumn, CurrentDirection);
             }
+
+            _isPopulating = false;
 
             return FindResults.Count;
         }
