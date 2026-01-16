@@ -346,6 +346,7 @@ namespace Timekeeper.Forms
             View_HiddenCategoriesSince.SelectedIndex = Values.View_HiddenCategoriesSince;
             View_HiddenTodoItemsSince.SelectedIndex = Values.View_HiddenTodoItemsSince;
             View_HiddenEventsSince.SelectedIndex = Values.View_HiddenEventsSince;
+            View_Tree_UsageCounts.Checked = Values.View_Tree_UsageCounts;
 
             View_MemoEditor_ShowToolbar.Checked = Values.View_MemoEditor_ShowToolbar;
             View_MemoEditor_ShowRuler.Checked = Values.View_MemoEditor_ShowRuler;
@@ -459,6 +460,7 @@ namespace Timekeeper.Forms
             Values.View_HiddenCategories = View_HiddenCategories.Checked;
             Values.View_HiddenTodoItems = View_HiddenTodoItems.Checked;
             Values.View_HiddenEvents = View_HiddenEvents.Checked;
+            Values.View_Tree_UsageCounts = View_Tree_UsageCounts.Checked;
 
             Values.View_HiddenProjectsSince = View_HiddenProjectsSince.SelectedIndex;
             Values.View_HiddenActivitiesSince = View_HiddenActivitiesSince.SelectedIndex;
@@ -466,6 +468,7 @@ namespace Timekeeper.Forms
             Values.View_HiddenCategoriesSince = View_HiddenCategoriesSince.SelectedIndex;
             Values.View_HiddenTodoItemsSince = View_HiddenTodoItemsSince.SelectedIndex;
             Values.View_HiddenEventsSince = View_HiddenEventsSince.SelectedIndex;
+            Values.View_Tree_UsageCounts = View_Tree_UsageCounts.Checked;
 
             Values.View_MemoEditor_ShowToolbar = View_MemoEditor_ShowToolbar.Checked;
             Values.View_MemoEditor_ShowRuler = View_MemoEditor_ShowRuler.Checked;

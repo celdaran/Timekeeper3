@@ -65,6 +65,7 @@ namespace Timekeeper.Classes
         public int View_HiddenCategoriesSince { get; set; }
         public int View_HiddenTodoItemsSince { get; set; }
         public int View_HiddenEventsSince { get; set; }
+        public bool View_Tree_UsageCounts { get; set; }
         public bool View_MemoEditor_ShowToolbar { get; set; }
         public bool View_MemoEditor_ShowRuler { get; set; }
         public bool View_MemoEditor_ShowGutter { get; set; }
@@ -403,6 +404,8 @@ namespace Timekeeper.Classes
             View_HiddenCategoriesSince = (int)Key.GetValue("HiddenCategoriesSince", 4);
             View_HiddenTodoItemsSince = (int)Key.GetValue("HiddenTodoItemsSince", 4);
             View_HiddenEventsSince = (int)Key.GetValue("HiddenEventsSince", 4);
+
+            View_Tree_UsageCounts = ((int)Key.GetValue("Tree_UsageCounts", 0) == 1);
 
             View_MemoEditor_ShowToolbar = ((int)Key.GetValue("MemoEditor_ShowToolbar", 0) == 1);
             View_MemoEditor_ShowRuler = ((int)Key.GetValue("MemoEditor_ShowRuler", 0) == 1);
@@ -828,6 +831,7 @@ namespace Timekeeper.Classes
             Key.SetValue("HiddenCategoriesSince", View_HiddenCategoriesSince, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("HiddenTodoItemsSince", View_HiddenTodoItemsSince, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("HiddenEventsSince", View_HiddenEventsSince, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("Tree_UsageCounts", View_Tree_UsageCounts, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.SetValue("MemoEditor_ShowToolbar", View_MemoEditor_ShowToolbar, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("MemoEditor_ShowRuler", View_MemoEditor_ShowRuler, Microsoft.Win32.RegistryValueKind.DWord);

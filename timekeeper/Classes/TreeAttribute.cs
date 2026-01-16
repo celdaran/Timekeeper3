@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Windows.Forms.VisualStyles;
 using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Classes
@@ -43,6 +43,7 @@ namespace Timekeeper.Classes
 
         // In-memory only
         public DateTimeOffset TimerStartedTime;
+        public long _ItemCount;
 
         //---------------------------------------------------------------------
         // Protected Properties
@@ -493,7 +494,8 @@ namespace Timekeeper.Classes
 
             // fetch row from db
             string Query = String.Format(@"
-                select * from {0}
+                select *, (SELECT COUNT(*) FROM Journal WHERE {1} = {2}) AS _ItemCount
+                from {0}
                 where {1} = {2}", this.TableName, this.IdColumnName, itemId);
 
             Row row = Database.SelectRow(Query);
@@ -519,6 +521,7 @@ namespace Timekeeper.Classes
             this.HiddenTime = row["HiddenTime"];
             this.DeletedTime = row["DeletedTime"];
             this.IsDefault = row["IsDefault"] == null ? false : row["IsDefault"];
+            this._ItemCount = row["_ItemCount"];
 
             if (this.Dimension == Timekeeper.Dimension.Project) {
                 this.LastActivityId = row["LastActivityId"];

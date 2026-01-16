@@ -238,6 +238,10 @@ namespace Timekeeper.Classes
 
                 Node.Tag = item;
                 Node.Text = item.DisplayName();
+                if ((Timekeeper.Options.View_Tree_UsageCounts) && (!item.IsFolder) && (item._ItemCount > 0))
+                {
+                    Node.Text += " (" + item._ItemCount.ToString() + ")";
+                }
                 Node.ToolTipText = item.Description;
                 if (item.IsHidden) {
                     Node.ForeColor = Color.Gray;

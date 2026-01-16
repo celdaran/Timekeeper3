@@ -238,6 +238,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.TreeViewGroup = new System.Windows.Forms.GroupBox();
+            this.View_Tree_UsageCounts = new System.Windows.Forms.CheckBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
@@ -297,6 +299,7 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).BeginInit();
+            this.TreeViewGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // CancelDialogButton
@@ -498,6 +501,7 @@
             // 
             this.ViewPage.AutoScroll = true;
             this.ViewPage.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ViewPage.Controls.Add(this.TreeViewGroup);
             this.ViewPage.Controls.Add(this.MainViewGroup);
             this.ViewPage.Controls.Add(this.ViewSpacerBox);
             this.ViewPage.Controls.Add(this.MemoEditorGroup);
@@ -576,7 +580,7 @@
             // ViewSpacerBox
             // 
             this.ViewSpacerBox.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
-            this.ViewSpacerBox.Location = new System.Drawing.Point(17, 693);
+            this.ViewSpacerBox.Location = new System.Drawing.Point(15, 736);
             this.ViewSpacerBox.Name = "ViewSpacerBox";
             this.ViewSpacerBox.Size = new System.Drawing.Size(16, 16);
             this.ViewSpacerBox.TabIndex = 22;
@@ -2701,6 +2705,26 @@
             // 
             this.OpenFileDialog.FileName = "SET AT RUN TIME";
             // 
+            // TreeViewGroup
+            // 
+            this.TreeViewGroup.Controls.Add(this.View_Tree_UsageCounts);
+            this.TreeViewGroup.Location = new System.Drawing.Point(15, 693);
+            this.TreeViewGroup.Name = "TreeViewGroup";
+            this.TreeViewGroup.Size = new System.Drawing.Size(345, 46);
+            this.TreeViewGroup.TabIndex = 24;
+            this.TreeViewGroup.TabStop = false;
+            this.TreeViewGroup.Text = "Tree Options";
+            // 
+            // View_Tree_UsageCounts
+            // 
+            this.View_Tree_UsageCounts.AutoSize = true;
+            this.View_Tree_UsageCounts.Location = new System.Drawing.Point(17, 20);
+            this.View_Tree_UsageCounts.Name = "View_Tree_UsageCounts";
+            this.View_Tree_UsageCounts.Size = new System.Drawing.Size(256, 17);
+            this.View_Tree_UsageCounts.TabIndex = 0;
+            this.View_Tree_UsageCounts.Text = "View usage counts in tree views (requires restart)";
+            this.View_Tree_UsageCounts.UseVisualStyleBackColor = true;
+            // 
             // Options
             // 
             this.AcceptButton = this.AcceptDialogButton;
@@ -2819,6 +2843,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).EndInit();
+            this.TreeViewGroup.ResumeLayout(false);
+            this.TreeViewGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3035,5 +3061,7 @@
         private System.Windows.Forms.RadioButton Behavior_NewEntries_Category_FP;
         private System.Windows.Forms.RadioButton Behavior_NewEntries_Category_UD;
         private System.Windows.Forms.RadioButton Behavior_NewEntries_Category_DS;
+        private System.Windows.Forms.GroupBox TreeViewGroup;
+        private System.Windows.Forms.CheckBox View_Tree_UsageCounts;
     }
 }
