@@ -39,7 +39,15 @@ CREATE TABLE Journal
 CREATE UNIQUE INDEX idx_Journal_JournalId           ON Journal(JournalId);
 CREATE UNIQUE INDEX idx_Journal_JournalGuid         ON Journal(JournalGuid);
 CREATE UNIQUE INDEX idx_Journal_StartTime           ON Journal(StartTime);
+
+/*
 CREATE        INDEX idx_Journal_ProjectId           ON Journal(ProjectId);
 CREATE        INDEX idx_Journal_ActivityId          ON Journal(ActivityId);
 CREATE        INDEX idx_Journal_LocationId          ON Journal(LocationId);
 CREATE        INDEX idx_Journal_CategoryId          ON Journal(CategoryId);
+*/
+
+CREATE        INDEX idx_Journal_Project_Stats       ON Journal(ProjectId, StartTime, Seconds);
+CREATE        INDEX idx_Journal_Activity_Stats      ON Journal(ActivityId, StartTime, Seconds);
+CREATE        INDEX idx_Journal_Location_Stats      ON Journal(LocationId, StartTime, Seconds);
+CREATE        INDEX idx_Journal_Category_Stats      ON Journal(CategoryId, StartTime, Seconds);

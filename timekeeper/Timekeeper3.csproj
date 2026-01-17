@@ -157,6 +157,7 @@
     <Compile Include="Classes\CategoryCollection.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\Datatypes.cs" />
+    <Compile Include="Classes\JournalUsage.cs" />
     <Compile Include="Classes\Toolbox\Common.cs" />
     <Compile Include="Classes\Toolbox\DBI.cs" />
     <Compile Include="Classes\Event.cs" />
@@ -641,6 +642,7 @@
     <None Include="Resources\Images\Icons\Gutter.png" />
     <None Include="Resources\Images\Buttons\BallotBoxList.png" />
     <None Include="Resources\Images\Icons\Properties.png" />
+    <Content Include="Resources\SQL\3.0\JournalUsage.Create.sql" />
     <Content Include="tk3.icon.ico" />
     <None Include="Resources\Images\Icons\Speaker.png" />
     <None Include="Resources\Images\Icons\Warning.png" />

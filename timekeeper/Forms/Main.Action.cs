@@ -19,6 +19,7 @@ using Quartz.Simpl;
 //Move(d) to Classes.Schedule (?)
 
 using Timekeeper.Classes.Toolbox;
+using Timekeeper.Classes;
 
 namespace Timekeeper.Forms
 {
@@ -574,6 +575,10 @@ namespace Timekeeper.Forms
 
                 // Subscribe to the message event. This will allow the form to be notified whenever there's a new message.
                 Timekeeper.Mailbox.HandleMessage += new EventHandler(OnHandleMessage);
+
+                // Update JournalUsage stats
+                var JournalUsage = new JournalUsage();
+                JournalUsage.Update();
 
                 // Specific-Window Testing
 
@@ -1313,6 +1318,10 @@ namespace Timekeeper.Forms
                     // Auto-save current entry
                     if (!isBrowsing)
                         Browser_SaveRow();
+
+                    // Update JournalUsage stats
+                    var JournalUsage = new JournalUsage();
+                    JournalUsage.Update();
                 }
             }
             catch (Exception x) {

@@ -1908,7 +1908,7 @@ namespace Timekeeper.Forms
             this.ToolbarPrevEntryBrowseByEntry.Checked = true;
             this.ToolbarPrevEntryBrowseByEntry.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ToolbarPrevEntryBrowseByEntry.Name = "ToolbarPrevEntryBrowseByEntry";
-            this.ToolbarPrevEntryBrowseByEntry.Size = new System.Drawing.Size(180, 22);
+            this.ToolbarPrevEntryBrowseByEntry.Size = new System.Drawing.Size(156, 22);
             this.ToolbarPrevEntryBrowseByEntry.Tag = "0";
             this.ToolbarPrevEntryBrowseByEntry.Text = "Browse by Entry";
             this.ToolbarPrevEntryBrowseByEntry.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
@@ -1916,7 +1916,7 @@ namespace Timekeeper.Forms
             // ToolbarPrevEntryBrowseByDay
             // 
             this.ToolbarPrevEntryBrowseByDay.Name = "ToolbarPrevEntryBrowseByDay";
-            this.ToolbarPrevEntryBrowseByDay.Size = new System.Drawing.Size(180, 22);
+            this.ToolbarPrevEntryBrowseByDay.Size = new System.Drawing.Size(156, 22);
             this.ToolbarPrevEntryBrowseByDay.Tag = "1";
             this.ToolbarPrevEntryBrowseByDay.Text = "Browse by Day";
             this.ToolbarPrevEntryBrowseByDay.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
@@ -1924,7 +1924,7 @@ namespace Timekeeper.Forms
             // ToolbarPrevEntryBrowseByWeek
             // 
             this.ToolbarPrevEntryBrowseByWeek.Name = "ToolbarPrevEntryBrowseByWeek";
-            this.ToolbarPrevEntryBrowseByWeek.Size = new System.Drawing.Size(180, 22);
+            this.ToolbarPrevEntryBrowseByWeek.Size = new System.Drawing.Size(156, 22);
             this.ToolbarPrevEntryBrowseByWeek.Tag = "2";
             this.ToolbarPrevEntryBrowseByWeek.Text = "Browse by Week";
             this.ToolbarPrevEntryBrowseByWeek.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
@@ -1932,7 +1932,7 @@ namespace Timekeeper.Forms
             // ToolbarPrevEntryBrowseByMonth
             // 
             this.ToolbarPrevEntryBrowseByMonth.Name = "ToolbarPrevEntryBrowseByMonth";
-            this.ToolbarPrevEntryBrowseByMonth.Size = new System.Drawing.Size(180, 22);
+            this.ToolbarPrevEntryBrowseByMonth.Size = new System.Drawing.Size(156, 22);
             this.ToolbarPrevEntryBrowseByMonth.Tag = "3";
             this.ToolbarPrevEntryBrowseByMonth.Text = "Browse by Month";
             this.ToolbarPrevEntryBrowseByMonth.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);
@@ -1940,7 +1940,7 @@ namespace Timekeeper.Forms
             // ToolbarPrevEntryBrowseByYear
             // 
             this.ToolbarPrevEntryBrowseByYear.Name = "ToolbarPrevEntryBrowseByYear";
-            this.ToolbarPrevEntryBrowseByYear.Size = new System.Drawing.Size(180, 22);
+            this.ToolbarPrevEntryBrowseByYear.Size = new System.Drawing.Size(156, 22);
             this.ToolbarPrevEntryBrowseByYear.Tag = "4";
             this.ToolbarPrevEntryBrowseByYear.Text = "Browse by Year";
             this.ToolbarPrevEntryBrowseByYear.Click += new System.EventHandler(this.ToolbarPrevEntryBrowseByUnit_Click);

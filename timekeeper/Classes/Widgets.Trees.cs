@@ -561,14 +561,19 @@ namespace Timekeeper.Classes
                 case 3: OrderBy = "ModifyTime"; break;
 
                 // Supported for just projects
-                case 4:
+                // TODO: EXPAND THIS TO SUPPORT ALL DIMENSIONS
+                case 4: OrderBy = "(SELECT TotalSeconds     FROM JournalUsage u WHERE u.DimensionId = Project.ProjectId AND u.RefDimensionId = 1)"; break;
+                case 5: OrderBy = "(SELECT TotalCount       FROM JournalUsage u WHERE u.DimensionId = Project.ProjectId AND u.RefDimensionId = 1)"; break;
+                case 6: OrderBy = "(SELECT LastMonthSeconds FROM JournalUsage u WHERE u.DimensionId = Project.ProjectId AND u.RefDimensionId = 1)"; break;
+                case 7: OrderBy = "(SELECT LastMonthCount   FROM JournalUsage u WHERE u.DimensionId = Project.ProjectId AND u.RefDimensionId = 1)"; break;
+                case 8:
                     if (this.Options.Advanced_Other_SortExtProjectAsNumber)
                         OrderBy = "cast(ExternalProjectNo as int)";
                     else
                         OrderBy = "ExternalProjectNo";
                     break;
-                case 5: OrderBy = "StartTime"; break;
-                case 6: OrderBy = "DueTime"; break;
+                case 9: OrderBy = "StartTime"; break;
+                case 10: OrderBy = "DueTime"; break;
                 default: OrderBy = "SortOrderNo"; break;
             }
 

@@ -136,11 +136,15 @@ namespace Timekeeper.Forms
             // Populate various dropdowns
             //----------------------------------------------
 
-            string[] Entries = new string[7] { 
+            string[] Entries = new string[11] { 
                 "as Placed",
                 "Alphabetically",
                 "by Created Date",
                 "by Modified Date",
+                "by Most Time Logged",
+                "by Most Often Used",
+                "by Most Time Logged (Recently)",
+                "by Most Often Used (Recently)",
                 "by External Project Number",
                 "by Todo Start Date",
                 "by Todo Due Date"};
