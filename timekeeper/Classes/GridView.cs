@@ -151,6 +151,7 @@ namespace Timekeeper.Classes
                     SUM(j.Seconds) AS Seconds
                 FROM Journal j
                 JOIN {1}Path ii ON j.{1}Id = ii.{1}Id
+                WHERE {2}
                 GROUP BY ii.FullPath, Grouping
                 ORDER BY ii.FullPath, Grouping",
                 sGroupBy, tableName, this.FilterOptions.WhereClause, Offset);
