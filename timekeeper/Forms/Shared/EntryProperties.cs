@@ -28,8 +28,11 @@ namespace Timekeeper.Forms.Shared
             wStopTime.Text = this.journalEntry.StopTime.ToString(options.Advanced_DateTimeFormat);
             wCreatedOn.Text = this.journalEntry.CreateTime.ToString(options.Advanced_DateTimeFormat);
             wModifiedOn.Text = this.journalEntry.ModifyTime.ToString(options.Advanced_DateTimeFormat);
+            wReconciledOn.Text = this.journalEntry.ReconcileTime == null ? "" : this.journalEntry.ReconcileTime.ToString().Substring(0, 19);
             wGUID.Text = this.journalEntry.JournalGuid.ToLower();
             wLockedFlag.Text = this.journalEntry.IsLocked ? "Yes" : "No";
+            wIgnoredFlag.Text = this.journalEntry.IsIgnored ? "Yes" : "No";
+            wReconciledFlag.Text = this.journalEntry.IsReconciled ? "Yes" : "No";
         }
 
         private void btnClose_Click(object sender, EventArgs e)
