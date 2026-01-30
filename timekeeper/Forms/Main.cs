@@ -758,7 +758,7 @@ namespace Timekeeper.Forms
             Action_ChangedCheckedIgnore();
         }
 
-        private void ReconciledCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void ReconciledCheckBox_Click(object sender, EventArgs e)
         {
             Action_ChangedCheckedReconciled();
         }

@@ -210,7 +210,19 @@ namespace Timekeeper.Forms
 
         private void Action_ChangedCheckedReconciled()
         {
-            SetDirtyBitUnconditional();
+            var j = new JournalEntry(this.browserEntry.JournalId)
+            {
+                IsReconciled = ReconciledCheckBox.Checked
+            };
+            if (j.IsReconciled)
+            {
+                j.Reconcile();
+            }
+            else
+            {
+                j.Unreconcile();
+            }
+            this.browserEntry.Load(this.browserEntry.JournalId);
         }
 
         //---------------------------------------------------------------------

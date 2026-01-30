@@ -1578,7 +1578,7 @@ namespace Timekeeper.Forms
             this.ReconciledCheckBox.TabIndex = 14;
             this.ReconciledCheckBox.Text = "Reconciled";
             this.ReconciledCheckBox.UseVisualStyleBackColor = true;
-            this.ReconciledCheckBox.CheckedChanged += new System.EventHandler(this.ReconciledCheckBox_CheckedChanged);
+            this.ReconciledCheckBox.Click += new System.EventHandler(this.ReconciledCheckBox_Click);
             // 
             // IgnoreCheckBox
             // 

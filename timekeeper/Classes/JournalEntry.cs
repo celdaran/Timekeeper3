@@ -14,7 +14,7 @@ namespace Timekeeper.Classes
 
         private DBI Database;
 
-        private enum Mode { Insert, Update };
+        private enum Mode { Insert, Update, Reconcile, Unreconcile };
         public enum BrowseByMode { Entry, Day, Week, Month, Year };
 
         //---------------------------------------------------------------------
@@ -25,6 +25,7 @@ namespace Timekeeper.Classes
 
         public DateTimeOffset CreateTime { get; private set; }
         public DateTimeOffset ModifyTime { get; private set; }
+        public DateTimeOffset? ReconcileTime { get; private set; }
         public string JournalGuid { get; private set; }
 
         public DateTimeOffset StartTime { get; set; }
@@ -114,6 +115,7 @@ namespace Timekeeper.Classes
             copy.JournalId = this.JournalId;
             copy.CreateTime = this.CreateTime;
             copy.ModifyTime = this.ModifyTime;
+            copy.ReconcileTime = this.ReconcileTime;
             copy.JournalGuid = UUID.Get();
 
             // copy public properties
@@ -186,7 +188,7 @@ namespace Timekeeper.Classes
                             j.LocationId, l.Name as LocationName,
                             j.CategoryId, c.Name as CategoryName,
                             j.IsLocked, j.IsIgnored, j.IsReconciled,
-                            j.CreateTime, j.ModifyTime, j.JournalGuid
+                            j.CreateTime, j.ModifyTime, j.ReconcileTime, j.JournalGuid
                         from Journal j
                         join Activity a on a.ActivityId  = j.ActivityId
                         join Project p  on p.ProjectId   = j.ProjectId
@@ -221,7 +223,7 @@ namespace Timekeeper.Classes
                         j.LocationId, 'No Locaiton' as LocationName,
                         j.CategoryId, 'No Category' as CategoryName,
                         j.IsLocked, j.IsIngored, j.IsReconciled,
-                        j.CreateTime, j.ModifyTime, j.JournalGuid
+                        j.CreateTime, j.ModifyTime, j.ReconcileTime, j.JournalGuid
                     from Journal j
                     where j.JournalId = " + journalId;
                 SetAttributes(Database.SelectRow(Query));
@@ -246,6 +248,42 @@ namespace Timekeeper.Classes
                 Timekeeper.Exception(x);
             }
             return Saved;
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool Reconcile()
+        {
+            bool Reconciled = false;
+            try
+            {
+                long RowsUpdated = Database.Update("Journal", GetAttributes(Mode.Reconcile), "JournalId", JournalId);
+                if (RowsUpdated > 0)
+                    Reconciled = true;
+            }
+            catch (Exception x)
+            {
+                Timekeeper.Exception(x);
+            }
+            return Reconciled;
+        }
+
+        //---------------------------------------------------------------------
+
+        public bool Unreconcile()
+        {
+            bool Unreconciled = false;
+            try
+            {
+                long RowsUpdated = Database.Update("Journal", GetAttributes(Mode.Unreconcile), "JournalId", JournalId);
+                if (RowsUpdated > 0)
+                    Unreconciled = true;
+            }
+            catch (Exception x)
+            {
+                Timekeeper.Exception(x);
+            }
+            return Unreconciled;
         }
 
         //---------------------------------------------------------------------
@@ -477,9 +515,23 @@ namespace Timekeeper.Classes
 
                 if (mode == Mode.Insert) {
                     Journal["CreateTime"] = Now;
+                    Journal["ModifyTime"] = Now;
                     Journal["JournalGuid"] = UUID.Get();
                 }
-                Journal["ModifyTime"] = Now;
+                if (mode == Mode.Update)
+                {
+                    Journal["ModifyTime"] = Now;
+                }
+                if (mode == Mode.Reconcile)
+                {
+                    Journal["ReconcileTime"] = Now;
+                    Journal["IsReconciled"] = 1;
+                }
+                if (mode == Mode.Unreconcile)
+                {
+                    Journal["ReconcileTime"] = null;
+                    Journal["IsReconciled"] = 0;
+                }
 
                 Journal["StartTime"] = Timekeeper.DateForDatabase(StartTime);
                 Journal["StopTime"] = Timekeeper.DateForDatabase(StopTime);
@@ -492,7 +544,6 @@ namespace Timekeeper.Classes
 
                 Journal["IsLocked"] = IsLocked ? 1 : 0;
                 Journal["IsIgnored"] = IsIgnored ? 1 : 0;
-                Journal["IsReconciled"] = IsReconciled ? 1 : 0;
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -531,6 +582,7 @@ namespace Timekeeper.Classes
 
                 Journal["CreateTime"] = Timekeeper.LocalNow;
                 Journal["ModifyTime"] = Timekeeper.LocalNow;
+                Journal["ReconcileTime"] = null;
                 Journal["JournalGuid"] = UUID.Get();
 
                 SetAttributes(Journal);
@@ -579,6 +631,7 @@ namespace Timekeeper.Classes
 
                 CreateTime = Journal["CreateTime"];
                 ModifyTime = Journal["ModifyTime"];
+                ReconcileTime = Journal["ReconcileTime"];
                 JournalGuid = Journal["JournalGuid"];
             }
             catch (Exception x) {

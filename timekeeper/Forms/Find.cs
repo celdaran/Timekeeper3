@@ -280,11 +280,16 @@ namespace Timekeeper.Forms
                     DataGridViewRow Row = JournalResultsGrid.Rows[e.RowIndex];
                     bool isChecked = Convert.ToBoolean(Row.Cells["IsReconciled"].Value);
                     long JournalId = Convert.ToInt64(Row.Cells["JournalId"].Value);
-                    // MessageBox.Show($"Checkbox is now: {isChecked}");
                     var JournalEntry = new JournalEntry();
                     JournalEntry.Load(JournalId);
-                    JournalEntry.IsReconciled = isChecked;
-                    JournalEntry.Save();
+                    if (isChecked)
+                    {
+                        JournalEntry.Reconcile();
+                    }
+                    else
+                    {
+                        JournalEntry.Unreconcile();
+                    }
                 }
             }
         }
