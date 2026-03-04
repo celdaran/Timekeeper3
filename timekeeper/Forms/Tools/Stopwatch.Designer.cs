@@ -158,6 +158,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Stopwatch";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Stopwatch_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.wSplits)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using Timekeeper.Classes.Toolbox;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace Timekeeper.Forms.Tools
 {
@@ -40,6 +41,13 @@ namespace Timekeeper.Forms.Tools
                 timer.Enabled = true;
                 btnReset.Enabled = false;
                 btnSplit.Enabled = true;
+                string splitTime = "00:00:00.00";
+                if (wSplits.Rows.Count > 0)
+                {
+                    splitTime = wDisplay.Text;
+                }
+                string[] row = { splitTime, Timekeeper.DateForDisplay() };
+                wSplits.Rows.Add(row);
             }
         }
 
@@ -71,6 +79,17 @@ namespace Timekeeper.Forms.Tools
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void Stopwatch_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (timer.Enabled)
+            {
+                if (Common.WarnPrompt("Timer is running. Do you want to close?") == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
         //---------------------------------------------------------------------
