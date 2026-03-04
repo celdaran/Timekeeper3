@@ -78,6 +78,11 @@
             this.RightMarginMarker = new System.Windows.Forms.PictureBox();
             this.GutterPanel = new System.Windows.Forms.Panel();
             this.FontDialog = new System.Windows.Forms.FontDialog();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.splitInHalfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitInThirdsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitInQuartersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenu.SuspendLayout();
             this.MemoToolbar.SuspendLayout();
             this.MainPanel.SuspendLayout();
@@ -106,6 +111,7 @@
             // 
             // PopupMenu
             // 
+            this.PopupMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PopupMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PopupMenuCut,
             this.PopupMenuCopy,
@@ -119,17 +125,22 @@
             this.PopupMenuShowRuler,
             this.PopupMenuHideGutter,
             this.PopupMenuShowGutter,
+            this.toolStripMenuItem1,
+            this.testToolStripMenuItem,
+            this.splitInHalfToolStripMenuItem,
+            this.splitInThirdsToolStripMenuItem,
+            this.splitInQuartersToolStripMenuItem,
             this.PopupMenuSep3,
             this.PopupMenuMarkupLanguage});
             this.PopupMenu.Name = "PopupMenu";
-            this.PopupMenu.Size = new System.Drawing.Size(208, 264);
+            this.PopupMenu.Size = new System.Drawing.Size(193, 380);
             this.PopupMenu.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenu_Opening);
             // 
             // PopupMenuCut
             // 
             this.PopupMenuCut.Name = "PopupMenuCut";
             this.PopupMenuCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.PopupMenuCut.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuCut.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuCut.Text = "Cut";
             this.PopupMenuCut.Click += new System.EventHandler(this.PopupMenuCut_Click);
             // 
@@ -137,7 +148,7 @@
             // 
             this.PopupMenuCopy.Name = "PopupMenuCopy";
             this.PopupMenuCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.PopupMenuCopy.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuCopy.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuCopy.Text = "Copy";
             this.PopupMenuCopy.Click += new System.EventHandler(this.PopupMenuCopy_Click);
             // 
@@ -145,38 +156,38 @@
             // 
             this.PopupMenuPaste.Name = "PopupMenuPaste";
             this.PopupMenuPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.PopupMenuPaste.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuPaste.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuPaste.Text = "Paste";
             this.PopupMenuPaste.Click += new System.EventHandler(this.PopupMenuPaste_Click);
             // 
             // PopupMenuSep1
             // 
             this.PopupMenuSep1.Name = "PopupMenuSep1";
-            this.PopupMenuSep1.Size = new System.Drawing.Size(204, 6);
+            this.PopupMenuSep1.Size = new System.Drawing.Size(189, 6);
             // 
             // PopupMenuToggleCheckbox
             // 
             this.PopupMenuToggleCheckbox.Name = "PopupMenuToggleCheckbox";
-            this.PopupMenuToggleCheckbox.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuToggleCheckbox.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuToggleCheckbox.Text = "Toggle Checkbox";
             this.PopupMenuToggleCheckbox.Click += new System.EventHandler(this.PopupMenuToggleCheckbox_Click);
             // 
             // PopupMenuSep2
             // 
             this.PopupMenuSep2.Name = "PopupMenuSep2";
-            this.PopupMenuSep2.Size = new System.Drawing.Size(204, 6);
+            this.PopupMenuSep2.Size = new System.Drawing.Size(189, 6);
             // 
             // PopupMenuHideToolbar
             // 
             this.PopupMenuHideToolbar.Name = "PopupMenuHideToolbar";
-            this.PopupMenuHideToolbar.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuHideToolbar.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuHideToolbar.Text = "Hide Formatting Toolbar";
             this.PopupMenuHideToolbar.Click += new System.EventHandler(this.PopupMenuHideToolbar_Click);
             // 
             // PopupMenuShowToolbar
             // 
             this.PopupMenuShowToolbar.Name = "PopupMenuShowToolbar";
-            this.PopupMenuShowToolbar.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuShowToolbar.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuShowToolbar.Text = "Show Formatting Toolbar";
             this.PopupMenuShowToolbar.Visible = false;
             this.PopupMenuShowToolbar.Click += new System.EventHandler(this.PopupMenuShowToolbar_Click);
@@ -184,14 +195,14 @@
             // PopupMenuHideRuler
             // 
             this.PopupMenuHideRuler.Name = "PopupMenuHideRuler";
-            this.PopupMenuHideRuler.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuHideRuler.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuHideRuler.Text = "Hide Ruler";
             this.PopupMenuHideRuler.Click += new System.EventHandler(this.PopupMenuHideRuler_Click);
             // 
             // PopupMenuShowRuler
             // 
             this.PopupMenuShowRuler.Name = "PopupMenuShowRuler";
-            this.PopupMenuShowRuler.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuShowRuler.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuShowRuler.Text = "Show Ruler";
             this.PopupMenuShowRuler.Visible = false;
             this.PopupMenuShowRuler.Click += new System.EventHandler(this.PopupMenuShowRuler_Click);
@@ -199,21 +210,21 @@
             // PopupMenuHideGutter
             // 
             this.PopupMenuHideGutter.Name = "PopupMenuHideGutter";
-            this.PopupMenuHideGutter.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuHideGutter.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuHideGutter.Text = "Hide Left Gutter";
             this.PopupMenuHideGutter.Click += new System.EventHandler(this.PopupMenuHideGutter_Click);
             // 
             // PopupMenuShowGutter
             // 
             this.PopupMenuShowGutter.Name = "PopupMenuShowGutter";
-            this.PopupMenuShowGutter.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuShowGutter.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuShowGutter.Text = "Show Left Gutter";
             this.PopupMenuShowGutter.Click += new System.EventHandler(this.PopupMenuShowGutter_Click);
             // 
             // PopupMenuSep3
             // 
             this.PopupMenuSep3.Name = "PopupMenuSep3";
-            this.PopupMenuSep3.Size = new System.Drawing.Size(204, 6);
+            this.PopupMenuSep3.Size = new System.Drawing.Size(189, 6);
             // 
             // PopupMenuMarkupLanguage
             // 
@@ -221,20 +232,20 @@
             this.PopupMenuHTML,
             this.PopupMenuMarkdown});
             this.PopupMenuMarkupLanguage.Name = "PopupMenuMarkupLanguage";
-            this.PopupMenuMarkupLanguage.Size = new System.Drawing.Size(207, 22);
+            this.PopupMenuMarkupLanguage.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuMarkupLanguage.Text = "Markup Language";
             // 
             // PopupMenuHTML
             // 
             this.PopupMenuHTML.Name = "PopupMenuHTML";
-            this.PopupMenuHTML.Size = new System.Drawing.Size(131, 22);
+            this.PopupMenuHTML.Size = new System.Drawing.Size(124, 22);
             this.PopupMenuHTML.Text = "HTML";
             this.PopupMenuHTML.Click += new System.EventHandler(this.PopupMenuHTML_Click);
             // 
             // PopupMenuMarkdown
             // 
             this.PopupMenuMarkdown.Name = "PopupMenuMarkdown";
-            this.PopupMenuMarkdown.Size = new System.Drawing.Size(131, 22);
+            this.PopupMenuMarkdown.Size = new System.Drawing.Size(124, 22);
             this.PopupMenuMarkdown.Text = "Markdown";
             this.PopupMenuMarkdown.Click += new System.EventHandler(this.PopupMenuMarkdown_Click);
             // 
@@ -570,6 +581,36 @@
             this.GutterPanel.TabIndex = 0;
             this.GutterPanel.Click += new System.EventHandler(this.GutterPanel_Click);
             // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.testToolStripMenuItem.Text = "Split by Bullets";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.PopupMenuSplitByBullets_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(189, 6);
+            // 
+            // splitInHalfToolStripMenuItem
+            // 
+            this.splitInHalfToolStripMenuItem.Name = "splitInHalfToolStripMenuItem";
+            this.splitInHalfToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.splitInHalfToolStripMenuItem.Text = "Split in Half";
+            // 
+            // splitInThirdsToolStripMenuItem
+            // 
+            this.splitInThirdsToolStripMenuItem.Name = "splitInThirdsToolStripMenuItem";
+            this.splitInThirdsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.splitInThirdsToolStripMenuItem.Text = "Split in Thirds";
+            // 
+            // splitInQuartersToolStripMenuItem
+            // 
+            this.splitInQuartersToolStripMenuItem.Name = "splitInQuartersToolStripMenuItem";
+            this.splitInQuartersToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.splitInQuartersToolStripMenuItem.Text = "Split in Quarters";
+            // 
             // MemoEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -642,5 +683,10 @@
         private System.Windows.Forms.TextBox Hacktastic;
         private System.Windows.Forms.ToolStripButton FormatCheckboxButton;
         private System.Windows.Forms.ToolStripButton FormatTestButton;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem splitInHalfToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem splitInThirdsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem splitInQuartersToolStripMenuItem;
     }
 }

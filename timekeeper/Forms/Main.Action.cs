@@ -585,6 +585,12 @@ namespace Timekeeper.Forms
                 // Will this work here?
                 MemoEditor.Focus();
 
+                // Trying something out...
+                MemoEditor.SplitByBulletsRequested += (s, e) => Action_SplitEntryByContent();
+                MemoEditor.SplitInHalvesRequested += (s, e) => Action_SplitEntry(2);
+                MemoEditor.SplitInThirdsRequested += (s, e) => Action_SplitEntry(3);
+                MemoEditor.SplitInQuartersRequested += (s, e) => Action_SplitEntry(4);
+
                 // Subscribe to the message event. This will allow the form to be notified whenever there's a new message.
                 Timekeeper.Mailbox.HandleMessage += new EventHandler(OnHandleMessage);
 
@@ -1619,6 +1625,96 @@ namespace Timekeeper.Forms
             }
         }
 
+        //---------------------------------------------------------------------
+        // Planned replacement for above
+
+        private void Action_SplitEntryByContent()
+        {
+            // Save any current edits first (TK-466)
+            browserEntry.Save();
+
+            // Regex: Optional bullet, memo, then optional [mins] with potential trailing spaces
+            var bulletRegex = new System.Text.RegularExpressions.Regex(@"^[*|-]?\s*(?<memo>.*?)\s*(?:\[(?<mins>\d+)\])?\s*$");
+
+            var lines = browserEntry.Memo.Split(new[] { Environment.NewLine, "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(l => bulletRegex.Match(l)) // Removed .Trim() here to let Regex handle whitespace
+                .Where(m => m.Success && !string.IsNullOrWhiteSpace(m.Groups["memo"].Value))
+                .Select(m => new {
+                    Memo = m.Groups["memo"].Value.Trim(),
+                    FixedMins = m.Groups["mins"].Success ? (long?)long.Parse(m.Groups["mins"].Value) : null
+                })
+                .ToList();
+
+            if (lines.Count < 2)
+            {
+                Common.Warn("To split by bullets you need at least two lines, and each line must start with '*'");
+                return;
+            }
+            ;
+
+            try
+            {
+                long totalTicks = browserEntry.StopTime.Ticks - browserEntry.StartTime.Ticks;
+                long totalFixedTicks = lines.Where(l => l.FixedMins.HasValue).Sum(l => TimeSpan.FromMinutes(l.FixedMins.Value).Ticks);
+
+                // --- DATA PROTECTION ---
+                if (totalFixedTicks > totalTicks)
+                {
+                    long overBy = (totalFixedTicks - totalTicks) / TimeSpan.TicksPerMinute;
+                    Common.Warn($"The total time defined in brackets ({totalFixedTicks / TimeSpan.TicksPerMinute}m) " +
+                                $"exceeds the original entry duration ({totalTicks / TimeSpan.TicksPerMinute}m) by {overBy} minutes. " +
+                                "Please adjust your numbers.");
+                    return;
+                }
+
+                int floatingCount = lines.Count(l => !l.FixedMins.HasValue);
+                long remainingTicks = totalTicks - totalFixedTicks;
+                long ticksPerFloating = floatingCount > 0 ? remainingTicks / floatingCount : 0;
+
+                DateTimeOffset currentStart = browserEntry.StartTime;
+
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    var line = lines[i];
+                    long currentChunkTicks = line.FixedMins.HasValue
+                                             ? TimeSpan.FromMinutes(line.FixedMins.Value).Ticks
+                                             : ticksPerFloating;
+
+                    if (i == 0)
+                    {
+                        browserEntry.Memo = line.Memo;
+                        browserEntry.StopTime = currentStart.AddTicks(currentChunkTicks);
+                        browserEntry.Seconds = (long)TimeSpan.FromTicks(currentChunkTicks).TotalSeconds;
+                        browserEntry.Save();
+                        currentStart = browserEntry.StopTime;
+                    }
+                    else
+                    {
+                        Classes.JournalEntry split = browserEntry.Copy();
+                        split.Memo = line.Memo;
+                        split.StartTime = currentStart;
+                        split.StopTime = currentStart.AddTicks(currentChunkTicks);
+                        split.Seconds = (long)TimeSpan.FromTicks(currentChunkTicks).TotalSeconds;
+
+                        if (split.Create())
+                        {
+                            currentStart = split.StopTime;
+                        }
+                    }
+                }
+
+                // Refresh the form with the original (now modified) entry
+                Browser_EntryToForm(browserEntry);
+
+                // Not sure if I want this...?
+                Common.Info($"Entry split into {lines.Count} parts.");
+            }
+            catch (Exception x)
+            {
+                Timekeeper.Exception(x);
+            }
+        }
+        
         //---------------------------------------------------------------------
 
         private void Action_JoinEntries()

@@ -21,6 +21,11 @@ namespace Timekeeper.Forms.Shared
         // the notebook editor and todo list.
         //---------------------------------------------------------------------
 
+        public event EventHandler SplitByBulletsRequested;
+        public event EventHandler SplitInHalvesRequested;
+        public event EventHandler SplitInThirdsRequested;
+        public event EventHandler SplitInQuartersRequested;
+
         private Classes.Options Options;
 
         public MemoEditor()
@@ -215,6 +220,26 @@ namespace Timekeeper.Forms.Shared
         private void PopupMenuShowGutter_Click(object sender, EventArgs e)
         {
             this.ShowGutter = true;
+        }
+
+        private void PopupMenuSplitByBullets_Click(object sender, EventArgs e)
+        {
+            SplitByBulletsRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void PopupMenuSplitInHalves_Click(object sender, EventArgs e)
+        {
+            SplitInHalvesRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void PopupMenuSplitInThirds_Click(object sender, EventArgs e)
+        {
+            SplitInThirdsRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void PopupMenuSplitInQuarters_Click(object sender, EventArgs e)
+        {
+            SplitInQuartersRequested?.Invoke(this, EventArgs.Empty);
         }
 
         //---------------------------------------------------------------------

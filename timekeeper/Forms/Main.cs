@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
-
+using System.Linq;
 using System.Resources;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using System.Xml;
-
 using Timekeeper.Classes.Toolbox;
 
 namespace Timekeeper.Forms
@@ -434,6 +433,12 @@ namespace Timekeeper.Forms
         private void MenuToolbarBrowserSplitEntry4_Click(object sender, EventArgs e)
         {
             Action_SplitEntry(4);
+        }
+
+        // Toolbar Functions | Browser | Split | by Content
+        private void MenuToolbarBrowserSplitByBullets_Click(object sender, EventArgs e)
+        {
+            Action_SplitEntryByContent();
         }
 
         // Toolbar Functions | Browser | Split | Join Entries

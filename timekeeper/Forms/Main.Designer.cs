@@ -224,6 +224,7 @@ namespace Timekeeper.Forms
             this.ToolbarJournalId = new System.Windows.Forms.ToolStripLabel();
             this.ToolbarSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolbarSplitEntry = new System.Windows.Forms.ToolStripSplitButton();
+            this.splitByBulletsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolbarSplitEntry2 = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolbarSplitEntry3 = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolbarSplitEntry4 = new System.Windows.Forms.ToolStripMenuItem();
@@ -2046,6 +2047,7 @@ namespace Timekeeper.Forms
             // 
             this.ToolbarSplitEntry.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.ToolbarSplitEntry.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.splitByBulletsToolStripMenuItem,
             this.ToolbarSplitEntry2,
             this.ToolbarSplitEntry3,
             this.ToolbarSplitEntry4,
@@ -2057,38 +2059,44 @@ namespace Timekeeper.Forms
             this.ToolbarSplitEntry.Name = "ToolbarSplitEntry";
             this.ToolbarSplitEntry.Size = new System.Drawing.Size(43, 22);
             this.ToolbarSplitEntry.Text = "Split";
-            this.ToolbarSplitEntry.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry2_Click);
+            // 
+            // splitByBulletsToolStripMenuItem
+            // 
+            this.splitByBulletsToolStripMenuItem.Name = "splitByBulletsToolStripMenuItem";
+            this.splitByBulletsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.splitByBulletsToolStripMenuItem.Text = "Split by Bullets";
+            this.splitByBulletsToolStripMenuItem.Click += new System.EventHandler(this.MenuToolbarBrowserSplitByBullets_Click);
             // 
             // ToolbarSplitEntry2
             // 
             this.ToolbarSplitEntry2.Name = "ToolbarSplitEntry2";
-            this.ToolbarSplitEntry2.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarSplitEntry2.Size = new System.Drawing.Size(180, 22);
             this.ToolbarSplitEntry2.Text = "Split in Halves";
             this.ToolbarSplitEntry2.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry2_Click);
             // 
             // ToolbarSplitEntry3
             // 
             this.ToolbarSplitEntry3.Name = "ToolbarSplitEntry3";
-            this.ToolbarSplitEntry3.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarSplitEntry3.Size = new System.Drawing.Size(180, 22);
             this.ToolbarSplitEntry3.Text = "Split in Thirds";
             this.ToolbarSplitEntry3.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry3_Click);
             // 
             // ToolbarSplitEntry4
             // 
             this.ToolbarSplitEntry4.Name = "ToolbarSplitEntry4";
-            this.ToolbarSplitEntry4.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarSplitEntry4.Size = new System.Drawing.Size(180, 22);
             this.ToolbarSplitEntry4.Text = "Split in Quarters";
             this.ToolbarSplitEntry4.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry4_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(145, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // ToolbarJoinEntries
             // 
             this.ToolbarJoinEntries.Name = "ToolbarJoinEntries";
-            this.ToolbarJoinEntries.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarJoinEntries.Size = new System.Drawing.Size(180, 22);
             this.ToolbarJoinEntries.Text = "Join Entries";
             this.ToolbarJoinEntries.Click += new System.EventHandler(this.MenuToolbarBrowserJoinEntries_Click);
             // 
@@ -2466,5 +2474,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.CheckBox IgnoreCheckBox;
         private System.Windows.Forms.Panel IgnorePanel;
         private System.Windows.Forms.CheckBox ReconciledCheckBox;
+        private System.Windows.Forms.ToolStripMenuItem splitByBulletsToolStripMenuItem;
     }
 }
