@@ -43,6 +43,11 @@
             this.PopupMenuShowRuler = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuHideGutter = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuShowGutter = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.splitByBulletsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitInHalfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitInThirdsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitInQuartersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenuMarkupLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenuHTML = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,11 +83,6 @@
             this.RightMarginMarker = new System.Windows.Forms.PictureBox();
             this.GutterPanel = new System.Windows.Forms.Panel();
             this.FontDialog = new System.Windows.Forms.FontDialog();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.splitInHalfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.splitInThirdsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.splitInQuartersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PopupMenu.SuspendLayout();
             this.MemoToolbar.SuspendLayout();
             this.MainPanel.SuspendLayout();
@@ -126,7 +126,7 @@
             this.PopupMenuHideGutter,
             this.PopupMenuShowGutter,
             this.toolStripMenuItem1,
-            this.testToolStripMenuItem,
+            this.splitByBulletsToolStripMenuItem,
             this.splitInHalfToolStripMenuItem,
             this.splitInThirdsToolStripMenuItem,
             this.splitInQuartersToolStripMenuItem,
@@ -220,6 +220,36 @@
             this.PopupMenuShowGutter.Size = new System.Drawing.Size(192, 22);
             this.PopupMenuShowGutter.Text = "Show Left Gutter";
             this.PopupMenuShowGutter.Click += new System.EventHandler(this.PopupMenuShowGutter_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(189, 6);
+            // 
+            // splitByBulletsToolStripMenuItem
+            // 
+            this.splitByBulletsToolStripMenuItem.Name = "splitByBulletsToolStripMenuItem";
+            this.splitByBulletsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.splitByBulletsToolStripMenuItem.Text = "Split by Bullets";
+            this.splitByBulletsToolStripMenuItem.Click += new System.EventHandler(this.PopupMenuSplitByBullets_Click);
+            // 
+            // splitInHalfToolStripMenuItem
+            // 
+            this.splitInHalfToolStripMenuItem.Name = "splitInHalfToolStripMenuItem";
+            this.splitInHalfToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.splitInHalfToolStripMenuItem.Text = "Split in Half";
+            // 
+            // splitInThirdsToolStripMenuItem
+            // 
+            this.splitInThirdsToolStripMenuItem.Name = "splitInThirdsToolStripMenuItem";
+            this.splitInThirdsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.splitInThirdsToolStripMenuItem.Text = "Split in Thirds";
+            // 
+            // splitInQuartersToolStripMenuItem
+            // 
+            this.splitInQuartersToolStripMenuItem.Name = "splitInQuartersToolStripMenuItem";
+            this.splitInQuartersToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.splitInQuartersToolStripMenuItem.Text = "Split in Quarters";
             // 
             // PopupMenuSep3
             // 
@@ -581,36 +611,6 @@
             this.GutterPanel.TabIndex = 0;
             this.GutterPanel.Click += new System.EventHandler(this.GutterPanel_Click);
             // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.testToolStripMenuItem.Text = "Split by Bullets";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.PopupMenuSplitByBullets_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(189, 6);
-            // 
-            // splitInHalfToolStripMenuItem
-            // 
-            this.splitInHalfToolStripMenuItem.Name = "splitInHalfToolStripMenuItem";
-            this.splitInHalfToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.splitInHalfToolStripMenuItem.Text = "Split in Half";
-            // 
-            // splitInThirdsToolStripMenuItem
-            // 
-            this.splitInThirdsToolStripMenuItem.Name = "splitInThirdsToolStripMenuItem";
-            this.splitInThirdsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.splitInThirdsToolStripMenuItem.Text = "Split in Thirds";
-            // 
-            // splitInQuartersToolStripMenuItem
-            // 
-            this.splitInQuartersToolStripMenuItem.Name = "splitInQuartersToolStripMenuItem";
-            this.splitInQuartersToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.splitInQuartersToolStripMenuItem.Text = "Split in Quarters";
-            // 
             // MemoEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -683,10 +683,10 @@
         private System.Windows.Forms.TextBox Hacktastic;
         private System.Windows.Forms.ToolStripButton FormatCheckboxButton;
         private System.Windows.Forms.ToolStripButton FormatTestButton;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem splitInHalfToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem splitInThirdsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem splitInQuartersToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem splitByBulletsToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem splitInHalfToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem splitInThirdsToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem splitInQuartersToolStripMenuItem;
     }
 }

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 
 using Timekeeper.Classes.Toolbox;
+using Timekeeper.Forms.Shared;
 
 namespace Timekeeper.Forms
 {
@@ -338,6 +339,10 @@ namespace Timekeeper.Forms
         {
             ToolbarSplitEntry.Enabled = enabled;
             MenuToolbarBrowserSplitEntry.Enabled = enabled;
+            MemoEditor.splitByBulletsToolStripMenuItem.Enabled = enabled;
+            MemoEditor.splitInHalfToolStripMenuItem.Enabled = enabled;
+            MemoEditor.splitInThirdsToolStripMenuItem.Enabled = enabled;
+            MemoEditor.splitInQuartersToolStripMenuItem.Enabled = enabled;
         }
 
         private void Browser_EnableStartEntry(bool enabled)
