@@ -46,6 +46,8 @@
             this.Layout_UseActivities = new System.Windows.Forms.CheckBox();
             this.Layout_UseProjects = new System.Windows.Forms.CheckBox();
             this.ViewPage = new System.Windows.Forms.TabPage();
+            this.TreeViewGroup = new System.Windows.Forms.GroupBox();
+            this.View_Tree_UsageCounts = new System.Windows.Forms.CheckBox();
             this.MainViewGroup = new System.Windows.Forms.GroupBox();
             this.View_MemoEditor = new System.Windows.Forms.CheckBox();
             this.View_StatusBar = new System.Windows.Forms.CheckBox();
@@ -238,13 +240,13 @@
             this.label5 = new System.Windows.Forms.Label();
             this.FontDialog = new System.Windows.Forms.FontDialog();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.TreeViewGroup = new System.Windows.Forms.GroupBox();
-            this.View_Tree_UsageCounts = new System.Windows.Forms.CheckBox();
+            this.Behavior_NewEntries_ApplyToExisting = new System.Windows.Forms.CheckBox();
             this.OptionsPanelCollection.SuspendLayout();
             this.LayoutPage.SuspendLayout();
             this.PresetGroup.SuspendLayout();
             this.DimensionGroup.SuspendLayout();
             this.ViewPage.SuspendLayout();
+            this.TreeViewGroup.SuspendLayout();
             this.MainViewGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ViewSpacerBox)).BeginInit();
             this.MemoEditorGroup.SuspendLayout();
@@ -299,13 +301,12 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).BeginInit();
-            this.TreeViewGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // CancelDialogButton
             // 
             this.CancelDialogButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelDialogButton.Location = new System.Drawing.Point(432, 435);
+            this.CancelDialogButton.Location = new System.Drawing.Point(428, 566);
             this.CancelDialogButton.Name = "CancelDialogButton";
             this.CancelDialogButton.Size = new System.Drawing.Size(75, 23);
             this.CancelDialogButton.TabIndex = 1;
@@ -314,7 +315,7 @@
             // 
             // AcceptDialogButton
             // 
-            this.AcceptDialogButton.Location = new System.Drawing.Point(351, 435);
+            this.AcceptDialogButton.Location = new System.Drawing.Point(347, 566);
             this.AcceptDialogButton.Name = "AcceptDialogButton";
             this.AcceptDialogButton.Size = new System.Drawing.Size(75, 23);
             this.AcceptDialogButton.TabIndex = 0;
@@ -335,7 +336,7 @@
             this.OptionsPanelCollection.Location = new System.Drawing.Point(12, 9);
             this.OptionsPanelCollection.Name = "OptionsPanelCollection";
             this.OptionsPanelCollection.SelectedIndex = 0;
-            this.OptionsPanelCollection.Size = new System.Drawing.Size(495, 420);
+            this.OptionsPanelCollection.Size = new System.Drawing.Size(495, 551);
             this.OptionsPanelCollection.TabIndex = 0;
             // 
             // LayoutPage
@@ -513,6 +514,26 @@
             this.ViewPage.Size = new System.Drawing.Size(487, 387);
             this.ViewPage.TabIndex = 0;
             this.ViewPage.Text = "View";
+            // 
+            // TreeViewGroup
+            // 
+            this.TreeViewGroup.Controls.Add(this.View_Tree_UsageCounts);
+            this.TreeViewGroup.Location = new System.Drawing.Point(15, 693);
+            this.TreeViewGroup.Name = "TreeViewGroup";
+            this.TreeViewGroup.Size = new System.Drawing.Size(345, 46);
+            this.TreeViewGroup.TabIndex = 24;
+            this.TreeViewGroup.TabStop = false;
+            this.TreeViewGroup.Text = "Tree Options";
+            // 
+            // View_Tree_UsageCounts
+            // 
+            this.View_Tree_UsageCounts.AutoSize = true;
+            this.View_Tree_UsageCounts.Location = new System.Drawing.Point(17, 20);
+            this.View_Tree_UsageCounts.Name = "View_Tree_UsageCounts";
+            this.View_Tree_UsageCounts.Size = new System.Drawing.Size(256, 17);
+            this.View_Tree_UsageCounts.TabIndex = 0;
+            this.View_Tree_UsageCounts.Text = "View usage counts in tree views (requires restart)";
+            this.View_Tree_UsageCounts.UseVisualStyleBackColor = true;
             // 
             // MainViewGroup
             // 
@@ -1097,18 +1118,19 @@
             this.BehaviorPage.Location = new System.Drawing.Point(4, 29);
             this.BehaviorPage.Name = "BehaviorPage";
             this.BehaviorPage.Padding = new System.Windows.Forms.Padding(3);
-            this.BehaviorPage.Size = new System.Drawing.Size(487, 387);
+            this.BehaviorPage.Size = new System.Drawing.Size(487, 518);
             this.BehaviorPage.TabIndex = 3;
             this.BehaviorPage.Text = "Behavior";
             // 
             // ForNewEntriesGroup
             // 
+            this.ForNewEntriesGroup.Controls.Add(this.Behavior_NewEntries_ApplyToExisting);
             this.ForNewEntriesGroup.Controls.Add(this.panel5);
             this.ForNewEntriesGroup.Controls.Add(this.panel3);
             this.ForNewEntriesGroup.Controls.Add(this.panel1);
             this.ForNewEntriesGroup.Location = new System.Drawing.Point(17, 300);
             this.ForNewEntriesGroup.Name = "ForNewEntriesGroup";
-            this.ForNewEntriesGroup.Size = new System.Drawing.Size(345, 105);
+            this.ForNewEntriesGroup.Size = new System.Drawing.Size(345, 126);
             this.ForNewEntriesGroup.TabIndex = 24;
             this.ForNewEntriesGroup.TabStop = false;
             this.ForNewEntriesGroup.Text = "For New Entries";
@@ -1501,7 +1523,7 @@
             // BehaviorSpacingBox
             // 
             this.BehaviorSpacingBox.Image = global::Timekeeper.Properties.Resources.ImageIconBlank;
-            this.BehaviorSpacingBox.Location = new System.Drawing.Point(17, 617);
+            this.BehaviorSpacingBox.Location = new System.Drawing.Point(17, 638);
             this.BehaviorSpacingBox.Name = "BehaviorSpacingBox";
             this.BehaviorSpacingBox.Size = new System.Drawing.Size(16, 16);
             this.BehaviorSpacingBox.TabIndex = 23;
@@ -1514,7 +1536,7 @@
             this.BrowsingGroup.Controls.Add(this.Behavior_BrowsePrevBy);
             this.BrowsingGroup.Controls.Add(this.label14);
             this.BrowsingGroup.Controls.Add(this.label13);
-            this.BrowsingGroup.Location = new System.Drawing.Point(17, 519);
+            this.BrowsingGroup.Location = new System.Drawing.Point(17, 540);
             this.BrowsingGroup.Name = "BrowsingGroup";
             this.BrowsingGroup.Size = new System.Drawing.Size(345, 102);
             this.BrowsingGroup.TabIndex = 5;
@@ -1584,7 +1606,7 @@
             // 
             this.SortingGroup.Controls.Add(this.SortingGroup_BottomPanel);
             this.SortingGroup.Controls.Add(this.SortingGroup_ProjectPanel);
-            this.SortingGroup.Location = new System.Drawing.Point(17, 411);
+            this.SortingGroup.Location = new System.Drawing.Point(17, 432);
             this.SortingGroup.Name = "SortingGroup";
             this.SortingGroup.Size = new System.Drawing.Size(345, 102);
             this.SortingGroup.TabIndex = 4;
@@ -2705,25 +2727,15 @@
             // 
             this.OpenFileDialog.FileName = "SET AT RUN TIME";
             // 
-            // TreeViewGroup
+            // Behavior_NewEntries_ApplyToExisting
             // 
-            this.TreeViewGroup.Controls.Add(this.View_Tree_UsageCounts);
-            this.TreeViewGroup.Location = new System.Drawing.Point(15, 693);
-            this.TreeViewGroup.Name = "TreeViewGroup";
-            this.TreeViewGroup.Size = new System.Drawing.Size(345, 46);
-            this.TreeViewGroup.TabIndex = 24;
-            this.TreeViewGroup.TabStop = false;
-            this.TreeViewGroup.Text = "Tree Options";
-            // 
-            // View_Tree_UsageCounts
-            // 
-            this.View_Tree_UsageCounts.AutoSize = true;
-            this.View_Tree_UsageCounts.Location = new System.Drawing.Point(17, 20);
-            this.View_Tree_UsageCounts.Name = "View_Tree_UsageCounts";
-            this.View_Tree_UsageCounts.Size = new System.Drawing.Size(256, 17);
-            this.View_Tree_UsageCounts.TabIndex = 0;
-            this.View_Tree_UsageCounts.Text = "View usage counts in tree views (requires restart)";
-            this.View_Tree_UsageCounts.UseVisualStyleBackColor = true;
+            this.Behavior_NewEntries_ApplyToExisting.AutoSize = true;
+            this.Behavior_NewEntries_ApplyToExisting.Location = new System.Drawing.Point(79, 103);
+            this.Behavior_NewEntries_ApplyToExisting.Name = "Behavior_NewEntries_ApplyToExisting";
+            this.Behavior_NewEntries_ApplyToExisting.Size = new System.Drawing.Size(231, 17);
+            this.Behavior_NewEntries_ApplyToExisting.TabIndex = 6;
+            this.Behavior_NewEntries_ApplyToExisting.Text = "Also honor these settings for existing entries";
+            this.Behavior_NewEntries_ApplyToExisting.UseVisualStyleBackColor = true;
             // 
             // Options
             // 
@@ -2731,7 +2743,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelDialogButton;
-            this.ClientSize = new System.Drawing.Size(519, 467);
+            this.ClientSize = new System.Drawing.Size(519, 601);
             this.Controls.Add(this.AcceptDialogButton);
             this.Controls.Add(this.CancelDialogButton);
             this.Controls.Add(this.OptionsPanelCollection);
@@ -2752,6 +2764,8 @@
             this.DimensionGroup.ResumeLayout(false);
             this.DimensionGroup.PerformLayout();
             this.ViewPage.ResumeLayout(false);
+            this.TreeViewGroup.ResumeLayout(false);
+            this.TreeViewGroup.PerformLayout();
             this.MainViewGroup.ResumeLayout(false);
             this.MainViewGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ViewSpacerBox)).EndInit();
@@ -2793,6 +2807,7 @@
             this.HiddenGroup_ProjectPanel.PerformLayout();
             this.BehaviorPage.ResumeLayout(false);
             this.ForNewEntriesGroup.ResumeLayout(false);
+            this.ForNewEntriesGroup.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
@@ -2843,8 +2858,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Mail_SmtpTimeout)).EndInit();
-            this.TreeViewGroup.ResumeLayout(false);
-            this.TreeViewGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3063,5 +3076,6 @@
         private System.Windows.Forms.RadioButton Behavior_NewEntries_Category_DS;
         private System.Windows.Forms.GroupBox TreeViewGroup;
         private System.Windows.Forms.CheckBox View_Tree_UsageCounts;
+        private System.Windows.Forms.CheckBox Behavior_NewEntries_ApplyToExisting;
     }
 }

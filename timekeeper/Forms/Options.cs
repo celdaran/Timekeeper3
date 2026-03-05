@@ -386,6 +386,8 @@ namespace Timekeeper.Forms
             Behavior_NewEntries_Category_UD.Checked = (Values.Behavior_NewEntries_Category == 1);
             Behavior_NewEntries_Category_FP.Checked = (Values.Behavior_NewEntries_Category == 2);
 
+            Behavior_NewEntries_ApplyToExisting.Checked = Values.Behavior_NewEntries_ApplyToExisting;
+
             Behavior_SortProjectsBy.SelectedIndex = Values.Behavior_SortProjectsBy;
             Behavior_SortProjectsByDirection.SelectedIndex = Values.Behavior_SortProjectsByDirection;
             Behavior_SortProjectsThenBy.SelectedIndex = Values.Behavior_SortProjectsThenBy;
@@ -501,6 +503,8 @@ namespace Timekeeper.Forms
             Values.Behavior_NewEntries_Activity = GetRadioValue(Behavior_NewEntries_Activity_DS, Behavior_NewEntries_Activity_UD, Behavior_NewEntries_Activity_FP);
             Values.Behavior_NewEntries_Location = GetRadioValue(Behavior_NewEntries_Location_DS, Behavior_NewEntries_Location_UD, Behavior_NewEntries_Location_FP);
             Values.Behavior_NewEntries_Category = GetRadioValue(Behavior_NewEntries_Category_DS, Behavior_NewEntries_Category_UD, Behavior_NewEntries_Category_FP);
+
+            Values.Behavior_NewEntries_ApplyToExisting = Behavior_NewEntries_ApplyToExisting.Checked;
 
             Values.Behavior_SortProjectsBy = Behavior_SortProjectsBy.SelectedIndex;
             Values.Behavior_SortProjectsByDirection = Behavior_SortProjectsByDirection.SelectedIndex;

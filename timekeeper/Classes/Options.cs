@@ -90,6 +90,8 @@ namespace Timekeeper.Classes
         public int Behavior_NewEntries_Location { get; set; }
         public int Behavior_NewEntries_Category { get; set; }
 
+        public bool Behavior_NewEntries_ApplyToExisting { get; set; }
+
         public int Behavior_SortProjectsBy { get; set; }
         public int Behavior_SortProjectsByDirection { get; set; }
         public int Behavior_SortProjectsThenBy { get; set; }
@@ -434,6 +436,7 @@ namespace Timekeeper.Classes
             Behavior_NewEntries_Activity = (int)Key.GetValue("NewEntries_Activity", 0);
             Behavior_NewEntries_Location = (int)Key.GetValue("NewEntries_Location", 0);
             Behavior_NewEntries_Category = (int)Key.GetValue("NewEntries_Category", 0);
+            Behavior_NewEntries_ApplyToExisting = ((int)Key.GetValue("NewEntries_ApplyToExisting", 1) == 1);
 
             Behavior_SortProjectsBy = (int)Key.GetValue("SortProjectsBy", 0);
             Behavior_SortProjectsByDirection = (int)Key.GetValue("SortProjectsByDirection", 0);
@@ -860,6 +863,7 @@ namespace Timekeeper.Classes
             Key.SetValue("NewEntries_Activity", Behavior_NewEntries_Activity, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("NewEntries_Location", Behavior_NewEntries_Location, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("NewEntries_Category", Behavior_NewEntries_Category, Microsoft.Win32.RegistryValueKind.DWord);
+            Key.SetValue("NewEntries_ApplyToExisting", Behavior_NewEntries_ApplyToExisting, Microsoft.Win32.RegistryValueKind.DWord);
 
             Key.SetValue("SortProjectsBy", Behavior_SortProjectsBy, Microsoft.Win32.RegistryValueKind.DWord);
             Key.SetValue("SortProjectsByDirection", Behavior_SortProjectsByDirection, Microsoft.Win32.RegistryValueKind.DWord);

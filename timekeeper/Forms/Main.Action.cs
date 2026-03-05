@@ -43,7 +43,7 @@ namespace Timekeeper.Forms
 
             if (followType != null && followType > 0)
             {
-                if (!isBrowsing) // Still not sure if this makes sense or just always allow this?
+                if ((isBrowsing && Options.Behavior_NewEntries_ApplyToExisting) || !isBrowsing)
                 {
                     switch (followType)
                     {
