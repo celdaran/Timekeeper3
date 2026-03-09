@@ -22,11 +22,15 @@ namespace Timekeeper
         public const string TITLE = "Timekeeper";
         public const string IDENTIFIER = "7EFF6E35-2448-4AA8-BBB0-441536BE592F";
 
+        private static readonly object[] _descAttribs = Assembly.GetEntryAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+
         public static readonly string VERSION = Assembly.GetEntryAssembly().GetName().Version.ToString();
-        public static readonly string SHORT_VERSION = VERSION.Substring(0, 3);
+        public static readonly string SHORT_VERSION = Version.Parse(VERSION).ToString(2);
         public static readonly object[] ATTRIBS = Assembly.GetEntryAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
-        public static readonly string COPYRIGHT = ((AssemblyCopyrightAttribute)ATTRIBS[0]).Copyright;
-        public static readonly string RELEASE_DATE = "Spring 2026 Prerelease";
+        public static readonly string COPYRIGHT =    ((AssemblyCopyrightAttribute)ATTRIBS[0]).Copyright;
+        public static readonly string RELEASE_DATE = (_descAttribs.Length > 0)
+            ? ((AssemblyDescriptionAttribute)_descAttribs[0]).Description.Split(',').Last().Trim()
+            : "Coming Soon";
 
         public static readonly string CWD = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
@@ -106,6 +110,30 @@ namespace Timekeeper
                 Options = new Classes.Options();
             }
             return Options;
+        }
+
+        //---------------------------------------------------------------------
+        // Version helper
+        //---------------------------------------------------------------------
+
+        // Inside your Timekeeper class
+        public static string GetReleaseType()
+        {
+            string[] parts = VERSION.Split('.');
+
+            // Safety check: Ensure we have at least the 4th digit
+            if (parts.Length < 4) return "Development Build";
+
+            string typeDigit = parts[3];
+
+            switch (typeDigit)
+            {
+                case "1": return "Alpha";
+                case "3": return "Beta";
+                case "5": return "Release Candidate";
+                case "9": return "Production";
+                default: return "Internal Build";
+            }
         }
 
         //---------------------------------------------------------------------
