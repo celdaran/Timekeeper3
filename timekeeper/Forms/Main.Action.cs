@@ -1572,6 +1572,7 @@ namespace Timekeeper.Forms
             try {
                 // Save any current edits first (TK-466)
                 browserEntry.Save();
+                Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
 
                 // Determine the duration of each split
                 long ChunkSize = (browserEntry.StopTime.Ticks - browserEntry.StartTime.Ticks) / parts;
@@ -1626,7 +1627,6 @@ namespace Timekeeper.Forms
         }
 
         //---------------------------------------------------------------------
-        // Planned replacement for above
 
         private void Action_SplitEntryByContent()
         {
