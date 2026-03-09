@@ -1632,16 +1632,40 @@ namespace Timekeeper.Forms
         {
             // Save any current edits first (TK-466)
             browserEntry.Save();
+            Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
 
-            // Regex: Optional bullet, memo, then optional [mins] with potential trailing spaces
-            var bulletRegex = new System.Text.RegularExpressions.Regex(@"^[*|-]?\s*(?<memo>.*?)\s*(?:\[(?<mins>\d+)\])?\s*$");
+            // Updated Regex: Captured 'val' can be "60" or "18:34 - 20:13"
+            var bulletRegex = new System.Text.RegularExpressions.Regex(@"^[*|-]?\s*(?<memo>.*?)\s*(?:\[(?<val>.*?)\])?\s*$");
 
             var lines = browserEntry.Memo.Split(new[] { Environment.NewLine, "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(l => bulletRegex.Match(l)) // Removed .Trim() here to let Regex handle whitespace
+                .Select(l => bulletRegex.Match(l))
                 .Where(m => m.Success && !string.IsNullOrWhiteSpace(m.Groups["memo"].Value))
-                .Select(m => new {
-                    Memo = m.Groups["memo"].Value.Trim(),
-                    FixedMins = m.Groups["mins"].Success ? (long?)long.Parse(m.Groups["mins"].Value) : null
+                .Select(m => {
+                    string memo = m.Groups["memo"].Value.Trim();
+                    long? mins = null;
+
+                    if (m.Groups["val"].Success)
+                    {
+                        string rawVal = m.Groups["val"].Value.Trim();
+
+                        if (rawVal.Contains("-")) // Handle [18:34 - 20:13]
+                        {
+                            var parts = rawVal.Split('-').Select(p => p.Trim()).ToArray();
+                            if (parts.Length == 2 &&
+                                DateTime.TryParse(parts[0], out DateTime start) &&
+                                DateTime.TryParse(parts[1], out DateTime end))
+                            {
+                                if (end < start) end = end.AddDays(1); // Basic overnight support
+                                mins = (long)(end - start).TotalMinutes;
+                            }
+                        }
+                        else if (long.TryParse(rawVal, out long parsedMins)) // Handle [60]
+                        {
+                            mins = parsedMins;
+                        }
+                    }
+
+                    return new { Memo = memo, FixedMins = mins };
                 })
                 .ToList();
 
@@ -1650,20 +1674,17 @@ namespace Timekeeper.Forms
                 Common.Warn("To split by bullets you need at least two lines, and each line must start with '*'");
                 return;
             }
-            ;
 
             try
             {
                 long totalTicks = browserEntry.StopTime.Ticks - browserEntry.StartTime.Ticks;
                 long totalFixedTicks = lines.Where(l => l.FixedMins.HasValue).Sum(l => TimeSpan.FromMinutes(l.FixedMins.Value).Ticks);
 
-                // --- DATA PROTECTION ---
                 if (totalFixedTicks > totalTicks)
                 {
                     long overBy = (totalFixedTicks - totalTicks) / TimeSpan.TicksPerMinute;
-                    Common.Warn($"The total time defined in brackets ({totalFixedTicks / TimeSpan.TicksPerMinute}m) " +
-                                $"exceeds the original entry duration ({totalTicks / TimeSpan.TicksPerMinute}m) by {overBy} minutes. " +
-                                "Please adjust your numbers.");
+                    Common.Warn($"The total time defined ({totalFixedTicks / TimeSpan.TicksPerMinute}m) " +
+                                $"exceeds the original entry duration ({totalTicks / TimeSpan.TicksPerMinute}m) by {overBy}m.");
                     return;
                 }
 
