@@ -1735,7 +1735,82 @@ namespace Timekeeper.Forms
                 Timekeeper.Exception(x);
             }
         }
-        
+
+        //---------------------------------------------------------------------
+
+        private void Action_InsertEntry(int direction)
+        {
+            try
+            {
+                // 1. Ensure we have the latest data from the form
+                browserEntry.Save();
+                Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
+
+                // 2. Clone the current entry
+                Classes.JournalEntry newEntry = browserEntry.Copy();
+
+                // 3. Set a placeholder memo
+                newEntry.Memo = "New entry inserted " + (direction > 0 ? "after" : "before") + " Journal Entry Id " + browserEntry.JournalId;
+
+                // 4. Time Math: Snap the new entry to the edge of the current one and fill gap
+                long neighborId = (direction > 0) ? browserEntry.GetNextId() : browserEntry.GetPreviousId();
+                TimeSpan duration;
+
+                if (neighborId > 0)
+                {
+                    var neighbor = new JournalEntry(neighborId);
+
+                    // Calculate the absolute difference between the two entries
+                    if (direction > 0) // AFTER: Gap between current Stop and neighbor Start
+                        duration = neighbor.StartTime - browserEntry.StopTime;
+                    else // BEFORE: Gap between neighbor Stop and current Start
+                        duration = browserEntry.StartTime - neighbor.StopTime;
+
+                    // If no room? Default newly-inserted entry to one minute
+                    if (duration.TotalSeconds < 1)
+                        duration = TimeSpan.FromMinutes(1);
+                } else {
+                    // No neighbor found (end of the line), use 1 minute (actually, this code might be unreachable: need to test more)
+                    duration = TimeSpan.FromMinutes(1);
+                }
+
+                if (direction > 0)
+                {
+                    // INSERT AFTER
+                    newEntry.StartTime = browserEntry.StopTime;
+                    newEntry.StopTime = newEntry.StartTime.Add(duration);
+                }
+                else
+                {
+                    // INSERT BEFORE
+                    newEntry.StopTime = browserEntry.StartTime;
+                    newEntry.StartTime = newEntry.StopTime.Subtract(duration);
+                }
+
+                newEntry.Seconds = (long)duration.TotalSeconds;
+
+                // 5. Commit to SQLite
+                if (newEntry.Create())
+                {
+                    // 6. UI: Jump the browser to the newly created entry
+                    browserEntry = newEntry.Copy();
+                    Browser_EntryToForm(browserEntry);
+
+                    // Optional: Focus the Memo field so you can start typing immediately
+                    MemoEditor.Focus();
+                }
+                else
+                {
+                    throw new Exception("Database failed to create the inserted entry.");
+                }
+            }
+            catch (Exception e)
+            {
+                Common.Warn("Could not insert the new entry.");
+                Timekeeper.Exception(e);
+            }
+        }
+
         //---------------------------------------------------------------------
 
         private void Action_JoinEntries()

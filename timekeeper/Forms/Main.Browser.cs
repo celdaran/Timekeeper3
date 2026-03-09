@@ -312,12 +312,14 @@ namespace Timekeeper.Forms
         {
             MenuToolbarBrowserCloseStartGap.Enabled = enabled;
             CloseStartGapButton.Enabled = enabled;
+            ToolbarInsertBefore.Enabled = enabled;
         }
 
         private void Browser_EnableCloseStopGap(bool enabled)
         {
             MenuToolbarBrowserCloseEndGap.Enabled = enabled;
             CloseStopGapButton.Enabled = enabled;
+            ToolbarInsertAfter.Enabled = enabled;
         }
 
         private void Browser_EnableRevert(bool enabled)

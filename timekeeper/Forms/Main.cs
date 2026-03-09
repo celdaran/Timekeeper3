@@ -441,6 +441,18 @@ namespace Timekeeper.Forms
             Action_SplitEntryByContent();
         }
 
+        // Toolbar Functions | Browser | Split | Insert After
+        private void MenuToolbarBrowserInsertAfter_Click(object sender, EventArgs e)
+        {
+            Action_InsertEntry(1);
+        }
+
+        // Toolbar Functions | Browser | Split | Insert Before
+        private void MenuToolbarBrowserInsertBefore_Click(object sender, EventArgs e)
+        {
+            Action_InsertEntry(-1);
+        }
+
         // Toolbar Functions | Browser | Split | Join Entries
         private void MenuToolbarBrowserJoinEntries_Click(object sender, EventArgs e)
         {
