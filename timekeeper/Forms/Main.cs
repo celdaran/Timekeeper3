@@ -163,6 +163,14 @@ namespace Timekeeper.Forms
             OpenForms.Add(FindDialog);
         }
 
+        // Action | Audit
+        private void MenuActionAudit_Click(object sender, EventArgs e)
+        {
+            Forms.Audit AuditDialog = new Forms.Audit(Browser_GotoEntry);
+            AuditDialog.Show();
+            OpenForms.Add(AuditDialog);
+        }
+
         // Action | Manage Projects
         private void MenuActionManageProjects_Click(object sender, EventArgs e)
         {

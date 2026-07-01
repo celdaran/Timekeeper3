@@ -151,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Audit.cs" />
+    <Compile Include="Classes\AuditView.cs" />
     <Compile Include="Classes\BaseView.cs" />
     <Compile Include="Classes\BaseViewCollection.cs" />
     <Compile Include="Classes\CalendarView.cs" />
@@ -259,6 +260,12 @@
     </Compile>
     <Compile Include="Forms\Find.Designer.cs">
       <DependentUpon>Find.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Audit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Audit.Designer.cs">
+      <DependentUpon>Audit.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Shared\TreeAttributeManager.cs">
       <SubType>Form</SubType>
@@ -466,6 +473,9 @@
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Audit.resx">
+      <DependentUpon>Audit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Reports\DatabaseCheck.resx">
       <DependentUpon>DatabaseCheck.cs</DependentUpon>
