@@ -316,9 +316,14 @@ namespace Timekeeper
 
         //---------------------------------------------------------------------
 
-        public static string DateForDisplay(DateTimeOffset datetime)
+        public static string DateForDisplay(DateTimeOffset? datetime)
         {
-            return UserDateTimeString(datetime);
+            if (datetime == null) {
+                return "";
+            } else {
+                DateTimeOffset Converted = (DateTimeOffset)datetime;
+                return UserDateTimeString(Converted);
+            }
         }
 
         //---------------------------------------------------------------------
