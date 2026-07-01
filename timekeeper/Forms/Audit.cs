@@ -104,6 +104,12 @@ namespace Timekeeper.Forms
         // Toolbar Commands
         //----------------------------------------------------------------------
 
+        private void AuditDate_Leave(object sender, EventArgs e)
+        {
+            RunFind();
+        }
+
+
         private void RefreshButton_Click(object sender, EventArgs e)
         {
             RunFind();
@@ -112,6 +118,8 @@ namespace Timekeeper.Forms
         //----------------------------------------------------------------------
         // Other events
         //----------------------------------------------------------------------
+
+        // TODO: These are copy/pasted from Find
 
         private void JournalFindResults_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -123,6 +131,8 @@ namespace Timekeeper.Forms
                 this.Browser_GotoEntry(JournalId);
             }
         }
+
+        //----------------------------------------------------------------------
 
         private void JournalResultsGrid_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
@@ -136,6 +146,8 @@ namespace Timekeeper.Forms
                 }
             }
         }
+
+        //----------------------------------------------------------------------
 
         private void JournalResultsGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -158,10 +170,6 @@ namespace Timekeeper.Forms
                     }
                 }
             }
-        }
-
-        private void JournalResultsGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
         }
 
         //----------------------------------------------------------------------
