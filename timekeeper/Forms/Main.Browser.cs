@@ -490,7 +490,9 @@ namespace Timekeeper.Forms
 
                 if (browserEntry.JournalId > 0) {
 
+                    IgnoreDimensionChanges = true;
                     Browser_DisplayRow();
+                    IgnoreDimensionChanges = false;
 
                     isBrowsing = true;
 
