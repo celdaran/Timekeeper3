@@ -20,7 +20,6 @@ namespace Timekeeper.Forms
         // Properties
         //---------------------------------------------------------------------
 
-        private Classes.Options Options;
         private Classes.Widgets Widgets;
 
         private Classes.AuditView AuditView;
@@ -28,6 +27,8 @@ namespace Timekeeper.Forms
         public delegate void BrowserCallback(long entryId);
 
         private BrowserCallback Browser_GotoEntry;
+
+        private string sortOrder = "j.StartTime ASC";
 
         //---------------------------------------------------------------------
         // Constructor
@@ -37,13 +38,14 @@ namespace Timekeeper.Forms
         {
             InitializeComponent();
 
-            this.Options = Timekeeper.Options;
             this.AuditView = new Classes.AuditView();
             this.Widgets = new Classes.Widgets();
 
             this.Browser_GotoEntry = f;
 
-            JournalResultsGrid.Visible = true;
+            this.AuditDate.Text = AuditView.GetDateAfterMostRecentlyReconciledEntry();
+            RunFind(AuditDate.Text, this.sortOrder);
+
             JournalResultsGrid.Dock = DockStyle.Fill;
         }
 
@@ -55,22 +57,8 @@ namespace Timekeeper.Forms
         {
             try {
                 // Restore window metrics
-                Height = Options.Find_Height;
-                Width = Options.Find_Width;
-                Top = Options.Find_Top;
-                Left = Options.Find_Left;
-
-                // Restore column widths
-                JournalResultsGrid.Columns["JournalId"].Width = Options.Find_JournalGrid_JournalIdWidth;
-                JournalResultsGrid.Columns["ProjectName"].Width = Options.Find_JournalGrid_ProjectNameWidth;
-                JournalResultsGrid.Columns["ActivityName"].Width = Options.Find_JournalGrid_ActivityNameWidth;
-                JournalResultsGrid.Columns["StartTime"].Width = Options.Find_JournalGrid_StartTimeWidth;
-                JournalResultsGrid.Columns["StopTime"].Width = Options.Find_JournalGrid_StopTimeWidth;
-                JournalResultsGrid.Columns["Seconds"].Width = Options.Find_JournalGrid_SecondsWidth;
-                JournalResultsGrid.Columns["Memo"].Width = Options.Find_JournalGrid_MemoWidth;
-                JournalResultsGrid.Columns["LocationName"].Width = Options.Find_JournalGrid_LocationNameWidth;
-                JournalResultsGrid.Columns["CategoryName"].Width = Options.Find_JournalGrid_CategoryNameWidth;
-                JournalResultsGrid.Columns["IsLocked"].Width = Options.Find_JournalGrid_IsLockedWidth;
+                // Note: setting window metrics for Audit is currently not implemented.
+                // Refer to Find.cs in the future as a reference for how to implement this.
             }
             catch (Exception x) {
                 Timekeeper.Exception(x);
@@ -82,37 +70,102 @@ namespace Timekeeper.Forms
         private void Find_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Save window metrics
-            Options.Find_Height = Height;
-            Options.Find_Width = Width;
-            Options.Find_Top = Top;
-            Options.Find_Left = Left;
-
-            // Save column widths
-            Options.Find_JournalGrid_JournalIdWidth = JournalResultsGrid.Columns["JournalId"].Width;
-            Options.Find_JournalGrid_ProjectNameWidth = JournalResultsGrid.Columns["ProjectName"].Width;
-            Options.Find_JournalGrid_ActivityNameWidth = JournalResultsGrid.Columns["ActivityName"].Width;
-            Options.Find_JournalGrid_StartTimeWidth = JournalResultsGrid.Columns["StartTime"].Width;
-            Options.Find_JournalGrid_StopTimeWidth = JournalResultsGrid.Columns["StopTime"].Width;
-            Options.Find_JournalGrid_SecondsWidth = JournalResultsGrid.Columns["Seconds"].Width;
-            Options.Find_JournalGrid_MemoWidth = JournalResultsGrid.Columns["Memo"].Width;
-            Options.Find_JournalGrid_LocationNameWidth = JournalResultsGrid.Columns["LocationName"].Width;
-            Options.Find_JournalGrid_CategoryNameWidth = JournalResultsGrid.Columns["CategoryName"].Width;
-            Options.Find_JournalGrid_IsLockedWidth = JournalResultsGrid.Columns["IsLocked"].Width;
+            // Note: saving window metrics for Audit is currently not implemented.
         }
 
         //----------------------------------------------------------------------
         // Toolbar Commands
         //----------------------------------------------------------------------
 
-        private void AuditDate_Leave(object sender, EventArgs e)
+        private void GoToPrevDayButton_Click(object sender, EventArgs e)
         {
-            RunFind();
+            string prevDay = AuditView.GetPrevDateFromJournal(AuditDate.Text);
+            AuditDate.Text = prevDay;
+            RunFind(AuditDate.Text, this.sortOrder);
         }
 
+        private void AuditDate_Leave(object sender, EventArgs e)
+        {
+            if (AuditView.IsDateValid(AuditDate.Text)) {
+                RunFind(AuditDate.Text, this.sortOrder);
+            } else
+            {
+                Common.Warn("Invalid date format. Please enter a valid date in the format: YYYY-MM-DD");
+            }
+        }
+
+        private void GoToNextDayButton_Click(object sender, EventArgs e)
+        {
+            string nextDay = AuditView.GetNextDateFromJournal(AuditDate.Text);
+            AuditDate.Text = nextDay;
+            RunFind(AuditDate.Text, this.sortOrder);
+        }
+
+        private void ReconcileAllButton_Click(object sender, EventArgs e)
+        {
+            if (!AuditView.IsDateValid(AuditDate.Text))
+            {
+                Common.Warn("Invalid date format. Please enter a valid date in the format: YYYY-MM-DD");
+                return;
+            }
+
+            if (Common.Prompt("This will mark all entries for date " + AuditDate.Text + " as reconciled. Continue?") == DialogResult.Yes)
+            {
+                var rowsUpdated = AuditView.ReconcileAll(AuditDate.Text);
+                Common.Info("Updated " + rowsUpdated + " entries.");
+                RunFind(AuditDate.Text, this.sortOrder);
+            }
+            else
+            {
+                Common.Info("No action taken");
+            }
+        }
 
         private void RefreshButton_Click(object sender, EventArgs e)
         {
-            RunFind();
+            RunFind(AuditDate.Text, this.sortOrder);
+        }
+
+        private void SortByStartTimeButton_Click(object sender, EventArgs e)
+        {
+            this.sortOrder = "j.StartTime ASC";
+            RunFind(AuditDate.Text, this.sortOrder);
+        }
+
+        private void SortByProjectButton_Click(object sender, EventArgs e)
+        {
+            this.sortOrder = "p.Name ASC, a.Name ASC, j.StartTime ASC";
+            RunFind(AuditDate.Text, this.sortOrder);
+        }
+
+        private void SortByActivityButton_Click(object sender, EventArgs e)
+        {
+            this.sortOrder = "a.Name ASC, p.Name ASC, j.StartTime ASC";
+            RunFind(AuditDate.Text, this.sortOrder);
+        }
+
+        private void SortByLocationButton_Click(object sender, EventArgs e)
+        {
+            this.sortOrder = "l.Name ASC, j.StartTime ASC";
+            RunFind(AuditDate.Text, this.sortOrder);
+        }
+
+        private void SortByCategoryButton_Click(object sender, EventArgs e)
+        {
+            this.sortOrder = "c.Name ASC, p.Name ASC, a.Name ASC, j.StartTime ASC";
+            RunFind(AuditDate.Text, this.sortOrder);
+        }
+
+        private void SortByDurationButton_Click(object sender, EventArgs e)
+        {
+            this.sortOrder = "Duration ASC";
+            RunFind(AuditDate.Text, this.sortOrder);
+        }
+
+        private void SortByModifiedTimeButton_Click(object sender, EventArgs e)
+        {
+            this.sortOrder = "j.ModifyTime ASC, p.Name ASC, a.Name ASC";
+            RunFind(AuditDate.Text, this.sortOrder);
         }
 
         //----------------------------------------------------------------------
@@ -176,11 +229,11 @@ namespace Timekeeper.Forms
         // Internal Helpers
         //----------------------------------------------------------------------
 
-        private void RunFind()
+        private void RunFind(string auditDate, string whereClause)
         {
             int Count = 0;
 
-            Count = RunJournalFind();
+            Count = RunJournalFind(auditDate, whereClause);
 
             string StatusBarText = String.Format("{0} found.",
                 Timekeeper.Pluralize(Count, "entry", "entries"));
@@ -192,13 +245,13 @@ namespace Timekeeper.Forms
 
         private bool _isPopulating;
 
-        private int RunJournalFind()
+        private int RunJournalFind(string auditDate, string whereClause)
         {
             //----------------------------------------------
             // Populate Table
             //----------------------------------------------
 
-            Table FindResults = AuditView.JournalResults();
+            Table FindResults = AuditView.JournalResults(auditDate, whereClause);
 
             JournalResultsGrid.Rows.Clear();
 
@@ -207,9 +260,14 @@ namespace Timekeeper.Forms
             foreach (Row JournalEntry in FindResults) {
 
                 JournalResultsGrid.Rows.Add(
-                    Timekeeper.DateForDisplay(JournalEntry["StartTime"]),
-                    Timekeeper.DateForDisplay(JournalEntry["StopTime"]),
-                    Timekeeper.FormatSeconds(JournalEntry["Seconds"]),
+                    JournalEntry["JournalId"],
+                    JournalEntry["IsReconciled"],
+                    Timekeeper.DateForDisplay(JournalEntry["ReconcileTime"]),
+                    JournalEntry["ShortStartTime"],
+                    JournalEntry["ShortStopTime"],
+                    JournalEntry["Duration"],
+                    JournalEntry["Gap"],
+                    JournalEntry["RunningTotal"],
                     JournalEntry["ProjectId"],
                     JournalEntry["ProjectName"],
                     JournalEntry["ActivityId"],
@@ -218,35 +276,17 @@ namespace Timekeeper.Forms
                     JournalEntry["LocationName"],
                     JournalEntry["CategoryId"],
                     JournalEntry["CategoryName"],
-                    JournalEntry["Memo"],
-                    JournalEntry["IsReconciled"],
-                    JournalEntry["IsIgnored"],
-                    JournalEntry["IsLocked"],
-                    JournalEntry["JournalId"]
+                    JournalEntry["MemoExcerpt"],
+                    Timekeeper.DateForDisplay(JournalEntry["CreateTime"]),
+                    Timekeeper.DateForDisplay(JournalEntry["ModifyTime"])
                     );
-            }
-
-            //----------------------------------------------
-            // Sort (or re-sort) the table
-            //----------------------------------------------
-
-            DataGridViewColumn CurrentlySortedColumn = JournalResultsGrid.SortedColumn;
-
-            if (CurrentlySortedColumn == null) {
-                DataGridViewColumn DefaultSortColumn = JournalResultsGrid.Columns["StartTime"];
-                JournalResultsGrid.Sort(DefaultSortColumn, ListSortDirection.Ascending);
-            } else {
-                ListSortDirection CurrentDirection = ListSortDirection.Ascending;
-                if (JournalResultsGrid.SortOrder == SortOrder.Descending) {
-                    CurrentDirection = ListSortDirection.Descending;
-                }
-                JournalResultsGrid.Sort(CurrentlySortedColumn, CurrentDirection);
             }
 
             _isPopulating = false;
 
             return FindResults.Count;
         }
+
 
         //---------------------------------------------------------------------
 
