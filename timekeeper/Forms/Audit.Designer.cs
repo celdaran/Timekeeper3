@@ -28,10 +28,10 @@ namespace Timekeeper.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Audit));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.SelectDateLabel = new System.Windows.Forms.ToolStripLabel();
             this.AuditDate = new System.Windows.Forms.ToolStripTextBox();
@@ -79,6 +79,7 @@ namespace Timekeeper.Forms
             // 
             // ToolStrip
             // 
+            this.ToolStrip.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.ToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SelectDateLabel,
@@ -106,14 +107,14 @@ namespace Timekeeper.Forms
             // 
             // SelectDateLabel
             // 
-            this.SelectDateLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectDateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SelectDateLabel.Name = "SelectDateLabel";
-            this.SelectDateLabel.Size = new System.Drawing.Size(75, 22);
+            this.SelectDateLabel.Size = new System.Drawing.Size(66, 22);
             this.SelectDateLabel.Text = "Select Date:";
             // 
             // AuditDate
             // 
-            this.AuditDate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.AuditDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.AuditDate.Name = "AuditDate";
             this.AuditDate.Size = new System.Drawing.Size(100, 25);
             this.AuditDate.Text = "YYYY-MM-DD";
@@ -166,50 +167,55 @@ namespace Timekeeper.Forms
             // 
             // SortByStartTimeButton
             // 
+            this.SortByStartTimeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.SortByStartTimeButton.Image = global::Timekeeper.Properties.Resources.ImageIconMedium;
             this.SortByStartTimeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SortByStartTimeButton.Name = "SortByStartTimeButton";
-            this.SortByStartTimeButton.Size = new System.Drawing.Size(80, 22);
+            this.SortByStartTimeButton.Size = new System.Drawing.Size(75, 22);
             this.SortByStartTimeButton.Text = "Start Time";
             this.SortByStartTimeButton.ToolTipText = "Sort by Journal Start Time";
             this.SortByStartTimeButton.Click += new System.EventHandler(this.SortByStartTimeButton_Click);
             // 
             // SortByProjectButton
             // 
+            this.SortByProjectButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.SortByProjectButton.Image = global::Timekeeper.Properties.Resources.ImageIconSmallProject;
             this.SortByProjectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SortByProjectButton.Name = "SortByProjectButton";
-            this.SortByProjectButton.Size = new System.Drawing.Size(64, 22);
+            this.SortByProjectButton.Size = new System.Drawing.Size(60, 22);
             this.SortByProjectButton.Text = "Project";
             this.SortByProjectButton.ToolTipText = "Sort by Project, by Activity";
             this.SortByProjectButton.Click += new System.EventHandler(this.SortByProjectButton_Click);
             // 
             // SortByActivityButton
             // 
+            this.SortByActivityButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.SortByActivityButton.Image = global::Timekeeper.Properties.Resources.ImageIconSmallActivity;
             this.SortByActivityButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SortByActivityButton.Name = "SortByActivityButton";
-            this.SortByActivityButton.Size = new System.Drawing.Size(67, 22);
+            this.SortByActivityButton.Size = new System.Drawing.Size(61, 22);
             this.SortByActivityButton.Text = "Activity";
             this.SortByActivityButton.ToolTipText = "Sort by Activity, by Project";
             this.SortByActivityButton.Click += new System.EventHandler(this.SortByActivityButton_Click);
             // 
             // SortByLocationButton
             // 
+            this.SortByLocationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.SortByLocationButton.Image = global::Timekeeper.Properties.Resources.ImageIconSmallLocation;
             this.SortByLocationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SortByLocationButton.Name = "SortByLocationButton";
-            this.SortByLocationButton.Size = new System.Drawing.Size(73, 22);
+            this.SortByLocationButton.Size = new System.Drawing.Size(68, 22);
             this.SortByLocationButton.Text = "Location";
             this.SortByLocationButton.ToolTipText = "Sort by Location, by Start Time";
             this.SortByLocationButton.Click += new System.EventHandler(this.SortByLocationButton_Click);
             // 
             // SortByCategoryButton
             // 
+            this.SortByCategoryButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.SortByCategoryButton.Image = global::Timekeeper.Properties.Resources.ImageIconSmallCategory;
             this.SortByCategoryButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SortByCategoryButton.Name = "SortByCategoryButton";
-            this.SortByCategoryButton.Size = new System.Drawing.Size(75, 22);
+            this.SortByCategoryButton.Size = new System.Drawing.Size(69, 22);
             this.SortByCategoryButton.Text = "Category";
             this.SortByCategoryButton.ToolTipText = "Sort by Category, by Project, by Activity";
             this.SortByCategoryButton.Click += new System.EventHandler(this.SortByCategoryButton_Click);
@@ -217,10 +223,11 @@ namespace Timekeeper.Forms
             // SortByDurationButton
             // 
             this.SortByDurationButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SortByDurationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.SortByDurationButton.Image = ((System.Drawing.Image)(resources.GetObject("SortByDurationButton.Image")));
             this.SortByDurationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SortByDurationButton.Name = "SortByDurationButton";
-            this.SortByDurationButton.Size = new System.Drawing.Size(57, 22);
+            this.SortByDurationButton.Size = new System.Drawing.Size(51, 22);
             this.SortByDurationButton.Text = "Duration";
             this.SortByDurationButton.ToolTipText = "Sort by Journal Entry Duration";
             this.SortByDurationButton.Click += new System.EventHandler(this.SortByDurationButton_Click);
@@ -228,10 +235,11 @@ namespace Timekeeper.Forms
             // SortByModifiedTimeButton
             // 
             this.SortByModifiedTimeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SortByModifiedTimeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.SortByModifiedTimeButton.Image = ((System.Drawing.Image)(resources.GetObject("SortByModifiedTimeButton.Image")));
             this.SortByModifiedTimeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SortByModifiedTimeButton.Name = "SortByModifiedTimeButton";
-            this.SortByModifiedTimeButton.Size = new System.Drawing.Size(88, 22);
+            this.SortByModifiedTimeButton.Size = new System.Drawing.Size(77, 22);
             this.SortByModifiedTimeButton.Text = "Modified Time";
             this.SortByModifiedTimeButton.ToolTipText = "Sort by Journal Entry Modified Time";
             this.SortByModifiedTimeButton.Click += new System.EventHandler(this.SortByModifiedTimeButton_Click);
@@ -294,8 +302,8 @@ namespace Timekeeper.Forms
             // 
             // JournalId
             // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.JournalId.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.JournalId.DefaultCellStyle = dataGridViewCellStyle1;
             this.JournalId.HeaderText = "ID";
             this.JournalId.MinimumWidth = 8;
             this.JournalId.Name = "JournalId";
@@ -319,8 +327,8 @@ namespace Timekeeper.Forms
             // 
             // StartTime
             // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.StartTime.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.StartTime.DefaultCellStyle = dataGridViewCellStyle2;
             this.StartTime.HeaderText = "Start";
             this.StartTime.Name = "StartTime";
             this.StartTime.ReadOnly = true;
@@ -328,8 +336,8 @@ namespace Timekeeper.Forms
             // 
             // StopTime
             // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.StopTime.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.StopTime.DefaultCellStyle = dataGridViewCellStyle3;
             this.StopTime.HeaderText = "Stop";
             this.StopTime.Name = "StopTime";
             this.StopTime.ReadOnly = true;
@@ -337,8 +345,8 @@ namespace Timekeeper.Forms
             // 
             // Seconds
             // 
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Seconds.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Seconds.DefaultCellStyle = dataGridViewCellStyle4;
             this.Seconds.HeaderText = "Duration";
             this.Seconds.Name = "Seconds";
             this.Seconds.ReadOnly = true;
