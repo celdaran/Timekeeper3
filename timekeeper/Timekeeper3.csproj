@@ -201,6 +201,9 @@
     <Compile Include="Classes\Widgets.Trees.cs" />
     <Compile Include="Classes\Widgets.Views.cs" />
     <Compile Include="Classes\Widgets.Wizard.cs" />
+    <Compile Include="Forms\Tools\SafeMonthCalendar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\Shared\EntryProperties.cs">
       <SubType>Form</SubType>
     </Compile>

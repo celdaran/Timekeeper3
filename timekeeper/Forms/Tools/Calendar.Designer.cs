@@ -30,7 +30,7 @@ namespace Timekeeper.Forms.Tools
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.CalendarSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.CalendarControl = new System.Windows.Forms.MonthCalendar();
+            this.CalendarControl = new SafeMonthCalendar();
             this.FilterResultsGrid = new System.Windows.Forms.DataGridView();
             this.StartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StopTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -68,7 +68,7 @@ namespace Timekeeper.Forms.Tools
             // CalendarSplitContainer.Panel2
             // 
             this.CalendarSplitContainer.Panel2.Controls.Add(this.FilterResultsGrid);
-            this.CalendarSplitContainer.Size = new System.Drawing.Size(740, 224);
+            this.CalendarSplitContainer.Size = new System.Drawing.Size(1173, 224);
             this.CalendarSplitContainer.SplitterDistance = 239;
             this.CalendarSplitContainer.TabIndex = 5;
             // 
@@ -117,7 +117,7 @@ namespace Timekeeper.Forms.Tools
             this.FilterResultsGrid.Location = new System.Drawing.Point(0, 0);
             this.FilterResultsGrid.Name = "FilterResultsGrid";
             this.FilterResultsGrid.RowHeadersVisible = false;
-            this.FilterResultsGrid.Size = new System.Drawing.Size(497, 224);
+            this.FilterResultsGrid.Size = new System.Drawing.Size(930, 224);
             this.FilterResultsGrid.TabIndex = 2;
             this.FilterResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.FilterResultsGrid_CellDoubleClick);
             // 
@@ -233,7 +233,7 @@ namespace Timekeeper.Forms.Tools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(740, 271);
+            this.ClientSize = new System.Drawing.Size(1173, 271);
             this.Controls.Add(this.CalendarSplitContainer);
             this.Name = "Calendar";
             this.Text = "Calendar";
