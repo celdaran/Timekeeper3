@@ -1634,53 +1634,102 @@ namespace Timekeeper.Forms
             browserEntry.Save();
             Browser_FormToEntry(ref browserEntry, browserEntry.JournalId);
 
-            // Updated Regex: Captured 'val' can be "60" or "18:34 - 20:13"
+            // Regex holds up: 'val' matches "60", "18:34 - 20:13", or "10:09"
             var bulletRegex = new System.Text.RegularExpressions.Regex(@"^[*|-]?\s*(?<memo>.*?)\s*(?:\[(?<val>.*?)\])?\s*$");
 
-            var lines = browserEntry.Memo.Split(new[] { Environment.NewLine, "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries)
+            // Phase 1: Parse the structure into a raw list first
+            var parsedLines = browserEntry.Memo.Split(new[] { Environment.NewLine, "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(l => bulletRegex.Match(l))
                 .Where(m => m.Success && !string.IsNullOrWhiteSpace(m.Groups["memo"].Value))
                 .Select(m => {
                     string memo = m.Groups["memo"].Value.Trim();
-                    long? mins = null;
+                    string rawVal = m.Groups["val"].Success ? m.Groups["val"].Value.Trim() : null;
 
-                    if (m.Groups["val"].Success)
+                    DateTime? parsedTimePoint = null;
+                    long? fixedMins = null;
+
+                    if (!string.IsNullOrEmpty(rawVal))
                     {
-                        string rawVal = m.Groups["val"].Value.Trim();
-
-                        if (rawVal.Contains("-")) // Handle [18:34 - 20:13]
+                        if (rawVal.Contains("-")) // Handle legacy range [18:34 - 20:13]
                         {
                             var parts = rawVal.Split('-').Select(p => p.Trim()).ToArray();
                             if (parts.Length == 2 &&
                                 DateTime.TryParse(parts[0], out DateTime start) &&
                                 DateTime.TryParse(parts[1], out DateTime end))
                             {
-                                if (end < start) end = end.AddDays(1); // Basic overnight support
-                                mins = (long)(end - start).TotalMinutes;
+                                if (end < start) end = end.AddDays(1); // Overnight support
+                                fixedMins = (long)(end - start).TotalMinutes;
                             }
                         }
-                        else if (long.TryParse(rawVal, out long parsedMins)) // Handle [60]
+                        else if (DateTime.TryParse(rawVal, out DateTime singleTime)) // New Checkpoint: Handle [10:09]
                         {
-                            mins = parsedMins;
+                            // Fix: Force the parsed timepoint to use the original journal entry's historical date component
+                            parsedTimePoint = browserEntry.StartTime.Date
+                                            + singleTime.TimeOfDay;
+                        }
+                        else if (long.TryParse(rawVal, out long parsedMins)) // Handle explicit duration [60]
+                        {
+                            fixedMins = parsedMins;
                         }
                     }
 
-                    return new { Memo = memo, FixedMins = mins };
+                    return new { Memo = memo, FixedMins = fixedMins, TimePoint = parsedTimePoint };
                 })
                 .ToList();
 
-            if (lines.Count < 2)
+            if (parsedLines.Count < 2)
             {
-                Common.Warn("To split by bullets you need at least two lines, and each line must start with '*'");
+                Common.Warn("To split by bullets you need at least two lines.");
+                return;
+            }
+
+            bool reliesOnSequence = parsedLines.Any(l => l.TimePoint.HasValue);
+            bool hasInvalidTerminalLine = !parsedLines.Last().TimePoint.HasValue
+                                       && !parsedLines.Last().FixedMins.HasValue;
+
+            if (reliesOnSequence && hasInvalidTerminalLine)
+            {
+                Common.Warn("The final entry in a timeline must have an explicit timestamp, duration, or range.");
                 return;
             }
 
             try
             {
-                long totalTicks = browserEntry.StopTime.Ticks - browserEntry.StartTime.Ticks;
-                long totalFixedTicks = lines.Where(l => l.FixedMins.HasValue).Sum(l => TimeSpan.FromMinutes(l.FixedMins.Value).Ticks);
+                // Phase 2: Compute durations using standard KeyValuePair instead of modern Tuples
+                var finalLines = new List<KeyValuePair<string, long?>>();
 
-                if (totalFixedTicks > totalTicks)
+                for (int i = 0; i < parsedLines.Count; i++)
+                {
+                    var current = parsedLines[i];
+                    long? mins = current.FixedMins;
+
+                    if (current.TimePoint.HasValue)
+                    {
+                        DateTime start = current.TimePoint.Value;
+
+                        // Because of our validation gate, we can confidently assume 
+                        // the next line has a valid TimePoint, or we default to the session stop time.
+                        DateTime end = (i + 1 < parsedLines.Count)
+                                       ? parsedLines[i + 1].TimePoint.Value
+                                       : browserEntry.StopTime.DateTime;
+
+                        if (end < start) end = end.AddDays(1); // Handle day rollover
+                        mins = (long)(end - start).TotalMinutes;
+                    }
+
+                    finalLines.Add(new KeyValuePair<string, long?>(current.Memo, mins));
+                }
+
+                // Phase 3 (new)
+
+                // Phase 3: Total original budget calculations
+                long totalTicks = browserEntry.StopTime.Ticks - browserEntry.StartTime.Ticks;
+                long totalFixedTicks = finalLines.Where(l => l.Value.HasValue).Sum(l => TimeSpan.FromMinutes(l.Value.Value).Ticks);
+
+                // Add a 2-minute buffer to absorb sub-minute rounding discrepancies
+                long tickBuffer = TimeSpan.FromSeconds(120).Ticks;
+
+                if (totalFixedTicks > (totalTicks + tickBuffer))
                 {
                     long overBy = (totalFixedTicks - totalTicks) / TimeSpan.TicksPerMinute;
                     Common.Warn($"The total time defined ({totalFixedTicks / TimeSpan.TicksPerMinute}m) " +
@@ -1688,22 +1737,23 @@ namespace Timekeeper.Forms
                     return;
                 }
 
-                int floatingCount = lines.Count(l => !l.FixedMins.HasValue);
+                int floatingCount = finalLines.Count(l => !l.Value.HasValue);
                 long remainingTicks = totalTicks - totalFixedTicks;
                 long ticksPerFloating = floatingCount > 0 ? remainingTicks / floatingCount : 0;
 
                 DateTimeOffset currentStart = browserEntry.StartTime;
 
-                for (int i = 0; i < lines.Count; i++)
+                // Phase 4: Create Database splits
+                for (int i = 0; i < finalLines.Count; i++)
                 {
-                    var line = lines[i];
-                    long currentChunkTicks = line.FixedMins.HasValue
-                                             ? TimeSpan.FromMinutes(line.FixedMins.Value).Ticks
-                                             : ticksPerFloating;
+                    var line = finalLines[i];
+                    long currentChunkTicks = line.Value.HasValue
+                                                 ? TimeSpan.FromMinutes(line.Value.Value).Ticks
+                                                 : ticksPerFloating;
 
                     if (i == 0)
                     {
-                        browserEntry.Memo = line.Memo;
+                        browserEntry.Memo = line.Key;
                         browserEntry.StopTime = currentStart.AddTicks(currentChunkTicks);
                         browserEntry.Seconds = (long)TimeSpan.FromTicks(currentChunkTicks).TotalSeconds;
                         browserEntry.Save();
@@ -1712,7 +1762,7 @@ namespace Timekeeper.Forms
                     else
                     {
                         Classes.JournalEntry split = browserEntry.Copy();
-                        split.Memo = line.Memo;
+                        split.Memo = line.Key;
                         split.StartTime = currentStart;
                         split.StopTime = currentStart.AddTicks(currentChunkTicks);
                         split.Seconds = (long)TimeSpan.FromTicks(currentChunkTicks).TotalSeconds;
@@ -1724,11 +1774,8 @@ namespace Timekeeper.Forms
                     }
                 }
 
-                // Refresh the form with the original (now modified) entry
                 Browser_EntryToForm(browserEntry);
-
-                // Not sure if I want this...?
-                Common.Info($"Entry split into {lines.Count} parts.");
+                Common.Info($"Entry split into {finalLines.Count} parts.");
             }
             catch (Exception x)
             {
