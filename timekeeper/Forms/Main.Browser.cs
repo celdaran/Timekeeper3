@@ -313,6 +313,7 @@ namespace Timekeeper.Forms
             MenuToolbarBrowserCloseStartGap.Enabled = enabled;
             CloseStartGapButton.Enabled = enabled;
             ToolbarInsertBefore.Enabled = enabled;
+            MemoEditor.PopupMenuInsertBefore.Enabled = enabled;
         }
 
         private void Browser_EnableCloseStopGap(bool enabled)
@@ -320,6 +321,7 @@ namespace Timekeeper.Forms
             MenuToolbarBrowserCloseEndGap.Enabled = enabled;
             CloseStopGapButton.Enabled = enabled;
             ToolbarInsertAfter.Enabled = enabled;
+            MemoEditor.PopupMenuInsertAfter.Enabled = enabled;
         }
 
         private void Browser_EnableRevert(bool enabled)

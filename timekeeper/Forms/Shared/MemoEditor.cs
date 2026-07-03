@@ -25,6 +25,8 @@ namespace Timekeeper.Forms.Shared
         public event EventHandler SplitInHalvesRequested;
         public event EventHandler SplitInThirdsRequested;
         public event EventHandler SplitInQuartersRequested;
+        public event EventHandler InsertAfterRequested;
+        public event EventHandler InsertBeforeRequested;
 
         private Classes.Options Options;
 
@@ -240,6 +242,16 @@ namespace Timekeeper.Forms.Shared
         private void PopupMenuSplitInQuarters_Click(object sender, EventArgs e)
         {
             SplitInQuartersRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void PopupMenuInsertAfter_Click(object sender, EventArgs e)
+        {
+            InsertAfterRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void PopupMenuInsertBefore_Click(object sender, EventArgs e)
+        {
+            InsertBeforeRequested?.Invoke(this, EventArgs.Empty);
         }
 
         //---------------------------------------------------------------------

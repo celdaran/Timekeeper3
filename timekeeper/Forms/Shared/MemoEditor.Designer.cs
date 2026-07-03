@@ -83,6 +83,9 @@
             this.RightMarginMarker = new System.Windows.Forms.PictureBox();
             this.GutterPanel = new System.Windows.Forms.Panel();
             this.FontDialog = new System.Windows.Forms.FontDialog();
+            this.PopupMenuInsertAfter = new System.Windows.Forms.ToolStripMenuItem();
+            this.PopupMenuInsertBefore = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.PopupMenu.SuspendLayout();
             this.MemoToolbar.SuspendLayout();
             this.MainPanel.SuspendLayout();
@@ -117,6 +120,14 @@
             this.PopupMenuCopy,
             this.PopupMenuPaste,
             this.PopupMenuSep1,
+            this.splitByBulletsToolStripMenuItem,
+            this.splitInHalfToolStripMenuItem,
+            this.splitInThirdsToolStripMenuItem,
+            this.splitInQuartersToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.PopupMenuInsertAfter,
+            this.PopupMenuInsertBefore,
+            this.toolStripMenuItem1,
             this.PopupMenuToggleCheckbox,
             this.PopupMenuSep2,
             this.PopupMenuHideToolbar,
@@ -125,15 +136,10 @@
             this.PopupMenuShowRuler,
             this.PopupMenuHideGutter,
             this.PopupMenuShowGutter,
-            this.toolStripMenuItem1,
-            this.splitByBulletsToolStripMenuItem,
-            this.splitInHalfToolStripMenuItem,
-            this.splitInThirdsToolStripMenuItem,
-            this.splitInQuartersToolStripMenuItem,
             this.PopupMenuSep3,
             this.PopupMenuMarkupLanguage});
             this.PopupMenu.Name = "PopupMenu";
-            this.PopupMenu.Size = new System.Drawing.Size(193, 380);
+            this.PopupMenu.Size = new System.Drawing.Size(193, 430);
             this.PopupMenu.Opening += new System.ComponentModel.CancelEventHandler(this.PopupMenu_Opening);
             // 
             // PopupMenuCut
@@ -372,7 +378,7 @@
             this.FormatStrikethroughButton.Image = global::Timekeeper.Properties.Resources.ImageButtonStrikethrough;
             this.FormatStrikethroughButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatStrikethroughButton.Name = "FormatStrikethroughButton";
-            this.FormatStrikethroughButton.Size = new System.Drawing.Size(28, 22);
+            this.FormatStrikethroughButton.Size = new System.Drawing.Size(29, 22);
             this.FormatStrikethroughButton.Text = "abc";
             this.FormatStrikethroughButton.ToolTipText = "Strikethrough";
             this.FormatStrikethroughButton.Click += new System.EventHandler(this.FormatStrikethroughButton_Click);
@@ -611,6 +617,25 @@
             this.GutterPanel.TabIndex = 0;
             this.GutterPanel.Click += new System.EventHandler(this.GutterPanel_Click);
             // 
+            // PopupMenuInsertAfter
+            // 
+            this.PopupMenuInsertAfter.Name = "PopupMenuInsertAfter";
+            this.PopupMenuInsertAfter.Size = new System.Drawing.Size(192, 22);
+            this.PopupMenuInsertAfter.Text = "Insert After";
+            this.PopupMenuInsertAfter.Click += new System.EventHandler(this.PopupMenuInsertAfter_Click);
+            // 
+            // PopupMenuInsertBefore
+            // 
+            this.PopupMenuInsertBefore.Name = "PopupMenuInsertBefore";
+            this.PopupMenuInsertBefore.Size = new System.Drawing.Size(192, 22);
+            this.PopupMenuInsertBefore.Text = "Insert Before";
+            this.PopupMenuInsertBefore.Click += new System.EventHandler(this.PopupMenuInsertBefore_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(189, 6);
+            // 
             // MemoEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -688,5 +713,8 @@
         public System.Windows.Forms.ToolStripMenuItem splitInHalfToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem splitInThirdsToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem splitInQuartersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        public System.Windows.Forms.ToolStripMenuItem PopupMenuInsertAfter;
+        public System.Windows.Forms.ToolStripMenuItem PopupMenuInsertBefore;
     }
 }

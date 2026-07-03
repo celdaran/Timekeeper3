@@ -590,6 +590,9 @@ namespace Timekeeper.Forms
                 MemoEditor.SplitInHalvesRequested += (s, e) => Action_SplitEntry(2);
                 MemoEditor.SplitInThirdsRequested += (s, e) => Action_SplitEntry(3);
                 MemoEditor.SplitInQuartersRequested += (s, e) => Action_SplitEntry(4);
+                MemoEditor.InsertAfterRequested += (s, e) => Action_InsertEntry(1);
+                MemoEditor.InsertBeforeRequested += (s, e) => Action_InsertEntry(-1);
+
 
                 // Subscribe to the message event. This will allow the form to be notified whenever there's a new message.
                 Timekeeper.Mailbox.HandleMessage += new EventHandler(OnHandleMessage);
