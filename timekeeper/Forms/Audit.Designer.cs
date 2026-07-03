@@ -34,7 +34,9 @@ namespace Timekeeper.Forms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ToolStrip = new System.Windows.Forms.ToolStrip();
             this.SelectDateLabel = new System.Windows.Forms.ToolStripLabel();
+            this.GoToPrevDayButton = new System.Windows.Forms.ToolStripButton();
             this.AuditDate = new System.Windows.Forms.ToolStripTextBox();
+            this.GoToNextDayButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ReconcileAllButton = new System.Windows.Forms.ToolStripButton();
             this.RefreshButton = new System.Windows.Forms.ToolStripButton();
@@ -49,8 +51,6 @@ namespace Timekeeper.Forms
             this.SortByDurationButton = new System.Windows.Forms.ToolStripButton();
             this.SortByModifiedTimeButton = new System.Windows.Forms.ToolStripButton();
             this.JournalResultsGrid = new System.Windows.Forms.DataGridView();
-            this.StatusBar = new System.Windows.Forms.StatusStrip();
-            this.ResultCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.JournalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IsReconciled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ReconcileTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -70,8 +70,8 @@ namespace Timekeeper.Forms
             this.MemoExcerpt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CreateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ModifyTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GoToNextDayButton = new System.Windows.Forms.ToolStripButton();
-            this.GoToPrevDayButton = new System.Windows.Forms.ToolStripButton();
+            this.StatusBar = new System.Windows.Forms.StatusStrip();
+            this.ResultCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.ToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.JournalResultsGrid)).BeginInit();
             this.StatusBar.SuspendLayout();
@@ -112,6 +112,16 @@ namespace Timekeeper.Forms
             this.SelectDateLabel.Size = new System.Drawing.Size(66, 22);
             this.SelectDateLabel.Text = "Select Date:";
             // 
+            // GoToPrevDayButton
+            // 
+            this.GoToPrevDayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.GoToPrevDayButton.Image = global::Timekeeper.Properties.Resources.ImageButtonPrev;
+            this.GoToPrevDayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.GoToPrevDayButton.Name = "GoToPrevDayButton";
+            this.GoToPrevDayButton.Size = new System.Drawing.Size(23, 22);
+            this.GoToPrevDayButton.Text = "Prev Day";
+            this.GoToPrevDayButton.Click += new System.EventHandler(this.GoToPrevDayButton_Click);
+            // 
             // AuditDate
             // 
             this.AuditDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -120,6 +130,16 @@ namespace Timekeeper.Forms
             this.AuditDate.Text = "YYYY-MM-DD";
             this.AuditDate.ToolTipText = "Enter date to audit and reconcile in YYYY-MM-DD format";
             this.AuditDate.Leave += new System.EventHandler(this.AuditDate_Leave);
+            // 
+            // GoToNextDayButton
+            // 
+            this.GoToNextDayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.GoToNextDayButton.Image = global::Timekeeper.Properties.Resources.ImageButtonNext;
+            this.GoToNextDayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.GoToNextDayButton.Name = "GoToNextDayButton";
+            this.GoToNextDayButton.Size = new System.Drawing.Size(23, 22);
+            this.GoToNextDayButton.Text = "Next Day";
+            this.GoToNextDayButton.Click += new System.EventHandler(this.GoToNextDayButton_Click);
             // 
             // toolStripSeparator1
             // 
@@ -162,7 +182,7 @@ namespace Timekeeper.Forms
             // 
             this.SortByLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SortByLabel.Name = "SortByLabel";
-            this.SortByLabel.Size = new System.Drawing.Size(51, 22);
+            this.SortByLabel.Size = new System.Drawing.Size(44, 22);
             this.SortByLabel.Text = "Sort By:";
             // 
             // SortByStartTimeButton
@@ -284,21 +304,6 @@ namespace Timekeeper.Forms
             this.JournalResultsGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.JournalFindResults_CellDoubleClick);
             this.JournalResultsGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.JournalResultsGrid_CellValueChanged);
             this.JournalResultsGrid.CurrentCellDirtyStateChanged += new System.EventHandler(this.JournalResultsGrid_CurrentCellDirtyStateChanged);
-            // 
-            // StatusBar
-            // 
-            this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ResultCount});
-            this.StatusBar.Location = new System.Drawing.Point(0, 271);
-            this.StatusBar.Name = "StatusBar";
-            this.StatusBar.Size = new System.Drawing.Size(1312, 22);
-            this.StatusBar.TabIndex = 2;
-            this.StatusBar.Text = "statusStrip1";
-            // 
-            // ResultCount
-            // 
-            this.ResultCount.Name = "ResultCount";
-            this.ResultCount.Size = new System.Drawing.Size(0, 17);
             // 
             // JournalId
             // 
@@ -442,25 +447,20 @@ namespace Timekeeper.Forms
             this.ModifyTime.ReadOnly = true;
             this.ModifyTime.Width = 125;
             // 
-            // GoToNextDayButton
+            // StatusBar
             // 
-            this.GoToNextDayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.GoToNextDayButton.Image = global::Timekeeper.Properties.Resources.ImageButtonNext;
-            this.GoToNextDayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.GoToNextDayButton.Name = "GoToNextDayButton";
-            this.GoToNextDayButton.Size = new System.Drawing.Size(23, 22);
-            this.GoToNextDayButton.Text = "Next Day";
-            this.GoToNextDayButton.Click += new System.EventHandler(this.GoToNextDayButton_Click);
+            this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ResultCount});
+            this.StatusBar.Location = new System.Drawing.Point(0, 271);
+            this.StatusBar.Name = "StatusBar";
+            this.StatusBar.Size = new System.Drawing.Size(1312, 22);
+            this.StatusBar.TabIndex = 2;
+            this.StatusBar.Text = "statusStrip1";
             // 
-            // GoToPrevDayButton
+            // ResultCount
             // 
-            this.GoToPrevDayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.GoToPrevDayButton.Image = global::Timekeeper.Properties.Resources.ImageButtonPrev;
-            this.GoToPrevDayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.GoToPrevDayButton.Name = "GoToPrevDayButton";
-            this.GoToPrevDayButton.Size = new System.Drawing.Size(23, 22);
-            this.GoToPrevDayButton.Text = "Prev Day";
-            this.GoToPrevDayButton.Click += new System.EventHandler(this.GoToPrevDayButton_Click);
+            this.ResultCount.Name = "ResultCount";
+            this.ResultCount.Size = new System.Drawing.Size(0, 17);
             // 
             // Audit
             // 
@@ -470,6 +470,7 @@ namespace Timekeeper.Forms
             this.Controls.Add(this.JournalResultsGrid);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.ToolStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Audit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Audit";
