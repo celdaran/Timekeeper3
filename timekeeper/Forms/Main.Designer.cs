@@ -50,6 +50,7 @@ namespace Timekeeper.Forms
             this.MenuActionStopTimer = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuActionFind = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuActionAudit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuActionManageProjects = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuActionManageActivities = new System.Windows.Forms.ToolStripMenuItem();
@@ -247,7 +248,7 @@ namespace Timekeeper.Forms
             this.SaveAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.IdleTimer = new System.Windows.Forms.Timer(this.components);
-            this.MenuActionAudit = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolbarSplit = new System.Windows.Forms.ToolStripButton();
             this.MenuMain.SuspendLayout();
             this.StatusBar.SuspendLayout();
             this.PopupMenuTray.SuspendLayout();
@@ -300,7 +301,7 @@ namespace Timekeeper.Forms
             // MenuFileNew
             // 
             this.MenuFileNew.Name = "MenuFileNew";
-            this.MenuFileNew.Size = new System.Drawing.Size(180, 22);
+            this.MenuFileNew.Size = new System.Drawing.Size(145, 22);
             this.MenuFileNew.Text = "&New...";
             this.MenuFileNew.Click += new System.EventHandler(this.MenuFileNew_Click);
             // 
@@ -308,14 +309,14 @@ namespace Timekeeper.Forms
             // 
             this.MenuFileOpen.Name = "MenuFileOpen";
             this.MenuFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.MenuFileOpen.Size = new System.Drawing.Size(180, 22);
+            this.MenuFileOpen.Size = new System.Drawing.Size(145, 22);
             this.MenuFileOpen.Text = "&Open...";
             this.MenuFileOpen.Click += new System.EventHandler(this.MenuFileOpen_Click);
             // 
             // MenuFileSaveAs
             // 
             this.MenuFileSaveAs.Name = "MenuFileSaveAs";
-            this.MenuFileSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.MenuFileSaveAs.Size = new System.Drawing.Size(145, 22);
             this.MenuFileSaveAs.Text = "Save As...";
             this.MenuFileSaveAs.Click += new System.EventHandler(this.MenuFileSaveAs_Click);
             // 
@@ -323,19 +324,19 @@ namespace Timekeeper.Forms
             // 
             this.MenuFileClose.Name = "MenuFileClose";
             this.MenuFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.MenuFileClose.Size = new System.Drawing.Size(180, 22);
+            this.MenuFileClose.Size = new System.Drawing.Size(145, 22);
             this.MenuFileClose.Text = "&Close";
             this.MenuFileClose.Click += new System.EventHandler(this.MenuFileClose_Click);
             // 
             // MenuFileSep1
             // 
             this.MenuFileSep1.Name = "MenuFileSep1";
-            this.MenuFileSep1.Size = new System.Drawing.Size(177, 6);
+            this.MenuFileSep1.Size = new System.Drawing.Size(142, 6);
             // 
             // MenuFileRecent
             // 
             this.MenuFileRecent.Name = "MenuFileRecent";
-            this.MenuFileRecent.Size = new System.Drawing.Size(180, 22);
+            this.MenuFileRecent.Size = new System.Drawing.Size(145, 22);
             this.MenuFileRecent.Text = "&Recent Files";
             // 
             // MenuFileUtilities
@@ -346,7 +347,7 @@ namespace Timekeeper.Forms
             this.MenuFileUtilitiesBackup,
             this.MenuFileUtilitiesCheck});
             this.MenuFileUtilities.Name = "MenuFileUtilities";
-            this.MenuFileUtilities.Size = new System.Drawing.Size(180, 22);
+            this.MenuFileUtilities.Size = new System.Drawing.Size(145, 22);
             this.MenuFileUtilities.Text = "Utilities";
             // 
             // MenuFileUtilitiesImport
@@ -380,12 +381,12 @@ namespace Timekeeper.Forms
             // MenuFileSep2
             // 
             this.MenuFileSep2.Name = "MenuFileSep2";
-            this.MenuFileSep2.Size = new System.Drawing.Size(177, 6);
+            this.MenuFileSep2.Size = new System.Drawing.Size(142, 6);
             // 
             // MenuFileExit
             // 
             this.MenuFileExit.Name = "MenuFileExit";
-            this.MenuFileExit.Size = new System.Drawing.Size(180, 22);
+            this.MenuFileExit.Size = new System.Drawing.Size(145, 22);
             this.MenuFileExit.Text = "E&xit";
             this.MenuFileExit.Click += new System.EventHandler(this.MenuFileExit_Click);
             // 
@@ -438,6 +439,15 @@ namespace Timekeeper.Forms
             this.MenuActionFind.Size = new System.Drawing.Size(225, 22);
             this.MenuActionFind.Text = "&Find...";
             this.MenuActionFind.Click += new System.EventHandler(this.MenuActionFind_Click);
+            // 
+            // MenuActionAudit
+            // 
+            this.MenuActionAudit.Name = "MenuActionAudit";
+            this.MenuActionAudit.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.A)));
+            this.MenuActionAudit.Size = new System.Drawing.Size(225, 22);
+            this.MenuActionAudit.Text = "&Audit";
+            this.MenuActionAudit.Click += new System.EventHandler(this.MenuActionAudit_Click);
             // 
             // MenuActionSep2
             // 
@@ -492,7 +502,7 @@ namespace Timekeeper.Forms
             // 
             this.MenuReportGrid.Name = "MenuReportGrid";
             this.MenuReportGrid.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.MenuReportGrid.Size = new System.Drawing.Size(180, 22);
+            this.MenuReportGrid.Size = new System.Drawing.Size(151, 22);
             this.MenuReportGrid.Text = "G&rid...";
             this.MenuReportGrid.Click += new System.EventHandler(this.menuReportsGrid_Click);
             // 
@@ -500,35 +510,35 @@ namespace Timekeeper.Forms
             // 
             this.MenuReportJournal.Name = "MenuReportJournal";
             this.MenuReportJournal.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            this.MenuReportJournal.Size = new System.Drawing.Size(180, 22);
+            this.MenuReportJournal.Size = new System.Drawing.Size(151, 22);
             this.MenuReportJournal.Text = "&Journal...";
             this.MenuReportJournal.Click += new System.EventHandler(this.menuReportsQuick_Click);
             // 
             // MenuReportTodo
             // 
             this.MenuReportTodo.Name = "MenuReportTodo";
-            this.MenuReportTodo.Size = new System.Drawing.Size(180, 22);
+            this.MenuReportTodo.Size = new System.Drawing.Size(151, 22);
             this.MenuReportTodo.Text = "To Do...";
             this.MenuReportTodo.Visible = false;
             // 
             // MenuReportEvents
             // 
             this.MenuReportEvents.Name = "MenuReportEvents";
-            this.MenuReportEvents.Size = new System.Drawing.Size(180, 22);
+            this.MenuReportEvents.Size = new System.Drawing.Size(151, 22);
             this.MenuReportEvents.Text = "Events...";
             this.MenuReportEvents.Visible = false;
             // 
             // MenuReportNotebook
             // 
             this.MenuReportNotebook.Name = "MenuReportNotebook";
-            this.MenuReportNotebook.Size = new System.Drawing.Size(180, 22);
+            this.MenuReportNotebook.Size = new System.Drawing.Size(151, 22);
             this.MenuReportNotebook.Text = "Notebook...";
             this.MenuReportNotebook.Visible = false;
             // 
             // MenuReportPunch
             // 
             this.MenuReportPunch.Name = "MenuReportPunch";
-            this.MenuReportPunch.Size = new System.Drawing.Size(180, 22);
+            this.MenuReportPunch.Size = new System.Drawing.Size(151, 22);
             this.MenuReportPunch.Text = "&Punch Card...";
             this.MenuReportPunch.Click += new System.EventHandler(this.menuReportsPunch_Click);
             // 
@@ -553,14 +563,14 @@ namespace Timekeeper.Forms
             // MenuToolTodo
             // 
             this.MenuToolTodo.Name = "MenuToolTodo";
-            this.MenuToolTodo.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolTodo.Size = new System.Drawing.Size(156, 22);
             this.MenuToolTodo.Text = "To Do...";
             this.MenuToolTodo.Click += new System.EventHandler(this.MenuToolTodo_Click);
             // 
             // MenuToolEvents
             // 
             this.MenuToolEvents.Name = "MenuToolEvents";
-            this.MenuToolEvents.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolEvents.Size = new System.Drawing.Size(156, 22);
             this.MenuToolEvents.Text = "&Events...";
             this.MenuToolEvents.Visible = false;
             this.MenuToolEvents.Click += new System.EventHandler(this.MenuToolReminders_Click);
@@ -568,28 +578,28 @@ namespace Timekeeper.Forms
             // MenuToolNotebook
             // 
             this.MenuToolNotebook.Name = "MenuToolNotebook";
-            this.MenuToolNotebook.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolNotebook.Size = new System.Drawing.Size(156, 22);
             this.MenuToolNotebook.Text = "&Notebook...";
             this.MenuToolNotebook.Click += new System.EventHandler(this.MenuToolNotebook_Click);
             // 
             // MenuToolCalendar
             // 
             this.MenuToolCalendar.Name = "MenuToolCalendar";
-            this.MenuToolCalendar.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolCalendar.Size = new System.Drawing.Size(156, 22);
             this.MenuToolCalendar.Text = "&Calendar...";
             this.MenuToolCalendar.Click += new System.EventHandler(this.MenuToolCalendar_Click);
             // 
             // MenuToolStopwatch
             // 
             this.MenuToolStopwatch.Name = "MenuToolStopwatch";
-            this.MenuToolStopwatch.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolStopwatch.Size = new System.Drawing.Size(156, 22);
             this.MenuToolStopwatch.Text = "Stopwatch...";
             this.MenuToolStopwatch.Click += new System.EventHandler(this.MenuToolStopwatch_Click);
             // 
             // MenuToolCountdown
             // 
             this.MenuToolCountdown.Name = "MenuToolCountdown";
-            this.MenuToolCountdown.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolCountdown.Size = new System.Drawing.Size(156, 22);
             this.MenuToolCountdown.Text = "C&ountdown...";
             this.MenuToolCountdown.Click += new System.EventHandler(this.MenuToolCountdown_Click);
             // 
@@ -597,7 +607,7 @@ namespace Timekeeper.Forms
             // 
             this.MenuToolDatecalc.Enabled = false;
             this.MenuToolDatecalc.Name = "MenuToolDatecalc";
-            this.MenuToolDatecalc.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolDatecalc.Size = new System.Drawing.Size(156, 22);
             this.MenuToolDatecalc.Text = "&Date Calculator...";
             this.MenuToolDatecalc.Visible = false;
             this.MenuToolDatecalc.Click += new System.EventHandler(this.menuToolsDatecalc_Click);
@@ -605,13 +615,13 @@ namespace Timekeeper.Forms
             // MenuToolSep2
             // 
             this.MenuToolSep2.Name = "MenuToolSep2";
-            this.MenuToolSep2.Size = new System.Drawing.Size(177, 6);
+            this.MenuToolSep2.Size = new System.Drawing.Size(153, 6);
             // 
             // MenuToolOptions
             // 
             this.MenuToolOptions.Name = "MenuToolOptions";
             this.MenuToolOptions.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.MenuToolOptions.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolOptions.Size = new System.Drawing.Size(156, 22);
             this.MenuToolOptions.Text = "Options";
             this.MenuToolOptions.Click += new System.EventHandler(this.MenuToolOptions_Click);
             // 
@@ -700,7 +710,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarBrowserRevert,
             this.MenuToolbarBrowserUnlock});
             this.MenuToolbarBrowser.Name = "MenuToolbarBrowser";
-            this.MenuToolbarBrowser.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolbarBrowser.Size = new System.Drawing.Size(112, 22);
             this.MenuToolbarBrowser.Text = "&Browser";
             // 
             // MenuToolbarBrowserFirst
@@ -962,7 +972,7 @@ namespace Timekeeper.Forms
             this.MenuToolbarFormatBlockquote,
             this.MenuToolbarFormatHorizontalRule});
             this.MenuToolbarFormat.Name = "MenuToolbarFormat";
-            this.MenuToolbarFormat.Size = new System.Drawing.Size(180, 22);
+            this.MenuToolbarFormat.Size = new System.Drawing.Size(112, 22);
             this.MenuToolbarFormat.Text = "&Format";
             // 
             // MenuToolbarFormatBold
@@ -1840,6 +1850,7 @@ namespace Timekeeper.Forms
             this.ToolbarNewEntry,
             this.ToolbarJournalId,
             this.ToolbarSep2,
+            this.ToolbarSplit,
             this.ToolbarSplitEntry,
             this.ToolbarSep3,
             this.ToolbarSave,
@@ -2075,59 +2086,59 @@ namespace Timekeeper.Forms
             // ToolbarSplitEntry2
             // 
             this.ToolbarSplitEntry2.Name = "ToolbarSplitEntry2";
-            this.ToolbarSplitEntry2.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarSplitEntry2.Size = new System.Drawing.Size(180, 22);
             this.ToolbarSplitEntry2.Text = "Split in Halves";
             this.ToolbarSplitEntry2.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry2_Click);
             // 
             // ToolbarSplitEntry3
             // 
             this.ToolbarSplitEntry3.Name = "ToolbarSplitEntry3";
-            this.ToolbarSplitEntry3.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarSplitEntry3.Size = new System.Drawing.Size(180, 22);
             this.ToolbarSplitEntry3.Text = "Split in Thirds";
             this.ToolbarSplitEntry3.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry3_Click);
             // 
             // ToolbarSplitEntry4
             // 
             this.ToolbarSplitEntry4.Name = "ToolbarSplitEntry4";
-            this.ToolbarSplitEntry4.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarSplitEntry4.Size = new System.Drawing.Size(180, 22);
             this.ToolbarSplitEntry4.Text = "Split in Quarters";
             this.ToolbarSplitEntry4.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry4_Click);
             // 
             // ToolbarSplitEntryByBullets
             // 
             this.ToolbarSplitEntryByBullets.Name = "ToolbarSplitEntryByBullets";
-            this.ToolbarSplitEntryByBullets.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarSplitEntryByBullets.Size = new System.Drawing.Size(180, 22);
             this.ToolbarSplitEntryByBullets.Text = "Split by Bullets";
             this.ToolbarSplitEntryByBullets.Click += new System.EventHandler(this.MenuToolbarBrowserSplitByBullets_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(145, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // ToolbarInsertAfter
             // 
             this.ToolbarInsertAfter.Name = "ToolbarInsertAfter";
-            this.ToolbarInsertAfter.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarInsertAfter.Size = new System.Drawing.Size(180, 22);
             this.ToolbarInsertAfter.Text = "Insert After";
             this.ToolbarInsertAfter.Click += new System.EventHandler(this.MenuToolbarBrowserInsertAfter_Click);
             // 
             // ToolbarInsertBefore
             // 
             this.ToolbarInsertBefore.Name = "ToolbarInsertBefore";
-            this.ToolbarInsertBefore.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarInsertBefore.Size = new System.Drawing.Size(180, 22);
             this.ToolbarInsertBefore.Text = "Insert Before";
             this.ToolbarInsertBefore.Click += new System.EventHandler(this.MenuToolbarBrowserInsertBefore_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(145, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
             // 
             // ToolbarJoinEntries
             // 
             this.ToolbarJoinEntries.Name = "ToolbarJoinEntries";
-            this.ToolbarJoinEntries.Size = new System.Drawing.Size(148, 22);
+            this.ToolbarJoinEntries.Size = new System.Drawing.Size(180, 22);
             this.ToolbarJoinEntries.Text = "Join Entries";
             this.ToolbarJoinEntries.Click += new System.EventHandler(this.MenuToolbarBrowserJoinEntries_Click);
             // 
@@ -2245,14 +2256,15 @@ namespace Timekeeper.Forms
             this.IdleTimer.Interval = 1200000;
             this.IdleTimer.Tick += new System.EventHandler(this.IdleTimer_Tick);
             // 
-            // MenuActionAudit
+            // ToolbarSplit
             // 
-            this.MenuActionAudit.Name = "MenuActionAudit";
-            this.MenuActionAudit.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.A)));
-            this.MenuActionAudit.Size = new System.Drawing.Size(225, 22);
-            this.MenuActionAudit.Text = "&Audit";
-            this.MenuActionAudit.Click += new System.EventHandler(this.MenuActionAudit_Click);
+            this.ToolbarSplit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.ToolbarSplit.Image = ((System.Drawing.Image)(resources.GetObject("ToolbarSplit.Image")));
+            this.ToolbarSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ToolbarSplit.Name = "ToolbarSplit";
+            this.ToolbarSplit.Size = new System.Drawing.Size(31, 22);
+            this.ToolbarSplit.Text = "Split";
+            this.ToolbarSplit.Click += new System.EventHandler(this.MenuToolbarBrowserSplitEntry2_Click);
             // 
             // Main
             // 
@@ -2519,5 +2531,6 @@ namespace Timekeeper.Forms
         private System.Windows.Forms.ToolStripMenuItem ToolbarInsertBefore;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem MenuActionAudit;
+        private System.Windows.Forms.ToolStripButton ToolbarSplit;
     }
 }
