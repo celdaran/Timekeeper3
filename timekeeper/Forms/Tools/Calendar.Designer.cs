@@ -76,7 +76,7 @@ namespace Timekeeper.Forms.Tools
             // 
             this.CalendarControl.BackColor = System.Drawing.Color.White;
             this.CalendarControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CalendarControl.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CalendarControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CalendarControl.ForeColor = System.Drawing.Color.Black;
             this.CalendarControl.Location = new System.Drawing.Point(0, 0);
             this.CalendarControl.MaxSelectionCount = 1;

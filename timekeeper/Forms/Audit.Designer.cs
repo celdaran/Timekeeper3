@@ -160,7 +160,7 @@ namespace Timekeeper.Forms
             // 
             // SortByLabel
             // 
-            this.SortByLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SortByLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SortByLabel.Name = "SortByLabel";
             this.SortByLabel.Size = new System.Drawing.Size(51, 22);
             this.SortByLabel.Text = "Sort By:";

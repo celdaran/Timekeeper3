@@ -332,7 +332,7 @@
             // FormatBoldButton
             // 
             this.FormatBoldButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatBoldButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormatBoldButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormatBoldButton.Image = global::Timekeeper.Properties.Resources.ImageButtonBold;
             this.FormatBoldButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatBoldButton.Name = "FormatBoldButton";
@@ -344,7 +344,7 @@
             // FormatItalicButton
             // 
             this.FormatItalicButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatItalicButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormatItalicButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormatItalicButton.Image = global::Timekeeper.Properties.Resources.ImageButtonItalics;
             this.FormatItalicButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatItalicButton.Name = "FormatItalicButton";
@@ -356,7 +356,7 @@
             // FormatUnderlineButton
             // 
             this.FormatUnderlineButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatUnderlineButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormatUnderlineButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormatUnderlineButton.Image = global::Timekeeper.Properties.Resources.ImageButtonUnderlined;
             this.FormatUnderlineButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatUnderlineButton.Name = "FormatUnderlineButton";
@@ -368,7 +368,7 @@
             // FormatStrikethroughButton
             // 
             this.FormatStrikethroughButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.FormatStrikethroughButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormatStrikethroughButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormatStrikethroughButton.Image = global::Timekeeper.Properties.Resources.ImageButtonStrikethrough;
             this.FormatStrikethroughButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.FormatStrikethroughButton.Name = "FormatStrikethroughButton";
